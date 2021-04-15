@@ -1,0 +1,11 @@
+AttendanceSystem/*.nupkg
+AttendanceSystem/*.dll
+AttendanceSystem/*.pdb
+AttendanceSystem/*.xdt
+AttendanceSystem/bin
+AttendanceSystem/obj
+packages
+ 
+.vs/*
+.git/
+.dll
