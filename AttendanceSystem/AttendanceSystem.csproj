@@ -147,6 +147,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helper\CommonMethod.cs" />
+    <Compile Include="Helper\Enums.cs" />
+    <Compile Include="Helper\ErrorMessage.cs" />
+    <Compile Include="Helper\ResponseDataModel.cs" />
     <Compile Include="Models\AttendanceSystem.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1050,6 +1054,7 @@
     <Folder Include="Areas\WebAPI\Views\Account\" />
     <Folder Include="Areas\WebAPI\Views\Shared\" />
     <Folder Include="Content\client-theme\" />
+    <Folder Include="Images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
