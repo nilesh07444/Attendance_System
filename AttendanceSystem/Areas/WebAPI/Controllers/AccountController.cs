@@ -11,7 +11,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
     public class AccountController : ApiController
     {
 
-        AttendanceSystemEntities _db;
+        private readonly AttendanceSystemEntities _db;
         public AccountController()
         {
             _db = new AttendanceSystemEntities();
@@ -19,7 +19,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
         [Route("TestMethod"), HttpGet]
         public string TestMethod()
-        {
+        {            
             return "Hello Nilesh";
         }
 

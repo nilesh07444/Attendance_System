@@ -1055,6 +1055,7 @@
     <Folder Include="Areas\WebAPI\Views\Shared\" />
     <Folder Include="Content\client-theme\" />
     <Folder Include="Images\" />
+    <Folder Include="ViewModel\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

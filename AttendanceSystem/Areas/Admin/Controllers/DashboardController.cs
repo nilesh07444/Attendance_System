@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AttendanceSystem.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,7 +9,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 {
     public class DashboardController : Controller
     {
-        // GET: Admin/Dashboard
+        private readonly AttendanceSystemEntities _db;
+        public DashboardController()
+        {
+            _db = new AttendanceSystemEntities();
+        }
         public ActionResult Index()
         {
             return View();
