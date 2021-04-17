@@ -37,7 +37,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             try
             {
                 string curPwd = CommonMethod.Encrypt(changePasswordVM.CurrentPassword, psSult);
-                tbl_AdminUser data = _db.tbl_AdminUser.Where(x => x.MobileNo == clsAdminSession.UserName && x.Password == curPwd).FirstOrDefault();
+                tbl_AdminUser data = _db.tbl_AdminUser.Where(x => x.UserName == clsAdminSession.UserName && x.Password == curPwd).FirstOrDefault();
 
                 if (data != null)
                 {

@@ -42,7 +42,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             try
             {
                 string encryptedPassword = CommonMethod.Encrypt(password, psSult);
-                var data = _db.tbl_AdminUser.Where(x => x.MobileNo == userName && x.Password == encryptedPassword).FirstOrDefault();
+                var data = _db.tbl_AdminUser.Where(x => x.UserName == userName && x.Password == encryptedPassword).FirstOrDefault();
 
                 if (data != null)
                 {
@@ -98,7 +98,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         {
             try
             {
-                var data = _db.tbl_AdminUser.Where(x => x.MobileNo == login.UserName).FirstOrDefault();
+                var data = _db.tbl_AdminUser.Where(x => x.UserName == login.UserName).FirstOrDefault();
                 var roleData = _db.mst_AdminRole.Where(x => x.AdminRoleId == data.AdminUserRoleId).FirstOrDefault();
                 clsAdminSession.SessionID = Session.SessionID;
                 clsAdminSession.UserID = data.AdminUserId;
@@ -129,7 +129,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             try
             {
                 string encryptedPassword = CommonMethod.Encrypt(login.Password, psSult);
-                tbl_AdminUser data = _db.tbl_AdminUser.Where(x => x.MobileNo == login.UserName).FirstOrDefault();
+                tbl_AdminUser data = _db.tbl_AdminUser.Where(x => x.UserName == login.UserName).FirstOrDefault();
 
                 if (data != null)
                 {
@@ -152,7 +152,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             string otp = string.Empty;
             try
             {
-                var data = _db.tbl_AdminUser.Where(x => x.MobileNo == userName && x.IsActive).FirstOrDefault();
+                var data = _db.tbl_AdminUser.Where(x => x.UserName == userName && x.IsActive).FirstOrDefault();
 
                 if (data != null)
                 {

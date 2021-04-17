@@ -49,7 +49,7 @@
                                             <div class="d-block">
                                                 <label for="password" class="control-label">Password</label>
                                                 <div class="float-right">
-                                                    <a href="ForgotPassword" class="text-small">
+                                                    <a href="~/admin/login/forgotpassword" class="text-small">
                                                         Forgot Password?
                                                     </a>
                                                 </div>
@@ -135,7 +135,7 @@
                 var password = $("#Password").val();
 
 
-                var StrURL = '/admin/Login/Login?userName=' + userName + "&password=" + password;
+                var StrURL = '/admin/login/login?userName=' + userName + "&password=" + password;
                 $.ajax({
                     url: StrURL,
                     cache: false,
