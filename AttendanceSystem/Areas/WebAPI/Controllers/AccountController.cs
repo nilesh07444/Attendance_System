@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -19,8 +20,12 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
         [Route("TestMethod"), HttpGet]
         public string TestMethod()
-        {            
-            return "Hello Nilesh";
+        {
+            string psSult = ConfigurationManager.AppSettings["PasswordSult"].ToString();
+            string password = "12345";
+            string encryptedPwd = CommonMethod.Encrypt(password, psSult);
+            
+            return encryptedPwd;
         }
 
 

@@ -147,10 +147,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helper\clsAdminSession.cs" />
     <Compile Include="Helper\CommonMethod.cs" />
     <Compile Include="Helper\Enums.cs" />
     <Compile Include="Helper\ErrorMessage.cs" />
     <Compile Include="Helper\ResponseDataModel.cs" />
+    <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\AttendanceSystem.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -166,7 +168,40 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AttendanceSystem.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\mst_AdminRole.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\mst_CompanyType.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tbl_AdminUser.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tbl_Attendance.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tbl_Company.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tbl_CompanyRegistrationPayment.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tbl_CompanyRequest.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tbl_EmployeePayment.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tbl_Holiday.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tbl_LoginHistory.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tbl_Setting.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tbl_Site.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -1018,6 +1053,8 @@
     <Content Include="Models\AttendanceSystem.edmx.diagram">
       <DependentUpon>AttendanceSystem.edmx</DependentUpon>
     </Content>
+    <Content Include="Areas\Admin\Views\Dashboard\ChangePassword.cshtml" />
+    <Content Include="Areas\Admin\Views\Login\ForgotPassword.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -1029,7 +1066,9 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>

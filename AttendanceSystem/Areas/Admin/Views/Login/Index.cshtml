@@ -1,8 +1,7 @@
-﻿
+﻿@model AttendanceSystem.Models.AccountModels.LoginModel
 @{
-    Layout = null;
+    Layout = "";
 }
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,64 +34,80 @@
                                 <h4>Login</h4>
                             </div>
                             <div class="card-body">
-                                <form method="POST" action="#" class="needs-validation" novalidate="">
-                                    <div class="form-group">
-                                        <label for="email">Email</label>
-                                        <input id="email" type="email" class="form-control" name="email" tabindex="1" required autofocus>
-                                        <div class="invalid-feedback">
-                                            Please fill in your email
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="d-block">
-                                            <label for="password" class="control-label">Password</label>
-                                            <div class="float-right">
-                                                <a href="auth-forgot-password.html" class="text-small">
-                                                    Forgot Password?
-                                                </a>
+                                @using (Html.BeginForm("LoginSubmit", "Login", FormMethod.Post, new { @id = "submit_form", @class = "login-form", ReturnUrl = ViewBag.ReturnUrl }))
+                                {
+                                    <div id="dv_login">
+                                        <div class="form-group">
+                                            <label for="email">UserName Or Mobile No</label>
+                                            @*<input id="email" type="email" class="form-control" name="email" tabindex="1" required autofocus>*@
+                                            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control required autofocus", @placeholder = "User Name", @autocomplete = "off" })
+                                            <div class="invalid-feedback">
+                                                Please fill in your email
                                             </div>
                                         </div>
-                                        <input id="password" type="password" class="form-control" name="password" tabindex="2" required>
+                                        <div class="form-group">
+                                            <div class="d-block">
+                                                <label for="password" class="control-label">Password</label>
+                                                <div class="float-right">
+                                                    <a href="ForgotPassword" class="text-small">
+                                                        Forgot Password?
+                                                    </a>
+                                                </div>
+                                            </div>
+
+                                            @Html.PasswordFor(m => m.Password, new { @class = "form-control placeholder-no-fix required", @placeholder = "Password", @autocomplete = "off" })
+                                            <div class="invalid-feedback">
+                                                please fill in your password
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" name="remember" class="custom-control-input" tabindex="3" id="remember-me">
+                                                <label class="custom-control-label" for="remember-me">Remember Me</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="button" id="btn_login" class="btn btn-primary btn-lg btn-block" tabindex="4">
+                                                Login
+                                            </button>
+                                        </div>
+                                    </div>
+                                }
+
+                                <div id="dv_otp">
+                                    @using (Html.BeginForm("LoginSubmit", "Login", FormMethod.Post, new { @id = "submit_form", @class = "login-form", ReturnUrl = ViewBag.ReturnUrl }))
+                                    {
+                                    <div class="form-group">
+                                        <div class="d-block">
+                                            <label for="password" class="control-label">OTP</label>
+                                        </div>
+                                        @Html.TextBoxFor(m => m.TextOTP, new { @class = "form-control autofocus", @placeholder = "OTP", @autocomplete = "off" })
+                                        @*<input id="Txt_OTP" type="text" class="form-control" name="email" tabindex="1" required autofocus>*@
                                         <div class="invalid-feedback">
-                                            please fill in your password
+                                            please enter OTP
                                         </div>
+                                        @Html.HiddenFor(m => m.OTP)
+                                        @Html.HiddenFor(m => m.UserName) 
                                     </div>
-                                    <div class="form-group">
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" name="remember" class="custom-control-input" tabindex="3" id="remember-me">
-                                            <label class="custom-control-label" for="remember-me">Remember Me</label>
+                                        <div class="form-group">
+                                            <button type="submit" id="btn_OtpSubmit" class="btn btn-primary btn-lg btn-block" tabindex="4">
+                                                Submit OTP
+                                            </button>
                                         </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
-                                            Login
-                                        </button>
-                                    </div>
-                                </form>
-                                <div class="text-center mt-4 mb-3">
-                                    <div class="text-job text-muted">Login With Social</div>
+                                    }
                                 </div>
-                                <div class="row sm-gutters">
-                                    <div class="col-6">
-                                        <a class="btn btn-block btn-social btn-facebook">
-                                            <span class="fab fa-facebook"></span> Facebook
-                                        </a>
-                                    </div>
-                                    <div class="col-6">
-                                        <a class="btn btn-block btn-social btn-twitter">
-                                            <span class="fab fa-twitter"></span> Twitter
-                                        </a>
-                                    </div>
+                                <div class="mt-5 text-muted text-center">
+                                    Don't have an account? <a href="auth-register.html">Create One</a>
                                 </div>
                             </div>
-                        </div>
-                        <div class="mt-5 text-muted text-center">
-                            Don't have an account? <a href="auth-register.html">Create One</a>
+
                         </div>
                     </div>
+
                 </div>
             </div>
-        </section>
+    </div>
+    </section>
     </div>
     <!-- General JS Scripts -->
     <script src="~/Content/admin-theme/assets/js/app.min.js"></script>
@@ -107,3 +122,68 @@
 
 <!-- auth-login.html  21 Nov 2019 03:49:32 GMT -->
 </html>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#dv_login").show();
+        $("#dv_otp").hide();
+
+
+        $('#btn_login').click(function () {
+            if ($("#submit_form").valid()) {
+                var userName = $("#UserName").val();
+                var password = $("#Password").val();
+
+
+                var StrURL = '/admin/Login/Login?userName=' + userName + "&password=" + password;
+                $.ajax({
+                    url: StrURL,
+                    cache: false,
+                    data: {},
+                    type: 'POST',
+                    success: function (data) {
+                        if (data.Status == 1) {
+                            $("#dv_login").hide();
+                            $("#dv_otp").show();
+                            $("#OTP").val(data.Otp);
+                            $("#TextOTP").val(data.Otp);
+                            $("#EncryptedKey").val(data.EncryptedUserDetails);
+                        }
+                        else {
+                            alert(data.ErrorMessage);
+                        }
+
+                    },
+                    error: function (req, status, error) {
+                        alert(error);
+                    }
+                });
+            }
+            else {
+
+                return false;
+            }
+        });
+
+
+        $('#btn_OtpSubmit').click(function () {
+
+            var otpText = $("#TextOTP").val();
+
+            var OTP = $("#OTP").val();
+
+            if (otpText == "") {
+                alert("Please enter OTP")
+                return false;
+            }
+            if (otpText != OTP) {
+                alert("Invalid OTP")
+                return false;
+            } else {
+                $("#submit_form").submit();
+            }
+
+        });
+    })
+
+</script>
