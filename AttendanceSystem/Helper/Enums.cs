@@ -17,4 +17,25 @@ namespace AttendanceSystem.Helper
         Worker = 7
     }
 
+    public enum AttendanceStatus
+    {
+        Pending = 1,
+        Accept = 2,
+        Reject = 3
+    }
+
+    public enum LeaveStatus
+    {
+        Pending = 1,
+        Accept = 2,
+        Reject = 3,
+        Cancelled = 4
+    }
+
+    public enum EmployeePaymentType
+    {
+        Salary = 1,
+        Extra = 2
+    }
+
 }
