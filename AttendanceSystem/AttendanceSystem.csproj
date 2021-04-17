@@ -141,6 +141,14 @@
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Admin\Controllers\LoginController.cs" />
     <Compile Include="Areas\Client\ClientAreaRegistration.cs" />
+    <Compile Include="Areas\Client\Controllers\AboutController.cs" />
+    <Compile Include="Areas\Client\Controllers\CompanyRequestController.cs" />
+    <Compile Include="Areas\Client\Controllers\ContactController.cs" />
+    <Compile Include="Areas\Client\Controllers\FAQController.cs" />
+    <Compile Include="Areas\Client\Controllers\MainController.cs" />
+    <Compile Include="Areas\Client\Controllers\PrivacyPolicyController.cs" />
+    <Compile Include="Areas\Client\Controllers\TermsConditionController.cs" />
+    <Compile Include="Areas\Client\Controllers\WebViewController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\AccountController.cs" />
     <Compile Include="Areas\WebAPI\WebAPIAreaRegistration.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -1055,6 +1063,15 @@
     </Content>
     <Content Include="Areas\Admin\Views\Dashboard\ChangePassword.cshtml" />
     <Content Include="Areas\Admin\Views\Login\ForgotPassword.cshtml" />
+    <Content Include="Areas\Client\Views\Main\Index.cshtml" />
+    <Content Include="Areas\Client\Views\Contact\Index.cshtml" />
+    <Content Include="Areas\Client\Views\PrivacyPolicy\Index.cshtml" />
+    <Content Include="Areas\Client\Views\WebView\TermsCondition.cshtml" />
+    <Content Include="Areas\Client\Views\WebView\PrivacyPolicy.cshtml" />
+    <Content Include="Areas\Client\Views\CompanyRequest\Index.cshtml" />
+    <Content Include="Areas\Client\Views\About\Index.cshtml" />
+    <Content Include="Areas\Client\Views\TermsCondition\Index.cshtml" />
+    <Content Include="Areas\Client\Views\FAQ\Index.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -1086,7 +1103,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Data\" />
-    <Folder Include="Areas\Client\Controllers\" />
     <Folder Include="Areas\Client\Data\" />
     <Folder Include="Areas\Client\Views\Shared\" />
     <Folder Include="Areas\WebAPI\Data\" />
