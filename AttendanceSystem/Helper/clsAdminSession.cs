@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace BarcodeSystem.Model
+namespace AttendanceSystem.Helper
 {
     public class clsAdminSession
     {
@@ -86,6 +86,18 @@ namespace BarcodeSystem.Model
             set
             {
                 HttpContext.Current.Session["UserName"] = value;
+            }
+        }
+
+        public static string FullName
+        {
+            get
+            {
+                return HttpContext.Current.Session["FullName"] != null ? Convert.ToString(HttpContext.Current.Session["FullName"]) : string.Empty;
+            }
+            set
+            {
+                HttpContext.Current.Session["FullName"] = value;
             }
         }
 

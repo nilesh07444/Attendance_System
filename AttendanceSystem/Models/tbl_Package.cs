@@ -12,19 +12,18 @@ namespace AttendanceSystem.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class tbl_CompanyRegistrationPayment
+    public partial class tbl_Package
     {
-        public long CompanyRegistrationPaymentId { get; set; }
-        public long CompanyId { get; set; }
+        public long PackageId { get; set; }
+        public string PackageName { get; set; }
         public decimal Amount { get; set; }
-        public string PaymentFor { get; set; }
-        public string PaymentGatewayResponseId { get; set; }
-        public System.DateTime StartDate { get; set; }
-        public System.DateTime EndDate { get; set; }
+        public string PackageDescription { get; set; }
         public int AccessDays { get; set; }
-        public long CreatedBy { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsDeleted { get; set; }
         public System.DateTime CreatedDate { get; set; }
-        public Nullable<long> ModifiedBy { get; set; }
+        public long CreatedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
+        public Nullable<long> ModifiedBy { get; set; }
     }
 }

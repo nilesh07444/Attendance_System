@@ -1,6 +1,5 @@
 ﻿using AttendanceSystem.Helper;
-using AttendanceSystem.Models;
-using BarcodeSystem.Model;
+using AttendanceSystem.Models; 
 using MyMobileApp.Helper;
 using System;
 using System.Collections.Generic;
@@ -105,6 +104,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 clsAdminSession.RoleID = data.AdminUserRoleId;
                 clsAdminSession.RoleName = roleData.AdminRoleName;
                 clsAdminSession.UserName = data.UserName;
+                clsAdminSession.FullName = data.FirstName + " " + data.LastName;
                 clsAdminSession.ImagePath = ""; //data.ProfilePicture;
                 clsAdminSession.MobileNumber = data.MobileNo;
 
@@ -140,7 +140,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                //throw ex
+                throw ex;
             }
             return RedirectToAction("Index", "Login");
         }
@@ -189,7 +189,14 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 errorMessage = ex.Message.ToString();
             }
 
-            return Json(new { Status = status, UserName= userName, Otp = otp, ErrorMessage = errorMessage }, JsonRequestBehavior.AllowGet);
+            return Json(new { Status = status, UserName = userName, Otp = otp, ErrorMessage = errorMessage }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult Signout()
+        {
+            clsAdminSession.SessionID = "";
+            clsAdminSession.UserID = 0;
+            return RedirectToAction("Index");
         }
 
     }

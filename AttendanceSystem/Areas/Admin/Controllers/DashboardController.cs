@@ -1,5 +1,5 @@
 ﻿using AttendanceSystem.Models;
-using BarcodeSystem.Model;
+using AttendanceSystem.Helper;
 using MyMobileApp.Helper;
 using System;
 using System.Collections.Generic;
