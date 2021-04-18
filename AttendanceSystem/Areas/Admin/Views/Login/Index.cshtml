@@ -1,4 +1,4 @@
-﻿@model AttendanceSystem.Models.AccountModels.LoginModel
+﻿@model AttendanceSystem.ViewModel.AccountModels.LoginVM
 @{
     Layout = "";
 }
@@ -129,8 +129,9 @@
         $("#dv_otp").hide();
 
 
-        $('#btn_login').click(function () {
+        $('#btn_login').click(function (e) {
             if ($("#submit_form").valid()) {
+                e.preventDefault();
                 var userName = $("#UserName").val();
                 var password = $("#Password").val();
 
@@ -167,7 +168,7 @@
 
 
         $('#btn_OtpSubmit').click(function () {
-
+            e.preventDefault();
             var otpText = $("#TextOTP").val();
 
             var OTP = $("#OTP").val();

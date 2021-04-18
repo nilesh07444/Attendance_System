@@ -1,14 +1,13 @@
 ﻿using AttendanceSystem.Helper;
-using AttendanceSystem.Models; 
+using AttendanceSystem.Models;
 using MyMobileApp.Helper;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using static AttendanceSystem.Models.AccountModels;
+using static AttendanceSystem.ViewModel.AccountModels;
 
 namespace AttendanceSystem.Areas.Admin.Controllers
 {
@@ -24,7 +23,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         // GET: Admin/Login
         public ActionResult Index()
         {
-            LoginModel login = new LoginModel()
+            LoginVM login = new LoginVM()
             {
                 UserName = "9999999999",
                 Password = "12345"
@@ -93,7 +92,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public ActionResult LoginSubmit(LoginModel login)
+        public ActionResult LoginSubmit(LoginVM login)
         {
             try
             {
@@ -119,12 +118,12 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
         public ActionResult ForgotPassword()
         {
-            LoginModel loginModel = new LoginModel();
+            LoginVM loginModel = new LoginVM();
             return View(loginModel);
         }
 
         [HttpPost]
-        public ActionResult ResetPassword(LoginModel login)
+        public ActionResult ResetPassword(LoginVM login)
         {
             try
             {
