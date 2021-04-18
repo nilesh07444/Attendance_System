@@ -12,6 +12,20 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         public ActionResult Index()
         {
             return View();
-        } 
+        }
+        public ActionResult Add()
+        {
+            return View();
+        }
+
+        public ActionResult Edit(int Id)
+        {
+            return View();
+        }
+
+        public ActionResult View(int Id)
+        {
+            return View();
+        }
     }
 }

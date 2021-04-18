@@ -13,5 +13,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         {
             return View();
         }
+
+        public ActionResult Edit()
+        {
+            return View();
+        }
+
     }
 }
