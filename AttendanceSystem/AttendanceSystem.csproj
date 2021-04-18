@@ -143,6 +143,7 @@
     <Compile Include="Areas\Admin\Controllers\DynamicContentController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeImageController.cs" />
     <Compile Include="Areas\Admin\Controllers\LoginController.cs" />
+    <Compile Include="Areas\Admin\Controllers\MyProfileController.cs" />
     <Compile Include="Areas\Admin\Controllers\PackageController.cs" />
     <Compile Include="Areas\Admin\Controllers\SettingController.cs" />
     <Compile Include="Areas\Client\ClientAreaRegistration.cs" />
@@ -1106,6 +1107,10 @@
     <Content Include="Areas\Admin\Views\HomeImage\View.cshtml" />
     <Content Include="Areas\Admin\Views\Setting\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\HomeImage\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\MyProfile\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\MyProfile\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Company\Registered.cshtml" />
+    <Content Include="Areas\Admin\Views\Company\Renew.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

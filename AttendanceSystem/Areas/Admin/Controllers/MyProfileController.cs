@@ -6,20 +6,15 @@ using System.Web.Mvc;
 
 namespace AttendanceSystem.Areas.Admin.Controllers
 {
-    public class CompanyController : Controller
+    public class MyProfileController : Controller
     {
-        // GET: Admin/Company
-        public ActionResult Registered()
+        // GET: Admin/MyProfile
+        public ActionResult Index()
         {
             return View();
         }
 
-        public ActionResult Requests()
-        {
-            return View();
-        }
-
-        public ActionResult Renew()
+        public ActionResult Edit()
         {
             return View();
         }
