@@ -255,7 +255,6 @@
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModel\Class1.cs" />
     <Compile Include="ViewModel\WebAPI\UserTokenVM.cs" />
   </ItemGroup>
   <ItemGroup>

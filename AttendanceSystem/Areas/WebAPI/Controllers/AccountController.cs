@@ -87,5 +87,32 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
             return response;
         }
+
+        [Route("SampleAPI"), HttpGet]
+        public ResponseDataModel<bool> SampleAPI()
+        {
+            ResponseDataModel<bool> response = new ResponseDataModel<bool>();
+
+            try
+            {
+                response.Data = true;
+
+                // for testing error
+                if (response.Data == true)
+                {
+                    throw new Exception("custom error by nilesh");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                response.Data = false;
+
+                response.AddError(ex.Message.ToString());
+            }
+             
+            return response;
+        }
+
     }
 }
