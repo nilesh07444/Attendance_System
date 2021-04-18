@@ -37,5 +37,10 @@ namespace AttendanceSystem.Helper
         Salary = 1,
         Extra = 2
     }
+    public enum Status
+    {
+        Failure = 0,
+        Success = 1
+    }
 
 }

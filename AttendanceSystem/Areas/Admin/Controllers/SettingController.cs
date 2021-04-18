@@ -53,9 +53,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 ModelState.AddModelError("error", ex.Message);
-                return RedirectToAction("ChangePassword", "Dashboard");
+                return RedirectToAction("ChangePassword", "Setting");
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Dashboard");
         }
 
         public ActionResult Edit()

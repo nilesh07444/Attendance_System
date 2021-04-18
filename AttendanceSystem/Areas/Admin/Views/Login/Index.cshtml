@@ -38,7 +38,7 @@
                                 {
                                     <div id="dv_login">
                                         <div class="form-group">
-                                            <label for="email">UserName Or Mobile No</label>
+                                            <label for="email">UserName</label>
                                             @*<input id="email" type="email" class="form-control" name="email" tabindex="1" required autofocus>*@
                                             @Html.TextBoxFor(m => m.UserName, new { @class = "form-control required autofocus", @placeholder = "User Name", @autocomplete = "off" })
                                             <div class="invalid-feedback">
@@ -131,7 +131,7 @@
 
         $('#btn_login').click(function (e) {
             if ($("#submit_form").valid()) {
-                e.preventDefault();
+                $(".loader").fadeOut("slow");
                 var userName = $("#UserName").val();
                 var password = $("#Password").val();
 
@@ -164,11 +164,12 @@
 
                 return false;
             }
+            
         });
 
 
-        $('#btn_OtpSubmit').click(function () {
-            e.preventDefault();
+        $('#btn_OtpSubmit').click(function (e) {
+            $(".loader").fadeOut("slow");
             var otpText = $("#TextOTP").val();
 
             var OTP = $("#OTP").val();

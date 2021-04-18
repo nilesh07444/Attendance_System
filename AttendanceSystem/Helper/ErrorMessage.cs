@@ -14,6 +14,7 @@ namespace MyMobileApp.Helper
         public static string InvalidMobileNo = "Invalid mobile no provided.";
         public static string InvalidPassword = "Invalid current password.";
         public static string InvalidUserName = "Invalid User Name.";
+        public static string UserNamePasswordRequired = "User Name and Password required.";
 
         // Folder Directory Path
         public static string UserDirectoryPath = "/Images/UserMedia/";
@@ -22,5 +23,9 @@ namespace MyMobileApp.Helper
         public static string DefaultImagePath = "/Images/default_image.png";
         public static string DefaultUserImagePath = "/Images/default_user_image.png";
 
+        public static string TokenExpired = "Token expired";
+        public static string InvalidToken = "Invalid token";
+        public static string AuthorizationTokenMissing = "Authorization token missing";
+        public static string InternalServerError = "Internal server error";
     }
 }

@@ -52,9 +52,21 @@
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.IdentityModel.JsonWebTokens, Version=6.10.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.JsonWebTokens.6.10.2\lib\net472\Microsoft.IdentityModel.JsonWebTokens.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Logging, Version=6.10.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Logging.6.10.2\lib\net472\Microsoft.IdentityModel.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Tokens, Version=6.10.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Tokens.6.10.2\lib\net472\Microsoft.IdentityModel.Tokens.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=6.10.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.6.10.2\lib\net472\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+    </Reference>
     <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
@@ -156,6 +168,17 @@
     <Compile Include="Areas\Client\Controllers\TermsConditionController.cs" />
     <Compile Include="Areas\Client\Controllers\WebViewController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\AccountController.cs" />
+    <Compile Include="Areas\WebAPI\Controllers\CompanyController.cs" />
+    <Compile Include="Areas\WebAPI\Controllers\BaseController.cs" />
+    <Compile Include="Areas\WebAPI\Controllers\BaseUserController.cs" />
+    <Compile Include="Filters\JWT\AddChallengeOnUnauthorizedResult.cs" />
+    <Compile Include="Filters\JWT\AuthenticationFailureResult.cs" />
+    <Compile Include="Filters\JWT\HttpAuthenticationChallengeContextExtensions.cs" />
+    <Compile Include="Filters\JWT\JwtAuthenticationAttribute.cs" />
+    <Compile Include="Helper\JWTAuthenticationHelper.cs" />
+    <Compile Include="ViewModel\WebAPI\JWTAccessTokenVM.cs" />
+    <Compile Include="ViewModel\WebAPI\LoginRequestVM.cs" />
+    <Compile Include="ViewModel\WebAPI\LoginResponseVM.cs" />
     <Compile Include="Areas\WebAPI\WebAPIAreaRegistration.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -232,6 +255,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\Class1.cs" />
+    <Compile Include="ViewModel\WebAPI\UserTokenVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\admin-theme\assets\bundles\amcharts4\animated.js" />
@@ -1142,6 +1166,7 @@
     <Folder Include="Areas\Client\Views\Shared\" />
     <Folder Include="Areas\WebAPI\Data\" />
     <Folder Include="Areas\WebAPI\Views\Account\" />
+    <Folder Include="Areas\WebAPI\Views\Admin\" />
     <Folder Include="Areas\WebAPI\Views\Shared\" />
     <Folder Include="Content\client-theme\" />
     <Folder Include="Images\" />
