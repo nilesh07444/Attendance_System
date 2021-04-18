@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace AttendanceSystem.Models
+namespace AttendanceSystem.ViewModel
 {
     public class AccountModels
     {
-        public class LoginModel
+        public class LoginVM
         {
             [Required]
             [Display(Name = "User name")]

@@ -1,4 +1,4 @@
-﻿@model AttendanceSystem.Models.AccountModels.LoginModel
+﻿@model AttendanceSystem.ViewModel.AccountModels.LoginVM
 @{
     Layout = "";
 }
@@ -38,7 +38,7 @@
                                 {
                                     <div id="dv_login">
                                         <div class="form-group">
-                                            <label for="email">UserName Or Mobile No</label>
+                                            <label for="email">UserName</label>
                                             @*<input id="email" type="email" class="form-control" name="email" tabindex="1" required autofocus>*@
                                             @Html.TextBoxFor(m => m.UserName, new { @class = "form-control required autofocus", @placeholder = "User Name", @autocomplete = "off" })
                                             <div class="invalid-feedback">
@@ -129,8 +129,9 @@
         $("#dv_otp").hide();
 
 
-        $('#btn_login').click(function () {
+        $('#btn_login').click(function (e) {
             if ($("#submit_form").valid()) {
+                $(".loader").fadeOut("slow");
                 var userName = $("#UserName").val();
                 var password = $("#Password").val();
 
@@ -163,11 +164,12 @@
 
                 return false;
             }
+            
         });
 
 
-        $('#btn_OtpSubmit').click(function () {
-
+        $('#btn_OtpSubmit').click(function (e) {
+            $(".loader").fadeOut("slow");
             var otpText = $("#TextOTP").val();
 
             var OTP = $("#OTP").val();
