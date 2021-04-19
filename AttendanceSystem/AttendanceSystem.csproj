@@ -177,6 +177,7 @@
     <Compile Include="Filters\JWT\HttpAuthenticationChallengeContextExtensions.cs" />
     <Compile Include="Filters\JWT\JwtAuthenticationAttribute.cs" />
     <Compile Include="Helper\JWTAuthenticationHelper.cs" />
+    <Compile Include="ViewModel\HomeImageVM.cs" />
     <Compile Include="ViewModel\WebAPI\JWTAccessTokenVM.cs" />
     <Compile Include="ViewModel\WebAPI\LoginRequestVM.cs" />
     <Compile Include="ViewModel\WebAPI\LoginResponseVM.cs" />

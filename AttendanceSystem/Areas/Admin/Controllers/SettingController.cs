@@ -1,6 +1,5 @@
 ﻿using AttendanceSystem.Helper;
 using AttendanceSystem.Models;
-using MyMobileApp.Helper;
 using System;
 using System.Configuration;
 using System.Linq;

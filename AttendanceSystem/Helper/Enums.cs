@@ -43,4 +43,9 @@ namespace AttendanceSystem.Helper
         Success = 1
     }
 
+    public enum HomeImageFor
+    {
+        Website = 1,
+        MobileApp = 2
+    }
 }

@@ -1,8 +1,23 @@
 ﻿@using AttendanceSystem.Helper
+@using Newtonsoft.Json;
+@using AttendanceSystem.ViewModel;
+@model List<AttendanceSystem.ViewModel.HomeImageVM>
 @{
     ViewBag.Title = "HomeImage";
+    int counter = 1;
 }
+@{
+    //UserPermissionVM objPermission = new UserPermissionVM();
 
+    //int RoleId = Int32.Parse(clsAdminSession.RoleID.ToString());
+
+    //if (RoleId != 1)
+    //{
+    //    string strPermission = clsAdminSession.UserPermission;
+    //    objPermission = JsonConvert.DeserializeObject<UserPermissionVM>(strPermission, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+    //}
+    //bool IsSA = (RoleId == 1 ? true : false);
+}
 
 <section class="section">
     <div class="section-body">
@@ -14,7 +29,7 @@
                     </div>
                     <div class="card-body">
                         <div class="pull-right">
-                            <a href="/admin/homeimage/add" class="btn btn-icon icon-left btn-primary"><i class="fas fa-plus-circle"></i> Add Home Image</a>
+                            <a href="/admin/homeimage/add/0" class="btn btn-icon icon-left btn-primary"><i class="fas fa-plus-circle"></i> Add Home Image</a>
                         </div>
 
                         <div class="table-responsive">
@@ -32,65 +47,56 @@
                                 </thead>
                                 <tbody>
 
-                                    <tr>
-                                        <td>1.</td>
-                                        <td>
-                                            <img src="~/Content/admin-theme/assets/img/posts/post4.png" style="width: 50px; height: 50px;" />
-                                        </td>
-                                        <td>Cool</td>
-                                        <td>This is cool description.</td>
-                                        <td>Website</td>
-                                        <td>
-                                            <div class="badge badge-success">Active</div>
-                                        </td>
-                                        <td>
+                                    @if (Model != null && Model.Count > 0)
+                                    {
+                                        foreach (HomeImageVM obj in Model)
+                                        {
+                                            <tr class="gradeX">
+                                                <td>@counter.</td>
+                                                <td>
+                                                    @if (!string.IsNullOrEmpty(obj.HomeImageName))
+                                                    {
+                                                        if (File.Exists(Server.MapPath(ErrorMessage.HomeDirectoryPath + obj.HomeImageName)))
+                                                        {
+                                                            <img src="@ErrorMessage.HomeDirectoryPath/@obj.HomeImageName" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height:40px;" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <img src="@ErrorMessage.DefaultImagePath" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height: 40px;" />
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="@ErrorMessage.DefaultImagePath" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height: 40px;" />
+                                                    }
 
-                                            <a href="/admin/homeimage/view/1" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
-                                            <a href="/admin/homeimage/edit/1" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
-                                            <a href="javascript:void(0);" title="Delete" class="btn btn-icon btn-danger"><i class="fas fa-trash-alt"></i></a>
+                                                </td>
+                                                <td>@(obj.HomeImageFor == 1 ? "Website" : "Mobile App")</td>
+                                                <td>@obj.HeadingText1</td>
+                                                <td>@obj.HeadingText2</td>
+                                                @if (obj.IsActive == true)
+                                                {
+                                                    <td><span class="badge badge-success" style="cursor:pointer;" title="Click to Inactive" onclick="fnChangeStatus('@obj.HomeImageId','InActive');">Active</span></td>
+                                                }
+                                                else
+                                                {
+                                                    <td><span class="badge badge-danger" style="cursor:pointer;" title="Click to Active" onclick="fnChangeStatus('@obj.HomeImageId','Active');">InActive</span></td>
+                                                }
 
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>2.</td>
-                                        <td>
-                                            <img src="~/Content/admin-theme/assets/img/posts/post4.png" style="width: 50px; height: 50px;" />
-                                        </td>
-                                        <td>Great</td>
-                                        <td>This is great description.</td>
-                                        <td>Mobile App</td>
-                                        <td>
-                                            <div class="badge badge-danger">InActive</div>
-                                        </td>
-                                        <td>
-
-                                            <a href="/admin/homeimage/view/1" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
-                                            <a href="/admin/homeimage/edit/1" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
-                                            <a href="javascript:void(0);" title="Delete" class="btn btn-icon btn-danger"><i class="fas fa-trash-alt"></i></a>
-
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>3.</td>
-                                        <td>
-                                            <img src="~/Content/admin-theme/assets/img/posts/post4.png" style="width: 50px; height: 50px;" />
-                                        </td>
-                                        <td></td>
-                                        <td></td>
-                                        <td>Website</td>
-                                        <td>
-                                            <div class="badge badge-success">Active</div>
-                                        </td>
-                                        <td>
-
-                                            <a href="/admin/homeimage/view/1" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
-                                            <a href="/admin/homeimage/edit/1" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
-                                            <a href="javascript:void(0);" title="Delete" class="btn btn-icon btn-danger"><i class="fas fa-trash-alt"></i></a>
-
-                                        </td>
-                                    </tr>
+                                                <td>
+                                                    @*@if (IsSA || objPermission.ManagePageContent >= (int)ModulePermission.Edit)
+                                                        {*@
+                                                    <a href="/admin/homeimage/add/@obj.HomeImageId"><i class="fa fa-edit mr-2 font-success"></i></a>
+                                                    @*}
+                                                        @if (IsSA || objPermission.ManagePageContent == (int)ModulePermission.Full)
+                                                        {*@
+                                                    <a href="javascript:void(0);" onclick="fnDeleteHomeImage('@obj.HomeImageId')"><i class="fa fa-trash font-danger"></i></a>
+                                                    @*}*@
+                                                </td>
+                                            </tr>
+                                            counter++;
+                                        }
+                                    }
 
                                 </tbody>
                             </table>
@@ -100,4 +106,135 @@
             </div>
         </div>
     </div>
-</section> 
+</section>
+<div class="modal fade open" id="deleteHomeImageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Delete Confirm</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete ?
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" id="hdnDeleteHomeImage" />
+                <button data-dismiss="modal" class="btn btn-danger" type="button">Close</button>
+                <button id="btnDeleteHomeImage" class="btn btn-primary" type="button">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade open" id="activeinactiveModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to active ?
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" id="hdndataId" />
+                <input type="hidden" id="hdnstatus" />
+                <button data-dismiss="modal" class="btn btn-danger" type="button">Close</button>
+                <button id="btnChangeStatus" class="btn btn-primary" type="button">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        
+        $('#btnDeleteHomeImage').click(function () {
+            var HomeImage_Id = jQuery("#hdnDeleteHomeImage").val();
+            if (HomeImage_Id != "" && HomeImage_Id != null) {
+                $('#deleteHomeImageModal').modal('hide');
+
+                //StartLoading();
+
+                var URL = '@Url.Action("DeleteHomeImage", "HomeImage")';
+                $.ajax({
+                    type: 'POST',
+                    async: true,
+                    url: URL + "?HomeImageId=" + HomeImage_Id,
+                    success: function (result) {
+                        if (result == "success") {
+                            alert("Image deleted successfully");
+                            window.location.reload();
+                        }
+                        else if (result == "notfound") {
+                            alert("Image Not Found");
+                        }
+                        else {
+                            alert("Something went wrong. Please try again");
+                        }
+
+                       StopLoading();
+                    },
+                    error: function (resultData) {
+                       // StopLoading();
+                    }
+                });
+            }
+        });
+
+        $('#btnChangeStatus').click(function () {
+
+            var Id = jQuery("#hdndataId").val();
+            if (Id != "" && Id != null) {
+                $('#activeinactiveModal').modal('hide');
+
+                //StartLoading();
+
+                var URL = '@Url.Action("ChangeStatus", "HomeImage")';
+                $.ajax({
+                    type: 'POST',
+                    async: true,
+                    url: URL + "?Id=" + Id+"&Status="+jQuery("#hdnstatus").val(),
+                    success: function (result) {
+                        if (result == "success") {
+                            alert("Status change Successfully...");
+                            window.location.reload();
+                        }
+                        else {
+                            alert("Something went wrong. Please try again");
+                        }
+
+                       //StopLoading();
+                    },
+                    error: function (resultData) {
+                        //StopLoading();
+                    }
+                });
+            }
+        });
+
+
+    })
+
+    function fnDeleteHomeImage(HomeImage_Id) {
+        jQuery("#hdnDeleteHomeImage").val(HomeImage_Id);
+        $('#deleteHomeImageModal').modal('show');
+    }
+
+    function fnChangeStatus(HomeImage_Id, status) {
+        jQuery("#hdndataId").val(HomeImage_Id);
+        jQuery("#hdnstatus").val(status);
+        if (status == "Active") {
+            $('#activeinactiveModal .modal-body').html(" Are you sure you want to make active ?");
+        }
+        else {
+            $('#activeinactiveModal .modal-body').html(" Are you sure you want to make inactive ?");
+        }
+        $('#activeinactiveModal').modal('show');
+    }
+
+</script>
+ 

@@ -1,13 +1,11 @@
-﻿using System;
+﻿using AttendanceSystem.Helper;
+using AttendanceSystem.Models;
+using AttendanceSystem.ViewModel.WebAPI.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using System.Net;
 using System.Web.Http;
-using AttendanceSystem.Helper;
-using AttendanceSystem.Models;
-using AttendanceSystem.ViewModel.WebAPI.ViewModel;
-using MyMobileApp.Helper;
 
 namespace AttendanceSystem.Areas.WebAPI.Controllers
 {

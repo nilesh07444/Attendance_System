@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace MyMobileApp.Helper
+﻿namespace AttendanceSystem.Helper
 {
     public static class ErrorMessage
     {
@@ -22,10 +17,13 @@ namespace MyMobileApp.Helper
         // Default Images
         public static string DefaultImagePath = "/Images/default_image.png";
         public static string DefaultUserImagePath = "/Images/default_user_image.png";
+        public static string HomeDirectoryPath = "/Images/HomeImage/";
 
         public static string TokenExpired = "Token expired";
         public static string InvalidToken = "Invalid token";
         public static string AuthorizationTokenMissing = "Authorization token missing";
         public static string InternalServerError = "Internal server error";
+        public static string SelectOnlyImage = "Select only image file.";
+        public static string ImageRequired = "Please select image file.";
     }
 }

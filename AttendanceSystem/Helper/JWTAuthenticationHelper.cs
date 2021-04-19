@@ -1,6 +1,5 @@
 ﻿using AttendanceSystem.ViewModel.WebAPI.ViewModel;
 using Microsoft.IdentityModel.Tokens;
-using MyMobileApp.Helper;
 using Newtonsoft.Json;
 using System;
 using System.Configuration;
