@@ -38,7 +38,6 @@ namespace AttendanceSystem.Models
         public string CancellationChequePhoto { get; set; }
         public string RequestStatus { get; set; }
         public string RejectReason { get; set; }
-        public decimal RegistrationFee { get; set; }
         public int FreeAccessDays { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }

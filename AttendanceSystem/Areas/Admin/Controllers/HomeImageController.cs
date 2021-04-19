@@ -96,14 +96,17 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     }
                     else
                     {
-                        ModelState.AddModelError("HomeImageFile", ErrorMessage.ImageRequired);
-                        return View(homeImageVM);
+                        if (homeImageVM.HomeImageId == 0)
+                        {
+                            ModelState.AddModelError("HomeImageFile", ErrorMessage.ImageRequired);
+                            return View(homeImageVM);
+                        }
                     }
 
                     if (homeImageVM.HomeImageId > 0)
                     {
                         tbl_HomeImage objHome = _db.tbl_HomeImage.Where(x => x.HomeImageId == homeImageVM.HomeImageId).FirstOrDefault();
-                        objHome.HomeImageName = fileName;
+                        objHome.HomeImageName = HomeImageFile != null ? fileName: objHome.HomeImageName;
                         objHome.HomeImageFor = homeImageVM.HomeImageFor.HasValue ? homeImageVM.HomeImageFor.Value : (int)HomeImageFor.Website;
                         objHome.HeadingText1 = homeImageVM.HeadingText1;
                         objHome.HeadingText2 = homeImageVM.HeadingText2;

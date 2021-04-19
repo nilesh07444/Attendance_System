@@ -4,12 +4,11 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="b3cd309c1e3145e0a3f9c48a3f0854ae" Name="Diagram1" ZoomLevel="92">
+      <Diagram DiagramId="b3cd309c1e3145e0a3f9c48a3f0854ae" Name="Diagram1" ZoomLevel="61">
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_AdminUser" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AttendanceSystemModel.mst_AdminRole" Width="1.5" PointX="3.75" PointY="0.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.mst_CompanyType" Width="1.5" PointX="3.75" PointY="3.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Attendance" Width="1.5" PointX="5.75" PointY="0.75" />
-        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Company" Width="1.5" PointX="0.75" PointY="6.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_CompanyRequest" Width="1.5" PointX="4.75" PointY="6.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_EmployeePayment" Width="1.5" PointX="6.75" PointY="6.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Holiday" Width="1.5" PointX="7.75" PointY="0.75" />
@@ -21,6 +20,7 @@
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_HomeImage" Width="1.5" PointX="11.375" PointY="9.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Leave" Width="1.5" PointX="13.375" PointY="0.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Package" Width="1.5" PointX="13.375" PointY="5.75" />
+        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Company" Width="1.5" PointX="0.75" PointY="7.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

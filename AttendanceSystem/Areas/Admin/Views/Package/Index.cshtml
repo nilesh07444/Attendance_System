@@ -1,6 +1,9 @@
 ﻿@using AttendanceSystem.Helper
+@using AttendanceSystem.ViewModel;
+@model List<AttendanceSystem.ViewModel.PackageVM>
 @{
     ViewBag.Title = "Package";
+    int counter = 1;
 }
 
 
@@ -14,7 +17,7 @@
                     </div>
                     <div class="card-body">
                         <div class="pull-right">
-                            <a href="/admin/package/add" class="btn btn-icon icon-left btn-primary"><i class="fas fa-plus-circle"></i> Add Package</a>
+                            <a href="/admin/package/add/0" class="btn btn-icon icon-left btn-primary"><i class="fas fa-plus-circle"></i> Add Package</a>
                         </div>
 
                         <div class="table-responsive">
@@ -22,6 +25,7 @@
                                 <thead>
                                     <tr>
                                         <td>#</td>
+                                        <th>Package IMage</th>
                                         <th>Package Name</th>
                                         <th>Package Description</th>
                                         <th>Package Amount</th>
@@ -31,78 +35,54 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @if (Model != null && Model.Count > 0)
+                                    {
+                                        foreach (PackageVM obj in Model)
+                                        {
+                                            <tr>
+                                                <td>@counter.</td>
+                                                <td>
+                                                    @if (!string.IsNullOrEmpty(obj.PackageImage))
+                                                    {
+                                                        if (File.Exists(Server.MapPath(ErrorMessage.PackageDirectoryPath + obj.PackageImage)))
+                                                        {
+                                                            <img src="@ErrorMessage.PackageDirectoryPath/@obj.PackageImage" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height:40px;" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <img src="@ErrorMessage.DefaultImagePath" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height: 40px;" />
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="@ErrorMessage.DefaultImagePath" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height: 40px;" />
+                                                    }
 
-                                    <tr>
-                                        <td>1.</td>
-                                        <td>Package 1</td>
-                                        <td>1 Month</td>
-                                        <td>1000</td>
-                                        <td>30</td>
-                                        <td>
-                                            <div class="badge badge-success">Active</div>
-                                        </td>
-                                        <td>
+                                                </td>
+                                                <td>@obj.PackageName</td>
+                                                <td>@obj.PackageDescription</td>
+                                                <td>@obj.Amount</td>
+                                                <td>@obj.AccessDays</td>
+                                                @if (obj.IsActive == true)
+                                                {
+                                                    <td><span class="badge badge-success" style="cursor:pointer;" title="Click to Inactive" onclick="fnChangeStatus('@obj.PackageId','InActive');">Active</span></td>
+                                                }
+                                                else
+                                                {
+                                                    <td><span class="badge badge-danger" style="cursor:pointer;" title="Click to Active" onclick="fnChangeStatus('@obj.PackageId','Active');">InActive</span></td>
+                                                }
+                                                <td>
 
-                                            <a href="/admin/package/view/1" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
-                                            <a href="/admin/package/edit/1" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
-                                            <a href="javascript:void(0);" title="Delete" class="btn btn-icon btn-danger"><i class="fas fa-trash-alt"></i></a>
+                                                    <a href="/admin/package/view/@obj.PackageId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
+                                                    <a href="/admin/package/add/@obj.PackageId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
+                                                    <a href="javascript:void(0);" title="Delete" class="btn btn-icon btn-danger" onclick="fnDeletePackage('@obj.PackageId')"><i class="fas fa-trash-alt"></i></a>
 
-                                        </td>
-                                    </tr>
+                                                </td>
+                                            </tr>
 
-                                    <tr>
-                                        <td>2.</td>
-                                        <td>Package 2</td>
-                                        <td>3 Month</td>
-                                        <td>3000</td>
-                                        <td>90</td>
-                                        <td>
-                                            <div class="badge badge-danger">InActive</div>
-                                        </td>
-                                        <td>
-
-                                            <a href="#" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
-                                            <a href="#" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
-                                            <a href="#" title="Delete" class="btn btn-icon btn-danger"><i class="fas fa-trash-alt"></i></a>
-
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>3.</td>
-                                        <td>Package 3</td>
-                                        <td>6 Month</td>
-                                        <td>6000</td>
-                                        <td>180</td>
-                                        <td>
-                                            <div class="badge badge-success">Active</div>
-                                        </td>
-                                        <td>
-
-                                            <a href="#" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
-                                            <a href="#" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
-                                            <a href="#" title="Delete" class="btn btn-icon btn-danger"><i class="fas fa-trash-alt"></i></a>
-
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>4.</td>
-                                        <td>Package 4</td>
-                                        <td>12 Month</td>
-                                        <td>12000</td>
-                                        <td>365</td>
-                                        <td>
-                                            <div class="badge badge-danger">InActive</div>
-                                        </td>
-                                        <td>
-
-                                            <a href="#" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
-                                            <a href="#" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
-                                            <a href="#" title="Delete" class="btn btn-icon btn-danger"><i class="fas fa-trash-alt"></i></a>
-
-                                        </td>
-                                    </tr>
+                                            counter++;
+                                        }
+                                    }
 
                                 </tbody>
                             </table>
@@ -112,4 +92,136 @@
             </div>
         </div>
     </div>
-</section> 
+</section>
+<div class="modal fade open" id="deletePackageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Delete Confirm</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete ?
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" id="hdnDeletePackage" />
+                <button data-dismiss="modal" class="btn btn-primary" type="button">Close</button>
+                <button id="btnDeletePackage" class="btn btn-danger" type="button">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade open" id="activeinactiveModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Status Confirm</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to active ?
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" id="hdndataId" />
+                <input type="hidden" id="hdnstatus" />
+                <button data-dismiss="modal" class="btn btn-primary" type="button">Close</button>
+                <button id="btnChangeStatus" class="btn btn-danger" type="button">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+        $('#btnDeletePackage').click(function () {
+            var PackageImage_Id = jQuery("#hdnDeletePackage").val();
+            if (PackageImage_Id != "" && PackageImage_Id != null) {
+                $('#deletePackageModal').modal('hide');
+
+                //StartLoading();
+
+                var URL = '@Url.Action("DeletePackage", "Package")';
+                $.ajax({
+                    type: 'POST',
+                    async: true,
+                    url: URL + "?PackageId=" + PackageImage_Id,
+                    success: function (result) {
+                        if (result == "success") {
+                            alert("Image deleted successfully");
+                            window.location.reload();
+                        }
+                        else if (result == "notfound") {
+                            alert("Image Not Found");
+                        }
+                        else {
+                            alert("Something went wrong. Please try again");
+                        }
+
+                       StopLoading();
+                    },
+                    error: function (resultData) {
+                       // StopLoading();
+                    }
+                });
+            }
+        });
+
+        $('#btnChangeStatus').click(function () {
+
+            var Id = jQuery("#hdndataId").val();
+            if (Id != "" && Id != null) {
+                $('#activeinactiveModal').modal('hide');
+
+                //StartLoading();
+
+                var URL = '@Url.Action("ChangeStatus", "Package")';
+                $.ajax({
+                    type: 'POST',
+                    async: true,
+                    url: URL + "?Id=" + Id+"&Status="+jQuery("#hdnstatus").val(),
+                    success: function (result) {
+                        if (result == "success") {
+                            alert("Status change Successfully...");
+                            window.location.reload();
+                        }
+                        else {
+                            alert("Something went wrong. Please try again");
+                        }
+
+                       //StopLoading();
+                    },
+                    error: function (resultData) {
+                        //StopLoading();
+                    }
+                });
+            }
+        });
+
+
+    })
+
+    function fnDeletePackage(Package_Id) {
+        jQuery("#hdnDeletePackage").val(Package_Id);
+        $('#deletePackageModal').modal('show');
+    }
+
+    function fnChangeStatus(HomeImage_Id, status) {
+        jQuery("#hdndataId").val(HomeImage_Id);
+        jQuery("#hdnstatus").val(status);
+        if (status == "Active") {
+            $('#btnChangeStatus').html("Active");
+            $('#activeinactiveModal .modal-body').html(" Are you sure you want to make active ?");
+        }
+        else {
+            $('#btnChangeStatus').html("Inactive");
+            $('#activeinactiveModal .modal-body').html(" Are you sure you want to make inactive ?");
+        }
+        $('#activeinactiveModal').modal('show');
+    }
+
+</script> 

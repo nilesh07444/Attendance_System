@@ -25,5 +25,6 @@ namespace AttendanceSystem.Models
         public long CreatedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public Nullable<long> ModifiedBy { get; set; }
+        public string PackageImage { get; set; }
     }
 }

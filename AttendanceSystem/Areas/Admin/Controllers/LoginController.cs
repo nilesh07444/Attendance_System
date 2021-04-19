@@ -14,6 +14,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
     {
         AttendanceSystemEntities _db;
         string psSult = ConfigurationManager.AppSettings["PasswordSult"].ToString();
+        string enviornment = ConfigurationManager.AppSettings["Environment"].ToString();
         public LoginController()
         {
             _db = new AttendanceSystemEntities();
@@ -50,23 +51,30 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         {
                             Random random = new Random();
                             int num = random.Next(555555, 999999);
-                            string msg = "Your Otp code for Login is " + num;
-                            msg = HttpUtility.UrlEncode(msg);
-                            string url = CommonMethod.GetSMSUrl().Replace("--MOBILE--", data.MobileNo).Replace("--MSG--", msg);
-                            var json = webClient.DownloadString(url);
-                            if (json.Contains("invalidnumber"))
+                            if (enviornment != "Development")
                             {
-                                status = 0;
-                                errorMessage = ErrorMessage.InvalidMobileNo;
+                                string msg = "Your Otp code for Login is " + num;
+                                msg = HttpUtility.UrlEncode(msg);
+                                string url = CommonMethod.GetSMSUrl().Replace("--MOBILE--", data.MobileNo).Replace("--MSG--", msg);
+                                var json = webClient.DownloadString(url);
+                                if (json.Contains("invalidnumber"))
+                                {
+                                    status = 0;
+                                    errorMessage = ErrorMessage.InvalidMobileNo;
+                                }
+                                else
+                                {
+                                    status = 1;
+                                    string encKey = userName + "," + data.AdminUserRoleId + "," + data.MobileNo;
+                                    encryptedUserDetails = CommonMethod.Encrypt(encKey, psSult);
+                                    otp = num.ToString();
+                                }
                             }
                             else
                             {
                                 status = 1;
-                                string encKey = userName + "," + data.AdminUserRoleId + "," + data.MobileNo;
-                                encryptedUserDetails = CommonMethod.Encrypt(encKey, psSult);
                                 otp = num.ToString();
                             }
-
                         }
                     }
                     else

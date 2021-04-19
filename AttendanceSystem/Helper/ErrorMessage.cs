@@ -18,6 +18,7 @@
         public static string DefaultImagePath = "/Images/default_image.png";
         public static string DefaultUserImagePath = "/Images/default_user_image.png";
         public static string HomeDirectoryPath = "/Images/HomeImage/";
+        public static string PackageDirectoryPath = "/Images/PackageImage/";
 
         public static string TokenExpired = "Token expired";
         public static string InvalidToken = "Invalid token";

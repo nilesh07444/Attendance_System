@@ -32,5 +32,13 @@ namespace AttendanceSystem.Models
         public System.DateTime CreatedDate { get; set; }
         public Nullable<long> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
+        public string Prefix { get; set; }
+        public System.DateTime DateOfBirth { get; set; }
+        public string AlternateMobileNo { get; set; }
+        public string AadharCardNo { get; set; }
+        public string PanCardNo { get; set; }
+        public string PanCardPhoto { get; set; }
+        public string UserPhoto { get; set; }
+        public string AadharCardPhoto { get; set; }
     }
 }

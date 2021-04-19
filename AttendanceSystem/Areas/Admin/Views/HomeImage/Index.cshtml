@@ -83,16 +83,17 @@
                                                     <td><span class="badge badge-danger" style="cursor:pointer;" title="Click to Active" onclick="fnChangeStatus('@obj.HomeImageId','Active');">InActive</span></td>
                                                 }
 
-                                                <td>
-                                                    @*@if (IsSA || objPermission.ManagePageContent >= (int)ModulePermission.Edit)
-                                                        {*@
-                                                    <a href="/admin/homeimage/add/@obj.HomeImageId"><i class="fa fa-edit mr-2 font-success"></i></a>
-                                                    @*}
-                                                        @if (IsSA || objPermission.ManagePageContent == (int)ModulePermission.Full)
-                                                        {*@
-                                                    <a href="javascript:void(0);" onclick="fnDeleteHomeImage('@obj.HomeImageId')"><i class="fa fa-trash font-danger"></i></a>
-                                                    @*}*@
-                                                </td>
+                                                    <td>
+                                                        @*@if (IsSA || objPermission.ManagePageContent >= (int)ModulePermission.Edit)
+        {*@
+                                                        @*}
+        @if (IsSA || objPermission.ManagePageContent == (int)ModulePermission.Full)
+        {*@
+                                                        @*}*@
+
+                                                        <a href="/admin/homeimage/add/@obj.HomeImageId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
+                                                        <a href="javascript:void(0);" title="Delete" class="btn btn-icon btn-danger" onclick="fnDeleteHomeImage('@obj.HomeImageId')"><i class="fas fa-trash-alt"></i></a>
+                                                    </td>
                                             </tr>
                                             counter++;
                                         }
@@ -119,8 +120,8 @@
             </div>
             <div class="modal-footer">
                 <input type="hidden" id="hdnDeleteHomeImage" />
-                <button data-dismiss="modal" class="btn btn-danger" type="button">Close</button>
-                <button id="btnDeleteHomeImage" class="btn btn-primary" type="button">Delete</button>
+                <button data-dismiss="modal" class="btn btn-primary" type="button">Close</button>
+                <button id="btnDeleteHomeImage" class="btn btn-danger" type="button">Delete</button>
             </div>
         </div>
     </div>
@@ -129,7 +130,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title"></h4>
+                <h4 class="modal-title">Status Confirm</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
             <div class="modal-body">
@@ -138,8 +139,8 @@
             <div class="modal-footer">
                 <input type="hidden" id="hdndataId" />
                 <input type="hidden" id="hdnstatus" />
-                <button data-dismiss="modal" class="btn btn-danger" type="button">Close</button>
-                <button id="btnChangeStatus" class="btn btn-primary" type="button">Submit</button>
+                <button data-dismiss="modal" class="btn btn-primary" type="button">Close</button>
+                <button id="btnChangeStatus" class="btn btn-danger" type="button">Submit</button>
             </div>
         </div>
     </div>
@@ -228,9 +229,11 @@
         jQuery("#hdndataId").val(HomeImage_Id);
         jQuery("#hdnstatus").val(status);
         if (status == "Active") {
+            $('#btnChangeStatus').html("Active");
             $('#activeinactiveModal .modal-body').html(" Are you sure you want to make active ?");
         }
         else {
+            $('#btnChangeStatus').html("Inactive");
             $('#activeinactiveModal .modal-body').html(" Are you sure you want to make inactive ?");
         }
         $('#activeinactiveModal').modal('show');
