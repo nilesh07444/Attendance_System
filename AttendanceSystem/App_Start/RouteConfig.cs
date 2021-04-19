@@ -22,9 +22,9 @@ namespace AttendanceSystem
             routes.MapRoute("redirect all other requests", "{*url}",
             new
             {
-                controller = "Login",
+                controller = "Main", // Login/Main
                 action = "Index"
-            }).DataTokens = new RouteValueDictionary(new { area = "Admin" });
+            }).DataTokens = new RouteValueDictionary(new { area = "Client" }); // Admin/Client
 
         }
     }
