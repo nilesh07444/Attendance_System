@@ -10,9 +10,9 @@ using System.Web.Mvc;
 
 namespace AttendanceSystem.Areas.Admin.Controllers
 {
+    [PageAccess]
     public class HomeImageController : Controller
     {
-        // GET: Admin/HomeImage
         AttendanceSystemEntities _db;
         public string HomeDirectoryPath = "";
         public HomeImageController()
@@ -106,7 +106,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     if (homeImageVM.HomeImageId > 0)
                     {
                         tbl_HomeImage objHome = _db.tbl_HomeImage.Where(x => x.HomeImageId == homeImageVM.HomeImageId).FirstOrDefault();
-                        objHome.HomeImageName = HomeImageFile != null ? fileName: objHome.HomeImageName;
+                        objHome.HomeImageName = HomeImageFile != null ? fileName : objHome.HomeImageName;
                         objHome.HomeImageFor = homeImageVM.HomeImageFor.HasValue ? homeImageVM.HomeImageFor.Value : (int)HomeImageFor.Website;
                         objHome.HeadingText1 = homeImageVM.HeadingText1;
                         objHome.HeadingText2 = homeImageVM.HeadingText2;
@@ -141,11 +141,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             }
 
             return View(homeImageVM);
-        }
-
-        public ActionResult Edit(int Id)
-        {
-            return View();
         }
 
         public ActionResult View(int Id)

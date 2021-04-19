@@ -10,6 +10,7 @@ using System.Web.Mvc;
 
 namespace AttendanceSystem.Areas.Admin.Controllers
 {
+    [PageAccess]
     public class PackageController : Controller
     {
         // GET: Admin/Package

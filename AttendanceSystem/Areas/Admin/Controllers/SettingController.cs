@@ -8,6 +8,7 @@ using static AttendanceSystem.ViewModel.AccountModels;
 
 namespace AttendanceSystem.Areas.Admin.Controllers
 {
+    [PageAccess]
     public class SettingController : Controller
     {
         // GET: Admin/Setting

@@ -177,6 +177,7 @@
     <Compile Include="Filters\JWT\HttpAuthenticationChallengeContextExtensions.cs" />
     <Compile Include="Filters\JWT\JwtAuthenticationAttribute.cs" />
     <Compile Include="Helper\JWTAuthenticationHelper.cs" />
+    <Compile Include="Helper\PageAccess.cs" />
     <Compile Include="Models\tbl_Company.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
@@ -1276,12 +1277,10 @@
     <Content Include="Areas\Admin\Views\DynamicContent\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Company\Requests.cshtml" />
     <Content Include="Areas\Admin\Views\HomeImage\Add.cshtml" />
-    <Content Include="Areas\Admin\Views\Package\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Package\View.cshtml" />
     <Content Include="Areas\Admin\Views\DynamicContent\Add.cshtml" />
     <Content Include="Areas\Admin\Views\DynamicContent\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\DynamicContent\View.cshtml" />
-    <Content Include="Areas\Admin\Views\HomeImage\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\HomeImage\View.cshtml" />
     <Content Include="Areas\Admin\Views\Setting\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\HomeImage\Index.cshtml" />
