@@ -19,6 +19,11 @@
         public static string DefaultUserImagePath = "/Images/default_user_image.png";
         public static string HomeDirectoryPath = "/Images/HomeImage/";
         public static string PackageDirectoryPath = "/Images/PackageImage/";
+        public static string PancardDirectoryPath = "/Images/Pancard/";
+        public static string AdharcardDirectoryPath = "/Images/Adharcard/";
+        public static string GSTDirectoryPath = "/Images/GST/";
+        public static string CompanyDirectoryPath = "/Images/CompanyPhoto/";
+        public static string CancellationChequeDirectoryPath = "/Images/CancellationCheque/";
 
         public static string TokenExpired = "Token expired";
         public static string InvalidToken = "Invalid token";
