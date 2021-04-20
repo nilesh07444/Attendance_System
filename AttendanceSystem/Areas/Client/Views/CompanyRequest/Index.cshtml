@@ -22,12 +22,14 @@
                 <h2 class="contact-title">Submit Request</h2>
             </div>
             <div class="col-lg-12">
-                @using (Html.BeginForm("Add", "CompanyRequest", FormMethod.Post, new { @id = "CompanyRequestFormId", @class = "needs-validation", enctype = "multipart/form-data", role = "form" }))
+
+
+                @using (Html.BeginForm("Add", "CompanyRequest", FormMethod.Post, new { @id = "CompanyRequestFormId", @class = "form-contact contact_form", enctype = "multipart/form-data", role = "form" }))
                 {
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="form-group">
-                                @Html.DropDownListFor(model => model.CompanyTypeId, new SelectList(Model.CompanyTypeList, "Value", "Text"), "- Select -", new { @class = "nice-select form-control col-md-8 required", style = "" })
+                                @Html.DropDownListFor(model => model.CompanyTypeId, new SelectList(Model.CompanyTypeList, "Value", "Text"), "- Select -", new { @class = "form-control required", style = "width: 100%" })
                             </div>
                         </div>
                         <div class="col-lg-6">
