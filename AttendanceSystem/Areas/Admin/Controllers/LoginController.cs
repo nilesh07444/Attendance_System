@@ -25,7 +25,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         {
             LoginVM login = new LoginVM()
             {
-                UserName = "9999999999",
+                UserName = "UN/18042021/1",
                 Password = "12345"
             };
             return View(login);
@@ -44,7 +44,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                 if (data != null)
                 {
-                    if (data.AdminUserRoleId == (int)AdminRoles.SuperAdmin)
+                    if (data.AdminUserRoleId == (int)AdminRoles.SuperAdmin || data.AdminUserRoleId == (int)AdminRoles.CompanyAdmin)
                     {
 
                         using (WebClient webClient = new WebClient())

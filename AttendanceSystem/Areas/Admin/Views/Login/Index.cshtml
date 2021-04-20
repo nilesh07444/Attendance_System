@@ -19,7 +19,8 @@
     <link rel="stylesheet" href="~/Content/admin-theme/assets/css/components.css">
     <!-- Custom style CSS -->
     <link rel="stylesheet" href="~/Content/admin-theme/assets/css/custom.css">
-    <link rel='shortcut icon' type='image/x-icon' href='~/Content/admin-themeassets/img/favicon.ico' />
+    @*<link rel='shortcut icon' type='image/x-icon' href='~/Content/admin-themeassets/img/favicon.ico' />*@
+    <link rel='shortcut icon' type='image/x-icon' href='~/favicon.ico' />
 </head>
 
 <body>
@@ -34,6 +35,7 @@
                                 <h4>Login</h4>
                             </div>
                             <div class="card-body">
+
                                 @using (Html.BeginForm("LoginSubmit", "Login", FormMethod.Post, new { @id = "submit_form", @class = "login-form", ReturnUrl = ViewBag.ReturnUrl }))
                                 {
                                     <div id="dv_login">
@@ -77,18 +79,18 @@
                                 <div id="dv_otp">
                                     @using (Html.BeginForm("LoginSubmit", "Login", FormMethod.Post, new { @id = "submit_form", @class = "login-form", ReturnUrl = ViewBag.ReturnUrl }))
                                     {
-                                    <div class="form-group">
-                                        <div class="d-block">
-                                            <label for="password" class="control-label">OTP</label>
+                                        <div class="form-group">
+                                            <div class="d-block">
+                                                <label for="password" class="control-label">OTP</label>
+                                            </div>
+                                            @Html.TextBoxFor(m => m.TextOTP, new { @class = "form-control autofocus", @placeholder = "OTP", @autocomplete = "off" })
+                                            @*<input id="Txt_OTP" type="text" class="form-control" name="email" tabindex="1" required autofocus>*@
+                                            <div class="invalid-feedback">
+                                                please enter OTP
+                                            </div>
+                                            @Html.HiddenFor(m => m.OTP)
+                                            @Html.HiddenFor(m => m.UserName)
                                         </div>
-                                        @Html.TextBoxFor(m => m.TextOTP, new { @class = "form-control autofocus", @placeholder = "OTP", @autocomplete = "off" })
-                                        @*<input id="Txt_OTP" type="text" class="form-control" name="email" tabindex="1" required autofocus>*@
-                                        <div class="invalid-feedback">
-                                            please enter OTP
-                                        </div>
-                                        @Html.HiddenFor(m => m.OTP)
-                                        @Html.HiddenFor(m => m.UserName) 
-                                    </div>
                                         <div class="form-group">
                                             <button type="submit" id="btn_OtpSubmit" class="btn btn-primary btn-lg btn-block" tabindex="4">
                                                 Submit OTP
@@ -96,9 +98,11 @@
                                         </div>
                                     }
                                 </div>
+                                
                                 <div class="mt-5 text-muted text-center">
                                     Don't have an account? <a href="/companyrequest">Create One</a>
                                 </div>
+
                             </div>
 
                         </div>
@@ -106,8 +110,7 @@
 
                 </div>
             </div>
-    </div>
-    </section>
+        </section>
     </div>
     <!-- General JS Scripts -->
     <script src="~/Content/admin-theme/assets/js/app.min.js"></script>
@@ -129,14 +132,13 @@
         $("#dv_login").show();
         $("#dv_otp").hide();
 
-
         $('#btn_login').click(function (e) {
             if ($("#submit_form").valid()) {
                 $(".loader").fadeOut("slow");
                 var userName = $("#UserName").val();
                 var password = $("#Password").val();
 
-
+                $.blockUI({ message: '<h4> Please Wait...</h4>' });
                 var StrURL = '/admin/login/login?userName=' + userName + "&password=" + password;
                 $.ajax({
                     url: StrURL,
@@ -144,6 +146,7 @@
                     data: {},
                     type: 'POST',
                     success: function (data) {
+                        $.unblockUI();
                         if (data.Status == 1) {
                             $("#dv_login").hide();
                             $("#dv_otp").show();
@@ -157,6 +160,7 @@
 
                     },
                     error: function (req, status, error) {
+                        $.unblockUI();
                         alert(error);
                     }
                 });
@@ -165,7 +169,7 @@
 
                 return false;
             }
-            
+
         });
 
 

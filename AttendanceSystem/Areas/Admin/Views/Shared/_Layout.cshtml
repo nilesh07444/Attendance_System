@@ -4,6 +4,7 @@
 <html lang="en">
 <!-- index.html  21 Nov 2019 03:44:50 GMT -->
 <head>
+
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
     <title> Contract Book - Admin Panel </title>
@@ -20,7 +21,8 @@
 
     <!-- Custom style CSS -->
     <link rel="stylesheet" href="~/Content/admin-theme/assets/css/custom.css">
-    <link rel='shortcut icon' type='image/x-icon' href='~/Content/admin-theme/assets/img/favicon.ico' />
+    <link rel='shortcut icon' type='image/x-icon' href='~/favicon.ico' />
+
 </head>
 
 <body>
@@ -123,6 +125,79 @@
                             <li class="dropdown @(ViewBag.Title == "Dashboard" ? "active" : "")">
                                 <a href="/admin/dashboard" class="nav-link"><i data-feather="monitor"></i><span>Dashboard</span></a>
                             </li>
+
+                            <li class="dropdown @(ViewBag.Title == "Employee" ? "active" : "")">
+                                <a href="#" class="menu-toggle nav-link has-dropdown">
+                                    <i data-feather="users"></i><span>Employee</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="nav-link" href="/admin/company/registered">Add Employee</a></li>
+                                    <li><a class="nav-link" href="/admin/company/requests">Employee List</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="dropdown @(ViewBag.Title == "Leave" ? "active" : "")">
+                                <a href="#" class="menu-toggle nav-link has-dropdown">
+                                    <i data-feather="briefcase"></i><span>Leave</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="nav-link" href="/admin/leave">Leave List</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="dropdown @(ViewBag.Title == "Holiday" ? "active" : "")">
+                                <a href="#" class="menu-toggle nav-link has-dropdown">
+                                    <i data-feather="film"></i><span>Holiday</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="nav-link" href="/admin/holiday/add/0">Add Holiday</a></li>
+                                    <li><a class="nav-link" href="/admin/holiday">Holiday List</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="dropdown @(ViewBag.Title == "Payment" ? "active" : "")">
+                                <a href="#" class="menu-toggle nav-link has-dropdown">
+                                    <i data-feather="dollar-sign"></i><span>Payment</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="nav-link" href="/admin/payment/add/0">Add Payment</a></li>
+                                    <li><a class="nav-link" href="/admin/payment">Payment List</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="dropdown @(ViewBag.Title == "Attendance" ? "active" : "")">
+                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="command"></i><span>Attendance</span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="nav-link" href="/admin/attendance">Attendance List</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="dropdown @(ViewBag.Title == "Report" ? "active" : "")">
+                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="server"></i><span>Report</span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="nav-link" href="/admin/report/report1">Report 1</a></li>
+                                    <li><a class="nav-link" href="/admin/report/report2">Report 2</a></li>
+                                    <li><a class="nav-link" href="/admin/report/report3">Report 3</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="dropdown @(ViewBag.Title == "AccountRenew" ? "active" : "")">
+                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="clock"></i><span>Account Renew</span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="nav-link" href="/admin/accountrenew/add">Add Renew</a></li>
+                                    <li><a class="nav-link" href="/admin/accountrenew">Renew Transaction List</a></li> 
+                                </ul>
+                            </li>
+
+                            <li class="dropdown @(ViewBag.Title == "Setting" ? "active" : "")">
+                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="settings"></i><span>Setting</span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="nav-link" href="/admin/setting">General</a></li>
+                                </ul>
+                            </li>
+
+
+
                         }
 
                     </ul>
