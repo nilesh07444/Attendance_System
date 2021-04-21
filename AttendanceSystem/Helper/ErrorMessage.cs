@@ -31,5 +31,8 @@
         public static string InternalServerError = "Internal server error";
         public static string SelectOnlyImage = "Select only image file.";
         public static string ImageRequired = "Please select image file.";
+        public static string RunningStatusApprove = "Approve";
+        public static string RunningStatusReject = "Reject";
+        public static string RunningStatusPending = "Pending";
     }
 }

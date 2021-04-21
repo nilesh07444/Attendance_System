@@ -8257,3 +8257,7 @@ del {
 }
 
 /*# sourceMappingURL=style.css.map */
+
+label.error {
+    color: red;
+}

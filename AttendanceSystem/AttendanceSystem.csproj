@@ -1336,6 +1336,7 @@
     <Content Include="Content\client-theme\assets\scss\_testimonial.scss" />
     <Content Include="Content\client-theme\assets\scss\_variables.scss" />
     <Content Include="Content\client-theme\assets\scss\_wantTowork.scss" />
+    <Content Include="Areas\Client\Views\CompanyRequest\ThankYou.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />

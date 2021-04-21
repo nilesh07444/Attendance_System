@@ -3,6 +3,7 @@ using AttendanceSystem.Models;
 using AttendanceSystem.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -42,6 +43,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
         {
             try
             {
+                int freeAccessDays=Convert.ToInt32(ConfigurationManager.AppSettings["CompanyFreeAccessDays"].ToString());
                 IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
                 if (ModelState.IsValid)
                 {
@@ -206,17 +208,14 @@ namespace AttendanceSystem.Areas.Client.Controllers
                     objCompany.AadharCardNo = companyRequestVM.AadharCardNo;
                     objCompany.GSTNo = companyRequestVM.GSTNo;
                     objCompany.PanCardNo = companyRequestVM.PanCardNo;
-                    objCompany.PanCardPhoto = companyRequestVM.PanCardPhoto;
-                    objCompany.AadharCardPhoto = companyRequestVM.AadharCardPhoto;
-                    objCompany.GSTPhoto = companyRequestVM.GSTPhoto;
-                    objCompany.CompanyPhoto = companyRequestVM.CompanyPhoto;
-                    objCompany.CancellationChequePhoto = companyRequestVM.CancellationChequePhoto;
-                    objCompany.RequestStatus = companyRequestVM.RequestStatus;
-                    objCompany.RejectReason = companyRequestVM.RejectReason;
-                    objCompany.CompanyId = companyRequestVM.CompanyId;
-                    objCompany.RegistrationFee = companyRequestVM.RegistrationFee;
-                    objCompany.FreeAccessDays = companyRequestVM.FreeAccessDays;
-                    objCompany.IsDeleted = companyRequestVM.IsDeleted;
+                    objCompany.PanCardPhoto = panCardFileName;
+                    objCompany.AadharCardPhoto = adharCardFileName;
+                    objCompany.GSTPhoto = gstFileName;
+                    objCompany.CompanyPhoto = companyFileName;
+                    objCompany.CancellationChequePhoto = chqFileName;
+                    objCompany.RequestStatus = ErrorMessage.RunningStatusPending;
+                    objCompany.FreeAccessDays = freeAccessDays;
+                    objCompany.IsDeleted = false;
                     objCompany.CreatedBy = LoggedInUserId;
                     objCompany.CreatedDate = DateTime.UtcNow;
                     objCompany.ModifiedBy = LoggedInUserId;
@@ -224,9 +223,6 @@ namespace AttendanceSystem.Areas.Client.Controllers
                     _db.tbl_CompanyRequest.Add(objCompany);
 
                     _db.SaveChanges();
-
-                    return RedirectToAction("Index");
-
                 }
             }
             catch (Exception ex)
@@ -248,6 +244,11 @@ namespace AttendanceSystem.Areas.Client.Controllers
                                             Value = ms.CompanyTypeId.ToString()
                                         }).ToList();
             return lst;
+        }
+
+        public ActionResult ThankYou()
+        {
+            return View();
         }
     }
 }

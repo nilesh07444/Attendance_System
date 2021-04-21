@@ -1,4 +1,12 @@
 ﻿@model AttendanceSystem.ViewModel.CompanyRequestVM
+@{
+
+    List<SelectListItem> lstPrefix = new List<SelectListItem>();
+
+    lstPrefix.Add(new SelectListItem { Value = "Mr", Text = "Mr" });
+    lstPrefix.Add(new SelectListItem { Value = "Mrs", Text = "Mrs" });
+    lstPrefix.Add(new SelectListItem { Value = "Miss", Text = "Miss" });
+}
 <!--? Hero Start -->
 <div class="slider-area2">
     <div class="slider-height2 hero-overly2 d-flex align-items-center">
@@ -24,39 +32,150 @@
             <div class="col-lg-12">
 
 
-                @using (Html.BeginForm("Add", "CompanyRequest", FormMethod.Post, new { @id = "CompanyRequestFormId", @class = "form-contact contact_form", enctype = "multipart/form-data", role = "form" }))
+                @using (Html.BeginForm("Index", "CompanyRequest", FormMethod.Post, new { @id = "CompanyRequestFormId", @class = "form-contact contact_form", enctype = "multipart/form-data", role = "form" }))
                 {
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="form-group">
-                                @Html.DropDownListFor(model => model.CompanyTypeId, new SelectList(Model.CompanyTypeList, "Value", "Text"), "- Select -", new { @class = "form-control required", style = "width: 100%" })
+                                <label>Company Type</label>
+                                @Html.DropDownListFor(model => model.CompanyTypeId, new SelectList(Model.CompanyTypeList, "Value", "Text"), "- Select -", new { @class = "form-control required" })
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                @Html.TextBoxFor(model => model.CompanyName, new { @type = "text", @class = "form-control", @placeholder = "Enter Company Name" })
+                                <label>Company Name</label>
+                                @Html.TextBoxFor(model => model.CompanyName, new { @type = "text", @class = "form-control required", @placeholder = "Enter Company Name"
+                           })
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <input class="form-control valid" name="name" id="name" type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter your name'" placeholder="Enter your name">
+                                <label>Prefix</label>
+                                @Html.DropDownListFor(model => model.Prefix, new SelectList(lstPrefix, "Value", "Text"), "- Select -", new { @class = "form-control required", style = "width: 100%" })
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <input class="form-control valid" name="email" id="email" type="email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter email address'" placeholder="Email">
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="form-group">
-                                <input class="form-control" name="subject" id="subject" type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Subject'" placeholder="Enter Subject">
+                                <label>First Name</label>
+                                @Html.TextBoxFor(model => model.Firstname, new { @type = "text", @class = "form-control required", @placeholder = "Enter First Name" })
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Last Name</label>
+                                @Html.TextBoxFor(model => model.Lastname, new { @type = "text", @class = "form-control required", @placeholder = "Enter Last Name" })
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Date of Birth</label>
+                                @Html.TextBoxFor(model => model.DateOfBirth, new { @type = "date", @class = "form-control required", @placeholder = "Enter Date of Birth" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Email Id</label>
+                                @Html.TextBoxFor(model => model.EmailId, new { @type = "email", @class = "form-control required", @placeholder = "Enter Email Id" })
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Mobile No</label>
+                                @Html.TextBoxFor(model => model.MobileNo, new { @type = "text", @class = "form-control required", @placeholder = "Enter Mobile No" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Alternate Mobile No</label>
+                                @Html.TextBoxFor(model => model.AlternateMobileNo, new { @type = "text", @class = "form-control", @placeholder = "Enter Alternate MobileNo" })
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>City</label>
+                                @Html.TextBoxFor(model => model.City, new { @type = "text", @class = "form-control required", @placeholder = "Enter City" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>State</label>
+                                @Html.TextBoxFor(model => model.State, new { @type = "text", @class = "form-control required", @placeholder = "Enter State" })
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Aadhar Card No</label>
+                                @Html.TextBoxFor(model => model.AadharCardNo, new { @type = "text", @class = "form-control required", @placeholder = "Enter Aadhar Card No" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Pan Card No</label>
+                                @Html.TextBoxFor(model => model.PanCardNo, new { @type = "text", @class = "form-control required", @placeholder = "Enter Pan Card No" })
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>GST No</label>
+                                @Html.TextBoxFor(model => model.GSTNo, new { @type = "text", @class = "form-control required", @placeholder = "Enter GST No" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Aadhar Card Photo</label>
+                                @Html.TextBoxFor(model => model.AadharCardPhotoFile, new { type = "file", @class = "form-control col-md-8"})
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Pan Card Photo</label>
+                                @Html.TextBoxFor(model => model.PanCardPhotoFile, new { type = "file", @class = "form-control col-md-8" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>GST Photo</label>
+                                @Html.TextBoxFor(model => model.GSTPhotoFile, new { type = "file", @class = "form-control col-md-8" })
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Company Photo</label>
+                                @Html.TextBoxFor(model => model.CompanyPhotoFile, new { type = "file", @class = "form-control col-md-8" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Cancellation Cheque Photo</label>
+                                @Html.TextBoxFor(model => model.CancellationChequePhotoFile, new { type = "file", @class = "form-control col-md-8" })
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="form-group mt-3">
-                        <button type="submit" class="button button-contactForm boxed-btn">Send</button>
+                        <button type="submit" id="btnSubmit" class="button button-contactForm boxed-btn">Send</button>
                     </div>
                 }
             </div>
@@ -64,4 +183,53 @@
         </div>
     </div>
 </section>
-  
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnSubmit').click(function () {
+            if ($("#CompanyRequestFormId").valid()) {
+                if ($("#CompanyTypeId").val() == "") {
+                    alert("Please select company type.");
+                    return false;
+                }
+
+                if ($("#Prefix").val() == "") {
+                    alert("Please select prefix.");
+                    return false;
+                }
+
+                if ($("#AadharCardPhoto").val() == "") {
+                    alert("Please select Aadhar card photo.");
+                    return false;
+                }
+
+                if ($("#PanCardPhoto").val() == "") {
+                    alert("Please select Pan card photo.");
+                    return false;
+                }
+
+                if ($("#GSTPhoto").val() == "") {
+                    alert("Please select GST photo.");
+                    return false;
+                }
+
+                if ($("#CompanyPhotoFile").val() == "") {
+                    alert("Please select Company photo.");
+                    return false;
+                }
+
+                if ($("#CancellationChequePhotoFile").val() == "") {
+                    alert("Please select Cancellation cheque photo.");
+                    return false;
+                }
+            }
+            else {
+                return false;
+            }
+
+        });
+    })
+</script>

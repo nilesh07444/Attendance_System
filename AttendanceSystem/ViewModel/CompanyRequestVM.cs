@@ -33,7 +33,6 @@ namespace AttendanceSystem.ViewModel
         public long? CompanyId { get; set; }
         public decimal RegistrationFee { get; set; }
         public int FreeAccessDays { get; set; }
-        public bool IsDeleted { get; set; }
         public List<SelectListItem> CompanyTypeList { get; set; }
         public HttpPostedFileBase PanCardPhotoFile { get; set; }
         public HttpPostedFileBase AadharCardPhotoFile { get; set; }
