@@ -35,7 +35,6 @@
                                 <h4>Login</h4>
                             </div>
                             <div class="card-body">
-
                                 @using (Html.BeginForm("LoginSubmit", "Login", FormMethod.Post, new { @id = "submit_form", @class = "login-form", ReturnUrl = ViewBag.ReturnUrl }))
                                 {
                                     <div id="dv_login">
@@ -56,7 +55,6 @@
                                                     </a>
                                                 </div>
                                             </div>
-
                                             @Html.PasswordFor(m => m.Password, new { @class = "form-control placeholder-no-fix required", @placeholder = "Password", @autocomplete = "off" })
                                             <div class="invalid-feedback">
                                                 please fill in your password
@@ -74,11 +72,9 @@
                                             </button>
                                         </div>
                                     </div>
-                                }
 
-                                <div id="dv_otp">
-                                    @using (Html.BeginForm("LoginSubmit", "Login", FormMethod.Post, new { @id = "submit_form", @class = "login-form", ReturnUrl = ViewBag.ReturnUrl }))
-                                    {
+                                    <div id="dv_otp">
+
                                         <div class="form-group">
                                             <div class="d-block">
                                                 <label for="password" class="control-label">OTP</label>
@@ -96,9 +92,9 @@
                                                 Submit OTP
                                             </button>
                                         </div>
-                                    }
-                                </div>
-                                
+
+                                    </div>
+                                }
                                 <div class="mt-5 text-muted text-center">
                                     Don't have an account? <a href="/companyrequest">Create One</a>
                                 </div>
@@ -131,6 +127,8 @@
     $(document).ready(function () {
         $("#dv_login").show();
         $("#dv_otp").hide();
+        $("#btn_OtpSubmit").attr("disabled", true)
+
 
         $('#btn_login').click(function (e) {
             if ($("#submit_form").valid()) {
@@ -152,7 +150,7 @@
                             $("#dv_otp").show();
                             $("#OTP").val(data.Otp);
                             $("#TextOTP").val(data.Otp);
-                            $("#EncryptedKey").val(data.EncryptedUserDetails);
+                            $("#btn_OtpSubmit").attr("disabled", false)
                         }
                         else {
                             alert(data.ErrorMessage);

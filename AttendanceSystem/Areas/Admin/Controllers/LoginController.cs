@@ -23,11 +23,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         // GET: Admin/Login
         public ActionResult Index()
         {
-            LoginVM login = new LoginVM()
-            {
-                UserName = "UN/18042021/1",
-                Password = "12345"
-            };
+            LoginVM login = new LoginVM();
+            //{
+            //    UserName = "UN/18042021/1",
+            //    Password = "12345"
+            //};
             return View(login);
         }
 
@@ -35,7 +35,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         {
             int status = 0;
             string errorMessage = string.Empty;
-            string encryptedUserDetails = string.Empty;
             string otp = string.Empty;
             try
             {
@@ -65,8 +64,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                 else
                                 {
                                     status = 1;
-                                    string encKey = userName + "," + data.AdminUserRoleId + "," + data.MobileNo;
-                                    encryptedUserDetails = CommonMethod.Encrypt(encKey, psSult);
+                                     
                                     otp = num.ToString();
                                 }
                             }
@@ -95,7 +93,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 errorMessage = ex.Message.ToString();
             }
 
-            return Json(new { Status = status, EncryptedUserDetails = encryptedUserDetails, Otp = otp, ErrorMessage = errorMessage }, JsonRequestBehavior.AllowGet);
+            return Json(new { Status = status, Otp = otp, ErrorMessage = errorMessage }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
