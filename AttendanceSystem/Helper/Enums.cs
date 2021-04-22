@@ -48,4 +48,12 @@ namespace AttendanceSystem.Helper
         Website = 1,
         MobileApp = 2
     }
+
+    public enum DynamicContents
+    {
+        FAQ = 1,
+        PrivacyPolicy = 2,
+        TermsCondition = 3 
+    }
+
 }

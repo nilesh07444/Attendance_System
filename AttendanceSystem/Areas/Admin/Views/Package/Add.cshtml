@@ -1,93 +1,69 @@
 ﻿@using AttendanceSystem.Helper;
 @model AttendanceSystem.ViewModel.PackageVM
 @{
-   
+
 }
 
-<div class="page-body">
+<section class="section">
 
-    <!-- Container-fluid starts-->
-    
-    <!-- Container-fluid Ends-->
-    <!-- Container-fluid starts-->
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h5>@(Model.PackageId == 0 ? "Add" : "Edit") Package</h5>
-                    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h4>@(Model.PackageId == 0 ? "Add" : "Edit") Package</h4>
+                </div>
+
+                @using (Html.BeginForm("Add", "Package", FormMethod.Post, new { @id = "PackageFormId", @class = "", enctype = "multipart/form-data", role = "form" }))
+                {
                     <div class="card-body">
-                        @using (Html.BeginForm("Add", "Package", FormMethod.Post, new { @id = "PackageFormId", @class = "needs-validation", enctype = "multipart/form-data", role = "form" }))
-                        {
-
-                            @Html.AntiForgeryToken()
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                            @Html.HiddenFor(model => model.PackageId)
-                            <div class="form-group row">
-                                @Html.LabelFor(model => model.PackageName, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                @Html.EditorFor(model => model.PackageName, new { htmlAttributes = new { @class = "form-control col-md-8 required", @placeholder = "Enter Package Name ", maxlength = "200" } })
-
-                                <lable class="col-xl-3 col-md-4"></lable>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.PackageName, htmlAttributes: new { @class = "" })
+                                @Html.EditorFor(model => model.PackageName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Package Name ", maxlength = "200", @autofocus = "autofocus" } })
                                 @Html.ValidationMessageFor(model => model.PackageName, "", new { @class = "text-danger" })
                             </div>
-
-                            <div class="form-group row">
-                                @Html.LabelFor(model => model.PackageDescription, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                @Html.TextAreaFor(model => model.PackageDescription, new { htmlAttributes = new { @class = "form-control col-md-8 required", @placeholder = "Enter Package Description ", maxlength = "200" } })
-
-                                <lable class="col-xl-3 col-md-4"></lable>
-                                @Html.ValidationMessageFor(model => model.PackageDescription, "", new { @class = "text-danger" })
-                            </div>
-
-                            <div class="form-group row">
-                                @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control col-md-8",@min=1, @placeholder = "Enter Amount", @maxlength = "10" } })
-
-                                <lable class="col-xl-3 col-md-4"></lable>
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "" })
+                                @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Package Amount", maxlength = "10" } })
                                 @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
                             </div>
-                            <div class="form-group row">
-                                @Html.LabelFor(model => model.AccessDays, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                @Html.EditorFor(model => model.AccessDays, new { htmlAttributes = new { @class = "form-control col-md-8", @min = 1, @placeholder = "Enter Access Days", @maxlength = "10" } })
-
-                                <lable class="col-xl-3 col-md-4"></lable>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.PackageDescription, htmlAttributes: new { @class = "" })
+                            @Html.TextAreaFor(model => model.PackageDescription, 10, 5, new { @class = "form-control", @placeholder = "Enter Package Description", maxlength = "250" })
+                            @Html.ValidationMessageFor(model => model.PackageDescription, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.AccessDays, htmlAttributes: new { @class = "" })
+                                @Html.EditorFor(model => model.AccessDays, new { htmlAttributes = new { @class = "form-control", @min = 1, @placeholder = "Enter Access Days", @maxlength = "10" } })
                                 @Html.ValidationMessageFor(model => model.AccessDays, "", new { @class = "text-danger" })
                             </div>
-
-                            <div class="form-group row">
-                                @Html.LabelFor(model => model.PackageImageFile, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                @Html.TextBoxFor(model => model.PackageImageFile, new { type = "file", @class = "form-control col-md-8" })
-
-                                <lable class="col-xl-3 col-md-4"></lable>
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.PackageImageFile, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.PackageImageFile, new { type = "file", @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.PackageImageFile, "", new { @class = "text-danger" })
-                                <p class="text-primary">NOTE: Upload Images size : 1920 X 718</p>
-                                @Html.HiddenFor(model => model.PackageImage)
                             </div>
-                            if (!string.IsNullOrEmpty(Model.PackageImage))
-                            {
-                                <div class="form-group row">
-                                    <lable class="col-xl-3 col-md-4"></lable>
-                                    <p><a target="_blank" href="@ErrorMessage.HomeDirectoryPath/@Model.PackageImage"> Click here to view image </a></p>
-                                </div>
-                            }
-                            <div class="form-group row">
-                                <lable class="col-xl-3 col-md-4"></lable>
-                                <button type="submit" class="btn btn-primary" style="margin-right:10px;" id="btnSubmit">Submit</button>
-                                <button type="button" class="btn btn-danger" id="btnCancel">Cancel</button>
-                            </div>
-                        }
+                        </div>
+                         
                     </div>
-                </div>
+
+                    <div class="card-footer text-center">
+                        <button class="btn btn-primary mr-1" type="submit">Submit</button>                        
+                        <a href="/admin/package" class="btn btn-secondary">Cancel</a>
+                    </div>
+
+                    @Html.HiddenFor(model => model.PackageImage)
+                }
+                 
             </div>
         </div>
     </div>
-    <!-- Container-fluid Ends-->
 
-</div>
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+</section>
+ 
+<script src="~/Scripts/jquery-3.4.1.min.js"></script> 
+
 
 <script type="text/javascript">
     $(document).ready(function () {

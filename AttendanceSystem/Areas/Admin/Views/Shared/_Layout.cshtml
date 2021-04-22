@@ -185,7 +185,7 @@
                                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="clock"></i><span>Account Renew</span></a>
                                 <ul class="dropdown-menu">
                                     <li><a class="nav-link" href="/admin/accountrenew/add">Add Renew</a></li>
-                                    <li><a class="nav-link" href="/admin/accountrenew">Renew Transaction List</a></li> 
+                                    <li><a class="nav-link" href="/admin/accountrenew">Renew Transaction List</a></li>
                                 </ul>
                             </li>
 
@@ -227,6 +227,8 @@
     <!-- Custom JS File -->
     <script src="~/Content/admin-theme/assets/js/custom.js"></script>
     <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
     <!-- Datatable - JS - start -->
     <script src="~/Content/admin-theme/assets/bundles/datatables/datatables.min.js"></script>
@@ -239,6 +241,19 @@
     <script src="~/Content/admin-theme/assets/bundles/datatables/export-tables/buttons.print.min.js"></script>
     <script src="~/Content/admin-theme/assets/js/page/datatables.js"></script>
     <!-- Datatable - JS - End -->
+    <script src="~/Scripts/jquery.blockUI.js"></script>
+
+    <script>
+
+        function StartLoading() {
+            $.blockUI({ message: '<h4> Please Wait...</h4>' });
+        }
+
+        function StopLoading() {
+            $.unblockUI();
+        }
+
+    </script>
 
 </body>
 

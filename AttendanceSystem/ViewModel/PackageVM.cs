@@ -12,7 +12,7 @@ namespace AttendanceSystem.ViewModel
         [Required, Display(Name = "Package Name")]
         public string PackageName { get; set; }
 
-        [Required, Display(Name = "Amount")]
+        [Required, Display(Name = "Package Amount")]
         public decimal Amount { get; set; }
         [Required, Display(Name = "Package Description")]
         public string PackageDescription { get; set; }

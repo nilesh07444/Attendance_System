@@ -182,6 +182,7 @@
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\CompanyRequestVM.cs" />
+    <Compile Include="ViewModel\DynamicContentVM.cs" />
     <Compile Include="ViewModel\HomeImageVM.cs" />
     <Compile Include="ViewModel\PackageVM.cs" />
     <Compile Include="ViewModel\WebAPI\JWTAccessTokenVM.cs" />

@@ -143,7 +143,7 @@
             if (PackageImage_Id != "" && PackageImage_Id != null) {
                 $('#deletePackageModal').modal('hide');
 
-                //StartLoading();
+                StartLoading();
 
                 var URL = '@Url.Action("DeletePackage", "Package")';
                 $.ajax({
@@ -152,11 +152,11 @@
                     url: URL + "?PackageId=" + PackageImage_Id,
                     success: function (result) {
                         if (result == "success") {
-                            alert("Image deleted successfully");
+                            alert("Package deleted successfully");
                             window.location.reload();
                         }
                         else if (result == "notfound") {
-                            alert("Image Not Found");
+                            alert("Package Not Found");
                         }
                         else {
                             alert("Something went wrong. Please try again");
@@ -165,7 +165,7 @@
                        StopLoading();
                     },
                     error: function (resultData) {
-                       // StopLoading();
+                       StopLoading();
                     }
                 });
             }
