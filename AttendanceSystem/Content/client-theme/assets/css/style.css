@@ -8261,3 +8261,10 @@ del {
 label.error {
     color: red;
 }
+
+span.error {
+    color: red;
+    font-size: 14px;
+    display: inline-block;
+    margin-bottom: .5rem;
+}

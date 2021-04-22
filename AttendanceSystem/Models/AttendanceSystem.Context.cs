@@ -33,13 +33,13 @@ namespace AttendanceSystem.Models
         public virtual DbSet<tbl_EmployeePayment> tbl_EmployeePayment { get; set; }
         public virtual DbSet<tbl_Holiday> tbl_Holiday { get; set; }
         public virtual DbSet<tbl_LoginHistory> tbl_LoginHistory { get; set; }
-        public virtual DbSet<tbl_Setting> tbl_Setting { get; set; }
         public virtual DbSet<tbl_Site> tbl_Site { get; set; }
-        public virtual DbSet<tbl_CompanyRenewPayment> tbl_CompanyRenewPayment { get; set; }
         public virtual DbSet<tbl_DynamicContent> tbl_DynamicContent { get; set; }
         public virtual DbSet<tbl_HomeImage> tbl_HomeImage { get; set; }
         public virtual DbSet<tbl_Leave> tbl_Leave { get; set; }
         public virtual DbSet<tbl_Package> tbl_Package { get; set; }
+        public virtual DbSet<tbl_Setting> tbl_Setting { get; set; }
+        public virtual DbSet<tbl_CompanyRenewPayment> tbl_CompanyRenewPayment { get; set; }
         public virtual DbSet<tbl_Company> tbl_Company { get; set; }
     }
 }

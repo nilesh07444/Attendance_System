@@ -48,4 +48,16 @@ namespace AttendanceSystem.Helper
         Website = 1,
         MobileApp = 2
     }
+    public enum CompanyRequestStatus
+    {
+        Pending = 1,
+        Accept = 2,
+        Reject = 3
+    }
+
+    public enum CompanyType
+    {
+        Banking_OfficeCompany = 1,
+        ConstructionCompany = 2
+    }
 }

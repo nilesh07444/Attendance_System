@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -22,6 +23,9 @@ namespace AttendanceSystem.ViewModel
         public string State { get; set; }
         public string AadharCardNo { get; set; }
         public string GSTNo { get; set; }
+
+        [Required(ErrorMessage = "PAN Card No is required")]
+        [RegularExpression("^([A-Za-z]){5}([0-9]){4}([A-Za-z]){1}$", ErrorMessage = "Invalid PAN No")]
         public string PanCardNo { get; set; }
         public string PanCardPhoto { get; set; }
         public string AadharCardPhoto { get; set; }
