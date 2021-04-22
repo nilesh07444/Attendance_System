@@ -18,21 +18,9 @@ namespace AttendanceSystem.Models
         public long CompanyTypeId { get; set; }
         public string CompanyName { get; set; }
         public string CompanyCode { get; set; }
-        public string Prefix { get; set; }
-        public string Firstname { get; set; }
-        public string Lastname { get; set; }
-        public System.DateTime DateOfBirth { get; set; }
-        public string EmailId { get; set; }
-        public string MobileNo { get; set; }
-        public string AlternateMobileNo { get; set; }
         public string City { get; set; }
         public string State { get; set; }
-        public string AadharCardNo { get; set; }
         public string GSTNo { get; set; }
-        public string PanCardNo { get; set; }
-        public string PanCardPhoto { get; set; }
-        public string UserPhoto { get; set; }
-        public string AadharCardPhoto { get; set; }
         public string GSTPhoto { get; set; }
         public string CompanyPhoto { get; set; }
         public string CancellationChequePhoto { get; set; }

@@ -43,7 +43,20 @@ namespace AttendanceSystem.Areas.Client.Controllers
         {
             try
             {
-                int freeAccessDays=Convert.ToInt32(ConfigurationManager.AppSettings["CompanyFreeAccessDays"].ToString());
+                tbl_Setting objSetting = _db.tbl_Setting.FirstOrDefault();
+                int freeAccessDays;
+                if (objSetting != null)
+                {
+                    if (companyRequestVM.CompanyTypeId == (int)CompanyType.Banking_OfficeCompany)
+                        freeAccessDays = objSetting.OfficeCompanyFreeAccessDays.Value;
+                    else
+                        freeAccessDays = objSetting.SiteCompanyFreeAccessDays.Value;
+                }
+                else
+                {
+                    freeAccessDays = Convert.ToInt32(ConfigurationManager.AppSettings["CompanyFreeAccessDays"].ToString());
+                }
+                // int freeAccessDays = objSetting!=null && companyRequestVM.CompanyTypeId==(int)CompanyType.Banking_OfficeCompany?  :Convert.ToInt32(ConfigurationManager.AppSettings["CompanyFreeAccessDays"].ToString());
                 IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
                 if (ModelState.IsValid)
                 {
@@ -224,6 +237,11 @@ namespace AttendanceSystem.Areas.Client.Controllers
 
                     _db.SaveChanges();
                 }
+                else
+                {
+                    companyRequestVM.CompanyTypeList = GetCompanyType();
+                    return View(companyRequestVM);
+                }
             }
             catch (Exception ex)
             {
@@ -250,5 +268,21 @@ namespace AttendanceSystem.Areas.Client.Controllers
         {
             return View();
         }
+
+        public JsonResult CheckCompanyName(string companyName)
+        {
+            bool isExist = false;
+            try
+            {
+                isExist = _db.tbl_CompanyRequest.Any(x => x.CompanyName == companyName);
+            }
+            catch (Exception ex)
+            {
+                isExist = false;
+            }
+
+            return Json(new { Status = isExist }, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

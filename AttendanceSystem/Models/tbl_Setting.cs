@@ -15,8 +15,6 @@ namespace AttendanceSystem.Models
     public partial class tbl_Setting
     {
         public long SettingId { get; set; }
-        public Nullable<decimal> SiteCompanyRegistrationFee { get; set; }
-        public Nullable<decimal> OfficeCompanyRegistrationFee { get; set; }
         public Nullable<int> SiteCompanyFreeAccessDays { get; set; }
         public Nullable<int> OfficeCompanyFreeAccessDays { get; set; }
     }

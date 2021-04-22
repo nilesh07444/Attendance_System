@@ -115,7 +115,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Aadhar Card No</label>
-                                @Html.TextBoxFor(model => model.AadharCardNo, new { @type = "text", @class = "form-control required", @placeholder = "Enter Aadhar Card No" })
+                                @Html.TextBoxFor(model => model.AadharCardNo, new { @type = "Text", @class = "form-control required", @placeholder = "Enter Aadhar Card No", @maxlength = "12" })
                             </div>
                         </div>
                     </div>
@@ -123,13 +123,16 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Pan Card No</label>
-                                @Html.TextBoxFor(model => model.PanCardNo, new { @type = "text", @class = "form-control required", @placeholder = "Enter Pan Card No" })
+                                @Html.TextBoxFor(model => model.PanCardNo, new { @type = "text", @class = "form-control required", @placeholder = "Enter Pan Card No", @maxlength = "10" })
+
+                                @Html.ValidationMessageFor(model => model.PanCardNo, "", new { @class = "error" })
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>GST No</label>
-                                @Html.TextBoxFor(model => model.GSTNo, new { @type = "text", @class = "form-control required", @placeholder = "Enter GST No" })
+                                @Html.TextBoxFor(model => model.GSTNo, new { @type = "text", @class = "form-control required", @placeholder = "Enter GST No", @maxlength = "15" })
+                                @Html.ValidationMessageFor(model => model.GSTNo, "", new { @class = "error" })
                             </div>
                         </div>
                     </div>
@@ -137,7 +140,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Aadhar Card Photo</label>
-                                @Html.TextBoxFor(model => model.AadharCardPhotoFile, new { type = "file", @class = "form-control col-md-8"})
+                                @Html.TextBoxFor(model => model.AadharCardPhotoFile, new { type = "file", @class = "form-control col-md-8" })
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -189,8 +192,38 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+
+        $("#CompanyName").change(function () {
+            var companyName = $("#CompanyName").val();
+
+            var StrURL = '/Client/companyRequest/CheckCompanyName?companyName=' + companyName;
+            $.ajax({
+                url: StrURL,
+                cache: false,
+                data: {},
+                type: 'POST',
+                success: function (data) {
+                    if (data.Status == true) {
+                        alert("Company with same name already exist, Please use another name.")
+                        $("#CompanyName").val("");
+                    }
+
+                },
+                error: function (req, status, error) {
+                    alert(error);
+                }
+            });
+        });
+
         $('#btnSubmit').click(function () {
             if ($("#CompanyRequestFormId").valid()) {
+                var now = new Date;
+                var target = new Date($("#DateOfBirth").val());
+                if (target.getDate() >= now.getDate()) {
+                    alert("Please valid date of birth.");
+                    return false;
+                }
+
                 if ($("#CompanyTypeId").val() == "") {
                     alert("Please select company type.");
                     return false;
