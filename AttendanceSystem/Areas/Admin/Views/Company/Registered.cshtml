@@ -1,13 +1,77 @@
-﻿ 
-<!DOCTYPE html>
+﻿@using AttendanceSystem.Helper
+@using AttendanceSystem.ViewModel;
+@model List<AttendanceSystem.ViewModel.CompanyRequestVM>
+@{
+    /**/
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Registered</title>
-</head>
-<body>
-    <div> 
+    ViewBag.Title = "Registered";
+    int counter = 1;
+}
+
+<section class="section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Registered Company List</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover" id="tableExport" style="width:100%;">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Company Photo</th>
+                                        <th>Company Type</th>
+                                        <th>Company Name</th>
+                                        <th>City</th>
+                                        <th>State</th>
+                                        <th>GSTNo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @if (Model != null && Model.Count > 0)
+                                    {
+                                        foreach (CompanyRequestVM obj in Model)
+                                        {
+                                            <tr class="gradeX">
+                                                <td>@counter.</td>
+                                                <td>
+                                                    @if (!string.IsNullOrEmpty(obj.CompanyPhoto))
+                                                    {
+                                                        if (File.Exists(Server.MapPath(ErrorMessage.CompanyDirectoryPath + obj.CompanyPhoto)))
+                                                        {
+                                                            <img src="@ErrorMessage.CompanyDirectoryPath/@obj.CompanyPhoto" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height:40px;" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <img src="@ErrorMessage.DefaultImagePath" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height: 40px;" />
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="@ErrorMessage.DefaultImagePath" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height: 40px;" />
+                                                    }
+                                                </td>
+                                                <td>@obj.CompanyTypeText</td>
+                                                <td>@obj.CompanyName</td>
+                                                <td>@obj.City</td>
+                                                <td>@obj.State</td>
+                                                <td>@obj.GSTNo</td>
+                                            </tr>
+                                            counter++;
+                                        }
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</body>
-</html>
+</section>
+

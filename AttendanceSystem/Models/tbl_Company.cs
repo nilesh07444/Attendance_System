@@ -24,7 +24,7 @@ namespace AttendanceSystem.Models
         public string GSTPhoto { get; set; }
         public string CompanyPhoto { get; set; }
         public string CancellationChequePhoto { get; set; }
-        public string RequestStatus { get; set; }
+        public int RequestStatus { get; set; }
         public string RejectReason { get; set; }
         public int FreeAccessDays { get; set; }
         public bool IsActive { get; set; }

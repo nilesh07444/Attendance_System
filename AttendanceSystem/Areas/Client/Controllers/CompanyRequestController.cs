@@ -226,7 +226,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
                     objCompany.GSTPhoto = gstFileName;
                     objCompany.CompanyPhoto = companyFileName;
                     objCompany.CancellationChequePhoto = chqFileName;
-                    objCompany.RequestStatus = ErrorMessage.RunningStatusPending;
+                    objCompany.RequestStatus = (int)CompanyRequestStatus.Pending;
                     objCompany.FreeAccessDays = freeAccessDays;
                     objCompany.IsDeleted = false;
                     objCompany.CreatedBy = LoggedInUserId;
@@ -274,6 +274,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
             bool isExist = false;
             try
             {
+
                 isExist = _db.tbl_CompanyRequest.Any(x => x.CompanyName == companyName);
             }
             catch (Exception ex)

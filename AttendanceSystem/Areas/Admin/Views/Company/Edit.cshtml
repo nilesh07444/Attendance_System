@@ -1,0 +1,193 @@
+﻿@using AttendanceSystem.Helper;
+@model AttendanceSystem.ViewModel.CompanyRequestVM
+@{
+    List<SelectListItem> lstCompanyStatus = new List<SelectListItem>();
+
+    lstCompanyStatus.Add(new SelectListItem { Value = "2", Text = "Accept" });
+    lstCompanyStatus.Add(new SelectListItem { Value = "3", Text = "Reject" });
+}
+
+<div class="page-body">
+
+    <!-- Container-fluid starts-->
+    <!-- Container-fluid Ends-->
+    <!-- Container-fluid starts-->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Company Details</h5>
+                    </div>
+                    <div class="card-body">
+                        @using (Html.BeginForm("Edit", "company", FormMethod.Post, new { @id = "CompanyRequestForm", @class = "needs-validation", enctype = "multipart/form-data", role = "form" }))
+                        {
+                            @Html.HiddenFor(model => model.CompanyRequestId)
+                            @Html.HiddenFor(model => model.CompanyName)
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.CompanyTypeId, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                @Model.CompanyTypeText
+                            </div>
+
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                @Model.CompanyName
+                            </div>
+
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.Prefix, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                @Model.Prefix
+                            </div>
+
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.Firstname, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                @Model.Firstname
+                            </div>
+
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.Lastname, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                @Model.Lastname
+                            </div>
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.DateOfBirth, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                @Model.DateOfBirth
+                            </div>
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.EmailId, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                @Model.EmailId
+                            </div>
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.MobileNo, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                @Model.MobileNo
+                            </div>
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.AlternateMobileNo, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                @Model.AlternateMobileNo
+                            </div>
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                @Model.City
+                            </div>
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                @Model.State
+                            </div>
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.AadharCardNo, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                @Model.AadharCardNo
+                            </div>
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.PanCardNo, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                @Model.PanCardNo
+                            </div>
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.GSTNo, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                @Model.GSTNo
+                            </div>
+
+                            if (!string.IsNullOrEmpty(Model.AadharCardPhoto))
+                            {
+                                <div class="form-group row">
+                                    @Html.LabelFor(model => model.AadharCardPhoto, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                    <p><a target="_blank" href="@ErrorMessage.AdharcardDirectoryPath/@Model.AadharCardPhoto"> Click here to view image </a></p>
+                                </div>
+                            }
+                            if (!string.IsNullOrEmpty(Model.PanCardPhoto))
+                            {
+                                <div class="form-group row">
+                                    @Html.LabelFor(model => model.PanCardPhoto, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                    <p><a target="_blank" href="@ErrorMessage.PancardDirectoryPath/@Model.PanCardPhoto"> Click here to view image </a></p>
+                                </div>
+                            }
+                            if (!string.IsNullOrEmpty(Model.GSTPhoto))
+                            {
+                                <div class="form-group row">
+                                    @Html.LabelFor(model => model.GSTPhoto, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                    <p><a target="_blank" href="@ErrorMessage.GSTDirectoryPath/@Model.GSTPhoto"> Click here to view image </a></p>
+                                </div>
+                            }
+                            if (!string.IsNullOrEmpty(Model.CompanyPhoto))
+                            {
+                                <div class="form-group row">
+                                    @Html.LabelFor(model => model.CompanyPhoto, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                    <p><a target="_blank" href="@ErrorMessage.CompanyDirectoryPath/@Model.CompanyPhoto"> Click here to view image </a></p>
+                                </div>
+                            }
+                            if (!string.IsNullOrEmpty(Model.CancellationChequePhoto))
+                            {
+                                <div class="form-group row">
+                                    @Html.LabelFor(model => model.CancellationChequePhoto, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                    <p><a target="_blank" href="@ErrorMessage.CancellationChequeDirectoryPath/@Model.CancellationChequePhoto"> Click here to view image </a></p>
+                                </div>
+                            }
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.RequestStatus, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                @Html.DropDownListFor(model => model.RequestStatus, new SelectList(lstCompanyStatus, "Value", "Text"), "- Select -", new { @class = "form-control required", @style = "width:20%" })
+
+                                @Html.ValidationMessageFor(model => model.RequestStatus, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group row" id="dvRejectReason">
+                                @Html.LabelFor(model => model.RejectReason, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                @Html.TextBoxFor(model => model.RejectReason, new { @type = "text", @class = "form-control", @placeholder = "Enter Reject Reason", @style = "width:50%" })
+                            </div>
+                            <div class="form-group row">
+                                <lable class="col-xl-3 col-md-4"></lable>
+                                <button type="submit" class="btn btn-primary" style="margin-right:10px;" id="btnSubmit">Submit</button>
+                                <button type="button" class="btn btn-danger" id="btnCancel">Cancel</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Container-fluid Ends-->
+
+</div>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ($("#RequestStatus").val() == "3") {
+            $("#dvRejectReason").show();
+        } else {
+            $("#dvRejectReason").hide();
+            $("#RejectReason").val("");
+        }
+
+        $('#btnCancel').click(function () {
+            window.location.href = "/admin/company/Requests";
+        });
+
+        $("#RequestStatus").change(function () {
+            var requestStatus = $("#RequestStatus").val();
+            if (requestStatus == "3") {
+                $("#dvRejectReason").show();
+            } else {
+                $("#dvRejectReason").hide();
+                $("#RejectReason").val("");
+            }
+
+        });
+
+        $('#btnSubmit').click(function () {
+            if ($("#CompanyRequestForm").valid()) {
+                var requestStatus = $("#RequestStatus").val();
+                if (requestStatus == "") {
+                    alert("Please select request reason.");
+                    return false;
+                }
+                if (requestStatus == "3" && $("#RejectReason").val() == "") {
+                    alert("Please enter reject reason.");
+                    return false;
+                }
+            }
+            else {
+                return false;
+            }
+
+        });
+    })
+</script>
