@@ -1,0 +1,113 @@
+﻿@using AttendanceSystem.Helper;
+@model AttendanceSystem.ViewModel.HolidayVM
+@{
+
+}
+
+<section class="section">
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h4>@(Model.HolidayId == 0 ? "Add" : "Edit") Holiday</h4>
+                </div>
+
+                @using (Html.BeginForm("Add", "Holiday", FormMethod.Post, new { @id = "HolidayFormId", @class = "", enctype = "multipart/form-data", role = "form" }))
+                {
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="form-group col-6">
+                                @Html.HiddenFor(model => model.HolidayId)
+                                @Html.LabelFor(model => model.HolidayDate, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.HolidayDate ,"{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Holiday Date" })
+                                @Html.ValidationMessageFor(model => model.HolidayDate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.HolidayReason, htmlAttributes: new { @class = "" })
+                            @Html.TextAreaFor(model => model.HolidayReason, 10, 5, new { @class = "form-control", @placeholder = "Enter Package Description", maxlength = "250" })
+                            @Html.ValidationMessageFor(model => model.HolidayReason, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="card-footer text-center">
+                        <button class="btn btn-primary mr-1" type="submit">Submit</button>
+                        <a href="/admin/holiday" class="btn btn-secondary">Cancel</a>
+                    </div>
+
+                }
+
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#HolidayDate").change(function () {
+            var holidayDate = $("#HolidayDate").val();
+
+            var StrURL = '/admin/holiday/CheckHolidayDate?date=' + holidayDate;
+            $.ajax({
+                url: StrURL,
+                cache: false,
+                data: {},
+                type: 'POST',
+                success: function (data) {
+                    if (data.Status == true) {
+                        alert("Holiday fro same date already created, Please use another date.")
+                        $("#HolidayDate").val("");
+                    }
+
+                },
+                error: function (req, status, error) {
+                    alert(error);
+                }
+            });
+        });
+
+
+        $('#btnCancel').click(function () {
+            window.location.href = "/admin/holiday";
+        });
+
+        $('#btnSubmit').click(function () {
+            if ($("#HolidayFormId").valid()) {
+                var target = new Date($("#HolidayDate").val());
+                if (target.getDate() < now.getDate()) {
+                    alert("Please valid holiday date.");
+                    return false;
+                }
+
+                var StrURL = '/admin/holiday/CheckHolidayDate?date=' + holidayDate;
+                $.ajax({
+                    url: StrURL,
+                    cache: false,
+                    data: {},
+                    type: 'POST',
+                    success: function (data) {
+                        if (data.Status == true) {
+                            alert("Holiday fro same date already created, Please use another date.")
+                            $("#HolidayDate").val("");
+                        }
+
+                    },
+                    error: function (req, status, error) {
+                        alert(error);
+                    }
+                });
+
+            }
+            else {
+                return false;
+            }
+
+        });
+    })
+</script>

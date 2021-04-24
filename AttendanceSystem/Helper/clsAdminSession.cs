@@ -125,5 +125,16 @@ namespace AttendanceSystem.Helper
             }
         }
 
+        public static long CompanyId
+        {
+            get
+            {
+                return HttpContext.Current.Session["CompanyId"] != null ? Int32.Parse(Convert.ToString(HttpContext.Current.Session["CompanyId"])) : 0;
+            }
+            set
+            {
+                HttpContext.Current.Session["CompanyId"] = value;
+            }
+        }
     }
 }

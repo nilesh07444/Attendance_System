@@ -64,7 +64,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                 else
                                 {
                                     status = 1;
-                                     
+
                                     otp = num.ToString();
                                 }
                             }
@@ -111,7 +111,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 clsAdminSession.FullName = data.FirstName + " " + data.LastName;
                 clsAdminSession.ImagePath = ""; //data.ProfilePicture;
                 clsAdminSession.MobileNumber = data.MobileNo;
-
+                clsAdminSession.CompanyId = data.CompanyId.HasValue ? data.CompanyId.Value : 0;
             }
             catch (Exception ex)
             {

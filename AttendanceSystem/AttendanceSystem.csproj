@@ -150,10 +150,13 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\AccountRenewController.cs" />
     <Compile Include="Areas\Admin\Controllers\CompanyController.cs" />
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Admin\Controllers\DynamicContentController.cs" />
+    <Compile Include="Areas\Admin\Controllers\HolidayController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeImageController.cs" />
+    <Compile Include="Areas\Admin\Controllers\LeaveController.cs" />
     <Compile Include="Areas\Admin\Controllers\LoginController.cs" />
     <Compile Include="Areas\Admin\Controllers\MyProfileController.cs" />
     <Compile Include="Areas\Admin\Controllers\PackageController.cs" />
@@ -187,7 +190,9 @@
     <Compile Include="ViewModel\CompanyRenewPaymentVM.cs" />
     <Compile Include="ViewModel\CompanyRequestVM.cs" />
     <Compile Include="ViewModel\DynamicContentVM.cs" />
+    <Compile Include="ViewModel\HolidayVM.cs" />
     <Compile Include="ViewModel\HomeImageVM.cs" />
+    <Compile Include="ViewModel\LeaveVM.cs" />
     <Compile Include="ViewModel\PackageVM.cs" />
     <Compile Include="ViewModel\WebAPI\JWTAccessTokenVM.cs" />
     <Compile Include="ViewModel\WebAPI\LoginRequestVM.cs" />
@@ -1340,6 +1345,10 @@
     <Content Include="Content\client-theme\assets\scss\_wantTowork.scss" />
     <Content Include="Areas\Client\Views\CompanyRequest\ThankYou.cshtml" />
     <Content Include="Areas\Admin\Views\Company\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Holiday\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Holiday\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\Leave\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\AccountRenew\Index.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />

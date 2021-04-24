@@ -1,0 +1,132 @@
+﻿@using AttendanceSystem.Helper
+@using AttendanceSystem.ViewModel;
+@model AttendanceSystem.ViewModel.LeaveFilterVM
+@{
+    ViewBag.Title = "Leave";
+    int counter = 1;
+
+    List<SelectListItem> lstLeaveStatus = new List<SelectListItem>();
+    lstLeaveStatus.Add(new SelectListItem { Value = "1", Text = "Pending" });
+    lstLeaveStatus.Add(new SelectListItem { Value = "2", Text = "Accept" });
+    lstLeaveStatus.Add(new SelectListItem { Value = "3", Text = "Reject" });
+    lstLeaveStatus.Add(new SelectListItem { Value = "4", Text = "Cancelled" });
+
+}
+
+
+<section class="section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Leave List</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label>Start Date</label>
+                                    @Html.TextBoxFor(model => model.StartDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Start Date" })
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label>End Date</label>
+                                    @Html.TextBoxFor(model => model.EndDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Start Date" })
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label>Leave Status</label>
+                                    @Html.DropDownListFor(model => model.LeaveStatus, new SelectList(lstLeaveStatus, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8 required", style = "" })
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label>Employee Type</label>
+                                    @Html.DropDownListFor(model => model.UserRole, new SelectList(Model.UserRoleList, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8 required", style = "" })
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label style="padding-top:45px"></label>
+                                    <button class="btn btn-primary mr-1" id="btnSearch" type="button">Search</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover" id="tableExport" style="width:100%;">
+                                <thead>
+                                    <tr>
+                                        <td>#</td>
+                                        <th>User Name</th>
+                                        <th>StartDate</th>
+                                        <th>EndDate</th>
+                                        <th>NoOfDays</th>
+                                        <th>LeaveStatus</th>
+                                        <th>RejectReason</th>
+                                        <th>CancelledReason</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null && Model.LeaveList.Count > 0)
+                                    {
+                                        foreach (LeaveVM obj in Model.LeaveList)
+                                        {
+                                            <tr>
+                                                <td>@counter.</td>
+
+                                                <td>@obj.UserName</td>
+                                                <td>@obj.StartDate.ToString("dd MMM yyyy")</td>
+                                                <td>@obj.EndDate.ToString("dd MMM yyyy")</td>
+                                                <td>@obj.NoOfDays</td>
+                                                <td>@obj.LeaveStatus</td>
+                                                <td>@obj.RejectReason</td>
+                                                <td>@obj.CancelledReason</td>
+
+                                            </tr>
+
+                                            counter++;
+                                        }
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnSearch').click(function () {
+            if ($("#StartDate").val() == "" || $("#EndDate").val() == "") {
+                alert("Please fill Start Date and End Date");
+                return false;
+            }
+
+            var startDate = new Date($("#StartDate").val());
+            var endDate = new Date($("#EndDate").val());
+            if (startDate.getDate() > endDate.getDate()) {
+                alert("Please select valid date range.");
+                return false;
+            }
+
+            var leaveStatus = $("#LeaveStatus").val();
+            var userRole = $("#UserRole").val();
+            StartLoading();
+            window.location.href = "/admin/leave/Index?userRole=" + userRole + "&leaveStatus=" + leaveStatus + "&startDate=" + $("#StartDate").val() + "&endDate=" + $("#EndDate").val();
+        });
+
+    })
+
+
+
+</script> 

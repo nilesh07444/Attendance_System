@@ -1,0 +1,67 @@
+﻿@using AttendanceSystem.ViewModel;
+@model List<AttendanceSystem.ViewModel.CompanyRenewPaymentVM>
+@{
+    /**/
+
+    ViewBag.Title = "Account Renew";
+    int counter = 1;
+}
+
+<section class="section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Renew Company List</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover" id="tableExport" style="width:100%;">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>CompanyName </th>
+                                        <th>Amount</th>
+                                        <th>PaymentFor</th>
+                                        <th>PaymentGatewayResponseId</th>
+                                        <th>StartDate</th>
+                                        <th>EndDate</th>
+                                        <th>AccessDays</th>
+                                        <th>PackageId</th>
+                                        <th>PackageName</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @if (Model != null && Model.Count > 0)
+                                    {
+                                        foreach (CompanyRenewPaymentVM obj in Model)
+                                        {
+                                            <tr class="gradeX">
+                                                <td>@counter.</td>
+                                                <td>@obj.CompanyName</td>
+                                                <td>@obj.Amount</td>
+                                                <td>@obj.PaymentFor</td>
+                                                <td>@obj.PaymentGatewayResponseId</td>
+                                                <td>@obj.StartDate</td>
+                                                <td>@obj.EndDate</td>
+                                                <td>@obj.AccessDays</td>
+                                                <td>@obj.PackageId</td>
+                                                <td>@obj.PackageName</td>
+                                            </tr>
+                                            counter++;
+                                        }
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

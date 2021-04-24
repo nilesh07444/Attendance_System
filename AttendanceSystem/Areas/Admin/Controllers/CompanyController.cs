@@ -146,7 +146,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                     if (companyRequestVM.RequestStatus == (int)CompanyRequestStatus.Accept)
                     {
-                        string companyInitials = "UN/" + System.DateTime.Today.ToString("ddMMYYYY") + "/2";
+                        string companyInitials = "UN/" + System.DateTime.Today.ToString("ddMMyyyy") + "/2";
                         tbl_Company objcomp = new tbl_Company();
 
                         objcomp.CompanyTypeId = objCompanyReq.CompanyTypeId;
