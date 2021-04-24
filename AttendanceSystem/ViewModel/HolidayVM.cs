@@ -9,9 +9,14 @@ namespace AttendanceSystem.ViewModel
     public class HolidayVM
     {
         public long HolidayId { get; set; }
-        [Required, Display(Name = "Holiday Date")]
+        [Required, Display(Name = "Start Date")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
-        public DateTime HolidayDate { get; set; }
+        public DateTime StartDate { get; set; }
+
+        [Required, Display(Name = "End Date")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        public DateTime EndDate { get; set; }
+
         [Required, Display(Name = "Holiday Reason")]
         public string HolidayReason { get; set; }
         public string CompanyId { get; set; }

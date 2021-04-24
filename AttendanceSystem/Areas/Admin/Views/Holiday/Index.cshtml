@@ -51,7 +51,8 @@
                                 <thead>
                                     <tr>
                                         <td>#</td>
-                                        <th>Holiday Date</th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
                                         <th>Holiday Reason</th>
                                         <th>Active</th>
                                         <th>Action</th>
@@ -62,26 +63,27 @@
                                     {
                                         foreach (HolidayVM obj in Model.HolidayList)
                                         {
-                                            <tr>
-                                                <td>@counter.</td>
+                                    <tr>
+                                        <td>@counter.</td>
 
-                                                <td>@obj.HolidayDate.ToString("dd MMM yyyy")</td>
-                                                <td>@obj.HolidayReason</td>
-                                                @if (obj.IsActive == true)
-                                                {
-                                                    <td><span class="badge badge-success" style="cursor:pointer;" title="Click to Inactive" onclick="fnChangeStatus('@obj.HolidayId','InActive');">Active</span></td>
-                                                }
-                                                else
-                                                {
-                                                    <td><span class="badge badge-danger" style="cursor:pointer;" title="Click to Active" onclick="fnChangeStatus('@obj.HolidayId','Active');">InActive</span></td>
-                                                }
-                                                <td>
+                                        <td>@obj.StartDate.ToString("dd MMM yyyy")</td>
+                                        <td>@obj.EndDate.ToString("dd MMM yyyy")</td>
+                                        <td>@obj.HolidayReason</td>
+                                        @if (obj.IsActive == true)
+                                        {
+                                            <td><span class="badge badge-success" style="cursor:pointer;" title="Click to Inactive" onclick="fnChangeStatus('@obj.HolidayId','InActive');">Active</span></td>
+                                        }
+                                        else
+                                        {
+                                            <td><span class="badge badge-danger" style="cursor:pointer;" title="Click to Active" onclick="fnChangeStatus('@obj.HolidayId','Active');">InActive</span></td>
+                                        }
+                                        <td>
 
-                                                    <a href="/admin/Holiday/add/@obj.HolidayId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
-                                                    <a href="javascript:void(0);" title="Delete" class="btn btn-icon btn-danger" onclick="fnDeleteHoliday('@obj.HolidayId')"><i class="fas fa-trash-alt"></i></a>
+                                            <a href="/admin/Holiday/add/@obj.HolidayId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
+                                            <a href="javascript:void(0);" title="Delete" class="btn btn-icon btn-danger" onclick="fnDeleteHoliday('@obj.HolidayId')"><i class="fas fa-trash-alt"></i></a>
 
-                                                </td>
-                                            </tr>
+                                        </td>
+                                    </tr>
 
                                             counter++;
                                         }

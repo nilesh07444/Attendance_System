@@ -19,9 +19,16 @@
                         <div class="row">
                             <div class="form-group col-6">
                                 @Html.HiddenFor(model => model.HolidayId)
-                                @Html.LabelFor(model => model.HolidayDate, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.HolidayDate ,"{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Holiday Date" })
-                                @Html.ValidationMessageFor(model => model.HolidayDate, "", new { @class = "text-danger" })
+                                @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.StartDate ,"{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Holiday Start Date" })
+                                @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.EndDate ,"{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Holiday End Date" })
+                                @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="form-group">
@@ -49,43 +56,32 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-
-        $("#HolidayDate").change(function () {
-            var holidayDate = $("#HolidayDate").val();
-
-            var StrURL = '/admin/holiday/CheckHolidayDate?date=' + holidayDate;
-            $.ajax({
-                url: StrURL,
-                cache: false,
-                data: {},
-                type: 'POST',
-                success: function (data) {
-                    if (data.Status == true) {
-                        alert("Holiday fro same date already created, Please use another date.")
-                        $("#HolidayDate").val("");
-                    }
-
-                },
-                error: function (req, status, error) {
-                    alert(error);
-                }
-            });
-        });
-
-
+ 
         $('#btnCancel').click(function () {
             window.location.href = "/admin/holiday";
         });
 
         $('#btnSubmit').click(function () {
             if ($("#HolidayFormId").valid()) {
-                var target = new Date($("#HolidayDate").val());
-                if (target.getDate() < now.getDate()) {
-                    alert("Please valid holiday date.");
+
+                if ($("#StartDate").val() == "") {
+                    alert("Please select start date.")
                     return false;
                 }
 
-                var StrURL = '/admin/holiday/CheckHolidayDate?date=' + holidayDate;
+                if ($("#EndDate").val() == "") {
+                    alert("Please select end date.")
+                    return false;
+                }
+
+                var startDate = new Date($("#StartDate").val());
+                var endDate = new Date($("#EndDate").val());
+                if (startDate.getDate() > endDate.getDate()) {
+                    alert("Please select valid date range.");
+                    return false;
+                }
+
+                var StrURL = '/admin/holiday/CheckHolidayDate?startDate=' + $("#StartDate").val() + '&endDate=' + $("#StartDate").val();
                 $.ajax({
                     url: StrURL,
                     cache: false,

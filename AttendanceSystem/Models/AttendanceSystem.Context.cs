@@ -30,7 +30,6 @@ namespace AttendanceSystem.Models
         public virtual DbSet<mst_CompanyType> mst_CompanyType { get; set; }
         public virtual DbSet<tbl_Attendance> tbl_Attendance { get; set; }
         public virtual DbSet<tbl_EmployeePayment> tbl_EmployeePayment { get; set; }
-        public virtual DbSet<tbl_Holiday> tbl_Holiday { get; set; }
         public virtual DbSet<tbl_LoginHistory> tbl_LoginHistory { get; set; }
         public virtual DbSet<tbl_Site> tbl_Site { get; set; }
         public virtual DbSet<tbl_DynamicContent> tbl_DynamicContent { get; set; }
@@ -41,5 +40,7 @@ namespace AttendanceSystem.Models
         public virtual DbSet<tbl_CompanyRenewPayment> tbl_CompanyRenewPayment { get; set; }
         public virtual DbSet<tbl_CompanyRequest> tbl_CompanyRequest { get; set; }
         public virtual DbSet<tbl_Company> tbl_Company { get; set; }
+        public virtual DbSet<tbl_Employee> tbl_Employee { get; set; }
+        public virtual DbSet<tbl_Holiday> tbl_Holiday { get; set; }
     }
 }

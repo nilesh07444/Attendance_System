@@ -15,7 +15,8 @@ namespace AttendanceSystem.Models
     public partial class tbl_Holiday
     {
         public long HolidayId { get; set; }
-        public System.DateTime HolidayDate { get; set; }
+        public System.DateTime StartDate { get; set; }
+        public System.DateTime EndDate { get; set; }
         public string HolidayReason { get; set; }
         public string CompanyId { get; set; }
         public bool IsActive { get; set; }

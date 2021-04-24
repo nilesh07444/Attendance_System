@@ -48,12 +48,18 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                              select new HolidayVM
                              {
                                  HolidayId = hd.HolidayId,
-                                 HolidayDate = hd.HolidayDate,
+                                 StartDate = hd.StartDate,
+                                 EndDate = hd.EndDate,
                                  HolidayReason = hd.HolidayReason,
                                  CompanyId = hd.CompanyId,
                                  IsActive = hd.IsActive,
                                  IsDeleted = hd.IsDeleted
                              }).FirstOrDefault();
+            }
+            else
+            {
+                HolidayVM.StartDate = System.DateTime.Today;
+                HolidayVM.EndDate = System.DateTime.Today;
             }
 
             return View(HolidayVM);
@@ -72,7 +78,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     if (HolidayVM.HolidayId > 0)
                     {
                         tbl_Holiday objHoliday = _db.tbl_Holiday.Where(x => x.HolidayId == HolidayVM.HolidayId).FirstOrDefault();
-                        objHoliday.HolidayDate = HolidayVM.HolidayDate;
+                        objHoliday.StartDate = HolidayVM.StartDate;
+                        objHoliday.EndDate = HolidayVM.EndDate;
                         objHoliday.HolidayReason = HolidayVM.HolidayReason;
                         objHoliday.ModifiedBy = LoggedInUserId;
                         objHoliday.ModifiedDate = DateTime.UtcNow;
@@ -80,7 +87,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     else
                     {
                         tbl_Holiday objHoliday = new tbl_Holiday();
-                        objHoliday.HolidayDate = HolidayVM.HolidayDate;
+                        objHoliday.StartDate = HolidayVM.StartDate;
+                        objHoliday.EndDate = HolidayVM.EndDate;
                         objHoliday.HolidayReason = HolidayVM.HolidayReason;
                         objHoliday.IsActive = true;
                         objHoliday.CompanyId = companyId.ToString();
@@ -174,13 +182,13 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return ReturnMessage;
         }
 
-        public JsonResult CheckHolidayDate(DateTime date)
+        public JsonResult CheckHolidayDate(DateTime startDate, DateTime endDate)
         {
             bool isExist = false;
             try
             {
                 long companyId = clsAdminSession.CompanyId;
-                isExist = _db.tbl_Holiday.Any(x => x.CompanyId == companyId.ToString() && !x.IsDeleted && x.HolidayDate == date);
+                isExist = _db.tbl_Holiday.Any(x => x.CompanyId == companyId.ToString() && !x.IsDeleted && x.StartDate >= startDate && x.EndDate <= startDate);
             }
             catch (Exception ex)
             {
@@ -210,17 +218,18 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             long companyId = clsAdminSession.CompanyId;
             List<HolidayVM> holidayList = (from hd in _db.tbl_Holiday
                                            where !hd.IsDeleted && hd.CompanyId == companyId.ToString()
-                                           && hd.HolidayDate >= holidayFilterVM.StartDate
-                                           && hd.HolidayDate <= holidayFilterVM.EndDate
+                                           && hd.StartDate >= holidayFilterVM.StartDate
+                                           && hd.StartDate <= holidayFilterVM.EndDate
                                            select new HolidayVM
                                            {
                                                HolidayId = hd.HolidayId,
-                                               HolidayDate = hd.HolidayDate,
+                                               StartDate = hd.StartDate,
+                                               EndDate= hd.EndDate,
                                                HolidayReason = hd.HolidayReason,
                                                CompanyId = hd.CompanyId,
                                                IsActive = hd.IsActive,
                                                IsDeleted = hd.IsDeleted
-                                           }).OrderByDescending(x => x.HolidayDate).ToList();
+                                           }).OrderByDescending(x => x.StartDate).ToList();
 
             return holidayList;
         }

@@ -187,6 +187,9 @@
     <Compile Include="Models\tbl_CompanyRequest.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\tbl_Employee.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\CompanyRenewPaymentVM.cs" />
     <Compile Include="ViewModel\CompanyRequestVM.cs" />
     <Compile Include="ViewModel\DynamicContentVM.cs" />
