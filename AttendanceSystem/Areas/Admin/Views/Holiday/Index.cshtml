@@ -69,6 +69,7 @@
                                         <td>@obj.StartDate.ToString("dd MMM yyyy")</td>
                                         <td>@obj.EndDate.ToString("dd MMM yyyy")</td>
                                         <td>@obj.HolidayReason</td>
+                                        <td>@obj.Remark</td>
                                         @if (obj.IsActive == true)
                                         {
                                             <td><span class="badge badge-success" style="cursor:pointer;" title="Click to Inactive" onclick="fnChangeStatus('@obj.HolidayId','InActive');">Active</span></td>

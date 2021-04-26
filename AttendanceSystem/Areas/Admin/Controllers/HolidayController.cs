@@ -51,6 +51,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                  StartDate = hd.StartDate,
                                  EndDate = hd.EndDate,
                                  HolidayReason = hd.HolidayReason,
+                                 Remark = hd.Remark,
                                  CompanyId = hd.CompanyId,
                                  IsActive = hd.IsActive,
                                  IsDeleted = hd.IsDeleted
@@ -73,6 +74,12 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
                 if (ModelState.IsValid)
                 {
+                    bool isHolidayExist = CheckHolidayDate(HolidayVM.StartDate, HolidayVM.EndDate);
+                    if (isHolidayExist)
+                    {
+                        ModelState.AddModelError("", ErrorMessage.HolidayOnSameDateAlreadyExist);
+                        return View(HolidayVM);
+                    }
                     long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
                     long companyId = clsAdminSession.CompanyId;
                     if (HolidayVM.HolidayId > 0)
@@ -80,6 +87,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         tbl_Holiday objHoliday = _db.tbl_Holiday.Where(x => x.HolidayId == HolidayVM.HolidayId).FirstOrDefault();
                         objHoliday.StartDate = HolidayVM.StartDate;
                         objHoliday.EndDate = HolidayVM.EndDate;
+                        objHoliday.Remark = HolidayVM.Remark;
                         objHoliday.HolidayReason = HolidayVM.HolidayReason;
                         objHoliday.ModifiedBy = LoggedInUserId;
                         objHoliday.ModifiedDate = DateTime.UtcNow;
@@ -90,6 +98,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objHoliday.StartDate = HolidayVM.StartDate;
                         objHoliday.EndDate = HolidayVM.EndDate;
                         objHoliday.HolidayReason = HolidayVM.HolidayReason;
+                        objHoliday.Remark = HolidayVM.Remark;
                         objHoliday.IsActive = true;
                         objHoliday.CompanyId = companyId.ToString();
                         objHoliday.CreatedBy = LoggedInUserId;
@@ -99,9 +108,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         _db.tbl_Holiday.Add(objHoliday);
                     }
                     _db.SaveChanges();
-
-                    return RedirectToAction("Index");
-
+                }
+                else
+                {
+                    return View(HolidayVM);
                 }
             }
             catch (Exception ex)
@@ -110,7 +120,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 throw ex;
             }
 
-            return View(HolidayVM);
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
@@ -182,7 +192,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return ReturnMessage;
         }
 
-        public JsonResult CheckHolidayDate(DateTime startDate, DateTime endDate)
+        private bool CheckHolidayDate(DateTime startDate, DateTime endDate)
         {
             bool isExist = false;
             try
@@ -195,7 +205,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 isExist = false;
             }
 
-            return Json(new { Status = isExist }, JsonRequestBehavior.AllowGet);
+            return isExist;
         }
 
         //public ActionResult SearchHoliday(DateTime startDate, DateTime endDate)
@@ -224,8 +234,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                            {
                                                HolidayId = hd.HolidayId,
                                                StartDate = hd.StartDate,
-                                               EndDate= hd.EndDate,
+                                               EndDate = hd.EndDate,
                                                HolidayReason = hd.HolidayReason,
+                                               Remark = hd.Remark,
                                                CompanyId = hd.CompanyId,
                                                IsActive = hd.IsActive,
                                                IsDeleted = hd.IsDeleted

@@ -114,7 +114,7 @@
 
             var startDate = new Date($("#StartDate").val());
             var endDate = new Date($("#EndDate").val());
-            if (startDate.getDate() > endDate.getDate()) {
+            if (startDate > endDate) {
                 alert("Please select valid date range.");
                 return false;
             }

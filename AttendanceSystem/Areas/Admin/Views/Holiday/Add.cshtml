@@ -15,31 +15,36 @@
 
                 @using (Html.BeginForm("Add", "Holiday", FormMethod.Post, new { @id = "HolidayFormId", @class = "", enctype = "multipart/form-data", role = "form" }))
                 {
+                    @Html.ValidationSummary()
                     <div class="card-body">
                         <div class="row">
+
                             <div class="form-group col-6">
                                 @Html.HiddenFor(model => model.HolidayId)
                                 @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.StartDate ,"{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Holiday Start Date" })
+                                @Html.TextBoxFor(model => model.StartDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Holiday Start Date" })
                                 @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.EndDate ,"{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Holiday End Date" })
+                                @Html.TextBoxFor(model => model.EndDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Holiday End Date" })
                                 @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
                             </div>
                         </div>
+
                         <div class="form-group">
                             @Html.LabelFor(model => model.HolidayReason, htmlAttributes: new { @class = "" })
                             @Html.TextAreaFor(model => model.HolidayReason, 10, 5, new { @class = "form-control", @placeholder = "Enter Package Description", maxlength = "250" })
                             @Html.ValidationMessageFor(model => model.HolidayReason, "", new { @class = "text-danger" })
                         </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Remark, htmlAttributes: new { @class = "" })
+                            @Html.TextAreaFor(model => model.Remark, 10, 5, new { @class = "form-control", @placeholder = "Enter Package Description", maxlength = "250" })
+                        </div>
                     </div>
 
                     <div class="card-footer text-center">
-                        <button class="btn btn-primary mr-1" type="submit">Submit</button>
+                        <button class="btn btn-primary mr-1" type="submit" id="btnSubmit">Submit</button>
                         <a href="/admin/holiday" class="btn btn-secondary">Cancel</a>
                     </div>
 
@@ -76,34 +81,11 @@
 
                 var startDate = new Date($("#StartDate").val());
                 var endDate = new Date($("#EndDate").val());
-                if (startDate.getDate() > endDate.getDate()) {
+                if (startDate > endDate) {
                     alert("Please select valid date range.");
                     return false;
                 }
-
-                var StrURL = '/admin/holiday/CheckHolidayDate?startDate=' + $("#StartDate").val() + '&endDate=' + $("#StartDate").val();
-                $.ajax({
-                    url: StrURL,
-                    cache: false,
-                    data: {},
-                    type: 'POST',
-                    success: function (data) {
-                        if (data.Status == true) {
-                            alert("Holiday fro same date already created, Please use another date.")
-                            $("#HolidayDate").val("");
-                        }
-
-                    },
-                    error: function (req, status, error) {
-                        alert(error);
-                    }
-                });
-
             }
-            else {
-                return false;
-            }
-
         });
     })
 </script>

@@ -65,7 +65,21 @@ namespace AttendanceSystem.Helper
     {
         FAQ = 1,
         PrivacyPolicy = 2,
-        TermsCondition = 3 
+        TermsCondition = 3
+    }
+
+    public enum EMploymentCategory
+    {
+        DailyBased = 1,
+        HourlyBased = 2,
+        MonthlyBased = 3,
+        UnitBased = 4
+    }
+
+    public enum UserStatus
+    {
+        Active = 1,
+        InActive = 0
     }
 
 }

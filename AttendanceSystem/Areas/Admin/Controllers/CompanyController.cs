@@ -179,7 +179,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objAdminUser.FirstName = objCompanyReq.Firstname;
                         objAdminUser.LastName = objCompanyReq.Lastname;
                         objAdminUser.UserName = companyInitials;
-                        objAdminUser.Password = CommonMethod.Encrypt(RandomString(6, true), psSult);
+                        objAdminUser.Password = CommonMethod.Encrypt(CommonMethod.RandomString(6, true), psSult);
                         objAdminUser.EmailId = objCompanyReq.EmailId;
                         objAdminUser.MobileNo = objCompanyReq.MobileNo;
                         objAdminUser.AlternateMobileNo = objCompanyReq.AlternateMobileNo;
@@ -241,19 +241,5 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return View(companyRenewPaymentVM);
         }
 
-        private string RandomString(int size, bool lowerCase)
-        {
-            StringBuilder builder = new StringBuilder();
-            Random random = new Random();
-            char ch;
-            for (int i = 0; i < size; i++)
-            {
-                ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26 * random.NextDouble() + 65)));
-                builder.Append(ch);
-            }
-            if (lowerCase)
-                return builder.ToString().ToLower();
-            return builder.ToString();
-        }
     }
 }

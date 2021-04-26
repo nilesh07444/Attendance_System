@@ -24,6 +24,7 @@
         public static string GSTDirectoryPath = "/Images/GST/";
         public static string CompanyDirectoryPath = "/Images/CompanyPhoto/";
         public static string CancellationChequeDirectoryPath = "/Images/CancellationCheque/";
+        public static string EmployeeDirectoryPath = "/Images/Employee/";
 
         public static string TokenExpired = "Token expired";
         public static string InvalidToken = "Invalid token";
@@ -34,5 +35,6 @@
         public static string RunningStatusApprove = "Approve";
         public static string RunningStatusReject = "Reject";
         public static string RunningStatusPending = "Pending";
+        public static string HolidayOnSameDateAlreadyExist  = "Holiday on same date already exist, Please use another date.";
     }
 }

@@ -18,6 +18,7 @@ namespace AttendanceSystem.Models
         public System.DateTime StartDate { get; set; }
         public System.DateTime EndDate { get; set; }
         public string HolidayReason { get; set; }
+        public string Remark { get; set; }
         public string CompanyId { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }

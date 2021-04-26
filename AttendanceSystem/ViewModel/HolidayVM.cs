@@ -19,6 +19,8 @@ namespace AttendanceSystem.ViewModel
 
         [Required, Display(Name = "Holiday Reason")]
         public string HolidayReason { get; set; }
+        [Display(Name = "Remark")]
+        public string Remark { get; set; }
         public string CompanyId { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
@@ -29,7 +31,7 @@ namespace AttendanceSystem.ViewModel
         public HolidayFilterVM()
         {
             StartDate = new DateTime(DateTime.Now.Year, 1, 1);
-            EndDate = new DateTime(DateTime.Now.Year, 1, 31);
+            EndDate = new DateTime(DateTime.Now.Year, 12, 31);
         }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }

@@ -147,10 +147,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
             return View(packageVM);
         }
-        public ActionResult Edit(int Id)
-        {
-            return View();
-        }
 
         public ActionResult View(int id)
         {

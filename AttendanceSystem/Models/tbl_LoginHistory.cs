@@ -15,7 +15,7 @@ namespace AttendanceSystem.Models
     public partial class tbl_LoginHistory
     {
         public long LoginHistoryId { get; set; }
-        public long UserId { get; set; }
+        public long EmployeeId { get; set; }
         public System.DateTime LoginDate { get; set; }
         public string LocationFrom { get; set; }
         public Nullable<long> SiteId { get; set; }

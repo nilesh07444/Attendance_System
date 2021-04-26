@@ -1,0 +1,297 @@
+﻿@using AttendanceSystem.Helper;
+@model AttendanceSystem.ViewModel.EmployeeVM
+@{
+    ViewBag.Title = "Employee";
+    List<SelectListItem> lstPrefix = new List<SelectListItem>();
+
+    lstPrefix.Add(new SelectListItem { Value = "Mr", Text = "Mr" });
+    lstPrefix.Add(new SelectListItem { Value = "Mrs", Text = "Mrs" });
+    lstPrefix.Add(new SelectListItem { Value = "Miss", Text = "Miss" });
+
+
+    List<SelectListItem> lstBloodGroup = new List<SelectListItem>();
+    lstBloodGroup.Add(new SelectListItem { Value = "(A+)", Text = "(A+)" });
+    lstBloodGroup.Add(new SelectListItem { Value = "(A-)", Text = "(A-)" });
+    lstBloodGroup.Add(new SelectListItem { Value = "(B+)", Text = "(B+)" });
+    lstBloodGroup.Add(new SelectListItem { Value = "(B-)", Text = "(B-)" });
+    lstBloodGroup.Add(new SelectListItem { Value = "(O+)", Text = "(O+)" });
+    lstBloodGroup.Add(new SelectListItem { Value = "(O-)", Text = "(O-)" });
+    lstBloodGroup.Add(new SelectListItem { Value = "(AB+)", Text = "(AB+)" });
+    lstBloodGroup.Add(new SelectListItem { Value = "(AB-)", Text = "(AB-)" });
+
+    List<SelectListItem> lstEmploymentCategory = new List<SelectListItem>();
+    lstEmploymentCategory.Add(new SelectListItem { Value = "1", Text = "Daily Based" });
+    lstEmploymentCategory.Add(new SelectListItem { Value = "2", Text = "Hourly Based" });
+    lstEmploymentCategory.Add(new SelectListItem { Value = "3", Text = "Monthly Based" });
+    lstEmploymentCategory.Add(new SelectListItem { Value = "4", Text = "Unit Based" });
+
+
+}
+
+<section class="section">
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h4>@(Model.EmployeeId == 0 ? "Add" : "Edit") Employee</h4>
+                </div>
+
+                @using (Html.BeginForm("Add", "Employee", FormMethod.Post, new { @id = "EmployeeFormId", @class = "", enctype = "multipart/form-data", role = "form" }))
+                {
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.AdminRoleId, htmlAttributes: new { @class = "" })
+                                @Html.DropDownListFor(model => model.AdminRoleId, new SelectList(Model.UserRoleList, "Value", "Text"), "- Select -", new { @class = "form-control required" })
+                                @Html.ValidationMessageFor(model => model.AdminRoleId, "", new { @class = "text-danger" })
+                                @Html.HiddenFor(model => model.EmployeeId)
+                            </div>
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.Prefix, htmlAttributes: new { @class = "" })
+                                @Html.DropDownListFor(model => model.Prefix, new SelectList(lstPrefix, "Value", "Text"), "- Select -", new { @class = "form-control", style = "width: 100%" })
+                                @Html.ValidationMessageFor(model => model.Prefix, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.FirstName, new { @type = "text", @class = "form-control required", @placeholder = "Enter First Name" })
+                                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.LastName, new { @type = "text", @class = "form-control required", @placeholder = "Enter Last Name" })
+                                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.Email, new { @type = "email", @class = "form-control required", @placeholder = "Enter Email" })
+                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.MobileNo, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.MobileNo, new { @type = "text", @class = "form-control required", @placeholder = "Enter Mobile no", @maxlength = "10" })
+                                @Html.ValidationMessageFor(model => model.MobileNo, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.AlternateMobile, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.AlternateMobile, new { @type = "text", @class = "form-control", @placeholder = "Enter Alternate Mobile no", @maxlength = "10" })
+                                @Html.ValidationMessageFor(model => model.AlternateMobile, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.Designation, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.Designation, new { @type = "text", @class = "form-control", @placeholder = "Enter Designation" })
+                                @Html.ValidationMessageFor(model => model.Designation, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "" })
+                                @Html.TextAreaFor(model => model.Address, new { @type = "text", @class = "form-control required", @placeholder = "Enter Address", @maxlength = "250" })
+                                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.City, new { @type = "text", @class = "form-control required", @placeholder = "Enter City" })
+                                @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.Dob, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.Dob, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Enter Date of Birth" })
+                                @Html.ValidationMessageFor(model => model.Dob, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.DateOfJoin, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.DateOfJoin, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Enter Date of Joining" })
+                                @Html.ValidationMessageFor(model => model.DateOfJoin, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.BloodGroup, htmlAttributes: new { @class = "" })
+                                @Html.DropDownListFor(model => model.BloodGroup, new SelectList(lstBloodGroup, "Value", "Text"), "- Select -", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.BloodGroup, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.WorkingTime, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.WorkingTime, new { @type = "text", @class = "form-control", @placeholder = "Enter WorkingTime" })
+                                @Html.ValidationMessageFor(model => model.WorkingTime, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.AdharCardNo, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.AdharCardNo, new { @type = "text", @class = "form-control", @placeholder = "Enter Adhar Card No", @maxlength = "12" })
+                                @Html.ValidationMessageFor(model => model.AdharCardNo, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.DateOfIdCardExpiry, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.DateOfIdCardExpiry, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control", @placeholder = "Enter Date Of Id Card Expiry" })
+                                @Html.ValidationMessageFor(model => model.DateOfIdCardExpiry, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.Remarks, new { @type = "text", @class = "form-control", @placeholder = "Enter Remark", @maxlength = "12" })
+                                @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.EmploymentCategory, htmlAttributes: new { @class = "" })
+                                @Html.DropDownListFor(model => model.EmploymentCategory, new SelectList(lstEmploymentCategory, "Value", "Text"), "- Select -", new { @class = "form-control required" })
+                                @Html.ValidationMessageFor(model => model.EmploymentCategory, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.PerCategoryPrice, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.PerCategoryPrice, new { @type = "text", @class = "form-control required", @placeholder = "Enter Per Category Price", @maxlength = "5", @min = "1" })
+                                @Html.ValidationMessageFor(model => model.PerCategoryPrice, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.MonthlySalaryPrice, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.MonthlySalaryPrice, new { @type = "text", @class = "form-control required", @placeholder = "Enter Monthly salary Price", @maxlength = "5", @min = "1" })
+                                @Html.ValidationMessageFor(model => model.MonthlySalaryPrice, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.ExtraPerHourPrice, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.ExtraPerHourPrice, new { @type = "text", @class = "form-control required", @placeholder = "Enter Extra Per Hour Price", @maxlength = "5", @min = "1" })
+                                @Html.ValidationMessageFor(model => model.ExtraPerHourPrice, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.ProfileImageFile, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.ProfileImageFile, new { type = "file", @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.ProfileImageFile, "", new { @class = "text-danger" })
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-6">
+
+                                @Html.LabelFor(model => model.IsLeaveForward, htmlAttributes: new { @class = "" })
+                                @Html.CheckBoxFor(model => model.IsLeaveForward, new { @type = "checkbox" })
+
+                            </div>
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.IsFingerprintEnabled, htmlAttributes: new { @class = "" })
+                                @Html.CheckBoxFor(model => model.IsFingerprintEnabled)
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="card-footer text-center">
+                        <button class="btn btn-primary mr-1" type="submit" id="btnSubmit">Submit</button>
+                        <a href="/admin/employee" class="btn btn-secondary">Cancel</a>
+                    </div>
+
+                    @Html.HiddenFor(model => model.ProfilePicture)
+                    @Html.HiddenFor(model => model.OTP)
+                }
+
+            </div>
+        </div>
+    </div>
+
+</section>
+<div class="modal fade" id="OtpModal" tabindex="-1" role="dialog" aria-labelledby="formModal"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="formModal">Mobile Verification</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="">
+                    <div class="form-group">
+                        <label>OTP</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                            </div>
+                            <input type="text" class="form-control" placeholder="OTP" name="OTP" id="TextOTP">
+                        </div>
+                    </div>
+                    <button type="button" id="BtnOtpSubmit" class="btn btn-primary m-t-15 waves-effect">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnCancel').click(function () {
+            window.location.href = "/admin/employee";
+        });
+
+        $('#btnSubmit').click(function () {
+            if ($("#EmployeeFormId").valid()) {
+                if ($("#ProfileImageFile").val() == "" && $("#ProfilePicture").val() == "") {
+                    alert("Please select Image.");
+                    return false;
+                }
+
+                var mobileNo = $("#MobileNo").val();
+                $.blockUI({ message: '<h4> Please Wait...</h4>' });
+
+                var StrURL = '/admin/employee/VerifyMobileNo?mobileNo=' + mobileNo;
+                $.ajax({
+                    url: StrURL,
+                    cache: false,
+                    data: {},
+                    type: 'POST',
+                    success: function (data) {
+                        $.unblockUI();
+                        if (data.Status == 1) {
+                            $('#OtpModal').modal('show');
+                            $("#OTP").val(data.Otp);
+                            $("#TextOTP").val(data.Otp);
+                        }
+                        else {
+                            alert(data.ErrorMessage);
+                        }
+
+                    },
+                    error: function (req, status, error) {
+                        $.unblockUI();
+                        alert(error);
+                    }
+                });
+            }
+            else {
+                return false;
+            }
+            return false;
+        });
+        $('#BtnOtpSubmit').click(function () {
+            var OTP = $("#OTP").val();
+            var TextOTP = $("#TextOTP").val();
+
+            if (TextOTP == OTP) {
+                $("#EmployeeFormId").submit();
+            } else {
+                alert("Wrong OTP you have entered.")
+                return false;
+            }
+        });
+
+    })
+</script>

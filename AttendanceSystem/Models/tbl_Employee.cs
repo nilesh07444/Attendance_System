@@ -17,6 +17,7 @@ namespace AttendanceSystem.Models
         public long EmployeeId { get; set; }
         public long CompanyId { get; set; }
         public int AdminRoleId { get; set; }
+        public string Prefix { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
@@ -35,6 +36,11 @@ namespace AttendanceSystem.Models
         public Nullable<System.DateTime> DateOfIdCardExpiry { get; set; }
         public string Remarks { get; set; }
         public string ProfilePicture { get; set; }
+        public int EmploymentCategory { get; set; }
+        public decimal PerCategoryPrice { get; set; }
+        public Nullable<decimal> MonthlySalaryPrice { get; set; }
+        public Nullable<decimal> ExtraPerHourPrice { get; set; }
+        public bool IsLeaveForward { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
         public bool IsFingerprintEnabled { get; set; }
