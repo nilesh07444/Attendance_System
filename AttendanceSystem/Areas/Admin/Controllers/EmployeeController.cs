@@ -251,6 +251,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     }
                     _db.SaveChanges();
                 }
+                else
+                {
+                    employeeVM.UserRoleList = GetUserRoleList();
+                    return View(employeeVM);
+                }
             }
             catch (Exception ex)
             {

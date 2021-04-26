@@ -121,7 +121,7 @@
                             </div>
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.WorkingTime, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.WorkingTime, new { @type = "text", @class = "form-control", @placeholder = "Enter WorkingTime" })
+                                @Html.TextBoxFor(model => model.WorkingTime, new { @type = "text", @class = "form-control", @placeholder = "Enter Working Time" })
                                 @Html.ValidationMessageFor(model => model.WorkingTime, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -138,26 +138,25 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.Remarks, new { @type = "text", @class = "form-control", @placeholder = "Enter Remark", @maxlength = "12" })
-                                @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
-                            </div>
+
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.EmploymentCategory, htmlAttributes: new { @class = "" })
                                 @Html.DropDownListFor(model => model.EmploymentCategory, new SelectList(lstEmploymentCategory, "Value", "Text"), "- Select -", new { @class = "form-control required" })
                                 @Html.ValidationMessageFor(model => model.EmploymentCategory, "", new { @class = "text-danger" })
                             </div>
-                        </div>
-                        <div class="row">
+
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.PerCategoryPrice, htmlAttributes: new { @class = "" })
                                 @Html.TextBoxFor(model => model.PerCategoryPrice, new { @type = "text", @class = "form-control required", @placeholder = "Enter Per Category Price", @maxlength = "5", @min = "1" })
                                 @Html.ValidationMessageFor(model => model.PerCategoryPrice, "", new { @class = "text-danger" })
                             </div>
-                            <div class="form-group col-6">
+
+                        </div>
+                        <div class="row">
+
+                            <div class="form-group col-6" id="dvMonthlySal">
                                 @Html.LabelFor(model => model.MonthlySalaryPrice, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.MonthlySalaryPrice, new { @type = "text", @class = "form-control required", @placeholder = "Enter Monthly salary Price", @maxlength = "5", @min = "1" })
+                                @Html.TextBoxFor(model => model.MonthlySalaryPrice, new { @type = "text", @class = "form-control", @placeholder = "Enter Monthly salary Price", @maxlength = "5", @min = "1" })
                                 @Html.ValidationMessageFor(model => model.MonthlySalaryPrice, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -186,6 +185,13 @@
                                 @Html.CheckBoxFor(model => model.IsFingerprintEnabled)
                             </div>
 
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-12">
+                                @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "" })
+                                @Html.TextAreaFor(model => model.Remarks, new { @type = "text", @class = "form-control", @placeholder = "Enter Remark", @maxlength = "12" })
+                                @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
+                            </div>
                         </div>
 
                     </div>
@@ -238,8 +244,21 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+        $("#dvMonthlySal").hide();
+
         $('#btnCancel').click(function () {
             window.location.href = "/admin/employee";
+        });
+
+        $('#EmploymentCategory').change(function () {
+            var EmploymentCategory = $('#EmploymentCategory').val();
+            if (EmploymentCategory == "3") {
+                $("#dvMonthlySal").show();
+                $("#MonthlySalaryPrice").attr("required");
+            } else {
+                $("#dvMonthlySal").hide();
+                $("#dvMonthlySal").removeAttr("required");
+            }
         });
 
         $('#btnSubmit').click(function () {
@@ -249,6 +268,12 @@
                     return false;
                 }
 
+                var now = new Date;
+                var target = new Date($("#Dob").val());
+                if (target.getDate() >= now.getDate()) {
+                    alert("Please valid date of birth.");
+                    return false;
+                }
                 var mobileNo = $("#MobileNo").val();
                 $.blockUI({ message: '<h4> Please Wait...</h4>' });
 

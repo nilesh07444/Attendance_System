@@ -54,7 +54,7 @@ namespace AttendanceSystem.ViewModel
         public int EmploymentCategory { get; set; }
         [Required, Display(Name = "Per Category Price")]
         public decimal PerCategoryPrice { get; set; }
-        [Required, Display(Name = "Monthly Salary")]
+        [Display(Name = "Monthly Salary")]
         public decimal? MonthlySalaryPrice { get; set; }
         [Required, Display(Name = "Extra Per Hour Price")]
         public decimal? ExtraPerHourPrice { get; set; }
