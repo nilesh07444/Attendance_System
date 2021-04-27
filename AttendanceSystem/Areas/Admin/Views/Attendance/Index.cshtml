@@ -1,0 +1,137 @@
+﻿@using AttendanceSystem.Helper
+@using AttendanceSystem.ViewModel;
+@model AttendanceSystem.ViewModel.AttendanceFilterVM
+@{
+    ViewBag.Title = "Attendance";
+    int counter = 1;
+
+    List<SelectListItem> lstAttendanceStatus = new List<SelectListItem>();
+    lstAttendanceStatus.Add(new SelectListItem { Value = "1", Text = "Pending" });
+    lstAttendanceStatus.Add(new SelectListItem { Value = "2", Text = "Accept" });
+    lstAttendanceStatus.Add(new SelectListItem { Value = "3", Text = "Reject" });
+
+}
+
+
+<section class="section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Leave List</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label>Start Date</label>
+                                    @Html.TextBoxFor(model => model.StartDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Start Date" })
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label>End Date</label>
+                                    @Html.TextBoxFor(model => model.EndDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Start Date" })
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label>Attendance Status</label>
+                                    @Html.DropDownListFor(model => model.AttendanceStatus, new SelectList(lstAttendanceStatus, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8 required", style = "" })
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label>Employee</label>
+                                    @Html.DropDownListFor(model => model.UserId, new SelectList(Model.EmployeeList, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8 required", style = "" })
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label style="padding-top:45px"></label>
+                                    <button class="btn btn-primary mr-1" id="btnSearch" type="button">Search</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover" id="tableExport" style="width:100%;">
+                                <thead>
+                                    <tr>
+                                        <td>#</td>
+                                        <th>User Name</th>
+                                        <th>Attendance Date</th>
+                                        <th>Day Type</th>
+                                        <th>Extra Hours</th>
+                                        <th>Today Work Detail</th>
+                                        <th>Tomorrow Work Detail</th>
+                                        <th>Remarks</th>
+                                        <th>Location From</th>
+                                        <th>Status</th>
+                                        <th>Reject Reason</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null && Model.AttendanceList.Count > 0)
+                                    {
+                                        foreach (AttendanceVM obj in Model.AttendanceList)
+                                        {
+                                            <tr>
+                                                <td>@counter.</td>
+
+                                                <td>@obj.Name</td>
+                                                <td>@obj.AttendanceDate.ToString("dd MMM yyyy")</td>
+                                                <td>@obj.DayType</td>
+                                                <td>@obj.ExtraHours</td>
+                                                <td>@obj.TodayWorkDetail</td>
+                                                <td>@obj.TomorrowWorkDetail</td>
+                                                <td>@obj.Remarks</td>
+                                                <td>@obj.LocationFrom</td>
+                                                <td>@obj.Status</td>
+                                                <td>@obj.RejectReason</td>
+
+                                            </tr>
+
+                                            counter++;
+                                        }
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnSearch').click(function () {
+            if ($("#StartDate").val() == "" || $("#EndDate").val() == "") {
+                alert("Please fill Start Date and End Date");
+                return false;
+            }
+
+            var startDate = new Date($("#StartDate").val());
+            var endDate = new Date($("#EndDate").val());
+            if (startDate > endDate) {
+                alert("Please select valid date range.");
+                return false;
+            }
+
+            var attendanceStatus = $("#AttendanceStatus").val();
+            var userId = $("#UserId").val();
+            StartLoading();
+            window.location.href = "/admin/attendance/Index?userId=" + userId + "&attendanceStatus=" + attendanceStatus + "&startDate=" + $("#StartDate").val() + "&endDate=" + $("#EndDate").val();
+        });
+
+    })
+
+
+
+</script> 

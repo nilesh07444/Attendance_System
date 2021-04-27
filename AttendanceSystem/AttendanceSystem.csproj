@@ -151,6 +151,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AccountRenewController.cs" />
+    <Compile Include="Areas\Admin\Controllers\AttendanceController.cs" />
     <Compile Include="Areas\Admin\Controllers\CompanyController.cs" />
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Admin\Controllers\DynamicContentController.cs" />
@@ -194,8 +195,10 @@
     <Compile Include="Models\tbl_LoginHistory.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\AttendanceVM.cs" />
     <Compile Include="ViewModel\CompanyRenewPaymentVM.cs" />
     <Compile Include="ViewModel\CompanyRequestVM.cs" />
+    <Compile Include="ViewModel\DashboardVM.cs" />
     <Compile Include="ViewModel\DynamicContentVM.cs" />
     <Compile Include="ViewModel\EmployeeVM.cs" />
     <Compile Include="ViewModel\HolidayVM.cs" />
@@ -1359,6 +1362,7 @@
     <Content Include="Areas\Admin\Views\Employee\View.cshtml" />
     <Content Include="Areas\Admin\Views\Employee\Add.cshtml" />
     <Content Include="Areas\Admin\Views\Employee\LoginHistory.cshtml" />
+    <Content Include="Areas\Admin\Views\Attendance\Index.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
