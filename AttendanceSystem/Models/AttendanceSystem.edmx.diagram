@@ -9,7 +9,6 @@
         <EntityTypeShape EntityType="AttendanceSystemModel.mst_AdminRole" Width="1.5" PointX="3.75" PointY="0.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.mst_CompanyType" Width="1.5" PointX="3.75" PointY="3.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Attendance" Width="1.5" PointX="5.75" PointY="0.75" />
-        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_EmployeePayment" Width="1.5" PointX="6.75" PointY="6.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Site" Width="1.5" PointX="9.75" PointY="0.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_DynamicContent" Width="1.5" PointX="7.375" PointY="11.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_HomeImage" Width="1.5" PointX="11.375" PointY="9.75" />
@@ -22,6 +21,7 @@
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Holiday" Width="1.5" PointX="3.375" PointY="14.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_LoginHistory" Width="1.5" PointX="9.375" PointY="4.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Employee" Width="1.5" PointX="0.75" PointY="13.75" />
+        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_EmployeePayment" Width="1.5" PointX="5.375" PointY="6.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

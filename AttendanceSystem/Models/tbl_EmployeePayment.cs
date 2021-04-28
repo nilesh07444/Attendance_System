@@ -16,12 +16,13 @@ namespace AttendanceSystem.Models
     {
         public long EmployeePaymentId { get; set; }
         public long UserId { get; set; }
+        public System.DateTime PaymentDate { get; set; }
         public decimal Amount { get; set; }
         public int PaymentType { get; set; }
         public bool IsDeleted { get; set; }
-        public long CreatedBy { get; set; }
         public System.DateTime CreatedDate { get; set; }
-        public Nullable<long> ModifiedBy { get; set; }
+        public long CreatedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
+        public Nullable<long> ModifiedBy { get; set; }
     }
 }

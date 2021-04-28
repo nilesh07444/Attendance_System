@@ -74,18 +74,18 @@
                                     {
                                         foreach (AttendanceVM obj in Model.AttendanceList)
                                         {
-                                            <tr>
-                                                <td>@counter.</td>
+                                    <tr>
+                                        <td>@counter.</td>
 
-                                                <td>@obj.Name</td>
-                                                <td>@obj.AttendanceDate.ToString("dd MMM yyyy")</td>
-                                                <td>@obj.DayType</td>
-                                                <td>@obj.ExtraHours</td>
-                                                <td>@obj.TodayWorkDetail</td>
-                                                <td>@obj.TomorrowWorkDetail</td>
-                                                <td>@obj.Remarks</td>
-                                                <td>@obj.LocationFrom</td>
-                                            </tr>
+                                        <td>@obj.Name</td>
+                                        <td>@obj.AttendanceDate.ToString("dd MMM yyyy")</td>
+                                        <td>@obj.DayType</td>
+                                        <td>@obj.ExtraHours</td>
+                                        <td>@obj.TodayWorkDetail</td>
+                                        <td>@obj.TomorrowWorkDetail</td>
+                                        <td>@obj.LocationFrom</td>
+                                        <td>@obj.StatusText</td>
+                                    </tr>
 
                                             counter++;
                                         }

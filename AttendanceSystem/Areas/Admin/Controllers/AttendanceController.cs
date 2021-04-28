@@ -4,7 +4,6 @@ using AttendanceSystem.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace AttendanceSystem.Areas.Admin.Controllers
@@ -35,6 +34,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                 long companyId = clsAdminSession.CompanyId;
 
+                List<SelectListItem> attendanceStatusList = GetAttendanceStatusList();
+
+
+
                 attendanceFilterVM.AttendanceList = (from at in _db.tbl_Attendance
                                                      join emp in _db.tbl_Employee on at.UserId equals emp.EmployeeId
                                                      where !at.IsDeleted
@@ -60,6 +63,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                      }).OrderByDescending(x => x.AttendanceDate).ToList();
 
                 attendanceFilterVM.EmployeeList = GetEmployeeList();
+                attendanceFilterVM.AttendanceList.ForEach(x => {
+                    x.StatusText = attendanceStatusList.Where(z => z.Value == x.Status.ToString()).Select(c => c.Text).FirstOrDefault();
+                });
             }
             catch (Exception ex)
             {
@@ -76,6 +82,20 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                         {
                                             Text = emp.FirstName + " " + emp.LastName,
                                             Value = emp.EmployeeId.ToString()
+                                        }).ToList();
+            return lst;
+        }
+
+        private List<SelectListItem> GetAttendanceStatusList()
+        {
+            string[] paymentTypeArr = Enum.GetNames(typeof(AttendanceStatus));
+            var listpaymentType = paymentTypeArr.Select((value, key) => new { value, key }).ToDictionary(x => x.key + 1, x => x.value);
+
+            List<SelectListItem> lst = (from pt in listpaymentType
+                                        select new SelectListItem
+                                        {
+                                            Text = pt.Value,
+                                            Value = pt.Key.ToString()
                                         }).ToList();
             return lst;
         }

@@ -20,6 +20,7 @@ namespace AttendanceSystem.ViewModel
         public string Remarks { get; set; }
         public string LocationFrom { get; set; }
         public int Status { get; set; }
+        public string StatusText { get; set; }
         public string RejectReason { get; set; }
         public bool IsActive { get; set; }
     }

@@ -1,0 +1,81 @@
+﻿@using AttendanceSystem.Helper;
+@model AttendanceSystem.ViewModel.PaymentVM
+@{
+    ViewBag.Title = "Employee";
+    List<SelectListItem> lstPaymentType = new List<SelectListItem>();
+
+}
+
+<section class="section">
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h4>@(Model.EmployeePaymentId == 0 ? "Add" : "Edit") Employee Payment</h4>
+                </div>
+
+                @using (Html.BeginForm("Add", "Payment", FormMethod.Post, new { @id = "EmployeePaymentFormId", @class = "", enctype = "multipart/form-data", role = "form" }))
+                {
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.UserId, htmlAttributes: new { @class = "" })
+                                @Html.DropDownListFor(model => model.UserId, new SelectList(Model.EmployeeList, "Value", "Text"), "- Select -", new { @class = "form-control required" })
+                                @Html.ValidationMessageFor(model => model.UserId, "", new { @class = "text-danger" })
+                                @Html.HiddenFor(model => model.EmployeePaymentId)
+                            </div>
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.PaymentType, htmlAttributes: new { @class = "" })
+                                @Html.DropDownListFor(model => model.PaymentType, new SelectList(Model.EmployeePaymentTypeList, "Value", "Text"), "- Select -", new { @class = "form-control required" })
+                                @Html.ValidationMessageFor(model => model.PaymentType, "", new { @class = "text-danger" })
+                                @Html.HiddenFor(model => model.PaymentType)
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.PaymentDate, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.PaymentDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Enter Payment Date" })
+                                @Html.ValidationMessageFor(model => model.PaymentDate, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.Amount, new { @type = "number", @class = "form-control required", @placeholder = "Enter Amount", @maxlength = "10" })
+                                @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer text-center">
+                        <button class="btn btn-primary mr-1" type="submit" id="btnSubmit">Submit</button>
+                        <a href="/admin/payment" class="btn btn-secondary">Cancel</a>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+
+</section>
+ 
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+       
+        $('#btnCancel').click(function () {
+            window.location.href = "/admin/payment";
+        });
+
+        $('#btnSubmit').click(function () {
+            if ($("#EmployeeFormId").valid()) {
+                $.blockUI({ message: '<h4> Please Wait...</h4>' });
+            }
+            else {
+                return false;
+            }
+            return false;
+        });
+    })
+</script>
