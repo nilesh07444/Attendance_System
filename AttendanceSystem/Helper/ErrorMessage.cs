@@ -10,6 +10,7 @@
         public static string InvalidPassword = "Invalid current password.";
         public static string InvalidUserName = "Invalid User Name.";
         public static string UserNamePasswordRequired = "User Name and Password required.";
+        public static string CurrentAndNewBothPasswordRequired = "Current and new both password required.";
 
         // Folder Directory Path
         public static string UserDirectoryPath = "/Images/UserMedia/";

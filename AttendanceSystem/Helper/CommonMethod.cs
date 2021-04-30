@@ -440,5 +440,18 @@ namespace AttendanceSystem
                 return builder.ToString().ToLower();
             return builder.ToString();
         }
+
+        public static int WeekDaysInMonth(int year, int month)
+        {
+            int days = DateTime.DaysInMonth(year, month);
+            List<DateTime> dates = new List<DateTime>();
+            for (int i = 1; i <= days; i++)
+            {
+                dates.Add(new DateTime(year, month, i));
+            }
+
+            int weekDays = dates.Where(d => d.DayOfWeek > DayOfWeek.Sunday & d.DayOfWeek < DayOfWeek.Saturday).Count();
+            return weekDays;
+        }
     }
 }

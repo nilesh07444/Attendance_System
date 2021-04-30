@@ -178,6 +178,8 @@
     <Compile Include="Areas\WebAPI\Controllers\CompanyController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\BaseController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\BaseUserController.cs" />
+    <Compile Include="Areas\WebAPI\Controllers\DashboardController.cs" />
+    <Compile Include="Areas\WebAPI\Controllers\SettingController.cs" />
     <Compile Include="Filters\JWT\AddChallengeOnUnauthorizedResult.cs" />
     <Compile Include="Filters\JWT\AuthenticationFailureResult.cs" />
     <Compile Include="Filters\JWT\HttpAuthenticationChallengeContextExtensions.cs" />
@@ -208,6 +210,8 @@
     <Compile Include="ViewModel\LoginHistoryVM.cs" />
     <Compile Include="ViewModel\PackageVM.cs" />
     <Compile Include="ViewModel\PaymentVM.cs" />
+    <Compile Include="ViewModel\WebAPI\ChangePasswordVM.cs" />
+    <Compile Include="ViewModel\WebAPI\DashboardCountVM.cs" />
     <Compile Include="ViewModel\WebAPI\JWTAccessTokenVM.cs" />
     <Compile Include="ViewModel\WebAPI\LoginRequestVM.cs" />
     <Compile Include="ViewModel\WebAPI\LoginResponseVM.cs" />
@@ -277,6 +281,7 @@
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\WebAPI\ResetPasswordVM.cs" />
     <Compile Include="ViewModel\WebAPI\UserTokenVM.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -1410,6 +1415,7 @@
     <Folder Include="Areas\WebAPI\Data\" />
     <Folder Include="Areas\WebAPI\Views\Account\" />
     <Folder Include="Areas\WebAPI\Views\Admin\" />
+    <Folder Include="Areas\WebAPI\Views\Setting\" />
     <Folder Include="Areas\WebAPI\Views\Shared\" />
     <Folder Include="Images\" />
   </ItemGroup>

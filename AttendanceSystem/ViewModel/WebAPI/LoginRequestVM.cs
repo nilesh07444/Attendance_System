@@ -10,4 +10,10 @@ namespace AttendanceSystem.ViewModel.WebAPI.ViewModel
         public string UserName { get; set; }
         public string PassWord { get; set; }
     }
+
+    public class AuthenticateRequestVM
+    {
+        public int EmployeeId { get; set; }
+        public string LocationFrom { get; set; }
+    }
 }

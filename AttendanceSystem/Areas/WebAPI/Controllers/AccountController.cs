@@ -1,10 +1,13 @@
 ﻿using AttendanceSystem.Helper;
 using AttendanceSystem.Models;
+using AttendanceSystem.ViewModel.WebAPI;
 using AttendanceSystem.ViewModel.WebAPI.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Net;
+using System.Web;
 using System.Web.Http;
 
 namespace AttendanceSystem.Areas.WebAPI.Controllers
@@ -14,10 +17,12 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
         private readonly AttendanceSystemEntities _db;
         private string psSult = string.Empty;
+        private string enviornment = string.Empty;
         public AccountController()
         {
             _db = new AttendanceSystemEntities();
             psSult = ConfigurationManager.AppSettings["PasswordSult"].ToString();
+            enviornment = ConfigurationManager.AppSettings["Environment"].ToString();
         }
 
         [Route("TestMethod"), HttpGet]
@@ -32,54 +37,71 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
         [HttpPost]
         [Route("login")]
-        public LoginResponseVM Login(LoginRequestVM loginRequestVM)
+        public ResponseDataModel<LoginResponseVM> Login(LoginRequestVM loginRequestVM)
         {
-            LoginResponseVM response = new LoginResponseVM();
+            ResponseDataModel<LoginResponseVM> response = new ResponseDataModel<LoginResponseVM>();
             try
             {
-
+                LoginResponseVM loginResponseVM = new LoginResponseVM();
                 IEnumerable<string> HeaderAccessKey;
                 this.Request.Headers.TryGetValues("Authorization", out HeaderAccessKey);
                 string accessKey = HeaderAccessKey.ToList().FirstOrDefault().ToString();
 
                 if (!string.IsNullOrEmpty(loginRequestVM.UserName) && !string.IsNullOrEmpty(loginRequestVM.PassWord))
                 {
-                    string DecryptPassword = string.Empty;
+                    string encryptPassword = CommonMethod.Encrypt(loginRequestVM.PassWord, psSult); 
 
-                    var data = _db.tbl_AdminUser.Where(x => x.UserName == loginRequestVM.UserName && x.Password == loginRequestVM.PassWord).FirstOrDefault();
+                    var data = _db.tbl_Employee.Where(x => x.EmployeeCode == loginRequestVM.UserName && x.Password == encryptPassword && x.IsActive && !x.IsDeleted).FirstOrDefault();
 
                     if (data != null)
                     {
-                        string Name = data.FirstName + ' ' + data.LastName;
-                        response.Status = (int)Status.Success;
-                        UserTokenVM userToken = new UserTokenVM()
+                        response.IsError = false;
+                        loginResponseVM.IsFingerprintEnabled = data.IsFingerprintEnabled;
+                        loginResponseVM.EmployeeId = data.EmployeeId;
+
+                        using (WebClient webClient = new WebClient())
                         {
-                            UserId = data.UserName,
-                            Role = data.AdminUserRoleId.ToString(),
-                            UserName = Name
-
-                        };
-
-                        JWTAccessTokenVM tokenVM = new JWTAccessTokenVM();
-                        tokenVM = JWTAuthenticationHelper.GenerateToken(userToken);
-                        response.access_token = tokenVM.Token;
+                            Random random = new Random();
+                            int num = random.Next(555555, 999999);
+                            if (enviornment != "Development")
+                            {
+                                string msg = "Your Otp code for Login is " + num;
+                                msg = HttpUtility.UrlEncode(msg);
+                                string url = CommonMethod.GetSMSUrl().Replace("--MOBILE--", data.MobileNo).Replace("--MSG--", msg);
+                                var json = webClient.DownloadString(url);
+                                if (json.Contains("invalidnumber"))
+                                {
+                                    response.IsError = true;
+                                    response.AddError(ErrorMessage.InvalidMobileNo);
+                                }
+                                else
+                                {
+                                    loginResponseVM.OTP = num.ToString();
+                                }
+                            }
+                            else
+                            {
+                                loginResponseVM.OTP = num.ToString();
+                            }
+                        }
+                        response.Data = loginResponseVM;
                     }
                     else
                     {
-                        response.Status = (int)Status.Failure;
-                        response.ErrorMessage = ErrorMessage.YouAreNotAuthorized;
+                        response.IsError = true;
+                        response.AddError(ErrorMessage.YouAreNotAuthorized);
                     }
                 }
                 else
                 {
-                    response.Status = (int)Status.Failure;
-                    response.ErrorMessage = ErrorMessage.UserNamePasswordRequired;
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.UserNamePasswordRequired);
                 }
             }
             catch (Exception ex)
             {
-                response.Status = (int)Status.Failure;
-                response.ErrorMessage = ex.Message;
+                response.IsError = true;
+                response.AddError(ex.Message);
             }
 
 
@@ -108,9 +130,238 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                 response.AddError(ex.Message.ToString());
             }
-             
+
             return response;
         }
 
+        [Route("Authenticate"), HttpGet]
+        public ResponseDataModel<AuthenticateVM> Authenticate(AuthenticateRequestVM authenticateRequestVM)
+        {
+            ResponseDataModel<AuthenticateVM> response = new ResponseDataModel<AuthenticateVM>();
+            AuthenticateVM authenticateVM = new AuthenticateVM();
+
+            try
+            {
+                var data = _db.tbl_Employee.Where(x => x.EmployeeId == authenticateRequestVM.EmployeeId && x.IsActive && !x.IsDeleted).FirstOrDefault();
+                if (data != null)
+                {
+                    UserTokenVM userToken = new UserTokenVM()
+                    {
+                        UserId = data.EmployeeCode,
+                        Role = data.AdminRoleId.ToString(),
+                        UserName = data.FirstName + " " + data.LastName
+                    };
+
+                    JWTAccessTokenVM tokenVM = new JWTAccessTokenVM();
+                    tokenVM = JWTAuthenticationHelper.GenerateToken(userToken);
+                    authenticateVM.Access_token = tokenVM.Token;
+                    authenticateVM.EmployeeId = data.EmployeeId;
+                    authenticateVM.CompanyId = data.CompanyId;
+                    authenticateVM.Prefix = data.Prefix;
+                    authenticateVM.FirstName = data.FirstName;
+                    authenticateVM.LastName = data.LastName;
+                    authenticateVM.Email = data.Email;
+                    authenticateVM.EmployeeCode = data.EmployeeCode;
+                    authenticateVM.Password = data.Password;
+                    authenticateVM.MobileNo = data.MobileNo;
+                    authenticateVM.AlternateMobile = data.AlternateMobile;
+                    authenticateVM.Address = data.Address;
+                    authenticateVM.City = data.City;
+                    authenticateVM.Designation = data.Designation;
+                    authenticateVM.Dob = data.Dob;
+                    authenticateVM.DateOfJoin = data.DateOfJoin;
+                    authenticateVM.BloodGroup = data.BloodGroup;
+                    authenticateVM.WorkingTime = data.WorkingTime;
+                    authenticateVM.AdharCardNo = data.AdharCardNo;
+                    authenticateVM.DateOfIdCardExpiry = data.DateOfIdCardExpiry;
+                    authenticateVM.Remarks = data.Remarks;
+                    authenticateVM.ProfilePicture = data.ProfilePicture;
+                    authenticateVM.EmploymentCategory = data.EmploymentCategory;
+                    response.Data = authenticateVM;
+
+                    tbl_LoginHistory objLoginHistory = new tbl_LoginHistory();
+                    objLoginHistory.EmployeeId = data.EmployeeId;
+                    objLoginHistory.LoginDate = DateTime.UtcNow;
+                    objLoginHistory.LocationFrom = authenticateRequestVM.LocationFrom;
+                    objLoginHistory.SiteId = data.CompanyId;
+                    objLoginHistory.CreatedBy = data.EmployeeId;
+                    objLoginHistory.CreatedDate = DateTime.UtcNow;
+                    objLoginHistory.ModifiedBy = data.EmployeeId;
+                    objLoginHistory.ModifiedDate = DateTime.UtcNow;
+                    _db.tbl_LoginHistory.Add(objLoginHistory);
+                    _db.SaveChanges();
+                }
+                else
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.YouAreNotAuthorized);
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IsError = false;
+                response.AddError(ex.Message.ToString());
+            }
+
+            return response;
+        }
+
+        [Route("ResendLoginOtp"), HttpGet]
+        public ResponseDataModel<LoginResponseVM> ResendLoginOtp(long employeeId)
+        {
+            ResponseDataModel<LoginResponseVM> response = new ResponseDataModel<LoginResponseVM>();
+            LoginResponseVM loginResponseVM = new LoginResponseVM();
+
+            try
+            {
+                var data = _db.tbl_Employee.Where(x => x.EmployeeId == employeeId && x.IsActive && !x.IsDeleted).FirstOrDefault();
+                if (data != null)
+                {
+                    response.IsError = false;
+                    loginResponseVM.IsFingerprintEnabled = data.IsFingerprintEnabled;
+                    loginResponseVM.EmployeeId = data.EmployeeId;
+
+                    using (WebClient webClient = new WebClient())
+                    {
+                        Random random = new Random();
+                        int num = random.Next(555555, 999999);
+                        if (enviornment != "Development")
+                        {
+                            string msg = "Your Otp code for Login is " + num;
+                            msg = HttpUtility.UrlEncode(msg);
+                            string url = CommonMethod.GetSMSUrl().Replace("--MOBILE--", data.MobileNo).Replace("--MSG--", msg);
+                            var json = webClient.DownloadString(url);
+                            if (json.Contains("invalidnumber"))
+                            {
+                                response.IsError = true;
+                                response.AddError(ErrorMessage.InvalidMobileNo);
+                            }
+                            else
+                            {
+                                loginResponseVM.OTP = num.ToString();
+                            }
+                        }
+                        else
+                        {
+                            loginResponseVM.OTP = num.ToString();
+                        }
+                    }
+                    response.Data = loginResponseVM;
+                }
+                else
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.YouAreNotAuthorized);
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IsError = false;
+                response.AddError(ex.Message.ToString());
+            }
+
+            return response;
+        }
+
+        [Route("ForgotPassword"), HttpGet]
+        public ResponseDataModel<LoginResponseVM> ForgotPassword(string employeeCode)
+        {
+            ResponseDataModel<LoginResponseVM> response = new ResponseDataModel<LoginResponseVM>();
+            LoginResponseVM loginResponseVM = new LoginResponseVM();
+
+            try
+            {
+                var data = _db.tbl_Employee.Where(x => x.EmployeeCode == employeeCode && x.IsActive && !x.IsDeleted).FirstOrDefault();
+                if (data != null)
+                {
+                    response.IsError = false;
+                    loginResponseVM.IsFingerprintEnabled = data.IsFingerprintEnabled;
+                    loginResponseVM.EmployeeId = data.EmployeeId;
+
+                    using (WebClient webClient = new WebClient())
+                    {
+                        Random random = new Random();
+                        int num = random.Next(555555, 999999);
+                        if (enviornment != "Development")
+                        {
+                            string msg = "Your Otp code for Login is " + num;
+                            msg = HttpUtility.UrlEncode(msg);
+                            string url = CommonMethod.GetSMSUrl().Replace("--MOBILE--", data.MobileNo).Replace("--MSG--", msg);
+                            var json = webClient.DownloadString(url);
+                            if (json.Contains("invalidnumber"))
+                            {
+                                response.IsError = true;
+                                response.AddError(ErrorMessage.InvalidMobileNo);
+                            }
+                            else
+                            {
+                                loginResponseVM.OTP = num.ToString();
+                            }
+                        }
+                        else
+                        {
+                            loginResponseVM.OTP = num.ToString();
+                        }
+                    }
+                    response.Data = loginResponseVM;
+                }
+                else
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.YouAreNotAuthorized);
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IsError = false;
+                response.AddError(ex.Message.ToString());
+            }
+
+            return response;
+        }
+
+        [HttpPost]
+        [Route("ResetPassword")]
+        public ResponseDataModel<bool> ResetPassword(ChangePasswordVM changePasswordVM)
+        {
+            ResponseDataModel<bool> response = new ResponseDataModel<bool>();
+            response.Data = false;
+            try
+            {
+                if (changePasswordVM.EmployeeId > 0 && !string.IsNullOrEmpty(changePasswordVM.PassWord))
+                {
+                    string encryptedPwd = CommonMethod.Encrypt(changePasswordVM.PassWord, psSult);
+
+                    tbl_Employee data = _db.tbl_Employee.Where(x => x.EmployeeId == changePasswordVM.EmployeeId && x.IsActive && !x.IsDeleted).FirstOrDefault();
+
+                    if (data != null)
+                    {
+                        data.Password = encryptedPwd;
+                        data.UpdatedBy = changePasswordVM.EmployeeId;
+                        data.UpdatedDate = DateTime.UtcNow;
+                        response.IsError = false;
+                        response.Data = true;
+                        _db.SaveChanges();
+                    }
+                    else
+                    {
+                        response.IsError = true;
+                        response.AddError(ErrorMessage.InvalidUserName);
+                    }
+                }
+                else
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.UserNamePasswordRequired);
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message);
+            }
+
+            return response;
+        }
     }
 }
