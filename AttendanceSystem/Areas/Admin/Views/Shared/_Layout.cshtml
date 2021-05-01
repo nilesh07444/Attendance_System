@@ -212,6 +212,13 @@
                                     <li><a class="nav-link" href="/admin/materialcategory">Material Category List</a></li>
                                 </ul>
                             </li>
+                            <li class="dropdown @(ViewBag.Title == "AccountRenew" ? "active" : "")">
+                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="clock"></i><span>Materials</span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="nav-link" href="/admin/material/add/0">Add Material</a></li>
+                                    <li><a class="nav-link" href="/admin/material">Material List</a></li>
+                                </ul>
+                            </li>
                         }
 
                     </ul>

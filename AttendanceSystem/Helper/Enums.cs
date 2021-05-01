@@ -82,4 +82,10 @@ namespace AttendanceSystem.Helper
         InActive = 0
     }
 
+    public enum MateriaStatus
+    {
+        In = 1,
+        Out = 2
+    }
+
 }

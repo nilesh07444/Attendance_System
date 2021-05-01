@@ -47,7 +47,7 @@ namespace AttendanceSystem.Models
         public virtual DbSet<tbl_Feedback> tbl_Feedback { get; set; }
         public virtual DbSet<tbl_Leave> tbl_Leave { get; set; }
         public virtual DbSet<tbl_SMSPackage> tbl_SMSPackage { get; set; }
-        public virtual DbSet<tbl_Material> tbl_Material { get; set; }
         public virtual DbSet<tbl_MaterialCategory> tbl_MaterialCategory { get; set; }
+        public virtual DbSet<tbl_Material> tbl_Material { get; set; }
     }
 }

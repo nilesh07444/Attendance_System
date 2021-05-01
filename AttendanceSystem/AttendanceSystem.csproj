@@ -160,6 +160,7 @@
     <Compile Include="Areas\Admin\Controllers\HomeImageController.cs" />
     <Compile Include="Areas\Admin\Controllers\LeaveController.cs" />
     <Compile Include="Areas\Admin\Controllers\LoginController.cs" />
+    <Compile Include="Areas\Admin\Controllers\MaterialController.cs" />
     <Compile Include="Areas\Admin\Controllers\MyProfileController.cs" />
     <Compile Include="Areas\Admin\Controllers\MaterialCategoryController.cs" />
     <Compile Include="Areas\Admin\Controllers\SiteController.cs" />
@@ -234,6 +235,7 @@
     <Compile Include="ViewModel\HomeImageVM.cs" />
     <Compile Include="ViewModel\LeaveVM.cs" />
     <Compile Include="ViewModel\LoginHistoryVM.cs" />
+    <Compile Include="ViewModel\MaterialVM.cs" />
     <Compile Include="ViewModel\MaterialCategoryVM.cs" />
     <Compile Include="ViewModel\SiteVM.cs" />
     <Compile Include="ViewModel\PackageVM.cs" />
@@ -1406,6 +1408,8 @@
     <Content Include="Areas\Admin\Views\Site\Add.cshtml" />
     <Content Include="Areas\Admin\Views\MaterialCategory\Index.cshtml" />
     <Content Include="Areas\Admin\Views\MaterialCategory\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\Material\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Material\Add.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
