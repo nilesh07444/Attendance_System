@@ -181,7 +181,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             try
             {
 
-                isExist = _db.tbl_Site.Any(x => x.CompanyId == clsAdminSession.CompanyId && x.SiteName == siteName);
+                isExist = _db.tbl_Site.Any(x => !x.IsDeleted && x.CompanyId == clsAdminSession.CompanyId && x.SiteName == siteName);
             }
             catch (Exception ex)
             {

@@ -27,6 +27,8 @@
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Feedback" Width="1.5" PointX="5.375" PointY="15.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Leave" Width="1.5" PointX="15.375" PointY="9.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_SMSPackage" Width="1.5" PointX="11.375" PointY="15.75" />
+        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Material" Width="1.5" PointX="13.375" PointY="15.75" />
+        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_MaterialCategory" Width="1.5" PointX="15.375" PointY="14.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

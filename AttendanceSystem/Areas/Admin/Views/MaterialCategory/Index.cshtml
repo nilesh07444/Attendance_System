@@ -1,10 +1,12 @@
 ﻿@using AttendanceSystem.Helper
 @using AttendanceSystem.ViewModel;
-@model List<AttendanceSystem.ViewModel.SiteVM>
+@model List<AttendanceSystem.ViewModel.MaterialCategoryVM>
 @{
                 /**/
 
-                ViewBag.Title = "Site";
+                /**/
+
+                ViewBag.Title = "MaterialCategory";
                 int counter = 1;
 }
 
@@ -15,11 +17,11 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Site List</h4>
+                        <h4>Material Category List</h4>
                     </div>
                     <div class="card-body">
                         <div class="pull-right">
-                            <a href="/admin/Site/add/0" class="btn btn-icon icon-left btn-primary"><i class="fas fa-plus-circle"></i> Add Site</a>
+                            <a href="/admin/MaterialCategory/add/0" class="btn btn-icon icon-left btn-primary"><i class="fas fa-plus-circle"></i> Add Material Category</a>
                         </div>
 
                         <div class="table-responsive">
@@ -27,8 +29,8 @@
                                 <thead>
                                     <tr>
                                         <td>#</td>
-                                        <th>Site Name</th>
-                                        <th>Site Description</th>
+                                        <th>Material Category Name</th>
+                                        <th>Description</th>
                                         <th>Active</th>
                                         <th>Action</th>
                                     </tr>
@@ -36,23 +38,23 @@
                                 <tbody>
                                     @if (Model != null && Model.Count > 0)
                                     {
-                                        foreach (SiteVM obj in Model)
+                                        foreach (MaterialCategoryVM obj in Model)
                                         {
                                             <tr>
                                                 <td>@counter.</td>
-                                                <td>@obj.SiteName</td>
-                                                <td>@obj.SiteDescription</td>
+                                                <td>@obj.MaterialCategoryName</td>
+                                                <td>@obj.Description</td>
                                                 @if (obj.IsActive == true)
                                                 {
-                                                    <td><span class="badge badge-success" style="cursor:pointer;" title="Click to Inactive" onclick="fnChangeStatus('@obj.SiteId','InActive');">Active</span></td>
+                                                    <td><span class="badge badge-success" style="cursor:pointer;" title="Click to Inactive" onclick="fnChangeStatus('@obj.MaterialCategoryId','InActive');">Active</span></td>
                                                 }
                                                 else
                                                 {
-                                                    <td><span class="badge badge-danger" style="cursor:pointer;" title="Click to Active" onclick="fnChangeStatus('@obj.SiteId','Active');">InActive</span></td>
+                                                    <td><span class="badge badge-danger" style="cursor:pointer;" title="Click to Active" onclick="fnChangeStatus('@obj.MaterialCategoryId','Active');">InActive</span></td>
                                                 }
                                                 <td>
-                                                    <a href="/admin/Site/add/@obj.SiteId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
-                                                    <a href="javascript:void(0);" title="Delete" class="btn btn-icon btn-danger" onclick="fnDeleteSite('@obj.SiteId')"><i class="fas fa-trash-alt"></i></a>
+                                                    <a href="/admin/MaterialCategory/add/@obj.MaterialCategoryId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
+                                                    <a href="javascript:void(0);" title="Delete" class="btn btn-icon btn-danger" onclick="fnDeleteMaterialCategory('@obj.MaterialCategoryId')"><i class="fas fa-trash-alt"></i></a>
                                                 </td>
                                             </tr>
 
@@ -69,7 +71,7 @@
         </div>
     </div>
 </section>
-<div class="modal fade open" id="deleteSiteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade open" id="deleteMaterialCategoryModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -80,9 +82,9 @@
                 Are you sure you want to delete ?
             </div>
             <div class="modal-footer">
-                <input type="hidden" id="hdnDeleteSite" />
+                <input type="hidden" id="hdnDeleteMaterialCategory" />
                 <button data-dismiss="modal" class="btn btn-primary" type="button">Close</button>
-                <button id="btnDeleteSite" class="btn btn-danger" type="button">Delete</button>
+                <button id="btnDeleteMaterialCategory" class="btn btn-danger" type="button">Delete</button>
             </div>
         </div>
     </div>
@@ -114,25 +116,25 @@
     $(document).ready(function () {
 
 
-        $('#btnDeleteSite').click(function () {
-            var Site_Id = jQuery("#hdnDeleteSite").val();
-            if (Site_Id != "" && Site_Id != null) {
-                $('#deleteSiteModal').modal('hide');
+        $('#btnDeleteMaterialCategory').click(function () {
+            var MaterialCategory_Id = jQuery("#hdnDeleteMaterialCategory").val();
+            if (MaterialCategory_Id != "" && MaterialCategory_Id != null) {
+                $('#deleteMaterialCategoryModal').modal('hide');
 
                 StartLoading();
 
-                var URL = '@Url.Action("DeleteSite", "Site")';
+                var URL = '@Url.Action("DeleteMaterialCategory", "MaterialCategory")';
                 $.ajax({
                     type: 'POST',
                     async: true,
-                    url: URL + "?SiteId=" + Site_Id,
+                    url: URL + "?MaterialCategoryId=" + MaterialCategory_Id,
                     success: function (result) {
                         if (result == "success") {
-                            alert("Site deleted successfully");
+                            alert("MaterialCategory deleted successfully");
                             window.location.reload();
                         }
                         else if (result == "notfound") {
-                            alert("Site Not Found");
+                            alert("MaterialCategory Not Found");
                         }
                         else {
                             alert("Something went wrong. Please try again");
@@ -155,7 +157,7 @@
 
                 //StartLoading();
 
-                var URL = '@Url.Action("ChangeStatus", "Site")';
+                var URL = '@Url.Action("ChangeStatus", "MaterialCategory")';
                 $.ajax({
                     type: 'POST',
                     async: true,
@@ -181,13 +183,13 @@
 
     })
 
-    function fnDeleteSite(Site_Id) {
-        jQuery("#hdnDeleteSite").val(Site_Id);
-        $('#deleteSiteModal').modal('show');
+    function fnDeleteMaterialCategory(MaterialCategory_Id) {
+        jQuery("#hdnDeleteMaterialCategory").val(MaterialCategory_Id);
+        $('#deleteMaterialCategoryModal').modal('show');
     }
 
-    function fnChangeStatus(Site_Id, status) {
-        jQuery("#hdndataId").val(Site_Id);
+    function fnChangeStatus(MaterialCategory_Id, status) {
+        jQuery("#hdndataId").val(MaterialCategory_Id);
         jQuery("#hdnstatus").val(status);
         if (status == "Active") {
             $('#btnChangeStatus').html("Active");

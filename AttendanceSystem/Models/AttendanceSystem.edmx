@@ -352,6 +352,40 @@
           <Property Name="ModifiedBy" Type="bigint" />
           <Property Name="ModifiedDate" Type="datetime" />
         </EntityType>
+        <EntityType Name="tbl_Material">
+          <Key>
+            <PropertyRef Name="MaterialId" />
+          </Key>
+          <Property Name="MaterialId" Type="bigint" Nullable="false" />
+          <Property Name="CompanyId" Type="bigint" Nullable="false" />
+          <Property Name="MaterialCategoryId" Type="bigint" />
+          <Property Name="MaterialDate" Type="datetime" Nullable="false" />
+          <Property Name="SiteId" Type="bigint" Nullable="false" />
+          <Property Name="Qty" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="InOut" Type="int" Nullable="false" />
+          <Property Name="Remarks" Type="nvarchar" MaxLength="500" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="CreatedBy" Type="bigint" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="bigint" />
+          <Property Name="ModifiedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="tbl_MaterialCategory">
+          <Key>
+            <PropertyRef Name="MaterialCategoryId" />
+          </Key>
+          <Property Name="MaterialCategoryId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyId" Type="bigint" Nullable="false" />
+          <Property Name="MaterialCategoryName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="500" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="CreatedBy" Type="bigint" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="bigint" />
+          <Property Name="ModifiedDate" Type="datetime" />
+        </EntityType>
         <EntityType Name="tbl_Package">
           <Key>
             <PropertyRef Name="PackageId" />
@@ -429,6 +463,8 @@
           <EntitySet Name="tbl_HomeImage" EntityType="Self.tbl_HomeImage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Leave" EntityType="Self.tbl_Leave" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_LoginHistory" EntityType="Self.tbl_LoginHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_Material" EntityType="Self.tbl_Material" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_MaterialCategory" EntityType="Self.tbl_MaterialCategory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Package" EntityType="Self.tbl_Package" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Setting" EntityType="Self.tbl_Setting" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Site" EntityType="Self.tbl_Site" Schema="dbo" store:Type="Tables" />
@@ -492,6 +528,8 @@
           <EntitySet Name="tbl_Feedback" EntityType="AttendanceSystemModel.tbl_Feedback" />
           <EntitySet Name="tbl_Leave" EntityType="AttendanceSystemModel.tbl_Leave" />
           <EntitySet Name="tbl_SMSPackage" EntityType="AttendanceSystemModel.tbl_SMSPackage" />
+          <EntitySet Name="tbl_Material" EntityType="AttendanceSystemModel.tbl_Material" />
+          <EntitySet Name="tbl_MaterialCategory" EntityType="AttendanceSystemModel.tbl_MaterialCategory" />
         </EntityContainer>
         <EntityType Name="mst_AdminRole">
           <Key>
@@ -860,6 +898,40 @@
           <Property Name="PackageAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
           <Property Name="AccessDays" Type="Int32" Nullable="false" />
           <Property Name="NoOfSMS" Type="Int32" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int64" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="tbl_Material">
+          <Key>
+            <PropertyRef Name="MaterialId" />
+          </Key>
+          <Property Name="MaterialId" Type="Int64" Nullable="false" />
+          <Property Name="CompanyId" Type="Int64" Nullable="false" />
+          <Property Name="MaterialCategoryId" Type="Int64" />
+          <Property Name="MaterialDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SiteId" Type="Int64" Nullable="false" />
+          <Property Name="Qty" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="InOut" Type="Int32" Nullable="false" />
+          <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int64" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="tbl_MaterialCategory">
+          <Key>
+            <PropertyRef Name="MaterialCategoryId" />
+          </Key>
+          <Property Name="MaterialCategoryId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyId" Type="Int64" Nullable="false" />
+          <Property Name="MaterialCategoryName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <Property Name="CreatedBy" Type="Int64" Nullable="false" />
@@ -1297,6 +1369,42 @@
                 <ScalarProperty Name="PackageName" ColumnName="PackageName" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="SMSPackageId" ColumnName="SMSPackageId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_Material">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Material">
+              <MappingFragment StoreEntitySet="tbl_Material">
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="InOut" ColumnName="InOut" />
+                <ScalarProperty Name="Qty" ColumnName="Qty" />
+                <ScalarProperty Name="SiteId" ColumnName="SiteId" />
+                <ScalarProperty Name="MaterialDate" ColumnName="MaterialDate" />
+                <ScalarProperty Name="MaterialCategoryId" ColumnName="MaterialCategoryId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="MaterialId" ColumnName="MaterialId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_MaterialCategory">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_MaterialCategory">
+              <MappingFragment StoreEntitySet="tbl_MaterialCategory">
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="MaterialCategoryName" ColumnName="MaterialCategoryName" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="MaterialCategoryId" ColumnName="MaterialCategoryId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
