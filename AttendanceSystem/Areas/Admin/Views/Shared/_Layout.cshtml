@@ -198,7 +198,13 @@
                                 </ul>
                             </li>
 
-
+                            <li class="dropdown @(ViewBag.Title == "AccountRenew" ? "active" : "")">
+                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="clock"></i><span>Site</span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="nav-link" href="/admin/site/add/0">Add Site</a></li>
+                                    <li><a class="nav-link" href="/admin/site">Site List</a></li>
+                                </ul>
+                            </li>
 
                         }
 

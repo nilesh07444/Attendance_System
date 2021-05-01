@@ -1,0 +1,91 @@
+﻿@using AttendanceSystem.Helper;
+@model AttendanceSystem.ViewModel.SiteVM
+@{
+                /**/
+
+}
+
+<section class="section">
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h4>@(Model.SiteId == 0 ? "Add" : "Edit") Site</h4>
+                </div>
+
+                @using (Html.BeginForm("Add", "Site", FormMethod.Post, new { @id = "SiteFormId", @class = "", enctype = "multipart/form-data", role = "form" }))
+                {
+                <div class="card-body">
+                    <div class="row">
+                        <div class="form-group col-6">
+                            @Html.LabelFor(model => model.SiteName, htmlAttributes: new { @class = "" })
+                            @Html.EditorFor(model => model.SiteName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Site Name ", maxlength = "200", @autofocus = "autofocus" } })
+                            @Html.ValidationMessageFor(model => model.SiteName, "", new { @class = "text-danger" })
+                            @Html.HiddenFor(model => model.SiteId)
+                        </div>
+                        
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.SiteDescription, htmlAttributes: new { @class = "" })
+                        @Html.TextAreaFor(model => model.SiteDescription, 10, 5, new { @class = "form-control", @placeholder = "Enter Package Description", maxlength = "250" })
+                        @Html.ValidationMessageFor(model => model.SiteDescription, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                    <div class="card-footer text-center">
+                        <button class="btn btn-primary mr-1" type="submit">Submit</button>
+                        <a href="/admin/Site" class="btn btn-secondary">Cancel</a>
+                    </div>
+
+                }
+
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnCancel').click(function () {
+            window.location.href = "/admin/Site";
+        });
+
+        $('#btnSubmit').click(function () {
+            if ($("#SiteFormId").valid()) {
+                 
+            }
+            else {
+                return false;
+            }
+
+        });
+
+        $("#SiteName").change(function () {
+            var siteName = $("#SiteName").val();
+
+            var StrURL = '/admin/site/CheckSiteName?siteName=' + siteName;
+            $.ajax({
+                url: StrURL,
+                cache: false,
+                data: {},
+                type: 'POST',
+                success: function (data) {
+                    if (data.Status == true) {
+                        alert("Site with same name already exist, Please use another name.")
+                        $("#SiteName").val("");
+                    }
+
+                },
+                error: function (req, status, error) {
+                    alert(error);
+                }
+            });
+        });
+
+    })
+</script>
