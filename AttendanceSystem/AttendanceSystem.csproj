@@ -313,7 +313,8 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\WebAPI\PaymentVM.cs" />
-    <Compile Include="ViewModel\WebAPI\ResetPasswordVM.cs" />
+    <Compile Include="ViewModel\WebAPI\ProfileChangePasswordVM.cs" />
+    <Compile Include="ViewModel\WebAPI\SetPasswordVM.cs" />
     <Compile Include="ViewModel\WebAPI\UserTokenVM.cs" />
   </ItemGroup>
   <ItemGroup>

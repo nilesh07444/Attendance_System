@@ -5,10 +5,8 @@ using System.Web;
 
 namespace AttendanceSystem.ViewModel.WebAPI
 {
-    public class ResetPasswordVM
+    public class ProfileChangePasswordVM
     {
-        public int EmployeeId { get; set; }
         public string CurrentPassWord { get; set; }
-        public string NewPassWord { get; set; }
     }
 }
