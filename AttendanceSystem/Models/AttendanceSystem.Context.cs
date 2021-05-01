@@ -32,7 +32,6 @@ namespace AttendanceSystem.Models
         public virtual DbSet<tbl_Site> tbl_Site { get; set; }
         public virtual DbSet<tbl_DynamicContent> tbl_DynamicContent { get; set; }
         public virtual DbSet<tbl_HomeImage> tbl_HomeImage { get; set; }
-        public virtual DbSet<tbl_Leave> tbl_Leave { get; set; }
         public virtual DbSet<tbl_Package> tbl_Package { get; set; }
         public virtual DbSet<tbl_Setting> tbl_Setting { get; set; }
         public virtual DbSet<tbl_CompanyRenewPayment> tbl_CompanyRenewPayment { get; set; }
@@ -42,5 +41,11 @@ namespace AttendanceSystem.Models
         public virtual DbSet<tbl_LoginHistory> tbl_LoginHistory { get; set; }
         public virtual DbSet<tbl_Employee> tbl_Employee { get; set; }
         public virtual DbSet<tbl_EmployeePayment> tbl_EmployeePayment { get; set; }
+        public virtual DbSet<tbl_CompanyFollowup> tbl_CompanyFollowup { get; set; }
+        public virtual DbSet<tbl_CompanySMSPackRenew> tbl_CompanySMSPackRenew { get; set; }
+        public virtual DbSet<tbl_EmployeeRating> tbl_EmployeeRating { get; set; }
+        public virtual DbSet<tbl_Feedback> tbl_Feedback { get; set; }
+        public virtual DbSet<tbl_Leave> tbl_Leave { get; set; }
+        public virtual DbSet<tbl_SMSPackage> tbl_SMSPackage { get; set; }
     }
 }

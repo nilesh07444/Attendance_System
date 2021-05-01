@@ -179,7 +179,10 @@
     <Compile Include="Areas\WebAPI\Controllers\BaseController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\BaseUserController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\DashboardController.cs" />
-    <Compile Include="Areas\WebAPI\Controllers\SettingController.cs" />
+    <Compile Include="Areas\WebAPI\Controllers\AttendanceController.cs" />
+    <Compile Include="Areas\WebAPI\Controllers\LeaveController.cs" />
+    <Compile Include="Areas\WebAPI\Controllers\PaymentController.cs" />
+    <Compile Include="Areas\WebAPI\Controllers\ProfileController.cs" />
     <Compile Include="Filters\JWT\AddChallengeOnUnauthorizedResult.cs" />
     <Compile Include="Filters\JWT\AuthenticationFailureResult.cs" />
     <Compile Include="Filters\JWT\HttpAuthenticationChallengeContextExtensions.cs" />
@@ -189,13 +192,28 @@
     <Compile Include="Models\tbl_Company.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\tbl_CompanyFollowup.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tbl_CompanyRequest.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tbl_CompanySMSPackRenew.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tbl_Employee.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\tbl_EmployeeRating.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tbl_Feedback.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tbl_LoginHistory.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tbl_SMSPackage.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\AttendanceVM.cs" />
@@ -213,6 +231,7 @@
     <Compile Include="ViewModel\WebAPI\ChangePasswordVM.cs" />
     <Compile Include="ViewModel\WebAPI\DashboardCountVM.cs" />
     <Compile Include="ViewModel\WebAPI\JWTAccessTokenVM.cs" />
+    <Compile Include="ViewModel\WebAPI\LeaveVM.cs" />
     <Compile Include="ViewModel\WebAPI\LoginRequestVM.cs" />
     <Compile Include="ViewModel\WebAPI\LoginResponseVM.cs" />
     <Compile Include="Areas\WebAPI\WebAPIAreaRegistration.cs" />
@@ -281,6 +300,7 @@
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\WebAPI\PaymentVM.cs" />
     <Compile Include="ViewModel\WebAPI\ResetPasswordVM.cs" />
     <Compile Include="ViewModel\WebAPI\UserTokenVM.cs" />
   </ItemGroup>

@@ -37,5 +37,12 @@
         public static string RunningStatusReject = "Reject";
         public static string RunningStatusPending = "Pending";
         public static string HolidayOnSameDateAlreadyExist  = "Holiday on same date already exist, Please use another date.";
+
+        public static string LeaveDateRequired = "Leave date required";
+        public static string StartDateCanNotBeGreaterThanEndDate = "Start date can not be greater than end date";
+        public static string LeaveReasonRequired = "Leave reason required";
+        public static string LeaveOnSameDateAlreadyExist = "Leave on same date already exist";
+        public static string LeaveDateCanBeFutureDateOnly = "Leave date can be future date only.";
+
     }
 }

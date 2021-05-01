@@ -5,24 +5,24 @@ using AttendanceSystem.ViewModel.WebAPI.ViewModel;
 using System;
 using System.Configuration;
 using System.Linq;
-using System.Web.Mvc;
+using System.Web.Http;
 
 namespace AttendanceSystem.Areas.WebAPI.Controllers
 {
-    public class SettingController : BaseUserController
+    public class ProfileController : BaseUserController
     {
         private readonly AttendanceSystemEntities _db;
         private string psSult = string.Empty;
-        public SettingController()
+
+        public ProfileController()
         {
             _db = new AttendanceSystemEntities();
             psSult = ConfigurationManager.AppSettings["PasswordSult"].ToString();
         }
 
-
         [HttpPost]
-        [Route("ResetPassword")]
-        public ResponseDataModel<bool> ResetPassword(ResetPasswordVM resetPasswordVM)
+        [Route("ChangePassword")]
+        public ResponseDataModel<bool> ChangePassword(ResetPasswordVM resetPasswordVM)
         {
             ResponseDataModel<bool> response = new ResponseDataModel<bool>();
             response.Data = false;
@@ -66,26 +66,18 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
         }
 
         [Route("GetMyProfile"), HttpGet]
-        public ResponseDataModel<AuthenticateVM> GetMyProfile(int employeeId)
+        public ResponseDataModel<AuthenticateVM> GetMyProfile()
         {
             ResponseDataModel<AuthenticateVM> response = new ResponseDataModel<AuthenticateVM>();
             AuthenticateVM authenticateVM = new AuthenticateVM();
 
             try
             {
+                long employeeId = base.UTI.EmployeeId;
                 var data = _db.tbl_Employee.Where(x => x.EmployeeId == employeeId && x.IsActive && !x.IsDeleted).FirstOrDefault();
                 if (data != null)
                 {
-                    UserTokenVM userToken = new UserTokenVM()
-                    {
-                        UserId = data.EmployeeCode,
-                        Role = data.AdminRoleId.ToString(),
-                        UserName = data.FirstName + " " + data.LastName
-                    };
-
-                    JWTAccessTokenVM tokenVM = new JWTAccessTokenVM();
-                    tokenVM = JWTAuthenticationHelper.GenerateToken(userToken);
-                    authenticateVM.Access_token = tokenVM.Token;
+                    authenticateVM.CompanyId = data.CompanyId;
                     authenticateVM.Prefix = data.Prefix;
                     authenticateVM.FirstName = data.FirstName;
                     authenticateVM.LastName = data.LastName;

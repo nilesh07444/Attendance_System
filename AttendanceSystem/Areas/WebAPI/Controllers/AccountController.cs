@@ -145,11 +145,15 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 var data = _db.tbl_Employee.Where(x => x.EmployeeId == authenticateRequestVM.EmployeeId && x.IsActive && !x.IsDeleted).FirstOrDefault();
                 if (data != null)
                 {
+                    tbl_Company company = _db.tbl_Company.Where(x => x.CompanyId == data.CompanyId).FirstOrDefault();
                     UserTokenVM userToken = new UserTokenVM()
                     {
-                        UserId = data.EmployeeCode,
-                        Role = data.AdminRoleId.ToString(),
-                        UserName = data.FirstName + " " + data.LastName
+                        EmployeeCode = data.EmployeeCode,
+                        EmployeeId = data.EmployeeId,
+                        RoleId = data.AdminRoleId,
+                        UserName = data.FirstName + " " + data.LastName,
+                        CompanyId= data.CompanyId,
+                        CompanyTypeId= company.CompanyTypeId
                     };
 
                     JWTAccessTokenVM tokenVM = new JWTAccessTokenVM();

@@ -16,14 +16,15 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
         }
 
         [Route("DashboardCount"), HttpGet]
-        public ResponseDataModel<DashboardCountVM> DashboardCount(long employeeId)
+        public ResponseDataModel<DashboardCountVM> DashboardCount()
         {
             ResponseDataModel<DashboardCountVM> response = new ResponseDataModel<DashboardCountVM>();
             DashboardCountVM dashboardCountVM = new DashboardCountVM();
 
             try
             {
-                tbl_Employee data = _db.tbl_Employee.Where(x => x.EmployeeId == employeeId && x.IsActive && !x.IsDeleted).FirstOrDefault();
+                long employeeId = base.UTI.EmployeeId;
+                long companyId = base.UTI.CompanyId;
 
                 DateTime startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
                 DateTime endDate = startDate.AddMonths(1).AddDays(-1);
@@ -32,8 +33,16 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                     && x.Status == (int)AttendanceStatus.Accept && x.IsActive
                                                     && !x.IsDeleted && x.AttendanceDate >= startDate && x.AttendanceDate <= endDate).Count();
 
-                dashboardCountVM.thisMonthHoliday = _db.tbl_Holiday.Where(x => x.CompanyId == data.CompanyId.ToString()
-                                                    && x.IsActive && !x.IsDeleted).Select(X => (X.EndDate - X.StartDate).TotalDays).Sum();
+
+                var listDays = (from hd in _db.tbl_Holiday
+                                where hd.CompanyId == companyId.ToString()
+                                && hd.IsActive && !hd.IsDeleted
+                                select new
+                                {
+                                    StartDate = hd.StartDate,
+                                    EndDate = hd.EndDate
+                                }).ToList();
+                dashboardCountVM.thisMonthHoliday = listDays.Select(x => (x.EndDate - x.StartDate).TotalDays).Sum();
 
                 int currentMonthWorkingDays = CommonMethod.WeekDaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
                 dashboardCountVM.TotalAbsent = currentMonthWorkingDays - dashboardCountVM.TotalAttendance - (int.Parse(dashboardCountVM.thisMonthHoliday.ToString()));
