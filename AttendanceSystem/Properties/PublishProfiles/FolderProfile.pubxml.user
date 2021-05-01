@@ -8,20 +8,29 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     <History>True|2021-04-20T13:06:08.4047912Z;</History>
   </PropertyGroup>
   <ItemGroup>
+    <File Include="Areas/Admin/Views/AccountRenew/Index.cshtml">
+      <publishTime>04/26/2021 13:32:47</publishTime>
+    </File>
+    <File Include="Areas/Admin/Views/Attendance/Index.cshtml">
+      <publishTime>04/28/2021 10:22:56</publishTime>
+    </File>
+    <File Include="Areas/Admin/Views/Company/Edit.cshtml">
+      <publishTime>04/24/2021 08:47:32</publishTime>
+    </File>
     <File Include="Areas/Admin/Views/Company/Registered.cshtml">
-      <publishTime>04/18/2021 14:13:14</publishTime>
+      <publishTime>04/24/2021 08:47:32</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Company/Renew.cshtml">
-      <publishTime>04/18/2021 14:13:10</publishTime>
+      <publishTime>04/24/2021 08:47:32</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Company/Requests.cshtml">
-      <publishTime>04/18/2021 14:13:17</publishTime>
+      <publishTime>04/24/2021 08:47:32</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Dashboard/ChangePassword.cshtml">
       <publishTime>04/17/2021 18:51:31</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Dashboard/Index.cshtml">
-      <publishTime>04/18/2021 12:46:47</publishTime>
+      <publishTime>04/27/2021 22:03:23</publishTime>
     </File>
     <File Include="Areas/Admin/Views/DynamicContent/Add.cshtml">
       <publishTime>04/18/2021 10:26:03</publishTime>
@@ -30,25 +39,46 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>04/18/2021 10:26:10</publishTime>
     </File>
     <File Include="Areas/Admin/Views/DynamicContent/Index.cshtml">
-      <publishTime>04/18/2021 00:34:12</publishTime>
+      <publishTime>04/21/2021 23:38:30</publishTime>
     </File>
     <File Include="Areas/Admin/Views/DynamicContent/View.cshtml">
       <publishTime>04/18/2021 10:26:17</publishTime>
+    </File>
+    <File Include="Areas/Admin/Views/Employee/Add.cshtml">
+      <publishTime>04/26/2021 13:32:47</publishTime>
+    </File>
+    <File Include="Areas/Admin/Views/Employee/Index.cshtml">
+      <publishTime>04/27/2021 22:53:16</publishTime>
+    </File>
+    <File Include="Areas/Admin/Views/Employee/LoginHistory.cshtml">
+      <publishTime>04/26/2021 13:32:47</publishTime>
+    </File>
+    <File Include="Areas/Admin/Views/Employee/View.cshtml">
+      <publishTime>04/26/2021 13:32:47</publishTime>
+    </File>
+    <File Include="Areas/Admin/Views/Holiday/Add.cshtml">
+      <publishTime>04/26/2021 13:32:47</publishTime>
+    </File>
+    <File Include="Areas/Admin/Views/Holiday/Index.cshtml">
+      <publishTime>04/26/2021 13:32:47</publishTime>
     </File>
     <File Include="Areas/Admin/Views/HomeImage/Add.cshtml">
       <publishTime>04/19/2021 23:13:14</publishTime>
     </File>
     <File Include="Areas/Admin/Views/HomeImage/Index.cshtml">
-      <publishTime>04/19/2021 23:13:14</publishTime>
+      <publishTime>04/21/2021 23:29:41</publishTime>
     </File>
     <File Include="Areas/Admin/Views/HomeImage/View.cshtml">
       <publishTime>04/18/2021 10:26:45</publishTime>
+    </File>
+    <File Include="Areas/Admin/Views/Leave/Index.cshtml">
+      <publishTime>04/26/2021 13:32:47</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Login/ForgotPassword.cshtml">
       <publishTime>04/19/2021 23:07:42</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Login/Index.cshtml">
-      <publishTime>04/21/2021 12:46:46</publishTime>
+      <publishTime>04/23/2021 00:19:54</publishTime>
     </File>
     <File Include="Areas/Admin/Views/MyProfile/Edit.cshtml">
       <publishTime>04/18/2021 14:11:07</publishTime>
@@ -57,13 +87,19 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>04/18/2021 13:29:01</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Package/Add.cshtml">
-      <publishTime>04/19/2021 23:23:18</publishTime>
+      <publishTime>04/26/2021 13:32:47</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Package/Index.cshtml">
-      <publishTime>04/19/2021 23:18:57</publishTime>
+      <publishTime>04/23/2021 00:18:41</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Package/View.cshtml">
       <publishTime>04/19/2021 23:21:37</publishTime>
+    </File>
+    <File Include="Areas/Admin/Views/Payment/Add.cshtml">
+      <publishTime>04/28/2021 10:22:56</publishTime>
+    </File>
+    <File Include="Areas/Admin/Views/Payment/Index.cshtml">
+      <publishTime>04/28/2021 10:22:56</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Setting/ChangePassword.cshtml">
       <publishTime>04/18/2021 16:29:24</publishTime>
@@ -75,7 +111,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>04/18/2021 12:50:52</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Shared/_Layout.cshtml">
-      <publishTime>04/20/2021 23:37:09</publishTime>
+      <publishTime>04/25/2021 11:00:18</publishTime>
     </File>
     <File Include="Areas/Admin/Views/web.config">
       <publishTime>04/15/2021 23:40:49</publishTime>
@@ -87,7 +123,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>04/19/2021 15:27:17</publishTime>
     </File>
     <File Include="Areas/Client/Views/CompanyRequest/Index.cshtml">
-      <publishTime>04/21/2021 12:46:46</publishTime>
+      <publishTime>04/23/2021 00:31:54</publishTime>
     </File>
     <File Include="Areas/Client/Views/CompanyRequest/ThankYou.cshtml">
       <publishTime>04/21/2021 12:46:46</publishTime>
@@ -135,10 +171,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>09/10/2013 16:29:20</publishTime>
     </File>
     <File Include="bin/AttendanceSystem.dll">
-      <publishTime>04/21/2021 23:04:24</publishTime>
+      <publishTime>04/28/2021 21:27:44</publishTime>
     </File>
     <File Include="bin/AttendanceSystem.pdb">
-      <publishTime>04/21/2021 23:04:24</publishTime>
+      <publishTime>04/28/2021 21:27:44</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>10/23/2017 13:15:18</publishTime>
@@ -321,7 +357,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>11/28/2018 13:04:24</publishTime>
     </File>
     <File Include="bin/System.Web.Http.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>11/28/2018 13:01:00</publishTime>
     </File>
     <File Include="bin/System.Web.Http.WebHost.dll">
       <publishTime>11/28/2018 13:02:56</publishTime>
@@ -2223,7 +2259,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>11/21/2019 09:35:07</publishTime>
     </File>
     <File Include="Content/admin-theme/assets/css/style.css">
-      <publishTime>04/19/2021 23:08:59</publishTime>
+      <publishTime>04/26/2021 13:32:47</publishTime>
     </File>
     <File Include="Content/admin-theme/assets/fonts/fonts/webfonts/fa-brands-400.html">
       <publishTime>11/21/2019 09:35:05</publishTime>
@@ -2445,7 +2481,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>11/09/2019 22:28:28</publishTime>
     </File>
     <File Include="Content/admin-theme/assets/img/favicon.ico">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>11/14/2019 10:40:00</publishTime>
     </File>
     <File Include="Content/admin-theme/assets/img/image-64.png">
       <publishTime>11/09/2019 22:27:52</publishTime>
@@ -2574,7 +2610,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>11/09/2019 22:27:58</publishTime>
     </File>
     <File Include="Content/admin-theme/assets/img/logo.png">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>11/14/2019 10:40:00</publishTime>
     </File>
     <File Include="Content/admin-theme/assets/img/posts/post11.png">
       <publishTime>11/09/2019 22:28:26</publishTime>
@@ -2703,7 +2739,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>11/09/2019 22:27:48</publishTime>
     </File>
     <File Include="Content/admin-theme/assets/js/page/datatables.js">
-      <publishTime>11/09/2019 22:28:22</publishTime>
+      <publishTime>04/27/2021 22:37:13</publishTime>
     </File>
     <File Include="Content/admin-theme/assets/js/page/editable-table.js">
       <publishTime>11/09/2019 22:28:02</publishTime>
@@ -2742,7 +2778,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>11/09/2019 22:28:00</publishTime>
     </File>
     <File Include="Content/admin-theme/assets/js/page/index.js">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>11/14/2019 10:40:00</publishTime>
     </File>
     <File Include="Content/admin-theme/assets/js/page/ion-icons.js">
       <publishTime>11/09/2019 22:28:24</publishTime>
@@ -2808,583 +2844,583 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>04/15/2021 23:38:44</publishTime>
     </File>
     <File Include="Content/client-theme/assets/css/animate.min.css">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/css/bootstrap.min.css">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/css/flaticon.css">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/css/fontawesome-all.min.css">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/css/magnific-popup.css">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/css/main.css">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/css/nice-select.css">
       <publishTime>04/21/2021 12:46:46</publishTime>
     </File>
     <File Include="Content/client-theme/assets/css/owl.carousel.min.css">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/css/price_rangs.css">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/css/responsive.css">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/css/slick.css">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/css/slicknav.css">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/css/style.css">
-      <publishTime>04/21/2021 12:46:46</publishTime>
+      <publishTime>04/23/2021 00:31:54</publishTime>
     </File>
     <File Include="Content/client-theme/assets/css/style.map">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/css/themify-icons.css">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/fonts/fa-brands-400.eot">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/fonts/fa-brands-400.svg">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/fonts/fa-brands-400.ttf">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/fonts/fa-brands-400.woff">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/fonts/fa-brands-400.woff2">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/fonts/fa-regular-400.eot">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/fonts/fa-regular-400.svg">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/fonts/fa-regular-400.ttf">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/fonts/fa-regular-400.woff">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/fonts/fa-regular-400.woff2">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/fonts/fa-solid-900.eot">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/fonts/fa-solid-900.svg">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/fonts/fa-solid-900.ttf">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/fonts/fa-solid-900.woff">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/fonts/fa-solid-900.woff2">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/fonts/flaticon.css">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/fonts/Flaticon.eot">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/fonts/flaticon.html">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/fonts/Flaticon.svg">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/fonts/Flaticon.ttf">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/fonts/Flaticon.woff">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/fonts/Flaticon.woff2">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/fonts/themify.eot">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/fonts/themify.svg">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/fonts/themify.ttf">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/fonts/themify.woff">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/fonts/_flaticon.scss">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/about/about_lft.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/about/about_right.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/adapt_icon/1.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/adapt_icon/1.svg">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/adapt_icon/2.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/adapt_icon/3.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/banner/img.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/blog/author.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/blog/learn_about_bg.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/blog/single_blog_1.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/blog/single_blog_2.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/blog/single_blog_3.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/blog/single_blog_4.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/blog/single_blog_5.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/blog/slide_thumb_1.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/comment/comment_1.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/comment/comment_2.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/comment/comment_3.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/elements/a.jpg">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/elements/a2.jpg">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/elements/d.jpg">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/elements/disabled-check.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/elements/disabled-radio.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/elements/f1.jpg">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/elements/f2.jpg">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/elements/f3.jpg">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/elements/f4.jpg">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/elements/f5.jpg">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/elements/f6.jpg">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/elements/f7.jpg">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/elements/f8.jpg">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/elements/g1.jpg">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/elements/g2.jpg">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/elements/g3.jpg">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/elements/g4.jpg">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/elements/g5.jpg">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/elements/g6.jpg">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/elements/g7.jpg">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/elements/g8.jpg">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/elements/primary-check.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/elements/primary-radio.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/elements/success-check.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/elements/success-radio.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/favicon.ico">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/gallery/1.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/gallery/2.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/gallery/3.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/gallery/about.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/gallery/brand1.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/gallery/brand2.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/gallery/brand3.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/gallery/brand4.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/gallery/brand5.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/gallery/footer_bg.jpg">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/gallery/Homepage_testi.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/gallery/home_blog1.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/gallery/home_blog2.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/gallery/section_bg02.jpg">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/gallery/section_bg03.jpg">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/gallery/section_bg04.jpg">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/gallery/services1.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/gallery/services2.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/gallery/services3.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/gallery/services4.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/gallery/t1.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/gallery/team1.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/gallery/team2.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/gallery/team3.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/hero/h1_hero.jpg">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/hero/hero2.jpg">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/logo/loder.jpg">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/logo/logo.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/logo/logo2_footer.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/our_blog/blog-img1.jpg">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/post/next.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/post/post_1.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/post/post_10.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/post/post_2.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/post/post_3.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/post/post_4.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/post/post_5.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/post/post_6.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/post/post_7.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/post/post_8.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/post/post_9.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/post/preview.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/prising/1.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/prising/10.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/prising/2.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/prising/3.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/prising/4.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/prising/5.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/prising/6.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/prising/7.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/prising/8.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/prising/9.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/service/1.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/service/2.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/service/3.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/service/service_icon_1.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/service/service_icon_2.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/service/service_icon_3.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/service/service_icon_bg_1.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/team/1.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/team/2.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/img/team/3.png">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/js/animated.headline.js">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/js/bootstrap.min.js">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/js/contact.js">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/js/jquery.ajaxchimp.min.js">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/js/jquery.counterup.min.js">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/js/jquery.form.js">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/js/jquery.magnific-popup.js">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/js/jquery.nice-select.min.js">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/js/jquery.paroller.min.js">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/js/jquery.slicknav.min.js">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/js/jquery.sticky.js">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/js/jquery.validate.min.js">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/js/mail-script.js">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/js/main.js">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/js/one-page-nav-min.js">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/js/owl.carousel.min.js">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/js/plugins.js">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/js/popper.min.js">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/js/price-range.js">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/js/slick.min.js">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/js/vendor/jquery-1.12.4.min.js">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/js/vendor/modernizr-3.5.0.min.js">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/js/wow.min.js">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/scss/style.scss">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/scss/_about.scss">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/scss/_blog_page.scss">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/scss/_bradcam.scss">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/scss/_categories.scss">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/scss/_color.scss">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/scss/_common.scss">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/scss/_contact.scss">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/scss/_count_down.scss">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/scss/_elements.scss">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/scss/_extend.scss">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/scss/_footer.scss">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/scss/_h1-hero.scss">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/scss/_headerMenu.scss">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/scss/_mixins.scss">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/scss/_overlay.scss">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/scss/_services.scss">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/scss/_services_section.scss">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/scss/_team.scss">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/scss/_testimonial.scss">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/scss/_variables.scss">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/client-theme/assets/scss/_wantTowork.scss">
-      <publishTime>09/05/2020 13:56:47</publishTime>
+      <publishTime>05/09/2020 13:56:47</publishTime>
     </File>
     <File Include="Content/Site.css">
       <publishTime>04/15/2021 23:38:39</publishTime>
@@ -3411,7 +3447,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>04/15/2021 23:38:39</publishTime>
     </File>
     <File Include="Models/AttendanceSystem.edmx.diagram">
-      <publishTime>04/19/2021 23:13:14</publishTime>
+      <publishTime>04/28/2021 10:22:56</publishTime>
     </File>
     <File Include="Scripts/bootstrap-multiselect.css">
       <publishTime>01/05/2021 18:29:12</publishTime>

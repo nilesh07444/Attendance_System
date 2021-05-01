@@ -82,10 +82,24 @@ namespace AttendanceSystem.Helper
         InActive = 0
     }
 
-    public enum MateriaStatus
+    public enum FeedbackType
     {
-        In = 1,
-        Out = 2
+        Query = 1,
+        Suggestion = 2
+    }
+
+    public enum FeedbackStatus
+    {
+        Pending = 1,
+        Resolved = 2
+    }
+
+    public enum FollowupStatus
+    {
+        Open = 1,
+        Close = 2,
+        NotInterested = 3
     }
 
 }
+
