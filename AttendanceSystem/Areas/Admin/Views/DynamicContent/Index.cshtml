@@ -2,7 +2,7 @@
 @using AttendanceSystem.ViewModel
 @model List<DynamicContentVM>
 @{
-    ViewBag.Title = "DynamicContent";
+    ViewBag.Title = "WebsiteContent";
     int counter = 1;
 }
 
@@ -55,9 +55,10 @@
                                                 </td>
                                                 <td>@obj.ContentTitle</td>
                                                 <td>@obj.SeqNo</td>
-                                                <td>
-                                                    <a href="/admin/dynamiccontent/edit/@obj.DynamicContentId"><i class="fa fa-edit mr-2 font-success"></i></a>
-                                                    <a href="javascript:void(0);" onclick="fnDeleteDyanamicContent('@obj.DynamicContentId')"><i class="fa fa-trash font-danger"></i></a>
+                                                <td>                                                    
+                                                    <a href="/admin/dynamiccontent/edit/@obj.DynamicContentId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
+                                                    <a href="javascript:void(0);" title="Delete" class="btn btn-icon btn-danger" onclick="fnDeletedynamiccontent('@obj.DynamicContentId')"><i class="fas fa-trash-alt"></i></a>
+
                                                 </td>
                                             </tr>
                                             counter++;

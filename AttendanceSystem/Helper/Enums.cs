@@ -91,7 +91,8 @@ namespace AttendanceSystem.Helper
     public enum FeedbackStatus
     {
         Pending = 1,
-        Resolved = 2
+        Resolved = 2,
+        NotResolved = 3
     }
 
     public enum FollowupStatus

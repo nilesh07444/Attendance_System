@@ -16,8 +16,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         {
             _db = new AttendanceSystemEntities();
         }
-
-
+         
         public ActionResult Index()
         {
             List<DynamicContentVM> lstDyanamicContent = new List<DynamicContentVM>();
@@ -40,7 +39,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
             return View(lstDyanamicContent);
         }
-
 
         public ActionResult Add()
         {
@@ -82,8 +80,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
             return View(contentVM);
         }
-
-
+         
         public ActionResult Edit(int Id)
         {
             DynamicContentVM objDyanamicContent = new DynamicContentVM();

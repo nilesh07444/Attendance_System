@@ -1,17 +1,68 @@
-﻿
+﻿@model DynamicContentVM
 @{
-    Layout = null;
+    ViewBag.Title = "WebsiteContent";
 }
 
-<!DOCTYPE html>
+@{ List<SelectListItem> lstContentTypes = new List<SelectListItem>();
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Edit</title>
-</head>
-<body>
-    <div> 
+    lstContentTypes.Add(new SelectListItem { Value = "1", Text = "FAQ" });
+    lstContentTypes.Add(new SelectListItem { Value = "2", Text = "Privacy Policy" });
+    lstContentTypes.Add(new SelectListItem { Value = "3", Text = "Terms Condition" });
+}
+
+<section class="section">
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h4>Edit Dynamic Content</h4>
+                </div>
+
+                @using (Html.BeginForm("Edit", "DynamicContent", FormMethod.Post, new { @id = "DynamicContentFormId", @class = "", enctype = "multipart/form-data", role = "form" }))
+                {
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.DynamicContentType, htmlAttributes: new { @class = "" })
+                                @Html.DropDownListFor(model => model.DynamicContentType, new SelectList(lstContentTypes, "Value", "Text"), "- Select -", new { @class = "form-control", style = "" })
+                                @Html.ValidationMessageFor(model => model.DynamicContentType, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.SeqNo, htmlAttributes: new { @class = "" })
+                                @Html.EditorFor(model => model.SeqNo, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Seq No", maxlength = "10" } })
+                                @Html.ValidationMessageFor(model => model.SeqNo, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ContentTitle, htmlAttributes: new { @class = "" })
+                            @Html.EditorFor(model => model.ContentTitle, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Content Title", maxlength = "200" } })
+                            @Html.ValidationMessageFor(model => model.ContentTitle, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ContentDescription, htmlAttributes: new { @class = "" })
+                            @Html.TextAreaFor(model => model.ContentDescription, 10, 5, new { @class = "form-control", @placeholder = "Enter Content Description", maxlength = "500" })
+                            @Html.ValidationMessageFor(model => model.ContentDescription, "", new { @class = "text-danger" })
+                        </div>
+
+                    </div>
+
+                    <div class="card-footer text-center">
+                        @Html.HiddenFor(x=>x.DynamicContentId)
+                        <button class="btn btn-primary mr-1" type="submit">Submit</button>
+                        <a href="/admin/dynamiccontent" class="btn btn-secondary">Cancel</a>
+                    </div>
+                }
+
+            </div>
+        </div>
     </div>
-</body>
-</html>
+
+</section>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<script type="text/javascript">
+
+</script>
