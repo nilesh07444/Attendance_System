@@ -33,7 +33,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                   HeadingText1 = hi.HeadingText1,
                                   HeadingText2 = hi.HeadingText2,
                                   IsActive = hi.IsActive,
-                                  HomeImageFor = hi.HomeImageFor
                               }).OrderByDescending(x => x.HomeImageId).ToList();
             }
             catch (Exception ex)
@@ -56,10 +55,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                    HeadingText1 = hi.HeadingText1,
                                    HeadingText2 = hi.HeadingText2,
                                    IsActive = hi.IsActive,
-                                   HomeImageFor = hi.HomeImageFor
                                }).FirstOrDefault();
             }
-            homeImageVM.HomeImageForList = GetHomeImageFor();
             return View(homeImageVM);
         }
 
@@ -107,7 +104,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     {
                         tbl_HomeImage objHome = _db.tbl_HomeImage.Where(x => x.HomeImageId == homeImageVM.HomeImageId).FirstOrDefault();
                         objHome.HomeImageName = HomeImageFile != null ? fileName : objHome.HomeImageName;
-                        objHome.HomeImageFor = homeImageVM.HomeImageFor.HasValue ? homeImageVM.HomeImageFor.Value : (int)HomeImageFor.Website;
                         objHome.HeadingText1 = homeImageVM.HeadingText1;
                         objHome.HeadingText2 = homeImageVM.HeadingText2;
 
@@ -117,7 +113,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     else
                     {
                         tbl_HomeImage objHome = new tbl_HomeImage();
-                        objHome.HomeImageFor = homeImageVM.HomeImageFor.Value;
                         objHome.HeadingText1 = homeImageVM.HeadingText1;
                         objHome.HeadingText2 = homeImageVM.HeadingText2;
                         objHome.HomeImageName = fileName;
@@ -146,15 +141,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         public ActionResult View(int Id)
         {
             return View();
-        }
-        private List<SelectListItem> GetHomeImageFor()
-        {
-            List<SelectListItem> lst = new List<SelectListItem>();
-
-            lst.Add(new SelectListItem { Value = "1", Text = "Website" });
-            lst.Add(new SelectListItem { Value = "2", Text = "Mobile App" });
-
-            return lst;
         }
 
         [HttpPost]

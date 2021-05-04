@@ -36,4 +36,13 @@ namespace AttendanceSystem.ViewModel
         public List<SelectListItem> SiteList { get; set; }
         public List<SelectListItem> MaterialStatusList { get; set; }
     }
+
+    public class MaterialFilterVM
+    {
+        public long? SiteId { get; set; }
+        public long? MaterialCategoryId { get; set; }
+        public int? Status { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+    }
 }

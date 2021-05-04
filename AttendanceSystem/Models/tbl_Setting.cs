@@ -17,5 +17,7 @@ namespace AttendanceSystem.Models
         public long SettingId { get; set; }
         public Nullable<int> SiteCompanyFreeAccessDays { get; set; }
         public Nullable<int> OfficeCompanyFreeAccessDays { get; set; }
+        public Nullable<int> FreeEmployee { get; set; }
+        public Nullable<decimal> AmountPerEmp { get; set; }
     }
 }

@@ -8,10 +8,8 @@
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_AdminUser" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AttendanceSystemModel.mst_AdminRole" Width="1.5" PointX="3.75" PointY="0.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.mst_CompanyType" Width="1.5" PointX="3.75" PointY="3.75" />
-        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Attendance" Width="1.5" PointX="5.75" PointY="0.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Site" Width="1.5" PointX="9.75" PointY="0.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_DynamicContent" Width="1.5" PointX="7.375" PointY="11.75" />
-        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_HomeImage" Width="1.5" PointX="11.375" PointY="9.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Package" Width="1.5" PointX="13.375" PointY="5.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Setting" Width="1.5" PointX="9.375" PointY="13.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_CompanyRenewPayment" Width="1.5" PointX="13.375" PointY="10.75" />
@@ -26,9 +24,11 @@
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_EmployeeRating" Width="1.5" PointX="15.375" PointY="4.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Feedback" Width="1.5" PointX="5.375" PointY="15.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Leave" Width="1.5" PointX="15.375" PointY="9.75" />
-        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_SMSPackage" Width="1.5" PointX="11.375" PointY="15.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_MaterialCategory" Width="1.5" PointX="15.375" PointY="14.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Material" Width="1.5" PointX="7.375" PointY="16.75" />
+        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_HomeImage" Width="1.5" PointX="9.375" PointY="8.75" />
+        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_SMSPackage" Width="1.5" PointX="11.375" PointY="15.75" />
+        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Attendance" Width="1.5" PointX="6.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

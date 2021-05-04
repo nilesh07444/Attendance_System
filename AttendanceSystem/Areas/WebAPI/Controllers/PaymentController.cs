@@ -28,7 +28,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             {
                 long employeeId = base.UTI.EmployeeId;
 
-                List<PaymentVM> leaveList = (from emp in _db.tbl_EmployeePayment
+                List<PaymentVM> paymentList = (from emp in _db.tbl_EmployeePayment
                                              where !emp.IsDeleted && emp.UserId == employeeId
                                              && emp.PaymentDate >= paymentFilterVM.StartDate && emp.PaymentDate <= paymentFilterVM.EndDate
                                              select new PaymentVM
@@ -42,7 +42,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                                              }).OrderByDescending(x => x.EmployeePaymentId).ToList();
 
-                response.Data = leaveList;
+                response.Data = paymentList;
             }
             catch (Exception ex)
             {
@@ -63,7 +63,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             {
                 long employeeId = base.UTI.EmployeeId;
 
-                PaymentVM leaveDetails = (from emp in _db.tbl_EmployeePayment
+                PaymentVM paymentDetails = (from emp in _db.tbl_EmployeePayment
                                           where !emp.IsDeleted && emp.UserId == employeeId
                                           && emp.EmployeePaymentId == id
                                           select new PaymentVM
@@ -77,7 +77,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                                           }).FirstOrDefault();
 
-                response.Data = leaveDetails;
+                response.Data = paymentDetails;
             }
             catch (Exception ex)
             {

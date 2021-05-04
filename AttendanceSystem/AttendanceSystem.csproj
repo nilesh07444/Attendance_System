@@ -184,6 +184,9 @@
     <Compile Include="Areas\WebAPI\Controllers\DashboardController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\AttendanceController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\LeaveController.cs" />
+    <Compile Include="Areas\WebAPI\Controllers\MaterialController.cs" />
+    <Compile Include="Areas\WebAPI\Controllers\MaterialCategoryController.cs" />
+    <Compile Include="Areas\WebAPI\Controllers\SiteController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\PaymentController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\ProfileController.cs" />
     <Compile Include="Filters\JWT\AddChallengeOnUnauthorizedResult.cs" />

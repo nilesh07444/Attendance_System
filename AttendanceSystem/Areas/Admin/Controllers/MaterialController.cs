@@ -20,14 +20,14 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         }
         public ActionResult Index()
         {
-            List<MaterialVM> Material = new List<MaterialVM>();
+            List<MaterialVM> material = new List<MaterialVM>();
             try
             {
                 long companyId = clsAdminSession.CompanyId;
 
                 List<SelectListItem> materialStatusList = GetMaterialStatusList();
 
-                Material = (from mt in _db.tbl_Material
+                material = (from mt in _db.tbl_Material
                             join mc in _db.tbl_MaterialCategory on mt.MaterialCategoryId equals mc.MaterialCategoryId
                             join st in _db.tbl_Site on mt.SiteId equals st.SiteId
                             where !mt.IsDeleted && mt.CompanyId == companyId
@@ -45,14 +45,14 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                 IsActive = mt.IsActive,
                             }).OrderByDescending(x => x.MaterialId).ToList();
 
-                Material.ForEach(x => {
+                material.ForEach(x => {
                     x.InOutText = materialStatusList.Where(z => z.Value == x.InOut.ToString()).Select(c => c.Text).FirstOrDefault();
                 });
             }
             catch (Exception ex)
             {
             }
-            return View(Material);
+            return View(material);
         }
 
         public ActionResult Add(long id)

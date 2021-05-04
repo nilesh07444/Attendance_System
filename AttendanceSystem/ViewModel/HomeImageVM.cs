@@ -9,7 +9,6 @@ namespace AttendanceSystem.ViewModel
     {
         public long HomeImageId { get; set; }
         [Required, Display(Name = "Home Image For")]
-        public int? HomeImageFor { get; set; }
         public string HomeImageName { get; set; }
         [Display(Name = "Heading Text 1")]
         public string HeadingText1 { get; set; }
@@ -21,7 +20,6 @@ namespace AttendanceSystem.ViewModel
 
         // Additional fields
         public string ImageUrl { get; set; }
-        public List<SelectListItem> HomeImageForList { get; set; }
     }
 
     public class AdvertiseImageVM

@@ -18,7 +18,9 @@ namespace AttendanceSystem.Models
         public long CompanyId { get; set; }
         public long UserId { get; set; }
         public System.DateTime AttendanceDate { get; set; }
-        public string DayType { get; set; }
+        public double DayType { get; set; }
+        public System.TimeSpan InTime { get; set; }
+        public System.TimeSpan OutTime { get; set; }
         public decimal ExtraHours { get; set; }
         public string TodayWorkDetail { get; set; }
         public string TomorrowWorkDetail { get; set; }

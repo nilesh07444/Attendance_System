@@ -19,7 +19,6 @@ namespace AttendanceSystem.Models
         public string HeadingText1 { get; set; }
         public string HeadingText2 { get; set; }
         public bool IsActive { get; set; }
-        public int HomeImageFor { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public long CreatedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
