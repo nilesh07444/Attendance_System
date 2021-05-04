@@ -157,9 +157,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objcomp.GSTNo = objCompanyReq.GSTNo;
                         objcomp.GSTPhoto = objCompanyReq.GSTPhoto;
                         objcomp.CompanyPhoto = objCompanyReq.CompanyPhoto;
-                        objcomp.CancellationChequePhoto = objCompanyReq.CancellationChequePhoto;
-                        objcomp.RequestStatus = companyRequestVM.RequestStatus;
-                        objcomp.RejectReason = objCompanyReq.RejectReason;
+                        objcomp.CancellationChequePhoto = objCompanyReq.CancellationChequePhoto;                        
                         objcomp.FreeAccessDays = objCompanyReq.FreeAccessDays;
                         objcomp.IsActive = true;
                         objcomp.CreatedBy = LoggedInUserId;

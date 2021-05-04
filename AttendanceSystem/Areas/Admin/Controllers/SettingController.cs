@@ -1,6 +1,7 @@
 ﻿using AttendanceSystem.Helper;
 using AttendanceSystem.Models;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Web.Mvc;
@@ -10,8 +11,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 {
     [PageAccess]
     public class SettingController : Controller
-    {
-        // GET: Admin/Setting
+    {        
         private readonly AttendanceSystemEntities _db;
         string psSult = ConfigurationManager.AppSettings["PasswordSult"].ToString();
         public SettingController()
@@ -20,7 +20,70 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         }
         public ActionResult Index()
         {
+            SuperAdminSettingVM objSASetting = new SuperAdminSettingVM();
+            CompanyAdminSettingVM objCASetting = new CompanyAdminSettingVM();
+
+            int loggedUserRoleId = clsAdminSession.RoleID;
+
+            try
+            {
+                tbl_Setting setting = _db.tbl_Setting.FirstOrDefault();
+                if (setting != null)
+                {
+                    if (loggedUserRoleId == (int)AdminRoles.SuperAdmin)
+                    {
+                        // Super Admin Setting
+                        objSASetting.SiteCompanyFreeAccessDays = (int)setting.SiteCompanyFreeAccessDays;
+                        objSASetting.OfficeCompanyFreeAccessDays = (int)setting.OfficeCompanyFreeAccessDays;
+                        objSASetting.AmountPerEmp = (decimal)setting.AmountPerEmp;
+
+                        ViewData["objSASetting"] = objSASetting;
+                    }
+                    else
+                    {
+                        // Company Admin Setting
+
+
+                        ViewData["objCASetting"] = objCASetting;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
             return View();
+        }
+
+        public ActionResult Edit()
+        {
+            int loggedUserRoleId = clsAdminSession.RoleID;
+
+            if (loggedUserRoleId == (int)AdminRoles.SuperAdmin)
+            {
+                SuperAdminSettingVM objSASetting = (from s in _db.tbl_Setting
+                                                    select new SuperAdminSettingVM
+                                                    {
+                                                        SettingId = s.SettingId,
+                                                        SiteCompanyFreeAccessDays = (int)s.SiteCompanyFreeAccessDays,
+                                                        OfficeCompanyFreeAccessDays = (int)s.OfficeCompanyFreeAccessDays,
+                                                        AmountPerEmp = (decimal)s.AmountPerEmp
+                                                    }).FirstOrDefault();
+
+                return View("~/Areas/Admin/Views/Setting/EditSettingSA.cshtml", objSASetting);
+            }
+            else
+            {
+                CompanyAdminSettingVM objCASetting = (from s in _db.tbl_Setting
+                                                      select new CompanyAdminSettingVM
+                                                      {
+                                                          SettingId = s.SettingId,
+                                                      }).FirstOrDefault();
+
+                return View("~/Areas/Admin/Views/Setting/EditSettingCA.cshtml", objCASetting);
+            }
         }
 
         public ActionResult ChangePassword()
@@ -58,9 +121,33 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return RedirectToAction("Index", "Dashboard");
         }
 
-        public ActionResult Edit()
+        [HttpPost]
+        public ActionResult EditSuperAdminSetting(SuperAdminSettingVM settingVM)
         {
-            return View();
+            try
+            {
+                IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
+                if (ModelState.IsValid)
+                {
+                    long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
+
+                    tbl_Setting objSetting = _db.tbl_Setting.FirstOrDefault();
+                    objSetting.SiteCompanyFreeAccessDays = settingVM.SiteCompanyFreeAccessDays;
+                    objSetting.OfficeCompanyFreeAccessDays = settingVM.OfficeCompanyFreeAccessDays;
+                    objSetting.AmountPerEmp = settingVM.AmountPerEmp;
+                    _db.SaveChanges();
+
+                    return RedirectToAction("Index");
+
+                }
+            }
+            catch (Exception ex)
+            {
+                string ErrorMessage = ex.Message.ToString();
+                throw ex;
+            }
+
+            return View(settingVM);
         }
 
     }

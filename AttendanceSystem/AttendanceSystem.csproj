@@ -227,10 +227,15 @@
     <Compile Include="Models\tbl_MaterialCategory.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\tbl_Setting.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tbl_SMSPackage.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\AdminProfileVM.cs" />
     <Compile Include="ViewModel\AttendanceVM.cs" />
+    <Compile Include="ViewModel\CompanyAdminSettingVM.cs" />
     <Compile Include="ViewModel\CompanySMSPackRenewVM.cs" />
     <Compile Include="ViewModel\CompanyRenewPaymentVM.cs" />
     <Compile Include="ViewModel\CompanyRequestVM.cs" />
@@ -247,6 +252,7 @@
     <Compile Include="ViewModel\SiteVM.cs" />
     <Compile Include="ViewModel\PackageVM.cs" />
     <Compile Include="ViewModel\PaymentVM.cs" />
+    <Compile Include="ViewModel\SuperAdminSettingVM.cs" />
     <Compile Include="ViewModel\WebAPI\ChangePasswordVM.cs" />
     <Compile Include="ViewModel\WebAPI\DashboardCountVM.cs" />
     <Compile Include="ViewModel\WebAPI\JWTAccessTokenVM.cs" />
@@ -310,9 +316,6 @@
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tbl_Package.cs">
-      <DependentUpon>AttendanceSystem.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\tbl_Setting.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tbl_Site.cs">
@@ -1422,6 +1425,8 @@
     <Content Include="Areas\Admin\Views\SMSPackage\Add.cshtml" />
     <Content Include="Areas\Admin\Views\SMSPackage\View.cshtml" />
     <Content Include="Areas\Admin\Views\SMSRenew\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Setting\EditSettingSA.cshtml" />
+    <Content Include="Areas\Admin\Views\Setting\EditSettingCA.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />

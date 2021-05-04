@@ -1,17 +1,106 @@
-﻿
+﻿@using AttendanceSystem.Helper;
+@model AdminProfileVM
 @{
-    Layout = null;
+    ViewBag.Title = "Profile";
 }
 
-<!DOCTYPE html>
+<div class="page-body">
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
-</head>
-<body>
-    <div> 
+    <!-- Container-fluid starts-->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>View My Profile</h5>
+                    </div>
+                    <div class="card-body">
+
+                        <div class="form-group row">
+                            <label class="col-xl-3 col-md-4">Prefix</label>
+                            @Model.Prefix
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-xl-3 col-md-4">Firstname</label>
+                            @Model.FirstName
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-xl-3 col-md-4">Lastname</label>
+                            @Model.LastName
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-xl-3 col-md-4">Username</label>
+                            @Model.UserName
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-xl-3 col-md-4">EmailId</label>
+                            @Model.EmailId
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-xl-3 col-md-4">MobileNo</label>
+                            @Model.MobileNo
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-xl-3 col-md-4">Alternate MobileNo</label>
+                            @Model.AlternateMobileNo
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-xl-3 col-md-4">Date Of Birth</label>
+                            @Model.DateOfBirth
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-xl-3 col-md-4">Address</label>
+                            @Model.Address
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-xl-3 col-md-4">City</label>
+                            @Model.City
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-xl-3 col-md-4">State</label>
+                            @Model.State
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-xl-3 col-md-4">Aadhar Card No</label>
+                            @Model.AadharCardNo
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-xl-3 col-md-4">Aadhar Card Photo</label>
+                            @Model.AadharCardPhoto
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-xl-3 col-md-4">Pan Card No</label>
+                            @Model.PanCardNo
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-xl-3 col-md-4">Pan Card Photo</label>
+                            @Model.PanCardPhoto
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-xl-3 col-md-4">User Photo</label>
+                            @Model.UserPhoto
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</body>
-</html>
+    <!-- Container-fluid Ends-->
+
+</div>

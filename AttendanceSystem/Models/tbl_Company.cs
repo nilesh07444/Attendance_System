@@ -24,9 +24,18 @@ namespace AttendanceSystem.Models
         public string GSTPhoto { get; set; }
         public string CompanyPhoto { get; set; }
         public string CancellationChequePhoto { get; set; }
-        public int RequestStatus { get; set; }
-        public string RejectReason { get; set; }
         public int FreeAccessDays { get; set; }
+        public bool IsTrialMode { get; set; }
+        public Nullable<long> CurrentPackageId { get; set; }
+        public Nullable<System.DateTime> AccountStartDate { get; set; }
+        public Nullable<System.DateTime> AccountExpiryDate { get; set; }
+        public Nullable<int> CurrentEmployeeAccess { get; set; }
+        public Nullable<int> RemainingEmployeeAccess { get; set; }
+        public Nullable<int> CurrentSMSPackageId { get; set; }
+        public Nullable<System.DateTime> SMSPackStartDate { get; set; }
+        public Nullable<System.DateTime> SMSPackExpiryDate { get; set; }
+        public Nullable<int> TotalSMSReceived { get; set; }
+        public Nullable<int> RemainingSMSToUse { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
         public long CreatedBy { get; set; }
