@@ -119,6 +119,13 @@
                                     <li><a class="nav-link" href="/admin/dynamiccontent">Dynamic Content</a></li>
                                 </ul>
                             </li>
+                            <li class="dropdown @(ViewBag.Title == "Package" ? "active" : "")">
+                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="command"></i><span>SMS Package</span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="nav-link" href="/admin/smspackage/add/0">Add SMS Package</a></li>
+                                    <li><a class="nav-link" href="/admin/smspackage">SMS Package List</a></li>
+                                </ul>
+                            </li>
                         }
                         else if (clsAdminSession.RoleID == (int)AdminRoles.CompanyAdmin)
                         {
@@ -217,6 +224,12 @@
                                 <ul class="dropdown-menu">
                                     <li><a class="nav-link" href="/admin/material/add/0">Add Material</a></li>
                                     <li><a class="nav-link" href="/admin/material">Material List</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown @(ViewBag.Title == "AccountRenew" ? "active" : "")">
+                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="clock"></i><span>SMS Package</span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="nav-link" href="/admin/SMSRenew">SMS Package Renew List</a></li>
                                 </ul>
                             </li>
                         }

@@ -11,6 +11,7 @@
         public static string InvalidUserName = "Invalid User Name.";
         public static string UserNamePasswordRequired = "User Name and Password required.";
         public static string CurrentAndNewBothPasswordRequired = "Current and new both password required.";
+        public static string NewPasswordAndConfirmPasswordMustBeSame = "New password and confirm password must be same.";
 
         // Folder Directory Path
         public static string UserDirectoryPath = "/Images/UserMedia/";
@@ -20,6 +21,7 @@
         public static string DefaultUserImagePath = "/Images/default_user_image.png";
         public static string HomeDirectoryPath = "/Images/HomeImage/";
         public static string PackageDirectoryPath = "/Images/PackageImage/";
+        public static string SMSPackageDirectoryPath = "/Images/SMSPackageImage/";
         public static string PancardDirectoryPath = "/Images/Pancard/";
         public static string AdharcardDirectoryPath = "/Images/Adharcard/";
         public static string GSTDirectoryPath = "/Images/GST/";
@@ -38,11 +40,35 @@
         public static string RunningStatusPending = "Pending";
         public static string HolidayOnSameDateAlreadyExist  = "Holiday on same date already exist, Please use another date.";
 
+        public static string LeaveIsIsNotValid = "Leave id is not valid.";
         public static string LeaveDateRequired = "Leave date required";
         public static string StartDateCanNotBeGreaterThanEndDate = "Start date can not be greater than end date";
         public static string LeaveReasonRequired = "Leave reason required";
         public static string LeaveOnSameDateAlreadyExist = "Leave on same date already exist";
         public static string LeaveDateCanBeFutureDateOnly = "Leave date can be future date only.";
+        public static string LeaveIdIsNotValid = "Leave id is not valid.";
+        public static string PendingLeaveCanBeEditOnly = "Only pending leave can be edit.";
+        public static string PendingLeaveCanBeDeleteOnly = "Only pending leave can be Delete.";
+        public static string LeaveNotFound = "Leave not found.";
 
+        public static string MaterialCategoryIsNotValid = "Material category is not valid.";
+        public static string SiteIsNotValid = "Site is not valid.";
+        public static string MaterialQtyNotValid = "Material qty is not valid.";
+        public static string MaterialInOutNotValid = "Material in/out is not valid.";
+
+        public static string AttendanceDateRequired = "Attendance date required";
+        public static string AttendanceDayTypeNotValid= "Attendance day type not valid";
+        public static string TodayWorkDetailRequired= "Today work detail required";
+        public static string TomorrowWorkDetailRequired = "Tomorrow work detail required";
+        public static string InTimeIsNotValid = "In time is not valid";
+        public static string OutTimeIsNotValid = "Out time is not valid";
+        public static string AttendanceOnSameDateAlreadyExist = "Attendance on same date already exist";
+        public static string AttendanceIdIsNotValid = "Attendance id is not valid.";
+        public static string PendingAttendanceCanBeEditOnly = "Only pending attendance can be edit.";
+        public static string PendingAttendanceCanBeDeleteOnly = "Only pending attendance can be Delete.";
+
+        public static double FullDay = 1;
+        public static double HalfDay = 0.5;
+        public static string DefaultTime = "00:00:00";
     }
 }

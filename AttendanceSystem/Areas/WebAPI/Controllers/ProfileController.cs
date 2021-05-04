@@ -28,56 +28,67 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
         public ResponseDataModel<LoginResponseVM> ChangePassword(ProfileChangePasswordVM resetPasswordVM)
         {
             ResponseDataModel<LoginResponseVM> response = new ResponseDataModel<LoginResponseVM>();
-           
+
             try
             {
                 long employeeId = base.UTI.EmployeeId;
 
                 LoginResponseVM loginResponseVM = new LoginResponseVM();
-                
-                if (!string.IsNullOrEmpty(resetPasswordVM.CurrentPassWord))
+
+                if (!string.IsNullOrEmpty(resetPasswordVM.CurrentPassWord) && !string.IsNullOrEmpty(resetPasswordVM.NewPassword))
                 {
                     string encryptedPwd = CommonMethod.Encrypt(resetPasswordVM.CurrentPassWord, psSult);
+                    string encryptedNewPwd = CommonMethod.Encrypt(resetPasswordVM.NewPassword, psSult);
+                    string encryptedConfirmPwd = CommonMethod.Encrypt(resetPasswordVM.ConfirmPassword, psSult);
 
-                    tbl_Employee data = _db.tbl_Employee.Where(x => x.EmployeeId == employeeId && x.Password == encryptedPwd && x.IsActive && !x.IsDeleted).FirstOrDefault();
-
-                    if (data != null)
+                    if (encryptedNewPwd != encryptedConfirmPwd)
                     {
+                        response.IsError = true;
+                        response.AddError(ErrorMessage.NewPasswordAndConfirmPasswordMustBeSame);
+                    }
 
-                        using (WebClient webClient = new WebClient())
+                    if (!response.IsError)
+                    {
+                        tbl_Employee data = _db.tbl_Employee.Where(x => x.EmployeeId == employeeId && x.Password == encryptedPwd && x.IsActive && !x.IsDeleted).FirstOrDefault();
+
+                        if (data != null)
                         {
-                            Random random = new Random();
-                            int num = random.Next(555555, 999999);
-                            if (enviornment != "Development")
+
+                            using (WebClient webClient = new WebClient())
                             {
-                                string msg = "Your Otp code for change password is " + num;
-                                msg = HttpUtility.UrlEncode(msg);
-                                string url = CommonMethod.GetSMSUrl().Replace("--MOBILE--", data.MobileNo).Replace("--MSG--", msg);
-                                var json = webClient.DownloadString(url);
-                                if (json.Contains("invalidnumber"))
+                                Random random = new Random();
+                                int num = random.Next(555555, 999999);
+                                if (enviornment != "Development")
                                 {
-                                    response.IsError = true;
-                                    response.AddError(ErrorMessage.InvalidMobileNo);
+                                    string msg = "Your Otp code for change password is " + num;
+                                    msg = HttpUtility.UrlEncode(msg);
+                                    string url = CommonMethod.GetSMSUrl().Replace("--MOBILE--", data.MobileNo).Replace("--MSG--", msg);
+                                    var json = webClient.DownloadString(url);
+                                    if (json.Contains("invalidnumber"))
+                                    {
+                                        response.IsError = true;
+                                        response.AddError(ErrorMessage.InvalidMobileNo);
+                                    }
+                                    else
+                                    {
+                                        loginResponseVM.OTP = num.ToString();
+                                    }
                                 }
                                 else
                                 {
                                     loginResponseVM.OTP = num.ToString();
                                 }
                             }
-                            else
-                            {
-                                loginResponseVM.OTP = num.ToString();
-                            }
+                            loginResponseVM.EmployeeId = employeeId;
+                            loginResponseVM.IsFingerprintEnabled = data.IsFingerprintEnabled;
+
+                            response.Data = loginResponseVM;
                         }
-                        loginResponseVM.EmployeeId = employeeId;
-                        loginResponseVM.IsFingerprintEnabled = data.IsFingerprintEnabled;
-                       
-                        response.Data = loginResponseVM;
-                    }
-                    else
-                    {
-                        response.IsError = true;
-                        response.AddError(ErrorMessage.InvalidPassword);
+                        else
+                        {
+                            response.IsError = true;
+                            response.AddError(ErrorMessage.InvalidPassword);
+                        }
                     }
                 }
                 else

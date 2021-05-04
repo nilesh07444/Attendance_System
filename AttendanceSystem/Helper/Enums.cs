@@ -101,5 +101,11 @@ namespace AttendanceSystem.Helper
         NotInterested = 3
     }
 
+    public enum MateriaStatus
+    {
+        In = 1,
+        Out = 2
+    }
+
 }
 

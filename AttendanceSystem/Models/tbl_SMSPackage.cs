@@ -15,7 +15,6 @@ namespace AttendanceSystem.Models
     public partial class tbl_SMSPackage
     {
         public long SMSPackageId { get; set; }
-        public long CompanyId { get; set; }
         public string PackageName { get; set; }
         public string PackageImage { get; set; }
         public decimal PackageAmount { get; set; }

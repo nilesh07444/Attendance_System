@@ -13,7 +13,7 @@ namespace AttendanceSystem.ViewModel
         public long UserId { get; set; }
         public string Name { get; set; }
         public DateTime AttendanceDate { get; set; }
-        public string DayType { get; set; }
+        public double DayType { get; set; }
         public decimal ExtraHours { get; set; }
         public string TodayWorkDetail { get; set; }
         public string TomorrowWorkDetail { get; set; }
@@ -23,6 +23,8 @@ namespace AttendanceSystem.ViewModel
         public string StatusText { get; set; }
         public string RejectReason { get; set; }
         public bool IsActive { get; set; }
+        public TimeSpan InTime { get; set; }
+        public TimeSpan OutTime { get; set; }
     }
 
     public class AttendanceFilterVM

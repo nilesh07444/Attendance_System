@@ -164,5 +164,137 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             return response;
         }
 
+        [HttpPost]
+        [Route("Edit")]
+        public ResponseDataModel<bool> Edit(LeaveVM leaveVM)
+        {
+            ResponseDataModel<bool> response = new ResponseDataModel<bool>();
+            response.IsError = false;
+            response.Data = false;
+            try
+            {
+                #region Validation
+                if (leaveVM.LeaveId == null || leaveVM.LeaveId == 0)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.LeaveIdIsNotValid);
+                }
+
+                if (leaveVM.StartDate == null || leaveVM.EndDate == null)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.LeaveDateRequired);
+                }
+
+                if (leaveVM.StartDate < DateTime.Now.Date || leaveVM.EndDate < DateTime.Now.Date)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.LeaveDateCanBeFutureDateOnly);
+                }
+
+                if (leaveVM.EndDate < leaveVM.StartDate)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.StartDateCanNotBeGreaterThanEndDate);
+                }
+
+                if (string.IsNullOrEmpty(leaveVM.LeaveReason))
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.LeaveReasonRequired);
+                }
+
+                if (leaveVM.LeaveId > 0)
+                {
+                    long employeeId = base.UTI.EmployeeId;
+                    bool isLeaveExist = _db.tbl_Leave.Any(x => x.LeaveId != leaveVM.LeaveId && !x.IsDeleted && x.LeaveStatus != (int)LeaveStatus.Reject && x.UserId == employeeId && x.StartDate >= leaveVM.StartDate && x.StartDate <= leaveVM.EndDate);
+                    if (isLeaveExist)
+                    {
+                        response.IsError = true;
+                        response.AddError(ErrorMessage.LeaveOnSameDateAlreadyExist);
+                    }
+
+                    tbl_Leave leaveObject = _db.tbl_Leave.Where(x => x.LeaveId == leaveVM.LeaveId).FirstOrDefault();
+                    if (leaveObject.LeaveStatus != (int)LeaveStatus.Pending)
+                    {
+                        response.IsError = true;
+                        response.AddError(ErrorMessage.PendingLeaveCanBeEditOnly);
+                    }
+                    #endregion Validation
+                    if (!response.IsError)
+                    {
+
+                        leaveObject.StartDate = leaveVM.StartDate;
+                        leaveObject.EndDate = leaveVM.EndDate;
+                        leaveObject.NoOfDays = Convert.ToDecimal((leaveVM.EndDate - leaveVM.StartDate).TotalDays + 1);
+                        leaveObject.LeaveReason = leaveVM.LeaveReason;
+                        leaveObject.ModifiedBy = base.UTI.EmployeeId;
+                        leaveObject.ModifiedDate = DateTime.UtcNow;
+                        _db.SaveChanges();
+                        response.Data = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message);
+            }
+
+            return response;
+        }
+
+        [HttpPost]
+        [Route("Delete/{id}")]
+        public ResponseDataModel<bool> Delete(long id)
+        {
+            ResponseDataModel<bool> response = new ResponseDataModel<bool>();
+            response.IsError = false;
+            response.Data = false;
+            try
+            {
+
+
+                #region Validation
+                if (id == 0)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.LeaveIdIsNotValid);
+                }
+
+                long employeeId = base.UTI.EmployeeId;
+                tbl_Leave leaveObject = _db.tbl_Leave.Where(x => x.LeaveId == id && x.UserId == employeeId).FirstOrDefault();
+
+                if (leaveObject.LeaveStatus != (int)LeaveStatus.Pending)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.PendingLeaveCanBeDeleteOnly);
+                }
+                #endregion Validation
+                if (!response.IsError)
+                {
+                    if (leaveObject != null)
+                    {
+                        leaveObject.IsDeleted = true;
+                        leaveObject.ModifiedBy = employeeId;
+                        leaveObject.ModifiedDate = DateTime.UtcNow;
+                        _db.SaveChanges();
+                        response.Data = true;
+                    }
+                    else
+                    {
+                        response.IsError = true;
+                        response.AddError(ErrorMessage.PendingLeaveCanBeDeleteOnly);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message);
+            }
+
+            return response;
+        }
     }
 }

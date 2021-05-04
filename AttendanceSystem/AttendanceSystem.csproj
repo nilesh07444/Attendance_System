@@ -150,6 +150,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\SMSRenewController.cs" />
     <Compile Include="Areas\Admin\Controllers\AccountRenewController.cs" />
     <Compile Include="Areas\Admin\Controllers\AttendanceController.cs" />
     <Compile Include="Areas\Admin\Controllers\CompanyController.cs" />
@@ -163,6 +164,7 @@
     <Compile Include="Areas\Admin\Controllers\MaterialController.cs" />
     <Compile Include="Areas\Admin\Controllers\MyProfileController.cs" />
     <Compile Include="Areas\Admin\Controllers\MaterialCategoryController.cs" />
+    <Compile Include="Areas\Admin\Controllers\SMSPackageController.cs" />
     <Compile Include="Areas\Admin\Controllers\SiteController.cs" />
     <Compile Include="Areas\Admin\Controllers\PackageController.cs" />
     <Compile Include="Areas\Admin\Controllers\PaymentController.cs" />
@@ -184,6 +186,9 @@
     <Compile Include="Areas\WebAPI\Controllers\DashboardController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\AttendanceController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\LeaveController.cs" />
+    <Compile Include="Areas\WebAPI\Controllers\MaterialController.cs" />
+    <Compile Include="Areas\WebAPI\Controllers\MaterialCategoryController.cs" />
+    <Compile Include="Areas\WebAPI\Controllers\SiteController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\PaymentController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\ProfileController.cs" />
     <Compile Include="Filters\JWT\AddChallengeOnUnauthorizedResult.cs" />
@@ -226,6 +231,7 @@
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\AttendanceVM.cs" />
+    <Compile Include="ViewModel\CompanySMSPackRenewVM.cs" />
     <Compile Include="ViewModel\CompanyRenewPaymentVM.cs" />
     <Compile Include="ViewModel\CompanyRequestVM.cs" />
     <Compile Include="ViewModel\DashboardVM.cs" />
@@ -237,6 +243,7 @@
     <Compile Include="ViewModel\LoginHistoryVM.cs" />
     <Compile Include="ViewModel\MaterialVM.cs" />
     <Compile Include="ViewModel\MaterialCategoryVM.cs" />
+    <Compile Include="ViewModel\SMSPackageVM.cs" />
     <Compile Include="ViewModel\SiteVM.cs" />
     <Compile Include="ViewModel\PackageVM.cs" />
     <Compile Include="ViewModel\PaymentVM.cs" />
@@ -1411,6 +1418,10 @@
     <Content Include="Areas\Admin\Views\MaterialCategory\Add.cshtml" />
     <Content Include="Areas\Admin\Views\Material\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Material\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\SMSPackage\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\SMSPackage\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\SMSPackage\View.cshtml" />
+    <Content Include="Areas\Admin\Views\SMSRenew\Index.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
