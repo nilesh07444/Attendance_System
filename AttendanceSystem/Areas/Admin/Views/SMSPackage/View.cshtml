@@ -1,0 +1,50 @@
+﻿@using AttendanceSystem.Helper;
+@model AttendanceSystem.ViewModel.SMSPackageVM
+@{
+    ViewBag.Title = "SMSPackage";
+}
+
+<div class="page-body">
+
+    <!-- Container-fluid starts-->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>View SMS Package</h5>
+                    </div>
+                    <div class="card-body">
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.PackageName, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                            @Model.PackageName
+                        </div>
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.NoOfSMS, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                            @Model.NoOfSMS
+                        </div>
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.PackageAmount, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                            @Model.PackageAmount
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.AccessDays, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                            @Model.AccessDays
+                        </div>
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.PackageImageFile, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                            <p><a target="_blank" href="@ErrorMessage.SMSPackageDirectoryPath/@Model.PackageImage"> Click here to view image </a></p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Container-fluid Ends-->
+
+</div>

@@ -163,6 +163,7 @@
     <Compile Include="Areas\Admin\Controllers\MaterialController.cs" />
     <Compile Include="Areas\Admin\Controllers\MyProfileController.cs" />
     <Compile Include="Areas\Admin\Controllers\MaterialCategoryController.cs" />
+    <Compile Include="Areas\Admin\Controllers\SMSPackageController.cs" />
     <Compile Include="Areas\Admin\Controllers\SiteController.cs" />
     <Compile Include="Areas\Admin\Controllers\PackageController.cs" />
     <Compile Include="Areas\Admin\Controllers\PaymentController.cs" />
@@ -240,6 +241,7 @@
     <Compile Include="ViewModel\LoginHistoryVM.cs" />
     <Compile Include="ViewModel\MaterialVM.cs" />
     <Compile Include="ViewModel\MaterialCategoryVM.cs" />
+    <Compile Include="ViewModel\SMSPackageVM.cs" />
     <Compile Include="ViewModel\SiteVM.cs" />
     <Compile Include="ViewModel\PackageVM.cs" />
     <Compile Include="ViewModel\PaymentVM.cs" />
@@ -1414,6 +1416,9 @@
     <Content Include="Areas\Admin\Views\MaterialCategory\Add.cshtml" />
     <Content Include="Areas\Admin\Views\Material\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Material\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\SMSPackage\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\SMSPackage\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\SMSPackage\View.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
