@@ -150,6 +150,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\SMSRenewController.cs" />
     <Compile Include="Areas\Admin\Controllers\AccountRenewController.cs" />
     <Compile Include="Areas\Admin\Controllers\AttendanceController.cs" />
     <Compile Include="Areas\Admin\Controllers\CompanyController.cs" />
@@ -230,6 +231,7 @@
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\AttendanceVM.cs" />
+    <Compile Include="ViewModel\CompanySMSPackRenewVM.cs" />
     <Compile Include="ViewModel\CompanyRenewPaymentVM.cs" />
     <Compile Include="ViewModel\CompanyRequestVM.cs" />
     <Compile Include="ViewModel\DashboardVM.cs" />
@@ -1419,6 +1421,7 @@
     <Content Include="Areas\Admin\Views\SMSPackage\Index.cshtml" />
     <Content Include="Areas\Admin\Views\SMSPackage\Add.cshtml" />
     <Content Include="Areas\Admin\Views\SMSPackage\View.cshtml" />
+    <Content Include="Areas\Admin\Views\SMSRenew\Index.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
