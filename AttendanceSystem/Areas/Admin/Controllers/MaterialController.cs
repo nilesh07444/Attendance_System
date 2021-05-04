@@ -235,16 +235,18 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
         private List<SelectListItem> GetMaterialStatusList()
         {
-            string[] paymentTypeArr = Enum.GetNames(typeof(MateriaStatus));
-            var listpaymentType = paymentTypeArr.Select((value, key) => new { value, key }).ToDictionary(x => x.key + 1, x => x.value);
+            //string[] paymentTypeArr = Enum.GetNames(typeof(MateriaStatus));
+            //var listpaymentType = paymentTypeArr.Select((value, key) => new { value, key }).ToDictionary(x => x.key + 1, x => x.value);
 
-            List<SelectListItem> lst = (from pt in listpaymentType
-                                        select new SelectListItem
-                                        {
-                                            Text = pt.Value,
-                                            Value = pt.Key.ToString()
-                                        }).ToList();
-            return lst;
+            //List<SelectListItem> lst = (from pt in listpaymentType
+            //                            select new SelectListItem
+            //                            {
+            //                                Text = pt.Value,
+            //                                Value = pt.Key.ToString()
+            //                            }).ToList();
+            //return lst;
+
+            return null;
         }
     }
 }
