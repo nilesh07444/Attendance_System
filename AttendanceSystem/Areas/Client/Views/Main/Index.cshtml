@@ -1,50 +1,42 @@
 ﻿
-@{ 
+@{
     ViewBag.Title = "Home";
+
+    List<HomeImageVM> lstHomeImages = ViewData["lstHomeImages"] as List<HomeImageVM>;
+
 }
 
-<!-- slider Area Start-->
-<div class="slider-area ">
-    <div class="slider-active">
-        <!-- Single Slider -->
-        <div class="single-slider slider-height d-flex align-items-center">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-8 col-lg-7 col-md-8">
-                        <div class="hero__caption">
-                            <span data-animation="fadeInLeft" data-delay=".1s">Committed to success</span>
-                            <h1 data-animation="fadeInLeft" data-delay=".5s">We help to grow your business</h1>
-                            <p data-animation="fadeInLeft" data-delay=".9s">Mollit anim laborum.Dvcuis aute serunt  iruxvfg dhjkolohr indd re voluptate<br> velit esscillumlore eu quife nrulla parihatur.</p>
-                            <!-- Hero-btn -->
-                            <div class="hero__btn" data-animation="fadeInLeft" data-delay="1.1s">
-                                <a href="industries.html" class="btn hero-btn">Our Services</a>
+<!-- Home Image Slider - Start-->
+@if (lstHomeImages != null && lstHomeImages.Count > 0)
+{
+    <div class="slider-area" style="background-image: url(@ViewBag.HomeFirstImage);">
+        <div class="slider-active">
+
+            @foreach (HomeImageVM obj in lstHomeImages)
+            {
+                <div class="single-slider slider-height d-flex align-items-center">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xl-8 col-lg-7 col-md-8">
+                                <div class="hero__caption">
+                                    <span data-animation="fadeInLeft" data-delay=".1s">Committed to success</span>
+                                    <h1 data-animation="fadeInLeft" data-delay=".5s">@obj.HeadingText1</h1>
+                                    <p data-animation="fadeInLeft" data-delay=".9s">@obj.HeadingText2</p>
+                                    <!-- Hero-btn -->
+                                    <div class="hero__btn" data-animation="fadeInLeft" data-delay="1.1s">
+                                        <a target="_blank" href="/services" class="btn hero-btn">Our Services</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <!-- Single Slider -->
-        <div class="single-slider slider-height d-flex align-items-center">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-8 col-lg-7 col-md-8">
-                        <div class="hero__caption">
-                            <span data-animation="fadeInLeft" data-delay=".1s">Committed to success</span>
-                            <h1 data-animation="fadeInLeft" data-delay=".5s">We help to grow your business</h1>
-                            <p data-animation="fadeInLeft" data-delay=".9s">Mollit anim laborum.Dvcuis aute serunt  iruxvfg dhjkolohr indd re voluptate<br> velit esscillumlore eu quife nrulla parihatur.</p>
-                            <!-- Hero-btn -->
-                            <div class="hero__btn" data-animation="fadeInLeft" data-delay="1.1s">
-                                <a href="industries.html" class="btn hero-btn">Our Services</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            }
+
         </div>
     </div>
-</div>
-<!-- slider Area End-->
+}
+<!-- Home Image Slider - End -->
 <!--? Categories Area Start -->
 <div class="categories-area section-padding30">
     <div class="container">

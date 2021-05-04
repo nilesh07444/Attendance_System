@@ -3,13 +3,12 @@ using System.ComponentModel.DataAnnotations;
 using System.Web;
 using System.Web.Mvc;
 
-namespace AttendanceSystem.ViewModel
+namespace AttendanceSystem
 {
     public class HomeImageVM
     {
         public long HomeImageId { get; set; }
-        [Required, Display(Name = "Home Image For")]
-        public string HomeImageName { get; set; }
+        
         [Display(Name = "Heading Text 1")]
         public string HeadingText1 { get; set; }
         [Display(Name = "Heading Text 2")]
@@ -20,6 +19,7 @@ namespace AttendanceSystem.ViewModel
 
         // Additional fields
         public string ImageUrl { get; set; }
+        public string HomeImageName { get; set; }
     }
 
     public class AdvertiseImageVM

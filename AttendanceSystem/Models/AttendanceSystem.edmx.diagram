@@ -24,11 +24,11 @@
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Leave" Width="1.5" PointX="15.375" PointY="9.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_MaterialCategory" Width="1.5" PointX="15.375" PointY="14.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Material" Width="1.5" PointX="7.375" PointY="16.75" />
-        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_HomeImage" Width="1.5" PointX="9.375" PointY="8.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_SMSPackage" Width="1.5" PointX="11.375" PointY="15.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Attendance" Width="1.5" PointX="6.375" PointY="0.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Company" Width="1.5" PointX="17.375" PointY="0.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Setting" Width="1.5" PointX="0.75" PointY="7.75" />
+        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_HomeImage" Width="1.5" PointX="9.375" PointY="8.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

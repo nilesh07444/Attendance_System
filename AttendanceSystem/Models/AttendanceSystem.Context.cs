@@ -44,10 +44,10 @@ namespace AttendanceSystem.Models
         public virtual DbSet<tbl_Leave> tbl_Leave { get; set; }
         public virtual DbSet<tbl_MaterialCategory> tbl_MaterialCategory { get; set; }
         public virtual DbSet<tbl_Material> tbl_Material { get; set; }
-        public virtual DbSet<tbl_HomeImage> tbl_HomeImage { get; set; }
         public virtual DbSet<tbl_SMSPackage> tbl_SMSPackage { get; set; }
         public virtual DbSet<tbl_Attendance> tbl_Attendance { get; set; }
         public virtual DbSet<tbl_Company> tbl_Company { get; set; }
         public virtual DbSet<tbl_Setting> tbl_Setting { get; set; }
+        public virtual DbSet<tbl_HomeImage> tbl_HomeImage { get; set; }
     }
 }

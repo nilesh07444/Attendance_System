@@ -321,8 +321,8 @@
           </Key>
           <Property Name="HomeImageId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="HomeImageName" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="HeadingText1" Type="nvarchar" MaxLength="100" />
-          <Property Name="HeadingText2" Type="nvarchar" MaxLength="100" />
+          <Property Name="HeadingText1" Type="nvarchar" MaxLength="500" />
+          <Property Name="HeadingText2" Type="nvarchar" MaxLength="500" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="CreatedBy" Type="bigint" Nullable="false" />
@@ -535,11 +535,11 @@
           <EntitySet Name="tbl_Leave" EntityType="AttendanceSystemModel.tbl_Leave" />
           <EntitySet Name="tbl_MaterialCategory" EntityType="AttendanceSystemModel.tbl_MaterialCategory" />
           <EntitySet Name="tbl_Material" EntityType="AttendanceSystemModel.tbl_Material" />
-          <EntitySet Name="tbl_HomeImage" EntityType="AttendanceSystemModel.tbl_HomeImage" />
           <EntitySet Name="tbl_SMSPackage" EntityType="AttendanceSystemModel.tbl_SMSPackage" />
           <EntitySet Name="tbl_Attendance" EntityType="AttendanceSystemModel.tbl_Attendance" />
           <EntitySet Name="tbl_Company" EntityType="AttendanceSystemModel.tbl_Company" />
           <EntitySet Name="tbl_Setting" EntityType="AttendanceSystemModel.tbl_Setting" />
+          <EntitySet Name="tbl_HomeImage" EntityType="AttendanceSystemModel.tbl_HomeImage" />
         </EntityContainer>
         <EntityType Name="mst_AdminRole">
           <Key>
@@ -861,20 +861,6 @@
           <Property Name="ModifiedBy" Type="Int64" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
         </EntityType>
-        <EntityType Name="tbl_HomeImage">
-          <Key>
-            <PropertyRef Name="HomeImageId" />
-          </Key>
-          <Property Name="HomeImageId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="HomeImageName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="HeadingText1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="HeadingText2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int64" />
-        </EntityType>
         <EntityType Name="tbl_SMSPackage">
           <Key>
             <PropertyRef Name="SMSPackageId" />
@@ -958,6 +944,20 @@
           <Property Name="SiteCompanyFreeAccessDays" Type="Int32" />
           <Property Name="OfficeCompanyFreeAccessDays" Type="Int32" />
           <Property Name="AmountPerEmp" Type="Decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="tbl_HomeImage">
+          <Key>
+            <PropertyRef Name="HomeImageId" />
+          </Key>
+          <Property Name="HomeImageId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HomeImageName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="HeadingText1" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="HeadingText2" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int64" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1335,21 +1335,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tbl_HomeImage">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_HomeImage">
-              <MappingFragment StoreEntitySet="tbl_HomeImage">
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="HeadingText2" ColumnName="HeadingText2" />
-                <ScalarProperty Name="HeadingText1" ColumnName="HeadingText1" />
-                <ScalarProperty Name="HomeImageName" ColumnName="HomeImageName" />
-                <ScalarProperty Name="HomeImageId" ColumnName="HomeImageId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="tbl_SMSPackage">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_SMSPackage">
               <MappingFragment StoreEntitySet="tbl_SMSPackage">
@@ -1435,6 +1420,21 @@
                 <ScalarProperty Name="OfficeCompanyFreeAccessDays" ColumnName="OfficeCompanyFreeAccessDays" />
                 <ScalarProperty Name="SiteCompanyFreeAccessDays" ColumnName="SiteCompanyFreeAccessDays" />
                 <ScalarProperty Name="SettingId" ColumnName="SettingId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_HomeImage">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_HomeImage">
+              <MappingFragment StoreEntitySet="tbl_HomeImage">
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="HeadingText2" ColumnName="HeadingText2" />
+                <ScalarProperty Name="HeadingText1" ColumnName="HeadingText1" />
+                <ScalarProperty Name="HomeImageName" ColumnName="HomeImageName" />
+                <ScalarProperty Name="HomeImageId" ColumnName="HomeImageId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

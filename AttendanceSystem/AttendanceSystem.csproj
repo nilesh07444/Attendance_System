@@ -218,6 +218,9 @@
     <Compile Include="Models\tbl_Feedback.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\tbl_HomeImage.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tbl_LoginHistory.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
@@ -307,9 +310,6 @@
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tbl_Holiday.cs">
-      <DependentUpon>AttendanceSystem.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\tbl_HomeImage.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tbl_Leave.cs">
