@@ -99,30 +99,31 @@
                                 </ul>
                             </li>
                             <li class="dropdown @(ViewBag.Title == "Package" ? "active" : "")">
-                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="command"></i><span>Package</span></a>
+                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="command"></i><span>Account Package</span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="nav-link" href="/admin/package/add/0">Add Package</a></li>
-                                    <li><a class="nav-link" href="/admin/package">Package List</a></li>
+                                    <li><a class="nav-link" href="/admin/package/add/0">Add Account Package</a></li>
+                                    <li><a class="nav-link" href="/admin/package">Account Package List</a></li>
                                 </ul>
                             </li>
-                            <li class="dropdown @(ViewBag.Title == "Setting" ? "active" : "")">
-                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="settings"></i><span>Setting</span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="nav-link" href="/admin/setting">General</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown @(ViewBag.Title == "Package" ? "active" : "")">
-                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="command"></i><span>SMS Package</span></a>
+
+                            <li class="dropdown @(ViewBag.Title == "SMSPackage" ? "active" : "")">
+                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="message-circle"></i><span>SMS Package</span></a>
                                 <ul class="dropdown-menu">
                                     <li><a class="nav-link" href="/admin/smspackage/add/0">Add SMS Package</a></li>
                                     <li><a class="nav-link" href="/admin/smspackage">SMS Package List</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown @(ViewBag.Title == "WebsiteContent" ? "active" : "")">
-                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="settings"></i><span>Website Content</span></a>
+                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="globe"></i><span>Website Content</span></a>
                                 <ul class="dropdown-menu">
                                     <li><a class="nav-link" href="/admin/homeimage">Home Image List</a></li>
                                     <li><a class="nav-link" href="/admin/dynamiccontent">Dynamic Content</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown @(ViewBag.Title == "Setting" ? "active" : "")">
+                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="settings"></i><span>Setting</span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="nav-link" href="/admin/setting">General</a></li>
                                 </ul>
                             </li>
 
@@ -181,20 +182,49 @@
                                 </ul>
                             </li>
 
-                            <li class="dropdown @(ViewBag.Title == "Report" ? "active" : "")">
-                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="server"></i><span>Report</span></a>
+                            <li class="dropdown @(ViewBag.Title == "Site" ? "active" : "")">
+                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="clock"></i><span>Site</span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="nav-link" href="/admin/report/report1">Report 1</a></li>
-                                    <li><a class="nav-link" href="/admin/report/report2">Report 2</a></li>
-                                    <li><a class="nav-link" href="/admin/report/report3">Report 3</a></li>
+                                    <li><a class="nav-link" href="/admin/site/add/0">Add Site</a></li>
+                                    <li><a class="nav-link" href="/admin/site">Site List</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown @(ViewBag.Title == "MaterialCategory" ? "active" : "")">
+                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="box"></i><span>Material Category</span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="nav-link" href="/admin/materialcategory/add/0">Add Material Category</a></li>
+                                    <li><a class="nav-link" href="/admin/materialcategory">Material Category List</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown @(ViewBag.Title == "Material" ? "active" : "")">
+                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="aperture"></i><span>Materials</span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="nav-link" href="/admin/material/add/0">Add Material</a></li>
+                                    <li><a class="nav-link" href="/admin/material">Material List</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="dropdown @(ViewBag.Title == "EmployeeRating" ? "active" : "")">
+                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="file-text"></i><span>Employee Rating</span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="nav-link" href="/admin/employeerating/add">Add Employee Rating</a></li>
+                                    <li><a class="nav-link" href="/admin/employeerating">Employee Rating List</a></li>
                                 </ul>
                             </li>
 
                             <li class="dropdown @(ViewBag.Title == "AccountRenew" ? "active" : "")">
-                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="clock"></i><span>Account Renew</span></a>
+                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="compass"></i><span>Account Package Renew</span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="nav-link" href="/admin/accountrenew/add">Add Renew</a></li>
-                                    <li><a class="nav-link" href="/admin/accountrenew">Renew Transaction List</a></li>
+                                    <li><a class="nav-link" href="/admin/accountrenew/add">Buy Account Package</a></li>
+                                    <li><a class="nav-link" href="/admin/accountrenew">Account Renew List</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="dropdown @(ViewBag.Title == "SMSPackageRenew" ? "active" : "")">
+                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="cpu"></i><span>SMS Package Renew</span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="nav-link" href="/admin/smsrenew/add">Buy SMS Package</a></li>
+                                    <li><a class="nav-link" href="/admin/smsrenew">SMS Package Renew List</a></li>
                                 </ul>
                             </li>
 
@@ -205,41 +235,15 @@
                                 </ul>
                             </li>
 
-                            <li class="dropdown @(ViewBag.Title == "AccountRenew" ? "active" : "")">
-                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="clock"></i><span>Site</span></a>
+                            <li class="dropdown @(ViewBag.Title == "Report" ? "active" : "")">
+                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="server"></i><span>Report</span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="nav-link" href="/admin/site/add/0">Add Site</a></li>
-                                    <li><a class="nav-link" href="/admin/site">Site List</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown @(ViewBag.Title == "AccountRenew" ? "active" : "")">
-                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="clock"></i><span>Material Category</span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="nav-link" href="/admin/materialcategory/add/0">Add Material Category</a></li>
-                                    <li><a class="nav-link" href="/admin/materialcategory">Material Category List</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown @(ViewBag.Title == "AccountRenew" ? "active" : "")">
-                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="clock"></i><span>Materials</span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="nav-link" href="/admin/material/add/0">Add Material</a></li>
-                                    <li><a class="nav-link" href="/admin/material">Material List</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown @(ViewBag.Title == "AccountRenew" ? "active" : "")">
-                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="clock"></i><span>SMS Package</span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="nav-link" href="/admin/SMSRenew">SMS Package Renew List</a></li>
+                                    <li><a class="nav-link" href="/admin/report/report1">Report 1</a></li>
+                                    <li><a class="nav-link" href="/admin/report/report2">Report 2</a></li>
+                                    <li><a class="nav-link" href="/admin/report/report3">Report 3</a></li>
                                 </ul>
                             </li>
 
-                            <li class="dropdown @(ViewBag.Title == "AccountRenew" ? "active" : "")">
-                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="clock"></i><span>Employee Rating</span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="nav-link" href="/admin/employeerating">Employee Rating List</a></li>
-                                    <li><a class="nav-link" href="/admin/employeerating/add">Add Employee Rating</a></li>
-                                </ul>
-                            </li>
                         }
 
                     </ul>
