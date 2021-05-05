@@ -43,9 +43,6 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             try
             {
                 LoginResponseVM loginResponseVM = new LoginResponseVM();
-                IEnumerable<string> HeaderAccessKey;
-                this.Request.Headers.TryGetValues("Authorization", out HeaderAccessKey);
-                string accessKey = HeaderAccessKey.ToList().FirstOrDefault().ToString();
 
                 if (!string.IsNullOrEmpty(loginRequestVM.UserName) && !string.IsNullOrEmpty(loginRequestVM.PassWord))
                 {

@@ -187,6 +187,7 @@
     <Compile Include="Areas\WebAPI\Controllers\DashboardController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\AttendanceController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\HolidayController.cs" />
+    <Compile Include="Areas\WebAPI\Controllers\EmployeeRatingController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\LeaveController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\MaterialController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\MaterialCategoryController.cs" />
