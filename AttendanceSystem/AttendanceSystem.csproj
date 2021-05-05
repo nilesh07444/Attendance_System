@@ -150,6 +150,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\EmployeeRatingController.cs" />
     <Compile Include="Areas\Admin\Controllers\SMSRenewController.cs" />
     <Compile Include="Areas\Admin\Controllers\AccountRenewController.cs" />
     <Compile Include="Areas\Admin\Controllers\AttendanceController.cs" />
@@ -186,6 +187,8 @@
     <Compile Include="Areas\WebAPI\Controllers\BaseUserController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\DashboardController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\AttendanceController.cs" />
+    <Compile Include="Areas\WebAPI\Controllers\HolidayController.cs" />
+    <Compile Include="Areas\WebAPI\Controllers\EmployeeRatingController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\LeaveController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\MaterialController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\MaterialCategoryController.cs" />
@@ -245,6 +248,7 @@
     <Compile Include="ViewModel\CompanyRequestVM.cs" />
     <Compile Include="ViewModel\DashboardVM.cs" />
     <Compile Include="ViewModel\DynamicContentVM.cs" />
+    <Compile Include="ViewModel\EmployeeRatingVM.cs" />
     <Compile Include="ViewModel\EmployeeVM.cs" />
     <Compile Include="ViewModel\HolidayVM.cs" />
     <Compile Include="ViewModel\HomeImageVM.cs" />
@@ -1429,6 +1433,8 @@
     <Content Include="Areas\Admin\Views\Setting\EditSettingSA.cshtml" />
     <Content Include="Areas\Admin\Views\Setting\EditSettingCA.cshtml" />
     <Content Include="Areas\Client\Views\Service\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\EmployeeRating\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\EmployeeRating\Add.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />

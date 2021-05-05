@@ -1,0 +1,137 @@
+﻿@using AttendanceSystem.Helper
+@using AttendanceSystem.ViewModel;
+@model AttendanceSystem.ViewModel.EmployeeRatingFilterVM
+@{
+    ViewBag.Title = "EmployeeRating";
+    int counter = 1;
+
+    List<SelectListItem> lstRateMonth = new List<SelectListItem>();
+    lstRateMonth.Add(new SelectListItem { Value = "1", Text = "January" });
+    lstRateMonth.Add(new SelectListItem { Value = "2", Text = "February" });
+    lstRateMonth.Add(new SelectListItem { Value = "3", Text = "March" });
+    lstRateMonth.Add(new SelectListItem { Value = "4", Text = "April" });
+    lstRateMonth.Add(new SelectListItem { Value = "5", Text = "May" });
+    lstRateMonth.Add(new SelectListItem { Value = "6", Text = "Jun" });
+    lstRateMonth.Add(new SelectListItem { Value = "7", Text = "July" });
+    lstRateMonth.Add(new SelectListItem { Value = "8", Text = "August" });
+    lstRateMonth.Add(new SelectListItem { Value = "9", Text = "September" });
+    lstRateMonth.Add(new SelectListItem { Value = "10", Text = "October" });
+    lstRateMonth.Add(new SelectListItem { Value = "11", Text = "November" });
+    lstRateMonth.Add(new SelectListItem { Value = "12", Text = "December" });
+
+    List<SelectListItem> lstRateYear = new List<SelectListItem>();
+    lstRateYear.Add(new SelectListItem { Value = DateTime.Now.Year.ToString(), Text = DateTime.Now.Year.ToString() });
+    lstRateYear.Add(new SelectListItem { Value = (DateTime.Now.Year - 1).ToString(), Text = (DateTime.Now.Year - 1).ToString() });
+    lstRateYear.Add(new SelectListItem { Value = (DateTime.Now.Year - 2).ToString(), Text = (DateTime.Now.Year - 2).ToString() });
+    lstRateYear.Add(new SelectListItem { Value = (DateTime.Now.Year - 3).ToString(), Text = (DateTime.Now.Year - 3).ToString() });
+    lstRateYear.Add(new SelectListItem { Value = (DateTime.Now.Year - 4).ToString(), Text = (DateTime.Now.Year - 4).ToString() });
+}
+
+
+<section class="section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Employee Rating List</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label>EmployeeRating Role</label>
+                                    @Html.DropDownListFor(model => model.UserRole, new SelectList(Model.UserRoleList, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8 required", style = "" })
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label>Rate Year</label>
+                                    @Html.DropDownListFor(model => model.Year, new SelectList(lstRateYear, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8 required", style = "" })
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label>Rate Month</label>
+                                    @Html.DropDownListFor(model => model.Month, new SelectList(lstRateMonth, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8 required", style = "" })
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label>Employee Code</label>
+                                    @Html.TextBoxFor(model => model.EmployeeCode, new { @type = "text", @class = "form-control", @placeholder = "Enter Employee Code" })
+                                </div>
+                            </div>
+
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label style="padding-top:45px"></label>
+                                    <button class="btn btn-primary mr-1" id="btnSearch" type="button">Search</button>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label style="padding-top:45px"></label>
+                                    <a href="/admin/EmployeeRating/add/0" class="btn btn-icon icon-left btn-primary"><i class="fas fa-plus-circle"></i> Add EmployeeRating</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover" id="tableExport" style="width:100%;">
+                                <thead>
+                                    <tr>
+                                        <td>#</td>
+                                        <th>Employee Name</th>
+                                        <th>Month</th>
+                                        <th>Year</th>
+                                        <th>Behaviour</th>
+                                        <th>Ragularity</th>
+                                        <th>Work</th>
+                                        <th>Remark</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null && Model.EmployeeRatingList.Count > 0)
+                                    {
+                                        foreach (EmployeeRatingVM obj in Model.EmployeeRatingList)
+                                        {
+                                            <tr>
+                                                <td>@counter.</td>
+                                                <td>@obj.EmployeeName</td>
+                                                <td>@obj.RateMonth</td>
+                                                <td>@obj.RateYear</td>
+                                                <td>@obj.BehaviourRate</td>
+                                                <td>@obj.RegularityRate</td>
+                                                <td>@obj.WorkRate</td>
+                                                <td>@obj.Remarks</td>
+                                            </tr>
+
+                                            counter++;
+                                        }
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnSearch').click(function () {
+            var userRole = $("#UserRole").val();
+            var year = $("#Year").val();
+            var month = $("#Month").val();
+            var employeeCode = $("#EmployeeCode").val();
+            StartLoading();
+            window.location.href = "/admin/EmployeeRating/Index?year=" + year + "&month=" + month + "&userRole=" + userRole + "&employeeCode=" + employeeCode;
+        });
+    })
+</script> 

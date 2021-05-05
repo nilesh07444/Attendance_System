@@ -17,6 +17,8 @@ namespace AttendanceSystem.ViewModel.WebAPI.ViewModel
     {
         public string Access_token { get; set; }
         public long EmployeeId { get; set; }
+        public long RoleId { get; set; }
+        public long CompanyTypeId { get; set; }
         public long CompanyId { get; set; }
         public string Prefix { get; set; }
         public string FirstName { get; set; }

@@ -70,5 +70,7 @@
         public static double FullDay = 1;
         public static double HalfDay = 0.5;
         public static string DefaultTime = "00:00:00";
+
+        public static string EmployeeRatingAlreadyExist  = "Employee rating already exist.";
     }
 }

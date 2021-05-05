@@ -232,6 +232,14 @@
                                     <li><a class="nav-link" href="/admin/SMSRenew">SMS Package Renew List</a></li>
                                 </ul>
                             </li>
+
+                            <li class="dropdown @(ViewBag.Title == "AccountRenew" ? "active" : "")">
+                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="clock"></i><span>Employee Rating</span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="nav-link" href="/admin/employeerating">Employee Rating List</a></li>
+                                    <li><a class="nav-link" href="/admin/employeerating/add">Add Employee Rating</a></li>
+                                </ul>
+                            </li>
                         }
 
                     </ul>

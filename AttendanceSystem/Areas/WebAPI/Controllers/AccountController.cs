@@ -43,9 +43,6 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             try
             {
                 LoginResponseVM loginResponseVM = new LoginResponseVM();
-                IEnumerable<string> HeaderAccessKey;
-                this.Request.Headers.TryGetValues("Authorization", out HeaderAccessKey);
-                string accessKey = HeaderAccessKey.ToList().FirstOrDefault().ToString();
 
                 if (!string.IsNullOrEmpty(loginRequestVM.UserName) && !string.IsNullOrEmpty(loginRequestVM.PassWord))
                 {
@@ -160,7 +157,9 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     tokenVM = JWTAuthenticationHelper.GenerateToken(userToken);
                     authenticateVM.Access_token = tokenVM.Token;
                     authenticateVM.EmployeeId = data.EmployeeId;
+                    authenticateVM.RoleId = data.AdminRoleId;
                     authenticateVM.CompanyId = data.CompanyId;
+                    authenticateVM.CompanyTypeId = company.CompanyTypeId;
                     authenticateVM.Prefix = data.Prefix;
                     authenticateVM.FirstName = data.FirstName;
                     authenticateVM.LastName = data.LastName;
