@@ -1,0 +1,120 @@
+﻿@using AttendanceSystem.Helper;
+@model AttendanceSystem.ViewModel.EmployeeRatingVM
+@{
+    ViewBag.Title = "Employee Rating";
+
+    List<SelectListItem> lstRateMonth = new List<SelectListItem>();
+    lstRateMonth.Add(new SelectListItem { Value = "1", Text = "January" });
+    lstRateMonth.Add(new SelectListItem { Value = "2", Text = "February" });
+    lstRateMonth.Add(new SelectListItem { Value = "3", Text = "March" });
+    lstRateMonth.Add(new SelectListItem { Value = "4", Text = "April" });
+    lstRateMonth.Add(new SelectListItem { Value = "5", Text = "May" });
+    lstRateMonth.Add(new SelectListItem { Value = "6", Text = "Jun" });
+    lstRateMonth.Add(new SelectListItem { Value = "7", Text = "July" });
+    lstRateMonth.Add(new SelectListItem { Value = "8", Text = "August" });
+    lstRateMonth.Add(new SelectListItem { Value = "9", Text = "September" });
+    lstRateMonth.Add(new SelectListItem { Value = "10", Text = "October" });
+    lstRateMonth.Add(new SelectListItem { Value = "11", Text = "November" });
+    lstRateMonth.Add(new SelectListItem { Value = "12", Text = "December" });
+
+    List<SelectListItem> lstRateYear = new List<SelectListItem>();
+    lstRateYear.Add(new SelectListItem { Value = DateTime.Now.Year.ToString(), Text = DateTime.Now.Year.ToString() });
+    lstRateYear.Add(new SelectListItem { Value = (DateTime.Now.Year - 1).ToString(), Text = (DateTime.Now.Year - 1).ToString() });
+    lstRateYear.Add(new SelectListItem { Value = (DateTime.Now.Year - 2).ToString(), Text = (DateTime.Now.Year - 2).ToString() });
+    lstRateYear.Add(new SelectListItem { Value = (DateTime.Now.Year - 3).ToString(), Text = (DateTime.Now.Year - 3).ToString() });
+    lstRateYear.Add(new SelectListItem { Value = (DateTime.Now.Year - 4).ToString(), Text = (DateTime.Now.Year - 4).ToString() });
+}
+
+<section class="section">
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h4>@(Model.EmployeeId == 0 ? "Add" : "Edit") Employee Rating</h4>
+                </div>
+
+                @using (Html.BeginForm("Add", "EmployeeRating", FormMethod.Post, new { @id = "EmployeeRatingFormId", @class = "", enctype = "multipart/form-data", role = "form" }))
+                {
+                <div class="card-body">
+                    @Html.ValidationSummary()
+                    <div class="row">
+                        <div class="form-group col-6">
+                            @Html.LabelFor(model => model.EmployeeId, htmlAttributes: new { @class = "" })
+                            @Html.DropDownListFor(model => model.EmployeeId, new SelectList(Model.EmployeeList, "Value", "Text"), "- Select -", new { @class = "form-control required" })
+                            @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })
+                            @Html.HiddenFor(model => model.EmployeeId)
+                        </div>
+                        <div class="form-group col-6">
+                            @Html.LabelFor(model => model.RateYear, htmlAttributes: new { @class = "" })
+                            @Html.DropDownListFor(model => model.RateYear, new SelectList(lstRateYear, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8 required", style = "" })
+                            @Html.ValidationMessageFor(model => model.RateYear, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-6">
+                            @Html.LabelFor(model => model.RateMonth, htmlAttributes: new { @class = "" })
+                            @Html.DropDownListFor(model => model.RateMonth, new SelectList(lstRateMonth, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8 required", style = "" })
+                            @Html.ValidationMessageFor(model => model.RateMonth, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-6">
+                            @Html.LabelFor(model => model.BehaviourRate, htmlAttributes: new { @class = "" })
+                            @Html.TextBoxFor(model => model.BehaviourRate, new { @type = "number", @class = "form-control required", @placeholder = "Enter Behaviour rate", @max = 10 })
+                            @Html.ValidationMessageFor(model => model.BehaviourRate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-6">
+                            @Html.LabelFor(model => model.RegularityRate, htmlAttributes: new { @class = "" })
+                            @Html.TextBoxFor(model => model.RegularityRate, new { @type = "number", @class = "form-control required", @placeholder = "Enter Regularity rate", @max = 10 })
+                            @Html.ValidationMessageFor(model => model.RegularityRate, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-6">
+                            @Html.LabelFor(model => model.WorkRate, htmlAttributes: new { @class = "" })
+                            @Html.TextBoxFor(model => model.WorkRate, new { @type = "number", @class = "form-control required", @placeholder = "Enter Work rate", @max = 10 })
+                            @Html.ValidationMessageFor(model => model.WorkRate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-12">
+                            @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "" })
+                            @Html.TextAreaFor(model => model.Remarks, new { @type = "text", @class = "form-control", @placeholder = "Enter Remark" })
+                            @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                </div>
+
+                    <div class="card-footer text-center">
+                        <button class="btn btn-primary mr-1" type="submit" id="btnSubmit">Submit</button>
+                        <a href="/admin/employeerating" class="btn btn-secondary">Cancel</a>
+                    </div>
+
+                }
+
+            </div>
+        </div>
+    </div>
+
+</section>
+ 
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+
+<script type="text/javascript">
+    $(document).ready(function () { 
+        $('#btnCancel').click(function () {
+            window.location.href = "/admin/employeerating";
+        });
+
+        $('#btnSubmit').click(function () {
+            if ($("#EmployeeRatingFormId").valid()) {
+            }
+            else {
+                return false;
+            }
+            
+        });
+        
+    })
+</script>
