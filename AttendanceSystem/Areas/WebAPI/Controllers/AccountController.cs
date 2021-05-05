@@ -160,7 +160,9 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     tokenVM = JWTAuthenticationHelper.GenerateToken(userToken);
                     authenticateVM.Access_token = tokenVM.Token;
                     authenticateVM.EmployeeId = data.EmployeeId;
+                    authenticateVM.RoleId = data.AdminRoleId;
                     authenticateVM.CompanyId = data.CompanyId;
+                    authenticateVM.CompanyTypeId = company.CompanyTypeId;
                     authenticateVM.Prefix = data.Prefix;
                     authenticateVM.FirstName = data.FirstName;
                     authenticateVM.LastName = data.LastName;
