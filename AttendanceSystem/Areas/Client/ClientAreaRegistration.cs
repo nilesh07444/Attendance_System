@@ -48,6 +48,13 @@ namespace AttendanceSystem.Areas.Client
                 new { controller = "FAQ", action = "Index", id = UrlParameter.Optional }
             );
 
+            // Service Page
+            context.MapRoute(
+                "Client_Service",
+                "service",
+                new { controller = "Service", action = "Index", id = UrlParameter.Optional }
+            );
+
             // Company Request Page
             context.MapRoute(
                 "Client_CompanyRequest",

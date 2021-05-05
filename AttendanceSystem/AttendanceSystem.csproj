@@ -177,6 +177,7 @@
     <Compile Include="Areas\Client\Controllers\FAQController.cs" />
     <Compile Include="Areas\Client\Controllers\MainController.cs" />
     <Compile Include="Areas\Client\Controllers\PrivacyPolicyController.cs" />
+    <Compile Include="Areas\Client\Controllers\ServiceController.cs" />
     <Compile Include="Areas\Client\Controllers\TermsConditionController.cs" />
     <Compile Include="Areas\Client\Controllers\WebViewController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\AccountController.cs" />
@@ -1427,6 +1428,7 @@
     <Content Include="Areas\Admin\Views\SMSRenew\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Setting\EditSettingSA.cshtml" />
     <Content Include="Areas\Admin\Views\Setting\EditSettingCA.cshtml" />
+    <Content Include="Areas\Client\Views\Service\Index.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
