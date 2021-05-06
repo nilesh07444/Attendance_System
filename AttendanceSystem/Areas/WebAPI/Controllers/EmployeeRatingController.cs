@@ -19,8 +19,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("EmployeeRating")]
-        public ResponseDataModel<List<EmployeeRatingVM>> EmployeeRating(CommonEmployeeRatingFilterVM EmployeeRatingFilterVM)
+        [Route("List")]
+        public ResponseDataModel<List<EmployeeRatingVM>> List(CommonEmployeeRatingFilterVM EmployeeRatingFilterVM)
         {
             ResponseDataModel<List<EmployeeRatingVM>> response = new ResponseDataModel<List<EmployeeRatingVM>>();
             response.IsError = false;
@@ -30,6 +30,23 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 long employeeRole = base.UTI.RoleId;
                 long companyId = base.UTI.CompanyId;
 
+                if (EmployeeRatingFilterVM.StartMonth < (int)Months.StartMonth || EmployeeRatingFilterVM.EndMonth < (int)Months.StartMonth)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.MonthShouldBeFrom1To12);
+                }
+
+                if (EmployeeRatingFilterVM.StartMonth > (int)Months.EndMonth || EmployeeRatingFilterVM.EndMonth > (int)Months.EndMonth)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.MonthShouldBeFrom1To12);
+                }
+
+                if (EmployeeRatingFilterVM.StartYear > DateTime.Now.Year || EmployeeRatingFilterVM.EndYear > DateTime.Now.Year)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.FutureYearNotAllowed);
+                }
                 List<EmployeeRatingVM> EmployeeRatingList = (from er in _db.tbl_EmployeeRating
                                                              join emp in _db.tbl_Employee on er.EmployeeId equals emp.EmployeeId
                                                              where !emp.IsDeleted &&
@@ -101,8 +118,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("Top10AvgEmployeeRating")]
-        public ResponseDataModel<List<EmployeeRatingVM>> Top10AvgEmployeeRating(CommonEmployeeRatingFilterVM EmployeeRatingFilterVM)
+        [Route("Top10Avg")]
+        public ResponseDataModel<List<EmployeeRatingVM>> Top10Avg(CommonEmployeeRatingFilterVM EmployeeRatingFilterVM)
         {
             ResponseDataModel<List<EmployeeRatingVM>> response = new ResponseDataModel<List<EmployeeRatingVM>>();
             response.IsError = false;
@@ -132,7 +149,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                                  RegularityRate = er.RegularityRate,
                                                                  WorkRate = er.WorkRate,
                                                                  Remarks = er.Remarks,
-                                                             }).OrderByDescending(x => x.RateMonth).Take(10).ToList();
+                                                             }).OrderByDescending(x => (x.BehaviourRate+x.RegularityRate+x.WorkRate)/3).Take(10).ToList();
 
                 response.Data = EmployeeRatingList;
             }

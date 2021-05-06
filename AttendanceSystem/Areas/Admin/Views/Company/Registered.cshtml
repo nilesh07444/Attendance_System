@@ -28,6 +28,7 @@
                                         <th>City</th>
                                         <th>State</th>
                                         <th>GSTNo</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -60,6 +61,14 @@
                                                 <td>@obj.City</td>
                                                 <td>@obj.State</td>
                                                 <td>@obj.GSTNo</td>
+                                                <td>
+
+                                                    <a href="/admin/company/view/@obj.CompanyId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
+                                                    @if (clsAdminSession.RoleID == (int)AdminRoles.SuperAdmin)
+                                                    {
+                                                        <a href="/admin/company/editcompany/@obj.CompanyId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
+                                                    }
+                                                </td>
                                             </tr>
                                             counter++;
                                         }

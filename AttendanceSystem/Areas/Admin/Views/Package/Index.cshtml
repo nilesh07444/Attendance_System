@@ -30,6 +30,8 @@
                                         <th>Package Description</th>
                                         <th>Package Amount</th>
                                         <th>Access Days</th>
+                                        <th>No of SMS</th>
+                                        <th>No Of Employee</th>
                                         <th>Active</th>
                                         <th>Action</th>
                                     </tr>
@@ -39,46 +41,48 @@
                                     {
                                         foreach (PackageVM obj in Model)
                                         {
-                                            <tr>
-                                                <td>@counter.</td>
-                                                <td>
-                                                    @if (!string.IsNullOrEmpty(obj.PackageImage))
-                                                    {
-                                                        if (File.Exists(Server.MapPath(ErrorMessage.PackageDirectoryPath + obj.PackageImage)))
-                                                        {
-                                                            <img src="@ErrorMessage.PackageDirectoryPath/@obj.PackageImage" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height:40px;" />
-                                                        }
-                                                        else
-                                                        {
-                                                            <img src="@ErrorMessage.DefaultImagePath" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height: 40px;" />
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        <img src="@ErrorMessage.DefaultImagePath" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height: 40px;" />
-                                                    }
-
-                                                </td>
-                                                <td>@obj.PackageName</td>
-                                                <td>@obj.PackageDescription</td>
-                                                <td>@obj.Amount</td>
-                                                <td>@obj.AccessDays</td>
-                                                @if (obj.IsActive == true)
+                                    <tr>
+                                        <td>@counter.</td>
+                                        <td>
+                                            @if (!string.IsNullOrEmpty(obj.PackageImage))
+                                            {
+                                                if (File.Exists(Server.MapPath(ErrorMessage.PackageDirectoryPath + obj.PackageImage)))
                                                 {
-                                                    <td><span class="badge badge-success" style="cursor:pointer;" title="Click to Inactive" onclick="fnChangeStatus('@obj.PackageId','InActive');">Active</span></td>
+                                                    <img src="@ErrorMessage.PackageDirectoryPath/@obj.PackageImage" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height:40px;" />
                                                 }
                                                 else
                                                 {
-                                                    <td><span class="badge badge-danger" style="cursor:pointer;" title="Click to Active" onclick="fnChangeStatus('@obj.PackageId','Active');">InActive</span></td>
+                                                    <img src="@ErrorMessage.DefaultImagePath" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height: 40px;" />
                                                 }
-                                                <td>
+                                            }
+                                            else
+                                            {
+                                                <img src="@ErrorMessage.DefaultImagePath" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height: 40px;" />
+                                            }
 
-                                                    <a href="/admin/package/view/@obj.PackageId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
-                                                    <a href="/admin/package/add/@obj.PackageId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
-                                                    <a href="javascript:void(0);" title="Delete" class="btn btn-icon btn-danger" onclick="fnDeletePackage('@obj.PackageId')"><i class="fas fa-trash-alt"></i></a>
+                                        </td>
+                                        <td>@obj.PackageName</td>
+                                        <td>@obj.PackageDescription</td>
+                                        <td>@obj.Amount</td>
+                                        <td>@obj.AccessDays</td>
+                                        <td>@obj.NoOfSMS</td>
+                                        <td>@obj.NoOfEmployee</td>
+                                        @if (obj.IsActive == true)
+                                        {
+                                            <td><span class="badge badge-success" style="cursor:pointer;" title="Click to Inactive" onclick="fnChangeStatus('@obj.PackageId','InActive');">Active</span></td>
+                                        }
+                                        else
+                                        {
+                                            <td><span class="badge badge-danger" style="cursor:pointer;" title="Click to Active" onclick="fnChangeStatus('@obj.PackageId','Active');">InActive</span></td>
+                                        }
+                                        <td>
 
-                                                </td>
-                                            </tr>
+                                            <a href="/admin/package/view/@obj.PackageId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
+                                            <a href="/admin/package/add/@obj.PackageId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
+                                            <a href="javascript:void(0);" title="Delete" class="btn btn-icon btn-danger" onclick="fnDeletePackage('@obj.PackageId')"><i class="fas fa-trash-alt"></i></a>
+
+                                        </td>
+                                    </tr>
 
                                             counter++;
                                         }

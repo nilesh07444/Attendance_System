@@ -12,21 +12,17 @@ namespace AttendanceSystem.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class tbl_Package
+    public partial class tbl_Sponsor
     {
-        public long PackageId { get; set; }
-        public string PackageName { get; set; }
-        public decimal Amount { get; set; }
-        public string PackageDescription { get; set; }
-        public int AccessDays { get; set; }
-        public string PackageImage { get; set; }
-        public Nullable<int> NoOfEmployee { get; set; }
-        public Nullable<int> NoOfSMS { get; set; }
+        public long SponsorId { get; set; }
+        public string SponsorName { get; set; }
+        public string SponsorImage { get; set; }
+        public string SponsorLink { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
-        public System.DateTime CreatedDate { get; set; }
         public long CreatedBy { get; set; }
-        public Nullable<System.DateTime> ModifiedDate { get; set; }
+        public System.DateTime CreatedDate { get; set; }
         public Nullable<long> ModifiedBy { get; set; }
+        public Nullable<System.DateTime> ModifiedDate { get; set; }
     }
 }

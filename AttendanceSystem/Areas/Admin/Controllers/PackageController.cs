@@ -36,7 +36,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                PackageDescription = pck.PackageDescription,
                                AccessDays = pck.AccessDays,
                                IsActive = pck.IsActive,
-                               PackageImage = pck.PackageImage
+                               PackageImage = pck.PackageImage,
+                               NoOfSMS = pck.NoOfSMS,
+                               NoOfEmployee = pck.NoOfEmployee
                            }).OrderByDescending(x => x.PackageId).ToList();
             }
             catch (Exception ex)
@@ -60,7 +62,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                  PackageDescription = pkg.PackageDescription,
                                  AccessDays = pkg.AccessDays,
                                  PackageImage = pkg.PackageImage,
-                                 IsActive = pkg.IsActive
+                                 IsActive = pkg.IsActive,
+                                 NoOfSMS = pkg.NoOfSMS,
+                                 NoOfEmployee = pkg.NoOfEmployee
                              }).FirstOrDefault();
             }
 
@@ -115,6 +119,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objPackage.Amount = packageVM.Amount;
                         objPackage.PackageDescription = packageVM.PackageDescription;
                         objPackage.AccessDays = packageVM.AccessDays;
+                        objPackage.NoOfSMS = packageVM.NoOfSMS;
+                        objPackage.NoOfEmployee = packageVM.NoOfEmployee;
                         objPackage.ModifiedBy = LoggedInUserId;
                         objPackage.ModifiedDate = DateTime.UtcNow;
                     }
@@ -127,6 +133,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objPackage.AccessDays = packageVM.AccessDays;
                         objPackage.PackageImage = fileName;
                         objPackage.IsActive = true;
+                        objPackage.NoOfSMS = packageVM.NoOfSMS;
+                        objPackage.NoOfEmployee = packageVM.NoOfEmployee;
                         objPackage.CreatedBy = LoggedInUserId;
                         objPackage.CreatedDate = DateTime.UtcNow;
                         objPackage.ModifiedBy = LoggedInUserId;
@@ -162,7 +170,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                              PackageDescription = pkg.PackageDescription,
                              AccessDays = pkg.AccessDays,
                              PackageImage = pkg.PackageImage,
-                             IsActive = pkg.IsActive
+                             IsActive = pkg.IsActive,
+                             NoOfSMS = pkg.NoOfSMS,
+                             NoOfEmployee = pkg.NoOfEmployee
                          }).FirstOrDefault();
 
             return View(packageVM);

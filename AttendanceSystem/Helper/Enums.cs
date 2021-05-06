@@ -108,5 +108,10 @@ namespace AttendanceSystem.Helper
         Out = 2
     }
 
+    public enum Months
+    {
+        StartMonth = 1,
+        EndMonth = 12
+    }
 }
 

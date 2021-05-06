@@ -24,5 +24,9 @@ namespace AttendanceSystem.ViewModel
 
         [Display(Name = "Package Image")]
         public HttpPostedFileBase PackageImageFile { get; set; }
+        [Display(Name = "No of SMS")]
+        public int? NoOfSMS { get; set; }
+        [Display(Name = "No of Employee")]
+        public int? NoOfEmployee { get; set; }
     }
 }

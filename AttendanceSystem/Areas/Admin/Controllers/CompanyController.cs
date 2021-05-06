@@ -4,8 +4,9 @@ using AttendanceSystem.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
-using System.Text;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -16,10 +17,18 @@ namespace AttendanceSystem.Areas.Admin.Controllers
     {
         AttendanceSystemEntities _db;
         string psSult;
+        public string GSTDirectoryPath = "";
+        public string CompanyDirectoryPath = "";
+        public string CancellationChequeDirectoryPath = "";
+        string enviornment;
         public CompanyController()
         {
             _db = new AttendanceSystemEntities();
             psSult = ConfigurationManager.AppSettings["PasswordSult"].ToString();
+            GSTDirectoryPath = ErrorMessage.GSTDirectoryPath;
+            CompanyDirectoryPath = ErrorMessage.CompanyDirectoryPath;
+            CancellationChequeDirectoryPath = ErrorMessage.CancellationChequeDirectoryPath;
+            enviornment = ConfigurationManager.AppSettings["Environment"].ToString();
         }
         // GET: Admin/Company
         public ActionResult Registered()
@@ -157,7 +166,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objcomp.GSTNo = objCompanyReq.GSTNo;
                         objcomp.GSTPhoto = objCompanyReq.GSTPhoto;
                         objcomp.CompanyPhoto = objCompanyReq.CompanyPhoto;
-                        objcomp.CancellationChequePhoto = objCompanyReq.CancellationChequePhoto;                        
+                        objcomp.CancellationChequePhoto = objCompanyReq.CancellationChequePhoto;
                         objcomp.FreeAccessDays = objCompanyReq.FreeAccessDays;
                         objcomp.IsActive = true;
                         objcomp.CreatedBy = LoggedInUserId;
@@ -237,6 +246,222 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 throw ex;
             }
             return View(companyRenewPaymentVM);
+        }
+
+        public ActionResult EditCompany(long id)
+        {
+            RegisteredCompanyVM registeredCompanyVM = new RegisteredCompanyVM();
+            try
+            {
+                registeredCompanyVM = (from cp in _db.tbl_Company
+                                    join ct in _db.mst_CompanyType on cp.CompanyTypeId equals ct.CompanyTypeId
+                                    where cp.CompanyId == id
+                                    select new RegisteredCompanyVM
+                                    {
+                                        CompanyId = cp.CompanyId,
+                                        CompanyTypeId = cp.CompanyTypeId,
+                                        CompanyName = cp.CompanyName,
+                                        CompanyCode = cp.CompanyCode,
+                                        City = cp.City,
+                                        State = cp.State,
+                                        GSTNo = cp.GSTNo,
+                                        GSTPhoto = cp.GSTPhoto,
+                                        CompanyPhoto = cp.CompanyPhoto,
+                                        CancellationChequePhoto = cp.CancellationChequePhoto,
+                                        FreeAccessDays = cp.FreeAccessDays,
+                                        CompanyTypeText = ct.CompanyTypeName
+                                    }).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                string ErrorMessage = ex.Message.ToString();
+                throw ex;
+            }
+            return View(registeredCompanyVM);
+        }
+        [HttpPost]
+        public ActionResult EditCompany(RegisteredCompanyVM registeredCompanyVM, HttpPostedFileBase GSTPhotoFile, HttpPostedFileBase CompanyPhotoFile,
+            HttpPostedFileBase CancellationChequePhotoFile)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
+                    string gstFileName = string.Empty, companyFileName = string.Empty, chqFileName = string.Empty;
+                    bool folderExists = false;
+
+                    #region GSTImage
+                    if (GSTPhotoFile != null)
+                    {
+                        string gstPath = Server.MapPath(GSTDirectoryPath);
+
+                        folderExists = Directory.Exists(gstPath);
+                        if (!folderExists)
+                            Directory.CreateDirectory(gstPath);
+
+                        // Image file validation
+                        string ext = Path.GetExtension(GSTPhotoFile.FileName);
+                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
+                        {
+                            ModelState.AddModelError("GSTPhotoFile", ErrorMessage.SelectOnlyImage);
+                            return View(registeredCompanyVM);
+                        }
+
+                        // Save file in folder
+                        gstFileName = Guid.NewGuid() + "-" + Path.GetFileName(GSTPhotoFile.FileName);
+                        GSTPhotoFile.SaveAs(gstPath + gstFileName);
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("GSTPhotoFile", ErrorMessage.ImageRequired);
+                        return View(registeredCompanyVM);
+                    }
+                    #endregion GSTImage
+
+                    #region CompanyImage
+                    if (CompanyPhotoFile != null)
+                    {
+                        string companyPath = Server.MapPath(CompanyDirectoryPath);
+
+                        folderExists = Directory.Exists(companyPath);
+                        if (!folderExists)
+                            Directory.CreateDirectory(companyPath);
+
+                        // Image file validation
+                        string ext = Path.GetExtension(CompanyPhotoFile.FileName);
+                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
+                        {
+                            ModelState.AddModelError("CompanyPhotoFile", ErrorMessage.SelectOnlyImage);
+                            return View(registeredCompanyVM);
+                        }
+
+                        // Save file in folder
+                        companyFileName = Guid.NewGuid() + "-" + Path.GetFileName(CompanyPhotoFile.FileName);
+                        CompanyPhotoFile.SaveAs(companyPath + companyFileName);
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("CompanyPhotoFile", ErrorMessage.ImageRequired);
+                        return View(registeredCompanyVM);
+                    }
+                    #endregion CompanyImage
+
+                    #region Cancel Cheque Image
+
+                    if (CancellationChequePhotoFile != null)
+                    {
+                        string cancellationChqPath = Server.MapPath(CancellationChequeDirectoryPath);
+
+                        folderExists = Directory.Exists(cancellationChqPath);
+                        if (!folderExists)
+                            Directory.CreateDirectory(cancellationChqPath);
+
+                        // Image file validation
+                        string ext = Path.GetExtension(CancellationChequePhotoFile.FileName);
+                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
+                        {
+                            ModelState.AddModelError("CancellationChequePhotoFile", ErrorMessage.SelectOnlyImage);
+                            return View(registeredCompanyVM);
+                        }
+
+                        // Save file in folder
+                        chqFileName = Guid.NewGuid() + "-" + Path.GetFileName(CancellationChequePhotoFile.FileName);
+                        CancellationChequePhotoFile.SaveAs(cancellationChqPath + chqFileName);
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("CancellationChequePhotoFile", ErrorMessage.ImageRequired);
+                        return View(registeredCompanyVM);
+                    }
+
+                    #endregion ChqImage
+
+                    if (registeredCompanyVM.CompanyId > 0)
+                    {
+
+                        tbl_Company objcomp = _db.tbl_Company.Where(x => x.CompanyId == registeredCompanyVM.CompanyId).FirstOrDefault();
+
+                        objcomp.City = registeredCompanyVM.City;
+                        objcomp.State = registeredCompanyVM.State;
+                        objcomp.GSTNo = registeredCompanyVM.GSTNo;
+                        objcomp.GSTPhoto = GSTPhotoFile != null ? gstFileName : objcomp.GSTPhoto;
+                        objcomp.CompanyPhoto = CompanyPhotoFile != null ? companyFileName : objcomp.CompanyPhoto;
+                        objcomp.CancellationChequePhoto = CancellationChequePhotoFile != null ? chqFileName : objcomp.CancellationChequePhoto;
+                        objcomp.FreeAccessDays = registeredCompanyVM.FreeAccessDays;
+                        objcomp.ModifiedBy = LoggedInUserId;
+                        objcomp.ModifiedDate = DateTime.UtcNow;
+                        _db.tbl_Company.Add(objcomp);
+                        _db.SaveChanges();
+                    }
+                }
+                else
+                {
+                    return View(registeredCompanyVM);
+                }
+            }
+            catch (Exception ex)
+            {
+                string ErrorMessage = ex.Message.ToString();
+                throw ex;
+            }
+            return RedirectToAction("Requests");
+        }
+
+        public JsonResult VerifyCopmany(int companyId)
+        {
+            int status = 0;
+            string errorMessage = string.Empty;
+            string otp = string.Empty;
+            try
+            {
+                string mobileNo = (from cmp in _db.tbl_Company
+                                   join emp in _db.tbl_AdminUser on cmp.CompanyCode equals emp.UserName
+                                   select emp.MobileNo).FirstOrDefault();
+                if (!string.IsNullOrEmpty(mobileNo))
+                {
+                    using (WebClient webClient = new WebClient())
+                    {
+                        Random random = new Random();
+                        int num = random.Next(555555, 999999);
+                        if (enviornment != "Development")
+                        {
+                            string msg = "Your Otp code for Login is " + num;
+                            msg = HttpUtility.UrlEncode(msg);
+                            string url = CommonMethod.GetSMSUrl().Replace("--MOBILE--", mobileNo).Replace("--MSG--", msg);
+                            var json = webClient.DownloadString(url);
+                            if (json.Contains("invalidnumber"))
+                            {
+                                status = 0;
+                                errorMessage = ErrorMessage.InvalidMobileNo;
+                            }
+                            else
+                            {
+                                status = 1;
+
+                                otp = num.ToString();
+                            }
+                        }
+                        else
+                        {
+                            status = 1;
+                            otp = num.ToString();
+                        }
+                    }
+                }
+                else
+                {
+                    status = 0;
+                    errorMessage = ErrorMessage.MobileNoNotFoundForTheCompany;
+                }
+            }
+            catch (Exception ex)
+            {
+                status = 0;
+                errorMessage = ex.Message.ToString();
+            }
+
+            return Json(new { Status = status, Otp = otp, ErrorMessage = errorMessage }, JsonRequestBehavior.AllowGet);
         }
 
     }

@@ -97,11 +97,59 @@ namespace AttendanceSystem.ViewModel
         public string GSTPhoto { get; set; }
         public string CompanyPhoto { get; set; }
         public string CancellationChequePhoto { get; set; }
+
+        [Display(Name = "Company Code")]
+        public string CompanyCode{ get; set; }
     }
 
     public class CompanyRequestFilterVM
     {
         public int RequestStatus { get; set; }
         public List<CompanyRequestVM> companyRequest { get; set; }
+    }
+
+    public class RegisteredCompanyVM
+    {
+
+        [Display(Name = "Company Type")]
+        [Required(ErrorMessage = "Company Type is required")]
+        public long? CompanyTypeId { get; set; }
+
+        
+        [Required(ErrorMessage = "Company Name is required")]
+        [Display(Name = "Company Name")]
+        public string CompanyName { get; set; }
+
+        [Display(Name = "City")]
+        [Required(ErrorMessage = "City is required")]
+        public string City { get; set; }
+
+        [Display(Name = "State")]
+        [Required(ErrorMessage = "State is required")]
+        public string State { get; set; }
+
+         
+        [Display(Name = "GST No")]
+        public string GSTNo { get; set; }
+
+        [Display(Name = "GST Photo")]
+        public HttpPostedFileBase GSTPhotoFile { get; set; }
+
+        [Display(Name = "Company Photo")]
+        public HttpPostedFileBase CompanyPhotoFile { get; set; }
+
+        [Display(Name = "Cancel Cheque Photo")]
+        public HttpPostedFileBase CancellationChequePhotoFile { get; set; }
+
+        public long CompanyId { get; set; }
+        public int FreeAccessDays { get; set; }
+        public string CompanyTypeText { get; set; }
+
+        public string GSTPhoto { get; set; }
+        public string CompanyPhoto { get; set; }
+        public string CancellationChequePhoto { get; set; }
+
+        [Display(Name = "Company Code")]
+        public string CompanyCode { get; set; }
     }
 }

@@ -239,6 +239,12 @@
     <Compile Include="Models\tbl_SMSPackage.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\tbl_Sponsor.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tbl_Testimonial.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\AdminProfileVM.cs" />
     <Compile Include="ViewModel\AttendanceVM.cs" />
     <Compile Include="ViewModel\CompanyAdminSettingVM.cs" />
@@ -1433,6 +1439,7 @@
     <Content Include="Areas\Admin\Views\Setting\EditSettingCA.cshtml" />
     <Content Include="Areas\Admin\Views\EmployeeRating\Index.cshtml" />
     <Content Include="Areas\Admin\Views\EmployeeRating\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\Company\EditCompany.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
