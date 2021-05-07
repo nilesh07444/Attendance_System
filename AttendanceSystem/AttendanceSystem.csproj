@@ -151,6 +151,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\EmployeeRatingController.cs" />
+    <Compile Include="Areas\Admin\Controllers\FeedbackController.cs" />
     <Compile Include="Areas\Admin\Controllers\SMSRenewController.cs" />
     <Compile Include="Areas\Admin\Controllers\AccountRenewController.cs" />
     <Compile Include="Areas\Admin\Controllers\AttendanceController.cs" />
@@ -256,6 +257,7 @@
     <Compile Include="ViewModel\DynamicContentVM.cs" />
     <Compile Include="ViewModel\EmployeeRatingVM.cs" />
     <Compile Include="ViewModel\EmployeeVM.cs" />
+    <Compile Include="ViewModel\FeedbackVM.cs" />
     <Compile Include="ViewModel\HolidayVM.cs" />
     <Compile Include="ViewModel\HomeImageVM.cs" />
     <Compile Include="ViewModel\LeaveVM.cs" />
@@ -1442,6 +1444,10 @@
     <Content Include="Areas\Admin\Views\EmployeeRating\Index.cshtml" />
     <Content Include="Areas\Admin\Views\EmployeeRating\Add.cshtml" />
     <Content Include="Areas\Admin\Views\Company\EditCompany.cshtml" />
+    <Content Include="Areas\Admin\Views\Feedback\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Feedback\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\Feedback\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Feedback\View.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
