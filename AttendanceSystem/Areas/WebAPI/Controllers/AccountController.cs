@@ -46,7 +46,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                 if (!string.IsNullOrEmpty(loginRequestVM.UserName) && !string.IsNullOrEmpty(loginRequestVM.PassWord))
                 {
-                    string encryptPassword = CommonMethod.Encrypt(loginRequestVM.PassWord, psSult); 
+                    string encryptPassword = CommonMethod.Encrypt(loginRequestVM.PassWord, psSult);
 
                     var data = _db.tbl_Employee.Where(x => x.EmployeeCode == loginRequestVM.UserName && x.Password == encryptPassword && x.IsActive && !x.IsDeleted).FirstOrDefault();
 
@@ -149,8 +149,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         EmployeeId = data.EmployeeId,
                         RoleId = data.AdminRoleId,
                         UserName = data.FirstName + " " + data.LastName,
-                        CompanyId= data.CompanyId,
-                        CompanyTypeId= company.CompanyTypeId
+                        CompanyId = data.CompanyId,
+                        CompanyTypeId = company.CompanyTypeId
                     };
 
                     JWTAccessTokenVM tokenVM = new JWTAccessTokenVM();
@@ -366,5 +366,51 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
             return response;
         }
+
+        [HttpPost]
+        [Route("ValidateFingerprint")]
+        public ResponseDataModel<string> ValidateFingerprint(EmployeeFirgerprintVM fingerprintVM)
+        {
+            ResponseDataModel<string> response = new ResponseDataModel<string>();
+            try
+            {
+                if (fingerprintVM.EmployeeId > 0)
+                {
+
+                    tbl_EmployeeFingerprint data = _db.tbl_EmployeeFingerprint.Where(x => x.ISOCode == fingerprintVM.ISOCode
+                                                                    && x.EmployeeId == fingerprintVM.EmployeeId).FirstOrDefault();
+
+                    if (data != null)
+                    {
+                        tbl_Employee objEmp = _db.tbl_Employee.Where(x => x.EmployeeId == fingerprintVM.EmployeeId).FirstOrDefault();
+                        string EmployeeFullName = objEmp.FirstName + " " + objEmp.LastName;
+
+                        response.IsError = false;
+                        response.Data = "Great.. Fingerprint Matched.. This fingerprint is of " + EmployeeFullName;
+                    }
+                    else
+                    {
+                        response.Data = "Oops.. Fingerprint not match..";
+
+                        response.IsError = true;
+                        response.AddError("Oops.. Fingerprint not match..");
+                    }
+                }
+                else
+                {
+                    response.IsError = true;
+                    response.AddError("EmployeeId not found");
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message);
+            }
+
+            return response;
+        }
+
+
     }
 }

@@ -51,5 +51,8 @@ namespace AttendanceSystem.Models
         public virtual DbSet<tbl_Package> tbl_Package { get; set; }
         public virtual DbSet<tbl_Sponsor> tbl_Sponsor { get; set; }
         public virtual DbSet<tbl_Testimonial> tbl_Testimonial { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
+        public virtual DbSet<tbl_EmployeeBuyTransaction> tbl_EmployeeBuyTransaction { get; set; }
+        public virtual DbSet<tbl_EmployeeFingerprint> tbl_EmployeeFingerprint { get; set; }
     }
 }

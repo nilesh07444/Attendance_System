@@ -202,6 +202,9 @@
     <Compile Include="Filters\JWT\JwtAuthenticationAttribute.cs" />
     <Compile Include="Helper\JWTAuthenticationHelper.cs" />
     <Compile Include="Helper\PageAccess.cs" />
+    <Compile Include="Models\sysdiagram.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tbl_Company.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
@@ -215,6 +218,12 @@
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tbl_Employee.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tbl_EmployeeBuyTransaction.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tbl_EmployeeFingerprint.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tbl_EmployeeRating.cs">
@@ -271,6 +280,7 @@
     <Compile Include="ViewModel\SuperAdminSettingVM.cs" />
     <Compile Include="ViewModel\WebAPI\ChangePasswordVM.cs" />
     <Compile Include="ViewModel\WebAPI\DashboardCountVM.cs" />
+    <Compile Include="ViewModel\WebAPI\EmployeeFirgerprintVM.cs" />
     <Compile Include="ViewModel\WebAPI\JWTAccessTokenVM.cs" />
     <Compile Include="ViewModel\WebAPI\LeaveVM.cs" />
     <Compile Include="ViewModel\WebAPI\LoginRequestVM.cs" />
