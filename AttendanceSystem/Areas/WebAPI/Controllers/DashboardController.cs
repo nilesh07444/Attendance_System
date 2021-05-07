@@ -50,7 +50,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 dashboardCountVM.LeavePendingForApprove = _db.tbl_Leave.Where(x => x.UserId == employeeId && !x.IsDeleted && x.LeaveStatus == (int)LeaveStatus.Pending).Count();
                 dashboardCountVM.LastMonthRating = "7/10";
                 dashboardCountVM.PendingSalary = 15000;
-                response.IsError = true;
+                response.IsError = false;
                 response.Data = dashboardCountVM;
             }
             catch (Exception ex)

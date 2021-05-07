@@ -464,5 +464,48 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return Json(new { Status = status, Otp = otp, ErrorMessage = errorMessage }, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult View(long id)
+        {
+            CompanyRequestVM companyRequestVM = new CompanyRequestVM();
+            try
+            {
+                companyRequestVM = (from cp in _db.tbl_CompanyRequest
+                                    join ct in _db.mst_CompanyType on cp.CompanyTypeId equals ct.CompanyTypeId
+                                    where cp.CompanyRequestId == id
+                                    select new CompanyRequestVM
+                                    {
+                                        CompanyRequestId = cp.CompanyRequestId,
+                                        CompanyTypeId = cp.CompanyTypeId,
+                                        CompanyName = cp.CompanyName,
+                                        Prefix = cp.Prefix,
+                                        Firstname = cp.Firstname,
+                                        Lastname = cp.Lastname,
+                                        DateOfBirth = cp.DateOfBirth,
+                                        EmailId = cp.EmailId,
+                                        MobileNo = cp.MobileNo,
+                                        AlternateMobileNo = cp.AlternateMobileNo,
+                                        City = cp.City,
+                                        State = cp.State,
+                                        AadharCardNo = cp.AadharCardNo,
+                                        GSTNo = cp.GSTNo,
+                                        PanCardNo = cp.PanCardNo,
+                                        PanCardPhoto = cp.PanCardPhoto,
+                                        AadharCardPhoto = cp.AadharCardPhoto,
+                                        GSTPhoto = cp.GSTPhoto,
+                                        CompanyPhoto = cp.CompanyPhoto,
+                                        CancellationChequePhoto = cp.CancellationChequePhoto,
+                                        RequestStatus = cp.RequestStatus,
+                                        RejectReason = cp.RejectReason,
+                                        FreeAccessDays = cp.FreeAccessDays,
+                                        CompanyTypeText = ct.CompanyTypeName
+                                    }).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                string ErrorMessage = ex.Message.ToString();
+                throw ex;
+            }
+            return View(companyRequestVM);
+        }
     }
 }
