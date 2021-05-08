@@ -188,6 +188,7 @@
     <Compile Include="Areas\WebAPI\Controllers\BaseUserController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\DashboardController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\AttendanceController.cs" />
+    <Compile Include="Areas\WebAPI\Controllers\EmployeeController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\HolidayController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\EmployeeRatingController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\LeaveController.cs" />
@@ -1458,6 +1459,7 @@
     <Content Include="Areas\Admin\Views\Feedback\Add.cshtml" />
     <Content Include="Areas\Admin\Views\Feedback\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Feedback\View.cshtml" />
+    <Content Include="Areas\Admin\Views\Company\View.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
