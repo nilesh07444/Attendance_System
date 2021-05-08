@@ -1,0 +1,303 @@
+﻿@using AttendanceSystem.Helper;
+@model AttendanceSystem.ViewModel.CompanyRequestVM
+@{
+
+}
+
+<div class="page-body">
+
+    <!-- Container-fluid starts-->
+    <!-- Container-fluid Ends-->
+    <!-- Container-fluid starts-->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Company Details</h5>
+                    </div>
+                    <div class="card-body">
+
+                        @Html.HiddenFor(model => model.CompanyId)
+                        @Html.HiddenFor(model => model.CompanyName)
+
+                        <div class="row">
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.CompanyTypeId, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                @Model.CompanyTypeText
+                            </div>
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                @Model.CompanyName
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+
+                                    @Html.LabelFor(model => model.Prefix, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                    @Model.CompanyName
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+
+                                    @Html.LabelFor(model => model.Firstname, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                    @Model.CompanyName
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Lastname, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                    @Model.CompanyName
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.DateOfBirth, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                    @Model.CompanyName
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.EmailId, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                    @Model.CompanyName
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.MobileNo, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                    @Model.CompanyName
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.AlternateMobileNo, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                    @Model.CompanyName
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                    @Model.CompanyName
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                    @Model.CompanyName
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.AadharCardNo, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                    @Model.CompanyName
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.PanCardNo, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                    @Model.CompanyName
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.GSTNo, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                    @Model.CompanyName
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.AadharCardPhoto, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                    @if (!string.IsNullOrEmpty(Model.AadharCardPhoto))
+                                    {
+                                        <div class="form-group row">
+                                            <lable class="col-xl-3 col-md-4"></lable>
+                                            <p><a target="_blank" href="@ErrorMessage.CompanyDirectoryPath/@Model.AadharCardPhoto"> Click here to view image </a></p>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.PanCardPhoto, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                    @if (!string.IsNullOrEmpty(Model.PanCardPhoto))
+                                    {
+                                        <div class="form-group row">
+                                            <lable class="col-xl-3 col-md-4"></lable>
+                                            <p><a target="_blank" href="@ErrorMessage.CompanyDirectoryPath/@Model.PanCardPhoto"> Click here to view image </a></p>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.GSTPhotoFile, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                    @if (!string.IsNullOrEmpty(Model.GSTPhoto))
+                                    {
+                                        <div class="form-group row">
+                                            <lable class="col-xl-3 col-md-4"></lable>
+                                            <p><a target="_blank" href="@ErrorMessage.CompanyDirectoryPath/@Model.GSTPhoto"> Click here to view image </a></p>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CompanyPhoto, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                    @if (!string.IsNullOrEmpty(Model.CompanyPhoto))
+                                    {
+                                        <div class="form-group row">
+                                            <lable class="col-xl-3 col-md-4"></lable>
+                                            <p><a target="_blank" href="@ErrorMessage.CompanyDirectoryPath/@Model.CompanyPhoto"> Click here to view image </a></p>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CancellationChequePhoto, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                    @if (!string.IsNullOrEmpty(Model.CancellationChequePhoto))
+                                    {
+                                        <div class="form-group row">
+                                            <lable class="col-xl-3 col-md-4"></lable>
+                                            <p><a target="_blank" href="@ErrorMessage.CompanyDirectoryPath/@Model.CancellationChequePhoto"> Click here to view image </a></p>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group row">
+                            <lable class="col-xl-3 col-md-4"></lable>
+                            <button type="button" class="btn btn-danger" id="btnCancel">Cancel</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Container-fluid Ends-->
+
+</div>
+<div class="modal fade" id="OtpModal" tabindex="-1" role="dialog" aria-labelledby="formModal"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="formModal">Mobile Verification</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="">
+                    <div class="form-group">
+                        <label>OTP</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                            </div>
+                            <input type="text" class="form-control" placeholder="OTP" name="OTP" id="TextOTP">
+                        </div>
+                    </div>
+                    <button type="button" id="BtnOtpSubmit" class="btn btn-primary m-t-15 waves-effect">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#btnCancel').click(function () {
+            window.location.href = "/admin/company/registered";
+        });
+
+        $('#btnSubmit').click(function () {
+            if ($("#CompanyEditForm").valid()) {
+                if ($("#GSTPhotoFile").val() == "" && $("#GSTPhoto").val() == "") {
+                    alert("Please select GST photo.");
+                    return false;
+                }
+
+                if ($("#CompanyPhotoFile").val() == "" && $("#CompanyPhoto").val() == "") {
+                    alert("Please select company photo.");
+                    return false;
+                }
+
+                if ($("#CancellationChequePhotoFile").val() == "" && $("#CancellationChequePhoto").val() == "") {
+                    alert("Please select cancelled cheque photo.");
+                    return false;
+                }
+
+                var companyId = $("#CompanyId").val();
+                StartLoading();
+
+                var StrURL = '/admin/company/VerifyCopmany?companyId=' + companyId;
+                $.ajax({
+                    url: StrURL,
+                    cache: false,
+                    data: {},
+                    type: 'POST',
+                    success: function (data) {
+                        StopLoading();
+                        if (data.Status == 1) {
+                            $('#OtpModal').modal('show');
+                            $("#OTP").val(data.Otp);
+                            $("#TextOTP").val(data.Otp);
+                        }
+                        else {
+                            StopLoading();
+                            alert(data.ErrorMessage);
+                        }
+
+                    },
+                    error: function (req, status, error) {
+                        StopLoading();
+                        alert(error);
+                    }
+                });
+            }
+            else {
+                return false;
+            }
+            return false;
+        });
+        $('#BtnOtpSubmit').click(function () {
+            var OTP = $("#OTP").val();
+            var TextOTP = $("#TextOTP").val();
+
+            if (TextOTP == OTP) {
+                $("#CompanyEditForm").submit();
+            } else {
+                alert("Wrong OTP you have entered.")
+                return false;
+            }
+        });
+    })
+</script>
