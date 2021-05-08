@@ -7,7 +7,7 @@
     <title> Contract Book - @ViewBag.Title </title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    @*<link rel="manifest" href="site.webmanifest">*@ 
+    @*<link rel="manifest" href="site.webmanifest">*@
     <link rel='shortcut icon' type='image/x-icon' href='~/favicon.ico' />
 
     <!-- CSS here -->
@@ -40,7 +40,7 @@
         <!-- Header Start -->
         <div class="header-area">
             <div class="main-header ">
-                <div class="header-top d-none d-lg-block">
+                <div class="header-top d-none d-lg-block" style="background-color: #FFCEA3;">
                     <div class="container">
                         <div class="col-xl-12">
                             <div class="row d-flex justify-content-between align-items-center">
@@ -62,7 +62,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="header-bottom  header-sticky">
+                <div class="header-bottom  header-sticky" style="background-color: #425C59">
                     <div class="container">
                         <div class="row align-items-center">
                             <!-- Logo -->
@@ -79,7 +79,7 @@
                                             <ul id="navigation">
                                                 <li><a href="/">Home</a></li>
                                                 <li><a href="/about">About</a></li>
-                                                <li><a href="/service">Service</a></li>                                                
+                                                <li><a href="/service">Service</a></li>
                                                 <li><a href="/faq">FAQ</a></li>
                                                 <li><a href="/companyrequest">Company Request</a></li>
                                                 <li><a href="/contact">Contact</a></li>
@@ -111,30 +111,25 @@
                         <div class="col-xl-3 col-lg-4 col-md-5 col-sm-8">
                             <div class="single-footer-caption mb-50">
                                 <!-- logo -->
-                                <div class="footer-logo">
-                                    <a href="index.html"><img src="~/Content/client-theme/assets/img/logo/logo2_footer.png" alt=""></a>
+                                <div class="footer-logo" style="text-align: center;">
+                                    <a href="/"><img src="~/Content/client-theme/assets/img/logo/logo.png" alt=""></a>
                                 </div>
                                 <div class="footer-tittle">
                                     <div class="footer-pera">
-                                        <p class="info1">Receive updates and latest news direct from Simply enter.</p>
+                                        <p class="info1" style="text-align:justify;">Krupa Build Gallery In Godhra Has a Wide Range Of Products And Services To Cater To The Varied Requirements Of Their Customers. The Staff At This Establishment Are Courteous And Prompt At Providing Any Assistance.</p>
                                     </div>
-                                </div>
-                                <div class="footer-number">
-                                    <h4><span>+564 </span>7885 3222</h4>
-                                    <p>youremail@gmail.com</p>
-                                </div>
+                                </div> 
                             </div>
                         </div>
                         <div class="col-xl-2 col-lg-2 col-md-3 col-sm-5">
                             <div class="single-footer-caption mb-50">
                                 <div class="footer-tittle">
-                                    <h4>Location </h4>
+                                    <h4>Why We Choose </h4>
                                     <ul>
-                                        <li><a href="#">Advanced</a></li>
-                                        <li><a href="#"> Management</a></li>
-                                        <li><a href="#">Corporate</a></li>
-                                        <li><a href="#">Customer</a></li>
-                                        <li><a href="#">Information</a></li>
+                                        <li><a href="/">Home</a></li>
+                                        <li><a href="/about">About Us</a></li>
+                                        <li><a href="/contact">Contact Us</a></li>
+                                        <li><a href="/companyrequest">Company Request</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -142,13 +137,12 @@
                         <div class="col-xl-2 col-lg-2 col-md-3 col-sm-5">
                             <div class="single-footer-caption mb-50">
                                 <div class="footer-tittle">
-                                    <h4>Explore</h4>
+                                    <h4>My Account</h4>
                                     <ul>
-                                        <li><a href="#">Cookies</a></li>
-                                        <li><a href="#">About</a></li>
-                                        <li><a href="#">Privacy Policy</a></li>
-                                        <li><a href="#">Proparties</a></li>
-                                        <li><a href="#">Licenses</a></li>
+                                        <li><a href="/privacypolicy">Privacy Policy</a></li>
+                                        <li><a href="/termscondition">Terms & Conditions</a></li>
+                                        <li><a href="#">Package & Employee Policy</a></li>
+                                        <li><a href="/faq">FAQ's</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -156,23 +150,20 @@
                         <div class="col-xl-4 col-lg-4 col-md-6 col-sm-8">
                             <div class="single-footer-caption mb-50">
                                 <div class="footer-tittle">
-                                    <h4>Location</h4>
+                                    <h4>Address</h4>
                                     <div class="footer-pera">
-                                        <p class="info1">Subscribe now to get daily updates</p>
-                                    </div>
-                                </div>
-                                <!-- Form -->
-                                <div class="footer-form">
-                                    <div id="mc_embed_signup">
-                                        <form target="_blank" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01" method="get" class="subscribe_form relative mail_part" novalidate="true">
-                                            <input type="email" name="EMAIL" id="newsletter-form-email" placeholder=" Email Address " class="placeholder hide-on-focus" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Your email address'">
-                                            <div class="form-icon">
-                                                <button type="submit" name="submit" id="newsletter-submit" class="email_icon newsletter-submit button-contactForm">
-                                                    SIGN UP
-                                                </button>
-                                            </div>
-                                            <div class="mt-10 info"></div>
-                                        </form>
+                                        <p class="info1">
+                                            @*<i class="fa fa-map-marker"></i>*@
+                                            Krupa Build Gallery,  <br>
+                                            Nr. Vasupujya Society, <br>
+                                            Gadukpur Chokadi, Bamroli Road, <br>
+                                            Vavdi Buzarg, Godhra-389001 (P.M.S)  <br>
+                                            Gujarat - INDIA. 
+                                        </p>
+                                        <p class="info1">
+                                            <i class="fa fa-envelope"></i> Email Us: admin@shopping-saving.com <br />
+                                            <i class="fa fa-phone-volume"></i> Toll Free: 1800 - 200 - 7003
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -181,25 +172,14 @@
                 </div>
                 <div class="footer-bottom">
                     <div class="row d-flex justify-content-between align-items-center">
-                        <div class="col-xl-9 col-lg-8">
+                        <div class="col-sm-12" style="text-align:center;">
                             <div class="footer-copy-right">
                                 <p>
                                     <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                                    Copyright &copy;
-                                    <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-                                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                                    &copy; 2019-20 Copyright - Krupa Build Gallery
                                 </p>
                             </div>
-                        </div>
-                        <div class="col-xl-3 col-lg-4">
-                            <!-- Footer Social -->
-                            <div class="footer-social f-right">
-                                <a href="#"><i class="fab fa-twitter"></i></a>
-                                <a href="https://www.facebook.com/sai4ull"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#"><i class="fas fa-globe"></i></a>
-                                <a href="#"><i class="fab fa-instagram"></i></a>
-                            </div>
-                        </div>
+                        </div> 
                     </div>
                 </div>
             </div>

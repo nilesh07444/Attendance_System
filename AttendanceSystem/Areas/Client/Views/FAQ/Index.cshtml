@@ -20,34 +20,39 @@
     </div>
 </div>
 
-<div class="about-details section-padding30">
+<div class="about-details section-paddingt15">
     <div class="container">
-        <div class="row">
 
-            <div class="accordion theme-accordion" id="accordionExample">
-                @{ int counter = 1; }
-                @if (lstContent != null && lstContent.Count > 0)
-                {
-                    foreach (tbl_DynamicContent obj in lstContent)
+        <div class="accordion">
+            <div class="row">
+
+                <div class="accordion theme-accordion" id="accordionExample" style="width:100%;">
+                    @{ int counter = 1; }
+                    @if (lstContent != null && lstContent.Count > 0)
                     {
-                        <div class="card">
-                            <div class="card-header" id="headingOne_@counter">
-                                <h5 class="mb-0"><button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne_@counter" aria-expanded="true" aria-controls="collapseOne_@counter">@obj.ContentTitle</button></h5>
-                            </div>
-                            <div id="collapseOne_@counter" class="collapse" aria-labelledby="headingOne_@counter" data-parent="#accordionExample">
-                                <div class="card-body">
-                                    @{ string desc = obj.ContentDescription.Replace("\n", "<br />\n"); }
-
-                                    @Html.Raw(desc)
+                        foreach (tbl_DynamicContent obj in lstContent)
+                        {
+                            <div class="card">
+                                <div class="card-header" id="infraTwo">
+                                    <a href="#collapseTwo_@counter" class="collapsed" data-toggle="collapse" data-target="#collapseTwo_@counter" aria-expanded="false" aria-controls="collapseTwo_@counter">
+                                        <p class="mb-0 accordianTitle">@obj.ContentTitle</p>
+                                    </a>
+                                </div>
+                                <div id="collapseTwo_@counter" class="collapse" aria-labelledby="infraTwo" data-parent="#accordion">
+                                    <div class="card-body">
+                                        @{ string desc = obj.ContentDescription.Replace("\n", "<br />\n"); }
+                                        @Html.Raw(desc)
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        counter++;
+                            counter++;
+                        }
                     }
-                }
+
+                </div>
 
             </div>
-
         </div>
+
     </div>
-</div> 
+</div>

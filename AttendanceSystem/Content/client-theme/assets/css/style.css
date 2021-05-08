@@ -2897,12 +2897,23 @@ hero-btn {
   padding-bottom: 90px;
 }
 
+.section-paddingt15 {
+    padding-top: 102px;
+    padding-bottom: 45px;
+}
+
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
   /* line 867, C:/Users/HP/Desktop/264.Business_HTML/HTML/assets/scss/_common.scss */
   .section-paddingt30 {
     padding-top: 150px;
     padding-bottom: 90px;
   }
+
+    .section-paddingt15 {
+        padding-top: 75px;
+        padding-bottom: 45px;
+    }
+
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
@@ -2911,6 +2922,12 @@ hero-btn {
     padding-top: 100px;
     padding-bottom: 40px;
   }
+
+    .section-paddingt15 {
+        padding-top: 50px;
+        padding-bottom: 20px;
+    }
+
 }
 
 @media only screen and (min-width: 576px) and (max-width: 767px) {
@@ -2919,6 +2936,12 @@ hero-btn {
     padding-top: 65px;
     padding-bottom: 10px;
   }
+
+    .section-paddingt15 {
+        padding-top: 32px;
+        padding-bottom: 5px;
+    }
+
 }
 
 @media (max-width: 575px) {
@@ -2927,6 +2950,10 @@ hero-btn {
     padding-top: 65px;
     padding-bottom: 10px;
   }
+    .section-paddingt15 {
+        padding-top: 32px;
+        padding-bottom: 5px;
+    }
 }
 
 /* line 889, C:/Users/HP/Desktop/264.Business_HTML/HTML/assets/scss/_common.scss */
@@ -3254,15 +3281,15 @@ hero-btn {
 }
 
 /* line 36, C:/Users/HP/Desktop/264.Business_HTML/HTML/assets/scss/_headerMenu.scss */
-.header-area .header-top .header-info-left ul li {
-  color: #fff;
-  display: inline-block;
-  margin-right: 30px;
-  font-size: 12px;
-  font-weight: 100;
-  font-family: "Roboto", sans-serif;
-  text-transform: uppercase;
-}
+    .header-area .header-top .header-info-left ul li {
+        color: #425C59;
+        display: inline-block;
+        margin-right: 30px;
+        font-size: 12px;
+        font-weight: bold;
+        font-family: "Roboto", sans-serif;
+        text-transform: uppercase;
+    }
 
 /* line 44, C:/Users/HP/Desktop/264.Business_HTML/HTML/assets/scss/_headerMenu.scss */
 .header-area .header-top .header-info-left ul li:last-child {
@@ -3281,11 +3308,11 @@ hero-btn {
 }
 
 /* line 58, C:/Users/HP/Desktop/264.Business_HTML/HTML/assets/scss/_headerMenu.scss */
-.header-area .header-top .header-info-right .header-social li a {
-  color: #fff;
-  font-size: 16px;
-  padding-left: 25px;
-}
+    .header-area .header-top .header-info-right .header-social li a {
+        color: #425C59;
+        font-size: 16px;
+        padding-left: 25px;
+    }
 
 /* line 62, C:/Users/HP/Desktop/264.Business_HTML/HTML/assets/scss/_headerMenu.scss */
 .header-area .header-top .header-info-right .header-social li a:hover {
@@ -3313,19 +3340,19 @@ hero-btn {
 }
 
 /* line 85, C:/Users/HP/Desktop/264.Business_HTML/HTML/assets/scss/_headerMenu.scss */
-.main-header .main-menu ul li a {
-  color: #0d2d3e;
-  font-weight: 400;
-  padding: 39px 19px;
-  display: block;
-  font-size: 16px;
-  -webkit-transition: all 0.3s ease-out 0s;
-  -moz-transition: all 0.3s ease-out 0s;
-  -ms-transition: all 0.3s ease-out 0s;
-  -o-transition: all 0.3s ease-out 0s;
-  transition: all 0.3s ease-out 0s;
-  text-transform: capitalize;
-}
+    .main-header .main-menu ul li a {
+        color: #FFCEA3;
+        font-weight: 400;
+        padding: 39px 19px;
+        display: block;
+        font-size: 16px;
+        -webkit-transition: all 0.3s ease-out 0s;
+        -moz-transition: all 0.3s ease-out 0s;
+        -ms-transition: all 0.3s ease-out 0s;
+        -o-transition: all 0.3s ease-out 0s;
+        transition: all 0.3s ease-out 0s;
+        text-transform: capitalize;
+    }
 
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
   /* line 85, C:/Users/HP/Desktop/264.Business_HTML/HTML/assets/scss/_headerMenu.scss */
@@ -3336,7 +3363,7 @@ hero-btn {
 
 /* line 99, C:/Users/HP/Desktop/264.Business_HTML/HTML/assets/scss/_headerMenu.scss */
 .main-header .main-menu ul li:hover > a {
-  color: #14435c;
+    color: #14435c;
 }
 
 /* line 104, C:/Users/HP/Desktop/264.Business_HTML/HTML/assets/scss/_headerMenu.scss */
@@ -4644,11 +4671,11 @@ hero-btn {
 }
 
 /* line 10, C:/Users/HP/Desktop/264.Business_HTML/HTML/assets/scss/_footer.scss */
-.footer-area .footer-top .single-footer-caption .footer-pera .info1 {
-  line-height: 1.8;
-  margin-bottom: 35px;
-  color: #bdbdbd;
-}
+    .footer-area .footer-top .single-footer-caption .footer-pera .info1 {
+        line-height: 1.8;
+        margin-bottom: 35px;
+        color: #FFCEA3;
+    }
 
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
   /* line 10, C:/Users/HP/Desktop/264.Business_HTML/HTML/assets/scss/_footer.scss */
@@ -4708,22 +4735,22 @@ hero-btn {
 
 /* line 52, C:/Users/HP/Desktop/264.Business_HTML/HTML/assets/scss/_footer.scss */
 .footer-area .footer-top .single-footer-caption .footer-tittle ul li {
-  color: #bdbdbd;
-  margin-bottom: 15px;
-  text-transform: capitalize;
+    color: #FFCEA3;
+    margin-bottom: 15px;
+    text-transform: capitalize;
 }
 
 /* line 56, C:/Users/HP/Desktop/264.Business_HTML/HTML/assets/scss/_footer.scss */
-.footer-area .footer-top .single-footer-caption .footer-tittle ul li a {
-  color: #bdbdbd;
-  font-weight: 300;
-}
+    .footer-area .footer-top .single-footer-caption .footer-tittle ul li a {
+        color: #FFCEA3;
+        font-weight: 300;
+    }
 
 /* line 59, C:/Users/HP/Desktop/264.Business_HTML/HTML/assets/scss/_footer.scss */
-.footer-area .footer-top .single-footer-caption .footer-tittle ul li a:hover {
-  color: #fff;
-  padding-left: 5px;
-}
+        .footer-area .footer-top .single-footer-caption .footer-tittle ul li a:hover {
+            color: #FFCEA3;
+            padding-left: 5px;
+        }
 
 /* line 67, C:/Users/HP/Desktop/264.Business_HTML/HTML/assets/scss/_footer.scss */
 .footer-area .footer-top .single-footer-caption .footer-form {
@@ -8267,4 +8294,8 @@ span.error {
     font-size: 14px;
     display: inline-block;
     margin-bottom: .5rem;
+}
+
+.accordianTitle {
+    font-weight:bold;
 }
