@@ -7,6 +7,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -480,7 +481,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objAdminUser.State = registeredCompanyVM.State;
                         objAdminUser.AadharCardNo = registeredCompanyVM.AadharCardNo;
                         objAdminUser.PanCardNo = registeredCompanyVM.PanCardNo;
-                        objAdminUser.AadharCardPhoto = AadharCardPhotoFile != null ? adharCardFileName : objAdminUser.AadharCardPhoto; 
+                        objAdminUser.AadharCardPhoto = AadharCardPhotoFile != null ? adharCardFileName : objAdminUser.AadharCardPhoto;
                         objAdminUser.PanCardPhoto = PanCardPhotoFile != null ? panCardFileName : objAdminUser.PanCardPhoto;
                         objAdminUser.ModifiedBy = LoggedInUserId;
                         objAdminUser.ModifiedDate = DateTime.UtcNow;
@@ -599,5 +600,39 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             }
             return View(companyRequestVM);
         }
+
+        private string getCompanyCodeFormat(long companyId, string companyName)
+        {
+            string companyCode = string.Empty;
+            try
+            {
+                string companyNameWithoutSpeChar = Regex.Replace(companyName, @"[^0-9a-zA-Z]+", "");
+                string first2CharOfCompanyName = companyNameWithoutSpeChar.ToUpper().Substring(0, 2);
+                companyCode = first2CharOfCompanyName + "/" + DateTime.Now.ToString("ddMMyyyy") + "/" + companyId;
+            }
+            catch (Exception ex)
+            {
+            }
+            return companyCode;
+        }
+
+        private string getEmployeeCodeFormat(long companyId, string companyName)
+        {
+            string empCode = string.Empty;
+            try
+            {
+                //Get Last employee Number of selected number
+                int lastEmpNumber = 1; // ex.
+                int newEmpNumber = lastEmpNumber + 1;
+                string companyNameWithoutSpeChar = Regex.Replace(companyName, @"[^0-9a-zA-Z]+", "");
+                string first2CharOfCompanyName = companyNameWithoutSpeChar.ToUpper().Substring(0, 2);
+                empCode = first2CharOfCompanyName + "/EMP/" + companyId + "/" + newEmpNumber;
+            }
+            catch (Exception ex)
+            {
+            }
+            return empCode;
+        }
+
     }
 }
