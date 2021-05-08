@@ -75,6 +75,8 @@
         public static string MonthShouldBeFrom1To12   = "Month should be from 1 to 12.";
         public static string FutureYearNotAllowed  = "Future year not allowed.";
         public static string MobileNoNotFoundForTheCompany = "Mobile no not found for the company.";
+        public static string EmployeeIdIsNotValid = "Employee id is not valid.";
+        public static string EmployeeDoesNotExist = "Employee does not exist.";
 
     }
 }

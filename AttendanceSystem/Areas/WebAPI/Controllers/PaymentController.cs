@@ -1,4 +1,5 @@
-﻿using AttendanceSystem.Models;
+﻿using AttendanceSystem.Helper;
+using AttendanceSystem.Models;
 using AttendanceSystem.ViewModel.WebAPI;
 using System;
 using System.Collections.Generic;
@@ -87,5 +88,60 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
             return response;
         }
+
+        [HttpPost]
+        [Route("Add")]
+        public ResponseDataModel<bool> Add(PaymentVM paymentVM)
+        {
+            ResponseDataModel<bool> response = new ResponseDataModel<bool>();
+            response.IsError = false;
+            response.Data = false;
+            try
+            {
+                long employeeId = base.UTI.EmployeeId;
+                long companyId = base.UTI.CompanyId;
+
+                if (paymentVM.UserId == 0)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.EmployeeIdIsNotValid);
+                }
+
+                if (paymentVM.UserId > 0)
+                {
+                    bool isWorkerExist = _db.tbl_Employee.Any(x => x.EmployeeId != paymentVM.UserId && !x.IsDeleted && x.AdminRoleId != (int)AdminRoles.Worker && x.CompanyId == companyId);
+                    if (isWorkerExist)
+                    {
+                        response.IsError = true;
+                        response.AddError(ErrorMessage.EmployeeDoesNotExist);
+                    }
+
+                    if (!response.IsError)
+                    {
+
+                        tbl_EmployeePayment objEmployeePayment = new tbl_EmployeePayment();
+                        objEmployeePayment.UserId = paymentVM.UserId;
+                        objEmployeePayment.PaymentDate = paymentVM.PaymentDate;
+                        objEmployeePayment.Amount = paymentVM.Amount;
+                        objEmployeePayment.PaymentType = paymentVM.PaymentType;
+                        objEmployeePayment.CreatedBy = employeeId;
+                        objEmployeePayment.CreatedDate = DateTime.UtcNow;
+                        objEmployeePayment.ModifiedBy = employeeId;
+                        objEmployeePayment.ModifiedDate = DateTime.UtcNow;
+                        _db.tbl_EmployeePayment.Add(objEmployeePayment);
+                        _db.SaveChanges();
+                        response.Data = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message);
+            }
+
+            return response;
+        }
+
     }
 }

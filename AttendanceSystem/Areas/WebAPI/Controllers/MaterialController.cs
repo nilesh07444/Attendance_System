@@ -137,6 +137,46 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
             return response;
         }
+
+        [HttpGet]
+        [Route("Detail/{id}")]
+        public ResponseDataModel<MaterialVM> WorkerDetail(long id)
+        {
+            ResponseDataModel<MaterialVM> response = new ResponseDataModel<MaterialVM>();
+            response.IsError = false;
+            try
+            {
+                long companyId = base.UTI.CompanyId;
+
+                MaterialVM materialVM = (from mt in _db.tbl_Material
+                                         join mc in _db.tbl_MaterialCategory on mt.MaterialCategoryId equals mc.MaterialCategoryId
+                                         join st in _db.tbl_Site on mt.SiteId equals st.SiteId
+                                         where !mt.IsDeleted && mt.CompanyId == companyId
+                                         && mt.MaterialId==id
+                                         select new MaterialVM
+                                         {
+                                             MaterialId = mt.MaterialId,
+                                             MaterialCategoryId = mt.MaterialCategoryId.Value,
+                                             MaterialCategoryText = mc.MaterialCategoryName,
+                                             MaterialDate = mt.MaterialDate,
+                                             SiteId = mt.SiteId,
+                                             SiteName = st.SiteName,
+                                             Qty = mt.Qty,
+                                             InOut = mt.InOut,
+                                             Remarks = mt.Remarks,
+                                             IsActive = mt.IsActive,
+                                         }).FirstOrDefault();
+
+                response.Data = materialVM;
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message);
+            }
+
+            return response;
+        }
         private List<SelectListItem> GetMaterialStatusList()
         {
             string[] paymentTypeArr = Enum.GetNames(typeof(MateriaStatus));
