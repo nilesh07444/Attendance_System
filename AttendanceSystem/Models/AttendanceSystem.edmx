@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="AttendanceSystemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="AttendanceSystemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="mst_AdminRole">
           <Key>
             <PropertyRef Name="AdminRoleId" />
@@ -550,6 +550,37 @@
           <Property Name="ModifiedBy" Type="bigint" />
           <Property Name="ModifiedDate" Type="datetime" />
         </EntityType>
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="AttendanceSystemModelStoreContainer">
           <EntitySet Name="mst_AdminRole" EntityType="Self.mst_AdminRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="mst_CompanyType" EntityType="Self.mst_CompanyType" Schema="dbo" store:Type="Tables" />
@@ -581,323 +612,60 @@
           <EntitySet Name="tbl_Sponsor" EntityType="Self.tbl_Sponsor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Testimonial" EntityType="Self.tbl_Testimonial" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="AttendanceSystemModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityContainer Name="AttendanceSystemEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="mst_AdminRole" EntityType="AttendanceSystemModel.mst_AdminRole" />
-          <EntitySet Name="mst_CompanyType" EntityType="AttendanceSystemModel.mst_CompanyType" />
-          <EntitySet Name="tbl_Site" EntityType="AttendanceSystemModel.tbl_Site" />
-          <EntitySet Name="tbl_DynamicContent" EntityType="AttendanceSystemModel.tbl_DynamicContent" />
-          <EntitySet Name="tbl_Holiday" EntityType="AttendanceSystemModel.tbl_Holiday" />
-          <EntitySet Name="tbl_LoginHistory" EntityType="AttendanceSystemModel.tbl_LoginHistory" />
-          <EntitySet Name="tbl_Employee" EntityType="AttendanceSystemModel.tbl_Employee" />
-          <EntitySet Name="tbl_EmployeePayment" EntityType="AttendanceSystemModel.tbl_EmployeePayment" />
-          <EntitySet Name="tbl_CompanyFollowup" EntityType="AttendanceSystemModel.tbl_CompanyFollowup" />
-          <EntitySet Name="tbl_CompanySMSPackRenew" EntityType="AttendanceSystemModel.tbl_CompanySMSPackRenew" />
-          <EntitySet Name="tbl_EmployeeRating" EntityType="AttendanceSystemModel.tbl_EmployeeRating" />
-          <EntitySet Name="tbl_Feedback" EntityType="AttendanceSystemModel.tbl_Feedback" />
-          <EntitySet Name="tbl_Leave" EntityType="AttendanceSystemModel.tbl_Leave" />
-          <EntitySet Name="tbl_MaterialCategory" EntityType="AttendanceSystemModel.tbl_MaterialCategory" />
-          <EntitySet Name="tbl_Material" EntityType="AttendanceSystemModel.tbl_Material" />
-          <EntitySet Name="tbl_SMSPackage" EntityType="AttendanceSystemModel.tbl_SMSPackage" />
-          <EntitySet Name="tbl_Attendance" EntityType="AttendanceSystemModel.tbl_Attendance" />
-          <EntitySet Name="tbl_HomeImage" EntityType="AttendanceSystemModel.tbl_HomeImage" />
-          <EntitySet Name="tbl_Package" EntityType="AttendanceSystemModel.tbl_Package" />
-          <EntitySet Name="tbl_Sponsor" EntityType="AttendanceSystemModel.tbl_Sponsor" />
-          <EntitySet Name="tbl_Testimonial" EntityType="AttendanceSystemModel.tbl_Testimonial" />
-          <EntitySet Name="sysdiagrams" EntityType="AttendanceSystemModel.sysdiagram" />
-          <EntitySet Name="tbl_EmployeeBuyTransaction" EntityType="AttendanceSystemModel.tbl_EmployeeBuyTransaction" />
-          <EntitySet Name="tbl_EmployeeFingerprint" EntityType="AttendanceSystemModel.tbl_EmployeeFingerprint" />
-          <EntitySet Name="tbl_Company" EntityType="AttendanceSystemModel.tbl_Company" />
-          <EntitySet Name="tbl_CompanyRequest" EntityType="AttendanceSystemModel.tbl_CompanyRequest" />
-          <EntitySet Name="tbl_AdminUser" EntityType="AttendanceSystemModel.tbl_AdminUser" />
-          <EntitySet Name="tbl_CompanyRenewPayment" EntityType="AttendanceSystemModel.tbl_CompanyRenewPayment" />
-          <EntitySet Name="tbl_Setting" EntityType="AttendanceSystemModel.tbl_Setting" />
-          <EntitySet Name="tbl_AdminUser" EntityType="AttendanceSystemModel.tbl_AdminUser" />
-        </EntityContainer>
         <EntityType Name="mst_AdminRole">
           <Key>
             <PropertyRef Name="AdminRoleId" />
           </Key>
           <Property Name="AdminRoleId" Type="Int64" Nullable="false" />
-          <Property Name="AdminRoleName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AdminRoleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
         </EntityType>
         <EntityType Name="mst_CompanyType">
           <Key>
             <PropertyRef Name="CompanyTypeId" />
           </Key>
           <Property Name="CompanyTypeId" Type="Int64" Nullable="false" />
-          <Property Name="CompanyTypeName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyTypeName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
         </EntityType>
-        <EntityType Name="tbl_Site">
+        <EntityType Name="sysdiagram">
           <Key>
-            <PropertyRef Name="SiteId" />
+            <PropertyRef Name="diagram_id" />
           </Key>
-          <Property Name="SiteId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CompanyId" Type="Int64" Nullable="false" />
-          <Property Name="SiteName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="SiteDescription" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int64" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
-        <EntityType Name="tbl_DynamicContent">
+        <EntityType Name="tbl_AdminUser">
           <Key>
-            <PropertyRef Name="DynamicContentId" />
+            <PropertyRef Name="AdminUserId" />
           </Key>
-          <Property Name="DynamicContentId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DynamicContentType" Type="Int32" Nullable="false" />
-          <Property Name="ContentTitle" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="ContentDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SeqNo" Type="Int32" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int64" />
-        </EntityType>
-        <EntityType Name="tbl_CompanyRenewPayment">
-          <Key>
-            <PropertyRef Name="CompanyRegistrationPaymentId" />
-          </Key>
-          <Property Name="CompanyRegistrationPaymentId" Type="Int64" Nullable="false" />
-          <Property Name="CompanyId" Type="Int64" Nullable="false" />
-          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="PaymentFor" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="PaymentGatewayResponseId" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="AccessDays" Type="Int32" Nullable="false" />
-          <Property Name="PackageId" Type="Int64" Nullable="false" />
-          <Property Name="PackageName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int64" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="GSTPer" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="NoOfEmployee" Type="Int32" Nullable="false" />
-          <Property Name="NoOfSMS" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="tbl_Holiday">
-          <Key>
-            <PropertyRef Name="HolidayId" />
-          </Key>
-          <Property Name="HolidayId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="HolidayReason" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyId" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int64" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-        </EntityType>
-        <EntityType Name="tbl_LoginHistory">
-          <Key>
-            <PropertyRef Name="LoginHistoryId" />
-          </Key>
-          <Property Name="LoginHistoryId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="EmployeeId" Type="Int64" Nullable="false" />
-          <Property Name="LoginDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="LocationFrom" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="SiteId" Type="Int64" />
-          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int64" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-        </EntityType>
-        <EntityType Name="tbl_Employee">
-          <Key>
-            <PropertyRef Name="EmployeeId" />
-          </Key>
-          <Property Name="EmployeeId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CompanyId" Type="Int64" Nullable="false" />
-          <Property Name="AdminRoleId" Type="Int32" Nullable="false" />
-          <Property Name="Prefix" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="350" FixedLength="false" Unicode="true" />
-          <Property Name="LastName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" MaxLength="350" FixedLength="false" Unicode="true" />
-          <Property Name="EmployeeCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Password" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="MobileNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="AlternateMobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Address" Type="String" MaxLength="450" FixedLength="false" Unicode="true" />
-          <Property Name="City" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="Designation" Type="String" MaxLength="350" FixedLength="false" Unicode="true" />
-          <Property Name="Dob" Type="DateTime" Precision="3" />
-          <Property Name="DateOfJoin" Type="DateTime" Precision="3" />
-          <Property Name="BloodGroup" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="WorkingTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AdharCardNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="DateOfIdCardExpiry" Type="DateTime" Precision="3" />
-          <Property Name="Remarks" Type="String" MaxLength="600" FixedLength="false" Unicode="true" />
-          <Property Name="ProfilePicture" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="EmploymentCategory" Type="Int32" Nullable="false" />
-          <Property Name="PerCategoryPrice" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="MonthlySalaryPrice" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="ExtraPerHourPrice" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="IsLeaveForward" Type="Boolean" Nullable="false" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <Property Name="IsFingerprintEnabled" Type="Boolean" Nullable="false" />
-          <Property Name="IsFingerprintSaved" Type="Boolean" Nullable="false" />
-          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="UpdatedBy" Type="Int64" />
-          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
-        </EntityType>
-        <EntityType Name="tbl_EmployeePayment">
-          <Key>
-            <PropertyRef Name="EmployeePaymentId" />
-          </Key>
-          <Property Name="EmployeePaymentId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="Int64" Nullable="false" />
-          <Property Name="PaymentDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="PaymentType" Type="Int32" Nullable="false" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int64" />
-        </EntityType>
-        <EntityType Name="tbl_CompanyFollowup">
-          <Key>
-            <PropertyRef Name="CompanyFollowupId" />
-          </Key>
-          <Property Name="CompanyFollowupId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CompanyId" Type="Int64" Nullable="false" />
-          <Property Name="FollowupDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="FollowupText" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="FollowupStatus" Type="Int32" Nullable="false" />
-          <Property Name="NextDate" Type="DateTime" Precision="3" />
-          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int64" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-        </EntityType>
-        <EntityType Name="tbl_CompanySMSPackRenew">
-          <Key>
-            <PropertyRef Name="CompanySMSPackRenewId" />
-          </Key>
-          <Property Name="CompanySMSPackRenewId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CompanyId" Type="Int64" Nullable="false" />
-          <Property Name="SMSPackageId" Type="Int64" Nullable="false" />
-          <Property Name="SMSPackageName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="RenewDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="AccessDays" Type="Int32" Nullable="false" />
-          <Property Name="PackageExpiryDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int64" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-        </EntityType>
-        <EntityType Name="tbl_EmployeeRating">
-          <Key>
-            <PropertyRef Name="EmployeeRatingId" />
-          </Key>
-          <Property Name="EmployeeRatingId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="EmployeeId" Type="Int64" Nullable="false" />
-          <Property Name="RateMonth" Type="Int32" Nullable="false" />
-          <Property Name="RateYear" Type="Int32" Nullable="false" />
-          <Property Name="BehaviourRate" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="RegularityRate" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="WorkRate" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int64" />
-        </EntityType>
-        <EntityType Name="tbl_Feedback">
-          <Key>
-            <PropertyRef Name="FeedbackId" />
-          </Key>
-          <Property Name="FeedbackId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CompanyId" Type="Int64" Nullable="false" />
-          <Property Name="FeedbackType" Type="Int32" Nullable="false" />
-          <Property Name="FeedbackStatus" Type="Int32" Nullable="false" />
-          <Property Name="FeedbackText" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="SuperAdminFeedbackText" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int64" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-        </EntityType>
-        <EntityType Name="tbl_Leave">
-          <Key>
-            <PropertyRef Name="LeaveId" />
-          </Key>
-          <Property Name="LeaveId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="Int64" Nullable="false" />
-          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="NoOfDays" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="LeaveStatus" Type="Int32" Nullable="false" />
-          <Property Name="LeaveReason" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="RejectReason" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="CancelledReason" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int64" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-        </EntityType>
-        <EntityType Name="tbl_MaterialCategory">
-          <Key>
-            <PropertyRef Name="MaterialCategoryId" />
-          </Key>
-          <Property Name="MaterialCategoryId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CompanyId" Type="Int64" Nullable="false" />
-          <Property Name="MaterialCategoryName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int64" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-        </EntityType>
-        <EntityType Name="tbl_Material">
-          <Key>
-            <PropertyRef Name="MaterialId" />
-          </Key>
-          <Property Name="MaterialId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CompanyId" Type="Int64" Nullable="false" />
-          <Property Name="MaterialCategoryId" Type="Int64" />
-          <Property Name="MaterialDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="SiteId" Type="Int64" Nullable="false" />
-          <Property Name="Qty" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="InOut" Type="Int32" Nullable="false" />
-          <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int64" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-        </EntityType>
-        <EntityType Name="tbl_SMSPackage">
-          <Key>
-            <PropertyRef Name="SMSPackageId" />
-          </Key>
-          <Property Name="SMSPackageId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PackageName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="PackageImage" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="PackageAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="AccessDays" Type="Int32" Nullable="false" />
-          <Property Name="NoOfSMS" Type="Int32" Nullable="false" />
+          <Property Name="AdminUserId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AdminUserRoleId" Type="Int32" Nullable="false" />
+          <Property Name="CompanyId" Type="Int64" />
+          <Property Name="Prefix" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MIddleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EmailId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MobileNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AlternateMobileNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Designation" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Pincode" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="City" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="State" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AadharCardNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AadharCardPhoto" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PanCardNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PanCardPhoto" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <Property Name="CreatedBy" Type="Int64" Nullable="false" />
@@ -916,7 +684,7 @@
           <Property Name="DayType" Type="Double" Nullable="false" />
           <Property Name="InTime" Type="Time" Nullable="false" Precision="7" />
           <Property Name="OutTime" Type="Time" Nullable="false" Precision="7" />
-          <Property Name="ExtraHours" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="ExtraHours" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="TodayWorkDetail" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="TomorrowWorkDetail" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
@@ -930,126 +698,30 @@
           <Property Name="ModifiedBy" Type="Int64" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
         </EntityType>
-        <EntityType Name="tbl_HomeImage">
-          <Key>
-            <PropertyRef Name="HomeImageId" />
-          </Key>
-          <Property Name="HomeImageId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="HomeImageName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="HeadingText1" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="HeadingText2" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int64" />
-        </EntityType>
-        <EntityType Name="tbl_Package">
-          <Key>
-            <PropertyRef Name="PackageId" />
-          </Key>
-          <Property Name="PackageId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PackageName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="PackageDescription" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="AccessDays" Type="Int32" Nullable="false" />
-          <Property Name="PackageImage" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="NoOfEmployee" Type="Int32" />
-          <Property Name="NoOfSMS" Type="Int32" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int64" />
-        </EntityType>
-        <EntityType Name="tbl_Sponsor">
-          <Key>
-            <PropertyRef Name="SponsorId" />
-          </Key>
-          <Property Name="SponsorId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="SponsorName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="SponsorImage" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="SponsorLink" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int64" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-        </EntityType>
-        <EntityType Name="tbl_Testimonial">
-          <Key>
-            <PropertyRef Name="TestimonialId" />
-          </Key>
-          <Property Name="TestimonialId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CompanyName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyPersonName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="FeedbackText" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int64" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-        </EntityType>
-        <EntityType Name="sysdiagram">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-        </EntityType>
-        <EntityType Name="tbl_EmployeeBuyTransaction">
-          <Key>
-            <PropertyRef Name="EmployeeBuyTransactionId" />
-          </Key>
-          <Property Name="EmployeeBuyTransactionId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CompanyId" Type="Int64" Nullable="false" />
-          <Property Name="NoOfEmpToBuy" Type="Int32" Nullable="false" />
-          <Property Name="AmountPerEmp" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="TotalPaidAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="PaymentGatewayTransactionId" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int64" />
-        </EntityType>
-        <EntityType Name="tbl_EmployeeFingerprint">
-          <Key>
-            <PropertyRef Name="EmployeeFingerprintId" />
-          </Key>
-          <Property Name="EmployeeFingerprintId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="EmployeeId" Type="Int64" Nullable="false" />
-          <Property Name="ISOCode" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="BitmapCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="tbl_Company">
           <Key>
             <PropertyRef Name="CompanyId" />
           </Key>
           <Property Name="CompanyId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CompanyTypeId" Type="Int64" Nullable="false" />
-          <Property Name="CompanyName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyCode" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CompanyCode" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="EmailId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="ContactNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="AlternateContactNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="Pincode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="City" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="State" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="State" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="GSTNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="GSTPhoto" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="PanNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="PanPhoto" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyLogoImage" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyLogoImage" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="RegisterProofImage" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="WebisteUrl" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="CancellationChequePhoto" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CancellationChequePhoto" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="FreeAccessDays" Type="Int32" Nullable="false" />
           <Property Name="IsTrialMode" Type="Boolean" Nullable="false" />
           <Property Name="TrialExpiryDate" Type="DateTime" Precision="3" />
@@ -1070,125 +742,17 @@
           <Property Name="ModifiedBy" Type="Int64" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
         </EntityType>
-        <EntityType Name="tbl_Setting">
+        <EntityType Name="tbl_CompanyFollowup">
           <Key>
-            <PropertyRef Name="SettingId" />
+            <PropertyRef Name="CompanyFollowupId" />
           </Key>
-          <Property Name="SettingId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AccountFreeAccessDays" Type="Int32" />
-          <Property Name="AmountPerEmp" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="AccountPackageBuyGSTPer" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="SMSPackageBuyGSTPer" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="EmployeeBuyGSTPer" Type="Decimal" Precision="18" Scale="2" />
-        </EntityType>
-        <EntityType Name="tbl_AdminUser">
-          <Key>
-            <PropertyRef Name="AdminUserId" />
-          </Key>
-          <Property Name="AdminUserId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AdminUserRoleId" Type="Int32" Nullable="false" />
-          <Property Name="CompanyId" Type="Int64" />
-          <Property Name="Prefix" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="MIddleName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="LastName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="UserName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Password" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="EmailId" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="MobileNo" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="AlternateMobileNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Designation" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Address" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="Pincode" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="City" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="State" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="AadharCardNo" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="AadharCardPhoto" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="PanCardNo" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="PanCardPhoto" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int64" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-        </EntityType>
-        <EntityType Name="tbl_CompanyRequest">
-          <Key>
-            <PropertyRef Name="CompanyRequestId" />
-          </Key>
-          <Property Name="CompanyRequestId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CompanyTypeId" Type="Int64" Nullable="false" />
-          <Property Name="CompanyName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyEmailId" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyContactNo" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyAlternateContactNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyGSTNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyGSTPhoto" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyPanNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyPanPhoto" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyAddress" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyPincode" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyCity" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyState" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyLogoImage" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyRegisterProofImage" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyDescription" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyWebisteUrl" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyCancellationChequePhoto" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyAdminPrefix" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyAdminFirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyAdminMiddleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="CompanyAdminLastName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyAdminEmailId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyAdminMobileNo" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyAdminAlternateMobileNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyAdminDesignation" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="CompanyAdminAddress" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyAdminPincode" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyAdminCity" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyAdminState" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyAdminAadharCardNo" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyAdminAadharCardPhoto" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyAdminPanCardPhoto" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyAdminPanCardNo" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="RequestStatus" Type="Int32" Nullable="false" />
-          <Property Name="RejectReason" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="CompanyId" Type="Int64" />
-          <Property Name="FreeAccessDays" Type="Int32" Nullable="false" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int64" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-        </EntityType>
-        <EntityType Name="tbl_AdminUser">
-          <Key>
-            <PropertyRef Name="AdminUserId" />
-          </Key>
-          <Property Name="AdminUserId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AdminUserRoleId" Type="Int32" Nullable="false" />
-          <Property Name="CompanyId" Type="Int64" />
-          <Property Name="Prefix" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="MIddleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="LastName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="UserName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Password" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="EmailId" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="MobileNo" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="AlternateMobileNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Designation" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Address" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="Pincode" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="City" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="State" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="AadharCardNo" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="AadharCardPhoto" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="PanCardNo" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="PanCardPhoto" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="CompanyFollowupId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyId" Type="Int64" Nullable="false" />
+          <Property Name="FollowupDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="FollowupText" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="FollowupStatus" Type="Int32" Nullable="false" />
+          <Property Name="NextDate" Type="DateTime" Precision="3" />
           <Property Name="CreatedBy" Type="Int64" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ModifiedBy" Type="Int64" />
@@ -1201,20 +765,330 @@
           <Property Name="CompanyRegistrationPaymentId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CompanyId" Type="Int64" Nullable="false" />
           <Property Name="PackageId" Type="Int64" Nullable="false" />
-          <Property Name="PackageName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PackageName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="GSTPer" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="GSTPer" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="AccessDays" Type="Int32" Nullable="false" />
           <Property Name="NoOfEmployee" Type="Int32" Nullable="false" />
           <Property Name="NoOfSMS" Type="Int32" Nullable="false" />
-          <Property Name="PaymentFor" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PaymentFor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="PaymentGatewayResponseId" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="CreatedBy" Type="Int64" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ModifiedBy" Type="Int64" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="tbl_CompanyRequest">
+          <Key>
+            <PropertyRef Name="CompanyRequestId" />
+          </Key>
+          <Property Name="CompanyRequestId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyTypeId" Type="Int64" Nullable="false" />
+          <Property Name="CompanyName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CompanyEmailId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CompanyContactNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CompanyAlternateContactNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyGSTNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyGSTPhoto" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyPanNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyPanPhoto" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyAddress" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CompanyPincode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CompanyCity" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CompanyState" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CompanyLogoImage" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CompanyRegisterProofImage" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CompanyDescription" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CompanyWebisteUrl" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyCancellationChequePhoto" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CompanyAdminPrefix" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CompanyAdminFirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CompanyAdminMiddleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CompanyAdminLastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CompanyAdminEmailId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyAdminMobileNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CompanyAdminAlternateMobileNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyAdminDesignation" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CompanyAdminAddress" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CompanyAdminPincode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CompanyAdminCity" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CompanyAdminState" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CompanyAdminAadharCardNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CompanyAdminAadharCardPhoto" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CompanyAdminPanCardPhoto" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CompanyAdminPanCardNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RequestStatus" Type="Int32" Nullable="false" />
+          <Property Name="RejectReason" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyId" Type="Int64" />
+          <Property Name="FreeAccessDays" Type="Int32" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int64" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="tbl_CompanySMSPackRenew">
+          <Key>
+            <PropertyRef Name="CompanySMSPackRenewId" />
+          </Key>
+          <Property Name="CompanySMSPackRenewId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyId" Type="Int64" Nullable="false" />
+          <Property Name="SMSPackageId" Type="Int64" Nullable="false" />
+          <Property Name="SMSPackageName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RenewDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AccessDays" Type="Int32" Nullable="false" />
+          <Property Name="PackageExpiryDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int64" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="tbl_DynamicContent">
+          <Key>
+            <PropertyRef Name="DynamicContentId" />
+          </Key>
+          <Property Name="DynamicContentId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DynamicContentType" Type="Int32" Nullable="false" />
+          <Property Name="ContentTitle" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ContentDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SeqNo" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int64" />
+        </EntityType>
+        <EntityType Name="tbl_Employee">
+          <Key>
+            <PropertyRef Name="EmployeeId" />
+          </Key>
+          <Property Name="EmployeeId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyId" Type="Int64" Nullable="false" />
+          <Property Name="AdminRoleId" Type="Int32" Nullable="false" />
+          <Property Name="Prefix" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" MaxLength="350" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="350" FixedLength="false" Unicode="true" />
+          <Property Name="EmployeeCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MobileNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="AlternateMobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="450" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Designation" Type="String" MaxLength="350" FixedLength="false" Unicode="true" />
+          <Property Name="Dob" Type="DateTime" Precision="3" />
+          <Property Name="DateOfJoin" Type="DateTime" Precision="3" />
+          <Property Name="BloodGroup" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WorkingTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AdharCardNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DateOfIdCardExpiry" Type="DateTime" Precision="3" />
+          <Property Name="Remarks" Type="String" MaxLength="600" FixedLength="false" Unicode="true" />
+          <Property Name="ProfilePicture" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="EmploymentCategory" Type="Int32" Nullable="false" />
+          <Property Name="PerCategoryPrice" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="MonthlySalaryPrice" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ExtraPerHourPrice" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="IsLeaveForward" Type="Boolean" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="IsFingerprintEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="IsFingerprintSaved" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedBy" Type="Int64" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="tbl_EmployeeBuyTransaction">
+          <Key>
+            <PropertyRef Name="EmployeeBuyTransactionId" />
+          </Key>
+          <Property Name="EmployeeBuyTransactionId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyId" Type="Int64" Nullable="false" />
+          <Property Name="NoOfEmpToBuy" Type="Int32" Nullable="false" />
+          <Property Name="AmountPerEmp" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="TotalPaidAmount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="PaymentGatewayTransactionId" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int64" />
+        </EntityType>
+        <EntityType Name="tbl_EmployeeFingerprint">
+          <Key>
+            <PropertyRef Name="EmployeeFingerprintId" />
+          </Key>
+          <Property Name="EmployeeFingerprintId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="Int64" Nullable="false" />
+          <Property Name="ISOCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BitmapCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tbl_EmployeePayment">
+          <Key>
+            <PropertyRef Name="EmployeePaymentId" />
+          </Key>
+          <Property Name="EmployeePaymentId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int64" Nullable="false" />
+          <Property Name="PaymentDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="PaymentType" Type="Int32" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int64" />
+        </EntityType>
+        <EntityType Name="tbl_EmployeeRating">
+          <Key>
+            <PropertyRef Name="EmployeeRatingId" />
+          </Key>
+          <Property Name="EmployeeRatingId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="Int64" Nullable="false" />
+          <Property Name="RateMonth" Type="Int32" Nullable="false" />
+          <Property Name="RateYear" Type="Int32" Nullable="false" />
+          <Property Name="BehaviourRate" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="RegularityRate" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="WorkRate" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int64" />
+        </EntityType>
+        <EntityType Name="tbl_Feedback">
+          <Key>
+            <PropertyRef Name="FeedbackId" />
+          </Key>
+          <Property Name="FeedbackId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyId" Type="Int64" Nullable="false" />
+          <Property Name="FeedbackType" Type="Int32" Nullable="false" />
+          <Property Name="FeedbackStatus" Type="Int32" Nullable="false" />
+          <Property Name="FeedbackText" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="SuperAdminFeedbackText" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int64" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="tbl_Holiday">
+          <Key>
+            <PropertyRef Name="HolidayId" />
+          </Key>
+          <Property Name="HolidayId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="HolidayReason" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyId" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int64" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="tbl_HomeImage">
+          <Key>
+            <PropertyRef Name="HomeImageId" />
+          </Key>
+          <Property Name="HomeImageId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HomeImageName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HeadingText1" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="HeadingText2" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int64" />
+        </EntityType>
+        <EntityType Name="tbl_Leave">
+          <Key>
+            <PropertyRef Name="LeaveId" />
+          </Key>
+          <Property Name="LeaveId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int64" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="NoOfDays" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="LeaveStatus" Type="Int32" Nullable="false" />
+          <Property Name="LeaveReason" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="RejectReason" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CancelledReason" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int64" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="tbl_LoginHistory">
+          <Key>
+            <PropertyRef Name="LoginHistoryId" />
+          </Key>
+          <Property Name="LoginHistoryId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="Int64" Nullable="false" />
+          <Property Name="LoginDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LocationFrom" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="SiteId" Type="Int64" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int64" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="tbl_Material">
+          <Key>
+            <PropertyRef Name="MaterialId" />
+          </Key>
+          <Property Name="MaterialId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyId" Type="Int64" Nullable="false" />
+          <Property Name="MaterialCategoryId" Type="Int64" />
+          <Property Name="MaterialDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SiteId" Type="Int64" Nullable="false" />
+          <Property Name="Qty" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="InOut" Type="Int32" Nullable="false" />
+          <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int64" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="tbl_MaterialCategory">
+          <Key>
+            <PropertyRef Name="MaterialCategoryId" />
+          </Key>
+          <Property Name="MaterialCategoryId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyId" Type="Int64" Nullable="false" />
+          <Property Name="MaterialCategoryName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int64" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="tbl_Package">
+          <Key>
+            <PropertyRef Name="PackageId" />
+          </Key>
+          <Property Name="PackageId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PackageName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="PackageDescription" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="AccessDays" Type="Int32" Nullable="false" />
+          <Property Name="PackageImage" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NoOfEmployee" Type="Int32" />
+          <Property Name="NoOfSMS" Type="Int32" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int64" />
         </EntityType>
         <EntityType Name="tbl_Setting">
           <Key>
@@ -1227,6 +1101,139 @@
           <Property Name="SMSPackageBuyGSTPer" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="EmployeeBuyGSTPer" Type="Decimal" Precision="18" Scale="2" />
         </EntityType>
+        <EntityType Name="tbl_Site">
+          <Key>
+            <PropertyRef Name="SiteId" />
+          </Key>
+          <Property Name="SiteId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyId" Type="Int64" Nullable="false" />
+          <Property Name="SiteName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SiteDescription" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int64" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="tbl_SMSPackage">
+          <Key>
+            <PropertyRef Name="SMSPackageId" />
+          </Key>
+          <Property Name="SMSPackageId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PackageName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PackageImage" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PackageAmount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="AccessDays" Type="Int32" Nullable="false" />
+          <Property Name="NoOfSMS" Type="Int32" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int64" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="tbl_Sponsor">
+          <Key>
+            <PropertyRef Name="SponsorId" />
+          </Key>
+          <Property Name="SponsorId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SponsorName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SponsorImage" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SponsorLink" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int64" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="tbl_Testimonial">
+          <Key>
+            <PropertyRef Name="TestimonialId" />
+          </Key>
+          <Property Name="TestimonialId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CompanyPersonName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FeedbackText" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int64" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityContainer Name="AttendanceSystemEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="mst_AdminRole" EntityType="Self.mst_AdminRole" />
+          <EntitySet Name="mst_CompanyType" EntityType="Self.mst_CompanyType" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="tbl_AdminUser" EntityType="Self.tbl_AdminUser" />
+          <EntitySet Name="tbl_Attendance" EntityType="Self.tbl_Attendance" />
+          <EntitySet Name="tbl_Company" EntityType="Self.tbl_Company" />
+          <EntitySet Name="tbl_CompanyFollowup" EntityType="Self.tbl_CompanyFollowup" />
+          <EntitySet Name="tbl_CompanyRenewPayment" EntityType="Self.tbl_CompanyRenewPayment" />
+          <EntitySet Name="tbl_CompanyRequest" EntityType="Self.tbl_CompanyRequest" />
+          <EntitySet Name="tbl_CompanySMSPackRenew" EntityType="Self.tbl_CompanySMSPackRenew" />
+          <EntitySet Name="tbl_DynamicContent" EntityType="Self.tbl_DynamicContent" />
+          <EntitySet Name="tbl_Employee" EntityType="Self.tbl_Employee" />
+          <EntitySet Name="tbl_EmployeeBuyTransaction" EntityType="Self.tbl_EmployeeBuyTransaction" />
+          <EntitySet Name="tbl_EmployeeFingerprint" EntityType="Self.tbl_EmployeeFingerprint" />
+          <EntitySet Name="tbl_EmployeePayment" EntityType="Self.tbl_EmployeePayment" />
+          <EntitySet Name="tbl_EmployeeRating" EntityType="Self.tbl_EmployeeRating" />
+          <EntitySet Name="tbl_Feedback" EntityType="Self.tbl_Feedback" />
+          <EntitySet Name="tbl_Holiday" EntityType="Self.tbl_Holiday" />
+          <EntitySet Name="tbl_HomeImage" EntityType="Self.tbl_HomeImage" />
+          <EntitySet Name="tbl_Leave" EntityType="Self.tbl_Leave" />
+          <EntitySet Name="tbl_LoginHistory" EntityType="Self.tbl_LoginHistory" />
+          <EntitySet Name="tbl_Material" EntityType="Self.tbl_Material" />
+          <EntitySet Name="tbl_MaterialCategory" EntityType="Self.tbl_MaterialCategory" />
+          <EntitySet Name="tbl_Package" EntityType="Self.tbl_Package" />
+          <EntitySet Name="tbl_Setting" EntityType="Self.tbl_Setting" />
+          <EntitySet Name="tbl_Site" EntityType="Self.tbl_Site" />
+          <EntitySet Name="tbl_SMSPackage" EntityType="Self.tbl_SMSPackage" />
+          <EntitySet Name="tbl_Sponsor" EntityType="Self.tbl_Sponsor" />
+          <EntitySet Name="tbl_Testimonial" EntityType="Self.tbl_Testimonial" />
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(AttendanceSystemModel.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(AttendanceSystemModel.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
+        </EntityContainer>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1236,645 +1243,601 @@
           <EntitySetMapping Name="mst_AdminRole">
             <EntityTypeMapping TypeName="AttendanceSystemModel.mst_AdminRole">
               <MappingFragment StoreEntitySet="mst_AdminRole">
-                <ScalarProperty Name="AdminRoleName" ColumnName="AdminRoleName" />
                 <ScalarProperty Name="AdminRoleId" ColumnName="AdminRoleId" />
+                <ScalarProperty Name="AdminRoleName" ColumnName="AdminRoleName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="mst_CompanyType">
             <EntityTypeMapping TypeName="AttendanceSystemModel.mst_CompanyType">
               <MappingFragment StoreEntitySet="mst_CompanyType">
-                <ScalarProperty Name="CompanyTypeName" ColumnName="CompanyTypeName" />
                 <ScalarProperty Name="CompanyTypeId" ColumnName="CompanyTypeId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbl_Site">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Site">
-              <MappingFragment StoreEntitySet="tbl_Site">
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="SiteDescription" ColumnName="SiteDescription" />
-                <ScalarProperty Name="SiteName" ColumnName="SiteName" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="SiteId" ColumnName="SiteId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbl_DynamicContent">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_DynamicContent">
-              <MappingFragment StoreEntitySet="tbl_DynamicContent">
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="SeqNo" ColumnName="SeqNo" />
-                <ScalarProperty Name="ContentDescription" ColumnName="ContentDescription" />
-                <ScalarProperty Name="ContentTitle" ColumnName="ContentTitle" />
-                <ScalarProperty Name="DynamicContentType" ColumnName="DynamicContentType" />
-                <ScalarProperty Name="DynamicContentId" ColumnName="DynamicContentId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbl_CompanyRenewPayment">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_CompanyRenewPayment">
-              <MappingFragment StoreEntitySet="tbl_CompanyRenewPayment">
-                <ScalarProperty Name="NoOfSMS" ColumnName="NoOfSMS" />
-                <ScalarProperty Name="NoOfEmployee" ColumnName="NoOfEmployee" />
-                <ScalarProperty Name="GSTPer" ColumnName="GSTPer" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="PackageName" ColumnName="PackageName" />
-                <ScalarProperty Name="PackageId" ColumnName="PackageId" />
-                <ScalarProperty Name="AccessDays" ColumnName="AccessDays" />
-                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
-                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-                <ScalarProperty Name="PaymentGatewayResponseId" ColumnName="PaymentGatewayResponseId" />
-                <ScalarProperty Name="PaymentFor" ColumnName="PaymentFor" />
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="CompanyRegistrationPaymentId" ColumnName="CompanyRegistrationPaymentId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbl_Holiday">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Holiday">
-              <MappingFragment StoreEntitySet="tbl_Holiday">
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="Remark" ColumnName="Remark" />
-                <ScalarProperty Name="HolidayReason" ColumnName="HolidayReason" />
-                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
-                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-                <ScalarProperty Name="HolidayId" ColumnName="HolidayId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbl_LoginHistory">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_LoginHistory">
-              <MappingFragment StoreEntitySet="tbl_LoginHistory">
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="SiteId" ColumnName="SiteId" />
-                <ScalarProperty Name="LocationFrom" ColumnName="LocationFrom" />
-                <ScalarProperty Name="LoginDate" ColumnName="LoginDate" />
-                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
-                <ScalarProperty Name="LoginHistoryId" ColumnName="LoginHistoryId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbl_Employee">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Employee">
-              <MappingFragment StoreEntitySet="tbl_Employee">
-                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
-                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsFingerprintSaved" ColumnName="IsFingerprintSaved" />
-                <ScalarProperty Name="IsFingerprintEnabled" ColumnName="IsFingerprintEnabled" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="IsLeaveForward" ColumnName="IsLeaveForward" />
-                <ScalarProperty Name="ExtraPerHourPrice" ColumnName="ExtraPerHourPrice" />
-                <ScalarProperty Name="MonthlySalaryPrice" ColumnName="MonthlySalaryPrice" />
-                <ScalarProperty Name="PerCategoryPrice" ColumnName="PerCategoryPrice" />
-                <ScalarProperty Name="EmploymentCategory" ColumnName="EmploymentCategory" />
-                <ScalarProperty Name="ProfilePicture" ColumnName="ProfilePicture" />
-                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
-                <ScalarProperty Name="DateOfIdCardExpiry" ColumnName="DateOfIdCardExpiry" />
-                <ScalarProperty Name="AdharCardNo" ColumnName="AdharCardNo" />
-                <ScalarProperty Name="WorkingTime" ColumnName="WorkingTime" />
-                <ScalarProperty Name="BloodGroup" ColumnName="BloodGroup" />
-                <ScalarProperty Name="DateOfJoin" ColumnName="DateOfJoin" />
-                <ScalarProperty Name="Dob" ColumnName="Dob" />
-                <ScalarProperty Name="Designation" ColumnName="Designation" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="AlternateMobile" ColumnName="AlternateMobile" />
-                <ScalarProperty Name="MobileNo" ColumnName="MobileNo" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="EmployeeCode" ColumnName="EmployeeCode" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="Prefix" ColumnName="Prefix" />
-                <ScalarProperty Name="AdminRoleId" ColumnName="AdminRoleId" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbl_EmployeePayment">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_EmployeePayment">
-              <MappingFragment StoreEntitySet="tbl_EmployeePayment">
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="PaymentType" ColumnName="PaymentType" />
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="EmployeePaymentId" ColumnName="EmployeePaymentId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbl_CompanyFollowup">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_CompanyFollowup">
-              <MappingFragment StoreEntitySet="tbl_CompanyFollowup">
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="NextDate" ColumnName="NextDate" />
-                <ScalarProperty Name="FollowupStatus" ColumnName="FollowupStatus" />
-                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
-                <ScalarProperty Name="FollowupText" ColumnName="FollowupText" />
-                <ScalarProperty Name="FollowupDate" ColumnName="FollowupDate" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="CompanyFollowupId" ColumnName="CompanyFollowupId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbl_CompanySMSPackRenew">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_CompanySMSPackRenew">
-              <MappingFragment StoreEntitySet="tbl_CompanySMSPackRenew">
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="PackageExpiryDate" ColumnName="PackageExpiryDate" />
-                <ScalarProperty Name="AccessDays" ColumnName="AccessDays" />
-                <ScalarProperty Name="RenewDate" ColumnName="RenewDate" />
-                <ScalarProperty Name="SMSPackageName" ColumnName="SMSPackageName" />
-                <ScalarProperty Name="SMSPackageId" ColumnName="SMSPackageId" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="CompanySMSPackRenewId" ColumnName="CompanySMSPackRenewId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbl_EmployeeRating">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_EmployeeRating">
-              <MappingFragment StoreEntitySet="tbl_EmployeeRating">
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
-                <ScalarProperty Name="WorkRate" ColumnName="WorkRate" />
-                <ScalarProperty Name="RegularityRate" ColumnName="RegularityRate" />
-                <ScalarProperty Name="BehaviourRate" ColumnName="BehaviourRate" />
-                <ScalarProperty Name="RateYear" ColumnName="RateYear" />
-                <ScalarProperty Name="RateMonth" ColumnName="RateMonth" />
-                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
-                <ScalarProperty Name="EmployeeRatingId" ColumnName="EmployeeRatingId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbl_Feedback">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Feedback">
-              <MappingFragment StoreEntitySet="tbl_Feedback">
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="SuperAdminFeedbackText" ColumnName="SuperAdminFeedbackText" />
-                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
-                <ScalarProperty Name="FeedbackText" ColumnName="FeedbackText" />
-                <ScalarProperty Name="FeedbackStatus" ColumnName="FeedbackStatus" />
-                <ScalarProperty Name="FeedbackType" ColumnName="FeedbackType" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="FeedbackId" ColumnName="FeedbackId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbl_Leave">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Leave">
-              <MappingFragment StoreEntitySet="tbl_Leave">
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="CancelledReason" ColumnName="CancelledReason" />
-                <ScalarProperty Name="RejectReason" ColumnName="RejectReason" />
-                <ScalarProperty Name="LeaveReason" ColumnName="LeaveReason" />
-                <ScalarProperty Name="LeaveStatus" ColumnName="LeaveStatus" />
-                <ScalarProperty Name="NoOfDays" ColumnName="NoOfDays" />
-                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
-                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="LeaveId" ColumnName="LeaveId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbl_MaterialCategory">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_MaterialCategory">
-              <MappingFragment StoreEntitySet="tbl_MaterialCategory">
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="MaterialCategoryName" ColumnName="MaterialCategoryName" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="MaterialCategoryId" ColumnName="MaterialCategoryId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbl_Material">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Material">
-              <MappingFragment StoreEntitySet="tbl_Material">
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
-                <ScalarProperty Name="InOut" ColumnName="InOut" />
-                <ScalarProperty Name="Qty" ColumnName="Qty" />
-                <ScalarProperty Name="SiteId" ColumnName="SiteId" />
-                <ScalarProperty Name="MaterialDate" ColumnName="MaterialDate" />
-                <ScalarProperty Name="MaterialCategoryId" ColumnName="MaterialCategoryId" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="MaterialId" ColumnName="MaterialId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbl_SMSPackage">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_SMSPackage">
-              <MappingFragment StoreEntitySet="tbl_SMSPackage">
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="NoOfSMS" ColumnName="NoOfSMS" />
-                <ScalarProperty Name="AccessDays" ColumnName="AccessDays" />
-                <ScalarProperty Name="PackageAmount" ColumnName="PackageAmount" />
-                <ScalarProperty Name="PackageImage" ColumnName="PackageImage" />
-                <ScalarProperty Name="PackageName" ColumnName="PackageName" />
-                <ScalarProperty Name="SMSPackageId" ColumnName="SMSPackageId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbl_Attendance">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Attendance">
-              <MappingFragment StoreEntitySet="tbl_Attendance">
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="RejectReason" ColumnName="RejectReason" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="LocationFrom" ColumnName="LocationFrom" />
-                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
-                <ScalarProperty Name="TomorrowWorkDetail" ColumnName="TomorrowWorkDetail" />
-                <ScalarProperty Name="TodayWorkDetail" ColumnName="TodayWorkDetail" />
-                <ScalarProperty Name="ExtraHours" ColumnName="ExtraHours" />
-                <ScalarProperty Name="OutTime" ColumnName="OutTime" />
-                <ScalarProperty Name="InTime" ColumnName="InTime" />
-                <ScalarProperty Name="DayType" ColumnName="DayType" />
-                <ScalarProperty Name="AttendanceDate" ColumnName="AttendanceDate" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="AttendanceId" ColumnName="AttendanceId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbl_HomeImage">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_HomeImage">
-              <MappingFragment StoreEntitySet="tbl_HomeImage">
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="HeadingText2" ColumnName="HeadingText2" />
-                <ScalarProperty Name="HeadingText1" ColumnName="HeadingText1" />
-                <ScalarProperty Name="HomeImageName" ColumnName="HomeImageName" />
-                <ScalarProperty Name="HomeImageId" ColumnName="HomeImageId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbl_Package">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Package">
-              <MappingFragment StoreEntitySet="tbl_Package">
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="NoOfSMS" ColumnName="NoOfSMS" />
-                <ScalarProperty Name="NoOfEmployee" ColumnName="NoOfEmployee" />
-                <ScalarProperty Name="PackageImage" ColumnName="PackageImage" />
-                <ScalarProperty Name="AccessDays" ColumnName="AccessDays" />
-                <ScalarProperty Name="PackageDescription" ColumnName="PackageDescription" />
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="PackageName" ColumnName="PackageName" />
-                <ScalarProperty Name="PackageId" ColumnName="PackageId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbl_Sponsor">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Sponsor">
-              <MappingFragment StoreEntitySet="tbl_Sponsor">
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="SponsorLink" ColumnName="SponsorLink" />
-                <ScalarProperty Name="SponsorImage" ColumnName="SponsorImage" />
-                <ScalarProperty Name="SponsorName" ColumnName="SponsorName" />
-                <ScalarProperty Name="SponsorId" ColumnName="SponsorId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbl_Testimonial">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Testimonial">
-              <MappingFragment StoreEntitySet="tbl_Testimonial">
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="FeedbackText" ColumnName="FeedbackText" />
-                <ScalarProperty Name="CompanyPersonName" ColumnName="CompanyPersonName" />
-                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
-                <ScalarProperty Name="TestimonialId" ColumnName="TestimonialId" />
+                <ScalarProperty Name="CompanyTypeName" ColumnName="CompanyTypeName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="sysdiagrams">
             <EntityTypeMapping TypeName="AttendanceSystemModel.sysdiagram">
               <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="definition" ColumnName="definition" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
                 <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tbl_EmployeeBuyTransaction">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_EmployeeBuyTransaction">
-              <MappingFragment StoreEntitySet="tbl_EmployeeBuyTransaction">
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <EntitySetMapping Name="tbl_AdminUser">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_AdminUser">
+              <MappingFragment StoreEntitySet="tbl_AdminUser">
+                <ScalarProperty Name="AdminUserId" ColumnName="AdminUserId" />
+                <ScalarProperty Name="AdminUserRoleId" ColumnName="AdminUserRoleId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="Prefix" ColumnName="Prefix" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="MIddleName" ColumnName="MIddleName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="EmailId" ColumnName="EmailId" />
+                <ScalarProperty Name="MobileNo" ColumnName="MobileNo" />
+                <ScalarProperty Name="AlternateMobileNo" ColumnName="AlternateMobileNo" />
+                <ScalarProperty Name="Designation" ColumnName="Designation" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Pincode" ColumnName="Pincode" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="AadharCardNo" ColumnName="AadharCardNo" />
+                <ScalarProperty Name="AadharCardPhoto" ColumnName="AadharCardPhoto" />
+                <ScalarProperty Name="PanCardNo" ColumnName="PanCardNo" />
+                <ScalarProperty Name="PanCardPhoto" ColumnName="PanCardPhoto" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="PaymentGatewayTransactionId" ColumnName="PaymentGatewayTransactionId" />
-                <ScalarProperty Name="TotalPaidAmount" ColumnName="TotalPaidAmount" />
-                <ScalarProperty Name="AmountPerEmp" ColumnName="AmountPerEmp" />
-                <ScalarProperty Name="NoOfEmpToBuy" ColumnName="NoOfEmpToBuy" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="EmployeeBuyTransactionId" ColumnName="EmployeeBuyTransactionId" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tbl_EmployeeFingerprint">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_EmployeeFingerprint">
-              <MappingFragment StoreEntitySet="tbl_EmployeeFingerprint">
-                <ScalarProperty Name="BitmapCode" ColumnName="BitmapCode" />
-                <ScalarProperty Name="ISOCode" ColumnName="ISOCode" />
-                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
-                <ScalarProperty Name="EmployeeFingerprintId" ColumnName="EmployeeFingerprintId" />
+          <EntitySetMapping Name="tbl_Attendance">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Attendance">
+              <MappingFragment StoreEntitySet="tbl_Attendance">
+                <ScalarProperty Name="AttendanceId" ColumnName="AttendanceId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="AttendanceDate" ColumnName="AttendanceDate" />
+                <ScalarProperty Name="DayType" ColumnName="DayType" />
+                <ScalarProperty Name="InTime" ColumnName="InTime" />
+                <ScalarProperty Name="OutTime" ColumnName="OutTime" />
+                <ScalarProperty Name="ExtraHours" ColumnName="ExtraHours" />
+                <ScalarProperty Name="TodayWorkDetail" ColumnName="TodayWorkDetail" />
+                <ScalarProperty Name="TomorrowWorkDetail" ColumnName="TomorrowWorkDetail" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="LocationFrom" ColumnName="LocationFrom" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="RejectReason" ColumnName="RejectReason" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tbl_Company">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Company">
               <MappingFragment StoreEntitySet="tbl_Company">
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="RemainingSMSToUse" ColumnName="RemainingSMSToUse" />
-                <ScalarProperty Name="TotalSMSReceived" ColumnName="TotalSMSReceived" />
-                <ScalarProperty Name="SMSPackExpiryDate" ColumnName="SMSPackExpiryDate" />
-                <ScalarProperty Name="SMSPackStartDate" ColumnName="SMSPackStartDate" />
-                <ScalarProperty Name="CurrentSMSPackageId" ColumnName="CurrentSMSPackageId" />
-                <ScalarProperty Name="RemainingEmployeeAccess" ColumnName="RemainingEmployeeAccess" />
-                <ScalarProperty Name="CurrentEmployeeAccess" ColumnName="CurrentEmployeeAccess" />
-                <ScalarProperty Name="AccountExpiryDate" ColumnName="AccountExpiryDate" />
-                <ScalarProperty Name="AccountStartDate" ColumnName="AccountStartDate" />
-                <ScalarProperty Name="CurrentPackageId" ColumnName="CurrentPackageId" />
-                <ScalarProperty Name="TrialExpiryDate" ColumnName="TrialExpiryDate" />
-                <ScalarProperty Name="IsTrialMode" ColumnName="IsTrialMode" />
-                <ScalarProperty Name="FreeAccessDays" ColumnName="FreeAccessDays" />
-                <ScalarProperty Name="CancellationChequePhoto" ColumnName="CancellationChequePhoto" />
-                <ScalarProperty Name="WebisteUrl" ColumnName="WebisteUrl" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="RegisterProofImage" ColumnName="RegisterProofImage" />
-                <ScalarProperty Name="CompanyLogoImage" ColumnName="CompanyLogoImage" />
-                <ScalarProperty Name="PanPhoto" ColumnName="PanPhoto" />
-                <ScalarProperty Name="PanNo" ColumnName="PanNo" />
-                <ScalarProperty Name="GSTPhoto" ColumnName="GSTPhoto" />
-                <ScalarProperty Name="GSTNo" ColumnName="GSTNo" />
-                <ScalarProperty Name="State" ColumnName="State" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="Pincode" ColumnName="Pincode" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="AlternateContactNo" ColumnName="AlternateContactNo" />
-                <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
-                <ScalarProperty Name="EmailId" ColumnName="EmailId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="CompanyTypeId" ColumnName="CompanyTypeId" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
                 <ScalarProperty Name="CompanyCode" ColumnName="CompanyCode" />
-                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
-                <ScalarProperty Name="CompanyTypeId" ColumnName="CompanyTypeId" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbl_Setting">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Setting">
-              <MappingFragment StoreEntitySet="tbl_Setting">
-                <ScalarProperty Name="EmployeeBuyGSTPer" ColumnName="EmployeeBuyGSTPer" />
-                <ScalarProperty Name="SMSPackageBuyGSTPer" ColumnName="SMSPackageBuyGSTPer" />
-                <ScalarProperty Name="AccountPackageBuyGSTPer" ColumnName="AccountPackageBuyGSTPer" />
-                <ScalarProperty Name="AmountPerEmp" ColumnName="AmountPerEmp" />
-                <ScalarProperty Name="AccountFreeAccessDays" ColumnName="AccountFreeAccessDays" />
-                <ScalarProperty Name="SettingId" ColumnName="SettingId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbl_AdminUser">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_AdminUser">
-              <MappingFragment StoreEntitySet="tbl_AdminUser">
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="PanCardPhoto" ColumnName="PanCardPhoto" />
-                <ScalarProperty Name="PanCardNo" ColumnName="PanCardNo" />
-                <ScalarProperty Name="AadharCardPhoto" ColumnName="AadharCardPhoto" />
-                <ScalarProperty Name="AadharCardNo" ColumnName="AadharCardNo" />
-                <ScalarProperty Name="State" ColumnName="State" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="Pincode" ColumnName="Pincode" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="Designation" ColumnName="Designation" />
-                <ScalarProperty Name="AlternateMobileNo" ColumnName="AlternateMobileNo" />
-                <ScalarProperty Name="MobileNo" ColumnName="MobileNo" />
                 <ScalarProperty Name="EmailId" ColumnName="EmailId" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="MIddleName" ColumnName="MIddleName" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="Prefix" ColumnName="Prefix" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="AdminUserRoleId" ColumnName="AdminUserRoleId" />
-                <ScalarProperty Name="AdminUserId" ColumnName="AdminUserId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbl_CompanyRequest">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_CompanyRequest">
-              <MappingFragment StoreEntitySet="tbl_CompanyRequest">
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="FreeAccessDays" ColumnName="FreeAccessDays" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="RejectReason" ColumnName="RejectReason" />
-                <ScalarProperty Name="RequestStatus" ColumnName="RequestStatus" />
-                <ScalarProperty Name="CompanyAdminPanCardNo" ColumnName="CompanyAdminPanCardNo" />
-                <ScalarProperty Name="CompanyAdminPanCardPhoto" ColumnName="CompanyAdminPanCardPhoto" />
-                <ScalarProperty Name="CompanyAdminAadharCardPhoto" ColumnName="CompanyAdminAadharCardPhoto" />
-                <ScalarProperty Name="CompanyAdminAadharCardNo" ColumnName="CompanyAdminAadharCardNo" />
-                <ScalarProperty Name="CompanyAdminState" ColumnName="CompanyAdminState" />
-                <ScalarProperty Name="CompanyAdminCity" ColumnName="CompanyAdminCity" />
-                <ScalarProperty Name="CompanyAdminPincode" ColumnName="CompanyAdminPincode" />
-                <ScalarProperty Name="CompanyAdminAddress" ColumnName="CompanyAdminAddress" />
-                <ScalarProperty Name="CompanyAdminDesignation" ColumnName="CompanyAdminDesignation" />
-                <ScalarProperty Name="CompanyAdminAlternateMobileNo" ColumnName="CompanyAdminAlternateMobileNo" />
-                <ScalarProperty Name="CompanyAdminMobileNo" ColumnName="CompanyAdminMobileNo" />
-                <ScalarProperty Name="CompanyAdminEmailId" ColumnName="CompanyAdminEmailId" />
-                <ScalarProperty Name="CompanyAdminLastName" ColumnName="CompanyAdminLastName" />
-                <ScalarProperty Name="CompanyAdminMiddleName" ColumnName="CompanyAdminMiddleName" />
-                <ScalarProperty Name="CompanyAdminFirstName" ColumnName="CompanyAdminFirstName" />
-                <ScalarProperty Name="CompanyAdminPrefix" ColumnName="CompanyAdminPrefix" />
-                <ScalarProperty Name="CompanyCancellationChequePhoto" ColumnName="CompanyCancellationChequePhoto" />
-                <ScalarProperty Name="CompanyWebisteUrl" ColumnName="CompanyWebisteUrl" />
-                <ScalarProperty Name="CompanyDescription" ColumnName="CompanyDescription" />
-                <ScalarProperty Name="CompanyRegisterProofImage" ColumnName="CompanyRegisterProofImage" />
+                <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+                <ScalarProperty Name="AlternateContactNo" ColumnName="AlternateContactNo" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Pincode" ColumnName="Pincode" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="GSTNo" ColumnName="GSTNo" />
+                <ScalarProperty Name="GSTPhoto" ColumnName="GSTPhoto" />
+                <ScalarProperty Name="PanNo" ColumnName="PanNo" />
+                <ScalarProperty Name="PanPhoto" ColumnName="PanPhoto" />
                 <ScalarProperty Name="CompanyLogoImage" ColumnName="CompanyLogoImage" />
-                <ScalarProperty Name="CompanyState" ColumnName="CompanyState" />
-                <ScalarProperty Name="CompanyCity" ColumnName="CompanyCity" />
-                <ScalarProperty Name="CompanyPincode" ColumnName="CompanyPincode" />
-                <ScalarProperty Name="CompanyAddress" ColumnName="CompanyAddress" />
-                <ScalarProperty Name="CompanyPanPhoto" ColumnName="CompanyPanPhoto" />
-                <ScalarProperty Name="CompanyPanNo" ColumnName="CompanyPanNo" />
-                <ScalarProperty Name="CompanyGSTPhoto" ColumnName="CompanyGSTPhoto" />
-                <ScalarProperty Name="CompanyGSTNo" ColumnName="CompanyGSTNo" />
-                <ScalarProperty Name="CompanyAlternateContactNo" ColumnName="CompanyAlternateContactNo" />
-                <ScalarProperty Name="CompanyContactNo" ColumnName="CompanyContactNo" />
-                <ScalarProperty Name="CompanyEmailId" ColumnName="CompanyEmailId" />
-                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
-                <ScalarProperty Name="CompanyTypeId" ColumnName="CompanyTypeId" />
-                <ScalarProperty Name="CompanyRequestId" ColumnName="CompanyRequestId" />
+                <ScalarProperty Name="RegisterProofImage" ColumnName="RegisterProofImage" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="WebisteUrl" ColumnName="WebisteUrl" />
+                <ScalarProperty Name="CancellationChequePhoto" ColumnName="CancellationChequePhoto" />
+                <ScalarProperty Name="FreeAccessDays" ColumnName="FreeAccessDays" />
+                <ScalarProperty Name="IsTrialMode" ColumnName="IsTrialMode" />
+                <ScalarProperty Name="TrialExpiryDate" ColumnName="TrialExpiryDate" />
+                <ScalarProperty Name="CurrentPackageId" ColumnName="CurrentPackageId" />
+                <ScalarProperty Name="AccountStartDate" ColumnName="AccountStartDate" />
+                <ScalarProperty Name="AccountExpiryDate" ColumnName="AccountExpiryDate" />
+                <ScalarProperty Name="CurrentEmployeeAccess" ColumnName="CurrentEmployeeAccess" />
+                <ScalarProperty Name="RemainingEmployeeAccess" ColumnName="RemainingEmployeeAccess" />
+                <ScalarProperty Name="CurrentSMSPackageId" ColumnName="CurrentSMSPackageId" />
+                <ScalarProperty Name="SMSPackStartDate" ColumnName="SMSPackStartDate" />
+                <ScalarProperty Name="SMSPackExpiryDate" ColumnName="SMSPackExpiryDate" />
+                <ScalarProperty Name="TotalSMSReceived" ColumnName="TotalSMSReceived" />
+                <ScalarProperty Name="RemainingSMSToUse" ColumnName="RemainingSMSToUse" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tbl_AdminUser">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_AdminUser">
-              <MappingFragment StoreEntitySet="tbl_AdminUser">
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="PanCardPhoto" ColumnName="PanCardPhoto" />
-                <ScalarProperty Name="PanCardNo" ColumnName="PanCardNo" />
-                <ScalarProperty Name="AadharCardPhoto" ColumnName="AadharCardPhoto" />
-                <ScalarProperty Name="AadharCardNo" ColumnName="AadharCardNo" />
-                <ScalarProperty Name="State" ColumnName="State" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="Pincode" ColumnName="Pincode" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="Designation" ColumnName="Designation" />
-                <ScalarProperty Name="AlternateMobileNo" ColumnName="AlternateMobileNo" />
-                <ScalarProperty Name="MobileNo" ColumnName="MobileNo" />
-                <ScalarProperty Name="EmailId" ColumnName="EmailId" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="MIddleName" ColumnName="MIddleName" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="Prefix" ColumnName="Prefix" />
+          <EntitySetMapping Name="tbl_CompanyFollowup">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_CompanyFollowup">
+              <MappingFragment StoreEntitySet="tbl_CompanyFollowup">
+                <ScalarProperty Name="CompanyFollowupId" ColumnName="CompanyFollowupId" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="AdminUserRoleId" ColumnName="AdminUserRoleId" />
-                <ScalarProperty Name="AdminUserId" ColumnName="AdminUserId" />
+                <ScalarProperty Name="FollowupDate" ColumnName="FollowupDate" />
+                <ScalarProperty Name="FollowupText" ColumnName="FollowupText" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="FollowupStatus" ColumnName="FollowupStatus" />
+                <ScalarProperty Name="NextDate" ColumnName="NextDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tbl_CompanyRenewPayment">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_CompanyRenewPayment">
               <MappingFragment StoreEntitySet="tbl_CompanyRenewPayment">
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CompanyRegistrationPaymentId" ColumnName="CompanyRegistrationPaymentId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="PackageId" ColumnName="PackageId" />
+                <ScalarProperty Name="PackageName" ColumnName="PackageName" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="GSTPer" ColumnName="GSTPer" />
+                <ScalarProperty Name="AccessDays" ColumnName="AccessDays" />
+                <ScalarProperty Name="NoOfEmployee" ColumnName="NoOfEmployee" />
+                <ScalarProperty Name="NoOfSMS" ColumnName="NoOfSMS" />
+                <ScalarProperty Name="PaymentFor" ColumnName="PaymentFor" />
+                <ScalarProperty Name="PaymentGatewayResponseId" ColumnName="PaymentGatewayResponseId" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_CompanyRequest">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_CompanyRequest">
+              <MappingFragment StoreEntitySet="tbl_CompanyRequest">
+                <ScalarProperty Name="CompanyRequestId" ColumnName="CompanyRequestId" />
+                <ScalarProperty Name="CompanyTypeId" ColumnName="CompanyTypeId" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="CompanyEmailId" ColumnName="CompanyEmailId" />
+                <ScalarProperty Name="CompanyContactNo" ColumnName="CompanyContactNo" />
+                <ScalarProperty Name="CompanyAlternateContactNo" ColumnName="CompanyAlternateContactNo" />
+                <ScalarProperty Name="CompanyGSTNo" ColumnName="CompanyGSTNo" />
+                <ScalarProperty Name="CompanyGSTPhoto" ColumnName="CompanyGSTPhoto" />
+                <ScalarProperty Name="CompanyPanNo" ColumnName="CompanyPanNo" />
+                <ScalarProperty Name="CompanyPanPhoto" ColumnName="CompanyPanPhoto" />
+                <ScalarProperty Name="CompanyAddress" ColumnName="CompanyAddress" />
+                <ScalarProperty Name="CompanyPincode" ColumnName="CompanyPincode" />
+                <ScalarProperty Name="CompanyCity" ColumnName="CompanyCity" />
+                <ScalarProperty Name="CompanyState" ColumnName="CompanyState" />
+                <ScalarProperty Name="CompanyLogoImage" ColumnName="CompanyLogoImage" />
+                <ScalarProperty Name="CompanyRegisterProofImage" ColumnName="CompanyRegisterProofImage" />
+                <ScalarProperty Name="CompanyDescription" ColumnName="CompanyDescription" />
+                <ScalarProperty Name="CompanyWebisteUrl" ColumnName="CompanyWebisteUrl" />
+                <ScalarProperty Name="CompanyCancellationChequePhoto" ColumnName="CompanyCancellationChequePhoto" />
+                <ScalarProperty Name="CompanyAdminPrefix" ColumnName="CompanyAdminPrefix" />
+                <ScalarProperty Name="CompanyAdminFirstName" ColumnName="CompanyAdminFirstName" />
+                <ScalarProperty Name="CompanyAdminMiddleName" ColumnName="CompanyAdminMiddleName" />
+                <ScalarProperty Name="CompanyAdminLastName" ColumnName="CompanyAdminLastName" />
+                <ScalarProperty Name="CompanyAdminEmailId" ColumnName="CompanyAdminEmailId" />
+                <ScalarProperty Name="CompanyAdminMobileNo" ColumnName="CompanyAdminMobileNo" />
+                <ScalarProperty Name="CompanyAdminAlternateMobileNo" ColumnName="CompanyAdminAlternateMobileNo" />
+                <ScalarProperty Name="CompanyAdminDesignation" ColumnName="CompanyAdminDesignation" />
+                <ScalarProperty Name="CompanyAdminAddress" ColumnName="CompanyAdminAddress" />
+                <ScalarProperty Name="CompanyAdminPincode" ColumnName="CompanyAdminPincode" />
+                <ScalarProperty Name="CompanyAdminCity" ColumnName="CompanyAdminCity" />
+                <ScalarProperty Name="CompanyAdminState" ColumnName="CompanyAdminState" />
+                <ScalarProperty Name="CompanyAdminAadharCardNo" ColumnName="CompanyAdminAadharCardNo" />
+                <ScalarProperty Name="CompanyAdminAadharCardPhoto" ColumnName="CompanyAdminAadharCardPhoto" />
+                <ScalarProperty Name="CompanyAdminPanCardPhoto" ColumnName="CompanyAdminPanCardPhoto" />
+                <ScalarProperty Name="CompanyAdminPanCardNo" ColumnName="CompanyAdminPanCardNo" />
+                <ScalarProperty Name="RequestStatus" ColumnName="RequestStatus" />
+                <ScalarProperty Name="RejectReason" ColumnName="RejectReason" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="FreeAccessDays" ColumnName="FreeAccessDays" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_CompanySMSPackRenew">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_CompanySMSPackRenew">
+              <MappingFragment StoreEntitySet="tbl_CompanySMSPackRenew">
+                <ScalarProperty Name="CompanySMSPackRenewId" ColumnName="CompanySMSPackRenewId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="SMSPackageId" ColumnName="SMSPackageId" />
+                <ScalarProperty Name="SMSPackageName" ColumnName="SMSPackageName" />
+                <ScalarProperty Name="RenewDate" ColumnName="RenewDate" />
+                <ScalarProperty Name="AccessDays" ColumnName="AccessDays" />
+                <ScalarProperty Name="PackageExpiryDate" ColumnName="PackageExpiryDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_DynamicContent">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_DynamicContent">
+              <MappingFragment StoreEntitySet="tbl_DynamicContent">
+                <ScalarProperty Name="DynamicContentId" ColumnName="DynamicContentId" />
+                <ScalarProperty Name="DynamicContentType" ColumnName="DynamicContentType" />
+                <ScalarProperty Name="ContentTitle" ColumnName="ContentTitle" />
+                <ScalarProperty Name="ContentDescription" ColumnName="ContentDescription" />
+                <ScalarProperty Name="SeqNo" ColumnName="SeqNo" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="PaymentGatewayResponseId" ColumnName="PaymentGatewayResponseId" />
-                <ScalarProperty Name="PaymentFor" ColumnName="PaymentFor" />
-                <ScalarProperty Name="NoOfSMS" ColumnName="NoOfSMS" />
-                <ScalarProperty Name="NoOfEmployee" ColumnName="NoOfEmployee" />
-                <ScalarProperty Name="AccessDays" ColumnName="AccessDays" />
-                <ScalarProperty Name="GSTPer" ColumnName="GSTPer" />
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
-                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-                <ScalarProperty Name="PackageName" ColumnName="PackageName" />
-                <ScalarProperty Name="PackageId" ColumnName="PackageId" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_Employee">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Employee">
+              <MappingFragment StoreEntitySet="tbl_Employee">
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="CompanyRegistrationPaymentId" ColumnName="CompanyRegistrationPaymentId" />
+                <ScalarProperty Name="AdminRoleId" ColumnName="AdminRoleId" />
+                <ScalarProperty Name="Prefix" ColumnName="Prefix" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="EmployeeCode" ColumnName="EmployeeCode" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="MobileNo" ColumnName="MobileNo" />
+                <ScalarProperty Name="AlternateMobile" ColumnName="AlternateMobile" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Designation" ColumnName="Designation" />
+                <ScalarProperty Name="Dob" ColumnName="Dob" />
+                <ScalarProperty Name="DateOfJoin" ColumnName="DateOfJoin" />
+                <ScalarProperty Name="BloodGroup" ColumnName="BloodGroup" />
+                <ScalarProperty Name="WorkingTime" ColumnName="WorkingTime" />
+                <ScalarProperty Name="AdharCardNo" ColumnName="AdharCardNo" />
+                <ScalarProperty Name="DateOfIdCardExpiry" ColumnName="DateOfIdCardExpiry" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="ProfilePicture" ColumnName="ProfilePicture" />
+                <ScalarProperty Name="EmploymentCategory" ColumnName="EmploymentCategory" />
+                <ScalarProperty Name="PerCategoryPrice" ColumnName="PerCategoryPrice" />
+                <ScalarProperty Name="MonthlySalaryPrice" ColumnName="MonthlySalaryPrice" />
+                <ScalarProperty Name="ExtraPerHourPrice" ColumnName="ExtraPerHourPrice" />
+                <ScalarProperty Name="IsLeaveForward" ColumnName="IsLeaveForward" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsFingerprintEnabled" ColumnName="IsFingerprintEnabled" />
+                <ScalarProperty Name="IsFingerprintSaved" ColumnName="IsFingerprintSaved" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_EmployeeBuyTransaction">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_EmployeeBuyTransaction">
+              <MappingFragment StoreEntitySet="tbl_EmployeeBuyTransaction">
+                <ScalarProperty Name="EmployeeBuyTransactionId" ColumnName="EmployeeBuyTransactionId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="NoOfEmpToBuy" ColumnName="NoOfEmpToBuy" />
+                <ScalarProperty Name="AmountPerEmp" ColumnName="AmountPerEmp" />
+                <ScalarProperty Name="TotalPaidAmount" ColumnName="TotalPaidAmount" />
+                <ScalarProperty Name="PaymentGatewayTransactionId" ColumnName="PaymentGatewayTransactionId" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_EmployeeFingerprint">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_EmployeeFingerprint">
+              <MappingFragment StoreEntitySet="tbl_EmployeeFingerprint">
+                <ScalarProperty Name="EmployeeFingerprintId" ColumnName="EmployeeFingerprintId" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="ISOCode" ColumnName="ISOCode" />
+                <ScalarProperty Name="BitmapCode" ColumnName="BitmapCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_EmployeePayment">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_EmployeePayment">
+              <MappingFragment StoreEntitySet="tbl_EmployeePayment">
+                <ScalarProperty Name="EmployeePaymentId" ColumnName="EmployeePaymentId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="PaymentType" ColumnName="PaymentType" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_EmployeeRating">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_EmployeeRating">
+              <MappingFragment StoreEntitySet="tbl_EmployeeRating">
+                <ScalarProperty Name="EmployeeRatingId" ColumnName="EmployeeRatingId" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="RateMonth" ColumnName="RateMonth" />
+                <ScalarProperty Name="RateYear" ColumnName="RateYear" />
+                <ScalarProperty Name="BehaviourRate" ColumnName="BehaviourRate" />
+                <ScalarProperty Name="RegularityRate" ColumnName="RegularityRate" />
+                <ScalarProperty Name="WorkRate" ColumnName="WorkRate" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_Feedback">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Feedback">
+              <MappingFragment StoreEntitySet="tbl_Feedback">
+                <ScalarProperty Name="FeedbackId" ColumnName="FeedbackId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="FeedbackType" ColumnName="FeedbackType" />
+                <ScalarProperty Name="FeedbackStatus" ColumnName="FeedbackStatus" />
+                <ScalarProperty Name="FeedbackText" ColumnName="FeedbackText" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="SuperAdminFeedbackText" ColumnName="SuperAdminFeedbackText" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_Holiday">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Holiday">
+              <MappingFragment StoreEntitySet="tbl_Holiday">
+                <ScalarProperty Name="HolidayId" ColumnName="HolidayId" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="HolidayReason" ColumnName="HolidayReason" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_HomeImage">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_HomeImage">
+              <MappingFragment StoreEntitySet="tbl_HomeImage">
+                <ScalarProperty Name="HomeImageId" ColumnName="HomeImageId" />
+                <ScalarProperty Name="HomeImageName" ColumnName="HomeImageName" />
+                <ScalarProperty Name="HeadingText1" ColumnName="HeadingText1" />
+                <ScalarProperty Name="HeadingText2" ColumnName="HeadingText2" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_Leave">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Leave">
+              <MappingFragment StoreEntitySet="tbl_Leave">
+                <ScalarProperty Name="LeaveId" ColumnName="LeaveId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="NoOfDays" ColumnName="NoOfDays" />
+                <ScalarProperty Name="LeaveStatus" ColumnName="LeaveStatus" />
+                <ScalarProperty Name="LeaveReason" ColumnName="LeaveReason" />
+                <ScalarProperty Name="RejectReason" ColumnName="RejectReason" />
+                <ScalarProperty Name="CancelledReason" ColumnName="CancelledReason" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_LoginHistory">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_LoginHistory">
+              <MappingFragment StoreEntitySet="tbl_LoginHistory">
+                <ScalarProperty Name="LoginHistoryId" ColumnName="LoginHistoryId" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="LoginDate" ColumnName="LoginDate" />
+                <ScalarProperty Name="LocationFrom" ColumnName="LocationFrom" />
+                <ScalarProperty Name="SiteId" ColumnName="SiteId" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_Material">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Material">
+              <MappingFragment StoreEntitySet="tbl_Material">
+                <ScalarProperty Name="MaterialId" ColumnName="MaterialId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="MaterialCategoryId" ColumnName="MaterialCategoryId" />
+                <ScalarProperty Name="MaterialDate" ColumnName="MaterialDate" />
+                <ScalarProperty Name="SiteId" ColumnName="SiteId" />
+                <ScalarProperty Name="Qty" ColumnName="Qty" />
+                <ScalarProperty Name="InOut" ColumnName="InOut" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_MaterialCategory">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_MaterialCategory">
+              <MappingFragment StoreEntitySet="tbl_MaterialCategory">
+                <ScalarProperty Name="MaterialCategoryId" ColumnName="MaterialCategoryId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="MaterialCategoryName" ColumnName="MaterialCategoryName" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_Package">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Package">
+              <MappingFragment StoreEntitySet="tbl_Package">
+                <ScalarProperty Name="PackageId" ColumnName="PackageId" />
+                <ScalarProperty Name="PackageName" ColumnName="PackageName" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="PackageDescription" ColumnName="PackageDescription" />
+                <ScalarProperty Name="AccessDays" ColumnName="AccessDays" />
+                <ScalarProperty Name="PackageImage" ColumnName="PackageImage" />
+                <ScalarProperty Name="NoOfEmployee" ColumnName="NoOfEmployee" />
+                <ScalarProperty Name="NoOfSMS" ColumnName="NoOfSMS" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tbl_Setting">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Setting">
               <MappingFragment StoreEntitySet="tbl_Setting">
-                <ScalarProperty Name="EmployeeBuyGSTPer" ColumnName="EmployeeBuyGSTPer" />
-                <ScalarProperty Name="SMSPackageBuyGSTPer" ColumnName="SMSPackageBuyGSTPer" />
-                <ScalarProperty Name="AccountPackageBuyGSTPer" ColumnName="AccountPackageBuyGSTPer" />
-                <ScalarProperty Name="AmountPerEmp" ColumnName="AmountPerEmp" />
-                <ScalarProperty Name="AccountFreeAccessDays" ColumnName="AccountFreeAccessDays" />
                 <ScalarProperty Name="SettingId" ColumnName="SettingId" />
+                <ScalarProperty Name="AccountFreeAccessDays" ColumnName="AccountFreeAccessDays" />
+                <ScalarProperty Name="AmountPerEmp" ColumnName="AmountPerEmp" />
+                <ScalarProperty Name="AccountPackageBuyGSTPer" ColumnName="AccountPackageBuyGSTPer" />
+                <ScalarProperty Name="SMSPackageBuyGSTPer" ColumnName="SMSPackageBuyGSTPer" />
+                <ScalarProperty Name="EmployeeBuyGSTPer" ColumnName="EmployeeBuyGSTPer" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="tbl_Site">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Site">
+              <MappingFragment StoreEntitySet="tbl_Site">
+                <ScalarProperty Name="SiteId" ColumnName="SiteId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="SiteName" ColumnName="SiteName" />
+                <ScalarProperty Name="SiteDescription" ColumnName="SiteDescription" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_SMSPackage">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_SMSPackage">
+              <MappingFragment StoreEntitySet="tbl_SMSPackage">
+                <ScalarProperty Name="SMSPackageId" ColumnName="SMSPackageId" />
+                <ScalarProperty Name="PackageName" ColumnName="PackageName" />
+                <ScalarProperty Name="PackageImage" ColumnName="PackageImage" />
+                <ScalarProperty Name="PackageAmount" ColumnName="PackageAmount" />
+                <ScalarProperty Name="AccessDays" ColumnName="AccessDays" />
+                <ScalarProperty Name="NoOfSMS" ColumnName="NoOfSMS" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_Sponsor">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Sponsor">
+              <MappingFragment StoreEntitySet="tbl_Sponsor">
+                <ScalarProperty Name="SponsorId" ColumnName="SponsorId" />
+                <ScalarProperty Name="SponsorName" ColumnName="SponsorName" />
+                <ScalarProperty Name="SponsorImage" ColumnName="SponsorImage" />
+                <ScalarProperty Name="SponsorLink" ColumnName="SponsorLink" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_Testimonial">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Testimonial">
+              <MappingFragment StoreEntitySet="tbl_Testimonial">
+                <ScalarProperty Name="TestimonialId" ColumnName="TestimonialId" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="CompanyPersonName" ColumnName="CompanyPersonName" />
+                <ScalarProperty Name="FeedbackText" ColumnName="FeedbackText" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="AttendanceSystemModel.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="AttendanceSystemModel.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="AttendanceSystemModel.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="AttendanceSystemModel.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AttendanceSystemModel.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="AttendanceSystemModel.Store.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AttendanceSystemModel.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="AttendanceSystemModel.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="AttendanceSystemModel.Store.sp_upgraddiagrams" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
