@@ -16,7 +16,10 @@ namespace AttendanceSystem.ViewModel
         public long? CompanyTypeId { get; set; }
 
         [Required(ErrorMessage = "Company Name is required")]
+        [MinLength(2)]
         [Display(Name = "Company Name")]
+        [RegularExpression("^[a-zA-Z\\s]+", ErrorMessage = "special characters are not allowed.")]
+
         public string CompanyName { get; set; }
 
         [Required, Display(Name = "Company EmailId")]
@@ -78,7 +81,7 @@ namespace AttendanceSystem.ViewModel
         [Required(ErrorMessage = "Company Admin First Name is required")]
         public string CompanyAdminFirstName { get; set; }
 
-        [Display(Name = "Middle Name")]
+        [Required,Display(Name = "Middle Name")]
         public string CompanyAdminMiddleName { get; set; }
 
         [Display(Name = "Last Name")]
@@ -95,10 +98,10 @@ namespace AttendanceSystem.ViewModel
         [Display(Name = "Alternate Mobile No")]
         public string CompanyAdminAlternateMobileNo { get; set; }
 
-        [Display(Name = "Designation")]
+        [Required,Display(Name = "Designation")]
         public string CompanyAdminDesignation { get; set; }
 
-        [Required,Display(Name = "Address")]
+        [Required, Display(Name = "Address")]
         public string CompanyAdminAddress { get; set; }
 
         [Required, Display(Name = "Pincode")]
@@ -127,7 +130,7 @@ namespace AttendanceSystem.ViewModel
         [Display(Name = "Pan Card Photo")]
         public HttpPostedFileBase CompanyAdminPanCardPhotoFile { get; set; }
         public string CompanyAdminPanCardPhoto { get; set; }
-
+        [Display(Name = "Request Status")]
         public int RequestStatus { get; set; }
         public string RejectReason { get; set; }
         public long? CompanyId { get; set; }
@@ -138,6 +141,7 @@ namespace AttendanceSystem.ViewModel
 
         [Display(Name = "Company Code")]
         public string CompanyCode { get; set; }
+        public string OTP { get; set; }
     }
 
     public class CompanyRequestFilterVM

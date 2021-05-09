@@ -82,6 +82,7 @@
         public static string MobileNoNotFoundForTheCompany = "Mobile no not found for the company.";
         public static string EmployeeIdIsNotValid = "Employee id is not valid.";
         public static string EmployeeDoesNotExist = "Employee does not exist.";
+        public static string CompanyNameMinimum2CharacterRequired = "Company name minimum 2 character required.";
 
     }
 }
