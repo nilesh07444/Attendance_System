@@ -33,6 +33,7 @@
 
                 @using (Html.BeginForm("Index", "CompanyRequest", FormMethod.Post, new { @id = "CompanyRequestFormId", @class = "form-contact contact_form", enctype = "multipart/form-data", role = "form" }))
                 {
+                   // @Html.ValidationSummary()
                     <div class="row">
                         <div class="col-12">
                             <h5>Company Information</h5>
@@ -41,14 +42,14 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label>Company Name</label>
+                                <label>Company Name*</label>
                                 @Html.TextBoxFor(model => model.CompanyName, new { @type = "text", @class = "form-control", @placeholder = "Enter Company Name" })
                                 @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "error" })
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label>Company Type</label>
+                                <label>Company Type*</label>
                                 @Html.DropDownList("CompanyTypeId", new SelectList(Model.CompanyTypeList, "Value", "Text"), "- select -", new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.CompanyTypeId)
 
@@ -58,14 +59,14 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Email Id</label>
+                                <label>Email Id*</label>
                                 @Html.TextBoxFor(model => model.CompanyEmailId, new { @type = "email", @class = "form-control", @placeholder = "Enter Company Email Id" })
                                 @Html.ValidationMessageFor(model => model.CompanyEmailId, "", new { @class = "error" })
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Mobile No</label>
+                                <label>Mobile No*</label>
                                 @Html.TextBoxFor(model => model.CompanyContactNo, new { @type = "text", @class = "form-control", @placeholder = "Enter Company Mobile No", @maxlength = "10" })
                                 @Html.ValidationMessageFor(model => model.CompanyContactNo, "", new { @class = "error" })
                             </div>
@@ -89,21 +90,21 @@
                     </div>
 
                     <div class="form-group">
-                        @Html.LabelFor(model => model.CompanyDescription, htmlAttributes: new { @class = "" })
+                        <label>Company Description*</label>
                         @Html.TextAreaFor(model => model.CompanyDescription, 10, 5, new { @class = "form-control", @placeholder = "Enter Company Description", maxlength = "250" })
                         @Html.ValidationMessageFor(model => model.CompanyDescription, "", new { @class = "text-danger" })
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Address</label>
+                                <label>Address*</label>
                                 @Html.TextBoxFor(model => model.CompanyAddress, new { @type = "text", @class = "form-control", @placeholder = "Enter Address" })
                                 @Html.ValidationMessageFor(model => model.CompanyAddress, "", new { @class = "error" })
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Pincode</label>
+                                <label>Pincode*</label>
                                 @Html.TextBoxFor(model => model.CompanyPincode, new { @type = "Text", @class = "form-control", @placeholder = "Enter Pincode", @maxlength = "6" })
                                 @Html.ValidationMessageFor(model => model.CompanyPincode, "", new { @class = "error" })
                             </div>
@@ -112,16 +113,16 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>State</label>
-                                @Html.TextBoxFor(model => model.CompanyState, new { @type = "text", @class = "form-control", @placeholder = "Enter State" })
-                                @Html.ValidationMessageFor(model => model.CompanyState, "", new { @class = "error" })
+                                <label>City*</label>
+                                @Html.TextBoxFor(model => model.CompanyCity, new { @type = "Text", @class = "form-control", @placeholder = "Enter City", @maxlength = "20" })
+                                @Html.ValidationMessageFor(model => model.CompanyCity, "", new { @class = "error" })
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>City</label>
-                                @Html.TextBoxFor(model => model.CompanyCity, new { @type = "Text", @class = "form-control", @placeholder = "Enter City", @maxlength = "20" })
-                                @Html.ValidationMessageFor(model => model.CompanyCity, "", new { @class = "error" })
+                                <label>State*</label>
+                                @Html.TextBoxFor(model => model.CompanyState, new { @type = "text", @class = "form-control", @placeholder = "Enter State" })
+                                @Html.ValidationMessageFor(model => model.CompanyState, "", new { @class = "error" })
                             </div>
                         </div>
                     </div>
@@ -144,14 +145,14 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Pan Card No</label>
+                                <label>Pan Card No*</label>
                                 @Html.TextBoxFor(model => model.CompanyPanNo, new { @type = "text", @class = "form-control", @placeholder = "Enter Pan Card No", @maxlength = "10" })
                                 @Html.ValidationMessageFor(model => model.CompanyPanNo, "", new { @class = "error" })
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Pan card Photo</label>
+                                <label>Pan card Photo*</label>
                                 @Html.TextBoxFor(model => model.CompanyPanPhotoFile, new { type = "file", @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.CompanyPanPhotoFile, "", new { @class = "error" })
                             </div>
@@ -160,14 +161,14 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Company Logo</label>
+                                <label>Company Logo*</label>
                                 @Html.TextBoxFor(model => model.CompanyLogoImageFile, new { type = "file", @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.CompanyLogoImageFile, "", new { @class = "error" })
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Company Register Proof</label>
+                                <label>Company Register Proof*</label>
                                 @Html.TextBoxFor(model => model.CompanyRegisterProofImageFile, new { type = "file", @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.CompanyRegisterProofImageFile, "", new { @class = "error" })
                             </div>
@@ -176,13 +177,13 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Cancelled Cheque Photo</label>
+                                <label>Cancelled Cheque Photo*</label>
                                 @Html.TextBoxFor(model => model.CompanyCancellationChequePhotoFile, new { type = "file", @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.CompanyCancellationChequePhotoFile, "", new { @class = "error" })
                             </div>
                         </div>
                     </div>
-                   
+
                     <div class="row">
                         <div class="col-12">
                             <h5>Company Admin Information</h5>
@@ -191,14 +192,14 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Prefix</label>
+                                <label>Prefix*</label>
                                 @Html.DropDownListFor(model => model.CompanyAdminPrefix, new SelectList(lstPrefix, "Value", "Text"), "- Select -", new { @class = "form-control", style = "width: 100%" })
                                 @Html.ValidationMessageFor(model => model.CompanyAdminPrefix, "", new { @class = "error" })
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>First Name</label>
+                                <label>First Name*</label>
                                 @Html.TextBoxFor(model => model.CompanyAdminFirstName, new { @type = "text", @class = "form-control", @placeholder = "Enter First Name" })
                                 @Html.ValidationMessageFor(model => model.CompanyAdminFirstName, "", new { @class = "error" })
                             </div>
@@ -207,14 +208,14 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Middle Name</label>
+                                <label>Middle Name*</label>
                                 @Html.TextBoxFor(model => model.CompanyAdminMiddleName, new { @type = "text", @class = "form-control", @placeholder = "Enter Middle Name" })
                                 @Html.ValidationMessageFor(model => model.CompanyAdminMiddleName, "", new { @class = "error" })
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Last Name</label>
+                                <label>Last Name*</label>
                                 @Html.TextBoxFor(model => model.CompanyAdminLastName, new { @type = "text", @class = "form-control", @placeholder = "Enter Last Name" })
                                 @Html.ValidationMessageFor(model => model.CompanyAdminLastName, "", new { @class = "error" })
                             </div>
@@ -230,7 +231,7 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Mobile No</label>
+                                <label>Mobile No*</label>
                                 @Html.TextBoxFor(model => model.CompanyAdminMobileNo, new { @type = "text", @class = "form-control", @placeholder = "Enter Mobile No", @maxlength = "10" })
                                 @Html.ValidationMessageFor(model => model.CompanyAdminMobileNo, "", new { @class = "error" })
                             </div>
@@ -246,7 +247,7 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>City</label>
+                                <label>Designation*</label>
                                 @Html.TextBoxFor(model => model.CompanyAdminDesignation, new { @type = "text", @class = "form-control", @placeholder = "Designation" })
                                 @Html.ValidationMessageFor(model => model.CompanyAdminDesignation, "", new { @class = "error" })
                             </div>
@@ -255,14 +256,14 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Address</label>
+                                <label>Address*</label>
                                 @Html.TextBoxFor(model => model.CompanyAdminAddress, new { @type = "text", @class = "form-control", @placeholder = "Enter Address" })
                                 @Html.ValidationMessageFor(model => model.CompanyAdminAddress, "", new { @class = "error" })
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Pincode</label>
+                                <label>Pincode*</label>
                                 @Html.TextBoxFor(model => model.CompanyAdminPincode, new { @type = "Text", @class = "form-control", @placeholder = "Enter Pincode", @maxlength = "6" })
                                 @Html.ValidationMessageFor(model => model.CompanyAdminPincode, "", new { @class = "error" })
                             </div>
@@ -271,14 +272,14 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>City</label>
+                                <label>City*</label>
                                 @Html.TextBoxFor(model => model.CompanyAdminCity, new { @type = "text", @class = "form-control", @placeholder = "Enter City" })
                                 @Html.ValidationMessageFor(model => model.CompanyAdminCity, "", new { @class = "error" })
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>State</label>
+                                <label>State*</label>
                                 @Html.TextBoxFor(model => model.CompanyAdminState, new { @type = "text", @class = "form-control", @placeholder = "Enter State" })
                                 @Html.ValidationMessageFor(model => model.CompanyAdminState, "", new { @class = "error" })
                             </div>
@@ -287,14 +288,14 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Aadhar card  No</label>
+                                <label>Aadhar card  No*</label>
                                 @Html.TextBoxFor(model => model.CompanyAdminAadharCardNo, new { @type = "text", @class = "form-control", @placeholder = "Enter Aadhar card No", @maxlength = "12" })
                                 @Html.ValidationMessageFor(model => model.CompanyAdminAadharCardNo, "", new { @class = "error" })
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Aadhar card Photo</label>
+                                <label>Aadhar card Photo*</label>
                                 @Html.TextBoxFor(model => model.CompanyAdminAadharCardPhotoFile, new { type = "file", @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.CompanyAdminAadharCardPhotoFile, "", new { @class = "error" })
                             </div>
@@ -310,15 +311,22 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Pan card Photo</label>
+                                <label>Pan card Photo*</label>
                                 @Html.TextBoxFor(model => model.CompanyAdminPanCardPhotoFile, new { type = "file", @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.CompanyAdminPanCardPhotoFile, "", new { @class = "error" })
                             </div>
                         </div>
                     </div>
-
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <input type="checkbox" name="terms" id="terms" />  I Agree <a href="/termscondition" target="_blank" style="color:blue"> Terms & Coditions </a>
+                            </div>
+                        </div>
+                    </div>
                     <div class="form-group mt-3">
-                        <button type="submit" id="btnSubmit" class="button button-contactForm boxed-btn">Send</button>
+                        <button type="submit" id="btnSubmit" class="button button-contactForm boxed-btn">Submit</button>
+                        @Html.HiddenFor(model => model.OTP)
                     </div>
                 }
             </div>
@@ -326,60 +334,133 @@
         </div>
     </div>
 </section>
-
+<div class="modal fade" id="OtpModal" tabindex="-1" role="dialog" aria-labelledby="formModal"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="formModal">Mobile Verification</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="">
+                    <div class="form-group">
+                        <label>OTP</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                            </div>
+                            <input type="text" class="form-control" placeholder="OTP" name="OTP" id="TextOTP">
+                        </div>
+                    </div>
+                    <button type="button" id="BtnOtpSubmit" class="btn btn-primary m-t-15 waves-effect">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {
-
-
+        
         $('#btnSubmit').click(function () {
-            //if ($("#CompanyRequestFormId").valid()) {
-
-            //    if ($("#CompanyGSTPhotoFile").val() == "") {
-            //        alert("Please select company GST photo.");
-            //        return false;
-            //    }
-
-            //    if ($("#CompanyPanPhotoFile").val() == "") {
-            //        alert("Please select company pan card photo.");
-            //        return false;
-            //    }
-
-            //    if ($("#CompanyLogoImageFile").val() == "") {
-            //        alert("Please select company logo image.");
-            //        return false;
-            //    }
-
-            //    if ($("#CompanyRegisterProofImageFile").val() == "") {
-            //        alert("Please select company register proof photo.");
-            //        return false;
-            //    }
 
 
-            //    if ($("#CompanyCancellationChequePhotoFile").val() == "") {
-            //        alert("Please select cancelled cheque photo.");
-            //        return false;
-            //    }
+            if ($("#CompanyRequestFormId").valid()) {
+                if ($("#terms").is(':checked')) {   } else {
+                    alert("Please accept Terms & Conditions")
+                    return false;
+                }
 
-            //    if ($("#CompanyAdminAadharCardPhotoFile").val() == "") {
-            //        alert("Please select Company admin aadhar card photo.");
-            //        return false;
-            //    }
+                var mobileNo = $("#CompanyAdminMobileNo").val();
 
-            //    if ($("#CompanyAdminPanCardPhotoFile").val() == "") {
-            //        alert("Please select company admin pan card photo.");
-            //        return false;
-            //    }
-            //}
-            //else {
-            //    return false;
-            //}
 
+                var StrURL = '/client/companyrequest/VerifyMobileNo?mobileNo=' + mobileNo;
+                $.ajax({
+                    url: StrURL,
+                    cache: false,
+                    data: {},
+                    type: 'POST',
+                    success: function (data) {
+                        
+                        if (data.Status == 1) {
+                            $('#OtpModal').modal('show');
+                            $("#OTP").val(data.Otp);
+                            $("#TextOTP").val(data.Otp);
+                            
+                        }
+                        else {
+                             
+                            alert(data.ErrorMessage);
+                        }
+
+                    },
+                    error: function (req, status, error) {
+                    
+                        alert(error);
+                    }
+                });
+                //    if ($("#CompanyGSTPhotoFile").val() == "") {
+                //        alert("Please select company GST photo.");
+                //        return false;
+                //    }
+
+                //    if ($("#CompanyPanPhotoFile").val() == "") {
+                //        alert("Please select company pan card photo.");
+                //        return false;
+                //    }
+
+                //    if ($("#CompanyLogoImageFile").val() == "") {
+                //        alert("Please select company logo image.");
+                //        return false;
+                //    }
+
+                //    if ($("#CompanyRegisterProofImageFile").val() == "") {
+                //        alert("Please select company register proof photo.");
+                //        return false;
+                //    }
+
+
+                //    if ($("#CompanyCancellationChequePhotoFile").val() == "") {
+                //        alert("Please select cancelled cheque photo.");
+                //        return false;
+                //    }
+
+                //    if ($("#CompanyAdminAadharCardPhotoFile").val() == "") {
+                //        alert("Please select Company admin aadhar card photo.");
+                //        return false;
+                //    }
+
+                //    if ($("#CompanyAdminPanCardPhotoFile").val() == "") {
+                //        alert("Please select company admin pan card photo.");
+                //        return false;
+                //    }
+            }
+            else {
+                return false;
+            }
+            
+            return false;
         });
 
+        $('#BtnOtpSubmit').click(function () {
+            var OTP = $("#OTP").val();
+            var TextOTP = $("#TextOTP").val();
 
+            if (TextOTP == OTP) {
+                $("#CompanyRequestFormId").submit();
+                
+            } else {
+                alert("Wrong OTP you have entered.")
+                return false;
+            }
+        });
     })
 </script>

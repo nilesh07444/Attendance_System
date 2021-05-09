@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -21,7 +22,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
         public string aadharCardDirectoryPath = "";
         public string panCardDirectoryPath = "";
         public string CancellationChequeDirectoryPath = "";
-
+        string enviornment;
         public CompanyRequestController()
         {
             _db = new AttendanceSystemEntities();
@@ -32,6 +33,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
             aadharCardDirectoryPath = ErrorMessage.AdharcardDirectoryPath;
             panCardDirectoryPath = ErrorMessage.PancardDirectoryPath;
             CancellationChequeDirectoryPath = ErrorMessage.CancellationChequeDirectoryPath;
+            enviornment = ConfigurationManager.AppSettings["Environment"].ToString();
         }
         // GET: Client/CompanyRequest
         public ActionResult Index()
@@ -57,6 +59,15 @@ namespace AttendanceSystem.Areas.Client.Controllers
                 IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
                 if (ModelState.IsValid)
                 {
+                    #region validation
+                    if (companyRequestVM.CompanyName.Replace(" ", string.Empty).Length < 2)
+                    {
+                        ModelState.AddModelError("", ErrorMessage.CompanyNameMinimum2CharacterRequired);
+                        companyRequestVM.CompanyTypeList = GetCompanyType();
+                        return View(companyRequestVM);
+                    }
+                    #endregion validation
+
                     //long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
                     string companyGstFileName = string.Empty, companyPanCardFileName = string.Empty, companyLogoFileName = string.Empty, companyRegisterProofFileName = string.Empty,
                         chqFileName = string.Empty, companyAdminAdharCardFileName = string.Empty, companyAdminPancardFileName = string.Empty;
@@ -75,6 +86,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
                         if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
                         {
                             ModelState.AddModelError("CompanyGSTPhotoFile", ErrorMessage.SelectOnlyImage);
+                            companyRequestVM.CompanyTypeList = GetCompanyType();
                             return View(companyRequestVM);
                         }
 
@@ -97,6 +109,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
                         if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
                         {
                             ModelState.AddModelError("CompanyPanPhotoFile", ErrorMessage.SelectOnlyImage);
+                            companyRequestVM.CompanyTypeList = GetCompanyType();
                             return View(companyRequestVM);
                         }
 
@@ -120,6 +133,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
                         if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
                         {
                             ModelState.AddModelError("CompanyPhotoFile", ErrorMessage.SelectOnlyImage);
+                            companyRequestVM.CompanyTypeList = GetCompanyType();
                             return View(companyRequestVM);
                         }
 
@@ -130,6 +144,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
                     else
                     {
                         ModelState.AddModelError("CompanyPhotoFile", ErrorMessage.ImageRequired);
+                        companyRequestVM.CompanyTypeList = GetCompanyType();
                         return View(companyRequestVM);
                     }
                     #endregion CompanyLogoImage
@@ -148,6 +163,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
                         if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
                         {
                             ModelState.AddModelError("CompanyRegisterProofImageFile", ErrorMessage.SelectOnlyImage);
+                            companyRequestVM.CompanyTypeList = GetCompanyType();
                             return View(companyRequestVM);
                         }
 
@@ -158,6 +174,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
                     else
                     {
                         ModelState.AddModelError("CompanyRegisterProofImageFile", ErrorMessage.ImageRequired);
+                        companyRequestVM.CompanyTypeList = GetCompanyType();
                         return View(companyRequestVM);
                     }
                     #endregion CompanyRegisterProofImage
@@ -177,6 +194,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
                         if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
                         {
                             ModelState.AddModelError("CompanyCancellationChequePhotoFile", ErrorMessage.SelectOnlyImage);
+                            companyRequestVM.CompanyTypeList = GetCompanyType();
                             return View(companyRequestVM);
                         }
 
@@ -187,6 +205,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
                     else
                     {
                         ModelState.AddModelError("CompanyCancellationChequePhotoFile", ErrorMessage.ImageRequired);
+                        companyRequestVM.CompanyTypeList = GetCompanyType();
                         return View(companyRequestVM);
                     }
 
@@ -206,6 +225,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
                         if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
                         {
                             ModelState.AddModelError("CompanyAdminAadharCardPhotoFile", ErrorMessage.SelectOnlyImage);
+                            companyRequestVM.CompanyTypeList = GetCompanyType();
                             return View(companyRequestVM);
                         }
 
@@ -216,6 +236,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
                     else
                     {
                         ModelState.AddModelError("CompanyAdminAadharCardPhotoFile", ErrorMessage.ImageRequired);
+                        companyRequestVM.CompanyTypeList = GetCompanyType();
                         return View(companyRequestVM);
                     }
                     #endregion AdharCardImage
@@ -233,6 +254,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
                         if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
                         {
                             ModelState.AddModelError("CompanyAdminPanCardPhotoFile", ErrorMessage.SelectOnlyImage);
+                            companyRequestVM.CompanyTypeList = GetCompanyType();
                             return View(companyRequestVM);
                         }
 
@@ -243,6 +265,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
                     else
                     {
                         ModelState.AddModelError("CompanyAdminPanCardPhotoFile", ErrorMessage.ImageRequired);
+                        companyRequestVM.CompanyTypeList = GetCompanyType();
                         return View(companyRequestVM);
                     }
                     #endregion PancardImage
@@ -361,5 +384,51 @@ namespace AttendanceSystem.Areas.Client.Controllers
             return Json(new { Status = isExist }, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult VerifyMobileNo(string mobileNo)
+        {
+            int status = 0;
+            string errorMessage = string.Empty;
+            string otp = string.Empty;
+            try
+            {
+
+                using (WebClient webClient = new WebClient())
+                {
+                    Random random = new Random();
+                    int num = random.Next(555555, 999999);
+                    if (enviornment != "Development")
+                    {
+                        string msg = "Your Otp code for Login is " + num;
+                        msg = HttpUtility.UrlEncode(msg);
+                        string url = CommonMethod.GetSMSUrl().Replace("--MOBILE--", mobileNo).Replace("--MSG--", msg);
+                        var json = webClient.DownloadString(url);
+                        if (json.Contains("invalidnumber"))
+                        {
+                            status = 0;
+                            errorMessage = ErrorMessage.InvalidMobileNo;
+                        }
+                        else
+                        {
+                            status = 1;
+
+                            otp = num.ToString();
+                        }
+                    }
+                    else
+                    {
+                        status = 1;
+                        otp = num.ToString();
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                status = 0;
+                errorMessage = ex.Message.ToString();
+            }
+
+            return Json(new { Status = status, Otp = otp, ErrorMessage = errorMessage }, JsonRequestBehavior.AllowGet);
+        }
     }
 }

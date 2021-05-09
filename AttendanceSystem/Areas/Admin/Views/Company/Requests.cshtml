@@ -8,6 +8,7 @@
     List<SelectListItem> lstCompanyStatus = new List<SelectListItem>();
 
     lstCompanyStatus.Add(new SelectListItem { Value = "1", Text = "Pending" });
+    lstCompanyStatus.Add(new SelectListItem { Value = "2", Text = "Accept" });
     lstCompanyStatus.Add(new SelectListItem { Value = "3", Text = "Reject" });
 
     ViewBag.Title = "Company Request";
@@ -69,7 +70,10 @@
 
 
                                                 <td>
-                                                    <a href="/admin/company/edit/@obj.CompanyRequestId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
+                                                    @if (obj.RequestStatus != (int)CompanyRequestStatus.Accept)
+                                                    {
+                                                        <a href="/admin/company/edit/@obj.CompanyRequestId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
+                                                    }
                                                 </td>
                                             </tr>
                                             counter++;
@@ -95,8 +99,8 @@
         $("#RequestStatus").change(function () {
             var status = $("#RequestStatus").val();
             window.location.href = "/admin/company/Requests?status=" + status;
-            
+
         });
-        
+
     })
 </script>

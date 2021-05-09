@@ -67,7 +67,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             CompanyRequestFilterVM companyRequestFilterVM = new CompanyRequestFilterVM();
             try
             {
-                int[] companyStatusArr = new int[] { (int)CompanyRequestStatus.Pending, (int)CompanyRequestStatus.Reject };
+                int[] companyStatusArr = new int[] { (int)CompanyRequestStatus.Pending, (int)CompanyRequestStatus.Reject, (int)CompanyRequestStatus.Accept };
                 if (status.HasValue)
                 {
                     companyStatusArr = new int[] { status.Value };
@@ -176,10 +176,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                         tbl_Company objcomp = new tbl_Company();
 
-                        string companyCode = getCompanyCodeFormat(objCompanyReq.CompanyRequestId, objCompanyReq.CompanyName);
+                        
                         objcomp.CompanyTypeId = objCompanyReq.CompanyTypeId;
                         objcomp.CompanyName = objCompanyReq.CompanyName;
-                        objcomp.CompanyCode = companyCode;
+                        objcomp.CompanyCode = objCompanyReq.CompanyName;
                         objcomp.EmailId = objCompanyReq.CompanyEmailId;
                         objcomp.ContactNo = objCompanyReq.CompanyContactNo;
                         objcomp.AlternateContactNo = objCompanyReq.CompanyAlternateContactNo;
@@ -209,6 +209,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                         long companyId = objcomp.CompanyId;
 
+                        //Generate company code for company and user table 
+                        string companyCode = getCompanyCodeFormat(companyId, objCompanyReq.CompanyName);
+                        objcomp.CompanyCode = companyCode;
+
+                        //Update company id in company request table.
                         objCompanyReq.CompanyId = companyId;
                         _db.SaveChanges();
 
@@ -218,6 +223,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objAdminUser.CompanyId = objCompanyReq.CompanyId;
                         objAdminUser.Prefix = objCompanyReq.CompanyAdminPrefix;
                         objAdminUser.FirstName = objCompanyReq.CompanyAdminFirstName;
+                        objAdminUser.MIddleName = objCompanyReq.CompanyAdminMiddleName;
                         objAdminUser.LastName = objCompanyReq.CompanyAdminLastName;
                         objAdminUser.UserName = companyCode;
                         objAdminUser.Password = CommonMethod.Encrypt(CommonMethod.RandomString(6, true), psSult);
