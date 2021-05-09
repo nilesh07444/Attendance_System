@@ -4,71 +4,117 @@
     List<PackageVM> lstAccountPackages = ViewData["lstAccountPackages"] as List<PackageVM>;
 }
 
+
 <section class="section">
 
-    <div class="row">
-        <div class="col-12">
-            <div class="card card-primary">
-                <div class="card-header">
-                    <h4>Buy New Account Package</h4>
-                </div>
+    <div class="card-header" style="margin-bottom:20px;">
+        <h4>Buy New Account Package</h4>
+    </div>
 
-                <form>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="form-group col-6">
-                                <label>Package</label>
-                                <select id="ddlAccountPackage" class="form-control">
-                                    <option>-Select-</option>
-                                    @if (lstAccountPackages != null && lstAccountPackages.Count > 0)
-                                    {
-                                        foreach (PackageVM obj in lstAccountPackages)
-                                        {
-                                            <option value="@obj.PackageId">@obj.PackageName (@obj.Amount)</option>
-                                        }
-                                    }
-                                </select>
+    <div class="section-body">
+
+        <div class="row">
+
+            @if (lstAccountPackages != null && lstAccountPackages.Count > 0)
+            {
+                foreach (PackageVM obj in lstAccountPackages)
+                {
+                    <div class="col-12 col-md-4 col-lg-4">
+                        <div class="pricing pricing-highlight">
+                            <div class="pricing-title">
+                                @obj.PackageName
+                            </div>
+                            <div class="pricing-padding">
+                                <div class="pricing-price">
+                                    <div>@obj.Amount /-</div>
+                                </div>
+                                <div class="pricing-details">
+                                    <div class="pricing-item">
+                                        <div class="pricing-item-icon"><i class="fas fa-check"></i></div>
+                                        <div class="pricing-item-label">@obj.PackageName</div>
+                                    </div>
+                                    <div class="pricing-item">
+                                        <div class="pricing-item-icon"><i class="fas fa-check"></i></div>
+                                        <div class="pricing-item-label">@obj.AccessDays days access</div>
+                                    </div>
+                                    <div class="pricing-item">
+                                        <div class="pricing-item-icon"><i class="fas fa-check"></i></div>
+                                        <div class="pricing-item-label">@obj.NoOfEmployee Employee Accessible</div>
+                                    </div>
+                                    <div class="pricing-item">
+                                        <div class="pricing-item-icon"><i class="fas fa-check"></i></div>
+                                        <div class="pricing-item-label">@obj.NoOfSMS SMS Usage</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pricing-cta">
+                                <a href="javascript:void(0);" onclick="fnBuyNowPackage('@obj.PackageId', '@obj.PackageName')">Buy Now <i class="fas fa-arrow-right"></i></a>
                             </div>
                         </div>
                     </div>
 
-                    <div class="card-footer text-center">
-                        <button id="btnSubmit" class="btn btn-primary mr-1" type="button">Submit</button>
-                        <a href="/admin/accountrenew" class="btn btn-secondary">Cancel</a>
-                    </div>
+                }
+            }
 
-                </form>
-
-            </div>
         </div>
     </div>
-
 </section>
 
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 
 <script type="text/javascript">
-    $(document).ready(function () {
 
-        $("#ddlAccountPackage").change(function () {
-            var packageId = $("#ddlAccountPackage").val();
-            var StrURL = '/admin/accountrenew/GetSelectedAccountPackageDetail/' + packageId;
+    function fnBuyNowPackage(packageId, packageName) {
+        var r = confirm("Are you sure want to buy '" + packageName + "' package ?");
+        if (r == true) {
+
+            var StrURL = '/admin/accountrenew/BuySelectedAccountPackage';
             $.ajax({
                 url: StrURL,
                 cache: false,
-                data: {},
+                data: {
+                    'PackageId': packageId
+                },
                 type: 'POST',
                 success: function (data) {
-                    if (data.Status == true) {
-
+                    debugger;
+                    if (data != null) {
+                        alert(data.Message);
                     }
-
+                    else {
+                        alert("Something went wrong. Please try again later.")
+                    }
                 },
                 error: function (req, status, error) {
+                    debugger;
                     alert(error);
                 }
             });
+
+        }
+    }
+
+    function GetSelectedAccountPackageDetail(packageId) {
+
+        var StrURL = '/admin/accountrenew/GetSelectedAccountPackageDetail/' + packageId;
+        $.ajax({
+            url: StrURL,
+            cache: false,
+            data: {},
+            type: 'POST',
+            success: function (data) {
+                if (data != null) {
+
+                }
+                else {
+
+                }
+            },
+            error: function (req, status, error) {
+                alert(error);
+            }
         });
 
-    })
+    }
+
 </script>

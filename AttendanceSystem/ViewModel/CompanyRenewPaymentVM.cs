@@ -22,4 +22,10 @@ namespace AttendanceSystem.ViewModel
         public int NoOfSMS { get; set; }
         public DateTime CreatedDate { get; set; }
     }
+
+    public class PackageBuyVM
+    {
+        public long PackageId { get; set; }
+    }
+
 }

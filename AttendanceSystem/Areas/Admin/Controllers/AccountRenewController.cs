@@ -82,5 +82,91 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return View();
         }
 
+        [HttpPost]
+        public JsonResult GetSelectedAccountPackageDetail(long Id)
+        {
+            PackageVM objPackage = new PackageVM();
+            try
+            {
+                objPackage = (from pkg in _db.tbl_Package
+                              where pkg.PackageId == Id && !pkg.IsDeleted
+                              select new PackageVM
+                              {
+                                  PackageId = pkg.PackageId,
+                                  PackageName = pkg.PackageName,
+                                  Amount = pkg.Amount,
+                                  PackageDescription = pkg.PackageDescription,
+                                  AccessDays = pkg.AccessDays,
+                                  PackageImage = pkg.PackageImage,
+                                  IsActive = pkg.IsActive,
+                                  NoOfSMS = pkg.NoOfSMS,
+                                  NoOfEmployee = pkg.NoOfEmployee
+                              }).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return Json(objPackage, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult BuySelectedAccountPackage(PackageBuyVM packageBuyVM)
+        {
+            string message = string.Empty;
+            bool isSuccess = true;
+
+            try
+            {
+                if (packageBuyVM != null && packageBuyVM.PackageId != 0)
+                {
+                    // Get general setting detail
+                    tbl_Setting objSetting = _db.tbl_Setting.FirstOrDefault();
+
+                    // Get selected package detail
+                    tbl_Package objPackage = _db.tbl_Package.Where(x => x.PackageId == packageBuyVM.PackageId).FirstOrDefault();
+
+                    // Get last bought package of company
+                    tbl_CompanyRenewPayment objLastBoughtPackage = _db.tbl_CompanyRenewPayment.Where(x=>x.CompanyId == clsAdminSession.CompanyId)
+                                                                                                .OrderByDescending(x=>x.CompanyRegistrationPaymentId).FirstOrDefault();
+                     
+                    if (objPackage != null)
+                    {
+                        tbl_CompanyRenewPayment objCompanyRenewPayment = new tbl_CompanyRenewPayment();
+                        objCompanyRenewPayment.CompanyId = clsAdminSession.CompanyId;
+                        objCompanyRenewPayment.PackageId = objPackage.PackageId;
+                        objCompanyRenewPayment.PackageName = objPackage.PackageName;
+                        objCompanyRenewPayment.StartDate = DateTime.Now;
+                        objCompanyRenewPayment.EndDate = DateTime.Now.AddDays(objPackage.AccessDays);
+                        objCompanyRenewPayment.Amount = objPackage.Amount;
+                        objCompanyRenewPayment.GSTPer = objSetting.AccountPackageBuyGSTPer.Value;
+                        objCompanyRenewPayment.AccessDays = objPackage.AccessDays;
+                        objCompanyRenewPayment.NoOfEmployee = objPackage.NoOfEmployee.Value;
+                        objCompanyRenewPayment.NoOfSMS = objPackage.NoOfSMS.Value;
+                        objCompanyRenewPayment.PaymentFor = "Account Renew";
+                        objCompanyRenewPayment.PaymentGatewayResponseId = "";
+                        objCompanyRenewPayment.CreatedBy = clsAdminSession.UserID;
+                        objCompanyRenewPayment.CreatedDate = DateTime.Now;
+                        _db.tbl_CompanyRenewPayment.Add(objCompanyRenewPayment);
+                        _db.SaveChanges();
+
+                        isSuccess = true;
+                    }
+                }
+                else
+                {
+                    message = "Request data is not valid.";
+                    isSuccess = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                isSuccess = false;
+                message = ex.Message.ToString();
+            }
+
+            return Json(new { IsSuccess = isSuccess, Message = message }, JsonRequestBehavior.AllowGet);
+        }
     }
 }
