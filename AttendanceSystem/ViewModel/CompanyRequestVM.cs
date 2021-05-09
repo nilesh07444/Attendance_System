@@ -11,13 +11,11 @@ namespace AttendanceSystem.ViewModel
         public long CompanyRequestId { get; set; }
 
 
-        [Display(Name = "Company Type")]
-        [Required(ErrorMessage = "Company Type is required")]
+        [Required, Display(Name = "Company Type")]
         public long? CompanyTypeId { get; set; }
 
-        [Required(ErrorMessage = "Company Name is required")]
         [MinLength(2)]
-        [Display(Name = "Company Name")]
+        [Required, Display(Name = "Company Name")]
         [RegularExpression("^[a-zA-Z\\s]+", ErrorMessage = "special characters are not allowed.")]
 
         public string CompanyName { get; set; }
@@ -25,8 +23,7 @@ namespace AttendanceSystem.ViewModel
         [Required, Display(Name = "Company EmailId")]
         public string CompanyEmailId { get; set; }
 
-        [Display(Name = "Company ContactNo No")]
-        [Required(ErrorMessage = "Company Contact No is required")]
+        [Required, Display(Name = "Company ContactNo No")]
         public string CompanyContactNo { get; set; }
 
         [Display(Name = "Company Alternate Mobile No")]
@@ -40,8 +37,7 @@ namespace AttendanceSystem.ViewModel
         public HttpPostedFileBase CompanyGSTPhotoFile { get; set; }
         public string CompanyGSTPhoto { get; set; }
 
-        [Display(Name = "Company Pan Card No")]
-        [Required(ErrorMessage = "Company Pan Card No is required")]
+        [Required, Display(Name = "Company Pan Card No")]
         [RegularExpression("^([A-Za-z]){5}([0-9]){4}([A-Za-z]){1}$", ErrorMessage = "Invalid PAN No")]
         public string CompanyPanNo { get; set; }
 
@@ -73,32 +69,28 @@ namespace AttendanceSystem.ViewModel
         public HttpPostedFileBase CompanyCancellationChequePhotoFile { get; set; }
         public string CompanyCancellationChequePhoto { get; set; }
 
-        [Display(Name = "Prefix")]
-        [Required(ErrorMessage = "Company Admin Prefix is required")]
+        [Required, Display(Name = "Prefix")]
         public string CompanyAdminPrefix { get; set; }
 
-        [Display(Name = "First Name")]
-        [Required(ErrorMessage = "Company Admin First Name is required")]
+        [Required, Display(Name = "First Name")]
         public string CompanyAdminFirstName { get; set; }
 
-        [Required,Display(Name = "Middle Name")]
+        [Required, Display(Name = "Middle Name")]
         public string CompanyAdminMiddleName { get; set; }
 
-        [Display(Name = "Last Name")]
-        [Required(ErrorMessage = "Company Admin Last Name is required")]
+        [Required, Display(Name = "Last Name")]
         public string CompanyAdminLastName { get; set; }
 
         [Display(Name = "Email Id")]
         public string CompanyAdminEmailId { get; set; }
 
-        [Display(Name = "Mobile No")]
-        [Required(ErrorMessage = "Company Admin Mobile No is required")]
+        [Required, Display(Name = "Mobile No")]
         public string CompanyAdminMobileNo { get; set; }
 
         [Display(Name = "Alternate Mobile No")]
         public string CompanyAdminAlternateMobileNo { get; set; }
 
-        [Required,Display(Name = "Designation")]
+        [Required, Display(Name = "Designation")]
         public string CompanyAdminDesignation { get; set; }
 
         [Required, Display(Name = "Address")]
@@ -107,24 +99,20 @@ namespace AttendanceSystem.ViewModel
         [Required, Display(Name = "Pincode")]
         public string CompanyAdminPincode { get; set; }
 
-        [Display(Name = "City")]
-        [Required(ErrorMessage = "City is required")]
+        [Required, Display(Name = "City")]
         public string CompanyAdminCity { get; set; }
 
-        [Display(Name = "State")]
-        [Required(ErrorMessage = "State is required")]
+        [Required, Display(Name = "State")]
         public string CompanyAdminState { get; set; }
 
-        [Display(Name = "Aadhar Card No")]
-        [Required(ErrorMessage = "Aadhar Card No is required")]
+        [Required, Display(Name = "Aadhar Card No")]
         public string CompanyAdminAadharCardNo { get; set; }
 
         [Display(Name = "Aadhar Card Photo")]
         public HttpPostedFileBase CompanyAdminAadharCardPhotoFile { get; set; }
         public string CompanyAdminAadharCardPhoto { get; set; }
 
-        [Display(Name = "Pan Card No")]
-        [Required(ErrorMessage = "Pan Card No is required")]
+        [Required,Display(Name = "Pan Card No")]
         public string CompanyAdminPanCardNo { get; set; }
 
         [Display(Name = "Pan Card Photo")]
@@ -142,6 +130,8 @@ namespace AttendanceSystem.ViewModel
         [Display(Name = "Company Code")]
         public string CompanyCode { get; set; }
         public string OTP { get; set; }
+        [Display(Name = "I accept the terms and conditions.")]
+        public bool IsAccept { get; set; }
     }
 
     public class CompanyRequestFilterVM

@@ -31,9 +31,9 @@
             </div>
             <div class="col-lg-12">
 
-                @using (Html.BeginForm("Index", "CompanyRequest", FormMethod.Post, new { @id = "CompanyRequestFormId", @class = "form-contact contact_form", enctype = "multipart/form-data", role = "form" }))
+                @using (Html.BeginForm("Index", "CompanyRequest", FormMethod.Post, new { @id = "CompanyRequestFormId", @class = "form-contact", enctype = "multipart/form-data", role = "form" }))
                 {
-                   // @Html.ValidationSummary()
+                    // @Html.ValidationSummary()
                     <div class="row">
                         <div class="col-12">
                             <h5>Company Information</h5>
@@ -50,8 +50,8 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label>Company Type*</label>
-                                @Html.DropDownList("CompanyTypeId", new SelectList(Model.CompanyTypeList, "Value", "Text"), "- select -", new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.CompanyTypeId)
+                                @Html.DropDownList("CompanyTypeId", new SelectList(Model.CompanyTypeList, "Value", "Text"), "- select -", new { @class = "form-control required" })
+                                @Html.ValidationMessageFor(model => model.CompanyTypeId, "", new { @class = "error" })
 
                             </div>
                         </div>
@@ -88,11 +88,14 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="form-group">
-                        <label>Company Description*</label>
-                        @Html.TextAreaFor(model => model.CompanyDescription, 10, 5, new { @class = "form-control", @placeholder = "Enter Company Description", maxlength = "250" })
-                        @Html.ValidationMessageFor(model => model.CompanyDescription, "", new { @class = "text-danger" })
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>Company Description*</label>
+                                @Html.TextAreaFor(model => model.CompanyDescription, 10, 5, new { @class = "form-control", @placeholder = "Enter Company Description", maxlength = "250" })
+                                @Html.ValidationMessageFor(model => model.CompanyDescription, "", new { @class = "error" })
+                            </div>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
@@ -320,7 +323,10 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <input type="checkbox" name="terms" id="terms" />  I Agree <a href="/termscondition" target="_blank" style="color:blue"> Terms & Coditions </a>
+                                @Html.CheckBoxFor(model => model.IsAccept, new { @class = "required" })
+                                I accept <a href="/termscondition" target="_blank" style="color:blue"> Terms & Conditions </a>
+                                <p> @Html.ValidationMessageFor(model => model.IsAccept, "", new { @class = "error" })</p>
+
                             </div>
                         </div>
                     </div>
@@ -364,24 +370,14 @@
     </div>
 </div>
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
 
 <script type="text/javascript">
     $(document).ready(function () {
-        
         $('#btnSubmit').click(function () {
-
-
+            
             if ($("#CompanyRequestFormId").valid()) {
-                if ($("#terms").is(':checked')) {   } else {
-                    alert("Please accept Terms & Conditions")
-                    return false;
-                }
-
                 var mobileNo = $("#CompanyAdminMobileNo").val();
-
-
                 var StrURL = '/client/companyrequest/VerifyMobileNo?mobileNo=' + mobileNo;
                 $.ajax({
                     url: StrURL,
@@ -389,21 +385,21 @@
                     data: {},
                     type: 'POST',
                     success: function (data) {
-                        
+
                         if (data.Status == 1) {
                             $('#OtpModal').modal('show');
                             $("#OTP").val(data.Otp);
                             $("#TextOTP").val(data.Otp);
-                            
+
                         }
                         else {
-                             
+
                             alert(data.ErrorMessage);
                         }
 
                     },
                     error: function (req, status, error) {
-                    
+
                         alert(error);
                     }
                 });
@@ -446,7 +442,7 @@
             else {
                 return false;
             }
-            
+
             return false;
         });
 
@@ -456,7 +452,7 @@
 
             if (TextOTP == OTP) {
                 $("#CompanyRequestFormId").submit();
-                
+
             } else {
                 alert("Wrong OTP you have entered.")
                 return false;
