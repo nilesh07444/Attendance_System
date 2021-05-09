@@ -9,7 +9,6 @@
         <EntityTypeShape EntityType="AttendanceSystemModel.mst_CompanyType" Width="1.5" PointX="3.75" PointY="3.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Site" Width="1.5" PointX="9.75" PointY="0.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_DynamicContent" Width="1.5" PointX="7.375" PointY="11.75" />
-        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_CompanyRenewPayment" Width="1.5" PointX="13.375" PointY="10.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Holiday" Width="1.5" PointX="3.375" PointY="14.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_LoginHistory" Width="1.5" PointX="9.375" PointY="4.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Employee" Width="1.5" PointX="0.75" PointY="13.75" />
@@ -32,8 +31,9 @@
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_EmployeeFingerprint" Width="1.5" PointX="9.75" PointY="12.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Company" Width="1.5" PointX="13.75" PointY="18.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_CompanyRequest" Width="1.5" PointX="19.75" PointY="0.75" />
-        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Setting" Width="1.5" PointX="2.75" PointY="6.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_AdminUser" Width="1.5" PointX="3.375" PointY="20.75" />
+        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_CompanyRenewPayment" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Setting" Width="1.5" PointX="0.75" PointY="6.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

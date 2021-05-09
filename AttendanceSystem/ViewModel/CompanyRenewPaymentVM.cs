@@ -18,6 +18,8 @@ namespace AttendanceSystem.ViewModel
         public int AccessDays { get; set; }
         public long PackageId { get; set; }
         public string PackageName { get; set; }
-
+        public int NoOfEmployee { get; set; }
+        public int NoOfSMS { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
 }

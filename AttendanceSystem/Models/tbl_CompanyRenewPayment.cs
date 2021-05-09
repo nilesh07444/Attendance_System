@@ -16,14 +16,17 @@ namespace AttendanceSystem.Models
     {
         public long CompanyRegistrationPaymentId { get; set; }
         public long CompanyId { get; set; }
-        public decimal Amount { get; set; }
-        public string PaymentFor { get; set; }
-        public string PaymentGatewayResponseId { get; set; }
-        public System.DateTime StartDate { get; set; }
-        public System.DateTime EndDate { get; set; }
-        public int AccessDays { get; set; }
         public long PackageId { get; set; }
         public string PackageName { get; set; }
+        public System.DateTime StartDate { get; set; }
+        public System.DateTime EndDate { get; set; }
+        public decimal Amount { get; set; }
+        public decimal GSTPer { get; set; }
+        public int AccessDays { get; set; }
+        public int NoOfEmployee { get; set; }
+        public int NoOfSMS { get; set; }
+        public string PaymentFor { get; set; }
+        public string PaymentGatewayResponseId { get; set; }
         public long CreatedBy { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public Nullable<long> ModifiedBy { get; set; }

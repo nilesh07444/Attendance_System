@@ -16,7 +16,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         {
             _db = new AttendanceSystemEntities();
         }
-        // GET: Admin/AccountRenew
+
         public ActionResult Index()
         {
             List<CompanyRenewPaymentVM> companyRenewPaymentVM = new List<CompanyRenewPaymentVM>();
@@ -25,7 +25,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 long companyId = clsAdminSession.CompanyId;
                 companyRenewPaymentVM = (from cp in _db.tbl_CompanyRenewPayment
                                          join cm in _db.tbl_Company on cp.CompanyId equals cm.CompanyId
-                                         where cp.CompanyId== companyId
+                                         where cp.CompanyId == companyId
                                          select new CompanyRenewPaymentVM
                                          {
                                              CompanyRegistrationPaymentId = cp.CompanyRegistrationPaymentId,
@@ -38,7 +38,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                              EndDate = cp.EndDate,
                                              AccessDays = cp.AccessDays,
                                              PackageId = cp.PackageId,
-                                             PackageName = cp.PackageName
+                                             PackageName = cp.PackageName,
+                                             NoOfEmployee = cp.NoOfEmployee,
+                                             NoOfSMS = cp.NoOfSMS,
+                                             CreatedDate = cp.CreatedDate
                                          }).OrderByDescending(x => x.CompanyRegistrationPaymentId).ToList();
             }
             catch (Exception ex)
@@ -48,5 +51,36 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             }
             return View(companyRenewPaymentVM);
         }
+
+        public ActionResult Buy()
+        {
+            List<PackageVM> lstAccountPackages = new List<PackageVM>();
+            try
+            {
+                lstAccountPackages = (from pck in _db.tbl_Package
+                                      where !pck.IsDeleted && pck.IsActive
+                                      select new PackageVM
+                                      {
+                                          PackageId = pck.PackageId,
+                                          PackageName = pck.PackageName,
+                                          Amount = pck.Amount,
+                                          PackageDescription = pck.PackageDescription,
+                                          AccessDays = pck.AccessDays,
+                                          IsActive = pck.IsActive,
+                                          PackageImage = pck.PackageImage,
+                                          NoOfSMS = pck.NoOfSMS,
+                                          NoOfEmployee = pck.NoOfEmployee
+                                      }).OrderByDescending(x => x.PackageId).ToList();
+
+                ViewData["lstAccountPackages"] = lstAccountPackages;
+
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return View();
+        }
+
     }
 }

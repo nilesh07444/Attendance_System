@@ -1,0 +1,74 @@
+﻿@using AttendanceSystem.ViewModel
+@{
+    ViewBag.Title = "AccountRenew";
+    List<PackageVM> lstAccountPackages = ViewData["lstAccountPackages"] as List<PackageVM>;
+}
+
+<section class="section">
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h4>Buy New Account Package</h4>
+                </div>
+
+                <form>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="form-group col-6">
+                                <label>Package</label>
+                                <select id="ddlAccountPackage" class="form-control">
+                                    <option>-Select-</option>
+                                    @if (lstAccountPackages != null && lstAccountPackages.Count > 0)
+                                    {
+                                        foreach (PackageVM obj in lstAccountPackages)
+                                        {
+                                            <option value="@obj.PackageId">@obj.PackageName (@obj.Amount)</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer text-center">
+                        <button id="btnSubmit" class="btn btn-primary mr-1" type="button">Submit</button>
+                        <a href="/admin/accountrenew" class="btn btn-secondary">Cancel</a>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#ddlAccountPackage").change(function () {
+            var packageId = $("#ddlAccountPackage").val();
+            var StrURL = '/admin/accountrenew/GetSelectedAccountPackageDetail/' + packageId;
+            $.ajax({
+                url: StrURL,
+                cache: false,
+                data: {},
+                type: 'POST',
+                success: function (data) {
+                    if (data.Status == true) {
+
+                    }
+
+                },
+                error: function (req, status, error) {
+                    alert(error);
+                }
+            });
+        });
+
+    })
+</script>

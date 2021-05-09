@@ -215,6 +215,9 @@
     <Compile Include="Models\tbl_CompanyFollowup.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\tbl_CompanyRenewPayment.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tbl_CompanyRequest.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
@@ -322,9 +325,6 @@
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tbl_Attendance.cs">
-      <DependentUpon>AttendanceSystem.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\tbl_CompanyRenewPayment.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tbl_DynamicContent.cs">
@@ -1460,6 +1460,7 @@
     <Content Include="Areas\Admin\Views\Feedback\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Feedback\View.cshtml" />
     <Content Include="Areas\Admin\Views\Company\View.cshtml" />
+    <Content Include="Areas\Admin\Views\AccountRenew\Buy.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
