@@ -50,9 +50,9 @@ namespace AttendanceSystem.Models
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<tbl_EmployeeBuyTransaction> tbl_EmployeeBuyTransaction { get; set; }
         public virtual DbSet<tbl_EmployeeFingerprint> tbl_EmployeeFingerprint { get; set; }
-        public virtual DbSet<tbl_AdminUser> tbl_AdminUser { get; set; }
         public virtual DbSet<tbl_Company> tbl_Company { get; set; }
         public virtual DbSet<tbl_CompanyRequest> tbl_CompanyRequest { get; set; }
         public virtual DbSet<tbl_Setting> tbl_Setting { get; set; }
+        public virtual DbSet<tbl_AdminUser> tbl_AdminUser { get; set; }
     }
 }

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
@@ -12,90 +10,134 @@ namespace AttendanceSystem.ViewModel
 
         public long CompanyRequestId { get; set; }
 
-        
+
         [Display(Name = "Company Type")]
         [Required(ErrorMessage = "Company Type is required")]
         public long? CompanyTypeId { get; set; }
 
-        [MaxLength(2)]
         [Required(ErrorMessage = "Company Name is required")]
         [Display(Name = "Company Name")]
         public string CompanyName { get; set; }
 
+        [Required, Display(Name = "Company EmailId")]
+        public string CompanyEmailId { get; set; }
+
+        [Display(Name = "Company ContactNo No")]
+        [Required(ErrorMessage = "Company Contact No is required")]
+        public string CompanyContactNo { get; set; }
+
+        [Display(Name = "Company Alternate Mobile No")]
+        public string CompanyAlternateContactNo { get; set; }
+
+        [Display(Name = "Company GST No")]
+        public string CompanyGSTNo { get; set; }
+
+
+        [Display(Name = "Company GST Photo")]
+        public HttpPostedFileBase CompanyGSTPhotoFile { get; set; }
+        public string CompanyGSTPhoto { get; set; }
+
+        [Display(Name = "Company Pan Card No")]
+        [Required(ErrorMessage = "Company Pan Card No is required")]
+        [RegularExpression("^([A-Za-z]){5}([0-9]){4}([A-Za-z]){1}$", ErrorMessage = "Invalid PAN No")]
+        public string CompanyPanNo { get; set; }
+
+        [Display(Name = "Company Pan Card Photo")]
+        public HttpPostedFileBase CompanyPanPhotoFile { get; set; }
+        public string CompanyPanPhoto { get; set; }
+        [Required, Display(Name = "Company Address")]
+        public string CompanyAddress { get; set; }
+        [Required, Display(Name = "Company Pincode")]
+        public string CompanyPincode { get; set; }
+        [Required, Display(Name = "Company City")]
+        public string CompanyCity { get; set; }
+        [Required, Display(Name = "Company State")]
+        public string CompanyState { get; set; }
+
+        [Display(Name = "Company Logo Image")]
+        public HttpPostedFileBase CompanyLogoImageFile { get; set; }
+        public string CompanyLogoImage { get; set; }
+
+        [Display(Name = "Company Register Proof Image")]
+        public HttpPostedFileBase CompanyRegisterProofImageFile { get; set; }
+        public string CompanyRegisterProofImage { get; set; }
+        [Required, Display(Name = "Company Description")]
+        public string CompanyDescription { get; set; }
+        [Display(Name = "Company website Url")]
+        public string CompanyWebisteUrl { get; set; }
+
+        [Display(Name = "Company Cancel Cheque Photo")]
+        public HttpPostedFileBase CompanyCancellationChequePhotoFile { get; set; }
+        public string CompanyCancellationChequePhoto { get; set; }
+
         [Display(Name = "Prefix")]
-        [Required(ErrorMessage = "Prefix is required")]
-        public string Prefix { get; set; }
+        [Required(ErrorMessage = "Company Admin Prefix is required")]
+        public string CompanyAdminPrefix { get; set; }
 
         [Display(Name = "First Name")]
-        [Required(ErrorMessage = "First Name is required")]
-        public string Firstname { get; set; }
+        [Required(ErrorMessage = "Company Admin First Name is required")]
+        public string CompanyAdminFirstName { get; set; }
+
+        [Display(Name = "Middle Name")]
+        public string CompanyAdminMiddleName { get; set; }
 
         [Display(Name = "Last Name")]
-        [Required(ErrorMessage = "Last Name is required")]
-        public string Lastname { get; set; }
-        
+        [Required(ErrorMessage = "Company Admin Last Name is required")]
+        public string CompanyAdminLastName { get; set; }
+
         [Display(Name = "Email Id")]
-        public string EmailId { get; set; }
-         
+        public string CompanyAdminEmailId { get; set; }
+
         [Display(Name = "Mobile No")]
-        [Required(ErrorMessage = "Mobile No is required")]
-        public string MobileNo { get; set; }
+        [Required(ErrorMessage = "Company Admin Mobile No is required")]
+        public string CompanyAdminMobileNo { get; set; }
 
         [Display(Name = "Alternate Mobile No")]
-        public string AlternateMobileNo { get; set; }
+        public string CompanyAdminAlternateMobileNo { get; set; }
+
+        [Display(Name = "Designation")]
+        public string CompanyAdminDesignation { get; set; }
+
+        [Required,Display(Name = "Address")]
+        public string CompanyAdminAddress { get; set; }
+
+        [Required, Display(Name = "Pincode")]
+        public string CompanyAdminPincode { get; set; }
 
         [Display(Name = "City")]
         [Required(ErrorMessage = "City is required")]
-        public string City { get; set; }
+        public string CompanyAdminCity { get; set; }
 
         [Display(Name = "State")]
         [Required(ErrorMessage = "State is required")]
-        public string State { get; set; }
+        public string CompanyAdminState { get; set; }
 
         [Display(Name = "Aadhar Card No")]
         [Required(ErrorMessage = "Aadhar Card No is required")]
-        public string AadharCardNo { get; set; }
+        public string CompanyAdminAadharCardNo { get; set; }
 
-        [Display(Name = "GST No")]
-        public string GSTNo { get; set; }
+        [Display(Name = "Aadhar Card Photo")]
+        public HttpPostedFileBase CompanyAdminAadharCardPhotoFile { get; set; }
+        public string CompanyAdminAadharCardPhoto { get; set; }
 
         [Display(Name = "Pan Card No")]
         [Required(ErrorMessage = "Pan Card No is required")]
-        [RegularExpression("^([A-Za-z]){5}([0-9]){4}([A-Za-z]){1}$", ErrorMessage = "Invalid PAN No")]
-        public string PanCardNo { get; set; }
+        public string CompanyAdminPanCardNo { get; set; }
 
         [Display(Name = "Pan Card Photo")]
-        public HttpPostedFileBase PanCardPhotoFile { get; set; }
-         
-        [Display(Name = "Aadhar Card Photo")]
-        public HttpPostedFileBase AadharCardPhotoFile { get; set; }
+        public HttpPostedFileBase CompanyAdminPanCardPhotoFile { get; set; }
+        public string CompanyAdminPanCardPhoto { get; set; }
 
-        [Display(Name = "GST Photo")]
-        public HttpPostedFileBase GSTPhotoFile { get; set; }
-
-        [Display(Name = "Company Photo")]
-        public HttpPostedFileBase CompanyPhotoFile { get; set; }
-
-        [Display(Name = "Cancel Cheque Photo")]
-        public HttpPostedFileBase CancellationChequePhotoFile { get; set; }
-
-        //
         public int RequestStatus { get; set; }
+        public string RejectReason { get; set; }
         public long? CompanyId { get; set; }
         public int FreeAccessDays { get; set; }
         public List<SelectListItem> CompanyTypeList { get; set; }
 
         public string CompanyTypeText { get; set; }
-        public string RejectReason { get; set; }
-
-        public string PanCardPhoto { get; set; }
-        public string AadharCardPhoto { get; set; }
-        public string GSTPhoto { get; set; }
-        public string CompanyPhoto { get; set; }
-        public string CancellationChequePhoto { get; set; }
 
         [Display(Name = "Company Code")]
-        public string CompanyCode{ get; set; }
+        public string CompanyCode { get; set; }
     }
 
     public class CompanyRequestFilterVM
@@ -111,7 +153,7 @@ namespace AttendanceSystem.ViewModel
         [Required(ErrorMessage = "Company Type is required")]
         public long? CompanyTypeId { get; set; }
 
-        
+
         [Required(ErrorMessage = "Company Name is required")]
         [Display(Name = "Company Name")]
         public string CompanyName { get; set; }
@@ -124,15 +166,15 @@ namespace AttendanceSystem.ViewModel
         [Required(ErrorMessage = "State is required")]
         public string State { get; set; }
 
-         
+
         [Display(Name = "GST No")]
         public string GSTNo { get; set; }
 
         [Display(Name = "GST Photo")]
         public HttpPostedFileBase GSTPhotoFile { get; set; }
 
-        [Display(Name = "Company Photo")]
-        public HttpPostedFileBase CompanyPhotoFile { get; set; }
+        [Display(Name = "Company Logo Image")]
+        public HttpPostedFileBase CompanyLogoImageFile { get; set; }
 
         [Display(Name = "Cancel Cheque Photo")]
         public HttpPostedFileBase CancellationChequePhotoFile { get; set; }
@@ -142,7 +184,7 @@ namespace AttendanceSystem.ViewModel
         public string CompanyTypeText { get; set; }
 
         public string GSTPhoto { get; set; }
-        public string CompanyPhoto { get; set; }
+        public string CompanyLogoImage { get; set; }
         public string CancellationChequePhoto { get; set; }
 
         [Display(Name = "Company Code")]

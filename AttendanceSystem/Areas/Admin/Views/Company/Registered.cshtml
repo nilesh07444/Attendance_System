@@ -1,6 +1,6 @@
 ﻿@using AttendanceSystem.Helper
 @using AttendanceSystem.ViewModel;
-@model List<AttendanceSystem.ViewModel.CompanyRequestVM>
+@model List<AttendanceSystem.ViewModel.RegisteredCompanyVM>
 @{
     /**/
 
@@ -22,7 +22,7 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Company Photo</th>
+                                        <th>Company Logo</th>
                                         <th>Company Type</th>
                                         <th>Company Name</th>
                                         <th>City</th>
@@ -35,16 +35,16 @@
 
                                     @if (Model != null && Model.Count > 0)
                                     {
-                                        foreach (CompanyRequestVM obj in Model)
+                                        foreach (RegisteredCompanyVM obj in Model)
                                         {
                                             <tr class="gradeX">
                                                 <td>@counter.</td>
                                                 <td>
-                                                    @if (!string.IsNullOrEmpty(obj.CompanyPhoto))
+                                                    @if (!string.IsNullOrEmpty(obj.CompanyLogoImage))
                                                     {
-                                                        if (File.Exists(Server.MapPath(ErrorMessage.CompanyDirectoryPath + obj.CompanyPhoto)))
+                                                        if (File.Exists(Server.MapPath(ErrorMessage.CompanyLogoDirectoryPath + obj.CompanyLogoImage)))
                                                         {
-                                                            <img src="@ErrorMessage.CompanyDirectoryPath/@obj.CompanyPhoto" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height:40px;" />
+                                                            <img src="@ErrorMessage.CompanyDirectoryPath/@obj.CompanyLogoImage" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height:40px;" />
                                                         }
                                                         else
                                                         {

@@ -14,20 +14,23 @@ namespace AttendanceSystem.Areas.Client.Controllers
     public class CompanyRequestController : Controller
     {
         AttendanceSystemEntities _db;
-        public string HomeDirectoryPath = "";
-        public string PancardDirectoryPath = "";
-        public string AdharcardDirectoryPath = "";
-        public string GSTDirectoryPath = "";
-        public string CompanyDirectoryPath = "";
+        public string companyGSTDirectoryPath = "";
+        public string companyPanDirectoryPath = "";
+        public string companyLogoDirectoryPath = "";
+        public string companyRegisterProofDirectoryPath = "";
+        public string aadharCardDirectoryPath = "";
+        public string panCardDirectoryPath = "";
         public string CancellationChequeDirectoryPath = "";
 
         public CompanyRequestController()
         {
             _db = new AttendanceSystemEntities();
-            PancardDirectoryPath = ErrorMessage.PancardDirectoryPath;
-            AdharcardDirectoryPath = ErrorMessage.AdharcardDirectoryPath;
-            GSTDirectoryPath = ErrorMessage.GSTDirectoryPath;
-            CompanyDirectoryPath = ErrorMessage.CompanyDirectoryPath;
+            companyGSTDirectoryPath = ErrorMessage.CompanyGSTDirectoryPath;
+            companyPanDirectoryPath = ErrorMessage.CompanyPanCardDirectoryPath;
+            companyLogoDirectoryPath = ErrorMessage.CompanyLogoDirectoryPath;
+            companyRegisterProofDirectoryPath = ErrorMessage.CompanyRegisterProofDirectoryPath;
+            aadharCardDirectoryPath = ErrorMessage.AdharcardDirectoryPath;
+            panCardDirectoryPath = ErrorMessage.PancardDirectoryPath;
             CancellationChequeDirectoryPath = ErrorMessage.CancellationChequeDirectoryPath;
         }
         // GET: Client/CompanyRequest
@@ -40,11 +43,13 @@ namespace AttendanceSystem.Areas.Client.Controllers
 
         [HttpPost]
         public ActionResult Index(CompanyRequestVM companyRequestVM,
-            HttpPostedFileBase PanCardPhotoFile,
-            HttpPostedFileBase AadharCardPhotoFile,
-            HttpPostedFileBase GSTPhotoFile,
-            HttpPostedFileBase CompanyPhotoFile,
-            HttpPostedFileBase CancellationChequePhotoFile)
+            HttpPostedFileBase CompanyGSTPhotoFile,
+            HttpPostedFileBase CompanyPanPhotoFile,
+            HttpPostedFileBase CompanyLogoImageFile,
+            HttpPostedFileBase CompanyRegisterProofImageFile,
+            HttpPostedFileBase CompanyCancellationChequePhotoFile,
+            HttpPostedFileBase CompanyAdminAadharCardPhotoFile,
+            HttpPostedFileBase CompanyAdminPanCardPhotoFile)
         {
             try
             {
@@ -53,103 +58,65 @@ namespace AttendanceSystem.Areas.Client.Controllers
                 if (ModelState.IsValid)
                 {
                     //long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
-                    string panCardFileName = string.Empty, adharCardFileName = string.Empty, gstFileName = string.Empty, companyFileName = string.Empty, chqFileName = string.Empty;
+                    string companyGstFileName = string.Empty, companyPanCardFileName = string.Empty, companyLogoFileName = string.Empty, companyRegisterProofFileName = string.Empty,
+                        chqFileName = string.Empty, companyAdminAdharCardFileName = string.Empty, companyAdminPancardFileName = string.Empty;
                     bool folderExists = false;
 
-                    #region PancardImage
-                    if (PanCardPhotoFile != null)
+                    #region CompanyGST
+                    if (CompanyGSTPhotoFile != null)
                     {
-                        string panCardPath = Server.MapPath(PancardDirectoryPath);
-                        folderExists = Directory.Exists(panCardPath);
+                        string companyGSTPath = Server.MapPath(companyGSTDirectoryPath);
+                        folderExists = Directory.Exists(companyGSTPath);
                         if (!folderExists)
-                            Directory.CreateDirectory(panCardPath);
+                            Directory.CreateDirectory(companyGSTPath);
 
                         // Image file validation
-                        string ext = Path.GetExtension(PanCardPhotoFile.FileName);
+                        string ext = Path.GetExtension(CompanyGSTPhotoFile.FileName);
                         if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
                         {
-                            ModelState.AddModelError("PanCardPhotoFile", ErrorMessage.SelectOnlyImage);
+                            ModelState.AddModelError("CompanyGSTPhotoFile", ErrorMessage.SelectOnlyImage);
                             return View(companyRequestVM);
                         }
 
                         // Save file in folder
-                        panCardFileName = Guid.NewGuid() + "-" + Path.GetFileName(PanCardPhotoFile.FileName);
-                        PanCardPhotoFile.SaveAs(panCardPath + panCardFileName);
+                        companyGstFileName = Guid.NewGuid() + "-" + Path.GetFileName(CompanyGSTPhotoFile.FileName);
+                        CompanyGSTPhotoFile.SaveAs(companyGSTPath + companyGstFileName);
                     }
-                    else
-                    {
-                        ModelState.AddModelError("PanCardPhotoFile", ErrorMessage.ImageRequired);
-                        return View(companyRequestVM);
-                    }
-                    #endregion PancardImage
+                    #endregion CompanyGST
 
-                    #region AdharCardImage
-                    if (AadharCardPhotoFile != null)
+                    #region CompanyPancardImage
+                    if (CompanyPanPhotoFile != null)
                     {
-                        string adharCardPath = Server.MapPath(AdharcardDirectoryPath);
-
-                        folderExists = Directory.Exists(adharCardPath);
+                        string companyPanCardPath = Server.MapPath(companyPanDirectoryPath);
+                        folderExists = Directory.Exists(companyPanCardPath);
                         if (!folderExists)
-                            Directory.CreateDirectory(adharCardPath);
+                            Directory.CreateDirectory(companyPanCardPath);
 
                         // Image file validation
-                        string ext = Path.GetExtension(AadharCardPhotoFile.FileName);
+                        string ext = Path.GetExtension(CompanyPanPhotoFile.FileName);
                         if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
                         {
-                            ModelState.AddModelError("AadharCardPhotoFile", ErrorMessage.SelectOnlyImage);
+                            ModelState.AddModelError("CompanyPanPhotoFile", ErrorMessage.SelectOnlyImage);
                             return View(companyRequestVM);
                         }
 
                         // Save file in folder
-                        adharCardFileName = Guid.NewGuid() + "-" + Path.GetFileName(AadharCardPhotoFile.FileName);
-                        AadharCardPhotoFile.SaveAs(adharCardPath + adharCardFileName);
+                        companyPanCardFileName = Guid.NewGuid() + "-" + Path.GetFileName(CompanyPanPhotoFile.FileName);
+                        CompanyPanPhotoFile.SaveAs(companyPanCardPath + companyPanCardFileName);
                     }
-                    else
-                    {
-                        ModelState.AddModelError("AadharCardPhotoFile", ErrorMessage.ImageRequired);
-                        return View(companyRequestVM);
-                    }
-                    #endregion AdharCardImage
+                    #endregion CompanyPancardImage
 
-                    #region GSTImage
-                    if (GSTPhotoFile != null)
+                    #region CompanyLogoImage
+                    if (CompanyLogoImageFile != null)
                     {
-                        string gstPath = Server.MapPath(GSTDirectoryPath);
+                        string companyLogoPath = Server.MapPath(companyLogoDirectoryPath);
 
-                        folderExists = Directory.Exists(gstPath);
+                        folderExists = Directory.Exists(companyLogoPath);
                         if (!folderExists)
-                            Directory.CreateDirectory(gstPath);
+                            Directory.CreateDirectory(companyLogoPath);
 
                         // Image file validation
-                        string ext = Path.GetExtension(GSTPhotoFile.FileName);
-                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
-                        {
-                            ModelState.AddModelError("GSTPhotoFile", ErrorMessage.SelectOnlyImage);
-                            return View(companyRequestVM);
-                        }
-
-                        // Save file in folder
-                        gstFileName = Guid.NewGuid() + "-" + Path.GetFileName(GSTPhotoFile.FileName);
-                        GSTPhotoFile.SaveAs(gstPath + gstFileName);
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("GSTPhotoFile", ErrorMessage.ImageRequired);
-                        return View(companyRequestVM);
-                    }
-                    #endregion GSTImage
-
-                    #region CompanyImage
-                    if (CompanyPhotoFile != null)
-                    {
-                        string companyPath = Server.MapPath(CompanyDirectoryPath);
-
-                        folderExists = Directory.Exists(companyPath);
-                        if (!folderExists)
-                            Directory.CreateDirectory(companyPath);
-
-                        // Image file validation
-                        string ext = Path.GetExtension(CompanyPhotoFile.FileName);
+                        string ext = Path.GetExtension(CompanyLogoImageFile.FileName);
                         if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
                         {
                             ModelState.AddModelError("CompanyPhotoFile", ErrorMessage.SelectOnlyImage);
@@ -157,19 +124,47 @@ namespace AttendanceSystem.Areas.Client.Controllers
                         }
 
                         // Save file in folder
-                        companyFileName = Guid.NewGuid() + "-" + Path.GetFileName(CompanyPhotoFile.FileName);
-                        CompanyPhotoFile.SaveAs(companyPath + companyFileName);
+                        companyLogoFileName = Guid.NewGuid() + "-" + Path.GetFileName(CompanyLogoImageFile.FileName);
+                        CompanyLogoImageFile.SaveAs(companyLogoPath + companyLogoFileName);
                     }
                     else
                     {
                         ModelState.AddModelError("CompanyPhotoFile", ErrorMessage.ImageRequired);
                         return View(companyRequestVM);
                     }
-                    #endregion CompanyImage
+                    #endregion CompanyLogoImage
+
+                    #region CompanyRegisterProofImage
+                    if (CompanyRegisterProofImageFile != null)
+                    {
+                        string companyRegisterProofPath = Server.MapPath(companyRegisterProofDirectoryPath);
+
+                        folderExists = Directory.Exists(companyRegisterProofPath);
+                        if (!folderExists)
+                            Directory.CreateDirectory(companyRegisterProofPath);
+
+                        // Image file validation
+                        string ext = Path.GetExtension(CompanyRegisterProofImageFile.FileName);
+                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
+                        {
+                            ModelState.AddModelError("CompanyRegisterProofImageFile", ErrorMessage.SelectOnlyImage);
+                            return View(companyRequestVM);
+                        }
+
+                        // Save file in folder
+                        companyRegisterProofFileName = Guid.NewGuid() + "-" + Path.GetFileName(CompanyRegisterProofImageFile.FileName);
+                        CompanyRegisterProofImageFile.SaveAs(companyRegisterProofPath + companyRegisterProofFileName);
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("CompanyRegisterProofImageFile", ErrorMessage.ImageRequired);
+                        return View(companyRequestVM);
+                    }
+                    #endregion CompanyRegisterProofImage
 
                     #region Cancel Cheque Image
 
-                    if (CancellationChequePhotoFile != null)
+                    if (CompanyCancellationChequePhotoFile != null)
                     {
                         string cancellationChqPath = Server.MapPath(CancellationChequeDirectoryPath);
 
@@ -178,24 +173,79 @@ namespace AttendanceSystem.Areas.Client.Controllers
                             Directory.CreateDirectory(cancellationChqPath);
 
                         // Image file validation
-                        string ext = Path.GetExtension(CancellationChequePhotoFile.FileName);
+                        string ext = Path.GetExtension(CompanyCancellationChequePhotoFile.FileName);
                         if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
                         {
-                            ModelState.AddModelError("CancellationChequePhotoFile", ErrorMessage.SelectOnlyImage);
+                            ModelState.AddModelError("CompanyCancellationChequePhotoFile", ErrorMessage.SelectOnlyImage);
                             return View(companyRequestVM);
                         }
 
                         // Save file in folder
-                        chqFileName = Guid.NewGuid() + "-" + Path.GetFileName(CancellationChequePhotoFile.FileName);
-                        CancellationChequePhotoFile.SaveAs(cancellationChqPath + chqFileName);
+                        chqFileName = Guid.NewGuid() + "-" + Path.GetFileName(CompanyCancellationChequePhotoFile.FileName);
+                        CompanyCancellationChequePhotoFile.SaveAs(cancellationChqPath + chqFileName);
                     }
                     else
                     {
-                        ModelState.AddModelError("CancellationChequePhotoFile", ErrorMessage.ImageRequired);
+                        ModelState.AddModelError("CompanyCancellationChequePhotoFile", ErrorMessage.ImageRequired);
                         return View(companyRequestVM);
                     }
 
                     #endregion ChqImage
+
+                    #region AdharCardImage
+                    if (CompanyAdminAadharCardPhotoFile != null)
+                    {
+                        string adharCardPath = Server.MapPath(aadharCardDirectoryPath);
+
+                        folderExists = Directory.Exists(adharCardPath);
+                        if (!folderExists)
+                            Directory.CreateDirectory(adharCardPath);
+
+                        // Image file validation
+                        string ext = Path.GetExtension(CompanyAdminAadharCardPhotoFile.FileName);
+                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
+                        {
+                            ModelState.AddModelError("CompanyAdminAadharCardPhotoFile", ErrorMessage.SelectOnlyImage);
+                            return View(companyRequestVM);
+                        }
+
+                        // Save file in folder
+                        companyAdminAdharCardFileName = Guid.NewGuid() + "-" + Path.GetFileName(CompanyAdminAadharCardPhotoFile.FileName);
+                        CompanyAdminAadharCardPhotoFile.SaveAs(adharCardPath + companyAdminAdharCardFileName);
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("CompanyAdminAadharCardPhotoFile", ErrorMessage.ImageRequired);
+                        return View(companyRequestVM);
+                    }
+                    #endregion AdharCardImage
+
+                    #region PancardImage
+                    if (CompanyAdminPanCardPhotoFile != null)
+                    {
+                        string panCardPath = Server.MapPath(panCardDirectoryPath);
+                        folderExists = Directory.Exists(panCardPath);
+                        if (!folderExists)
+                            Directory.CreateDirectory(panCardPath);
+
+                        // Image file validation
+                        string ext = Path.GetExtension(CompanyAdminPanCardPhotoFile.FileName);
+                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
+                        {
+                            ModelState.AddModelError("CompanyAdminPanCardPhotoFile", ErrorMessage.SelectOnlyImage);
+                            return View(companyRequestVM);
+                        }
+
+                        // Save file in folder
+                        companyAdminPancardFileName = Guid.NewGuid() + "-" + Path.GetFileName(CompanyAdminPanCardPhotoFile.FileName);
+                        CompanyAdminPanCardPhotoFile.SaveAs(panCardPath + companyAdminPancardFileName);
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("CompanyAdminPanCardPhotoFile", ErrorMessage.ImageRequired);
+                        return View(companyRequestVM);
+                    }
+                    #endregion PancardImage
 
                     #region Get Free access days
 
@@ -217,28 +267,44 @@ namespace AttendanceSystem.Areas.Client.Controllers
                     tbl_CompanyRequest objCompany = new tbl_CompanyRequest();
                     objCompany.CompanyTypeId = Convert.ToInt64(companyRequestVM.CompanyTypeId);
                     objCompany.CompanyName = companyRequestVM.CompanyName;
-                    objCompany.CompanyAdminPrefix = companyRequestVM.Prefix;
-                    objCompany.CompanyAdminFirstName = companyRequestVM.Firstname;
-                    objCompany.CompanyAdminLastName = companyRequestVM.Lastname;
-                    objCompany.CompanyAdminEmailId = companyRequestVM.EmailId;
-                    objCompany.CompanyAdminMobileNo = companyRequestVM.MobileNo;
-                    objCompany.CompanyAdminAlternateMobileNo = companyRequestVM.AlternateMobileNo;
-                    objCompany.CompanyAdminCity = companyRequestVM.City;
-                    objCompany.CompanyAdminState = companyRequestVM.State;
-                    objCompany.CompanyAdminAadharCardNo = companyRequestVM.AadharCardNo;
-                    objCompany.CompanyGSTNo = companyRequestVM.GSTNo;
-                    objCompany.CompanyAdminPanCardNo = companyRequestVM.PanCardNo;
-                    objCompany.CompanyAdminPanCardPhoto = panCardFileName;
-                    objCompany.CompanyAdminAadharCardPhoto = adharCardFileName;
-                    objCompany.CompanyGSTPhoto = gstFileName;
-                    objCompany.CompanyLogoImage = companyFileName;
+                    objCompany.CompanyEmailId = companyRequestVM.CompanyEmailId;
+                    objCompany.CompanyContactNo = companyRequestVM.CompanyContactNo;
+                    objCompany.CompanyAlternateContactNo = companyRequestVM.CompanyAlternateContactNo;
+                    objCompany.CompanyGSTNo = companyRequestVM.CompanyGSTNo;
+                    objCompany.CompanyGSTPhoto = companyGstFileName;
+                    objCompany.CompanyPanNo = companyRequestVM.CompanyPanNo;
+                    objCompany.CompanyPanPhoto = companyPanCardFileName;
+                    objCompany.CompanyAddress = companyRequestVM.CompanyAddress;
+                    objCompany.CompanyPincode = companyRequestVM.CompanyPincode;
+                    objCompany.CompanyCity = companyRequestVM.CompanyCity;
+                    objCompany.CompanyState = companyRequestVM.CompanyState;
+                    objCompany.CompanyLogoImage = companyLogoFileName;
+                    objCompany.CompanyRegisterProofImage = companyRegisterProofFileName;
+                    objCompany.CompanyDescription = companyRequestVM.CompanyDescription;
+                    objCompany.CompanyWebisteUrl = companyRequestVM.CompanyWebisteUrl;
                     objCompany.CompanyCancellationChequePhoto = chqFileName;
+                    objCompany.CompanyAdminPrefix = companyRequestVM.CompanyAdminPrefix;
+                    objCompany.CompanyAdminFirstName = companyRequestVM.CompanyAdminFirstName;
+                    objCompany.CompanyAdminMiddleName = companyRequestVM.CompanyAdminMiddleName;
+                    objCompany.CompanyAdminLastName = companyRequestVM.CompanyAdminLastName;
+                    objCompany.CompanyAdminEmailId = companyRequestVM.CompanyAdminEmailId;
+                    objCompany.CompanyAdminMobileNo = companyRequestVM.CompanyAdminMobileNo;
+                    objCompany.CompanyAdminAlternateMobileNo = companyRequestVM.CompanyAdminAlternateMobileNo;
+                    objCompany.CompanyAdminDesignation = companyRequestVM.CompanyAdminDesignation;
+                    objCompany.CompanyAdminAddress = companyRequestVM.CompanyAdminAddress;
+                    objCompany.CompanyAdminPincode = companyRequestVM.CompanyAdminPincode;
+                    objCompany.CompanyAdminCity = companyRequestVM.CompanyAdminCity;
+                    objCompany.CompanyAdminState = companyRequestVM.CompanyAdminState;
+                    objCompany.CompanyAdminAadharCardNo = companyRequestVM.CompanyAdminAadharCardNo;
+                    objCompany.CompanyAdminAadharCardPhoto = companyAdminAdharCardFileName;
+                    objCompany.CompanyAdminPanCardPhoto = companyAdminPancardFileName;
+                    objCompany.CompanyAdminPanCardNo = companyRequestVM.CompanyAdminPanCardNo;
                     objCompany.RequestStatus = (int)CompanyRequestStatus.Pending;
                     objCompany.FreeAccessDays = freeAccessDays;
                     objCompany.IsDeleted = false;
-                    objCompany.CreatedBy = -1; //LoggedInUserId;
+                    objCompany.CreatedBy = -1; 
                     objCompany.CreatedDate = DateTime.UtcNow;
-                    objCompany.ModifiedBy = -1; //LoggedInUserId;
+                    objCompany.ModifiedBy = -1; 
                     objCompany.ModifiedDate = DateTime.UtcNow;
                     _db.tbl_CompanyRequest.Add(objCompany);
 

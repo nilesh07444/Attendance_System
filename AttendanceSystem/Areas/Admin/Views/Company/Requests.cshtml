@@ -10,7 +10,7 @@
     lstCompanyStatus.Add(new SelectListItem { Value = "1", Text = "Pending" });
     lstCompanyStatus.Add(new SelectListItem { Value = "3", Text = "Reject" });
 
-    ViewBag.Title = "HomeImage";
+    ViewBag.Title = "Company Request";
     int counter = 1;
 }
 
@@ -23,12 +23,14 @@
                         <h4>Company Request List</h4>
                     </div>
                     <div class="card-body">
-                        <div class="pull-left">
-                            <form>
-                                @Html.DropDownListFor(model=>model.RequestStatus, new SelectList(lstCompanyStatus, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8 required", style = "" })
-                            </form>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Request Status</label>
+                                    @Html.DropDownListFor(model => model.RequestStatus, new SelectList(lstCompanyStatus, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8 required", style = "" })
+                                </div>
+                            </div>
                         </div>
-
                         <div class="table-responsive">
 
                             <table class="table table-striped table-hover" id="tableExport" style="width:100%;">
@@ -37,9 +39,9 @@
                                         <th>#</th>
                                         <th>Company Type</th>
                                         <th>Company Name</th>
+                                        <th>EmailId</th>
                                         <th>First name</th>
                                         <th>Last name</th>
-                                        <th>EmailId</th>
                                         <th>Mobile No</th>
                                         <th>City</th>
                                         <th>State</th>
@@ -58,13 +60,12 @@
                                                     @obj.CompanyTypeText
                                                 </td>
                                                 <td>@obj.CompanyName</td>
-                                                <td>@obj.Firstname</td>
-                                                <td>@obj.Lastname</td>
-
-                                                <td>@obj.EmailId</td>
-                                                <td>@obj.MobileNo</td>
-                                                <td>@obj.City</td>
-                                                <td>@obj.State</td>
+                                                <td>@obj.CompanyEmailId</td>
+                                                <td>@obj.CompanyAdminFirstName</td>
+                                                <td>@obj.CompanyAdminLastName</td>
+                                                <td>@obj.CompanyAdminMobileNo</td>
+                                                <td>@obj.CompanyAdminCity</td>
+                                                <td>@obj.CompanyAdminState</td>
 
 
                                                 <td>

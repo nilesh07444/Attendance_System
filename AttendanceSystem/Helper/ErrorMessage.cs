@@ -28,6 +28,11 @@
         public static string CompanyDirectoryPath = "/Images/CompanyPhoto/";
         public static string CancellationChequeDirectoryPath = "/Images/CancellationCheque/";
         public static string EmployeeDirectoryPath = "/Images/Employee/";
+        public static string CompanyGSTDirectoryPath = "/Images/CompanyGST/";
+        public static string CompanyPanCardDirectoryPath = "/Images/CompanyPanCard/";
+        public static string CompanyLogoDirectoryPath = "/Images/CompanyLogo/";
+        public static string CompanyRegisterProofDirectoryPath = "/Images/CompanyRegisterProof/";
+
 
         public static string TokenExpired = "Token expired";
         public static string InvalidToken = "Invalid token";
