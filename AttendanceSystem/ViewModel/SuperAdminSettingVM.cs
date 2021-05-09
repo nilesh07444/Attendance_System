@@ -8,11 +8,9 @@ namespace AttendanceSystem
 {
     public class SuperAdminSettingVM
     {
-        public long SettingId { get; set; }
-        [Required, Display(Name = "Free Access Days (Site Company)")]
-        public int SiteCompanyFreeAccessDays { get; set; }
-        [Required, Display(Name = "Free Access Days (Office Company)")]
-        public int OfficeCompanyFreeAccessDays { get; set; }
+        public long SettingId { get; set; }        
+        [Required, Display(Name = "Account Free Access Days")]
+        public int AccountFreeAccessDays { get; set; }
         [Required, Display(Name = "Amount Per Employee Buy")]
         public decimal AmountPerEmp { get; set; }
     }

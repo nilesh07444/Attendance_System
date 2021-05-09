@@ -18,14 +18,25 @@ namespace AttendanceSystem.Models
         public long CompanyTypeId { get; set; }
         public string CompanyName { get; set; }
         public string CompanyCode { get; set; }
+        public string EmailId { get; set; }
+        public string ContactNo { get; set; }
+        public string AlternateContactNo { get; set; }
+        public string Address { get; set; }
+        public string Pincode { get; set; }
         public string City { get; set; }
         public string State { get; set; }
         public string GSTNo { get; set; }
         public string GSTPhoto { get; set; }
-        public string CompanyPhoto { get; set; }
+        public string PanNo { get; set; }
+        public string PanPhoto { get; set; }
+        public string CompanyLogoImage { get; set; }
+        public string RegisterProofImage { get; set; }
+        public string Description { get; set; }
+        public string WebisteUrl { get; set; }
         public string CancellationChequePhoto { get; set; }
         public int FreeAccessDays { get; set; }
         public bool IsTrialMode { get; set; }
+        public Nullable<System.DateTime> TrialExpiryDate { get; set; }
         public Nullable<long> CurrentPackageId { get; set; }
         public Nullable<System.DateTime> AccountStartDate { get; set; }
         public Nullable<System.DateTime> AccountExpiryDate { get; set; }

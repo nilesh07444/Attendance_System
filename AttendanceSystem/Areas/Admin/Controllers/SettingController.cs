@@ -33,8 +33,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     if (loggedUserRoleId == (int)AdminRoles.SuperAdmin)
                     {
                         // Super Admin Setting
-                        objSASetting.SiteCompanyFreeAccessDays = (int)setting.SiteCompanyFreeAccessDays;
-                        objSASetting.OfficeCompanyFreeAccessDays = (int)setting.OfficeCompanyFreeAccessDays;
+                        objSASetting.AccountFreeAccessDays = (int)setting.AccountFreeAccessDays; 
                         objSASetting.AmountPerEmp = (decimal)setting.AmountPerEmp;
 
                         ViewData["objSASetting"] = objSASetting;
@@ -67,8 +66,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                     select new SuperAdminSettingVM
                                                     {
                                                         SettingId = s.SettingId,
-                                                        SiteCompanyFreeAccessDays = (int)s.SiteCompanyFreeAccessDays,
-                                                        OfficeCompanyFreeAccessDays = (int)s.OfficeCompanyFreeAccessDays,
+                                                        AccountFreeAccessDays = (int)s.AccountFreeAccessDays, 
                                                         AmountPerEmp = (decimal)s.AmountPerEmp
                                                     }).FirstOrDefault();
 
@@ -132,8 +130,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
 
                     tbl_Setting objSetting = _db.tbl_Setting.FirstOrDefault();
-                    objSetting.SiteCompanyFreeAccessDays = settingVM.SiteCompanyFreeAccessDays;
-                    objSetting.OfficeCompanyFreeAccessDays = settingVM.OfficeCompanyFreeAccessDays;
+                    objSetting.AccountFreeAccessDays = settingVM.AccountFreeAccessDays; 
                     objSetting.AmountPerEmp = settingVM.AmountPerEmp;
                     _db.SaveChanges();
 

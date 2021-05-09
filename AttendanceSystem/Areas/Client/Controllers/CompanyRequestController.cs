@@ -39,11 +39,11 @@ namespace AttendanceSystem.Areas.Client.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(CompanyRequestVM companyRequestVM, 
-            HttpPostedFileBase PanCardPhotoFile, 
-            HttpPostedFileBase AadharCardPhotoFile, 
-            HttpPostedFileBase GSTPhotoFile, 
-            HttpPostedFileBase CompanyPhotoFile, 
+        public ActionResult Index(CompanyRequestVM companyRequestVM,
+            HttpPostedFileBase PanCardPhotoFile,
+            HttpPostedFileBase AadharCardPhotoFile,
+            HttpPostedFileBase GSTPhotoFile,
+            HttpPostedFileBase CompanyPhotoFile,
             HttpPostedFileBase CancellationChequePhotoFile)
         {
             try
@@ -203,10 +203,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
                     int freeAccessDays;
                     if (objSetting != null)
                     {
-                        if (companyRequestVM.CompanyTypeId == (int)CompanyType.Banking_OfficeCompany)
-                            freeAccessDays = objSetting.OfficeCompanyFreeAccessDays.Value;
-                        else
-                            freeAccessDays = objSetting.SiteCompanyFreeAccessDays.Value;
+                        freeAccessDays = objSetting.AccountFreeAccessDays.Value;
                     }
                     else
                     {
@@ -220,23 +217,22 @@ namespace AttendanceSystem.Areas.Client.Controllers
                     tbl_CompanyRequest objCompany = new tbl_CompanyRequest();
                     objCompany.CompanyTypeId = Convert.ToInt64(companyRequestVM.CompanyTypeId);
                     objCompany.CompanyName = companyRequestVM.CompanyName;
-                    objCompany.Prefix = companyRequestVM.Prefix;
-                    objCompany.Firstname = companyRequestVM.Firstname;
-                    objCompany.Lastname = companyRequestVM.Lastname;
-                    objCompany.DateOfBirth = companyRequestVM.DateOfBirth;
-                    objCompany.EmailId = companyRequestVM.EmailId;
-                    objCompany.MobileNo = companyRequestVM.MobileNo;
-                    objCompany.AlternateMobileNo = companyRequestVM.AlternateMobileNo;
-                    objCompany.City = companyRequestVM.City;
-                    objCompany.State = companyRequestVM.State;
-                    objCompany.AadharCardNo = companyRequestVM.AadharCardNo;
-                    objCompany.GSTNo = companyRequestVM.GSTNo;
-                    objCompany.PanCardNo = companyRequestVM.PanCardNo;
-                    objCompany.PanCardPhoto = panCardFileName;
-                    objCompany.AadharCardPhoto = adharCardFileName;
-                    objCompany.GSTPhoto = gstFileName;
-                    objCompany.CompanyPhoto = companyFileName;
-                    objCompany.CancellationChequePhoto = chqFileName;
+                    objCompany.CompanyAdminPrefix = companyRequestVM.Prefix;
+                    objCompany.CompanyAdminFirstName = companyRequestVM.Firstname;
+                    objCompany.CompanyAdminLastName = companyRequestVM.Lastname;
+                    objCompany.CompanyAdminEmailId = companyRequestVM.EmailId;
+                    objCompany.CompanyAdminMobileNo = companyRequestVM.MobileNo;
+                    objCompany.CompanyAdminAlternateMobileNo = companyRequestVM.AlternateMobileNo;
+                    objCompany.CompanyAdminCity = companyRequestVM.City;
+                    objCompany.CompanyAdminState = companyRequestVM.State;
+                    objCompany.CompanyAdminAadharCardNo = companyRequestVM.AadharCardNo;
+                    objCompany.CompanyGSTNo = companyRequestVM.GSTNo;
+                    objCompany.CompanyAdminPanCardNo = companyRequestVM.PanCardNo;
+                    objCompany.CompanyAdminPanCardPhoto = panCardFileName;
+                    objCompany.CompanyAdminAadharCardPhoto = adharCardFileName;
+                    objCompany.CompanyGSTPhoto = gstFileName;
+                    objCompany.CompanyLogoImage = companyFileName;
+                    objCompany.CompanyCancellationChequePhoto = chqFileName;
                     objCompany.RequestStatus = (int)CompanyRequestStatus.Pending;
                     objCompany.FreeAccessDays = freeAccessDays;
                     objCompany.IsDeleted = false;

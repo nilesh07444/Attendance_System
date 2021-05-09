@@ -46,13 +46,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                   CreatedDate = p.CreatedDate,
                                   ModifiedBy = p.ModifiedBy,
                                   ModifiedDate = p.ModifiedDate,
-                                  Prefix = p.Prefix,
-                                  DateOfBirth = p.DateOfBirth,
+                                  Prefix = p.Prefix, 
                                   AlternateMobileNo = p.AlternateMobileNo,
                                   AadharCardNo = p.AadharCardNo,
                                   PanCardNo = p.PanCardNo,
-                                  PanCardPhoto = p.PanCardPhoto,
-                                  UserPhoto = p.UserPhoto,
+                                  PanCardPhoto = p.PanCardPhoto, 
                                   AadharCardPhoto = p.AadharCardPhoto
                               }).FirstOrDefault();
 

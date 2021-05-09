@@ -17,27 +17,41 @@ namespace AttendanceSystem.Models
         public long CompanyRequestId { get; set; }
         public long CompanyTypeId { get; set; }
         public string CompanyName { get; set; }
-        public string Prefix { get; set; }
-        public string Firstname { get; set; }
-        public string Lastname { get; set; }
-        public System.DateTime DateOfBirth { get; set; }
-        public string EmailId { get; set; }
-        public string MobileNo { get; set; }
-        public string AlternateMobileNo { get; set; }
-        public string City { get; set; }
-        public string State { get; set; }
-        public string AadharCardNo { get; set; }
-        public string GSTNo { get; set; }
-        public string PanCardNo { get; set; }
-        public string PanCardPhoto { get; set; }
-        public string AadharCardPhoto { get; set; }
-        public string GSTPhoto { get; set; }
-        public string CompanyPhoto { get; set; }
-        public string CancellationChequePhoto { get; set; }
+        public string CompanyEmailId { get; set; }
+        public string CompanyContactNo { get; set; }
+        public string CompanyAlternateContactNo { get; set; }
+        public string CompanyGSTNo { get; set; }
+        public string CompanyGSTPhoto { get; set; }
+        public string CompanyPanNo { get; set; }
+        public string CompanyPanPhoto { get; set; }
+        public string CompanyAddress { get; set; }
+        public string CompanyPincode { get; set; }
+        public string CompanyCity { get; set; }
+        public string CompanyState { get; set; }
+        public string CompanyLogoImage { get; set; }
+        public string CompanyRegisterProofImage { get; set; }
+        public string CompanyDescription { get; set; }
+        public string CompanyWebisteUrl { get; set; }
+        public string CompanyCancellationChequePhoto { get; set; }
+        public string CompanyAdminPrefix { get; set; }
+        public string CompanyAdminFirstName { get; set; }
+        public string CompanyAdminMiddleName { get; set; }
+        public string CompanyAdminLastName { get; set; }
+        public string CompanyAdminEmailId { get; set; }
+        public string CompanyAdminMobileNo { get; set; }
+        public string CompanyAdminAlternateMobileNo { get; set; }
+        public string CompanyAdminDesignation { get; set; }
+        public string CompanyAdminAddress { get; set; }
+        public string CompanyAdminPincode { get; set; }
+        public string CompanyAdminCity { get; set; }
+        public string CompanyAdminState { get; set; }
+        public string CompanyAdminAadharCardNo { get; set; }
+        public string CompanyAdminAadharCardPhoto { get; set; }
+        public string CompanyAdminPanCardPhoto { get; set; }
+        public string CompanyAdminPanCardNo { get; set; }
         public int RequestStatus { get; set; }
         public string RejectReason { get; set; }
         public Nullable<long> CompanyId { get; set; }
-        public decimal RegistrationFee { get; set; }
         public int FreeAccessDays { get; set; }
         public bool IsDeleted { get; set; }
         public long CreatedBy { get; set; }

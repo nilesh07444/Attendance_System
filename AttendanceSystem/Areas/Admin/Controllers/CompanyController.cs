@@ -52,7 +52,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                         City = cp.City,
                                         State = cp.State,
                                         GSTNo = cp.GSTNo,
-                                        CompanyPhoto = cp.CompanyPhoto
+                                        CompanyPhoto = cp.CompanyLogoImage
                                     }).ToList();
             }
             catch (Exception ex)
@@ -65,8 +65,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
         public ActionResult Requests(int? status)
         {
-            CompanyRequestFilterVM companyRequestFilterVM = new CompanyRequestFilterVM();
-            //List<CompanyRequestVM> companyRequestVM = new List<CompanyRequestVM>();
+            CompanyRequestFilterVM companyRequestFilterVM = new CompanyRequestFilterVM(); 
             try
             {
                 int[] companyStatusArr = new int[] { (int)CompanyRequestStatus.Pending, (int)CompanyRequestStatus.Reject };
@@ -84,12 +83,12 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                              CompanyRequestId = cp.CompanyRequestId,
                                                              CompanyTypeText = ct.CompanyTypeName,
                                                              CompanyName = cp.CompanyName,
-                                                             Firstname = cp.Firstname,
-                                                             Lastname = cp.Lastname,
-                                                             EmailId = cp.EmailId,
-                                                             MobileNo = cp.MobileNo,
-                                                             City = cp.City,
-                                                             State = cp.State
+                                                             Firstname = cp.CompanyAdminFirstName,
+                                                             Lastname = cp.CompanyAdminLastName,
+                                                             EmailId = cp.CompanyAdminEmailId,
+                                                             MobileNo = cp.CompanyAdminMobileNo,
+                                                             City = cp.CompanyAdminCity,
+                                                             State = cp.CompanyAdminState
                                                          }).ToList();
             }
             catch (Exception ex)
@@ -113,23 +112,22 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                         CompanyRequestId = cp.CompanyRequestId,
                                         CompanyTypeId = cp.CompanyTypeId,
                                         CompanyName = cp.CompanyName,
-                                        Prefix = cp.Prefix,
-                                        Firstname = cp.Firstname,
-                                        Lastname = cp.Lastname,
-                                        DateOfBirth = cp.DateOfBirth,
-                                        EmailId = cp.EmailId,
-                                        MobileNo = cp.MobileNo,
-                                        AlternateMobileNo = cp.AlternateMobileNo,
-                                        City = cp.City,
-                                        State = cp.State,
-                                        AadharCardNo = cp.AadharCardNo,
-                                        GSTNo = cp.GSTNo,
-                                        PanCardNo = cp.PanCardNo,
-                                        PanCardPhoto = cp.PanCardPhoto,
-                                        AadharCardPhoto = cp.AadharCardPhoto,
-                                        GSTPhoto = cp.GSTPhoto,
-                                        CompanyPhoto = cp.CompanyPhoto,
-                                        CancellationChequePhoto = cp.CancellationChequePhoto,
+                                        Prefix = cp.CompanyAdminPrefix,
+                                        Firstname = cp.CompanyAdminFirstName,
+                                        Lastname = cp.CompanyAdminLastName, 
+                                        EmailId = cp.CompanyAdminEmailId,
+                                        MobileNo = cp.CompanyAdminMobileNo,
+                                        AlternateMobileNo = cp.CompanyAdminAlternateMobileNo,
+                                        City = cp.CompanyAdminCity,
+                                        State = cp.CompanyAdminState,
+                                        AadharCardNo = cp.CompanyAdminAadharCardNo,
+                                        GSTNo = cp.CompanyGSTNo,
+                                        PanCardNo = cp.CompanyAdminPanCardNo,
+                                        PanCardPhoto = cp.CompanyAdminPanCardPhoto,
+                                        AadharCardPhoto = cp.CompanyAdminAadharCardPhoto,
+                                        GSTPhoto = cp.CompanyGSTPhoto,
+                                        CompanyPhoto = cp.CompanyLogoImage,
+                                        CancellationChequePhoto = cp.CompanyCancellationChequePhoto,
                                         RequestStatus = cp.RequestStatus,
                                         RejectReason = cp.RejectReason,
                                         FreeAccessDays = cp.FreeAccessDays,
@@ -166,12 +164,12 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objcomp.CompanyTypeId = objCompanyReq.CompanyTypeId;
                         objcomp.CompanyName = objCompanyReq.CompanyName;
                         objcomp.CompanyCode = companyInitials;
-                        objcomp.City = objCompanyReq.City;
-                        objcomp.State = objCompanyReq.State;
-                        objcomp.GSTNo = objCompanyReq.GSTNo;
-                        objcomp.GSTPhoto = objCompanyReq.GSTPhoto;
-                        objcomp.CompanyPhoto = objCompanyReq.CompanyPhoto;
-                        objcomp.CancellationChequePhoto = objCompanyReq.CancellationChequePhoto;
+                        objcomp.City = objCompanyReq.CompanyCity;
+                        objcomp.State = objCompanyReq.CompanyState;
+                        objcomp.GSTNo = objCompanyReq.CompanyGSTNo;
+                        objcomp.GSTPhoto = objCompanyReq.CompanyGSTPhoto;
+                        objcomp.CompanyLogoImage = objCompanyReq.CompanyLogoImage;
+                        objcomp.CancellationChequePhoto = objCompanyReq.CompanyCancellationChequePhoto;
                         objcomp.FreeAccessDays = objCompanyReq.FreeAccessDays;
                         objcomp.IsActive = true;
                         objcomp.CreatedBy = LoggedInUserId;
@@ -187,21 +185,20 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         tbl_AdminUser objAdminUser = new tbl_AdminUser();
                         objAdminUser.AdminUserRoleId = (int)AdminRoles.CompanyAdmin;
                         objAdminUser.CompanyId = objCompanyReq.CompanyId;
-                        objAdminUser.Prefix = objCompanyReq.Prefix;
-                        objAdminUser.FirstName = objCompanyReq.Firstname;
-                        objAdminUser.LastName = objCompanyReq.Lastname;
+                        objAdminUser.Prefix = objCompanyReq.CompanyAdminPrefix;
+                        objAdminUser.FirstName = objCompanyReq.CompanyAdminFirstName;
+                        objAdminUser.LastName = objCompanyReq.CompanyAdminLastName;
                         objAdminUser.UserName = companyInitials;
                         objAdminUser.Password = CommonMethod.Encrypt(CommonMethod.RandomString(6, true), psSult);
-                        objAdminUser.EmailId = objCompanyReq.EmailId;
-                        objAdminUser.MobileNo = objCompanyReq.MobileNo;
-                        objAdminUser.AlternateMobileNo = objCompanyReq.AlternateMobileNo;
-                        objAdminUser.DateOfBirth = objCompanyReq.DateOfBirth;
-                        objAdminUser.City = objCompanyReq.City;
-                        objAdminUser.State = objCompanyReq.State;
-                        objAdminUser.AadharCardNo = objCompanyReq.AadharCardNo;
-                        objAdminUser.PanCardNo = objCompanyReq.PanCardNo;
-                        objAdminUser.AadharCardPhoto = objCompanyReq.AadharCardPhoto;
-                        objAdminUser.PanCardPhoto = objCompanyReq.PanCardPhoto;
+                        objAdminUser.EmailId = objCompanyReq.CompanyAdminEmailId;
+                        objAdminUser.MobileNo = objCompanyReq.CompanyAdminMobileNo;
+                        objAdminUser.AlternateMobileNo = objCompanyReq.CompanyAdminAlternateMobileNo; 
+                        objAdminUser.City = objCompanyReq.CompanyAdminCity;
+                        objAdminUser.State = objCompanyReq.CompanyAdminState;
+                        objAdminUser.AadharCardNo = objCompanyReq.CompanyAdminAadharCardNo;
+                        objAdminUser.PanCardNo = objCompanyReq.CompanyAdminPanCardNo;
+                        objAdminUser.AadharCardPhoto = objCompanyReq.CompanyAdminAadharCardPhoto;
+                        objAdminUser.PanCardPhoto = objCompanyReq.CompanyAdminPanCardPhoto;
                         objAdminUser.IsActive = true;
                         objAdminUser.CreatedBy = LoggedInUserId;
                         objAdminUser.CreatedDate = DateTime.UtcNow;
@@ -269,8 +266,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                            CompanyName = cp.CompanyName,
                                            Prefix = emp.Prefix,
                                            Firstname = emp.FirstName,
-                                           Lastname = emp.LastName,
-                                           DateOfBirth = emp.DateOfBirth,
+                                           Lastname = emp.LastName, 
                                            EmailId = emp.EmailId,
                                            MobileNo = emp.MobileNo,
                                            AlternateMobileNo = emp.AlternateMobileNo,
@@ -282,7 +278,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                            PanCardPhoto = emp.PanCardPhoto,
                                            AadharCardPhoto = emp.AadharCardPhoto,
                                            GSTPhoto = cp.GSTPhoto,
-                                           CompanyPhoto = cp.CompanyPhoto,
+                                           CompanyPhoto = cp.CompanyLogoImage,
                                            CancellationChequePhoto = cp.CancellationChequePhoto,
                                            FreeAccessDays = cp.FreeAccessDays,
                                            CompanyTypeText = ct.CompanyTypeName
@@ -460,7 +456,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objcomp.State = registeredCompanyVM.State;
                         objcomp.GSTNo = registeredCompanyVM.GSTNo;
                         objcomp.GSTPhoto = GSTPhotoFile != null ? gstFileName : objcomp.GSTPhoto;
-                        objcomp.CompanyPhoto = CompanyPhotoFile != null ? companyFileName : objcomp.CompanyPhoto;
+                        objcomp.CompanyLogoImage = CompanyPhotoFile != null ? companyFileName : objcomp.CompanyLogoImage;
                         objcomp.CancellationChequePhoto = CancellationChequePhotoFile != null ? chqFileName : objcomp.CancellationChequePhoto;
                         objcomp.FreeAccessDays = registeredCompanyVM.FreeAccessDays;
                         objcomp.ModifiedBy = LoggedInUserId;
@@ -475,8 +471,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objAdminUser.LastName = registeredCompanyVM.Lastname;
                         objAdminUser.EmailId = registeredCompanyVM.EmailId;
                         objAdminUser.MobileNo = registeredCompanyVM.MobileNo;
-                        objAdminUser.AlternateMobileNo = registeredCompanyVM.AlternateMobileNo;
-                        objAdminUser.DateOfBirth = registeredCompanyVM.DateOfBirth;
+                        objAdminUser.AlternateMobileNo = registeredCompanyVM.AlternateMobileNo; 
                         objAdminUser.City = registeredCompanyVM.City;
                         objAdminUser.State = registeredCompanyVM.State;
                         objAdminUser.AadharCardNo = registeredCompanyVM.AadharCardNo;
@@ -570,23 +565,22 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                         CompanyRequestId = cp.CompanyRequestId,
                                         CompanyTypeId = cp.CompanyTypeId,
                                         CompanyName = cp.CompanyName,
-                                        Prefix = cp.Prefix,
-                                        Firstname = cp.Firstname,
-                                        Lastname = cp.Lastname,
-                                        DateOfBirth = cp.DateOfBirth,
-                                        EmailId = cp.EmailId,
-                                        MobileNo = cp.MobileNo,
-                                        AlternateMobileNo = cp.AlternateMobileNo,
-                                        City = cp.City,
-                                        State = cp.State,
-                                        AadharCardNo = cp.AadharCardNo,
-                                        GSTNo = cp.GSTNo,
-                                        PanCardNo = cp.PanCardNo,
-                                        PanCardPhoto = cp.PanCardPhoto,
-                                        AadharCardPhoto = cp.AadharCardPhoto,
-                                        GSTPhoto = cp.GSTPhoto,
-                                        CompanyPhoto = cp.CompanyPhoto,
-                                        CancellationChequePhoto = cp.CancellationChequePhoto,
+                                        Prefix = cp.CompanyAdminPrefix,
+                                        Firstname = cp.CompanyAdminFirstName,
+                                        Lastname = cp.CompanyAdminLastName, 
+                                        EmailId = cp.CompanyAdminEmailId,
+                                        MobileNo = cp.CompanyAdminMobileNo,
+                                        AlternateMobileNo = cp.CompanyAdminAlternateMobileNo,
+                                        City = cp.CompanyAdminCity,
+                                        State = cp.CompanyAdminState,
+                                        AadharCardNo = cp.CompanyAdminAadharCardNo,
+                                        GSTNo = cp.CompanyGSTNo,
+                                        PanCardNo = cp.CompanyAdminPanCardNo,
+                                        PanCardPhoto = cp.CompanyAdminPanCardPhoto,
+                                        AadharCardPhoto = cp.CompanyAdminAadharCardPhoto,
+                                        GSTPhoto = cp.CompanyGSTPhoto,
+                                        CompanyPhoto = cp.CompanyLogoImage,
+                                        CancellationChequePhoto = cp.CompanyCancellationChequePhoto,
                                         RequestStatus = cp.RequestStatus,
                                         RejectReason = cp.RejectReason,
                                         FreeAccessDays = cp.FreeAccessDays,

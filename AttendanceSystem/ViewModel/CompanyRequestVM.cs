@@ -33,11 +33,7 @@ namespace AttendanceSystem.ViewModel
         [Display(Name = "Last Name")]
         [Required(ErrorMessage = "Last Name is required")]
         public string Lastname { get; set; }
-
-        [Display(Name = "Date of Birth")]
-        [Required(ErrorMessage = "Date of Birth is required")]
-        public DateTime DateOfBirth { get; set; }
-
+        
         [Display(Name = "Email Id")]
         public string EmailId { get; set; }
          
