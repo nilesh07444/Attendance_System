@@ -33,6 +33,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                 if (!response.IsError)
                 {
+                    int empCount = _db.tbl_Employee.Where(x => x.CompanyId == companyId).Count();
+                    tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == companyId).FirstOrDefault();
                     tbl_Employee objEmployee = new tbl_Employee();
                     objEmployee.ProfilePicture = employeeVM.ProfilePicture;
                     objEmployee.CompanyId = companyId;
@@ -48,7 +50,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     objEmployee.EmploymentCategory = employeeVM.EmploymentCategory;
                     objEmployee.MonthlySalaryPrice = employeeVM.MonthlySalaryPrice;
                     objEmployee.AdharCardNo = employeeVM.AdharCardNo;
-                    objEmployee.EmployeeCode = CommonMethod.RandomString(6, true);
+                    objEmployee.EmployeeCode = CommonMethod.getEmployeeCodeFormat(companyId, objCompany.CompanyName, empCount);
                     objEmployee.Address = employeeVM.Address;
                     objEmployee.City = employeeVM.City;
                     objEmployee.IsActive = true;

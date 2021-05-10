@@ -103,6 +103,12 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             {
                 var data = _db.tbl_AdminUser.Where(x => x.UserName == login.UserName).FirstOrDefault();
                 var roleData = _db.mst_AdminRole.Where(x => x.AdminRoleId == data.AdminUserRoleId).FirstOrDefault();
+                tbl_Company companyObj = null;
+                if (data.CompanyId.HasValue)
+                {
+                    companyObj = _db.tbl_Company.Where(x => x.CompanyId == data.CompanyId).FirstOrDefault();
+                }
+
                 clsAdminSession.SessionID = Session.SessionID;
                 clsAdminSession.UserID = data.AdminUserId;
                 clsAdminSession.RoleID = data.AdminUserRoleId;
@@ -112,6 +118,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 clsAdminSession.ImagePath = ""; //data.ProfilePicture;
                 clsAdminSession.MobileNumber = data.MobileNo;
                 clsAdminSession.CompanyId = data.CompanyId.HasValue ? data.CompanyId.Value : 0;
+                clsAdminSession.CompanyTypeId = companyObj != null ? companyObj.CompanyTypeId : 0;
             }
             catch (Exception ex)
             {

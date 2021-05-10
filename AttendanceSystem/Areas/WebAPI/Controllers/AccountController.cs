@@ -52,36 +52,89 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                     if (data != null)
                     {
-                        response.IsError = false;
-                        loginResponseVM.IsFingerprintEnabled = data.IsFingerprintEnabled;
-                        loginResponseVM.EmployeeId = data.EmployeeId;
+                        tbl_Company companyObj = _db.tbl_Company.Where(x => x.CompanyId == data.CompanyId).FirstOrDefault();
 
-                        using (WebClient webClient = new WebClient())
+                        if (companyObj != null)
                         {
-                            Random random = new Random();
-                            int num = random.Next(555555, 999999);
-                            if (enviornment != "Development")
+                            if (!companyObj.IsActive)
                             {
-                                string msg = "Your Otp code for Login is " + num;
-                                msg = HttpUtility.UrlEncode(msg);
-                                string url = CommonMethod.GetSMSUrl().Replace("--MOBILE--", data.MobileNo).Replace("--MSG--", msg);
-                                var json = webClient.DownloadString(url);
-                                if (json.Contains("invalidnumber"))
+                                response.IsError = true;
+                                response.AddError(ErrorMessage.CompanyIsNotActive);
+                            }
+
+                            tbl_CompanyRenewPayment companyPackage = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == data.CompanyId && DateTime.Today >= x.StartDate && DateTime.Today < x.EndDate).FirstOrDefault();
+                            tbl_CompanySMSPackRenew companySMSPackage = _db.tbl_CompanySMSPackRenew.Where(x => x.CompanyId == data.CompanyId && DateTime.Today >= x.RenewDate && DateTime.Today < x.PackageExpiryDate).FirstOrDefault();
+
+                            if (companyObj.IsTrialMode && companyObj.TrialExpiryDate < DateTime.Today && companyPackage == null)
+                            {
+                                response.IsError = true;
+                                response.AddError(ErrorMessage.CompanyTrailAccountIsExpired);
+                            }
+                            else if (companyObj.IsTrialMode && companyObj.TrialExpiryDate < DateTime.Today && companyPackage != null)
+                            {
+                                companyObj.IsTrialMode = false;
+                                companyObj.TrialExpiryDate = null;
+                                companyObj.CurrentPackageId = companyPackage.PackageId;
+                                companyObj.AccountStartDate = companyPackage.StartDate;
+                                companyObj.AccountExpiryDate = companyPackage.EndDate;
+                                //companyObj.CurrentEmployeeAccess
+                                //companyObj.RemainingEmployeeAccess
+                                if (companySMSPackage != null)
                                 {
-                                    response.IsError = true;
-                                    response.AddError(ErrorMessage.InvalidMobileNo);
+                                    companyObj.CurrentSMSPackageId = (int)companySMSPackage.SMSPackageId;
+                                    companyObj.SMSPackStartDate = companySMSPackage.RenewDate;
+                                    companyObj.SMSPackExpiryDate = companySMSPackage.PackageExpiryDate;
+                                }
+
+                                List<tbl_Employee> listEmployee = _db.tbl_Employee.Where(x => x.CompanyId == companyObj.CompanyId && x.IsActive).ToList();
+                                if (listEmployee.Count > companyPackage.NoOfEmployee)
+                                {
+
+                                }
+                            }
+                            else if (!companyObj.IsTrialMode && companyObj.AccountExpiryDate < DateTime.Today && companyPackage == null)
+                            {
+                                response.IsError = true;
+                                response.AddError(ErrorMessage.CompanyAccountIsExpired);
+                            }
+                            else if (!companyObj.IsTrialMode && companyObj.AccountExpiryDate < DateTime.Today && companyPackage != null)
+                            {
+                                response.IsError = true;
+                                response.AddError(ErrorMessage.CompanyAccountIsExpired);
+                            }
+
+                            response.IsError = false;
+                            loginResponseVM.IsFingerprintEnabled = data.IsFingerprintEnabled;
+                            loginResponseVM.EmployeeId = data.EmployeeId;
+
+                            using (WebClient webClient = new WebClient())
+                            {
+                                Random random = new Random();
+                                int num = random.Next(555555, 999999);
+                                if (enviornment != "Development")
+                                {
+                                    string msg = "Your Otp code for Login is " + num;
+                                    msg = HttpUtility.UrlEncode(msg);
+                                    string url = CommonMethod.GetSMSUrl().Replace("--MOBILE--", data.MobileNo).Replace("--MSG--", msg);
+                                    var json = webClient.DownloadString(url);
+                                    if (json.Contains("invalidnumber"))
+                                    {
+                                        response.IsError = true;
+                                        response.AddError(ErrorMessage.InvalidMobileNo);
+                                    }
+                                    else
+                                    {
+                                        loginResponseVM.OTP = num.ToString();
+                                    }
                                 }
                                 else
                                 {
                                     loginResponseVM.OTP = num.ToString();
                                 }
                             }
-                            else
-                            {
-                                loginResponseVM.OTP = num.ToString();
-                            }
+                            response.Data = loginResponseVM;
                         }
-                        response.Data = loginResponseVM;
+
                     }
                     else
                     {

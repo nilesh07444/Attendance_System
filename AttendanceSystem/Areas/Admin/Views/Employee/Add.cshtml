@@ -270,7 +270,7 @@
 
                 var now = new Date;
                 var target = new Date($("#Dob").val());
-                if (target.getDate() >= now.getDate()) {
+                if (target >= now) {
                     alert("Please valid date of birth.");
                     return false;
                 }

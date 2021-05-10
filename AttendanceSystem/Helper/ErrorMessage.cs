@@ -84,5 +84,8 @@
         public static string EmployeeDoesNotExist = "Employee does not exist.";
         public static string CompanyNameMinimum2CharacterRequired = "Company name minimum 2 character required.";
 
+        public static string CompanyIsNotActive = "Company is not active.";
+        public static string CompanyAccountIsExpired = "Company account is expired.";
+        public static string CompanyTrailAccountIsExpired = "Company trail account is expired.";
     }
 }

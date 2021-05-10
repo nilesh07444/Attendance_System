@@ -1,6 +1,4 @@
-﻿using AttendanceSystem.Helper;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -8,7 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
-using System.Web;
+using System.Text.RegularExpressions;
 using System.Web.Configuration;
 
 namespace AttendanceSystem
@@ -469,5 +467,20 @@ namespace AttendanceSystem
             return value.ToString();
         }
 
+        public static string getEmployeeCodeFormat(long companyId, string companyName, int lastEmpNumber)
+        {
+            string empCode = string.Empty;
+            try
+            {
+                int newEmpNumber = lastEmpNumber + 1;
+                string companyNameWithoutSpeChar = Regex.Replace(companyName, @"[^0-9a-zA-Z]+", "");
+                string first2CharOfCompanyName = companyNameWithoutSpeChar.ToUpper().Substring(0, 2);
+                empCode = first2CharOfCompanyName + "/EMP/" + companyId + "/" + newEmpNumber;
+            }
+            catch (Exception ex)
+            {
+            }
+            return empCode;
+        }
     }
 }

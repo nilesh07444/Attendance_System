@@ -214,6 +214,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     }
                     else
                     {
+                        int empCount = _db.tbl_Employee.Where(x => x.CompanyId == companyId).Count();
+                        tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == companyId).FirstOrDefault();
                         tbl_Employee objEmployee = new tbl_Employee();
                         objEmployee.ProfilePicture = fileName;
                         objEmployee.CompanyId = companyId;
@@ -223,7 +225,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployee.FirstName = employeeVM.FirstName;
                         objEmployee.LastName = employeeVM.LastName;
                         objEmployee.Email = employeeVM.Email;
-                        objEmployee.EmployeeCode = CommonMethod.RandomString(6, true);
+                        objEmployee.EmployeeCode = CommonMethod.getEmployeeCodeFormat(companyId, objCompany.CompanyName, empCount);
                         objEmployee.MobileNo = employeeVM.MobileNo;
                         objEmployee.AlternateMobile = employeeVM.AlternateMobile;
                         objEmployee.Address = employeeVM.Address;
@@ -382,7 +384,12 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
         private List<SelectListItem> GetUserRoleList()
         {
-            long[] adminRole = new long[] { (long)AdminRoles.CompanyAdmin, (long)AdminRoles.SuperAdmin };
+            long[] adminRole = new long[] { (long)AdminRoles.CompanyAdmin, (long)AdminRoles.SuperAdmin, (long)AdminRoles.Worker };
+
+            if (clsAdminSession.CompanyTypeId == (int)CompanyType.Banking_OfficeCompany)
+            {
+                adminRole = new long[] { (long)AdminRoles.CompanyAdmin, (long)AdminRoles.SuperAdmin, (long)AdminRoles.Supervisor, (long)AdminRoles.Checker, (long)AdminRoles.Payer, (long)AdminRoles.Worker };
+            }
             List<SelectListItem> lst = (from ms in _db.mst_AdminRole
                                         where !adminRole.Contains(ms.AdminRoleId)
                                         select new SelectListItem
@@ -453,20 +460,20 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                 long companyId = clsAdminSession.CompanyId;
                 loginHistoryFilterVM.LoginHistoryList = (from lh in _db.tbl_LoginHistory
-                                                     join emp in _db.tbl_Employee on lh.EmployeeId equals emp.EmployeeId
-                                                     where !emp.IsDeleted && emp.CompanyId == companyId
-                                                     && (loginHistoryFilterVM.EmployeeId.HasValue ? lh.EmployeeId == loginHistoryFilterVM.EmployeeId.Value : true)
-                                                     select new LoginHistoryVM
-                                                     {
-                                                         LoginHistoryId = lh.LoginHistoryId,
-                                                         EmployeeId = lh.EmployeeId,
-                                                         FirstName = emp.FirstName,
-                                                         LastName = emp.LastName,
-                                                         LoginDate = lh.LoginDate,
-                                                         LocationFrom = lh.LocationFrom,
-                                                         SiteId = lh.SiteId
+                                                         join emp in _db.tbl_Employee on lh.EmployeeId equals emp.EmployeeId
+                                                         where !emp.IsDeleted && emp.CompanyId == companyId
+                                                         && (loginHistoryFilterVM.EmployeeId.HasValue ? lh.EmployeeId == loginHistoryFilterVM.EmployeeId.Value : true)
+                                                         select new LoginHistoryVM
+                                                         {
+                                                             LoginHistoryId = lh.LoginHistoryId,
+                                                             EmployeeId = lh.EmployeeId,
+                                                             FirstName = emp.FirstName,
+                                                             LastName = emp.LastName,
+                                                             LoginDate = lh.LoginDate,
+                                                             LocationFrom = lh.LocationFrom,
+                                                             SiteId = lh.SiteId
 
-                                                     }).OrderByDescending(x => x.LoginDate).ToList();
+                                                         }).OrderByDescending(x => x.LoginDate).ToList();
             }
             catch (Exception ex)
             {

@@ -56,7 +56,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                            City = cp.City,
                                            State = cp.State,
                                            GSTNo = cp.GSTNo,
-                                           CompanyLogoImage = cp.CompanyLogoImage
+                                           CompanyLogoImage = cp.CompanyLogoImage,
+                                           CompanyCode = cp.CompanyCode
                                        }).ToList();
             }
             catch (Exception ex)
@@ -768,23 +769,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return companyCode;
         }
 
-        private string getEmployeeCodeFormat(long companyId, string companyName)
-        {
-            string empCode = string.Empty;
-            try
-            {
-                //Get Last employee Number of selected number
-                int lastEmpNumber = 1; // ex.
-                int newEmpNumber = lastEmpNumber + 1;
-                string companyNameWithoutSpeChar = Regex.Replace(companyName, @"[^0-9a-zA-Z]+", "");
-                string first2CharOfCompanyName = companyNameWithoutSpeChar.ToUpper().Substring(0, 2);
-                empCode = first2CharOfCompanyName + "/EMP/" + companyId + "/" + newEmpNumber;
-            }
-            catch (Exception ex)
-            {
-            }
-            return empCode;
-        }
+       
 
     }
 }

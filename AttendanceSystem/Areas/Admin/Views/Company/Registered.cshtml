@@ -25,6 +25,7 @@
                                         <th>Company Logo</th>
                                         <th>Company Type</th>
                                         <th>Company Name</th>
+                                        <th>Company Code</th>
                                         <th>City</th>
                                         <th>State</th>
                                         <th>GSTNo</th>
@@ -37,39 +38,40 @@
                                     {
                                         foreach (RegisteredCompanyVM obj in Model)
                                         {
-                                            <tr class="gradeX">
-                                                <td>@counter.</td>
-                                                <td>
-                                                    @if (!string.IsNullOrEmpty(obj.CompanyLogoImage))
-                                                    {
-                                                        if (File.Exists(Server.MapPath(ErrorMessage.CompanyLogoDirectoryPath + obj.CompanyLogoImage)))
-                                                        {
-                                                            <img src="@ErrorMessage.CompanyDirectoryPath/@obj.CompanyLogoImage" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height:40px;" />
-                                                        }
-                                                        else
-                                                        {
-                                                            <img src="@ErrorMessage.DefaultImagePath" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height: 40px;" />
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        <img src="@ErrorMessage.DefaultImagePath" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height: 40px;" />
-                                                    }
-                                                </td>
-                                                <td>@obj.CompanyTypeText</td>
-                                                <td>@obj.CompanyName</td>
-                                                <td>@obj.City</td>
-                                                <td>@obj.State</td>
-                                                <td>@obj.GSTNo</td>
-                                                <td>
+                                    <tr class="gradeX">
+                                        <td>@counter.</td>
+                                        <td>
+                                            @if (!string.IsNullOrEmpty(obj.CompanyLogoImage))
+                                            {
+                                                if (File.Exists(Server.MapPath(ErrorMessage.CompanyLogoDirectoryPath + obj.CompanyLogoImage)))
+                                                {
+                                                    <img src="@ErrorMessage.CompanyDirectoryPath/@obj.CompanyLogoImage" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height:40px;" />
+                                                }
+                                                else
+                                                {
+                                                    <img src="@ErrorMessage.DefaultImagePath" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height: 40px;" />
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <img src="@ErrorMessage.DefaultImagePath" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height: 40px;" />
+                                            }
+                                        </td>
+                                        <td>@obj.CompanyTypeText</td>
+                                        <td>@obj.CompanyName</td>
+                                        <td>@obj.CompanyCode</td>
+                                        <td>@obj.City</td>
+                                        <td>@obj.State</td>
+                                        <td>@obj.GSTNo</td>
+                                        <td>
 
-                                                    <a href="/admin/company/view/@obj.CompanyId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
-                                                    @if (clsAdminSession.RoleID == (int)AdminRoles.SuperAdmin)
-                                                    {
-                                                        <a href="/admin/company/editcompany/@obj.CompanyId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
-                                                    }
-                                                </td>
-                                            </tr>
+                                            <a href="/admin/company/view/@obj.CompanyId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
+                                            @if (clsAdminSession.RoleID == (int)AdminRoles.SuperAdmin)
+                                            {
+                                                <a href="/admin/company/editcompany/@obj.CompanyId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
+                                            }
+                                        </td>
+                                    </tr>
                                             counter++;
                                         }
                                     }
