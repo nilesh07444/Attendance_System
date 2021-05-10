@@ -4,6 +4,7 @@ using AttendanceSystem.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
@@ -17,21 +18,25 @@ namespace AttendanceSystem.Areas.Admin.Controllers
     {
         AttendanceSystemEntities _db;
         string psSult;
-        public string GSTDirectoryPath = "";
-        public string CompanyDirectoryPath = "";
+        public string companyGSTDirectoryPath = "";
+        public string companyPanDirectoryPath = "";
+        public string companyLogoDirectoryPath = "";
+        public string companyRegisterProofDirectoryPath = "";
+        public string aadharCardDirectoryPath = "";
+        public string panCardDirectoryPath = "";
         public string CancellationChequeDirectoryPath = "";
-        public string PancardDirectoryPath = "";
-        public string AdharcardDirectoryPath = "";
         string enviornment;
         public CompanyController()
         {
             _db = new AttendanceSystemEntities();
             psSult = ConfigurationManager.AppSettings["PasswordSult"].ToString();
-            GSTDirectoryPath = ErrorMessage.GSTDirectoryPath;
-            CompanyDirectoryPath = ErrorMessage.CompanyDirectoryPath;
+            companyGSTDirectoryPath = ErrorMessage.CompanyGSTDirectoryPath;
+            companyPanDirectoryPath = ErrorMessage.CompanyPanCardDirectoryPath;
+            companyLogoDirectoryPath = ErrorMessage.CompanyLogoDirectoryPath;
+            companyRegisterProofDirectoryPath = ErrorMessage.CompanyRegisterProofDirectoryPath;
+            aadharCardDirectoryPath = ErrorMessage.AdharcardDirectoryPath;
+            panCardDirectoryPath = ErrorMessage.PancardDirectoryPath;
             CancellationChequeDirectoryPath = ErrorMessage.CancellationChequeDirectoryPath;
-            PancardDirectoryPath = ErrorMessage.PancardDirectoryPath;
-            AdharcardDirectoryPath = ErrorMessage.AdharcardDirectoryPath;
             enviornment = ConfigurationManager.AppSettings["Environment"].ToString();
         }
         // GET: Admin/Company
@@ -41,18 +46,18 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             try
             {
                 registeredCompanyVM = (from cp in _db.tbl_Company
-                                    join ct in _db.mst_CompanyType on cp.CompanyTypeId equals ct.CompanyTypeId
-                                    where cp.IsActive
-                                    select new RegisteredCompanyVM
-                                    {
-                                        CompanyId = cp.CompanyId,
-                                        CompanyTypeText = ct.CompanyTypeName,
-                                        CompanyName = cp.CompanyName,
-                                        City = cp.City,
-                                        State = cp.State,
-                                        GSTNo = cp.GSTNo,
-                                        CompanyLogoImage = cp.CompanyLogoImage
-                                    }).ToList();
+                                       join ct in _db.mst_CompanyType on cp.CompanyTypeId equals ct.CompanyTypeId
+                                       where cp.IsActive
+                                       select new RegisteredCompanyVM
+                                       {
+                                           CompanyId = cp.CompanyId,
+                                           CompanyTypeText = ct.CompanyTypeName,
+                                           CompanyName = cp.CompanyName,
+                                           City = cp.City,
+                                           State = cp.State,
+                                           GSTNo = cp.GSTNo,
+                                           CompanyLogoImage = cp.CompanyLogoImage
+                                       }).ToList();
             }
             catch (Exception ex)
             {
@@ -176,7 +181,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                         tbl_Company objcomp = new tbl_Company();
 
-                        
+
                         objcomp.CompanyTypeId = objCompanyReq.CompanyTypeId;
                         objcomp.CompanyName = objCompanyReq.CompanyName;
                         objcomp.CompanyCode = objCompanyReq.CompanyName;
@@ -295,34 +300,50 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             CompanyRequestVM registeredCompanyVM = new CompanyRequestVM();
             try
             {
-                //registeredCompanyVM = (from cp in _db.tbl_Company
-                //                       join ct in _db.mst_CompanyType on cp.CompanyTypeId equals ct.CompanyTypeId
-                //                       join emp in _db.tbl_AdminUser on cp.CompanyCode equals emp.UserName
-                //                       where cp.CompanyId == id
-                //                       select new CompanyRequestVM
-                //                       {
-                //                           CompanyId = cp.CompanyId,
-                //                           CompanyTypeId = cp.CompanyTypeId,
-                //                           CompanyName = cp.CompanyName,
-                //                           Prefix = emp.Prefix,
-                //                           Firstname = emp.FirstName,
-                //                           Lastname = emp.LastName, 
-                //                           EmailId = emp.EmailId,
-                //                           MobileNo = emp.MobileNo,
-                //                           AlternateMobileNo = emp.AlternateMobileNo,
-                //                           City = cp.City,
-                //                           State = cp.State,
-                //                           AadharCardNo = emp.AadharCardNo,
-                //                           GSTNo = cp.GSTNo,
-                //                           PanCardNo = emp.PanCardNo,
-                //                           PanCardPhoto = emp.PanCardPhoto,
-                //                           AadharCardPhoto = emp.AadharCardPhoto,
-                //                           GSTPhoto = cp.GSTPhoto,
-                //                           CompanyPhoto = cp.CompanyLogoImage,
-                //                           CancellationChequePhoto = cp.CancellationChequePhoto,
-                //                           FreeAccessDays = cp.FreeAccessDays,
-                //                           CompanyTypeText = ct.CompanyTypeName
-                //                       }).FirstOrDefault();
+                registeredCompanyVM = (from cp in _db.tbl_Company
+                                       join ct in _db.mst_CompanyType on cp.CompanyTypeId equals ct.CompanyTypeId
+                                       join emp in _db.tbl_AdminUser on cp.CompanyCode equals emp.UserName
+                                       where cp.CompanyId == id
+                                       select new CompanyRequestVM
+                                       {
+                                           CompanyId = cp.CompanyId,
+                                           CompanyTypeId = cp.CompanyTypeId,
+                                           CompanyName = cp.CompanyName,
+                                           CompanyEmailId = cp.EmailId,
+                                           CompanyContactNo = cp.ContactNo,
+                                           CompanyAlternateContactNo = cp.AlternateContactNo,
+                                           CompanyGSTNo = cp.GSTNo,
+                                           CompanyGSTPhoto = cp.GSTPhoto,
+                                           CompanyPanNo = cp.PanNo,
+                                           CompanyPanPhoto = cp.PanPhoto,
+                                           CompanyAddress = cp.Address,
+                                           CompanyPincode = cp.Pincode,
+                                           CompanyCity = cp.City,
+                                           CompanyState = cp.State,
+                                           CompanyLogoImage = cp.CompanyLogoImage,
+                                           CompanyRegisterProofImage = cp.RegisterProofImage,
+                                           CompanyDescription = cp.Description,
+                                           CompanyWebisteUrl = cp.WebisteUrl,
+                                           CompanyCancellationChequePhoto = cp.CancellationChequePhoto,
+                                           CompanyAdminPrefix = emp.Prefix,
+                                           CompanyAdminFirstName = emp.FirstName,
+                                           CompanyAdminMiddleName = emp.MIddleName,
+                                           CompanyAdminLastName = emp.LastName,
+                                           CompanyAdminEmailId = emp.EmailId,
+                                           CompanyAdminMobileNo = emp.MobileNo,
+                                           CompanyAdminAlternateMobileNo = emp.AlternateMobileNo,
+                                           CompanyAdminDesignation = emp.Designation,
+                                           CompanyAdminAddress = emp.Address,
+                                           CompanyAdminPincode = emp.Pincode,
+                                           CompanyAdminCity = emp.City,
+                                           CompanyAdminState = emp.State,
+                                           CompanyAdminAadharCardNo = emp.AadharCardNo,
+                                           CompanyAdminAadharCardPhoto = emp.AadharCardPhoto,
+                                           CompanyAdminPanCardPhoto = emp.PanCardPhoto,
+                                           CompanyAdminPanCardNo = emp.PanCardNo,
+                                           FreeAccessDays = cp.FreeAccessDays,
+                                           CompanyTypeText = ct.CompanyTypeName
+                                       }).FirstOrDefault();
             }
             catch (Exception ex)
             {
@@ -332,200 +353,282 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return View(registeredCompanyVM);
         }
         [HttpPost]
-        public ActionResult EditCompany(CompanyRequestVM registeredCompanyVM, HttpPostedFileBase PanCardPhotoFile,
-            HttpPostedFileBase AadharCardPhotoFile,
-            HttpPostedFileBase GSTPhotoFile,
-            HttpPostedFileBase CompanyPhotoFile,
-            HttpPostedFileBase CancellationChequePhotoFile)
+        public ActionResult EditCompany(CompanyRequestVM companyRequestVM,
+            HttpPostedFileBase CompanyGSTPhotoFile,
+            HttpPostedFileBase CompanyPanPhotoFile,
+            HttpPostedFileBase CompanyLogoImageFile,
+            HttpPostedFileBase CompanyRegisterProofImageFile,
+            HttpPostedFileBase CompanyCancellationChequePhotoFile,
+            HttpPostedFileBase CompanyAdminAadharCardPhotoFile,
+            HttpPostedFileBase CompanyAdminPanCardPhotoFile)
         {
             try
             {
+                long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
+                IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
                 if (ModelState.IsValid)
                 {
-                    //long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
-                    //string panCardFileName = string.Empty, adharCardFileName = string.Empty, gstFileName = string.Empty, companyFileName = string.Empty, chqFileName = string.Empty;
-                    //bool folderExists = false;
 
-                    //#region PancardImage
-                    //if (PanCardPhotoFile != null)
-                    //{
-                    //    string panCardPath = Server.MapPath(PancardDirectoryPath);
-                    //    folderExists = Directory.Exists(panCardPath);
-                    //    if (!folderExists)
-                    //        Directory.CreateDirectory(panCardPath);
+                    string companyGstFileName = string.Empty, companyPanCardFileName = string.Empty, companyLogoFileName = string.Empty, companyRegisterProofFileName = string.Empty,
+                        chqFileName = string.Empty, companyAdminAdharCardFileName = string.Empty, companyAdminPancardFileName = string.Empty;
+                    bool folderExists = false;
 
-                    //    // Image file validation
-                    //    string ext = Path.GetExtension(PanCardPhotoFile.FileName);
-                    //    if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
-                    //    {
-                    //        ModelState.AddModelError("PanCardPhotoFile", ErrorMessage.SelectOnlyImage);
-                    //        return View(registeredCompanyVM);
-                    //    }
+                    #region CompanyGST
+                    if (CompanyGSTPhotoFile != null)
+                    {
+                        string companyGSTPath = Server.MapPath(companyGSTDirectoryPath);
+                        folderExists = Directory.Exists(companyGSTPath);
+                        if (!folderExists)
+                            Directory.CreateDirectory(companyGSTPath);
 
-                    //    // Save file in folder
-                    //    panCardFileName = Guid.NewGuid() + "-" + Path.GetFileName(PanCardPhotoFile.FileName);
-                    //    PanCardPhotoFile.SaveAs(panCardPath + panCardFileName);
-                    //}
-                    //else
-                    //{
-                    //    ModelState.AddModelError("PanCardPhotoFile", ErrorMessage.ImageRequired);
-                    //    return View(registeredCompanyVM);
-                    //}
-                    //#endregion PancardImage
+                        // Image file validation
+                        string ext = Path.GetExtension(CompanyGSTPhotoFile.FileName);
+                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
+                        {
+                            ModelState.AddModelError("CompanyGSTPhotoFile", ErrorMessage.SelectOnlyImage);
+                            return View(companyRequestVM);
+                        }
 
-                    //#region AdharCardImage
-                    //if (AadharCardPhotoFile != null)
-                    //{
-                    //    string adharCardPath = Server.MapPath(AdharcardDirectoryPath);
+                        // Save file in folder
+                        companyGstFileName = Guid.NewGuid() + "-" + Path.GetFileName(CompanyGSTPhotoFile.FileName);
+                        CompanyGSTPhotoFile.SaveAs(companyGSTPath + companyGstFileName);
+                    }
+                    #endregion CompanyGST
 
-                    //    folderExists = Directory.Exists(adharCardPath);
-                    //    if (!folderExists)
-                    //        Directory.CreateDirectory(adharCardPath);
+                    #region CompanyPancardImage
+                    if (CompanyPanPhotoFile != null)
+                    {
+                        string companyPanCardPath = Server.MapPath(companyPanDirectoryPath);
+                        folderExists = Directory.Exists(companyPanCardPath);
+                        if (!folderExists)
+                            Directory.CreateDirectory(companyPanCardPath);
 
-                    //    // Image file validation
-                    //    string ext = Path.GetExtension(AadharCardPhotoFile.FileName);
-                    //    if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
-                    //    {
-                    //        ModelState.AddModelError("AadharCardPhotoFile", ErrorMessage.SelectOnlyImage);
-                    //        return View(registeredCompanyVM);
-                    //    }
+                        // Image file validation
+                        string ext = Path.GetExtension(CompanyPanPhotoFile.FileName);
+                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
+                        {
+                            ModelState.AddModelError("CompanyPanPhotoFile", ErrorMessage.SelectOnlyImage);
+                            return View(companyRequestVM);
+                        }
 
-                    //    // Save file in folder
-                    //    adharCardFileName = Guid.NewGuid() + "-" + Path.GetFileName(AadharCardPhotoFile.FileName);
-                    //    AadharCardPhotoFile.SaveAs(adharCardPath + adharCardFileName);
-                    //}
-                    //else
-                    //{
-                    //    ModelState.AddModelError("AadharCardPhotoFile", ErrorMessage.ImageRequired);
-                    //    return View(registeredCompanyVM);
-                    //}
-                    //#endregion AdharCardImage
+                        // Save file in folder
+                        companyPanCardFileName = Guid.NewGuid() + "-" + Path.GetFileName(CompanyPanPhotoFile.FileName);
+                        CompanyPanPhotoFile.SaveAs(companyPanCardPath + companyPanCardFileName);
+                    }
+                    #endregion CompanyPancardImage
 
-                    //#region GSTImage
-                    //if (GSTPhotoFile != null)
-                    //{
-                    //    string gstPath = Server.MapPath(GSTDirectoryPath);
+                    #region CompanyLogoImage
+                    if (CompanyLogoImageFile != null)
+                    {
+                        string companyLogoPath = Server.MapPath(companyLogoDirectoryPath);
 
-                    //    folderExists = Directory.Exists(gstPath);
-                    //    if (!folderExists)
-                    //        Directory.CreateDirectory(gstPath);
+                        folderExists = Directory.Exists(companyLogoPath);
+                        if (!folderExists)
+                            Directory.CreateDirectory(companyLogoPath);
 
-                    //    // Image file validation
-                    //    string ext = Path.GetExtension(GSTPhotoFile.FileName);
-                    //    if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
-                    //    {
-                    //        ModelState.AddModelError("GSTPhotoFile", ErrorMessage.SelectOnlyImage);
-                    //        return View(registeredCompanyVM);
-                    //    }
+                        // Image file validation
+                        string ext = Path.GetExtension(CompanyLogoImageFile.FileName);
+                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
+                        {
+                            ModelState.AddModelError("CompanyPhotoFile", ErrorMessage.SelectOnlyImage);
+                            return View(companyRequestVM);
+                        }
 
-                    //    // Save file in folder
-                    //    gstFileName = Guid.NewGuid() + "-" + Path.GetFileName(GSTPhotoFile.FileName);
-                    //    GSTPhotoFile.SaveAs(gstPath + gstFileName);
-                    //}
-                    //else
-                    //{
-                    //    ModelState.AddModelError("GSTPhotoFile", ErrorMessage.ImageRequired);
-                    //    return View(registeredCompanyVM);
-                    //}
-                    //#endregion GSTImage
+                        // Save file in folder
+                        companyLogoFileName = Guid.NewGuid() + "-" + Path.GetFileName(CompanyLogoImageFile.FileName);
+                        CompanyLogoImageFile.SaveAs(companyLogoPath + companyLogoFileName);
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(companyRequestVM.CompanyLogoImage))
+                        {
+                            ModelState.AddModelError("CompanyPhotoFile", ErrorMessage.ImageRequired);
+                            return View(companyRequestVM);
+                        }
+                    }
+                    #endregion CompanyLogoImage
 
-                    //#region CompanyImage
-                    //if (CompanyPhotoFile != null)
-                    //{
-                    //    string companyPath = Server.MapPath(CompanyDirectoryPath);
+                    #region CompanyRegisterProofImage
+                    if (CompanyRegisterProofImageFile != null)
+                    {
+                        string companyRegisterProofPath = Server.MapPath(companyRegisterProofDirectoryPath);
 
-                    //    folderExists = Directory.Exists(companyPath);
-                    //    if (!folderExists)
-                    //        Directory.CreateDirectory(companyPath);
+                        folderExists = Directory.Exists(companyRegisterProofPath);
+                        if (!folderExists)
+                            Directory.CreateDirectory(companyRegisterProofPath);
 
-                    //    // Image file validation
-                    //    string ext = Path.GetExtension(CompanyPhotoFile.FileName);
-                    //    if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
-                    //    {
-                    //        ModelState.AddModelError("CompanyPhotoFile", ErrorMessage.SelectOnlyImage);
-                    //        return View(registeredCompanyVM);
-                    //    }
+                        // Image file validation
+                        string ext = Path.GetExtension(CompanyRegisterProofImageFile.FileName);
+                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
+                        {
+                            ModelState.AddModelError("CompanyRegisterProofImageFile", ErrorMessage.SelectOnlyImage);
+                            return View(companyRequestVM);
+                        }
 
-                    //    // Save file in folder
-                    //    companyFileName = Guid.NewGuid() + "-" + Path.GetFileName(CompanyPhotoFile.FileName);
-                    //    CompanyPhotoFile.SaveAs(companyPath + companyFileName);
-                    //}
-                    //else
-                    //{
-                    //    ModelState.AddModelError("CompanyPhotoFile", ErrorMessage.ImageRequired);
-                    //    return View(registeredCompanyVM);
-                    //}
-                    //#endregion CompanyImage
+                        // Save file in folder
+                        companyRegisterProofFileName = Guid.NewGuid() + "-" + Path.GetFileName(CompanyRegisterProofImageFile.FileName);
+                        CompanyRegisterProofImageFile.SaveAs(companyRegisterProofPath + companyRegisterProofFileName);
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(companyRequestVM.CompanyRegisterProofImage))
+                        {
+                            ModelState.AddModelError("CompanyRegisterProofImageFile", ErrorMessage.ImageRequired);
+                            return View(companyRequestVM);
+                        }
+                    }
+                    #endregion CompanyRegisterProofImage
 
-                    //#region Cancel Cheque Image
+                    #region Cancel Cheque Image
 
-                    //if (CancellationChequePhotoFile != null)
-                    //{
-                    //    string cancellationChqPath = Server.MapPath(CancellationChequeDirectoryPath);
+                    if (CompanyCancellationChequePhotoFile != null)
+                    {
+                        string cancellationChqPath = Server.MapPath(CancellationChequeDirectoryPath);
 
-                    //    folderExists = Directory.Exists(cancellationChqPath);
-                    //    if (!folderExists)
-                    //        Directory.CreateDirectory(cancellationChqPath);
+                        folderExists = Directory.Exists(cancellationChqPath);
+                        if (!folderExists)
+                            Directory.CreateDirectory(cancellationChqPath);
 
-                    //    // Image file validation
-                    //    string ext = Path.GetExtension(CancellationChequePhotoFile.FileName);
-                    //    if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
-                    //    {
-                    //        ModelState.AddModelError("CancellationChequePhotoFile", ErrorMessage.SelectOnlyImage);
-                    //        return View(registeredCompanyVM);
-                    //    }
+                        // Image file validation
+                        string ext = Path.GetExtension(CompanyCancellationChequePhotoFile.FileName);
+                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
+                        {
+                            ModelState.AddModelError("CompanyCancellationChequePhotoFile", ErrorMessage.SelectOnlyImage);
+                            return View(companyRequestVM);
+                        }
 
-                    //    // Save file in folder
-                    //    chqFileName = Guid.NewGuid() + "-" + Path.GetFileName(CancellationChequePhotoFile.FileName);
-                    //    CancellationChequePhotoFile.SaveAs(cancellationChqPath + chqFileName);
-                    //}
-                    //else
-                    //{
-                    //    ModelState.AddModelError("CancellationChequePhotoFile", ErrorMessage.ImageRequired);
-                    //    return View(registeredCompanyVM);
-                    //}
+                        // Save file in folder
+                        chqFileName = Guid.NewGuid() + "-" + Path.GetFileName(CompanyCancellationChequePhotoFile.FileName);
+                        CompanyCancellationChequePhotoFile.SaveAs(cancellationChqPath + chqFileName);
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(companyRequestVM.CompanyCancellationChequePhoto))
+                        {
+                            ModelState.AddModelError("CompanyCancellationChequePhotoFile", ErrorMessage.ImageRequired);
+                            return View(companyRequestVM);
+                        }
+                    }
 
-                    //#endregion ChqImage
+                    #endregion ChqImage
 
-                    //if (registeredCompanyVM.CompanyId > 0)
-                    //{
+                    #region AdharCardImage
+                    if (CompanyAdminAadharCardPhotoFile != null)
+                    {
+                        string adharCardPath = Server.MapPath(aadharCardDirectoryPath);
 
-                    //    tbl_Company objcomp = _db.tbl_Company.Where(x => x.CompanyId == registeredCompanyVM.CompanyId).FirstOrDefault();
+                        folderExists = Directory.Exists(adharCardPath);
+                        if (!folderExists)
+                            Directory.CreateDirectory(adharCardPath);
 
-                    //    objcomp.City = registeredCompanyVM.City;
-                    //    objcomp.State = registeredCompanyVM.State;
-                    //    objcomp.GSTNo = registeredCompanyVM.GSTNo;
-                    //    objcomp.GSTPhoto = GSTPhotoFile != null ? gstFileName : objcomp.GSTPhoto;
-                    //    objcomp.CompanyLogoImage = CompanyPhotoFile != null ? companyFileName : objcomp.CompanyLogoImage;
-                    //    objcomp.CancellationChequePhoto = CancellationChequePhotoFile != null ? chqFileName : objcomp.CancellationChequePhoto;
-                    //    objcomp.FreeAccessDays = registeredCompanyVM.FreeAccessDays;
-                    //    objcomp.ModifiedBy = LoggedInUserId;
-                    //    objcomp.ModifiedDate = DateTime.UtcNow;
-                    //    _db.tbl_Company.Add(objcomp);
-                    //    _db.SaveChanges();
+                        // Image file validation
+                        string ext = Path.GetExtension(CompanyAdminAadharCardPhotoFile.FileName);
+                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
+                        {
+                            ModelState.AddModelError("CompanyAdminAadharCardPhotoFile", ErrorMessage.SelectOnlyImage);
+                            return View(companyRequestVM);
+                        }
+
+                        // Save file in folder
+                        companyAdminAdharCardFileName = Guid.NewGuid() + "-" + Path.GetFileName(CompanyAdminAadharCardPhotoFile.FileName);
+                        CompanyAdminAadharCardPhotoFile.SaveAs(adharCardPath + companyAdminAdharCardFileName);
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(companyRequestVM.CompanyAdminAadharCardPhoto))
+                        {
+                            ModelState.AddModelError("CompanyAdminAadharCardPhotoFile", ErrorMessage.ImageRequired);
+                            return View(companyRequestVM);
+                        }
+                    }
+                    #endregion AdharCardImage
+
+                    #region PancardImage
+                    if (CompanyAdminPanCardPhotoFile != null)
+                    {
+                        string panCardPath = Server.MapPath(panCardDirectoryPath);
+                        folderExists = Directory.Exists(panCardPath);
+                        if (!folderExists)
+                            Directory.CreateDirectory(panCardPath);
+
+                        // Image file validation
+                        string ext = Path.GetExtension(CompanyAdminPanCardPhotoFile.FileName);
+                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
+                        {
+                            ModelState.AddModelError("CompanyAdminPanCardPhotoFile", ErrorMessage.SelectOnlyImage);
+                            return View(companyRequestVM);
+                        }
+
+                        // Save file in folder
+                        companyAdminPancardFileName = Guid.NewGuid() + "-" + Path.GetFileName(CompanyAdminPanCardPhotoFile.FileName);
+                        CompanyAdminPanCardPhotoFile.SaveAs(panCardPath + companyAdminPancardFileName);
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(companyRequestVM.CompanyAdminPanCardPhoto))
+                        {
+                            ModelState.AddModelError("CompanyAdminPanCardPhotoFile", ErrorMessage.ImageRequired);
+                            return View(companyRequestVM);
+                        }
+                    }
+                    #endregion PancardImage
 
 
-                    //    tbl_AdminUser objAdminUser = _db.tbl_AdminUser.Where(x => x.UserName == registeredCompanyVM.CompanyCode).FirstOrDefault();
-                    //    objAdminUser.Prefix = registeredCompanyVM.Prefix;
-                    //    objAdminUser.FirstName = registeredCompanyVM.Firstname;
-                    //    objAdminUser.LastName = registeredCompanyVM.Lastname;
-                    //    objAdminUser.EmailId = registeredCompanyVM.EmailId;
-                    //    objAdminUser.MobileNo = registeredCompanyVM.MobileNo;
-                    //    objAdminUser.AlternateMobileNo = registeredCompanyVM.AlternateMobileNo; 
-                    //    objAdminUser.City = registeredCompanyVM.City;
-                    //    objAdminUser.State = registeredCompanyVM.State;
-                    //    objAdminUser.AadharCardNo = registeredCompanyVM.AadharCardNo;
-                    //    objAdminUser.PanCardNo = registeredCompanyVM.PanCardNo;
-                    //    objAdminUser.AadharCardPhoto = AadharCardPhotoFile != null ? adharCardFileName : objAdminUser.AadharCardPhoto;
-                    //    objAdminUser.PanCardPhoto = PanCardPhotoFile != null ? panCardFileName : objAdminUser.PanCardPhoto;
-                    //    objAdminUser.ModifiedBy = LoggedInUserId;
-                    //    objAdminUser.ModifiedDate = DateTime.UtcNow;
-                    //    _db.SaveChanges();
-                    //}
+
+                    #region Create Company Request
+
+                    tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == companyRequestVM.CompanyId).FirstOrDefault();
+                    objCompany.CompanyTypeId = Convert.ToInt64(companyRequestVM.CompanyTypeId);
+                    objCompany.CompanyName = companyRequestVM.CompanyName;
+                    objCompany.EmailId = companyRequestVM.CompanyEmailId;
+                    objCompany.ContactNo = companyRequestVM.CompanyContactNo;
+                    objCompany.AlternateContactNo = companyRequestVM.CompanyAlternateContactNo;
+                    objCompany.GSTNo = companyRequestVM.CompanyGSTNo;
+                    objCompany.GSTPhoto = !string.IsNullOrEmpty(companyGstFileName) ? companyGstFileName : objCompany.GSTPhoto;
+                    objCompany.PanNo = companyRequestVM.CompanyPanNo;
+                    objCompany.PanPhoto = !string.IsNullOrEmpty(companyPanCardFileName) ? companyPanCardFileName : objCompany.PanPhoto; ;
+                    objCompany.Address = companyRequestVM.CompanyAddress;
+                    objCompany.Pincode = companyRequestVM.CompanyPincode;
+                    objCompany.City = companyRequestVM.CompanyCity;
+                    objCompany.State = companyRequestVM.CompanyState;
+                    objCompany.CompanyLogoImage = !string.IsNullOrEmpty(companyLogoFileName) ? companyLogoFileName : objCompany.CompanyLogoImage;
+                    objCompany.RegisterProofImage = !string.IsNullOrEmpty(companyRegisterProofFileName) ? companyRegisterProofFileName : objCompany.RegisterProofImage;
+                    objCompany.Description = companyRequestVM.CompanyDescription;
+                    objCompany.WebisteUrl = companyRequestVM.CompanyWebisteUrl;
+                    objCompany.CancellationChequePhoto = !string.IsNullOrEmpty(chqFileName) ? chqFileName : objCompany.CancellationChequePhoto; ;
+                    objCompany.ModifiedBy = LoggedInUserId;
+                    objCompany.ModifiedDate = DateTime.UtcNow;
+                    _db.SaveChanges();
+
+                    tbl_AdminUser objUser = _db.tbl_AdminUser.Where(x => x.UserName == objCompany.CompanyCode).FirstOrDefault();
+                    objUser.Prefix = companyRequestVM.CompanyAdminPrefix;
+                    objUser.FirstName = companyRequestVM.CompanyAdminFirstName;
+                    objUser.MIddleName = companyRequestVM.CompanyAdminMiddleName;
+                    objUser.LastName = companyRequestVM.CompanyAdminLastName;
+                    objUser.EmailId = companyRequestVM.CompanyAdminEmailId;
+                    objUser.MobileNo = companyRequestVM.CompanyAdminMobileNo;
+                    objUser.AlternateMobileNo = companyRequestVM.CompanyAdminAlternateMobileNo;
+                    objUser.Designation = companyRequestVM.CompanyAdminDesignation;
+                    objUser.Address = companyRequestVM.CompanyAdminAddress;
+                    objUser.Pincode = companyRequestVM.CompanyAdminPincode;
+                    objUser.City = companyRequestVM.CompanyAdminCity;
+                    objUser.State = companyRequestVM.CompanyAdminState;
+                    objUser.AadharCardNo = companyRequestVM.CompanyAdminAadharCardNo;
+                    objUser.AadharCardPhoto = companyAdminAdharCardFileName;
+                    objUser.PanCardPhoto = companyAdminPancardFileName;
+                    objUser.PanCardNo = companyRequestVM.CompanyAdminPanCardNo;
+                    objUser.ModifiedBy = LoggedInUserId;
+                    objUser.ModifiedDate = DateTime.UtcNow;
+
+                    _db.SaveChanges();
+
+                    #endregion
+
+                    return RedirectToAction("Registered");
                 }
                 else
                 {
-                    return View(registeredCompanyVM);
+                    return View(companyRequestVM);
                 }
             }
             catch (Exception ex)
@@ -533,7 +636,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 string ErrorMessage = ex.Message.ToString();
                 throw ex;
             }
-            return RedirectToAction("Requests");
+
         }
 
         public JsonResult VerifyCopmany(int companyId)
@@ -597,35 +700,50 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             CompanyRequestVM companyRequestVM = new CompanyRequestVM();
             try
             {
-                //companyRequestVM = (from cp in _db.tbl_CompanyRequest
-                //                    join ct in _db.mst_CompanyType on cp.CompanyTypeId equals ct.CompanyTypeId
-                //                    where cp.CompanyRequestId == id
-                //                    select new CompanyRequestVM
-                //                    {
-                //                        CompanyRequestId = cp.CompanyRequestId,
-                //                        CompanyTypeId = cp.CompanyTypeId,
-                //                        CompanyName = cp.CompanyName,
-                //                        Prefix = cp.CompanyAdminPrefix,
-                //                        Firstname = cp.CompanyAdminFirstName,
-                //                        Lastname = cp.CompanyAdminLastName, 
-                //                        EmailId = cp.CompanyAdminEmailId,
-                //                        MobileNo = cp.CompanyAdminMobileNo,
-                //                        AlternateMobileNo = cp.CompanyAdminAlternateMobileNo,
-                //                        City = cp.CompanyAdminCity,
-                //                        State = cp.CompanyAdminState,
-                //                        AadharCardNo = cp.CompanyAdminAadharCardNo,
-                //                        GSTNo = cp.CompanyGSTNo,
-                //                        PanCardNo = cp.CompanyAdminPanCardNo,
-                //                        PanCardPhoto = cp.CompanyAdminPanCardPhoto,
-                //                        AadharCardPhoto = cp.CompanyAdminAadharCardPhoto,
-                //                        GSTPhoto = cp.CompanyGSTPhoto,
-                //                        CompanyPhoto = cp.CompanyLogoImage,
-                //                        CancellationChequePhoto = cp.CompanyCancellationChequePhoto,
-                //                        RequestStatus = cp.RequestStatus,
-                //                        RejectReason = cp.RejectReason,
-                //                        FreeAccessDays = cp.FreeAccessDays,
-                //                        CompanyTypeText = ct.CompanyTypeName
-                //                    }).FirstOrDefault();
+                companyRequestVM = (from cp in _db.tbl_Company
+                                    join ct in _db.mst_CompanyType on cp.CompanyTypeId equals ct.CompanyTypeId
+                                    join emp in _db.tbl_AdminUser on cp.CompanyCode equals emp.UserName
+                                    where cp.CompanyId == id
+                                    select new CompanyRequestVM
+                                    {
+                                        CompanyId = cp.CompanyId,
+                                        CompanyTypeId = cp.CompanyTypeId,
+                                        CompanyName = cp.CompanyName,
+                                        CompanyEmailId = cp.EmailId,
+                                        CompanyContactNo = cp.ContactNo,
+                                        CompanyAlternateContactNo = cp.AlternateContactNo,
+                                        CompanyGSTNo = cp.GSTNo,
+                                        CompanyGSTPhoto = cp.GSTPhoto,
+                                        CompanyPanNo = cp.PanNo,
+                                        CompanyPanPhoto = cp.PanPhoto,
+                                        CompanyAddress = cp.Address,
+                                        CompanyPincode = cp.Pincode,
+                                        CompanyCity = cp.City,
+                                        CompanyState = cp.State,
+                                        CompanyLogoImage = cp.CompanyLogoImage,
+                                        CompanyRegisterProofImage = cp.RegisterProofImage,
+                                        CompanyDescription = cp.Description,
+                                        CompanyWebisteUrl = cp.WebisteUrl,
+                                        CompanyCancellationChequePhoto = cp.CancellationChequePhoto,
+                                        CompanyAdminPrefix = emp.Prefix,
+                                        CompanyAdminFirstName = emp.FirstName,
+                                        CompanyAdminMiddleName = emp.MIddleName,
+                                        CompanyAdminLastName = emp.LastName,
+                                        CompanyAdminEmailId = emp.EmailId,
+                                        CompanyAdminMobileNo = emp.MobileNo,
+                                        CompanyAdminAlternateMobileNo = emp.AlternateMobileNo,
+                                        CompanyAdminDesignation = emp.Designation,
+                                        CompanyAdminAddress = emp.Address,
+                                        CompanyAdminPincode = emp.Pincode,
+                                        CompanyAdminCity = emp.City,
+                                        CompanyAdminState = emp.State,
+                                        CompanyAdminAadharCardNo = emp.AadharCardNo,
+                                        CompanyAdminAadharCardPhoto = emp.AadharCardPhoto,
+                                        CompanyAdminPanCardPhoto = emp.PanCardPhoto,
+                                        CompanyAdminPanCardNo = emp.PanCardNo,
+                                        FreeAccessDays = cp.FreeAccessDays,
+                                        CompanyTypeText = ct.CompanyTypeName
+                                    }).FirstOrDefault();
             }
             catch (Exception ex)
             {
