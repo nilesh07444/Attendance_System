@@ -184,7 +184,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             return response;
         }
 
-        [Route("Authenticate"), HttpGet]
+        [Route("Authenticate"), HttpPost]
         public ResponseDataModel<AuthenticateVM> Authenticate(AuthenticateRequestVM authenticateRequestVM)
         {
             ResponseDataModel<AuthenticateVM> response = new ResponseDataModel<AuthenticateVM>();

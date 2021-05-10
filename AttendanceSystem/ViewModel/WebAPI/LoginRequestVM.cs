@@ -15,5 +15,7 @@ namespace AttendanceSystem.ViewModel.WebAPI.ViewModel
     {
         public int EmployeeId { get; set; }
         public string LocationFrom { get; set; }
+        public decimal? Latitude { get; set; }
+        public decimal? Longitude { get; set; }
     }
 }
