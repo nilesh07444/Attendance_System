@@ -9,7 +9,7 @@
 <!-- Home Image Slider - Start-->
 @if (lstHomeImages != null && lstHomeImages.Count > 0)
 {
-    <div class="slider-area" style="background-image: url(@ViewBag.HomeFirstImage);">
+    <div class="slider-area" style="background-image: url('@ViewBag.HomeFirstImage');">
         <div class="slider-active">
 
             @foreach (HomeImageVM obj in lstHomeImages)
