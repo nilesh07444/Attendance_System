@@ -19,6 +19,7 @@ namespace AttendanceSystem.Models
         public System.DateTime PaymentDate { get; set; }
         public decimal Amount { get; set; }
         public int PaymentType { get; set; }
+        public string Remarks { get; set; }
         public bool IsDeleted { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public long CreatedBy { get; set; }

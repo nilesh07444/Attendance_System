@@ -141,8 +141,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objCompanyRenewPayment.Amount = objPackage.Amount;
                         objCompanyRenewPayment.GSTPer = objSetting.AccountPackageBuyGSTPer.Value;
                         objCompanyRenewPayment.AccessDays = objPackage.AccessDays;
-                        objCompanyRenewPayment.NoOfEmployee = objPackage.NoOfEmployee.Value;
-                        objCompanyRenewPayment.NoOfSMS = objPackage.NoOfSMS.Value;
+                        objCompanyRenewPayment.NoOfEmployee = objPackage.NoOfEmployee;
+                        objCompanyRenewPayment.NoOfSMS = objPackage.NoOfSMS;
                         objCompanyRenewPayment.PaymentFor = "Account Renew";
                         objCompanyRenewPayment.PaymentGatewayResponseId = "";
                         objCompanyRenewPayment.CreatedBy = clsAdminSession.UserID;

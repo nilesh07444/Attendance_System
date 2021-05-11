@@ -41,7 +41,6 @@ namespace AttendanceSystem.Models
         public virtual DbSet<tbl_Employee> tbl_Employee { get; set; }
         public virtual DbSet<tbl_EmployeeBuyTransaction> tbl_EmployeeBuyTransaction { get; set; }
         public virtual DbSet<tbl_EmployeeFingerprint> tbl_EmployeeFingerprint { get; set; }
-        public virtual DbSet<tbl_EmployeePayment> tbl_EmployeePayment { get; set; }
         public virtual DbSet<tbl_EmployeeRating> tbl_EmployeeRating { get; set; }
         public virtual DbSet<tbl_Feedback> tbl_Feedback { get; set; }
         public virtual DbSet<tbl_Holiday> tbl_Holiday { get; set; }
@@ -56,6 +55,7 @@ namespace AttendanceSystem.Models
         public virtual DbSet<tbl_Sponsor> tbl_Sponsor { get; set; }
         public virtual DbSet<tbl_Testimonial> tbl_Testimonial { get; set; }
         public virtual DbSet<tbl_LoginHistory> tbl_LoginHistory { get; set; }
+        public virtual DbSet<tbl_EmployeePayment> tbl_EmployeePayment { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

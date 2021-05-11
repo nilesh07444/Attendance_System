@@ -42,7 +42,7 @@
                                     <button class="btn btn-primary mr-1" id="btnSearch" type="button">Search</button>
                                 </div>
                             </div>
-                            
+
                         </div>
 
                         <div class="pull-right">
@@ -75,7 +75,7 @@
                                                 <td>
 
                                                     <a href="/admin/payment/add/@obj.EmployeePaymentId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
-                                                    <a href="javascript:void(0);" title="Delete" class="btn btn-icon btn-danger" onclick="fnDeleteEmployee('@obj.EmployeePaymentId')"><i class="fas fa-trash-alt"></i></a>
+                                                    <a href="javascript:void(0);" title="Delete" class="btn btn-icon btn-danger" onclick="fnDeleteEmployee('@obj.EmployeePaymentId','@obj.UserId')"><i class="fas fa-trash-alt"></i></a>
 
                                                 </td>
                                             </tr>
@@ -111,7 +111,54 @@
         </div>
     </div>
 </div>
- 
+<div class="modal fade open" id="deleteEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Delete Confirm</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete ?
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" id="hdnDeleteEmployeePaymentId" />
+                <input type="hidden" id="hdnDeleteEmployeeId" />
+                <button data-dismiss="modal" class="btn btn-primary" type="button">Close</button>
+                <button id="btnDeleteEmployee" class="btn btn-danger" type="button">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="OtpModal" tabindex="-1" role="dialog" aria-labelledby="formModal"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="formModal">Mobile Verification</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="">
+                    <div class="form-group">
+                        <label>OTP</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                            </div>
+                            <input type="text" class="form-control" placeholder="OTP" name="OTP" id="TextOTP">
+                        </div>
+                    </div>
+                    <button type="button" id="BtnOtpSubmit" class="btn btn-primary m-t-15 waves-effect">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
@@ -119,19 +166,85 @@
 <script type="text/javascript">
     $(document).ready(function () {
 
+        function fnDeleteEmployee(employeePayment_Id,employee_Id) {
+            $("#hdnDeleteEmployeePaymentId").val(employeePayment_Id);
+            $("#hdnDeleteEmployeeId").val(employee_Id);
+            $('#deleteEmployeeModal').modal('show');
+        }
 
         $('#btnDeletePayment').click(function () {
-            var Payment_Id = jQuery("#hdnDeletePayment").val();
-            if (Payment_Id != "" && Payment_Id != null) {
-                $('#deletePaymentModal').modal('hide');
+             var employeePayment_Id = $("#hdnDeleteEmployeePaymentId").val();
+             var employee_Id = $("#hdnDeleteEmployeeId").val();
+             if (employeePayment_Id != "" && employeePayment_Id != null) {
+                $('#deleteEmployeeModal').modal('hide');
 
                 StartLoading();
+                 var StrURL = '/admin/Payment/VerifyEmployeeMobileNo?employeeId=' + employee_Id;
+                 $.ajax({
+                     url: StrURL,
+                     cache: false,
+                     data: {},
+                     type: 'POST',
+                     success: function (data) {
+                         $.unblockUI();
+                         if (data.Status == 1) {
+                             $('#OtpModal').modal('show');
+                             $("#OTP").val(data.Otp);
+                             $("#TextOTP").val(data.Otp);
+                         }
+                         else {
+                             alert(data.ErrorMessage);
+                         }
+
+                     },
+                     error: function (req, status, error) {
+                         $.unblockUI();
+                         alert(error);
+                     }
+                 });
+
+                 return false;
+
+                var URL = '@Url.Action("DeleteEmployeePayment", "Payment")';
+                $.ajax({
+                    type: 'POST',
+                    async: true,
+                    url: URL + "?employeePaymentId=" + employeePayment_Id ,
+                    success: function (result) {
+                        if (result == "success") {
+                            alert("Employee deleted successfully");
+                            window.location.reload();
+                        }
+                        else if (result == "notfound") {
+                            alert("Employee Not Found");
+                        }
+                        else {
+                            alert("Something went wrong. Please try again");
+                        }
+
+                       StopLoading();
+                    },
+                    error: function (resultData) {
+                       StopLoading();
+                    }
+                });
+            }
+        });
+
+
+        $('#BtnOtpSubmit').click(function () {
+            var OTP = $("#OTP").val();
+            var TextOTP = $("#TextOTP").val();
+            var employeePayment_Id = $("#hdnDeleteEmployeePaymentId").val();
+
+            if (TextOTP == OTP) {
+               StartLoading();
 
                 var URL = '@Url.Action("DeletePayment", "Payment")';
                 $.ajax({
                     type: 'POST',
                     async: true,
-                    url: URL + "?employeePaymentId=" + Payment_Id ,
+                    url: URL + "?employeePaymentId=" + employeePayment_Id ,
                     success: function (result) {
                         if (result == "success") {
                             alert("Payment deleted successfully");
@@ -150,10 +263,13 @@
                        StopLoading();
                     }
                 });
+            } else {
+                alert("Wrong OTP you have entered.")
+                return false;
             }
         });
 
-         
+
         $('#btnSearch').click(function () {
             var startDate = $("#StartDate").val();
             var endDate= $("#EndDate").val();
@@ -164,7 +280,7 @@
     })
 
     function fnDeletePayment(Payment_Id) {
-        jQuery("#hdnDeletePayment").val(Payment_Id);
+        $("#hdnDeletePayment").val(Payment_Id);
         $('#deletePaymentModal').modal('show');
     }
 </script> 

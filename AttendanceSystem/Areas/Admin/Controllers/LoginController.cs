@@ -78,7 +78,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     else
                     {
                         status = 0;
-                        errorMessage = ErrorMessage.YouAreNotAuthorized;
+                        errorMessage = ErrorMessage.UserNameOrPasswordInvalid;
                     }
                 }
                 else

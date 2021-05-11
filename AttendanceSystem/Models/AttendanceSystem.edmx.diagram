@@ -19,7 +19,6 @@
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Employee" Width="1.5" PointX="4.75" PointY="10.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_EmployeeBuyTransaction" Width="1.5" PointX="6.75" PointY="10.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_EmployeeFingerprint" Width="1.5" PointX="8.75" PointY="11.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_EmployeePayment" Width="1.5" PointX="10.75" PointY="11.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_EmployeeRating" Width="1.5" PointX="12.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Feedback" Width="1.5" PointX="12.75" PointY="5.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Holiday" Width="1.5" PointX="12.75" PointY="10.75" IsExpanded="true" />
@@ -34,6 +33,7 @@
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Sponsor" Width="1.5" PointX="16.75" PointY="5.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Testimonial" Width="1.5" PointX="16.75" PointY="9.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_LoginHistory" Width="1.5" PointX="17.375" PointY="13.75" />
+        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_EmployeePayment" Width="1.5" PointX="13.375" PointY="17.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -3,7 +3,10 @@ using AttendanceSystem.Models;
 using AttendanceSystem.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
+using System.Net;
+using System.Web;
 using System.Web.Mvc;
 
 namespace AttendanceSystem.Areas.Admin.Controllers
@@ -12,9 +15,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
     {
         // GET: Admin/Payment
         AttendanceSystemEntities _db;
+        string enviornment;
         public PaymentController()
         {
             _db = new AttendanceSystemEntities();
+            enviornment = ConfigurationManager.AppSettings["Environment"].ToString();
         }
         public ActionResult Index(int? userRole = null, DateTime? startDate = null, DateTime? endDate = null)
         {
@@ -32,7 +37,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
             try
             {
-                List<SelectListItem>  employeePaymentTypeList = GetEmployeePaymentTypeList();
+                List<SelectListItem> employeePaymentTypeList = GetEmployeePaymentTypeList();
 
                 long companyId = clsAdminSession.CompanyId;
                 paymentFilterVM.PaymentList = (from empp in _db.tbl_EmployeePayment
@@ -52,7 +57,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                                                }).OrderByDescending(x => x.EmployeePaymentId).ToList();
 
-                paymentFilterVM.PaymentList.ForEach(x => {
+                paymentFilterVM.PaymentList.ForEach(x =>
+                {
                     x.PaymentTypeText = employeePaymentTypeList.Where(z => z.Value == x.PaymentType.ToString()).Select(c => c.Text).FirstOrDefault();
                 });
             }
@@ -79,7 +85,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                  PaymentDate = empp.PaymentDate,
                                  UserName = emp.FirstName + " " + emp.LastName,
                                  Amount = empp.Amount,
-                                 PaymentType = empp.PaymentType
+                                 PaymentType = empp.PaymentType,
+                                 Remarks = empp.Remarks
                              }).FirstOrDefault();
             }
 
@@ -106,6 +113,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployeePayment.PaymentDate = paymentVM.PaymentDate;
                         objEmployeePayment.Amount = paymentVM.Amount;
                         objEmployeePayment.PaymentType = paymentVM.PaymentType;
+                        objEmployeePayment.Remarks = paymentVM.Remarks;
                         objEmployeePayment.ModifiedBy = LoggedInUserId;
                         objEmployeePayment.ModifiedDate = DateTime.UtcNow;
                     }
@@ -116,6 +124,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployeePayment.PaymentDate = paymentVM.PaymentDate;
                         objEmployeePayment.Amount = paymentVM.Amount;
                         objEmployeePayment.PaymentType = paymentVM.PaymentType;
+                        objEmployeePayment.Remarks = paymentVM.Remarks;
                         objEmployeePayment.CreatedBy = LoggedInUserId;
                         objEmployeePayment.CreatedDate = DateTime.UtcNow;
                         objEmployeePayment.ModifiedBy = LoggedInUserId;
@@ -212,5 +221,58 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return ReturnMessage;
         }
 
+        public JsonResult VerifyEmployeeMobileNo(long employeeId)
+        {
+            int status = 0;
+            string errorMessage = string.Empty;
+            string otp = string.Empty;
+            try
+            {
+                string mobileNo = _db.tbl_Employee.Where(x => x.EmployeeId == employeeId).Select(x => x.MobileNo).FirstOrDefault();
+                if (!string.IsNullOrEmpty(mobileNo))
+                {
+                    using (WebClient webClient = new WebClient())
+                    {
+                        Random random = new Random();
+                        int num = random.Next(555555, 999999);
+                        if (enviornment != "Development")
+                        {
+                            string msg = "Your Otp code for Login is " + num;
+                            msg = HttpUtility.UrlEncode(msg);
+                            string url = CommonMethod.GetSMSUrl().Replace("--MOBILE--", mobileNo).Replace("--MSG--", msg);
+                            var json = webClient.DownloadString(url);
+                            if (json.Contains("invalidnumber"))
+                            {
+                                status = 0;
+                                errorMessage = ErrorMessage.InvalidMobileNo;
+                            }
+                            else
+                            {
+                                status = 1;
+
+                                otp = num.ToString();
+                            }
+                        }
+                        else
+                        {
+                            status = 1;
+                            otp = num.ToString();
+                        }
+                    }
+                }
+                else
+                {
+                    status = 0;
+                    errorMessage = ErrorMessage.InvalidMobileNo;
+                }
+            }
+            catch (Exception ex)
+            {
+                status = 0;
+                errorMessage = ex.Message.ToString();
+            }
+
+            return Json(new { Status = status, Otp = otp, ErrorMessage = errorMessage }, JsonRequestBehavior.AllowGet);
+        }
     }
 }

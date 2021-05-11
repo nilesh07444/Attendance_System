@@ -309,7 +309,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 else
                 {
                     response.IsError = true;
-                    response.AddError(ErrorMessage.YouAreNotAuthorized);
+                    response.AddError(ErrorMessage.UserNameOrPasswordInvalid);
                 }
             }
             catch (Exception ex)
@@ -366,7 +366,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 else
                 {
                     response.IsError = true;
-                    response.AddError(ErrorMessage.YouAreNotAuthorized);
+                    response.AddError(ErrorMessage.UserNameOrPasswordInvalid);
                 }
             }
             catch (Exception ex)

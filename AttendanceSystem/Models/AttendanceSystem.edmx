@@ -320,6 +320,7 @@
           <Property Name="PaymentDate" Type="datetime" Nullable="false" />
           <Property Name="Amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="PaymentType" Type="int" Nullable="false" />
+          <Property Name="Remarks" Type="nvarchar" MaxLength="500" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="CreatedBy" Type="bigint" Nullable="false" />
@@ -924,21 +925,6 @@
           <Property Name="ISOCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="BitmapCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="tbl_EmployeePayment">
-          <Key>
-            <PropertyRef Name="EmployeePaymentId" />
-          </Key>
-          <Property Name="EmployeePaymentId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="Int64" Nullable="false" />
-          <Property Name="PaymentDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="PaymentType" Type="Int32" Nullable="false" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int64" />
-        </EntityType>
         <EntityType Name="tbl_EmployeeRating">
           <Key>
             <PropertyRef Name="EmployeeRatingId" />
@@ -1164,7 +1150,6 @@
           <EntitySet Name="tbl_Employee" EntityType="Self.tbl_Employee" />
           <EntitySet Name="tbl_EmployeeBuyTransaction" EntityType="Self.tbl_EmployeeBuyTransaction" />
           <EntitySet Name="tbl_EmployeeFingerprint" EntityType="Self.tbl_EmployeeFingerprint" />
-          <EntitySet Name="tbl_EmployeePayment" EntityType="Self.tbl_EmployeePayment" />
           <EntitySet Name="tbl_EmployeeRating" EntityType="Self.tbl_EmployeeRating" />
           <EntitySet Name="tbl_Feedback" EntityType="Self.tbl_Feedback" />
           <EntitySet Name="tbl_Holiday" EntityType="Self.tbl_Holiday" />
@@ -1209,6 +1194,7 @@
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
           <EntitySet Name="tbl_LoginHistory" EntityType="AttendanceSystemModel.tbl_LoginHistory" />
+          <EntitySet Name="tbl_EmployeePayment" EntityType="AttendanceSystemModel.tbl_EmployeePayment" />
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -1236,6 +1222,22 @@
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ModifiedBy" Type="Int64" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="tbl_EmployeePayment">
+          <Key>
+            <PropertyRef Name="EmployeePaymentId" />
+          </Key>
+          <Property Name="EmployeePaymentId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int64" Nullable="false" />
+          <Property Name="PaymentDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="PaymentType" Type="Int32" Nullable="false" />
+          <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int64" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1563,22 +1565,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tbl_EmployeePayment">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_EmployeePayment">
-              <MappingFragment StoreEntitySet="tbl_EmployeePayment">
-                <ScalarProperty Name="EmployeePaymentId" ColumnName="EmployeePaymentId" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="PaymentType" ColumnName="PaymentType" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="tbl_EmployeeRating">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_EmployeeRating">
               <MappingFragment StoreEntitySet="tbl_EmployeeRating">
@@ -1840,6 +1826,23 @@
                 <ScalarProperty Name="LoginDate" ColumnName="LoginDate" />
                 <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
                 <ScalarProperty Name="LoginHistoryId" ColumnName="LoginHistoryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_EmployeePayment">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_EmployeePayment">
+              <MappingFragment StoreEntitySet="tbl_EmployeePayment">
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="PaymentType" ColumnName="PaymentType" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="EmployeePaymentId" ColumnName="EmployeePaymentId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

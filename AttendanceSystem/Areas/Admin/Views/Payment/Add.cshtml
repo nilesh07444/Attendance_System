@@ -24,6 +24,7 @@
                                 @Html.DropDownListFor(model => model.UserId, new SelectList(Model.EmployeeList, "Value", "Text"), "- Select -", new { @class = "form-control required" })
                                 @Html.ValidationMessageFor(model => model.UserId, "", new { @class = "text-danger" })
                                 @Html.HiddenFor(model => model.EmployeePaymentId)
+                                @Html.HiddenFor(model => model.OTP)
                             </div>
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.PaymentType, htmlAttributes: new { @class = "" })
@@ -40,9 +41,14 @@
                             </div>
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.Amount, new { @type = "number", @class = "form-control required", @placeholder = "Enter Amount", @maxlength = "10" })
+                                @Html.TextBoxFor(model => model.Amount, new { @type = "number", @class = "form-control required", @placeholder = "Enter Amount", @maxlength = "10", @min = 1 })
                                 @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
                             </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "" })
+                            @Html.TextAreaFor(model => model.Remarks, 10, 5, new { @class = "form-control", @placeholder = "Enter Remarks", maxlength = "250" })
+                            @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
                         </div>
                     </div>
 
@@ -57,25 +63,95 @@
     </div>
 
 </section>
- 
+<div class="modal fade" id="OtpModal" tabindex="-1" role="dialog" aria-labelledby="formModal"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="formModal">Mobile Verification</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="">
+                    <div class="form-group">
+                        <label>OTP</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                            </div>
+                            <input type="text" class="form-control" placeholder="OTP" name="OTP" id="TextOTP">
+                        </div>
+                    </div>
+                    <button type="button" id="BtnOtpSubmit" class="btn btn-primary m-t-15 waves-effect">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 
 
 <script type="text/javascript">
     $(document).ready(function () {
-       
+
         $('#btnCancel').click(function () {
             window.location.href = "/admin/payment";
         });
 
         $('#btnSubmit').click(function () {
-            if ($("#EmployeeFormId").valid()) {
+            if ($("#EmployeePaymentFormId").valid()) {
+                if (parseFloat($("#EmployeePaymentId").val()) > 0) {
+
+                    var employeeId = $("#UserId").val();
+
+                    var StrURL = '/admin/Payment/VerifyEmployeeMobileNo?employeeId=' + employeeId;
+                    $.ajax({
+                        url: StrURL,
+                        cache: false,
+                        data: {},
+                        type: 'POST',
+                        success: function (data) {
+                            $.unblockUI();
+                            if (data.Status == 1) {
+                                $('#OtpModal').modal('show');
+                                $("#OTP").val(data.Otp);
+                                $("#TextOTP").val(data.Otp);
+                            }
+                            else {
+                                alert(data.ErrorMessage);
+                            }
+
+                        },
+                        error: function (req, status, error) {
+                            $.unblockUI();
+                            alert(error);
+                        }
+                    });
+
+                    return false;
+                }
                 $.blockUI({ message: '<h4> Please Wait...</h4>' });
             }
             else {
                 return false;
             }
-            return false;
+            
+        });
+
+        $('#BtnOtpSubmit').click(function () {
+            var OTP = $("#OTP").val();
+            var TextOTP = $("#TextOTP").val();
+
+            if (TextOTP == OTP) {
+                $("#EmployeePaymentFormId").submit();
+            } else {
+                alert("Wrong OTP you have entered.")
+                return false;
+            }
         });
     })
 </script>
