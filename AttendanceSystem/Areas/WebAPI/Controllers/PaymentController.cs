@@ -17,9 +17,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
         {
             _db = new AttendanceSystemEntities();
         }
-
-
-        [HttpGet]
+         
+        [HttpPost]
         [Route("List")]
         public ResponseDataModel<List<PaymentVM>> List(PaymentFilterVM paymentFilterVM)
         {

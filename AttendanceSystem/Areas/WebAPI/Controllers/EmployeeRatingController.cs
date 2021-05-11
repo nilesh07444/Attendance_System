@@ -18,7 +18,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             _db = new AttendanceSystemEntities();
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("List")]
         public ResponseDataModel<List<EmployeeRatingVM>> List(CommonEmployeeRatingFilterVM EmployeeRatingFilterVM)
         {
@@ -117,7 +117,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             return response;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("Top10Avg")]
         public ResponseDataModel<List<EmployeeRatingVM>> Top10Avg(CommonEmployeeRatingFilterVM EmployeeRatingFilterVM)
         {
