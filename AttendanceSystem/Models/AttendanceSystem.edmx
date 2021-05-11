@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="AttendanceSystemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="AttendanceSystemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="mst_AdminRole">
           <Key>
             <PropertyRef Name="AdminRoleId" />
@@ -420,6 +420,8 @@
           <Property Name="LoginDate" Type="datetime" Nullable="false" />
           <Property Name="LocationFrom" Type="nvarchar" MaxLength="200" />
           <Property Name="SiteId" Type="bigint" />
+          <Property Name="Latitude" Type="decimal" Precision="11" Scale="8" />
+          <Property Name="Longitude" Type="decimal" Precision="11" Scale="8" />
           <Property Name="CreatedBy" Type="bigint" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="ModifiedBy" Type="bigint" />
@@ -469,8 +471,8 @@
           <Property Name="PackageDescription" Type="nvarchar" MaxLength="500" />
           <Property Name="AccessDays" Type="int" Nullable="false" />
           <Property Name="PackageImage" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="NoOfEmployee" Type="int" />
-          <Property Name="NoOfSMS" Type="int" />
+          <Property Name="NoOfEmployee" Type="int" Nullable="false" />
+          <Property Name="NoOfSMS" Type="int" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
@@ -612,8 +614,7 @@
           <EntitySet Name="tbl_Sponsor" EntityType="Self.tbl_Sponsor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Testimonial" EntityType="Self.tbl_Testimonial" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="AttendanceSystemModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1023,20 +1024,6 @@
           <Property Name="ModifiedBy" Type="Int64" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
         </EntityType>
-        <EntityType Name="tbl_LoginHistory">
-          <Key>
-            <PropertyRef Name="LoginHistoryId" />
-          </Key>
-          <Property Name="LoginHistoryId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="EmployeeId" Type="Int64" Nullable="false" />
-          <Property Name="LoginDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="LocationFrom" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="SiteId" Type="Int64" />
-          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int64" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-        </EntityType>
         <EntityType Name="tbl_Material">
           <Key>
             <PropertyRef Name="MaterialId" />
@@ -1081,8 +1068,8 @@
           <Property Name="PackageDescription" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="AccessDays" Type="Int32" Nullable="false" />
           <Property Name="PackageImage" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="NoOfEmployee" Type="Int32" />
-          <Property Name="NoOfSMS" Type="Int32" />
+          <Property Name="NoOfEmployee" Type="Int32" Nullable="false" />
+          <Property Name="NoOfSMS" Type="Int32" Nullable="false" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
@@ -1183,7 +1170,6 @@
           <EntitySet Name="tbl_Holiday" EntityType="Self.tbl_Holiday" />
           <EntitySet Name="tbl_HomeImage" EntityType="Self.tbl_HomeImage" />
           <EntitySet Name="tbl_Leave" EntityType="Self.tbl_Leave" />
-          <EntitySet Name="tbl_LoginHistory" EntityType="Self.tbl_LoginHistory" />
           <EntitySet Name="tbl_Material" EntityType="Self.tbl_Material" />
           <EntitySet Name="tbl_MaterialCategory" EntityType="Self.tbl_MaterialCategory" />
           <EntitySet Name="tbl_Package" EntityType="Self.tbl_Package" />
@@ -1222,6 +1208,7 @@
             <Parameter Name="new_diagramname" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
+          <EntitySet Name="tbl_LoginHistory" EntityType="AttendanceSystemModel.tbl_LoginHistory" />
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -1234,6 +1221,22 @@
           <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
           <Property Type="Int32" Name="OwnerID" Nullable="false" />
         </ComplexType>
+        <EntityType Name="tbl_LoginHistory">
+          <Key>
+            <PropertyRef Name="LoginHistoryId" />
+          </Key>
+          <Property Name="LoginHistoryId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="Int64" Nullable="false" />
+          <Property Name="LoginDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LocationFrom" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="SiteId" Type="Int64" />
+          <Property Name="Latitude" Type="Decimal" Precision="11" Scale="8" />
+          <Property Name="Longitude" Type="Decimal" Precision="11" Scale="8" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int64" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1666,21 +1669,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tbl_LoginHistory">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_LoginHistory">
-              <MappingFragment StoreEntitySet="tbl_LoginHistory">
-                <ScalarProperty Name="LoginHistoryId" ColumnName="LoginHistoryId" />
-                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
-                <ScalarProperty Name="LoginDate" ColumnName="LoginDate" />
-                <ScalarProperty Name="LocationFrom" ColumnName="LocationFrom" />
-                <ScalarProperty Name="SiteId" ColumnName="SiteId" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="tbl_Material">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Material">
               <MappingFragment StoreEntitySet="tbl_Material">
@@ -1838,6 +1826,23 @@
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="AttendanceSystemModel.Store.sp_renamediagram" />
           <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="AttendanceSystemModel.Store.sp_upgraddiagrams" />
+          <EntitySetMapping Name="tbl_LoginHistory">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_LoginHistory">
+              <MappingFragment StoreEntitySet="tbl_LoginHistory">
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="SiteId" ColumnName="SiteId" />
+                <ScalarProperty Name="LocationFrom" ColumnName="LocationFrom" />
+                <ScalarProperty Name="LoginDate" ColumnName="LoginDate" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="LoginHistoryId" ColumnName="LoginHistoryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -47,7 +47,6 @@ namespace AttendanceSystem.Models
         public virtual DbSet<tbl_Holiday> tbl_Holiday { get; set; }
         public virtual DbSet<tbl_HomeImage> tbl_HomeImage { get; set; }
         public virtual DbSet<tbl_Leave> tbl_Leave { get; set; }
-        public virtual DbSet<tbl_LoginHistory> tbl_LoginHistory { get; set; }
         public virtual DbSet<tbl_Material> tbl_Material { get; set; }
         public virtual DbSet<tbl_MaterialCategory> tbl_MaterialCategory { get; set; }
         public virtual DbSet<tbl_Package> tbl_Package { get; set; }
@@ -56,6 +55,7 @@ namespace AttendanceSystem.Models
         public virtual DbSet<tbl_SMSPackage> tbl_SMSPackage { get; set; }
         public virtual DbSet<tbl_Sponsor> tbl_Sponsor { get; set; }
         public virtual DbSet<tbl_Testimonial> tbl_Testimonial { get; set; }
+        public virtual DbSet<tbl_LoginHistory> tbl_LoginHistory { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

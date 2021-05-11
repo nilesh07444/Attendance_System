@@ -221,5 +221,49 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             return response;
         }
 
+        [HttpGet]
+        [Route("Search")]
+        public ResponseDataModel<List<EmployeeVM>> Search(SearchEmployeeFilterVM searchEmployeeFilterVM)
+        {
+            ResponseDataModel<List<EmployeeVM>> response = new ResponseDataModel<List<EmployeeVM>>();
+            response.IsError = false;
+            try
+            {
+                long companyId = base.UTI.CompanyId;
+
+                List<EmployeeVM> workerList = (from emp in _db.tbl_Employee
+                                               where !emp.IsDeleted && emp.IsActive && emp.CompanyId == companyId
+                                               && (searchEmployeeFilterVM.EmployeeCode.Contains(emp.EmployeeCode) 
+                                               || searchEmployeeFilterVM.EmployeeCode.Contains(emp.FirstName) 
+                                               || searchEmployeeFilterVM.EmployeeCode.Contains(emp.LastName))
+                                               select new EmployeeVM
+                                               {
+                                                   ProfilePicture = emp.ProfilePicture,
+                                                   CompanyId = emp.CompanyId,
+                                                   Prefix = emp.Prefix,
+                                                   FirstName = emp.FirstName,
+                                                   LastName = emp.LastName,
+                                                   MobileNo = emp.MobileNo,
+                                                   Dob = emp.Dob,
+                                                   DateOfJoin = emp.DateOfJoin,
+                                                   BloodGroup = emp.BloodGroup,
+                                                   EmploymentCategory = emp.EmploymentCategory,
+                                                   MonthlySalaryPrice = emp.MonthlySalaryPrice,
+                                                   AdharCardNo = emp.AdharCardNo,
+                                                   EmployeeCode = emp.EmployeeCode,
+                                                   Address = emp.Address,
+                                                   City = emp.City,
+                                                   IsActive = true,
+                                               }).OrderByDescending(x => x.EmployeeId).ToList();
+                response.Data = workerList;
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message);
+            }
+
+            return response;
+        }
     }
 }

@@ -77,4 +77,10 @@ namespace AttendanceSystem.ViewModel
         public List<SelectListItem> UserRoleList { get; set; }
         public List<EmployeeVM> EmployeeList { get; set; }
     }
+
+    public class SearchEmployeeFilterVM
+    {
+        public string EmployeeName { get; set; }
+        public string EmployeeCode { get; set; }
+    }
 }

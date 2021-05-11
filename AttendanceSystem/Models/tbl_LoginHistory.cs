@@ -19,6 +19,8 @@ namespace AttendanceSystem.Models
         public System.DateTime LoginDate { get; set; }
         public string LocationFrom { get; set; }
         public Nullable<long> SiteId { get; set; }
+        public Nullable<decimal> Latitude { get; set; }
+        public Nullable<decimal> Longitude { get; set; }
         public long CreatedBy { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public Nullable<long> ModifiedBy { get; set; }

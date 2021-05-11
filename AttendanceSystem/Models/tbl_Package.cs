@@ -20,8 +20,8 @@ namespace AttendanceSystem.Models
         public string PackageDescription { get; set; }
         public int AccessDays { get; set; }
         public string PackageImage { get; set; }
-        public Nullable<int> NoOfEmployee { get; set; }
-        public Nullable<int> NoOfSMS { get; set; }
+        public int NoOfEmployee { get; set; }
+        public int NoOfSMS { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
         public System.DateTime CreatedDate { get; set; }

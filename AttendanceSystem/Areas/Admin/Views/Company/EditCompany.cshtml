@@ -40,7 +40,8 @@
                                 </div>
                                 <div class="form-group col-6">
                                     @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "" })
-                                    @Model.CompanyName
+                                    @Html.TextBoxFor(model => model.CompanyName, new { @type = "text", @class = "form-control", @placeholder = "Enter Company Name" })
+                                    @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "error" })
                                 </div>
                             </div>
                             <div class="row">

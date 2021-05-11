@@ -139,7 +139,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     else
                     {
                         response.IsError = true;
-                        response.AddError(ErrorMessage.YouAreNotAuthorized);
+                        response.AddError(ErrorMessage.UserNameOrPasswordInvalid);
                     }
                 }
                 else
@@ -231,7 +231,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     authenticateVM.AdharCardNo = data.AdharCardNo;
                     authenticateVM.DateOfIdCardExpiry = data.DateOfIdCardExpiry;
                     authenticateVM.Remarks = data.Remarks;
-                    authenticateVM.ProfilePicture = data.ProfilePicture;
+                    authenticateVM.ProfilePicture = ErrorMessage.EmployeeDirectoryPath + data.ProfilePicture;
                     authenticateVM.EmploymentCategory = data.EmploymentCategory;
                     response.Data = authenticateVM;
 
@@ -240,6 +240,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     objLoginHistory.LoginDate = DateTime.UtcNow;
                     objLoginHistory.LocationFrom = authenticateRequestVM.LocationFrom;
                     objLoginHistory.SiteId = data.CompanyId;
+                    objLoginHistory.Latitude = authenticateRequestVM.Latitude;
+                    objLoginHistory.Longitude = authenticateRequestVM.Longitude ;
                     objLoginHistory.CreatedBy = data.EmployeeId;
                     objLoginHistory.CreatedDate = DateTime.UtcNow;
                     objLoginHistory.ModifiedBy = data.EmployeeId;
@@ -250,7 +252,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 else
                 {
                     response.IsError = true;
-                    response.AddError(ErrorMessage.YouAreNotAuthorized);
+                    response.AddError(ErrorMessage.UserNameOrPasswordInvalid);
                 }
             }
             catch (Exception ex)

@@ -579,6 +579,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     #region Create Company Request
 
                     tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == companyRequestVM.CompanyId).FirstOrDefault();
+                    bool isCompanyNameChanged = objCompany.CompanyName != companyRequestVM.CompanyName;
                     objCompany.CompanyTypeId = Convert.ToInt64(companyRequestVM.CompanyTypeId);
                     objCompany.CompanyName = companyRequestVM.CompanyName;
                     objCompany.EmailId = companyRequestVM.CompanyEmailId;
@@ -599,6 +600,13 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     objCompany.CancellationChequePhoto = !string.IsNullOrEmpty(chqFileName) ? chqFileName : objCompany.CancellationChequePhoto; ;
                     objCompany.ModifiedBy = LoggedInUserId;
                     objCompany.ModifiedDate = DateTime.UtcNow;
+
+                    string companyCode = string.Empty;
+                    if (isCompanyNameChanged)
+                    {
+                        companyCode = getCompanyCodeFormat(objCompany.CompanyId, companyRequestVM.CompanyName);
+                        objCompany.CompanyCode = companyCode;
+                    }
                     _db.SaveChanges();
 
                     tbl_AdminUser objUser = _db.tbl_AdminUser.Where(x => x.UserName == objCompany.CompanyCode).FirstOrDefault();
@@ -620,7 +628,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     objUser.PanCardNo = companyRequestVM.CompanyAdminPanCardNo;
                     objUser.ModifiedBy = LoggedInUserId;
                     objUser.ModifiedDate = DateTime.UtcNow;
-
+                    if (isCompanyNameChanged)
+                    {
+                        objUser.UserName = companyCode;
+                    }
                     _db.SaveChanges();
 
                     #endregion
@@ -769,7 +780,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return companyCode;
         }
 
-       
+
 
     }
 }
