@@ -16,11 +16,13 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
         private readonly AttendanceSystemEntities _db;
         private string psSult = string.Empty;
         private string enviornment = string.Empty;
+        string domainUrl = string.Empty;
         public ProfileController()
         {
             _db = new AttendanceSystemEntities();
             psSult = ConfigurationManager.AppSettings["PasswordSult"].ToString();
             enviornment = ConfigurationManager.AppSettings["Environment"].ToString();
+            domainUrl = ConfigurationManager.AppSettings["DomainUrl"].ToString();
         }
 
         [HttpPost]
@@ -165,6 +167,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 if (data != null)
                 {
                     tbl_Company companyObj = _db.tbl_Company.Where(x => x.CompanyId == data.CompanyId).FirstOrDefault();
+                    authenticateVM.EmployeeId = data.EmployeeId;
                     authenticateVM.CompanyId = data.CompanyId;
                     authenticateVM.CompanyName = companyObj.CompanyName;
                     authenticateVM.CompanyTypeId = companyObj.CompanyTypeId;
@@ -189,7 +192,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     authenticateVM.AdharCardNo = data.AdharCardNo;
                     authenticateVM.DateOfIdCardExpiry = data.DateOfIdCardExpiry;
                     authenticateVM.Remarks = data.Remarks;
-                    authenticateVM.ProfilePicture = data.ProfilePicture;
+                    authenticateVM.ProfilePicture = domainUrl + ErrorMessage.EmployeeDirectoryPath + data.ProfilePicture;
                     authenticateVM.EmploymentCategory = data.EmploymentCategory;
                     authenticateVM.IsFingerprintEnabled = data.IsFingerprintEnabled;
                     authenticateVM.IsLeaveForward = data.IsLeaveForward;
