@@ -88,7 +88,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             return response;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("List")]
         public ResponseDataModel<List<LeaveVM>> List(LeaveFilterVM leaveFilterVM)
         {

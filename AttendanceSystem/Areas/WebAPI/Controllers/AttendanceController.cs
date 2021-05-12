@@ -116,7 +116,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             return response;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("List")]
         public ResponseDataModel<List<AttendanceVM>> List(AttendanceFilterVM attendanceFilterVM)
         {
