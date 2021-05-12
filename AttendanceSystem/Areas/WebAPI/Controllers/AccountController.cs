@@ -43,7 +43,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             try
             {
                 LoginResponseVM loginResponseVM = new LoginResponseVM();
-
+                response.IsError = false;
                 if (!string.IsNullOrEmpty(loginRequestVM.UserName) && !string.IsNullOrEmpty(loginRequestVM.PassWord))
                 {
                     string encryptPassword = CommonMethod.Encrypt(loginRequestVM.PassWord, psSult);
@@ -70,28 +70,6 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                 response.IsError = true;
                                 response.AddError(ErrorMessage.CompanyTrailAccountIsExpired);
                             }
-                            else if (companyObj.IsTrialMode && companyObj.TrialExpiryDate < DateTime.Today && companyPackage != null)
-                            {
-                                companyObj.IsTrialMode = false;
-                                companyObj.TrialExpiryDate = null;
-                                companyObj.CurrentPackageId = companyPackage.PackageId;
-                                companyObj.AccountStartDate = companyPackage.StartDate;
-                                companyObj.AccountExpiryDate = companyPackage.EndDate;
-                                //companyObj.CurrentEmployeeAccess
-                                //companyObj.RemainingEmployeeAccess
-                                if (companySMSPackage != null)
-                                {
-                                    companyObj.CurrentSMSPackageId = (int)companySMSPackage.SMSPackageId;
-                                    companyObj.SMSPackStartDate = companySMSPackage.RenewDate;
-                                    companyObj.SMSPackExpiryDate = companySMSPackage.PackageExpiryDate;
-                                }
-
-                                List<tbl_Employee> listEmployee = _db.tbl_Employee.Where(x => x.CompanyId == companyObj.CompanyId && x.IsActive).ToList();
-                                if (listEmployee.Count > companyPackage.NoOfEmployee)
-                                {
-
-                                }
-                            }
                             else if (!companyObj.IsTrialMode && companyObj.AccountExpiryDate < DateTime.Today && companyPackage == null)
                             {
                                 response.IsError = true;
@@ -99,37 +77,56 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                             }
                             else if (!companyObj.IsTrialMode && companyObj.AccountExpiryDate < DateTime.Today && companyPackage != null)
                             {
-                                response.IsError = true;
-                                response.AddError(ErrorMessage.CompanyAccountIsExpired);
+                                companyObj.CurrentPackageId = companyPackage.PackageId;
+                                companyObj.AccountStartDate = companyPackage.StartDate;
+                                companyObj.AccountExpiryDate = companyPackage.EndDate;
+                                companyObj.CurrentEmployeeAccess = companyPackage.NoOfEmployee;
+                                _db.SaveChanges();
+
+                                List<tbl_Employee> listEmployee = _db.tbl_Employee.Where(x => x.CompanyId == companyObj.CompanyId && x.IsActive).ToList();
+                                if (listEmployee.Count > companyPackage.NoOfEmployee)
+                                {
+                                    List<tbl_Employee> listEmployeeToDeactive = listEmployee.OrderBy(x => x.EmployeeId).Skip(companyPackage.NoOfEmployee).ToList();
+                                    listEmployeeToDeactive.ForEach(emp =>
+                                    {
+                                        emp.IsActive = false;
+                                        emp.UpdatedBy = -1;
+                                        emp.UpdatedDate = DateTime.UtcNow;
+                                        _db.SaveChanges();
+                                    });
+                                }
                             }
 
-                            response.IsError = false;
-                            loginResponseVM.IsFingerprintEnabled = data.IsFingerprintEnabled;
-                            loginResponseVM.EmployeeId = data.EmployeeId;
-
-                            using (WebClient webClient = new WebClient())
+                            if (!response.IsError)
                             {
-                                Random random = new Random();
-                                int num = random.Next(555555, 999999);
-                                if (enviornment != "Development")
+                               
+                                loginResponseVM.IsFingerprintEnabled = data.IsFingerprintEnabled;
+                                loginResponseVM.EmployeeId = data.EmployeeId;
+
+                                using (WebClient webClient = new WebClient())
                                 {
-                                    string msg = "Your Otp code for Login is " + num;
-                                    msg = HttpUtility.UrlEncode(msg);
-                                    string url = CommonMethod.GetSMSUrl().Replace("--MOBILE--", data.MobileNo).Replace("--MSG--", msg);
-                                    var json = webClient.DownloadString(url);
-                                    if (json.Contains("invalidnumber"))
+                                    Random random = new Random();
+                                    int num = random.Next(555555, 999999);
+                                    if (enviornment != "Development")
                                     {
-                                        response.IsError = true;
-                                        response.AddError(ErrorMessage.InvalidMobileNo);
+                                        string msg = "Your Otp code for Login is " + num;
+                                        msg = HttpUtility.UrlEncode(msg);
+                                        string url = CommonMethod.GetSMSUrl().Replace("--MOBILE--", data.MobileNo).Replace("--MSG--", msg);
+                                        var json = webClient.DownloadString(url);
+                                        if (json.Contains("invalidnumber"))
+                                        {
+                                            response.IsError = true;
+                                            response.AddError(ErrorMessage.InvalidMobileNo);
+                                        }
+                                        else
+                                        {
+                                            loginResponseVM.OTP = num.ToString();
+                                        }
                                     }
                                     else
                                     {
                                         loginResponseVM.OTP = num.ToString();
                                     }
-                                }
-                                else
-                                {
-                                    loginResponseVM.OTP = num.ToString();
                                 }
                             }
                             response.Data = loginResponseVM;
@@ -241,7 +238,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     objLoginHistory.LocationFrom = authenticateRequestVM.LocationFrom;
                     objLoginHistory.SiteId = data.CompanyId;
                     objLoginHistory.Latitude = authenticateRequestVM.Latitude;
-                    objLoginHistory.Longitude = authenticateRequestVM.Longitude ;
+                    objLoginHistory.Longitude = authenticateRequestVM.Longitude;
                     objLoginHistory.CreatedBy = data.EmployeeId;
                     objLoginHistory.CreatedDate = DateTime.UtcNow;
                     objLoginHistory.ModifiedBy = data.EmployeeId;
