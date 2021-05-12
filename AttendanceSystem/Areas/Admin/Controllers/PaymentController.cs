@@ -42,7 +42,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 long companyId = clsAdminSession.CompanyId;
                 paymentFilterVM.PaymentList = (from empp in _db.tbl_EmployeePayment
                                                join emp in _db.tbl_Employee on empp.UserId equals emp.EmployeeId
-                                               where !emp.IsDeleted && emp.CompanyId == companyId
+                                               where !emp.IsDeleted && emp.CompanyId == companyId && !empp.IsDeleted
                                                && empp.PaymentDate >= paymentFilterVM.StartDate && empp.PaymentDate <= paymentFilterVM.EndDate
                                                && (paymentFilterVM.UserRole.HasValue ? emp.AdminRoleId == paymentFilterVM.UserRole.Value : true)
                                                select new PaymentVM

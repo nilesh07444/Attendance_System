@@ -93,24 +93,6 @@
         </div>
     </div>
 </section>
-<div class="modal fade open" id="deletePaymentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Delete Confirm</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            </div>
-            <div class="modal-body">
-                Are you sure you want to delete ?
-            </div>
-            <div class="modal-footer">
-                <input type="hidden" id="hdnDeletePayment" />
-                <button data-dismiss="modal" class="btn btn-primary" type="button">Close</button>
-                <button id="btnDeletePayment" class="btn btn-danger" type="button">Delete</button>
-            </div>
-        </div>
-    </div>
-</div>
 <div class="modal fade open" id="deleteEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -124,8 +106,9 @@
             <div class="modal-footer">
                 <input type="hidden" id="hdnDeleteEmployeePaymentId" />
                 <input type="hidden" id="hdnDeleteEmployeeId" />
+                <input type="hidden" id="OTP" />
                 <button data-dismiss="modal" class="btn btn-primary" type="button">Close</button>
-                <button id="btnDeleteEmployee" class="btn btn-danger" type="button">Delete</button>
+                <button id="btnDeletePayment" class="btn btn-danger" type="button">Delete</button>
             </div>
         </div>
     </div>
@@ -166,12 +149,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
 
-        function fnDeleteEmployee(employeePayment_Id,employee_Id) {
-            $("#hdnDeleteEmployeePaymentId").val(employeePayment_Id);
-            $("#hdnDeleteEmployeeId").val(employee_Id);
-            $('#deleteEmployeeModal').modal('show');
-        }
-
+        
         $('#btnDeletePayment').click(function () {
              var employeePayment_Id = $("#hdnDeleteEmployeePaymentId").val();
              var employee_Id = $("#hdnDeleteEmployeeId").val();
@@ -204,30 +182,6 @@
                  });
 
                  return false;
-
-                var URL = '@Url.Action("DeleteEmployeePayment", "Payment")';
-                $.ajax({
-                    type: 'POST',
-                    async: true,
-                    url: URL + "?employeePaymentId=" + employeePayment_Id ,
-                    success: function (result) {
-                        if (result == "success") {
-                            alert("Employee deleted successfully");
-                            window.location.reload();
-                        }
-                        else if (result == "notfound") {
-                            alert("Employee Not Found");
-                        }
-                        else {
-                            alert("Something went wrong. Please try again");
-                        }
-
-                       StopLoading();
-                    },
-                    error: function (resultData) {
-                       StopLoading();
-                    }
-                });
             }
         });
 
@@ -279,8 +233,10 @@
         });
     })
 
-    function fnDeletePayment(Payment_Id) {
-        $("#hdnDeletePayment").val(Payment_Id);
-        $('#deletePaymentModal').modal('show');
+    function fnDeleteEmployee(employeePayment_Id, employee_Id) {
+        $("#hdnDeleteEmployeePaymentId").val(employeePayment_Id);
+        $("#hdnDeleteEmployeeId").val(employee_Id);
+        $('#deleteEmployeeModal').modal('show');
     }
+
 </script> 
