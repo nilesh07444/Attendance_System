@@ -18,8 +18,11 @@ namespace AttendanceSystem.ViewModel.WebAPI.ViewModel
         public string Access_token { get; set; }
         public long EmployeeId { get; set; }
         public long RoleId { get; set; }
+        public string RoleName { get; set; }
         public long CompanyTypeId { get; set; }
+        public string CompanyTypeText { get; set; }
         public long CompanyId { get; set; }
+        public string CompanyName { get; set; }
         public string Prefix { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -40,5 +43,7 @@ namespace AttendanceSystem.ViewModel.WebAPI.ViewModel
         public string Remarks { get; set; }
         public string ProfilePicture { get; set; }
         public int EmploymentCategory { get; set; }
+        public bool IsFingerprintEnabled { get; set; }
+        public bool IsLeaveForward { get; set; }
     }
 }

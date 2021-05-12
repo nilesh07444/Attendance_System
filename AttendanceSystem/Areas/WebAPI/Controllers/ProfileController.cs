@@ -164,7 +164,13 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 var data = _db.tbl_Employee.Where(x => x.EmployeeId == employeeId && x.IsActive && !x.IsDeleted).FirstOrDefault();
                 if (data != null)
                 {
+                    tbl_Company companyObj = _db.tbl_Company.Where(x => x.CompanyId == data.CompanyId).FirstOrDefault();
                     authenticateVM.CompanyId = data.CompanyId;
+                    authenticateVM.CompanyName = companyObj.CompanyName;
+                    authenticateVM.CompanyTypeId = companyObj.CompanyTypeId;
+                    authenticateVM.CompanyTypeText = CommonMethod.GetEnumDescription((CompanyType)companyObj.CompanyTypeId);
+                    authenticateVM.RoleId = data.AdminRoleId;
+                    authenticateVM.RoleName = CommonMethod.GetEnumDescription((AdminRoles)data.AdminRoleId);
                     authenticateVM.Prefix = data.Prefix;
                     authenticateVM.FirstName = data.FirstName;
                     authenticateVM.LastName = data.LastName;
@@ -185,6 +191,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     authenticateVM.Remarks = data.Remarks;
                     authenticateVM.ProfilePicture = data.ProfilePicture;
                     authenticateVM.EmploymentCategory = data.EmploymentCategory;
+                    authenticateVM.IsFingerprintEnabled = data.IsFingerprintEnabled;
+                    authenticateVM.IsLeaveForward = data.IsLeaveForward;
                     response.Data = authenticateVM;
                 }
                 else
