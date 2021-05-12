@@ -163,15 +163,16 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             try
             {
                 long employeeId = base.UTI.EmployeeId;
-                var data = _db.tbl_Employee.Where(x => x.EmployeeId == employeeId && x.IsActive && !x.IsDeleted).FirstOrDefault();
+                tbl_Employee data = _db.tbl_Employee.Where(x => x.EmployeeId == employeeId && x.IsActive && !x.IsDeleted).FirstOrDefault();
                 if (data != null)
                 {
                     tbl_Company companyObj = _db.tbl_Company.Where(x => x.CompanyId == data.CompanyId).FirstOrDefault();
+                    string companyTypeName = _db.mst_CompanyType.Where(x => x.CompanyTypeId == companyObj.CompanyTypeId).Select(x => x.CompanyTypeName).FirstOrDefault();
                     authenticateVM.EmployeeId = data.EmployeeId;
                     authenticateVM.CompanyId = data.CompanyId;
                     authenticateVM.CompanyName = companyObj.CompanyName;
                     authenticateVM.CompanyTypeId = companyObj.CompanyTypeId;
-                    authenticateVM.CompanyTypeText = CommonMethod.GetEnumDescription((CompanyType)companyObj.CompanyTypeId);
+                    authenticateVM.CompanyTypeText = companyTypeName;
                     authenticateVM.RoleId = data.AdminRoleId;
                     authenticateVM.RoleName = CommonMethod.GetEnumDescription((AdminRoles)data.AdminRoleId);
                     authenticateVM.Prefix = data.Prefix;
@@ -196,6 +197,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     authenticateVM.EmploymentCategory = data.EmploymentCategory;
                     authenticateVM.IsFingerprintEnabled = data.IsFingerprintEnabled;
                     authenticateVM.IsLeaveForward = data.IsLeaveForward;
+                    authenticateVM.State = string.Empty;
+                    authenticateVM.Pincode = string.Empty;
                     response.Data = authenticateVM;
                 }
                 else
