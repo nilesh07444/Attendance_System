@@ -171,7 +171,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             {
                 long employeeId = base.UTI.EmployeeId;
                 long companyId = base.UTI.CompanyId;
-                
+
                 if (employeeVM.EmployeeId == 0)
                 {
                     response.IsError = true;
@@ -180,7 +180,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                 if (employeeVM.EmployeeId > 0)
                 {
-                    bool isWorkerExist = _db.tbl_Employee.Any(x => x.EmployeeId != employeeVM.EmployeeId && !x.IsDeleted && x.AdminRoleId != (int)AdminRoles.Worker && x.CompanyId == companyId );
+                    bool isWorkerExist = _db.tbl_Employee.Any(x => x.EmployeeId != employeeVM.EmployeeId && !x.IsDeleted && x.AdminRoleId != (int)AdminRoles.Worker && x.CompanyId == companyId);
                     if (isWorkerExist)
                     {
                         response.IsError = true;
@@ -188,7 +188,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     }
 
                     tbl_Employee employeeObject = _db.tbl_Employee.Where(x => x.EmployeeId != employeeVM.EmployeeId).FirstOrDefault();
-                    
+
                     if (!response.IsError)
                     {
 
@@ -223,7 +223,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
         [HttpGet]
         [Route("Search")]
-        public ResponseDataModel<List<EmployeeVM>> Search(SearchEmployeeFilterVM searchEmployeeFilterVM)
+        public ResponseDataModel<List<EmployeeVM>> Search(string searchText)
         {
             ResponseDataModel<List<EmployeeVM>> response = new ResponseDataModel<List<EmployeeVM>>();
             response.IsError = false;
@@ -233,11 +233,13 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                 List<EmployeeVM> workerList = (from emp in _db.tbl_Employee
                                                where !emp.IsDeleted && emp.IsActive && emp.CompanyId == companyId
-                                               && (searchEmployeeFilterVM.EmployeeCode.Contains(emp.EmployeeCode) 
-                                               || searchEmployeeFilterVM.EmployeeCode.Contains(emp.FirstName) 
-                                               || searchEmployeeFilterVM.EmployeeCode.Contains(emp.LastName))
+                                               && (!string.IsNullOrEmpty(searchText) ? (emp.EmployeeCode.Contains(searchText)
+                                               || emp.FirstName.Contains(searchText)
+                                               || emp.LastName.Contains(searchText)) : true)
                                                select new EmployeeVM
                                                {
+                                                   EmployeeId = emp.EmployeeId,
+                                                   EmployeeCode = emp.EmployeeCode,
                                                    ProfilePicture = emp.ProfilePicture,
                                                    CompanyId = emp.CompanyId,
                                                    Prefix = emp.Prefix,
@@ -250,11 +252,10 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                    EmploymentCategory = emp.EmploymentCategory,
                                                    MonthlySalaryPrice = emp.MonthlySalaryPrice,
                                                    AdharCardNo = emp.AdharCardNo,
-                                                   EmployeeCode = emp.EmployeeCode,
                                                    Address = emp.Address,
                                                    City = emp.City,
                                                    IsActive = true,
-                                               }).OrderByDescending(x => x.EmployeeId).ToList();
+                                               }).ToList();
                 response.Data = workerList;
             }
             catch (Exception ex)
