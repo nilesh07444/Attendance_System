@@ -19,25 +19,19 @@
     </div>
 </div>
 
-<div class="about-details section-padding30">
-    <div class="container">
-        <div class="row">
+<div class="container mb-2" style="margin-top:40px;">
 
-            @if (lstContent != null && lstContent.Count > 0)
-            {
-                foreach (tbl_DynamicContent obj in lstContent)
-                {
-                    <div class="col-sm-12">
-                        <h4>@obj.ContentTitle</h4>
+    @if (lstContent != null && lstContent.Count > 0)
+    {
+        foreach (tbl_DynamicContent obj in lstContent)
+        {
+            <h5>@obj.ContentTitle</h5>
+            <h6 style="text-align: justify;">@Html.Raw(obj.ContentDescription)</h6><br />
+        }
+    }
+    else
+    {
+        <p style="text-align:center;">No any Terms & Conditions added yet !!!</p>
+    }
 
-                        @{ string desc = obj.ContentDescription.Replace("\n", "<br />\n"); }
-
-                        @Html.Raw(desc)
-
-                    </div>
-                }
-            }
-
-        </div>
-    </div>
 </div>

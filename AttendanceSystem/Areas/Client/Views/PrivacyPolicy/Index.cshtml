@@ -18,26 +18,21 @@
         </div>
     </div>
 </div>
+ 
+<div class="container mb-2" style="margin-top:40px;">
+    @*<h3 class="" style="text-align: center;">Privacy & Policy</h3>*@
 
-<div class="about-details section-padding30">
-    <div class="container">
-        <div class="row">
+    @if (lstContent != null && lstContent.Count > 0)
+    {
+        foreach (tbl_DynamicContent obj in lstContent)
+        {
+            <h5>@obj.ContentTitle</h5>
+            <h6 style="text-align: justify;">@Html.Raw(obj.ContentDescription)</h6><br />
+        }
+    }
+    else
+    {
+        <p style="text-align:center;">No any Privacy Policy added yet !!!</p>
+    }
 
-            @if (lstContent != null && lstContent.Count > 0)
-            {
-                foreach (tbl_DynamicContent obj in lstContent)
-                {
-                    <div class="col-sm-12">
-                        <h4>@obj.ContentTitle</h4>
-
-                        @{ string desc = obj.ContentDescription.Replace("\n", "<br />\n"); }
-
-                        @Html.Raw(desc)
-
-                    </div>
-                }
-            }
-
-        </div>
-    </div>
 </div>
