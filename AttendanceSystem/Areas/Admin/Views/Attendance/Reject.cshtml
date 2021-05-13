@@ -1,11 +1,13 @@
 ﻿@using AttendanceSystem.Helper;
-@model AttendanceSystem.ViewModel.LeaveVM
+@model AttendanceSystem.ViewModel.AttendanceVM
 @{
-    List<SelectListItem> lstLeaveStatus = new List<SelectListItem>();
 
-    lstLeaveStatus.Add(new SelectListItem { Value = "2", Text = "Accept" });
-    lstLeaveStatus.Add(new SelectListItem { Value = "3", Text = "Reject" });
+    ViewBag.Title = "Attendance";
+    List<SelectListItem> lstAttendanceStatus = new List<SelectListItem>();
+    lstAttendanceStatus.Add(new SelectListItem { Value = "2", Text = "Accept" });
+    lstAttendanceStatus.Add(new SelectListItem { Value = "3", Text = "Reject" });
 }
+   
 
 <div class="page-body">
 
@@ -17,51 +19,79 @@
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-header">
-                        <h5>Leave Details</h5>
+                        <h5>Attendance Details</h5>
                     </div>
                     <div class="card-body">
-                        @using (Html.BeginForm("Reject", "Leave", FormMethod.Post, new { @id = "LeaveForm", @class = "needs-validation", enctype = "multipart/form-data", role = "form" }))
+                        @using (Html.BeginForm("Reject", "Attendance", FormMethod.Post, new { @id = "AttendanceForm", @class = "needs-validation", enctype = "multipart/form-data", role = "form" }))
                         {
-                            @Html.HiddenFor(model => model.LeaveId)
+                            @Html.HiddenFor(model => model.AttendanceId)
 
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                        @Model.UserName
+                                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                        @Model.Name
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                        @Model.StartDate.ToString("dd MMM yyyy")
+                                        @Html.LabelFor(model => model.AttendanceDate, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                        @Model.AttendanceDate.ToString("dd MMM yyyy")
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                        @Model.EndDate.ToString("dd MMM yyyy")
+                                        @Html.LabelFor(model => model.DayType, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                        @Model.DayType
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        @Html.LabelFor(model => model.NoOfDays, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                        @Model.NoOfDays
+                                        @Html.LabelFor(model => model.ExtraHours, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                        @Model.ExtraHours
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        @Html.LabelFor(model => model.LeaveStatus, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                        @Model.LeaveStatusText
+                                        @Html.LabelFor(model => model.TodayWorkDetail, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                        @Model.DayType
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.TomorrowWorkDetail, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                        @Model.ExtraHours
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                        @Model.DayType
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.InTime, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                        @Model.InTime - @Model.OutTime
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                        @Model.StatusText
                                     </div>
                                 </div>
 
                             </div>
-                            if (Model.LeaveStatus == (int)LeaveStatus.Reject)
+                            if (Model.Status == (int)AttendanceStatus.Reject)
                             {
                                 <div class="row">
                                     <div class="col-sm-6">
@@ -73,13 +103,13 @@
 
                                 </div>
                             }
-                            if (Model.LeaveStatus == (int)LeaveStatus.Pending)
+                            if (Model.Status == (int)AttendanceStatus.Pending)
                             {
                                 <div class="form-group row">
-                                    @Html.LabelFor(model => model.LeaveStatus, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                    @Html.DropDownListFor(model => model.LeaveStatus, new SelectList(lstLeaveStatus, "Value", "Text"), "- Select -", new { @class = "form-control required", @style = "width:20%" })
+                                    @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                    @Html.DropDownListFor(model => model.Status, new SelectList(lstAttendanceStatus, "Value", "Text"), "- Select -", new { @class = "form-control required", @style = "width:20%" })
 
-                                    @Html.ValidationMessageFor(model => model.LeaveStatus, "", new { @class = "text-danger" })
+                                    @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group row" id="dvRejectReason">
                                     @Html.LabelFor(model => model.RejectReason, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
@@ -114,7 +144,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        if ($("#LeaveStatus").val() == "3") {
+        if ($("#Status").val() == "3") {
             $("#dvRejectReason").show();
         } else {
             $("#dvRejectReason").hide();
@@ -122,12 +152,12 @@
         }
 
         $('#btnCancel').click(function () {
-            window.location.href = "/admin/leave";
+            window.location.href = "/admin/attendance";
         });
 
-        $("#LeaveStatus").change(function () {
-            var leaveStatus = $("#LeaveStatus").val();
-            if (leaveStatus == "3") {
+        $("#Status").change(function () {
+            var status = $("#Status").val();
+            if (status == "3") {
                 $("#dvRejectReason").show();
             } else {
                 $("#dvRejectReason").hide();
@@ -137,13 +167,13 @@
         });
 
         $('#btnSubmit').click(function () {
-            if ($("#LeaveForm").valid()) {
-                var leaveStatus = $("#LeaveStatus").val();
-                if (leaveStatus == "") {
-                    alert("Please select leave reason.");
+            if ($("#AttendanceForm").valid()) {
+                var status = $("#Status").val();
+                if (status == "") {
+                    alert("Please select status.");
                     return false;
                 }
-                if (requestStatus == "3" && $("#RejectReason").val() == "") {
+                if (status == "3" && $("#RejectReason").val() == "") {
                     alert("Please enter reject reason.");
                     return false;
                 }

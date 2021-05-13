@@ -47,10 +47,16 @@
                                     @Html.DropDownListFor(model => model.UserId, new SelectList(Model.EmployeeList, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8 required", style = "" })
                                 </div>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-2">
                                 <div class="form-group">
                                     <label style="padding-top:45px"></label>
                                     <button class="btn btn-primary mr-1" id="btnSearch" type="button">Search</button>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label style="padding-top:45px"></label>
+                                    <button class="btn btn-primary mr-1" id="btnAccept" type="button">Accept</button>
                                 </div>
                             </div>
                         </div>
@@ -59,6 +65,7 @@
                                 <thead>
                                     <tr>
                                         <td>#</td>
+                                        <th>Accept</th>
                                         <th>Employee</th>
                                         <th>Attendance Date</th>
                                         <th>Day Type</th>
@@ -67,6 +74,7 @@
                                         <th>Tomorrow Work Detail</th>
                                         <th>Location From</th>
                                         <th>Status</th>
+                                        <th>Accept/Reject</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -76,7 +84,12 @@
                                         {
                                     <tr>
                                         <td>@counter.</td>
-
+                                        <td>
+                                            @if (obj.Status == (int)AttendanceStatus.Pending)
+                                            {
+                                                <input type="checkbox" class="chkBox" id='@obj.AttendanceId' name="Select">
+                                            }
+                                        </td>
                                         <td>@obj.Name</td>
                                         <td>@obj.AttendanceDate.ToString("dd MMM yyyy")</td>
                                         <td>@obj.DayType</td>
@@ -85,6 +98,16 @@
                                         <td>@obj.TomorrowWorkDetail</td>
                                         <td>@obj.LocationFrom</td>
                                         <td>@obj.StatusText</td>
+                                        <td>
+                                            @if (obj.Status == (int)AttendanceStatus.Pending)
+                                            {
+                                                <a href="/admin/attendance/reject/@obj.AttendanceId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
+                                            }
+                                            else
+                                            {
+                                                <a href="/admin/attendance/reject/@obj.AttendanceId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
+                                            }
+                                        </td>
                                     </tr>
 
                                             counter++;
@@ -100,6 +123,25 @@
         </div>
     </div>
 </section>
+<div class="modal fade open" id="activeinactiveModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Status Confirm</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to Accept ?
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" id="hdndataId" />
+                <input type="hidden" id="hdnstatus" />
+                <button data-dismiss="modal" class="btn btn-primary" type="button">Close</button>
+                <button id="btnChangeStatus" class="btn btn-danger" type="button">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
@@ -125,8 +167,66 @@
             window.location.href = "/admin/attendance/Index?userId=" + userId + "&attendanceStatus=" + attendanceStatus + "&startDate=" + $("#StartDate").val() + "&endDate=" + $("#EndDate").val();
         });
 
+         $('#btnAccept').click(function () {
+
+            var Ids = [];
+            var count = 0;
+            $(".chkBox").each(function () {
+                if ($(this).prop("checked")) {
+                    var id = $(this).attr("Id");
+                    Ids.push(id);
+                    count = parseFloat(count) + 1;
+                }
+            });
+
+            if (count == 0) {
+                alert("Please select alteast one attendance to accept");
+                return false;
+            }
+
+             fnChangeStatus(Ids)
+
+
+        });
+
+        $('#btnChangeStatus').click(function () {
+
+            var Id = jQuery("#hdndataId").val();
+            if (Id != "" && Id != null) {
+                $('#activeinactiveModal').modal('hide');
+
+                StartLoading();
+
+                var URL = '@Url.Action("Accept", "Attendance")';
+                $.ajax({
+                    type: 'POST',
+                    async: true,
+                    url: URL + "?ids=" + Id,
+                    success: function (result) {
+                        if (result == "success") {
+                            alert("Attendance accept Successfully...");
+                            window.location.reload();
+                        }
+                        else {
+                            alert("Something went wrong. Please try again");
+                        }
+
+                       StopLoading();
+                    },
+                    error: function (resultData) {
+                        StopLoading();
+                    }
+                });
+            }
+        });
     })
 
+    function fnChangeStatus(ids) {
+        jQuery("#hdndataId").val(ids);
 
+        $('#btnChangeStatus').html("Accept");
+        $('#activeinactiveModal .modal-body').html(" Are you sure you want to Accept ?");
+        $('#activeinactiveModal').modal('show');
+    }
 
 </script> 

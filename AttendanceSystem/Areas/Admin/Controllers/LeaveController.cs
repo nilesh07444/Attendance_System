@@ -162,7 +162,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     if (objleave != null)
                     {
                         objleave.LeaveStatus = leaveVM.LeaveStatus;
-                        objleave.CancelledReason = leaveVM.CancelledReason;
                         objleave.RejectReason = leaveVM.RejectReason;
                         objleave.ModifiedBy = LoggedInUserId;
                         objleave.ModifiedDate = DateTime.UtcNow;

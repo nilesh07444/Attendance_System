@@ -9,7 +9,6 @@
     lstLeaveStatus.Add(new SelectListItem { Value = "1", Text = "Pending" });
     lstLeaveStatus.Add(new SelectListItem { Value = "2", Text = "Accept" });
     lstLeaveStatus.Add(new SelectListItem { Value = "3", Text = "Reject" });
-    lstLeaveStatus.Add(new SelectListItem { Value = "4", Text = "Cancelled" });
 
 }
 
@@ -57,7 +56,7 @@
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label style="padding-top:45px"></label>
-                                    <button class="btn btn-primary mr-1" id="btnApprove" type="button">Accept</button>
+                                    <button class="btn btn-primary mr-1" id="btnAccept" type="button">Accept</button>
                                 </div>
                             </div>
                         </div>
@@ -74,7 +73,7 @@
                                         <th>Leave Status</th>
                                         <th>Reject Reason</th>
                                         <th>Cancelled Reason</th>
-                                        <th>Reject/Cancel</th>
+                                        <th>Accept/Reject</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -102,6 +101,10 @@
                                                     {
                                                         <a href="/admin/leave/reject/@obj.LeaveId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
                                                     }
+                                                    else
+                                                    {
+                                                        <a href="/admin/leave/reject/@obj.LeaveId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
+                                                    }
                                                 </td>
                                             </tr>
 
@@ -118,6 +121,25 @@
         </div>
     </div>
 </section>
+<div class="modal fade open" id="activeinactiveModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Status Confirm</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to Accept ?
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" id="hdndataId" />
+                <input type="hidden" id="hdnstatus" />
+                <button data-dismiss="modal" class="btn btn-primary" type="button">Close</button>
+                <button id="btnChangeStatus" class="btn btn-danger" type="button">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
@@ -143,7 +165,7 @@
             window.location.href = "/admin/leave/Index?userRole=" + userRole + "&leaveStatus=" + leaveStatus + "&startDate=" + $("#StartDate").val() + "&endDate=" + $("#EndDate").val();
         });
 
-        $('#btnApprove').click(function () {
+        $('#btnAccept').click(function () {
 
             var leaveIds = [];
             var count = 0;
@@ -156,15 +178,28 @@
             });
 
             if (count == 0) {
-                alert("Please select alteast one leave to approve");
+                alert("Please select alteast one leave to accept");
                 return false;
             }
-            StartLoading();
-            var URL = '@Url.Action("AcceptLeave", "Leave")';
+
+            fnChangeStatus(leaveIds)
+
+
+        });
+
+        $('#btnChangeStatus').click(function () {
+
+            var Id = jQuery("#hdndataId").val();
+            if (Id != "" && Id != null) {
+                $('#activeinactiveModal').modal('hide');
+
+                StartLoading();
+
+                var URL = '@Url.Action("AcceptLeave", "Leave")';
                 $.ajax({
                     type: 'POST',
                     async: true,
-                    url: URL + "?ids=" + leaveIds,
+                    url: URL + "?ids=" + Id,
                     success: function (result) {
                         if (result == "success") {
                             alert("Leave accept Successfully...");
@@ -180,10 +215,16 @@
                         StopLoading();
                     }
                 });
+            }
         });
-
     })
 
 
+    function fnChangeStatus(ids) {
+        jQuery("#hdndataId").val(ids);
 
+        $('#btnChangeStatus').html("Accept");
+        $('#activeinactiveModal .modal-body').html(" Are you sure you want to Accept ?");
+        $('#activeinactiveModal').modal('show');
+    }
 </script> 
