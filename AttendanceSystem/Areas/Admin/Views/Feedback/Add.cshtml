@@ -1,8 +1,7 @@
 ﻿@using AttendanceSystem.Helper;
 @model AttendanceSystem.ViewModel.FeedbackVM
 @{
-    /**/
-
+    ViewBag.Title = "Feedback";
 }
 
 <section class="section">
@@ -16,26 +15,26 @@
 
                 @using (Html.BeginForm("Add", "Feedback", FormMethod.Post, new { @id = "FeedbackFormId", @class = "", enctype = "multipart/form-data", role = "form" }))
                 {
-                <div class="card-body">
-                    <div class="row">
-                        <div class="form-group col-6">
-                            @Html.LabelFor(model => model.FeedbackType, htmlAttributes: new { @class = "" })
-                            @Html.DropDownListFor(model => model.FeedbackType, new SelectList(Model.FeedBackTypeLIst, "Value", "Text"), "- Select -", new { @class = "form-control required" })
-                            @Html.ValidationMessageFor(model => model.FeedbackType, "", new { @class = "text-danger" })
-                        </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.FeedbackType, htmlAttributes: new { @class = "" })
+                                @Html.DropDownListFor(model => model.FeedbackType, new SelectList(Model.FeedBackTypeLIst, "Value", "Text"), "- Select -", new { @class = "form-control required" })
+                                @Html.ValidationMessageFor(model => model.FeedbackType, "", new { @class = "text-danger" })
+                            </div>
 
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.FeedbackText, htmlAttributes: new { @class = "" })
+                            @Html.TextAreaFor(model => model.FeedbackText, 10, 5, new { @class = "form-control", @placeholder = "Enter Feedback Text", maxlength = "250" })
+                            @Html.ValidationMessageFor(model => model.FeedbackText, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "" })
+                            @Html.TextAreaFor(model => model.Remarks, 10, 5, new { @class = "form-control", @placeholder = "Enter Feedback Text", maxlength = "250" })
+                            @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
+                        </div>
                     </div>
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.FeedbackText, htmlAttributes: new { @class = "" })
-                        @Html.TextAreaFor(model => model.FeedbackText, 10, 5, new { @class = "form-control", @placeholder = "Enter Feedback Text", maxlength = "250" })
-                        @Html.ValidationMessageFor(model => model.FeedbackText, "", new { @class = "text-danger" })
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "" })
-                        @Html.TextAreaFor(model => model.Remarks, 10, 5, new { @class = "form-control", @placeholder = "Enter Feedback Text", maxlength = "250" })
-                        @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
-                    </div>
-                </div>
 
                     <div class="card-footer text-center">
                         <button class="btn btn-primary mr-1" type="submit">Submit</button>

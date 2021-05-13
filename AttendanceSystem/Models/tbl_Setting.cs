@@ -20,5 +20,15 @@ namespace AttendanceSystem.Models
         public Nullable<decimal> AccountPackageBuyGSTPer { get; set; }
         public Nullable<decimal> SMSPackageBuyGSTPer { get; set; }
         public Nullable<decimal> EmployeeBuyGSTPer { get; set; }
+        public string SMTPHost { get; set; }
+        public Nullable<int> SMTPPort { get; set; }
+        public string SMTPEmail { get; set; }
+        public string SMTPPassword { get; set; }
+        public Nullable<bool> SMTPEnableSSL { get; set; }
+        public string SMTPFromEmailId { get; set; }
+        public string SuperAdminEmailId { get; set; }
+        public string SuperAdminMobileNo { get; set; }
+        public string RazorPayKey { get; set; }
+        public string RazorPaySecret { get; set; }
     }
 }

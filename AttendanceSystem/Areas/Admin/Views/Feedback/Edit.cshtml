@@ -1,8 +1,7 @@
 ﻿@using AttendanceSystem.Helper;
 @model AttendanceSystem.ViewModel.FeedbackVM
 @{
-    /**/
-
+    ViewBag.Title = "Feedback";
 }
 
 <section class="section">
@@ -16,46 +15,46 @@
 
                 @using (Html.BeginForm("Edit", "Feedback", FormMethod.Post, new { @id = "FeedbackFormId", @class = "", enctype = "multipart/form-data", role = "form" }))
                 {
-                <div class="card-body">
-                    <div class="row">
-                        <div class="form-group col-6">
-                            @Html.HiddenFor(model => model.FeedbackId)
-                            @Html.LabelFor(model => model.CompanyId, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                            @Model.CompanyName
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="form-group col-6">
+                                @Html.HiddenFor(model => model.FeedbackId)
+                                @Html.LabelFor(model => model.CompanyId, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                @Model.CompanyName
+                            </div>
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.FeedbackType, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                @Model.FeedbackTypeText
+                                @Html.HiddenFor(model => model.FeedbackType)
+                                @Html.HiddenFor(model => model.FeedbackTypeText)
+                            </div>
                         </div>
-                        <div class="form-group col-6">
-                            @Html.LabelFor(model => model.FeedbackType, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                            @Model.FeedbackTypeText
-                            @Html.HiddenFor(model => model.FeedbackType)
-                            @Html.HiddenFor(model => model.FeedbackTypeText)
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.FeedbackText, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                            @Model.FeedbackText
+                            @Html.HiddenFor(model => model.FeedbackText)
+
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                            @Model.Remarks
+                            @Html.HiddenFor(model => model.Remarks)
+
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.FeedbackStatus, htmlAttributes: new { @class = "" })
+                                @Html.DropDownListFor(model => model.FeedbackStatus, new SelectList(Model.FeedBackStatusLIst, "Value", "Text"), "- Select -", new { @class = "form-control required" })
+                                @Html.ValidationMessageFor(model => model.FeedbackStatus, "", new { @class = "text-danger" })
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SuperAdminFeedbackText, htmlAttributes: new { @class = "" })
+                            @Html.TextAreaFor(model => model.SuperAdminFeedbackText, 10, 5, new { @class = "form-control required", @placeholder = "Enter Feedback Text", maxlength = "250" })
+                            @Html.ValidationMessageFor(model => model.SuperAdminFeedbackText, "", new { @class = "text-danger" })
                         </div>
                     </div>
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.FeedbackText, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                        @Model.FeedbackText
-                        @Html.HiddenFor(model => model.FeedbackText)
-
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                        @Model.Remarks
-                        @Html.HiddenFor(model => model.Remarks)
-
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-6">
-                            @Html.LabelFor(model => model.FeedbackStatus, htmlAttributes: new { @class = "" })
-                            @Html.DropDownListFor(model => model.FeedbackStatus, new SelectList(Model.FeedBackStatusLIst, "Value", "Text"), "- Select -", new { @class = "form-control required" })
-                            @Html.ValidationMessageFor(model => model.FeedbackStatus, "", new { @class = "text-danger" })
-                        </div>
-
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.SuperAdminFeedbackText, htmlAttributes: new { @class = "" })
-                        @Html.TextAreaFor(model => model.SuperAdminFeedbackText, 10, 5, new { @class = "form-control required", @placeholder = "Enter Feedback Text", maxlength = "250" })
-                        @Html.ValidationMessageFor(model => model.SuperAdminFeedbackText, "", new { @class = "text-danger" })
-                    </div>
-                </div>
 
                     <div class="card-footer text-center">
                         <button class="btn btn-primary mr-1" type="submit">Submit</button>

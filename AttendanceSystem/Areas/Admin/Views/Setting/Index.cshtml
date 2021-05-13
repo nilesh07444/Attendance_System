@@ -1,4 +1,4 @@
-﻿@using AttendanceSystem.Helper; 
+﻿@using AttendanceSystem.Helper;
 @{
     ViewBag.Title = "Setting";
 
@@ -13,36 +13,148 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
-                <div class="card">
-
-                    <div class="card-header">
-                        <h4>General Setting</h4>
-                        <div class="card-header-action">
-                            <a href="/admin/setting/edit" class="btn btn-primary">Edit</a> 
+                @if (clsAdminSession.RoleID == (int)AdminRoles.SuperAdmin)
+                {
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>General Setting</h4>
+                            <div class="card-header-action">
+                                <a href="/admin/setting/edit" class="btn btn-primary">Edit</a>
+                            </div>
                         </div>
-                    </div>
-                      
-                    @if (clsAdminSession.RoleID == (int)AdminRoles.SuperAdmin)
-                    {
                         <div class="card-body">
 
-                            <div class="form-group row">
-                                <label class="col-xl-3 col-md-4">Account Free Access Days</label>
-                                @objSASetting.AccountFreeAccessDays
+                            <div class="row">
+                                <div class="form-group col-4">
+                                    <label>Account Free Access Days</label>
+                                    <p>@objSASetting.AccountFreeAccessDays</p>
+                                </div>
+
+                                <div class="form-group col-4">
+                                    <label>Amount Per Employee Buy</label>
+                                    <p>@objSASetting.AmountPerEmp</p>
+                                </div>
+
                             </div>
-                             
-                            <div class="form-group row">
-                                <label class="col-xl-3 col-md-4">Amount Per Employee Buy</label>
-                                @objSASetting.AmountPerEmp
+
+                            <div class="row">
+                                <div class="form-group col-4">
+                                    <label>Account Package Buy GST (%)</label>
+                                    <p>@objSASetting.AccountPackageBuyGSTPer</p>
+                                </div>
+
+                                <div class="form-group col-4">
+                                    <label>SMS Package Buy GST (%)</label>
+                                    <p>@objSASetting.SMSPackageBuyGSTPer</p>
+                                </div>
+
+                                <div class="form-group col-4">
+                                    <label>Employee Buy GST (%)</label>
+                                    <p>@objSASetting.EmployeeBuyGSTPer</p>
+                                </div>
                             </div>
 
                         </div>
-                    }
-                    else if (clsAdminSession.RoleID == (int)AdminRoles.CompanyAdmin)
-                    {
-                    }
+                    </div>
 
-                </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Super Admin Information</h4>
+                            <div class="card-header-action">
+                                <a href="/admin/setting/edit" class="btn btn-primary">Edit</a>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                             
+                            <div class="row">
+                                <div class="form-group col-4">
+                                    <label>Super Admin EmailId</label>
+                                    <p>@objSASetting.SuperAdminEmailId</p>
+                                </div>
+
+                                <div class="form-group col-4">
+                                    <label>Super Admin Mobile No</label>
+                                    <p>@objSASetting.SuperAdminMobileNo</p>
+                                </div>
+
+                            </div>
+                             
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>SMTP Information</h4>
+                            <div class="card-header-action">
+                                <a href="/admin/setting/edit" class="btn btn-primary">Edit</a>
+                            </div>
+                        </div>
+                        <div class="card-body">
+
+                            <div class="row">
+                                <div class="form-group col-4">
+                                    <label>SMTP Host</label>
+                                    <p>@objSASetting.SMTPHost</p>
+                                </div>
+
+                                <div class="form-group col-4">
+                                    <label>SMTP Port</label>
+                                    <p>@objSASetting.SMTPPort</p>
+                                </div>
+
+                                <div class="form-group col-4">
+                                    <label>SMTP Enable SSL</label>
+                                    <p>@objSASetting.SMTPEnableSSL</p>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-4">
+                                    <label>SMTP Email</label>
+                                    <p>@objSASetting.SMTPEmail</p>
+                                </div>
+
+                                <div class="form-group col-4">
+                                    <label>SMTP Password</label>
+                                    <p>@objSASetting.SMTPPassword</p>
+                                </div>
+
+                                <div class="form-group col-4">
+                                    <label>SMTP From Email</label>
+                                    <p>@objSASetting.SMTPFromEmailId</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Razor Pay Information</h4>
+                            <div class="card-header-action">
+                                <a href="/admin/setting/edit" class="btn btn-primary">Edit</a>
+                            </div>
+                        </div>
+                        <div class="card-body">
+
+                            <div class="row">
+                                <div class="form-group col-4">
+                                    <label>Razor Pay Key</label>
+                                    <p>@objSASetting.RazorPayKey</p>
+                                </div>
+
+                                <div class="form-group col-4">
+                                    <label>Razor Pay Secret</label>
+                                    <p>@objSASetting.RazorPaySecret</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                }
+                else if (clsAdminSession.RoleID == (int)AdminRoles.CompanyAdmin)
+                {
+                }
             </div>
         </div>
     </div>

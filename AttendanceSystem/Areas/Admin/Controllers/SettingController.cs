@@ -11,7 +11,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 {
     [PageAccess]
     public class SettingController : Controller
-    {        
+    {
         private readonly AttendanceSystemEntities _db;
         string psSult = ConfigurationManager.AppSettings["PasswordSult"].ToString();
         public SettingController()
@@ -33,8 +33,22 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     if (loggedUserRoleId == (int)AdminRoles.SuperAdmin)
                     {
                         // Super Admin Setting
-                        objSASetting.AccountFreeAccessDays = (int)setting.AccountFreeAccessDays; 
+                        objSASetting.AccountFreeAccessDays = (int)setting.AccountFreeAccessDays;
                         objSASetting.AmountPerEmp = (decimal)setting.AmountPerEmp;
+                        objSASetting.AccountPackageBuyGSTPer = (decimal)setting.AccountPackageBuyGSTPer;
+                        objSASetting.SMSPackageBuyGSTPer = (decimal)setting.SMSPackageBuyGSTPer;
+                        objSASetting.EmployeeBuyGSTPer = (decimal)setting.EmployeeBuyGSTPer;
+
+                        objSASetting.SMTPHost = setting.SMTPHost;
+                        objSASetting.SMTPPort = setting.SMTPPort;
+                        objSASetting.SMTPEmail = setting.SMTPEmail;
+                        objSASetting.SMTPPassword = setting.SMTPPassword;
+                        objSASetting.SMTPEnableSSL = setting.SMTPEnableSSL;
+                        objSASetting.SMTPFromEmailId = setting.SMTPFromEmailId;
+                        objSASetting.SuperAdminEmailId = setting.SuperAdminEmailId;
+                        objSASetting.SuperAdminMobileNo = setting.SuperAdminMobileNo;
+                        objSASetting.RazorPayKey = setting.RazorPayKey;
+                        objSASetting.RazorPaySecret = setting.RazorPaySecret;
 
                         ViewData["objSASetting"] = objSASetting;
                     }
@@ -66,8 +80,22 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                     select new SuperAdminSettingVM
                                                     {
                                                         SettingId = s.SettingId,
-                                                        AccountFreeAccessDays = (int)s.AccountFreeAccessDays, 
-                                                        AmountPerEmp = (decimal)s.AmountPerEmp
+                                                        AccountFreeAccessDays = (int)s.AccountFreeAccessDays,
+                                                        AmountPerEmp = (decimal)s.AmountPerEmp,
+                                                        AccountPackageBuyGSTPer = (decimal)s.AccountPackageBuyGSTPer,
+                                                        SMSPackageBuyGSTPer = (decimal)s.SMSPackageBuyGSTPer,
+                                                        EmployeeBuyGSTPer = (decimal)s.EmployeeBuyGSTPer,
+
+                                                        SMTPHost = s.SMTPHost,
+                                                        SMTPPort = s.SMTPPort,
+                                                        SMTPEmail = s.SMTPEmail,
+                                                        SMTPPassword = s.SMTPPassword,
+                                                        SMTPEnableSSL = s.SMTPEnableSSL,
+                                                        SMTPFromEmailId = s.SMTPFromEmailId,
+                                                        SuperAdminEmailId = s.SuperAdminEmailId,
+                                                        RazorPayKey = s.RazorPayKey,
+                                                        RazorPaySecret = s.RazorPaySecret,
+
                                                     }).FirstOrDefault();
 
                 return View("~/Areas/Admin/Views/Setting/EditSettingSA.cshtml", objSASetting);
@@ -130,8 +158,23 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
 
                     tbl_Setting objSetting = _db.tbl_Setting.FirstOrDefault();
-                    objSetting.AccountFreeAccessDays = settingVM.AccountFreeAccessDays; 
+                    objSetting.AccountFreeAccessDays = settingVM.AccountFreeAccessDays;
                     objSetting.AmountPerEmp = settingVM.AmountPerEmp;
+                    objSetting.AccountPackageBuyGSTPer = settingVM.AccountPackageBuyGSTPer;
+                    objSetting.SMSPackageBuyGSTPer = settingVM.SMSPackageBuyGSTPer;
+                    objSetting.EmployeeBuyGSTPer = settingVM.EmployeeBuyGSTPer;
+
+                    objSetting.SMTPHost = settingVM.SMTPHost;
+                    objSetting.SMTPPort = settingVM.SMTPPort;
+                    objSetting.SMTPEmail = settingVM.SMTPEmail;
+                    objSetting.SMTPPassword = settingVM.SMTPPassword;
+                    objSetting.SMTPEnableSSL = settingVM.SMTPEnableSSL;
+                    objSetting.SMTPFromEmailId = settingVM.SMTPFromEmailId;
+                    objSetting.SuperAdminEmailId = settingVM.SuperAdminEmailId;
+                    objSetting.SuperAdminMobileNo = settingVM.SuperAdminMobileNo;
+                    objSetting.RazorPayKey = settingVM.RazorPayKey;
+                    objSetting.RazorPaySecret = settingVM.RazorPaySecret;
+
                     _db.SaveChanges();
 
                     return RedirectToAction("Index");

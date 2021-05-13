@@ -264,6 +264,8 @@
           <Property Name="AlternateMobile" Type="nvarchar" MaxLength="50" />
           <Property Name="Address" Type="nvarchar" MaxLength="450" />
           <Property Name="City" Type="nvarchar" MaxLength="200" />
+          <Property Name="Pincode" Type="nvarchar" MaxLength="200" />
+          <Property Name="State" Type="nvarchar" MaxLength="200" />
           <Property Name="Designation" Type="nvarchar" MaxLength="350" />
           <Property Name="Dob" Type="datetime" />
           <Property Name="DateOfJoin" Type="datetime" />
@@ -491,6 +493,16 @@
           <Property Name="AccountPackageBuyGSTPer" Type="decimal" Precision="18" Scale="2" />
           <Property Name="SMSPackageBuyGSTPer" Type="decimal" Precision="18" Scale="2" />
           <Property Name="EmployeeBuyGSTPer" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="SMTPHost" Type="nvarchar" MaxLength="50" />
+          <Property Name="SMTPPort" Type="int" />
+          <Property Name="SMTPEmail" Type="nvarchar" MaxLength="100" />
+          <Property Name="SMTPPassword" Type="nvarchar" MaxLength="100" />
+          <Property Name="SMTPEnableSSL" Type="bit" />
+          <Property Name="SMTPFromEmailId" Type="nvarchar" MaxLength="100" />
+          <Property Name="SuperAdminEmailId" Type="nvarchar" MaxLength="100" />
+          <Property Name="SuperAdminMobileNo" Type="nvarchar" MaxLength="15" />
+          <Property Name="RazorPayKey" Type="nvarchar" MaxLength="100" />
+          <Property Name="RazorPaySecret" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="tbl_Site">
           <Key>
@@ -1033,6 +1045,16 @@
           <Property Name="AccountPackageBuyGSTPer" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="SMSPackageBuyGSTPer" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="EmployeeBuyGSTPer" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="SMTPHost" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SMTPPort" Type="Int32" />
+          <Property Name="SMTPEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SMTPPassword" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SMTPEnableSSL" Type="Boolean" />
+          <Property Name="SMTPFromEmailId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SuperAdminEmailId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SuperAdminMobileNo" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="RazorPayKey" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RazorPaySecret" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tbl_Site">
           <Key>
@@ -1238,6 +1260,8 @@
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedBy" Type="Int64" />
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="Pincode" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1673,6 +1697,16 @@
           <EntitySetMapping Name="tbl_Setting">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Setting">
               <MappingFragment StoreEntitySet="tbl_Setting">
+                <ScalarProperty Name="RazorPaySecret" ColumnName="RazorPaySecret" />
+                <ScalarProperty Name="RazorPayKey" ColumnName="RazorPayKey" />
+                <ScalarProperty Name="SuperAdminMobileNo" ColumnName="SuperAdminMobileNo" />
+                <ScalarProperty Name="SuperAdminEmailId" ColumnName="SuperAdminEmailId" />
+                <ScalarProperty Name="SMTPFromEmailId" ColumnName="SMTPFromEmailId" />
+                <ScalarProperty Name="SMTPEnableSSL" ColumnName="SMTPEnableSSL" />
+                <ScalarProperty Name="SMTPPassword" ColumnName="SMTPPassword" />
+                <ScalarProperty Name="SMTPEmail" ColumnName="SMTPEmail" />
+                <ScalarProperty Name="SMTPPort" ColumnName="SMTPPort" />
+                <ScalarProperty Name="SMTPHost" ColumnName="SMTPHost" />
                 <ScalarProperty Name="SettingId" ColumnName="SettingId" />
                 <ScalarProperty Name="AccountFreeAccessDays" ColumnName="AccountFreeAccessDays" />
                 <ScalarProperty Name="AmountPerEmp" ColumnName="AmountPerEmp" />
@@ -1808,6 +1842,8 @@
           <EntitySetMapping Name="tbl_Employee">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Employee">
               <MappingFragment StoreEntitySet="tbl_Employee">
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Pincode" ColumnName="Pincode" />
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
@@ -1861,7 +1897,7 @@
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="true" />
-        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>
