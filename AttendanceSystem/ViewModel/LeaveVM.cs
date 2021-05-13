@@ -24,8 +24,6 @@ namespace AttendanceSystem.ViewModel
         public string LeaveStatusText { get; set; }
         [Display(Name = "Reject Reason")]
         public string RejectReason { get; set; }
-        [Display(Name = "Cancelled Reason")]
-        public string CancelledReason { get; set; }
         public bool IsDeleted { get; set; }
 
     }

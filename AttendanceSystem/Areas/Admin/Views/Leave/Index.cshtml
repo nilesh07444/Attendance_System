@@ -72,7 +72,6 @@
                                         <th>No Of Days</th>
                                         <th>Leave Status</th>
                                         <th>Reject Reason</th>
-                                        <th>Cancelled Reason</th>
                                         <th>Accept/Reject</th>
                                     </tr>
                                 </thead>
@@ -95,7 +94,6 @@
                                                 <td>@obj.NoOfDays</td>
                                                 <td>@obj.LeaveStatusText</td>
                                                 <td>@obj.RejectReason</td>
-                                                <td>@obj.CancelledReason</td>
                                                 <td>
                                                     @if (obj.LeaveStatus == (int)LeaveStatus.Pending)
                                                     {

@@ -57,7 +57,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                NoOfDays = lv.NoOfDays,
                                                LeaveStatus = lv.LeaveStatus,
                                                RejectReason = lv.RejectReason,
-                                               CancelledReason = lv.CancelledReason
                                            }).OrderByDescending(x => x.StartDate).ToList();
 
                 leaveFIlterVM.LeaveList.ForEach(x =>
@@ -137,7 +136,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                NoOfDays = lv.NoOfDays,
                                LeaveStatus = lv.LeaveStatus,
                                RejectReason = lv.RejectReason,
-                               CancelledReason = lv.CancelledReason
                            }).FirstOrDefault();
 
                 leaveVM.LeaveStatusText = CommonMethod.GetEnumDescription((LeaveStatus)leaveVM.LeaveStatus);
