@@ -228,6 +228,8 @@
           <Property Name="RenewDate" Type="datetime" Nullable="false" />
           <Property Name="AccessDays" Type="int" Nullable="false" />
           <Property Name="PackageExpiryDate" Type="datetime" Nullable="false" />
+          <Property Name="NoOfSMS" Type="int" />
+          <Property Name="RemainingSMS" Type="int" />
           <Property Name="CreatedBy" Type="bigint" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="ModifiedBy" Type="bigint" />
@@ -519,6 +521,22 @@
           <Property Name="ModifiedBy" Type="bigint" />
           <Property Name="ModifiedDate" Type="datetime" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="tbl_SMSLog">
+          <Key>
+            <PropertyRef Name="SMSLogId" />
+            <PropertyRef Name="MobileNo" />
+            <PropertyRef Name="Message" />
+            <PropertyRef Name="CreatedBy" />
+            <PropertyRef Name="CreatedDate" />
+          </Key>
+          <Property Name="SMSLogId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MobileNo" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Message" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="CreatedBy" Type="bigint" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="tbl_SMSPackage">
           <Key>
             <PropertyRef Name="SMSPackageId" />
@@ -626,6 +644,15 @@
           <EntitySet Name="tbl_SMSPackage" EntityType="Self.tbl_SMSPackage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Sponsor" EntityType="Self.tbl_Sponsor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Testimonial" EntityType="Self.tbl_Testimonial" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_SMSLog" EntityType="Self.tbl_SMSLog" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [tbl_SMSLog].[SMSLogId] AS [SMSLogId], 
+    [tbl_SMSLog].[MobileNo] AS [MobileNo], 
+    [tbl_SMSLog].[Message] AS [Message], 
+    [tbl_SMSLog].[CreatedBy] AS [CreatedBy], 
+    [tbl_SMSLog].[CreatedDate] AS [CreatedDate]
+    FROM [dbo].[tbl_SMSLog] AS [tbl_SMSLog]</DefiningQuery>
+          </EntitySet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -858,6 +885,8 @@
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ModifiedBy" Type="Int64" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="NoOfSMS" Type="Int32" />
+          <Property Name="RemainingSMS" Type="Int32" />
         </EntityType>
         <EntityType Name="tbl_DynamicContent">
           <Key>
@@ -1177,6 +1206,7 @@
           <EntitySet Name="tbl_LoginHistory" EntityType="AttendanceSystemModel.tbl_LoginHistory" />
           <EntitySet Name="tbl_EmployeePayment" EntityType="AttendanceSystemModel.tbl_EmployeePayment" />
           <EntitySet Name="tbl_Employee" EntityType="AttendanceSystemModel.tbl_Employee" />
+          <EntitySet Name="tbl_SMSLog" EntityType="AttendanceSystemModel.tbl_SMSLog" />
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -1262,6 +1292,20 @@
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
           <Property Name="Pincode" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="State" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tbl_SMSLog">
+          <Key>
+            <PropertyRef Name="SMSLogId" />
+            <PropertyRef Name="MobileNo" />
+            <PropertyRef Name="Message" />
+            <PropertyRef Name="CreatedBy" />
+            <PropertyRef Name="CreatedDate" />
+          </Key>
+          <Property Name="SMSLogId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MobileNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Message" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1493,6 +1537,8 @@
           <EntitySetMapping Name="tbl_CompanySMSPackRenew">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_CompanySMSPackRenew">
               <MappingFragment StoreEntitySet="tbl_CompanySMSPackRenew">
+                <ScalarProperty Name="RemainingSMS" ColumnName="RemainingSMS" />
+                <ScalarProperty Name="NoOfSMS" ColumnName="NoOfSMS" />
                 <ScalarProperty Name="CompanySMSPackRenewId" ColumnName="CompanySMSPackRenewId" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="SMSPackageId" ColumnName="SMSPackageId" />
@@ -1879,6 +1925,17 @@
                 <ScalarProperty Name="AdminRoleId" ColumnName="AdminRoleId" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_SMSLog">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_SMSLog">
+              <MappingFragment StoreEntitySet="tbl_SMSLog">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="MobileNo" ColumnName="MobileNo" />
+                <ScalarProperty Name="SMSLogId" ColumnName="SMSLogId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

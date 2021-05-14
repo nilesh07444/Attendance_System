@@ -25,5 +25,7 @@ namespace AttendanceSystem.Models
         public System.DateTime CreatedDate { get; set; }
         public Nullable<long> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
+        public Nullable<int> NoOfSMS { get; set; }
+        public Nullable<int> RemainingSMS { get; set; }
     }
 }

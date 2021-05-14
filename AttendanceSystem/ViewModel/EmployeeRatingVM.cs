@@ -11,6 +11,7 @@ namespace AttendanceSystem.ViewModel
         [Required, Display(Name = "Employee")]
         public long EmployeeId { get; set; }
         public string EmployeeName { get; set; }
+        public string EmployeeCode { get; set; }
         [Required, Display(Name = "Rate Month")]
         public int RateMonth { get; set; }
         [Required, Display(Name = "Rate Year")]
@@ -24,6 +25,7 @@ namespace AttendanceSystem.ViewModel
         [Required, Display(Name = "Remarks")]
         public string Remarks { get; set; }
 
+        public string AvgRate { get; set; }
         public List<SelectListItem> EmployeeList { get; set; }
     }
 

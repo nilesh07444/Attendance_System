@@ -42,5 +42,83 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             }
             return View(companySMSPackRenewVM);
         }
+        public ActionResult Buy()
+        {
+            List<SMSPackageVM> lstSMSPackages = new List<SMSPackageVM>();
+            try
+            {
+                lstSMSPackages = (from sms in _db.tbl_SMSPackage
+                                      where !sms.IsDeleted && sms.IsActive
+                                      select new SMSPackageVM
+                                      {
+                                          SMSPackageId = sms.SMSPackageId,
+                                          PackageName = sms.PackageName,
+                                          PackageImage = sms.PackageImage,
+                                          PackageAmount = sms.PackageAmount,
+                                          AccessDays = sms.AccessDays,
+                                          NoOfSMS = sms.NoOfSMS
+                                      }).OrderByDescending(x => x.SMSPackageId).ToList();
+
+                ViewData["lstSMSPackages"] = lstSMSPackages;
+
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return View();
+        }
+
+
+        [HttpPost]
+        public JsonResult BuySelectedsmsPackage(PackageBuyVM packageBuyVM)
+        {
+            string message = string.Empty;
+            bool isSuccess = true;
+
+            try
+            {
+                if (packageBuyVM != null && packageBuyVM.PackageId != 0)
+                {
+                    
+                    // Get selected package detail
+                    tbl_SMSPackage objPackage = _db.tbl_SMSPackage.Where(x => x.SMSPackageId == packageBuyVM.PackageId).FirstOrDefault();
+
+                    if (objPackage != null)
+                    {
+                        tbl_CompanySMSPackRenew objCompanySMSPackRenew = new tbl_CompanySMSPackRenew();
+                        objCompanySMSPackRenew.CompanyId = clsAdminSession.CompanyId;
+                        objCompanySMSPackRenew.SMSPackageId = objPackage.SMSPackageId;
+                        objCompanySMSPackRenew.SMSPackageName = objPackage.PackageName;
+                        objCompanySMSPackRenew.RenewDate = DateTime.Now;
+                        objCompanySMSPackRenew.AccessDays = objPackage.AccessDays;
+                        objCompanySMSPackRenew.PackageExpiryDate = DateTime.Now.AddDays(objPackage.AccessDays);
+                        objCompanySMSPackRenew.NoOfSMS = objPackage.NoOfSMS;
+                        objCompanySMSPackRenew.RemainingSMS = objPackage.NoOfSMS;
+                        objCompanySMSPackRenew.CreatedBy = clsAdminSession.UserID;
+                        objCompanySMSPackRenew.CreatedDate = DateTime.Now;
+                        objCompanySMSPackRenew.ModifiedBy = clsAdminSession.UserID;
+                        objCompanySMSPackRenew.ModifiedDate = DateTime.Now;
+                        _db.tbl_CompanySMSPackRenew.Add(objCompanySMSPackRenew);
+                        _db.SaveChanges();
+
+                        isSuccess = true;
+                    }
+                }
+                else
+                {
+                    message = "Request data is not valid.";
+                    isSuccess = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                isSuccess = false;
+                message = ex.Message.ToString();
+            }
+
+            return Json(new { IsSuccess = isSuccess, Message = message }, JsonRequestBehavior.AllowGet);
+        }
     }
 }

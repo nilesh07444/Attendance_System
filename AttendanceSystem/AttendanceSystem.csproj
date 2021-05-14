@@ -302,6 +302,9 @@
     <Compile Include="Models\tbl_Site.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\tbl_SMSLog.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tbl_SMSPackage.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
@@ -1469,6 +1472,7 @@
     </Content>
     <Content Include="Areas\Admin\Views\Leave\Reject.cshtml" />
     <Content Include="Areas\Admin\Views\Attendance\Reject.cshtml" />
+    <Content Include="Areas\Admin\Views\SMSRenew\Buy.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />

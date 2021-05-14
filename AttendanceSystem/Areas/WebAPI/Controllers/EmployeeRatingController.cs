@@ -3,6 +3,7 @@ using AttendanceSystem.Models;
 using AttendanceSystem.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.SqlServer;
 using System.Linq;
 using System.Web.Http;
 
@@ -60,6 +61,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                                                                  EmployeeRatingId = er.EmployeeRatingId,
                                                                  EmployeeId = er.EmployeeId,
+                                                                 EmployeeCode = emp.EmployeeCode,
                                                                  EmployeeName = emp.FirstName + " " + emp.LastName,
                                                                  RateMonth = er.RateMonth,
                                                                  RateYear = er.RateYear,
@@ -67,6 +69,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                                  RegularityRate = er.RegularityRate,
                                                                  WorkRate = er.WorkRate,
                                                                  Remarks = er.Remarks,
+                                                                 AvgRate = SqlFunctions.StringConvert((new decimal[] { er.BehaviourRate, er.RegularityRate, er.WorkRate }).Average(), 4, 2)
                                                              }).OrderByDescending(x => x.RateMonth).ToList();
 
                 response.Data = EmployeeRatingList;
@@ -97,6 +100,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                           {
                                                               EmployeeRatingId = er.EmployeeRatingId,
                                                               EmployeeId = er.EmployeeId,
+                                                              EmployeeCode = emp.EmployeeCode,
                                                               EmployeeName = emp.FirstName + " " + emp.LastName,
                                                               RateMonth = er.RateMonth,
                                                               RateYear = er.RateYear,
@@ -104,6 +108,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                               RegularityRate = er.RegularityRate,
                                                               WorkRate = er.WorkRate,
                                                               Remarks = er.Remarks,
+                                                              AvgRate = SqlFunctions.StringConvert((new decimal[] { er.BehaviourRate, er.RegularityRate, er.WorkRate }).Average(), 4, 2)
                                                           }).FirstOrDefault();
 
                 response.Data = EmployeeRatingDetails;
@@ -142,6 +147,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                                                                  EmployeeRatingId = er.EmployeeRatingId,
                                                                  EmployeeId = er.EmployeeId,
+                                                                 EmployeeCode = emp.EmployeeCode,
                                                                  EmployeeName = emp.FirstName + " " + emp.LastName,
                                                                  RateMonth = er.RateMonth,
                                                                  RateYear = er.RateYear,
@@ -149,7 +155,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                                  RegularityRate = er.RegularityRate,
                                                                  WorkRate = er.WorkRate,
                                                                  Remarks = er.Remarks,
-                                                             }).OrderByDescending(x => (x.BehaviourRate+x.RegularityRate+x.WorkRate)/3).Take(10).ToList();
+                                                                 AvgRate = SqlFunctions.StringConvert((new decimal[] { er.BehaviourRate, er.RegularityRate, er.WorkRate }).Average(), 4, 2)
+                                                             }).OrderByDescending(x => (x.BehaviourRate + x.RegularityRate + x.WorkRate) / 3).Take(10).ToList();
 
                 response.Data = EmployeeRatingList;
             }

@@ -1,0 +1,93 @@
+﻿@using AttendanceSystem.ViewModel
+@{
+    ViewBag.Title = "SMS Renew";
+    List<SMSPackageVM> lstSMSPackages = ViewData["lstSMSPackages"] as List<SMSPackageVM>;
+}
+
+
+<section class="section">
+
+    <div class="card-header" style="margin-bottom:20px;">
+        <h4>Buy New Account Package</h4>
+    </div>
+
+    <div class="section-body">
+
+        <div class="row">
+
+            @if (lstSMSPackages != null && lstSMSPackages.Count > 0)
+            {
+                foreach (SMSPackageVM obj in lstSMSPackages)
+                {
+                    <div class="col-12 col-md-4 col-lg-4">
+                        <div class="pricing pricing-highlight">
+                            <div class="pricing-title">
+                                @obj.PackageName
+                            </div>
+                            <div class="pricing-padding">
+                                <div class="pricing-price">
+                                    <div>@obj.PackageAmount /-</div>
+                                </div>
+                                <div class="pricing-details">
+                                    <div class="pricing-item">
+                                        <div class="pricing-item-icon"><i class="fas fa-check"></i></div>
+                                        <div class="pricing-item-label">@obj.PackageName</div>
+                                    </div>
+                                    <div class="pricing-item">
+                                        <div class="pricing-item-icon"><i class="fas fa-check"></i></div>
+                                        <div class="pricing-item-label">@obj.AccessDays days access</div>
+                                    </div>
+                                    <div class="pricing-item">
+                                        <div class="pricing-item-icon"><i class="fas fa-check"></i></div>
+                                        <div class="pricing-item-label">@obj.NoOfSMS SMS Usage</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pricing-cta">
+                                <a href="javascript:void(0);" onclick="fnBuyNowPackage('@obj.SMSPackageId', '@obj.PackageName')">Buy Now <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+            }
+
+        </div>
+    </div>
+</section>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<script type="text/javascript">
+
+    function fnBuyNowPackage(smsPackageId, packageName) {
+        var r = confirm("Are you sure want to buy '" + packageName + "' package ?");
+        if (r == true) {
+
+            var StrURL = '/admin/smsrenew/BuySelectedsmsPackage';
+            $.ajax({
+                url: StrURL,
+                cache: false,
+                data: {
+                    'PackageId': smsPackageId
+                },
+                type: 'POST',
+                success: function (data) {
+                    debugger;
+                    if (data != null) {
+                        alert(data.Message);
+                    }
+                    else {
+                        alert("Something went wrong. Please try again later.")
+                    }
+                },
+                error: function (req, status, error) {
+                    debugger;
+                    alert(error);
+                }
+            });
+
+        }
+    }
+
+</script>
