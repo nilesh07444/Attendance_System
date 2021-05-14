@@ -63,6 +63,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                      AlternateMobile = emp.AlternateMobile,
                                                      Address = emp.Address,
                                                      City = emp.City,
+                                                     Pincode = emp.Pincode,
+                                                     State = emp.State,
                                                      Designation = emp.Designation,
                                                      Dob = emp.Dob,
                                                      DateOfJoin = emp.DateOfJoin,
@@ -114,6 +116,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                   AlternateMobile = emp.AlternateMobile,
                                   Address = emp.Address,
                                   City = emp.City,
+                                  Pincode = emp.Pincode,
+                                  State = emp.State,
                                   Designation = emp.Designation,
                                   Dob = emp.Dob,
                                   DateOfJoin = emp.DateOfJoin,
@@ -195,6 +199,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployee.AlternateMobile = employeeVM.AlternateMobile;
                         objEmployee.Address = employeeVM.Address;
                         objEmployee.City = employeeVM.City;
+                        objEmployee.Pincode = employeeVM.Pincode;
+                        objEmployee.State = employeeVM.State;
                         objEmployee.Designation = employeeVM.Designation;
                         objEmployee.Dob = employeeVM.Dob;
                         objEmployee.DateOfJoin = employeeVM.DateOfJoin;
@@ -230,6 +236,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployee.AlternateMobile = employeeVM.AlternateMobile;
                         objEmployee.Address = employeeVM.Address;
                         objEmployee.City = employeeVM.City;
+                        objEmployee.Pincode = employeeVM.Pincode;
+                        objEmployee.State = employeeVM.State;
                         objEmployee.Designation = employeeVM.Designation;
                         objEmployee.Dob = employeeVM.Dob;
                         objEmployee.DateOfJoin = employeeVM.DateOfJoin;

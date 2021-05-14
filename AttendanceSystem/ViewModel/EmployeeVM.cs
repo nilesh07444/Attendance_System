@@ -32,6 +32,10 @@ namespace AttendanceSystem.ViewModel
         public string Address { get; set; }
         [Display(Name = "City")]
         public string City { get; set; }
+        [Display(Name = "Pincode")]
+        public string Pincode { get; set; }
+        [Display(Name = "State")]
+        public string State { get; set; }
         [Display(Name = "Designation")]
         public string Designation { get; set; }
         [Required, Display(Name = "Date of Birth")]

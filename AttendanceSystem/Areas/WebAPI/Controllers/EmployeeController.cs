@@ -53,6 +53,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     objEmployee.EmployeeCode = CommonMethod.getEmployeeCodeFormat(companyId, objCompany.CompanyName, empCount);
                     objEmployee.Address = employeeVM.Address;
                     objEmployee.City = employeeVM.City;
+                    objEmployee.Pincode = employeeVM.Pincode;
+                    objEmployee.State = employeeVM.State;
                     objEmployee.IsActive = true;
                     objEmployee.CreatedBy = employeeId;
                     objEmployee.CreatedDate = DateTime.UtcNow;
@@ -102,6 +104,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                    EmployeeCode = emp.EmployeeCode,
                                                    Address = emp.Address,
                                                    City = emp.City,
+                                                   Pincode = emp.Pincode,
+                                                   State = emp.State,
                                                    IsActive = true,
                                                }).OrderByDescending(x => x.EmployeeId).ToList();
                 response.Data = workerList;
@@ -146,6 +150,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                 EmployeeCode = emp.EmployeeCode,
                                                 Address = emp.Address,
                                                 City = emp.City,
+                                                Pincode = emp.Pincode,
+                                                State = emp.State,
                                                 IsActive = true,
                                             }).FirstOrDefault();
 
@@ -205,6 +211,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         employeeObject.AdharCardNo = employeeVM.AdharCardNo;
                         employeeObject.Address = employeeVM.Address;
                         employeeObject.City = employeeVM.City;
+                        employeeObject.Pincode = employeeVM.Pincode;
+                        employeeObject.State = employeeVM.State;
                         employeeObject.UpdatedBy = employeeId;
                         employeeObject.UpdatedDate = DateTime.UtcNow;
                         _db.SaveChanges();
@@ -254,6 +262,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                    AdharCardNo = emp.AdharCardNo,
                                                    Address = emp.Address,
                                                    City = emp.City,
+                                                   Pincode = emp.Pincode,
+                                                   State = emp.State,
                                                    IsActive = true,
                                                }).ToList();
                 response.Data = workerList;

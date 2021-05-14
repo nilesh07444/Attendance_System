@@ -39,162 +39,174 @@
 
                 @using (Html.BeginForm("Add", "Employee", FormMethod.Post, new { @id = "EmployeeFormId", @class = "", enctype = "multipart/form-data", role = "form" }))
                 {
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.AdminRoleId, htmlAttributes: new { @class = "" })
-                                @Html.DropDownListFor(model => model.AdminRoleId, new SelectList(Model.UserRoleList, "Value", "Text"), "- Select -", new { @class = "form-control required" })
-                                @Html.ValidationMessageFor(model => model.AdminRoleId, "", new { @class = "text-danger" })
-                                @Html.HiddenFor(model => model.EmployeeId)
-                            </div>
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.Prefix, htmlAttributes: new { @class = "" })
-                                @Html.DropDownListFor(model => model.Prefix, new SelectList(lstPrefix, "Value", "Text"), "- Select -", new { @class = "form-control", style = "width: 100%" })
-                                @Html.ValidationMessageFor(model => model.Prefix, "", new { @class = "text-danger" })
-                            </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="form-group col-6">
+                            @Html.LabelFor(model => model.AdminRoleId, htmlAttributes: new { @class = "" })
+                            @Html.DropDownListFor(model => model.AdminRoleId, new SelectList(Model.UserRoleList, "Value", "Text"), "- Select -", new { @class = "form-control required" })
+                            @Html.ValidationMessageFor(model => model.AdminRoleId, "", new { @class = "text-danger" })
+                            @Html.HiddenFor(model => model.EmployeeId)
                         </div>
-                        <div class="row">
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.FirstName, new { @type = "text", @class = "form-control required", @placeholder = "Enter First Name" })
-                                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.LastName, new { @type = "text", @class = "form-control required", @placeholder = "Enter Last Name" })
-                                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
-                            </div>
+                        <div class="form-group col-6">
+                            @Html.LabelFor(model => model.Prefix, htmlAttributes: new { @class = "" })
+                            @Html.DropDownListFor(model => model.Prefix, new SelectList(lstPrefix, "Value", "Text"), "- Select -", new { @class = "form-control", style = "width: 100%" })
+                            @Html.ValidationMessageFor(model => model.Prefix, "", new { @class = "text-danger" })
                         </div>
-                        <div class="row">
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.Email, new { @type = "email", @class = "form-control required", @placeholder = "Enter Email" })
-                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.MobileNo, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.MobileNo, new { @type = "text", @class = "form-control required", @placeholder = "Enter Mobile no", @maxlength = "10" })
-                                @Html.ValidationMessageFor(model => model.MobileNo, "", new { @class = "text-danger" })
-                            </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-6">
+                            @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "" })
+                            @Html.TextBoxFor(model => model.FirstName, new { @type = "text", @class = "form-control required", @placeholder = "Enter First Name" })
+                            @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
                         </div>
-                        <div class="row">
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.AlternateMobile, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.AlternateMobile, new { @type = "text", @class = "form-control", @placeholder = "Enter Alternate Mobile no", @maxlength = "10" })
-                                @Html.ValidationMessageFor(model => model.AlternateMobile, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.Designation, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.Designation, new { @type = "text", @class = "form-control", @placeholder = "Enter Designation" })
-                                @Html.ValidationMessageFor(model => model.Designation, "", new { @class = "text-danger" })
-                            </div>
+                        <div class="form-group col-6">
+                            @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "" })
+                            @Html.TextBoxFor(model => model.LastName, new { @type = "text", @class = "form-control required", @placeholder = "Enter Last Name" })
+                            @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
                         </div>
-                        <div class="row">
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "" })
-                                @Html.TextAreaFor(model => model.Address, new { @type = "text", @class = "form-control required", @placeholder = "Enter Address", @maxlength = "250" })
-                                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.City, new { @type = "text", @class = "form-control required", @placeholder = "Enter City" })
-                                @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
-                            </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-6">
+                            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "" })
+                            @Html.TextBoxFor(model => model.Email, new { @type = "email", @class = "form-control required", @placeholder = "Enter Email" })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                         </div>
-                        <div class="row">
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.Dob, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.Dob, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Enter Date of Birth" })
-                                @Html.ValidationMessageFor(model => model.Dob, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.DateOfJoin, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.DateOfJoin, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Enter Date of Joining" })
-                                @Html.ValidationMessageFor(model => model.DateOfJoin, "", new { @class = "text-danger" })
-                            </div>
+                        <div class="form-group col-6">
+                            @Html.LabelFor(model => model.MobileNo, htmlAttributes: new { @class = "" })
+                            @Html.TextBoxFor(model => model.MobileNo, new { @type = "text", @class = "form-control required", @placeholder = "Enter Mobile no", @maxlength = "10" })
+                            @Html.ValidationMessageFor(model => model.MobileNo, "", new { @class = "text-danger" })
                         </div>
-                        <div class="row">
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.BloodGroup, htmlAttributes: new { @class = "" })
-                                @Html.DropDownListFor(model => model.BloodGroup, new SelectList(lstBloodGroup, "Value", "Text"), "- Select -", new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.BloodGroup, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.WorkingTime, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.WorkingTime, new { @type = "text", @class = "form-control", @placeholder = "Enter Working Time" })
-                                @Html.ValidationMessageFor(model => model.WorkingTime, "", new { @class = "text-danger" })
-                            </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-6">
+                            @Html.LabelFor(model => model.AlternateMobile, htmlAttributes: new { @class = "" })
+                            @Html.TextBoxFor(model => model.AlternateMobile, new { @type = "text", @class = "form-control", @placeholder = "Enter Alternate Mobile no", @maxlength = "10" })
+                            @Html.ValidationMessageFor(model => model.AlternateMobile, "", new { @class = "text-danger" })
                         </div>
-                        <div class="row">
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.AdharCardNo, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.AdharCardNo, new { @type = "text", @class = "form-control", @placeholder = "Enter Adhar Card No", @maxlength = "12" })
-                                @Html.ValidationMessageFor(model => model.AdharCardNo, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.DateOfIdCardExpiry, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.DateOfIdCardExpiry, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control", @placeholder = "Enter Date Of Id Card Expiry" })
-                                @Html.ValidationMessageFor(model => model.DateOfIdCardExpiry, "", new { @class = "text-danger" })
-                            </div>
+                        <div class="form-group col-6">
+                            @Html.LabelFor(model => model.Designation, htmlAttributes: new { @class = "" })
+                            @Html.TextBoxFor(model => model.Designation, new { @type = "text", @class = "form-control", @placeholder = "Enter Designation" })
+                            @Html.ValidationMessageFor(model => model.Designation, "", new { @class = "text-danger" })
                         </div>
-                        <div class="row">
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-6">
+                            @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "" })
+                            @Html.TextAreaFor(model => model.Address, new { @type = "text", @class = "form-control required", @placeholder = "Enter Address", @maxlength = "250" })
+                            @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-6">
+                            @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "" })
+                            @Html.TextBoxFor(model => model.City, new { @type = "text", @class = "form-control required", @placeholder = "Enter City" })
+                            @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-6">
+                            @Html.LabelFor(model => model.Pincode, htmlAttributes: new { @class = "" })
+                            @Html.TextAreaFor(model => model.Pincode, new { @type = "text", @class = "form-control required", @placeholder = "Enter Pincode", @maxlength = "250" })
+                            @Html.ValidationMessageFor(model => model.Pincode, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-6">
+                            @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "" })
+                            @Html.TextBoxFor(model => model.State, new { @type = "text", @class = "form-control required", @placeholder = "Enter State" })
+                            @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-6">
+                            @Html.LabelFor(model => model.Dob, htmlAttributes: new { @class = "" })
+                            @Html.TextBoxFor(model => model.Dob, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Enter Date of Birth" })
+                            @Html.ValidationMessageFor(model => model.Dob, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-6">
+                            @Html.LabelFor(model => model.DateOfJoin, htmlAttributes: new { @class = "" })
+                            @Html.TextBoxFor(model => model.DateOfJoin, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Enter Date of Joining" })
+                            @Html.ValidationMessageFor(model => model.DateOfJoin, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-6">
+                            @Html.LabelFor(model => model.BloodGroup, htmlAttributes: new { @class = "" })
+                            @Html.DropDownListFor(model => model.BloodGroup, new SelectList(lstBloodGroup, "Value", "Text"), "- Select -", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.BloodGroup, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-6">
+                            @Html.LabelFor(model => model.WorkingTime, htmlAttributes: new { @class = "" })
+                            @Html.TextBoxFor(model => model.WorkingTime, new { @type = "text", @class = "form-control", @placeholder = "Enter Working Time" })
+                            @Html.ValidationMessageFor(model => model.WorkingTime, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-6">
+                            @Html.LabelFor(model => model.AdharCardNo, htmlAttributes: new { @class = "" })
+                            @Html.TextBoxFor(model => model.AdharCardNo, new { @type = "text", @class = "form-control", @placeholder = "Enter Adhar Card No", @maxlength = "12" })
+                            @Html.ValidationMessageFor(model => model.AdharCardNo, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-6">
+                            @Html.LabelFor(model => model.DateOfIdCardExpiry, htmlAttributes: new { @class = "" })
+                            @Html.TextBoxFor(model => model.DateOfIdCardExpiry, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control", @placeholder = "Enter Date Of Id Card Expiry" })
+                            @Html.ValidationMessageFor(model => model.DateOfIdCardExpiry, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
 
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.EmploymentCategory, htmlAttributes: new { @class = "" })
-                                @Html.DropDownListFor(model => model.EmploymentCategory, new SelectList(lstEmploymentCategory, "Value", "Text"), "- Select -", new { @class = "form-control required" })
-                                @Html.ValidationMessageFor(model => model.EmploymentCategory, "", new { @class = "text-danger" })
-                            </div>
-
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.PerCategoryPrice, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.PerCategoryPrice, new { @type = "text", @class = "form-control required", @placeholder = "Enter Per Category Price", @maxlength = "5", @min = "1" })
-                                @Html.ValidationMessageFor(model => model.PerCategoryPrice, "", new { @class = "text-danger" })
-                            </div>
-
+                        <div class="form-group col-6">
+                            @Html.LabelFor(model => model.EmploymentCategory, htmlAttributes: new { @class = "" })
+                            @Html.DropDownListFor(model => model.EmploymentCategory, new SelectList(lstEmploymentCategory, "Value", "Text"), "- Select -", new { @class = "form-control required" })
+                            @Html.ValidationMessageFor(model => model.EmploymentCategory, "", new { @class = "text-danger" })
                         </div>
-                        <div class="row">
 
-                            <div class="form-group col-6" id="dvMonthlySal">
-                                @Html.LabelFor(model => model.MonthlySalaryPrice, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.MonthlySalaryPrice, new { @type = "text", @class = "form-control", @placeholder = "Enter Monthly salary Price", @maxlength = "5", @min = "1" })
-                                @Html.ValidationMessageFor(model => model.MonthlySalaryPrice, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.ExtraPerHourPrice, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.ExtraPerHourPrice, new { @type = "text", @class = "form-control required", @placeholder = "Enter Extra Per Hour Price", @maxlength = "5", @min = "1" })
-                                @Html.ValidationMessageFor(model => model.ExtraPerHourPrice, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.ProfileImageFile, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.ProfileImageFile, new { type = "file", @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.ProfileImageFile, "", new { @class = "text-danger" })
-                            </div>
-
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-6">
-
-                                @Html.LabelFor(model => model.IsLeaveForward, htmlAttributes: new { @class = "" })
-                                @Html.CheckBoxFor(model => model.IsLeaveForward, new { @type = "checkbox" })
-
-                            </div>
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.IsFingerprintEnabled, htmlAttributes: new { @class = "" })
-                                @Html.CheckBoxFor(model => model.IsFingerprintEnabled)
-                            </div>
-
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-12">
-                                @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "" })
-                                @Html.TextAreaFor(model => model.Remarks, new { @type = "text", @class = "form-control", @placeholder = "Enter Remark", @maxlength = "12" })
-                                @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
-                            </div>
+                        <div class="form-group col-6">
+                            @Html.LabelFor(model => model.PerCategoryPrice, htmlAttributes: new { @class = "" })
+                            @Html.TextBoxFor(model => model.PerCategoryPrice, new { @type = "text", @class = "form-control required", @placeholder = "Enter Per Category Price", @maxlength = "5", @min = "1" })
+                            @Html.ValidationMessageFor(model => model.PerCategoryPrice, "", new { @class = "text-danger" })
                         </div>
 
                     </div>
+                    <div class="row">
+
+                        <div class="form-group col-6" id="dvMonthlySal">
+                            @Html.LabelFor(model => model.MonthlySalaryPrice, htmlAttributes: new { @class = "" })
+                            @Html.TextBoxFor(model => model.MonthlySalaryPrice, new { @type = "text", @class = "form-control", @placeholder = "Enter Monthly salary Price", @maxlength = "5", @min = "1" })
+                            @Html.ValidationMessageFor(model => model.MonthlySalaryPrice, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-6">
+                            @Html.LabelFor(model => model.ExtraPerHourPrice, htmlAttributes: new { @class = "" })
+                            @Html.TextBoxFor(model => model.ExtraPerHourPrice, new { @type = "text", @class = "form-control required", @placeholder = "Enter Extra Per Hour Price", @maxlength = "5", @min = "1" })
+                            @Html.ValidationMessageFor(model => model.ExtraPerHourPrice, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-6">
+                            @Html.LabelFor(model => model.ProfileImageFile, htmlAttributes: new { @class = "" })
+                            @Html.TextBoxFor(model => model.ProfileImageFile, new { type = "file", @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.ProfileImageFile, "", new { @class = "text-danger" })
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-6">
+
+                            @Html.LabelFor(model => model.IsLeaveForward, htmlAttributes: new { @class = "" })
+                            @Html.CheckBoxFor(model => model.IsLeaveForward, new { @type = "checkbox" })
+
+                        </div>
+                        <div class="form-group col-6">
+                            @Html.LabelFor(model => model.IsFingerprintEnabled, htmlAttributes: new { @class = "" })
+                            @Html.CheckBoxFor(model => model.IsFingerprintEnabled)
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-12">
+                            @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "" })
+                            @Html.TextAreaFor(model => model.Remarks, new { @type = "text", @class = "form-control", @placeholder = "Enter Remark", @maxlength = "12" })
+                            @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                </div>
 
                     <div class="card-footer text-center">
                         <button class="btn btn-primary mr-1" type="submit" id="btnSubmit">Submit</button>
