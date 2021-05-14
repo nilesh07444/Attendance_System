@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace AttendanceSystem.ViewModel
+namespace AttendanceSystem
 {
     public class PackageVM
     {
@@ -28,5 +28,12 @@ namespace AttendanceSystem.ViewModel
         public int NoOfSMS { get; set; }
         [Display(Name = "No of Employee")]
         public int NoOfEmployee { get; set; }
+
+        [Display(Name = "Package Color Code")]
+        public string PackageColorCode { get; set; }
+
+        [Display(Name = "Package Font Icon")]
+        public string PackageFontIcon { get; set; }
+
     }
 }

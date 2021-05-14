@@ -478,6 +478,8 @@
           <Property Name="PackageImage" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="NoOfEmployee" Type="int" Nullable="false" />
           <Property Name="NoOfSMS" Type="int" Nullable="false" />
+          <Property Name="PackageColorCode" Type="nvarchar" MaxLength="100" />
+          <Property Name="PackageFontIcon" Type="nvarchar" MaxLength="100" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
@@ -1063,6 +1065,8 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <Property Name="CreatedBy" Type="Int64" Nullable="false" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int64" />
+          <Property Name="PackageColorCode" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PackageFontIcon" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tbl_Setting">
           <Key>
@@ -1723,6 +1727,8 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <EntitySetMapping Name="tbl_Package">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Package">
               <MappingFragment StoreEntitySet="tbl_Package">
+                <ScalarProperty Name="PackageFontIcon" ColumnName="PackageFontIcon" />
+                <ScalarProperty Name="PackageColorCode" ColumnName="PackageColorCode" />
                 <ScalarProperty Name="PackageId" ColumnName="PackageId" />
                 <ScalarProperty Name="PackageName" ColumnName="PackageName" />
                 <ScalarProperty Name="Amount" ColumnName="Amount" />

@@ -38,7 +38,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                IsActive = pck.IsActive,
                                PackageImage = pck.PackageImage,
                                NoOfSMS = pck.NoOfSMS,
-                               NoOfEmployee = pck.NoOfEmployee
+                               NoOfEmployee = pck.NoOfEmployee,
+                               PackageColorCode = pck.PackageColorCode,
+                               PackageFontIcon = pck.PackageFontIcon
                            }).OrderByDescending(x => x.PackageId).ToList();
             }
             catch (Exception ex)
@@ -64,7 +66,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                  PackageImage = pkg.PackageImage,
                                  IsActive = pkg.IsActive,
                                  NoOfSMS = pkg.NoOfSMS,
-                                 NoOfEmployee = pkg.NoOfEmployee
+                                 NoOfEmployee = pkg.NoOfEmployee,
+                                 PackageColorCode = pkg.PackageColorCode,
+                                 PackageFontIcon = pkg.PackageFontIcon
                              }).FirstOrDefault();
             }
 
@@ -121,6 +125,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objPackage.AccessDays = packageVM.AccessDays;
                         objPackage.NoOfSMS = packageVM.NoOfSMS;
                         objPackage.NoOfEmployee = packageVM.NoOfEmployee;
+                        objPackage.PackageColorCode = packageVM.PackageColorCode;
+                        objPackage.PackageFontIcon = packageVM.PackageFontIcon;
                         objPackage.ModifiedBy = LoggedInUserId;
                         objPackage.ModifiedDate = DateTime.UtcNow;
                     }
@@ -135,6 +141,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objPackage.IsActive = true;
                         objPackage.NoOfSMS = packageVM.NoOfSMS;
                         objPackage.NoOfEmployee = packageVM.NoOfEmployee;
+                        objPackage.PackageColorCode = packageVM.PackageColorCode;
+                        objPackage.PackageFontIcon = packageVM.PackageFontIcon;
                         objPackage.CreatedBy = LoggedInUserId;
                         objPackage.CreatedDate = DateTime.UtcNow;
                         objPackage.ModifiedBy = LoggedInUserId;

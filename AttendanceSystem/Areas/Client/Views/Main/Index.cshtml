@@ -3,7 +3,7 @@
     ViewBag.Title = "Home";
 
     List<HomeImageVM> lstHomeImages = ViewData["lstHomeImages"] as List<HomeImageVM>;
-
+    List<PackageVM> lstPackages = ViewData["lstPackages"] as List<PackageVM>;
 }
 
 <!-- Home Image Slider - Start-->
@@ -37,6 +37,53 @@
     </div>
 }
 <!-- Home Image Slider - End -->
+<!--? Categories Area Start -->
+@if (lstPackages != null && lstPackages.Count > 0)
+{
+    <div class="categories-area section-padding30">
+        <div class="container">
+            <div class="row">
+                <div class="cl-xl-7 col-lg-8 col-md-10">
+                    <!-- Section Tittle -->
+                    <div class="section-tittle mb-70">
+                        <span>Our Account Packages</span>
+                        <h2>Buy Account Packages</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                @{ int accountPackageCounter = 1; }
+                @foreach (PackageVM obj in lstPackages)
+                {
+
+                    <div class="col-md-3 col-sm-6">
+                        <div class="pricingTable">
+                            <div id="pricingTableHeader_@accountPackageCounter" class="pricingTable-header" onmouseover="mouseover('@accountPackageCounter', '@obj.PackageColorCode')" onmouseout="mouseout('@accountPackageCounter', '@obj.PackageColorCode')">
+                                <i class="@obj.PackageFontIcon"></i>
+                                <div class="price-value" id="heading_@accountPackageCounter" style="color: @obj.PackageColorCode"> @obj.Amount <span class="month" id="per_@accountPackageCounter">per month</span> </div>
+                            </div>
+                            <h3 class="heading" style="color: @obj.PackageColorCode">@obj.PackageName</h3>
+                            <div class="pricing-content">
+                                <ul>
+                                    <li><b>60GB</b> Disk Space</li>
+                                    <li><b>60</b> Email Accounts</li>
+                                    <li><b>60GB</b> Monthly Bandwidth</li>
+                                    <li><b>15</b> subdomains</li>
+                                    <li><b>20</b> Domains</li>
+                                </ul>
+                            </div>
+                            <div class="pricingTable-signup">
+                                <a target="_blank" href="/admin/login" style="background: @obj.PackageColorCode">Buy</a>
+                            </div>
+                        </div>
+                    </div>
+                    { accountPackageCounter++; }
+                }
+            </div>
+        </div>
+    </div>
+}
+<!-- Services Area End -->
 <!--? Categories Area Start -->
 <div class="categories-area section-padding30">
     <div class="container">
@@ -418,3 +465,17 @@
     </div>
 </div>
 <!-- Brand Area End -->
+
+<script>
+    function mouseover(counter, colorcode) {
+        $("#pricingTableHeader_" + counter).css("background", colorcode);
+        $("#heading_" + counter).css("color", "white");
+        $("#per_" + counter).css("color", "white");
+    }
+
+    function mouseout(counter, colorcode) {
+        $("#pricingTableHeader_" + counter).css("background", "#f5f6f9");
+        $("#heading_" + counter).css("color", colorcode);
+        $("#per_" + counter).css("color", colorcode);
+    }
+</script>
