@@ -87,5 +87,7 @@
         public static string CompanyIsNotActive = "Company is not active.";
         public static string CompanyAccountIsExpired = "Company account is expired.";
         public static string CompanyTrailAccountIsExpired = "Company trail account is expired.";
+
+        public static string SMSPackageIsExpired = "SMS package is expired.";
     }
 }

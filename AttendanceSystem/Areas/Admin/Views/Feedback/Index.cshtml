@@ -1,6 +1,6 @@
 ﻿@using AttendanceSystem.Helper
 @using AttendanceSystem.ViewModel;
-@model List<AttendanceSystem.ViewModel.FeedbackVM>
+@model AttendanceSystem.ViewModel.FeedBackFilterVM
 @{
     /**/
 
@@ -17,12 +17,35 @@
                         <h4>Company Feedback List</h4>
                     </div>
                     <div class="card-body">
-                        @if (clsAdminSession.RoleID == (int)AdminRoles.CompanyAdmin)
-                        {
-                            <div class="pull-right">
-                                <a href="/admin/feedback/add" class="btn btn-icon icon-left btn-primary"><i class="fas fa-plus-circle"></i> Add feedback</a>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label>Feedback Status</label>
+                                    @Html.DropDownListFor(model => model.FeedbackStatus, new SelectList(Model.FeedBackStatusList, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8 required", style = "" })
+                                </div>
                             </div>
-                        }
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label>Feedback Type</label>
+                                    @Html.DropDownListFor(model => model.FeedbackType, new SelectList(Model.FeedBackTypeList, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8 required", style = "" })
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label style="padding-top:45px"></label>
+                                    <button class="btn btn-primary mr-1" id="btnSearch" type="button">Search</button>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    @if (clsAdminSession.RoleID == (int)AdminRoles.CompanyAdmin)
+                                    {
+                                        <label style="padding-top:45px"></label>
+                                        <a href="/admin/feedback/add" class="btn btn-icon icon-left btn-primary"><i class="fas fa-plus-circle"></i> Add feedback</a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
                         <div class="table-responsive">
                             <table class="table table-striped table-hover" id="tableExport" style="width:100%;">
                                 <thead>
@@ -40,9 +63,9 @@
                                 </thead>
                                 <tbody>
 
-                                    @if (Model != null && Model.Count > 0)
+                                    @if (Model != null && Model.FeedBackList.Count > 0)
                                     {
-                                        foreach (FeedbackVM obj in Model)
+                                        foreach (FeedbackVM obj in Model.FeedBackList)
                                         {
                                             <tr class="gradeX">
                                                 <td>@counter.</td>
@@ -75,4 +98,16 @@
         </div>
     </div>
 </section>
-
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnSearch').click(function () {
+            var feedbackStatus = $("#FeedbackStatus").val();
+            var feedbackType = $("#FeedbackType").val();
+            StartLoading();
+            window.location.href = "/admin/feedback/Index?feedbackType=" + feedbackType + "&feedbackStatus=" + feedbackStatus;
+        });
+    });
+</script>

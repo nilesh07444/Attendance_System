@@ -18,6 +18,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         public string employeeDirectoryPath = "";
         string psSult;
         string enviornment;
+        long companyId;
+        long loggedInUserId;
+        bool isTrailMode;
         // GET: Admin/Employee
         public EmployeeController()
         {
@@ -25,6 +28,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             employeeDirectoryPath = ErrorMessage.EmployeeDirectoryPath;
             psSult = ConfigurationManager.AppSettings["PasswordSult"].ToString();
             enviornment = ConfigurationManager.AppSettings["Environment"].ToString();
+            companyId = clsAdminSession.CompanyId;
+            loggedInUserId = clsAdminSession.UserID;
+            isTrailMode = clsAdminSession.IsTrialMode;
         }
         public ActionResult Index(int? userRole = null, int? userStatus = null)
         {
@@ -41,7 +47,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
             try
             {
-                long companyId = clsAdminSession.CompanyId;
+
                 employeeFilterVM.EmployeeList = (from emp in _db.tbl_Employee
                                                  join rl in _db.mst_AdminRole on emp.AdminRoleId equals rl.AdminRoleId
                                                  where !emp.IsDeleted && emp.CompanyId == companyId
@@ -151,9 +157,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
                 if (ModelState.IsValid)
                 {
-                    long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
-                    long companyId = Int64.Parse(clsAdminSession.CompanyId.ToString());
-
                     string fileName = string.Empty;
                     string path = Server.MapPath(employeeDirectoryPath);
 
@@ -215,7 +218,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployee.ExtraPerHourPrice = employeeVM.ExtraPerHourPrice;
                         objEmployee.IsLeaveForward = employeeVM.IsLeaveForward;
                         objEmployee.IsFingerprintEnabled = employeeVM.IsFingerprintEnabled;
-                        objEmployee.UpdatedBy = LoggedInUserId;
+                        objEmployee.UpdatedBy = loggedInUserId;
                         objEmployee.UpdatedDate = DateTime.UtcNow;
                     }
                     else
@@ -253,9 +256,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployee.IsLeaveForward = employeeVM.IsLeaveForward;
                         objEmployee.IsActive = true;
                         objEmployee.IsFingerprintEnabled = employeeVM.IsFingerprintEnabled;
-                        objEmployee.CreatedBy = LoggedInUserId;
+                        objEmployee.CreatedBy = loggedInUserId;
                         objEmployee.CreatedDate = DateTime.UtcNow;
-                        objEmployee.UpdatedBy = LoggedInUserId;
+                        objEmployee.UpdatedBy = loggedInUserId;
                         objEmployee.UpdatedDate = DateTime.UtcNow;
                         _db.tbl_Employee.Add(objEmployee);
                     }
@@ -331,7 +334,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                 if (objEmployee != null)
                 {
-                    long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
                     if (Status == "Active")
                     {
                         objEmployee.IsActive = true;
@@ -341,7 +343,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployee.IsActive = false;
                     }
 
-                    objEmployee.UpdatedBy = LoggedInUserId;
+                    objEmployee.UpdatedBy = loggedInUserId;
                     objEmployee.UpdatedDate = DateTime.UtcNow;
 
                     _db.SaveChanges();
@@ -372,9 +374,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 }
                 else
                 {
-                    long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
+
                     objEmployee.IsDeleted = true;
-                    objEmployee.UpdatedBy = LoggedInUserId;
+                    objEmployee.UpdatedBy = loggedInUserId;
                     objEmployee.UpdatedDate = DateTime.UtcNow;
                     _db.SaveChanges();
 
@@ -423,10 +425,14 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     if (enviornment != "Development")
                     {
                         string msg = "Your Otp code for Login is " + num;
-                        msg = HttpUtility.UrlEncode(msg);
-                        string url = CommonMethod.GetSMSUrl().Replace("--MOBILE--", mobileNo).Replace("--MSG--", msg);
-                        var json = webClient.DownloadString(url);
-                        if (json.Contains("invalidnumber"))
+                        ResponseDataModel<string> response = CommonMethod.SendSMS(msg, mobileNo, companyId, loggedInUserId, isTrailMode);
+                        var json = response.Data;
+                        if (response.IsError)
+                        {
+                            status = 0;
+                            errorMessage = string.Join(", ", response.ErrorData);
+                        }
+                        else if (json.Contains("invalidnumber"))
                         {
                             status = 0;
                             errorMessage = ErrorMessage.InvalidMobileNo;
@@ -434,7 +440,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         else
                         {
                             status = 1;
-
                             otp = num.ToString();
                         }
                     }

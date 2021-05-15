@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
@@ -25,6 +24,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         public string aadharCardDirectoryPath = "";
         public string panCardDirectoryPath = "";
         public string CancellationChequeDirectoryPath = "";
+        long loggedInUserId ;
         string enviornment;
         public CompanyController()
         {
@@ -38,6 +38,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             panCardDirectoryPath = ErrorMessage.PancardDirectoryPath;
             CancellationChequeDirectoryPath = ErrorMessage.CancellationChequeDirectoryPath;
             enviornment = ConfigurationManager.AppSettings["Environment"].ToString();
+            loggedInUserId = clsAdminSession.UserID;
         }
         // GET: Admin/Company
         public ActionResult Registered()
@@ -169,11 +170,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
                     tbl_CompanyRequest objCompanyReq = _db.tbl_CompanyRequest.FirstOrDefault(x => x.CompanyRequestId == companyRequestVM.CompanyRequestId);
                     objCompanyReq.RequestStatus = companyRequestVM.RequestStatus;
                     objCompanyReq.RejectReason = companyRequestVM.RejectReason;
-                    objCompanyReq.ModifiedBy = LoggedInUserId;
+                    objCompanyReq.ModifiedBy = loggedInUserId;
                     objCompanyReq.ModifiedDate = DateTime.UtcNow;
                     _db.SaveChanges();
 
@@ -206,9 +206,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objcomp.IsTrialMode = true;
                         objcomp.TrialExpiryDate = DateTime.Now.AddDays(objCompanyReq.FreeAccessDays);
                         objcomp.IsActive = true;
-                        objcomp.CreatedBy = LoggedInUserId;
+                        objcomp.CreatedBy = loggedInUserId;
                         objcomp.CreatedDate = DateTime.UtcNow;
-                        objcomp.ModifiedBy = LoggedInUserId;
+                        objcomp.ModifiedBy = loggedInUserId;
                         objcomp.ModifiedDate = DateTime.UtcNow;
                         _db.tbl_Company.Add(objcomp);
                         _db.SaveChanges();
@@ -246,9 +246,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objAdminUser.AadharCardPhoto = objCompanyReq.CompanyAdminAadharCardPhoto;
                         objAdminUser.PanCardPhoto = objCompanyReq.CompanyAdminPanCardPhoto;
                         objAdminUser.IsActive = true;
-                        objAdminUser.CreatedBy = LoggedInUserId;
+                        objAdminUser.CreatedBy = loggedInUserId;
                         objAdminUser.CreatedDate = DateTime.UtcNow;
-                        objAdminUser.ModifiedBy = LoggedInUserId;
+                        objAdminUser.ModifiedBy = loggedInUserId;
                         objAdminUser.ModifiedDate = DateTime.UtcNow;
                         _db.tbl_AdminUser.Add(objAdminUser);
                         _db.SaveChanges();
@@ -365,7 +365,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         {
             try
             {
-                long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
+               
                 IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
                 if (ModelState.IsValid)
                 {
@@ -598,7 +598,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     objCompany.Description = companyRequestVM.CompanyDescription;
                     objCompany.WebisteUrl = companyRequestVM.CompanyWebisteUrl;
                     objCompany.CancellationChequePhoto = !string.IsNullOrEmpty(chqFileName) ? chqFileName : objCompany.CancellationChequePhoto; ;
-                    objCompany.ModifiedBy = LoggedInUserId;
+                    objCompany.ModifiedBy = loggedInUserId;
                     objCompany.ModifiedDate = DateTime.UtcNow;
 
                     string companyCode = string.Empty;
@@ -626,7 +626,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     objUser.AadharCardPhoto = companyAdminAdharCardFileName;
                     objUser.PanCardPhoto = companyAdminPancardFileName;
                     objUser.PanCardNo = companyRequestVM.CompanyAdminPanCardNo;
-                    objUser.ModifiedBy = LoggedInUserId;
+                    objUser.ModifiedBy = loggedInUserId;
                     objUser.ModifiedDate = DateTime.UtcNow;
                     if (isCompanyNameChanged)
                     {
@@ -663,33 +663,28 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                    select emp.MobileNo).FirstOrDefault();
                 if (!string.IsNullOrEmpty(mobileNo))
                 {
-                    using (WebClient webClient = new WebClient())
+                    Random random = new Random();
+                    int num = random.Next(555555, 999999);
+                    if (enviornment != "Development")
                     {
-                        Random random = new Random();
-                        int num = random.Next(555555, 999999);
-                        if (enviornment != "Development")
+                        string msg = "Your Otp code for Login is " + num;
+                        var json = CommonMethod.SuperAdminSendSMS(msg, mobileNo, loggedInUserId);
+                        if (json.Contains("invalidnumber"))
                         {
-                            string msg = "Your Otp code for Login is " + num;
-                            msg = HttpUtility.UrlEncode(msg);
-                            string url = CommonMethod.GetSMSUrl().Replace("--MOBILE--", mobileNo).Replace("--MSG--", msg);
-                            var json = webClient.DownloadString(url);
-                            if (json.Contains("invalidnumber"))
-                            {
-                                status = 0;
-                                errorMessage = ErrorMessage.InvalidMobileNo;
-                            }
-                            else
-                            {
-                                status = 1;
-
-                                otp = num.ToString();
-                            }
+                            status = 0;
+                            errorMessage = ErrorMessage.InvalidMobileNo;
                         }
                         else
                         {
                             status = 1;
+
                             otp = num.ToString();
                         }
+                    }
+                    else
+                    {
+                        status = 1;
+                        otp = num.ToString();
                     }
                 }
                 else

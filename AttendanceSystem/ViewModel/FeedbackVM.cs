@@ -27,7 +27,17 @@ namespace AttendanceSystem.ViewModel
         public bool IsActive { get; set; }
         [Display(Name = "Feedback Date")]
         public DateTime CreatedDate { get; set; }
-        public List<SelectListItem> FeedBackTypeLIst { get; set; }
-        public List<SelectListItem> FeedBackStatusLIst { get; set; }
+        public List<SelectListItem> FeedBackTypeList { get; set; }
+        public List<SelectListItem> FeedBackStatusList { get; set; }
+    }
+
+    public class FeedBackFilterVM
+    {
+        public int? FeedbackType { get; set; }
+        public int? FeedbackStatus { get; set; }
+        public List<SelectListItem> FeedBackTypeList { get; set; }
+        public List<SelectListItem> FeedBackStatusList { get; set; }
+
+        public List<FeedbackVM> FeedBackList { get; set; }
     }
 }

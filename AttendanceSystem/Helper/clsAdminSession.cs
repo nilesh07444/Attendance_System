@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 
 namespace AttendanceSystem.Helper
 {
     public class clsAdminSession
     {
- 
+
         public static long UserID
         {
             get
@@ -20,7 +16,7 @@ namespace AttendanceSystem.Helper
             {
                 HttpContext.Current.Session["UserID"] = value;
             }
-        } 
+        }
         public static int RoleID
         {
             get
@@ -146,6 +142,18 @@ namespace AttendanceSystem.Helper
             set
             {
                 HttpContext.Current.Session["CompanyTypeId"] = value;
+            }
+        }
+
+        public static bool IsTrialMode
+        {
+            get
+            {
+                return HttpContext.Current.Session["IsTrialMode"] != null ? Convert.ToBoolean(Convert.ToString(HttpContext.Current.Session["IsTrialMode"])) : false;
+            }
+            set
+            {
+                HttpContext.Current.Session["IsTrialMode"] = value;
             }
         }
     }

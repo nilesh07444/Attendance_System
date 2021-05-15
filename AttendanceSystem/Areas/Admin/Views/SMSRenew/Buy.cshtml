@@ -3,12 +3,102 @@
     ViewBag.Title = "SMS Renew";
     List<SMSPackageVM> lstSMSPackages = ViewData["lstSMSPackages"] as List<SMSPackageVM>;
 }
+<style>
+    a {
+        text-decoration: none;
+    }
 
+    .pricingTable {
+        text-align: center;
+        background: #fff;
+        margin: 0 -15px;
+        box-shadow: 0 0 10px #ababab;
+        padding-bottom: 40px;
+        border-radius: 10px;
+        color: #cad0de;
+        transform: scale(1);
+        transition: all .5s ease 0s
+    }
+
+        .pricingTable:hover {
+            transform: scale(1.05);
+            z-index: 1
+        }
+
+        .pricingTable .pricingTable-header {
+            padding: 40px 0;
+            background: #f5f6f9;
+            border-radius: 10px 10px 50% 50%;
+            transition: all .5s ease 0s
+        }
+
+        .pricingTable:hover .pricingTable-header {
+            background: #ff9624
+        }
+
+        .pricingTable .pricingTable-header i {
+            font-size: 50px;
+            color: #858c9a;
+            margin-bottom: 10px;
+            transition: all .5s ease 0s
+        }
+
+        .pricingTable .price-value {
+            font-size: 35px;
+            color: #ff9624;
+            transition: all .5s ease 0s
+        }
+
+        .pricingTable .month {
+            display: block;
+            font-size: 14px;
+            color: #cad0de
+        }
+
+        .pricingTable:hover .month,
+        .pricingTable:hover .price-value,
+        .pricingTable:hover .pricingTable-header i {
+            color: #fff
+        }
+
+        .pricingTable .heading {
+            font-size: 24px;
+            color: #ff9624;
+            margin-bottom: 20px;
+            text-transform: uppercase
+        }
+
+        .pricingTable .pricing-content ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 30px
+        }
+
+            .pricingTable .pricing-content ul li {
+                line-height: 30px;
+                color: #a7a8aa
+            }
+
+        .pricingTable .pricingTable-signup a {
+            display: inline-block;
+            font-size: 15px;
+            color: #fff;
+            padding: 10px 35px;
+            border-radius: 20px;
+            background: #ffa442;
+            text-transform: uppercase;
+            transition: all .3s ease 0s
+        }
+
+            .pricingTable .pricingTable-signup a:hover {
+                box-shadow: 0 0 10px #ffa442
+            }
+</style>
 
 <section class="section">
 
     <div class="card-header" style="margin-bottom:20px;">
-        <h4>Buy New Account Package</h4>
+        <h4>Buy New SMS Package</h4>
     </div>
 
     <div class="section-body">
@@ -19,31 +109,21 @@
             {
                 foreach (SMSPackageVM obj in lstSMSPackages)
                 {
-                    <div class="col-12 col-md-4 col-lg-4">
-                        <div class="pricing pricing-highlight">
-                            <div class="pricing-title">
-                                @obj.PackageName
+
+                    <div class="col-md-3 col-sm-6">
+                        <div class="pricingTable" style="color: @obj.PackageColorCode">
+                            <div class="pricingTable-header">
+                                <i class="fa fa-cube"></i>
+                                <div class="price-value"> @obj.PackageAmount <span class="month">per month</span> </div>
                             </div>
-                            <div class="pricing-padding">
-                                <div class="pricing-price">
-                                    <div>@obj.PackageAmount /-</div>
-                                </div>
-                                <div class="pricing-details">
-                                    <div class="pricing-item">
-                                        <div class="pricing-item-icon"><i class="fas fa-check"></i></div>
-                                        <div class="pricing-item-label">@obj.PackageName</div>
-                                    </div>
-                                    <div class="pricing-item">
-                                        <div class="pricing-item-icon"><i class="fas fa-check"></i></div>
-                                        <div class="pricing-item-label">@obj.AccessDays days access</div>
-                                    </div>
-                                    <div class="pricing-item">
-                                        <div class="pricing-item-icon"><i class="fas fa-check"></i></div>
-                                        <div class="pricing-item-label">@obj.NoOfSMS SMS Usage</div>
-                                    </div>
-                                </div>
+                            <h3 class="heading">Extra</h3>
+                            <div class="pricing-content">
+                                <ul>
+                                    <li><b>@obj.AccessDays</b> Access Days</li>
+                                    <li><b>@obj.NoOfSMS</b> No Of SMS</li>
+                                </ul>
                             </div>
-                            <div class="pricing-cta">
+                            <div class="pricingTable-signup">
                                 <a href="javascript:void(0);" onclick="fnBuyNowPackage('@obj.SMSPackageId', '@obj.PackageName')">Buy Now <i class="fas fa-arrow-right"></i></a>
                             </div>
                         </div>

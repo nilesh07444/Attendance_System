@@ -22,38 +22,49 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             companyId = clsAdminSession.CompanyId;
             loggedInUserId = clsAdminSession.UserID;
         }
-        public ActionResult Index()
+        public ActionResult Index(int? feedbackType = null, int? feedbackStatus = null)
         {
-            List<FeedbackVM> feedbackVM = new List<FeedbackVM>();
+            FeedBackFilterVM feedBackFilterVM = new FeedBackFilterVM();
+
+            if (feedbackType.HasValue)
+                feedBackFilterVM.FeedbackType = feedbackType.Value;
+            if(feedbackStatus.HasValue)
+                feedBackFilterVM.FeedbackStatus = feedbackStatus.Value;
+
             try
             {
 
                 List<SelectListItem> feedBackTypeList = GetFeedbackTypeList();
                 List<SelectListItem> feedBackStatusList = GetFeedbackStatusList();
 
-                feedbackVM = (from fb in _db.tbl_Feedback
-                              join cmp in _db.tbl_Company on fb.CompanyId equals cmp.CompanyId
-                              where fb.IsActive && !fb.IsDeleted
-                              && (loggedInUserRoleId == (int)AdminRoles.CompanyAdmin ? fb.CompanyId == companyId : true)
-                              select new FeedbackVM
-                              {
-                                  FeedbackId = fb.FeedbackId,
-                                  CompanyId = fb.CompanyId,
-                                  CompanyName = cmp.CompanyName,
-                                  FeedbackType = fb.FeedbackType,
-                                  FeedbackStatus = fb.FeedbackStatus,
-                                  FeedbackText = fb.FeedbackText,
-                                  Remarks = fb.Remarks,
-                                  SuperAdminFeedbackText = fb.SuperAdminFeedbackText,
-                                  IsDeleted = fb.IsDeleted,
-                                  IsActive = fb.IsActive
-                              }).ToList();
+                feedBackFilterVM.FeedBackList = (from fb in _db.tbl_Feedback
+                                                 join cmp in _db.tbl_Company on fb.CompanyId equals cmp.CompanyId
+                                                 where fb.IsActive && !fb.IsDeleted
+                                                 && (loggedInUserRoleId == (int)AdminRoles.CompanyAdmin ? fb.CompanyId == companyId : true)
+                                                 && (feedBackFilterVM.FeedbackType.HasValue ? fb.FeedbackType == feedBackFilterVM.FeedbackType.Value : true)
+                                                 && (feedBackFilterVM.FeedbackStatus.HasValue ? fb.FeedbackStatus == feedBackFilterVM.FeedbackStatus.Value : true)
+                                                 select new FeedbackVM
+                                                 {
+                                                     FeedbackId = fb.FeedbackId,
+                                                     CompanyId = fb.CompanyId,
+                                                     CompanyName = cmp.CompanyName,
+                                                     FeedbackType = fb.FeedbackType,
+                                                     FeedbackStatus = fb.FeedbackStatus,
+                                                     FeedbackText = fb.FeedbackText,
+                                                     Remarks = fb.Remarks,
+                                                     SuperAdminFeedbackText = fb.SuperAdminFeedbackText,
+                                                     IsDeleted = fb.IsDeleted,
+                                                     IsActive = fb.IsActive
+                                                 }).ToList();
 
-                feedbackVM.ForEach(x =>
+                feedBackFilterVM.FeedBackList.ForEach(x =>
                 {
                     x.FeedbackTypeText = feedBackTypeList.Where(z => z.Value == x.FeedbackType.ToString()).Select(z => z.Text).FirstOrDefault();
                     x.FeedbackStatusText = feedBackStatusList.Where(z => z.Value == x.FeedbackStatus.ToString()).Select(z => z.Text).FirstOrDefault();
                 });
+
+                feedBackFilterVM.FeedBackTypeList = feedBackTypeList;
+                feedBackFilterVM.FeedBackStatusList = feedBackStatusList;
 
             }
             catch (Exception ex)
@@ -61,14 +72,14 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 string ErrorMessage = ex.Message.ToString();
                 throw ex;
             }
-            return View(feedbackVM);
+            return View(feedBackFilterVM);
         }
 
         public ActionResult Add()
         {
             FeedbackVM feedbackVM = new FeedbackVM();
             feedbackVM.CompanyId = clsAdminSession.CompanyId;
-            feedbackVM.FeedBackTypeLIst = GetFeedbackTypeList();
+            feedbackVM.FeedBackTypeList = GetFeedbackTypeList();
             return View(feedbackVM);
         }
 
@@ -98,12 +109,12 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                     _db.SaveChanges();
 
-                   
+
 
                 }
                 else
                 {
-                    feedbackVM.FeedBackTypeLIst = GetFeedbackTypeList();
+                    feedbackVM.FeedBackTypeList = GetFeedbackTypeList();
                     return View(feedbackVM);
                 }
             }
@@ -141,8 +152,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
 
                 feedbackVM.FeedbackTypeText = CommonMethod.GetEnumDescription((FeedbackType)feedbackVM.FeedbackType);
-                feedbackVM.FeedBackStatusLIst = GetFeedbackStatusList();
-                feedbackVM.FeedBackStatusLIst.RemoveAt(0);//remove pending status from list
+                feedbackVM.FeedBackStatusList = GetFeedbackStatusList();
+                feedbackVM.FeedBackStatusList.RemoveAt(0);//remove pending status from list
             }
             catch (Exception ex)
             {
@@ -174,8 +185,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 }
                 else
                 {
-                    feedbackVM.FeedBackStatusLIst = GetFeedbackStatusList();
-                    feedbackVM.FeedBackStatusLIst.RemoveAt(0);//remove pending status from list
+                    feedbackVM.FeedBackStatusList = GetFeedbackStatusList();
+                    feedbackVM.FeedBackStatusList.RemoveAt(0);//remove pending status from list
                 }
             }
             catch (Exception ex)

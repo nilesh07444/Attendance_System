@@ -36,7 +36,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                AccessDays = pck.AccessDays,
                                IsActive = pck.IsActive,
                                PackageImage = pck.PackageImage,
-                               NoOfSMS = pck.NoOfSMS
+                               NoOfSMS = pck.NoOfSMS,
+                               PackageColorCode = pck.PackageColorCode,
+                               PackageFontIcon = pck.PackageFontIcon
                            }).OrderByDescending(x => x.SMSPackageId).ToList();
             }
             catch (Exception ex)
@@ -60,7 +62,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                  NoOfSMS = pkg.NoOfSMS,
                                  AccessDays = pkg.AccessDays,
                                  PackageImage = pkg.PackageImage,
-                                 IsActive = pkg.IsActive
+                                 IsActive = pkg.IsActive,
+                                 PackageColorCode = pkg.PackageColorCode,
+                                 PackageFontIcon = pkg.PackageFontIcon
                              }).FirstOrDefault();
             }
 
@@ -115,6 +119,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objSMSPackage.PackageAmount = SMSPackageVM.PackageAmount;
                         objSMSPackage.NoOfSMS= SMSPackageVM.NoOfSMS;
                         objSMSPackage.AccessDays = SMSPackageVM.AccessDays;
+                        objSMSPackage.PackageColorCode = SMSPackageVM.PackageColorCode;
+                        objSMSPackage.PackageFontIcon = SMSPackageVM.PackageFontIcon;
                         objSMSPackage.ModifiedBy = LoggedInUserId;
                         objSMSPackage.ModifiedDate = DateTime.UtcNow;
                     }
@@ -126,6 +132,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objSMSPackage.NoOfSMS = SMSPackageVM.NoOfSMS;
                         objSMSPackage.AccessDays = SMSPackageVM.AccessDays;
                         objSMSPackage.PackageImage = fileName;
+                        objSMSPackage.PackageColorCode = SMSPackageVM.PackageColorCode;
+                        objSMSPackage.PackageFontIcon = SMSPackageVM.PackageFontIcon;
                         objSMSPackage.IsActive = true;
                         objSMSPackage.CreatedBy = LoggedInUserId;
                         objSMSPackage.CreatedDate = DateTime.UtcNow;
@@ -162,7 +170,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                              NoOfSMS = pkg.NoOfSMS,
                              AccessDays = pkg.AccessDays,
                              PackageImage = pkg.PackageImage,
-                             IsActive = pkg.IsActive
+                             IsActive = pkg.IsActive,
+                             PackageColorCode = pkg.PackageColorCode,
+                             PackageFontIcon = pkg.PackageFontIcon
                          }).FirstOrDefault();
 
             return View(SMSPackageVM);

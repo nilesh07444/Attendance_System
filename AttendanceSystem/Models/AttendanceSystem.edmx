@@ -549,6 +549,8 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <Property Name="PackageAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="AccessDays" Type="int" Nullable="false" />
           <Property Name="NoOfSMS" Type="int" Nullable="false" />
+          <Property Name="PackageColorCode" Type="nvarchar" MaxLength="200" />
+          <Property Name="PackageFontIcon" Type="nvarchar" MaxLength="200" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="CreatedBy" Type="bigint" Nullable="false" />
@@ -1120,6 +1122,8 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ModifiedBy" Type="Int64" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="PackageColorCode" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PackageFontIcon" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tbl_Sponsor">
           <Key>
@@ -1787,6 +1791,8 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <EntitySetMapping Name="tbl_SMSPackage">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_SMSPackage">
               <MappingFragment StoreEntitySet="tbl_SMSPackage">
+                <ScalarProperty Name="PackageFontIcon" ColumnName="PackageFontIcon" />
+                <ScalarProperty Name="PackageColorCode" ColumnName="PackageColorCode" />
                 <ScalarProperty Name="SMSPackageId" ColumnName="SMSPackageId" />
                 <ScalarProperty Name="PackageName" ColumnName="PackageName" />
                 <ScalarProperty Name="PackageImage" ColumnName="PackageImage" />

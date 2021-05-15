@@ -19,6 +19,10 @@ namespace AttendanceSystem.ViewModel
         public int AccessDays { get; set; }
         [Required, Display(Name = "No Of SMS")]
         public int NoOfSMS { get; set; }
+        [Required, Display(Name = "Color Code")]
+        public string PackageColorCode { get; set; }
+        [Required, Display(Name = "Font Icon")]
+        public string PackageFontIcon { get; set; }
         public string PackageImage { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }

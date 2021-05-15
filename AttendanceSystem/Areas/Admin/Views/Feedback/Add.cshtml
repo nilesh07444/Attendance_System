@@ -19,7 +19,7 @@
                         <div class="row">
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.FeedbackType, htmlAttributes: new { @class = "" })
-                                @Html.DropDownListFor(model => model.FeedbackType, new SelectList(Model.FeedBackTypeLIst, "Value", "Text"), "- Select -", new { @class = "form-control required" })
+                                @Html.DropDownListFor(model => model.FeedbackType, new SelectList(Model.FeedBackTypeList, "Value", "Text"), "- Select -", new { @class = "form-control required" })
                                 @Html.ValidationMessageFor(model => model.FeedbackType, "", new { @class = "text-danger" })
                             </div>
 

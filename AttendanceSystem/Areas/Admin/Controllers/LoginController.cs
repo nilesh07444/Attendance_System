@@ -3,8 +3,6 @@ using AttendanceSystem.Models;
 using System;
 using System.Configuration;
 using System.Linq;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using static AttendanceSystem.ViewModel.AccountModels;
 
@@ -45,34 +43,28 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 {
                     if (data.AdminUserRoleId == (int)AdminRoles.SuperAdmin || data.AdminUserRoleId == (int)AdminRoles.CompanyAdmin)
                     {
-
-                        using (WebClient webClient = new WebClient())
+                        Random random = new Random();
+                        int num = random.Next(555555, 999999);
+                        if (enviornment != "Development")
                         {
-                            Random random = new Random();
-                            int num = random.Next(555555, 999999);
-                            if (enviornment != "Development")
+                            string msg = "Your Otp code for Login is " + num;
+                            var json = CommonMethod.SuperAdminSendSMS(msg, data.MobileNo, -1);
+                            if (json.Contains("invalidnumber"))
                             {
-                                string msg = "Your Otp code for Login is " + num;
-                                msg = HttpUtility.UrlEncode(msg);
-                                string url = CommonMethod.GetSMSUrl().Replace("--MOBILE--", data.MobileNo).Replace("--MSG--", msg);
-                                var json = webClient.DownloadString(url);
-                                if (json.Contains("invalidnumber"))
-                                {
-                                    status = 0;
-                                    errorMessage = ErrorMessage.InvalidMobileNo;
-                                }
-                                else
-                                {
-                                    status = 1;
-
-                                    otp = num.ToString();
-                                }
+                                status = 0;
+                                errorMessage = ErrorMessage.InvalidMobileNo;
                             }
                             else
                             {
                                 status = 1;
+
                                 otp = num.ToString();
                             }
+                        }
+                        else
+                        {
+                            status = 1;
+                            otp = num.ToString();
                         }
                     }
                     else
@@ -119,6 +111,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 clsAdminSession.MobileNumber = data.MobileNo;
                 clsAdminSession.CompanyId = data.CompanyId.HasValue ? data.CompanyId.Value : 0;
                 clsAdminSession.CompanyTypeId = companyObj != null ? companyObj.CompanyTypeId : 0;
+                clsAdminSession.IsTrialMode = companyObj != null ? companyObj.IsTrialMode : false;
             }
             catch (Exception ex)
             {
@@ -167,25 +160,19 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                 if (data != null)
                 {
-                    using (WebClient webClient = new WebClient())
+                    Random random = new Random();
+                    int num = random.Next(555555, 999999);
+                    string msg = "Your Otp code for Login is " + num;
+                    var json = CommonMethod.SuperAdminSendSMS(msg, data.MobileNo, -1);
+                    if (json.Contains("invalidnumber"))
                     {
-                        Random random = new Random();
-                        int num = random.Next(555555, 999999);
-                        string msg = "Your Otp code for Login is " + num;
-                        msg = HttpUtility.UrlEncode(msg);
-                        string url = CommonMethod.GetSMSUrl().Replace("--MOBILE--", data.MobileNo).Replace("--MSG--", msg);
-                        var json = webClient.DownloadString(url);
-                        if (json.Contains("invalidnumber"))
-                        {
-                            status = 0;
-                            errorMessage = ErrorMessage.InvalidMobileNo;
-                        }
-                        else
-                        {
-                            status = 1;
-                            otp = num.ToString();
-                        }
-
+                        status = 0;
+                        errorMessage = ErrorMessage.InvalidMobileNo;
+                    }
+                    else
+                    {
+                        status = 1;
+                        otp = num.ToString();
                     }
                 }
                 else

@@ -1,12 +1,16 @@
-﻿using System;
+﻿using AttendanceSystem.Helper;
+using AttendanceSystem.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Web;
 using System.Web.Configuration;
 
 namespace AttendanceSystem
@@ -482,5 +486,110 @@ namespace AttendanceSystem
             }
             return empCode;
         }
+
+        public static string SuperAdminSendSMS(string msg, string mobileNo, long employeeId)
+        {
+            using (WebClient webClient = new WebClient())
+            {
+                msg = HttpUtility.UrlEncode(msg);
+                string url = GetSMSUrl().Replace("--MOBILE--", mobileNo).Replace("--MSG--", msg);
+                var json = webClient.DownloadString(url);
+
+                AttendanceSystemEntities _db = new AttendanceSystemEntities();
+                tbl_SMSLog smsLog = new tbl_SMSLog();
+                smsLog.Message = msg;
+                smsLog.MobileNo = mobileNo;
+                smsLog.CreatedBy = employeeId;
+                smsLog.CreatedDate = DateTime.UtcNow;
+                _db.tbl_SMSLog.Add(smsLog);
+                _db.SaveChanges();
+                return json;
+            }
+        }
+
+        public static ResponseDataModel<string> SendSMS(string msg, string mobileNo, long companyId, long employeeId, bool isTrialMode = false)
+        {
+            ResponseDataModel<string> response = new ResponseDataModel<string>();
+            try
+            {
+                if (!isTrialMode)
+                {
+                    AttendanceSystemEntities _db = new AttendanceSystemEntities();
+                    tbl_CompanySMSPackRenew activeSMSPackage = null;
+                    tbl_CompanySMSPackRenew currentSMSPackage = _db.tbl_CompanySMSPackRenew.Where(x => x.CompanyId == companyId
+                    && x.RenewDate <= DateTime.Now
+                    && x.PackageExpiryDate > DateTime.Now).FirstOrDefault();
+
+                    //could not found any active package 
+                    if (currentSMSPackage == null)
+                    {
+                        response.IsError = true;
+                        response.AddError(ErrorMessage.SMSPackageIsExpired);
+                    }
+                    else
+                    {
+                        //current package expired or sms get over
+                        if (currentSMSPackage.RemainingSMS == 0 || currentSMSPackage.PackageExpiryDate < DateTime.Now)
+                        {
+                            tbl_CompanySMSPackRenew nextSMSPackage = _db.tbl_CompanySMSPackRenew.Where(x => x.CompanyId == companyId
+                                                                    && x.RemainingSMS > 0).OrderBy(z => z.SMSPackageId).Take(1).FirstOrDefault();
+                            if (nextSMSPackage == null)
+                            {
+                                response.IsError = true;
+                                response.AddError(ErrorMessage.SMSPackageIsExpired);
+                            }
+                            else
+                            {
+                                currentSMSPackage.PackageExpiryDate = DateTime.Now.AddMinutes(-1);
+                                nextSMSPackage.RenewDate = DateTime.Now;
+                                nextSMSPackage.PackageExpiryDate = DateTime.Now.AddDays(nextSMSPackage.AccessDays);
+                                _db.SaveChanges();
+                                activeSMSPackage = nextSMSPackage;
+                            }
+                        }
+                        else
+                        {
+                            activeSMSPackage = currentSMSPackage;
+                        }
+                    }
+
+                    if (!response.IsError)
+                    {
+                        using (WebClient webClient = new WebClient())
+                        {
+                            msg = HttpUtility.UrlEncode(msg);
+                            string url = GetSMSUrl().Replace("--MOBILE--", mobileNo).Replace("--MSG--", msg);
+                            var json = webClient.DownloadString(url);
+                            response.IsError = false;
+                            response.Data = json;
+                            activeSMSPackage = _db.tbl_CompanySMSPackRenew.Where(x => x.SMSPackageId == activeSMSPackage.SMSPackageId).FirstOrDefault();
+                            activeSMSPackage.RemainingSMS = activeSMSPackage.RemainingSMS - 1;
+                            _db.SaveChanges();
+
+                            tbl_SMSLog smsLog = new tbl_SMSLog();
+                            smsLog.Message = msg;
+                            smsLog.MobileNo = mobileNo;
+                            smsLog.CreatedBy = employeeId;
+                            smsLog.CreatedDate = DateTime.UtcNow;
+                            _db.tbl_SMSLog.Add(smsLog);
+                            _db.SaveChanges();
+                        }
+                    }
+                }
+                else
+                {
+                    response.IsError = false;
+                    response.Data = SuperAdminSendSMS(msg, mobileNo, employeeId);
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message);
+            }
+
+            return response;
+        }
+
     }
 }
