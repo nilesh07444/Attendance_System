@@ -84,18 +84,20 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                         AmountPerEmp = (decimal)s.AmountPerEmp,
                                                         AccountPackageBuyGSTPer = (decimal)s.AccountPackageBuyGSTPer,
                                                         SMSPackageBuyGSTPer = (decimal)s.SMSPackageBuyGSTPer,
-                                                        EmployeeBuyGSTPer = (decimal)s.EmployeeBuyGSTPer,
-
+                                                        EmployeeBuyGSTPer = (decimal)s.EmployeeBuyGSTPer,                                                                                                                
                                                         SMTPHost = s.SMTPHost,
                                                         SMTPPort = s.SMTPPort,
                                                         SMTPEmail = s.SMTPEmail,
                                                         SMTPPassword = s.SMTPPassword,
                                                         SMTPEnableSSL = s.SMTPEnableSSL,
                                                         SMTPFromEmailId = s.SMTPFromEmailId,
+
                                                         SuperAdminEmailId = s.SuperAdminEmailId,
+                                                        SuperAdminMobileNo = s.SuperAdminMobileNo,
+                                                        
                                                         RazorPayKey = s.RazorPayKey,
                                                         RazorPaySecret = s.RazorPaySecret,
-
+                                                        
                                                     }).FirstOrDefault();
 
                 return View("~/Areas/Admin/Views/Setting/EditSettingSA.cshtml", objSASetting);

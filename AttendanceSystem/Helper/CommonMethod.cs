@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
@@ -591,5 +592,46 @@ namespace AttendanceSystem
             return response;
         }
 
+        public static void SendEmail(string To, string from, string subject, string body)
+        {
+            try
+            {
+                AttendanceSystemEntities _db = new AttendanceSystemEntities();
+                MailMessage mailMessage = new MailMessage(
+                      from, // From field
+                      To, // Recipient field
+                     subject, // Subject of the email message
+                      body // Email message body
+           );
+                mailMessage.From = new MailAddress(from, "Contract Book");
+
+                tbl_Setting objGensetting = _db.tbl_Setting.FirstOrDefault();
+                string SMTPHost = objGensetting.SMTPHost;
+                int SMTpPort = Convert.ToInt32(objGensetting.SMTPPort);
+                string SMTPEMail = objGensetting.SMTPEmail;
+                string SMTPPwd = objGensetting.SMTPPassword;
+                 
+                mailMessage.IsBodyHtml = true;
+                // System.Net.Mail.MailMessage mailMessage = (System.Net.Mail.MailMessage)mailMsg;
+
+                /* Setting should be kept somewhere so no need to 
+                   pass as a parameter (might be in web.config)       */
+                using (SmtpClient client = new SmtpClient())
+                {
+                    client.EnableSsl = objGensetting.SMTPEnableSSL == true ? true : false;
+                    client.UseDefaultCredentials = false;
+                    client.Host = objGensetting.SMTPHost;
+                    client.Port = Convert.ToInt32(objGensetting.SMTPPort);
+                    client.Credentials = new NetworkCredential(SMTPEMail, SMTPPwd); 
+                    client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    mailMessage.IsBodyHtml = true;
+                    client.Send(mailMessage);
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
     }
 }

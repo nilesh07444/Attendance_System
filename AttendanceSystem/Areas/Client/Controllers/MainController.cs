@@ -25,6 +25,20 @@ namespace AttendanceSystem.Areas.Client.Controllers
 
             try
             {
+
+                //
+                //string ToEmail = "prajapati.nileshbhai@gmail.com";
+                //tbl_Setting objGensetting = _db.tbl_Setting.FirstOrDefault();
+                //string FromEmail = objGensetting.SMTPFromEmailId;
+                //string Subject = "Your Registration is Successful - Contract Book";
+                //string bodyhtml = "Following are the detail:<br/>";
+                //bodyhtml += "===============================<br/>";
+                //bodyhtml += "Username: UN/16052021/1" + "<br/>";
+                //bodyhtml += "Password: 12345" + "<br/>";
+
+                //CommonMethod.SendEmail(ToEmail, FromEmail, Subject, bodyhtml);
+                //
+                 
                 lstHomeImages = (from hi in _db.tbl_HomeImage
                                  where hi.IsActive
                                  select new HomeImageVM

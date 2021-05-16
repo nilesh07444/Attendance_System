@@ -1,4 +1,9 @@
 ﻿@model AttendanceSystem.ViewModel.CompanyRequestVM
+
+@{
+    ViewBag.Title = "Company Request";
+}
+
 @{
 
     List<SelectListItem> lstPrefix = new List<SelectListItem>();
@@ -375,7 +380,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('#btnSubmit').click(function () {
-            
+
             if ($("#CompanyRequestFormId").valid()) {
                 var mobileNo = $("#CompanyAdminMobileNo").val();
                 var StrURL = '/client/companyrequest/VerifyMobileNo?mobileNo=' + mobileNo;

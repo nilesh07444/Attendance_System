@@ -175,7 +175,6 @@
     <Compile Include="Areas\Client\Controllers\AboutController.cs" />
     <Compile Include="Areas\Client\Controllers\CompanyRequestController.cs" />
     <Compile Include="Areas\Client\Controllers\ContactController.cs" />
-    <Compile Include="Areas\Client\Controllers\DynamicContentController.cs" />
     <Compile Include="Areas\Client\Controllers\FAQController.cs" />
     <Compile Include="Areas\Client\Controllers\MainController.cs" />
     <Compile Include="Areas\Client\Controllers\PrivacyPolicyController.cs" />
@@ -1363,7 +1362,6 @@
     <Content Include="Areas\Client\Views\About\Index.cshtml" />
     <Content Include="Areas\Client\Views\TermsCondition\Index.cshtml" />
     <Content Include="Areas\Client\Views\FAQ\Index.cshtml" />
-    <Content Include="Areas\Client\Views\DynamicContent\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Setting\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Package\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Package\Add.cshtml" />
