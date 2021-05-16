@@ -89,5 +89,9 @@
         public static string CompanyTrailAccountIsExpired = "Company trail account is expired.";
 
         public static string SMSPackageIsExpired = "SMS package is expired.";
+        public static string WorkerCanAssignForTodayOnly = "Workers can assign for today only.";
+        public static string WorkerCanCloseForTodayOnly = "Workers can close for today only.";
+        public static string SiteDoesNotExistForCurrentCompany = "Site does not exist for current company.";
+        public static string WorkerAlreadyClosed = "Worker already closed.";
     }
 }

@@ -61,6 +61,30 @@
           <Property Name="ModifiedBy" Type="bigint" />
           <Property Name="ModifiedDate" Type="datetime" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_AssignWorker' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="tbl_AssignWorker">
+          <Key>
+            <PropertyRef Name="AssignWorkerId" />
+            <PropertyRef Name="Date" />
+            <PropertyRef Name="SiteId" />
+            <PropertyRef Name="EmployeeId" />
+            <PropertyRef Name="IsClosed" />
+            <PropertyRef Name="CreatedDate" />
+            <PropertyRef Name="CreatedBy" />
+            <PropertyRef Name="ModifiedDate" />
+            <PropertyRef Name="ModifiedBy" />
+          </Key>
+          <Property Name="AssignWorkerId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="SiteId" Type="bigint" Nullable="false" />
+          <Property Name="EmployeeId" Type="bigint" Nullable="false" />
+          <Property Name="IsClosed" Type="bit" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="CreatedBy" Type="bigint" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="bigint" Nullable="false" />
+        </EntityType>
         <EntityType Name="tbl_Attendance">
           <Key>
             <PropertyRef Name="AttendanceId" />
@@ -648,6 +672,19 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <EntitySet Name="tbl_SMSPackage" EntityType="Self.tbl_SMSPackage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Sponsor" EntityType="Self.tbl_Sponsor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Testimonial" EntityType="Self.tbl_Testimonial" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_AssignWorker" EntityType="Self.tbl_AssignWorker" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [tbl_AssignWorker].[AssignWorkerId] AS [AssignWorkerId], 
+    [tbl_AssignWorker].[Date] AS [Date], 
+    [tbl_AssignWorker].[SiteId] AS [SiteId], 
+    [tbl_AssignWorker].[EmployeeId] AS [EmployeeId], 
+    [tbl_AssignWorker].[IsClosed] AS [IsClosed], 
+    [tbl_AssignWorker].[CreatedDate] AS [CreatedDate], 
+    [tbl_AssignWorker].[CreatedBy] AS [CreatedBy], 
+    [tbl_AssignWorker].[ModifiedDate] AS [ModifiedDate], 
+    [tbl_AssignWorker].[ModifiedBy] AS [ModifiedBy]
+    FROM [dbo].[tbl_AssignWorker] AS [tbl_AssignWorker]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="tbl_SMSLog" EntityType="Self.tbl_SMSLog" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [tbl_SMSLog].[SMSLogId] AS [SMSLogId], 
@@ -1215,6 +1252,7 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <EntitySet Name="tbl_EmployeePayment" EntityType="AttendanceSystemModel.tbl_EmployeePayment" />
           <EntitySet Name="tbl_Employee" EntityType="AttendanceSystemModel.tbl_Employee" />
           <EntitySet Name="tbl_SMSLog" EntityType="AttendanceSystemModel.tbl_SMSLog" />
+          <EntitySet Name="tbl_AssignWorker" EntityType="AttendanceSystemModel.tbl_AssignWorker" />
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -1314,6 +1352,28 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <Property Name="Message" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="CreatedBy" Type="Int64" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="tbl_AssignWorker">
+          <Key>
+            <PropertyRef Name="AssignWorkerId" />
+            <PropertyRef Name="Date" />
+            <PropertyRef Name="SiteId" />
+            <PropertyRef Name="EmployeeId" />
+            <PropertyRef Name="IsClosed" />
+            <PropertyRef Name="CreatedDate" />
+            <PropertyRef Name="CreatedBy" />
+            <PropertyRef Name="ModifiedDate" />
+            <PropertyRef Name="ModifiedBy" />
+          </Key>
+          <Property Name="AssignWorkerId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SiteId" Type="Int64" Nullable="false" />
+          <Property Name="EmployeeId" Type="Int64" Nullable="false" />
+          <Property Name="IsClosed" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int64" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1948,6 +2008,21 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
                 <ScalarProperty Name="Message" ColumnName="Message" />
                 <ScalarProperty Name="MobileNo" ColumnName="MobileNo" />
                 <ScalarProperty Name="SMSLogId" ColumnName="SMSLogId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_AssignWorker">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_AssignWorker">
+              <MappingFragment StoreEntitySet="tbl_AssignWorker">
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="IsClosed" ColumnName="IsClosed" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="SiteId" ColumnName="SiteId" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="AssignWorkerId" ColumnName="AssignWorkerId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

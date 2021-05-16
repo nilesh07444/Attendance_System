@@ -13,10 +13,14 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
     {
         private readonly AttendanceSystemEntities _db;
         string psSult;
+        long employeeId;
+        string defaultPassword;
         public EmployeeController()
         {
             _db = new AttendanceSystemEntities();
             psSult = ConfigurationManager.AppSettings["PasswordSult"].ToString();
+            employeeId = base.UTI.EmployeeId;
+            defaultPassword = ConfigurationManager.AppSettings["DefaultPassword"].ToString(); ;
         }
 
         [HttpPost]
@@ -38,7 +42,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     tbl_Employee objEmployee = new tbl_Employee();
                     objEmployee.ProfilePicture = employeeVM.ProfilePicture;
                     objEmployee.CompanyId = companyId;
-                    objEmployee.Password = CommonMethod.Encrypt(CommonMethod.RandomString(6, true), psSult); ;
+                    objEmployee.Password = CommonMethod.Encrypt(defaultPassword, psSult); ;
                     objEmployee.AdminRoleId = (int)AdminRoles.Worker;
                     objEmployee.Prefix = employeeVM.Prefix;
                     objEmployee.FirstName = employeeVM.FirstName;
@@ -89,6 +93,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                && emp.AdminRoleId == (int)AdminRoles.Worker
                                                select new EmployeeVM
                                                {
+                                                   EmployeeId = emp.EmployeeId,
+                                                   EmployeeCode = emp.EmployeeCode,
                                                    ProfilePicture = emp.ProfilePicture,
                                                    CompanyId = emp.CompanyId,
                                                    Prefix = emp.Prefix,
@@ -101,13 +107,12 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                    EmploymentCategory = emp.EmploymentCategory,
                                                    MonthlySalaryPrice = emp.MonthlySalaryPrice,
                                                    AdharCardNo = emp.AdharCardNo,
-                                                   EmployeeCode = emp.EmployeeCode,
                                                    Address = emp.Address,
                                                    City = emp.City,
                                                    Pincode = emp.Pincode,
                                                    State = emp.State,
                                                    IsActive = true,
-                                               }).OrderByDescending(x => x.EmployeeId).ToList();
+                                               }).ToList();
                 response.Data = workerList;
             }
             catch (Exception ex)
@@ -135,6 +140,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                             && emp.EmployeeId == id
                                             select new EmployeeVM
                                             {
+                                                EmployeeId = emp.EmployeeId,
+                                                EmployeeCode = emp.EmployeeCode,
                                                 ProfilePicture = emp.ProfilePicture,
                                                 CompanyId = emp.CompanyId,
                                                 Prefix = emp.Prefix,
@@ -147,7 +154,6 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                 EmploymentCategory = emp.EmploymentCategory,
                                                 MonthlySalaryPrice = emp.MonthlySalaryPrice,
                                                 AdharCardNo = emp.AdharCardNo,
-                                                EmployeeCode = emp.EmployeeCode,
                                                 Address = emp.Address,
                                                 City = emp.City,
                                                 Pincode = emp.Pincode,
@@ -186,8 +192,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                 if (employeeVM.EmployeeId > 0)
                 {
-                    bool isWorkerExist = _db.tbl_Employee.Any(x => x.EmployeeId != employeeVM.EmployeeId && !x.IsDeleted && x.AdminRoleId != (int)AdminRoles.Worker && x.CompanyId == companyId);
-                    if (isWorkerExist)
+                    bool isWorkerExist = _db.tbl_Employee.Any(x => x.EmployeeId == employeeVM.EmployeeId && !x.IsDeleted && x.AdminRoleId == (int)AdminRoles.Worker && x.CompanyId == companyId);
+                    if (!isWorkerExist)
                     {
                         response.IsError = true;
                         response.AddError(ErrorMessage.EmployeeDoesNotExist);
@@ -267,6 +273,214 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                    IsActive = true,
                                                }).ToList();
                 response.Data = workerList;
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message);
+            }
+
+            return response;
+        }
+
+        [HttpPost]
+        [Route("ListWorkersToAssign")]
+        public ResponseDataModel<List<EmployeeVM>> ListWorkersToAssign(ViewModel.WebAPI.WorkerListRequestVM requestVM)
+        {
+            ResponseDataModel<List<EmployeeVM>> response = new ResponseDataModel<List<EmployeeVM>>();
+            response.IsError = false;
+            try
+            {
+                long companyId = base.UTI.CompanyId;
+
+                List<EmployeeVM> workerList = (from emp in _db.tbl_Employee
+                                               join wk in _db.tbl_AssignWorker.Where(x => x.SiteId == requestVM.SiteId && x.Date == requestVM.Date)
+                                               on emp.EmployeeId equals wk.EmployeeId into lfwk
+                                               from wkr in lfwk.DefaultIfEmpty()
+                                               where !emp.IsDeleted && emp.CompanyId == companyId
+                                               && emp.AdminRoleId == (int)AdminRoles.Worker
+                                               && wkr == null
+                                               select new EmployeeVM
+                                               {
+                                                   ProfilePicture = emp.ProfilePicture,
+                                                   CompanyId = emp.CompanyId,
+                                                   Prefix = emp.Prefix,
+                                                   FirstName = emp.FirstName,
+                                                   LastName = emp.LastName,
+                                                   MobileNo = emp.MobileNo,
+                                                   Dob = emp.Dob,
+                                                   DateOfJoin = emp.DateOfJoin,
+                                                   BloodGroup = emp.BloodGroup,
+                                                   EmploymentCategory = emp.EmploymentCategory,
+                                                   MonthlySalaryPrice = emp.MonthlySalaryPrice,
+                                                   AdharCardNo = emp.AdharCardNo,
+                                                   EmployeeCode = emp.EmployeeCode,
+                                                   Address = emp.Address,
+                                                   City = emp.City,
+                                                   Pincode = emp.Pincode,
+                                                   State = emp.State,
+                                                   IsActive = true,
+                                               }).ToList();
+                response.Data = workerList;
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message);
+            }
+
+            return response;
+        }
+
+        [HttpPost]
+        [Route("AssignedWorkerList")]
+        public ResponseDataModel<List<EmployeeVM>> AssignedWorkerList(ViewModel.WebAPI.WorkerListRequestVM requestVM)
+        {
+            ResponseDataModel<List<EmployeeVM>> response = new ResponseDataModel<List<EmployeeVM>>();
+            response.IsError = false;
+            try
+            {
+                long companyId = base.UTI.CompanyId;
+
+                List<EmployeeVM> workerList = (from emp in _db.tbl_Employee
+                                               join wk in _db.tbl_AssignWorker
+                                               on emp.EmployeeId equals wk.EmployeeId
+                                               where !emp.IsDeleted && emp.CompanyId == companyId
+                                               && emp.AdminRoleId == (int)AdminRoles.Worker
+                                               && wk.SiteId == requestVM.SiteId
+                                               && wk.Date == requestVM.Date
+                                               select new EmployeeVM
+                                               {
+                                                   ProfilePicture = emp.ProfilePicture,
+                                                   CompanyId = emp.CompanyId,
+                                                   Prefix = emp.Prefix,
+                                                   FirstName = emp.FirstName,
+                                                   LastName = emp.LastName,
+                                                   MobileNo = emp.MobileNo,
+                                                   Dob = emp.Dob,
+                                                   DateOfJoin = emp.DateOfJoin,
+                                                   BloodGroup = emp.BloodGroup,
+                                                   EmploymentCategory = emp.EmploymentCategory,
+                                                   MonthlySalaryPrice = emp.MonthlySalaryPrice,
+                                                   AdharCardNo = emp.AdharCardNo,
+                                                   EmployeeCode = emp.EmployeeCode,
+                                                   Address = emp.Address,
+                                                   City = emp.City,
+                                                   Pincode = emp.Pincode,
+                                                   State = emp.State,
+                                                   IsActive = true,
+                                               }).OrderByDescending(x => x.EmployeeId).ToList();
+                response.Data = workerList;
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message);
+            }
+
+            return response;
+        }
+
+        [HttpPost]
+        [Route("AssignWorker")]
+        public ResponseDataModel<bool> AssignWorker(ViewModel.WebAPI.AssignWorkerRequestVM requestVM)
+        {
+            ResponseDataModel<bool> response = new ResponseDataModel<bool>();
+            response.IsError = false;
+            try
+            {
+                long companyId = base.UTI.CompanyId;
+
+                #region Validation
+                if (requestVM.Date != DateTime.Today)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.WorkerCanAssignForTodayOnly);
+                }
+
+                if (!_db.tbl_Site.Any(x => x.CompanyId == companyId && x.SiteId == requestVM.SiteId && x.IsActive && !x.IsDeleted))
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.SiteDoesNotExistForCurrentCompany);
+                }
+                #endregion Validation
+
+                if (!response.IsError)
+                {
+                    List<tbl_AssignWorker> listAssignedWorker = new List<tbl_AssignWorker>();
+                    requestVM.WorkerList.ForEach(x =>
+                    {
+                        tbl_AssignWorker assignedWorker = new tbl_AssignWorker();
+                        assignedWorker.SiteId = requestVM.SiteId;
+                        assignedWorker.Date = requestVM.Date;
+                        assignedWorker.EmployeeId = x;
+                        assignedWorker.IsClosed = false;
+                        assignedWorker.CreatedBy = employeeId;
+                        assignedWorker.CreatedDate = DateTime.UtcNow;
+                        assignedWorker.ModifiedBy = employeeId;
+                        assignedWorker.ModifiedDate = DateTime.UtcNow;
+                        listAssignedWorker.Add(assignedWorker);
+                    });
+
+                    _db.tbl_AssignWorker.AddRange(listAssignedWorker);
+                    _db.SaveChanges();
+                    response.Data = true;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message);
+            }
+
+            return response;
+        }
+
+        [HttpPost]
+        [Route("CloseWorker")]
+        public ResponseDataModel<bool> CloseWorker(ViewModel.WebAPI.CloseWorkerRequestVM requestVM)
+        {
+            ResponseDataModel<bool> response = new ResponseDataModel<bool>();
+            response.IsError = false;
+            try
+            {
+                long companyId = base.UTI.CompanyId;
+
+                #region Validation
+                if (requestVM.Date != DateTime.Today)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.WorkerCanCloseForTodayOnly);
+                }
+
+                if (!_db.tbl_Site.Any(x => x.CompanyId == companyId && x.SiteId == requestVM.SiteId && x.IsActive && !x.IsDeleted))
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.SiteDoesNotExistForCurrentCompany);
+                }
+
+                if (_db.tbl_AssignWorker.Any(x => x.SiteId == requestVM.SiteId && x.Date == requestVM.Date && x.EmployeeId == requestVM.EmployeeId && x.IsClosed))
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.WorkerAlreadyClosed);
+                }
+
+                #endregion Validation
+
+                if (!response.IsError)
+                {
+                    tbl_AssignWorker assignedWorker = _db.tbl_AssignWorker.Where(x => x.SiteId == requestVM.SiteId && x.Date == requestVM.Date && x.EmployeeId == requestVM.EmployeeId && x.IsClosed).FirstOrDefault();
+                    if (assignedWorker != null)
+                    {
+                        assignedWorker.IsClosed = true;
+                        assignedWorker.ModifiedBy = employeeId;
+                        assignedWorker.ModifiedDate = DateTime.UtcNow;
+                        _db.SaveChanges();
+                        response.Data = true;
+                    }
+                }
+
             }
             catch (Exception ex)
             {
