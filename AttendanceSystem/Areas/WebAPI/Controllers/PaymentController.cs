@@ -41,7 +41,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                    PaymentDate = emp.PaymentDate,
                                                    Amount = emp.Amount,
                                                    PaymentType = emp.PaymentType,
-
+                                                   Remarks=emp.Remarks
                                                }).OrderByDescending(x => x.EmployeePaymentId).ToList();
 
                 response.Data = paymentList;
@@ -76,7 +76,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                 PaymentDate = emp.PaymentDate,
                                                 Amount = emp.Amount,
                                                 PaymentType = emp.PaymentType,
-
+                                                Remarks = emp.Remarks
                                             }).FirstOrDefault();
 
                 response.Data = paymentDetails;

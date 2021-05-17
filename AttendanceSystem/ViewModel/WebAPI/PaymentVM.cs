@@ -12,6 +12,7 @@ namespace AttendanceSystem.ViewModel.WebAPI
         public long UserId { get; set; }
         public decimal Amount { get; set; }
         public int PaymentType { get; set; }
+        public string Remarks { get; set; }
     }
     public class PaymentFilterVM
     {
