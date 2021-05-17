@@ -400,8 +400,9 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             try
             {
                 DateTime today = DateTime.UtcNow.Date;
+                TimeSpan defaultTime = TimeSpan.Parse("00:00");
                 #region Validation
-                if (_db.tbl_Attendance.Any(x => x.AttendanceDate == today && x.InTime != null && x.OutTime == null))
+                if (_db.tbl_Attendance.Any(x => x.AttendanceDate == today && x.InTime != null && x.OutTime == defaultTime))
                 {
                     response.IsError = true;
                     response.AddError(ErrorMessage.AlreadyInForTheDay);
@@ -451,7 +452,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 DateTime today = DateTime.UtcNow.Date;
                 TimeSpan defaultTime = TimeSpan.Parse("00:00");
                 #region Validation
-                if (!_db.tbl_Attendance.Any(x => x.AttendanceDate == today && x.InTime != null && (x.OutTime == null || x.OutTime == defaultTime)))
+                if (!_db.tbl_Attendance.Any(x => x.AttendanceDate == today && x.InTime != null &&  x.OutTime == defaultTime))
                 {
                     response.IsError = true;
                     response.AddError(ErrorMessage.AlreadyOutForTheDay);
@@ -459,7 +460,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 #endregion Validation
                 if (!response.IsError)
                 {
-                    tbl_Attendance attendanceObject = _db.tbl_Attendance.FirstOrDefault(x => x.AttendanceDate == today && x.InTime != null && (x.OutTime == null || x.OutTime == defaultTime));
+                    tbl_Attendance attendanceObject = _db.tbl_Attendance.FirstOrDefault(x => x.AttendanceDate == today && x.InTime != null &&   x.OutTime == defaultTime);
                     attendanceObject.OutLocationFrom = outTimeRequestVM.OutLocationFrom;
                     attendanceObject.Status = (int)AttendanceStatus.Pending;
                     attendanceObject.OutTime = DateTime.UtcNow.TimeOfDay;
