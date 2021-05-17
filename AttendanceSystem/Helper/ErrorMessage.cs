@@ -93,5 +93,9 @@
         public static string WorkerCanCloseForTodayOnly = "Workers can close for today only.";
         public static string SiteDoesNotExistForCurrentCompany = "Site does not exist for current company.";
         public static string WorkerAlreadyClosed = "Worker already closed.";
+        public static string WorkerDidNotAssignedToThisSite = "Worker did not assigned to this site.";
+        
+        public static string AlreadyInForTheDay = "Already in for the day.";
+        public static string AlreadyOutForTheDay = "Already out for the day.";
     }
 }

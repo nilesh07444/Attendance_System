@@ -140,7 +140,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
         [HttpGet]
         [Route("Detail/{id}")]
-        public ResponseDataModel<MaterialVM> WorkerDetail(long id)
+        public ResponseDataModel<MaterialVM> Detail(long id)
         {
             ResponseDataModel<MaterialVM> response = new ResponseDataModel<MaterialVM>();
             response.IsError = false;

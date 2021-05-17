@@ -34,5 +34,10 @@ namespace AttendanceSystem.Models
         public System.DateTime CreatedDate { get; set; }
         public Nullable<long> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
+        public string OutLocationFrom { get; set; }
+        public Nullable<decimal> InLatitude { get; set; }
+        public Nullable<decimal> InLongitude { get; set; }
+        public Nullable<decimal> OutLatitude { get; set; }
+        public Nullable<decimal> OutLongitude { get; set; }
     }
 }

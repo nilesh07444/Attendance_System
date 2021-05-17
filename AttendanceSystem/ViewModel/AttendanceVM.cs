@@ -53,4 +53,22 @@ namespace AttendanceSystem.ViewModel
         public List<SelectListItem> EmployeeList { get; set; }
         public List<AttendanceVM> AttendanceList { get; set; }
     }
+
+    public class InTimeRequestVM
+    {
+        public string InLocationFrom { get; set; }
+        public decimal InLatitude { get; set; }
+        public decimal InLongitude { get; set; }
+    }
+
+    public class OutTimeRequestVM
+    {
+        public string OutLocationFrom { get; set; }
+        public decimal OutLatitude { get; set; }
+        public decimal OutLongitude { get; set; }
+        public decimal ExtraHours { get; set; }
+        public string TodayWorkDetail { get; set; }
+        public string TomorrowWorkDetail { get; set; }
+        public string Remarks { get; set; }
+    }
 }

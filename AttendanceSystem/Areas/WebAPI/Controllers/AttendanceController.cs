@@ -11,10 +11,13 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
     public class AttendanceController : BaseUserController
     {
         private readonly AttendanceSystemEntities _db;
-
+        long employeeId;
+        long companyId;
         public AttendanceController()
         {
             _db = new AttendanceSystemEntities();
+            employeeId = base.UTI.EmployeeId;
+            companyId = base.UTI.CompanyId;
         }
 
         [HttpPost]
@@ -150,6 +153,10 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                          InTime = at.InTime,
                                                          OutTime = at.OutTime
                                                      }).OrderByDescending(x => x.AttendanceDate).ToList();
+
+                attendanceList.ForEach(x => {
+                    x.StatusText = CommonMethod.GetEnumDescription((AttendanceStatus)x.Status);
+                });
                 response.Data = attendanceList;
             }
             catch (Exception ex)
@@ -194,6 +201,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                  InTime = at.InTime,
                                                  OutTime = at.OutTime
                                              }).FirstOrDefault();
+                leaveDetails.StatusText = CommonMethod.GetEnumDescription((AttendanceStatus)leaveDetails.Status);
 
                 response.Data = leaveDetails;
             }
@@ -371,6 +379,100 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                             }
                         }
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message);
+            }
+
+            return response;
+        }
+
+        [HttpPost]
+        [Route("InTime")]
+        public ResponseDataModel<bool> InTime(InTimeRequestVM inTimeRequestVM)
+        {
+            ResponseDataModel<bool> response = new ResponseDataModel<bool>();
+            response.IsError = false;
+            response.Data = false;
+            try
+            {
+                DateTime today = DateTime.UtcNow.Date;
+                #region Validation
+                if (_db.tbl_Attendance.Any(x => x.AttendanceDate == today && x.InTime != null && x.OutTime == null))
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.AlreadyInForTheDay);
+                }
+                #endregion Validation
+                if (!response.IsError)
+                {
+                    tbl_Employee employee = _db.tbl_Employee.FirstOrDefault(x => x.EmployeeId == employeeId);
+                    tbl_Attendance attendanceObject = new tbl_Attendance();
+                    attendanceObject.CompanyId = companyId;
+                    attendanceObject.UserId = employeeId;
+                    attendanceObject.AttendanceDate = DateTime.UtcNow.Date;
+                    attendanceObject.DayType = 1;
+                    attendanceObject.LocationFrom = inTimeRequestVM.InLocationFrom;
+                    attendanceObject.Status = (int)AttendanceStatus.Login;
+                    attendanceObject.IsActive = true;
+                    attendanceObject.InTime = DateTime.UtcNow.TimeOfDay;
+                    attendanceObject.InLatitude = inTimeRequestVM.InLatitude;
+                    attendanceObject.InLongitude = inTimeRequestVM.InLongitude;
+                    attendanceObject.CreatedBy = employeeId;
+                    attendanceObject.CreatedDate = DateTime.UtcNow;
+                    attendanceObject.ModifiedBy = employeeId;
+                    attendanceObject.ModifiedDate = DateTime.UtcNow;
+                    _db.tbl_Attendance.Add(attendanceObject);
+                    _db.SaveChanges();
+                    response.Data = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message);
+            }
+
+            return response;
+        }
+
+        [HttpPost]
+        [Route("OutTime")]
+        public ResponseDataModel<bool> OutTime(OutTimeRequestVM outTimeRequestVM)
+        {
+            ResponseDataModel<bool> response = new ResponseDataModel<bool>();
+            response.IsError = false;
+            response.Data = false;
+            try
+            {
+                DateTime today = DateTime.UtcNow.Date;
+                TimeSpan defaultTime = TimeSpan.Parse("00:00");
+                #region Validation
+                if (!_db.tbl_Attendance.Any(x => x.AttendanceDate == today && x.InTime != null && (x.OutTime == null || x.OutTime == defaultTime)))
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.AlreadyOutForTheDay);
+                }
+                #endregion Validation
+                if (!response.IsError)
+                {
+                    tbl_Attendance attendanceObject = _db.tbl_Attendance.FirstOrDefault(x => x.AttendanceDate == today && x.InTime != null && (x.OutTime == null || x.OutTime == defaultTime));
+                    attendanceObject.OutLocationFrom = outTimeRequestVM.OutLocationFrom;
+                    attendanceObject.Status = (int)AttendanceStatus.Pending;
+                    attendanceObject.OutTime = DateTime.UtcNow.TimeOfDay;
+                    attendanceObject.OutLatitude = outTimeRequestVM.OutLatitude;
+                    attendanceObject.OutLongitude = outTimeRequestVM.OutLongitude;
+                    attendanceObject.ExtraHours = outTimeRequestVM.ExtraHours;
+                    attendanceObject.TodayWorkDetail = outTimeRequestVM.TodayWorkDetail;
+                    attendanceObject.TomorrowWorkDetail = outTimeRequestVM.TomorrowWorkDetail;
+                    attendanceObject.Remarks = outTimeRequestVM.Remarks;
+                    attendanceObject.ModifiedBy = employeeId;
+                    attendanceObject.ModifiedDate = DateTime.UtcNow;
+                    _db.SaveChanges();
+                    response.Data = true;
                 }
             }
             catch (Exception ex)

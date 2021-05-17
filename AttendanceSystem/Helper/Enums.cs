@@ -21,7 +21,8 @@ namespace AttendanceSystem.Helper
     {
         Pending = 1,
         Accept = 2,
-        Reject = 3
+        Reject = 3,
+        Login = 4
     }
 
     public enum LeaveStatus

@@ -302,6 +302,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                && wkr == null
                                                select new EmployeeVM
                                                {
+                                                   EmployeeId = emp.EmployeeId,
                                                    ProfilePicture = emp.ProfilePicture,
                                                    CompanyId = emp.CompanyId,
                                                    Prefix = emp.Prefix,
@@ -351,6 +352,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                && wk.Date == requestVM.Date
                                                select new EmployeeVM
                                                {
+                                                   EmployeeId = emp.EmployeeId,
                                                    ProfilePicture = emp.ProfilePicture,
                                                    CompanyId = emp.CompanyId,
                                                    Prefix = emp.Prefix,
@@ -369,7 +371,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                    Pincode = emp.Pincode,
                                                    State = emp.State,
                                                    IsActive = true,
-                                               }).OrderByDescending(x => x.EmployeeId).ToList();
+                                               }).ToList();
                 response.Data = workerList;
             }
             catch (Exception ex)
@@ -460,6 +462,12 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     response.AddError(ErrorMessage.SiteDoesNotExistForCurrentCompany);
                 }
 
+                if (!_db.tbl_AssignWorker.Any(x => x.SiteId == requestVM.SiteId && x.Date == requestVM.Date && x.EmployeeId == requestVM.EmployeeId))
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.WorkerDidNotAssignedToThisSite);
+                }
+
                 if (_db.tbl_AssignWorker.Any(x => x.SiteId == requestVM.SiteId && x.Date == requestVM.Date && x.EmployeeId == requestVM.EmployeeId && x.IsClosed))
                 {
                     response.IsError = true;
@@ -470,12 +478,70 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                 if (!response.IsError)
                 {
-                    tbl_AssignWorker assignedWorker = _db.tbl_AssignWorker.Where(x => x.SiteId == requestVM.SiteId && x.Date == requestVM.Date && x.EmployeeId == requestVM.EmployeeId && x.IsClosed).FirstOrDefault();
+                    tbl_AssignWorker assignedWorker = _db.tbl_AssignWorker.Where(x => x.SiteId == requestVM.SiteId && x.Date == requestVM.Date && x.EmployeeId == requestVM.EmployeeId).FirstOrDefault();
                     if (assignedWorker != null)
                     {
                         assignedWorker.IsClosed = true;
                         assignedWorker.ModifiedBy = employeeId;
                         assignedWorker.ModifiedDate = DateTime.UtcNow;
+                        _db.SaveChanges();
+                        response.Data = true;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message);
+            }
+
+            return response;
+        }
+
+        [HttpPost]
+        [Route("RemoveWorker")]
+        public ResponseDataModel<bool> RemoveWorker(ViewModel.WebAPI.CloseWorkerRequestVM requestVM)
+        {
+            ResponseDataModel<bool> response = new ResponseDataModel<bool>();
+            response.IsError = false;
+            try
+            {
+                long companyId = base.UTI.CompanyId;
+
+                #region Validation
+                if (requestVM.Date != DateTime.Today)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.WorkerCanCloseForTodayOnly);
+                }
+
+                if (!_db.tbl_Site.Any(x => x.CompanyId == companyId && x.SiteId == requestVM.SiteId && x.IsActive && !x.IsDeleted))
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.SiteDoesNotExistForCurrentCompany);
+                }
+
+                if (!_db.tbl_AssignWorker.Any(x => x.SiteId == requestVM.SiteId && x.Date == requestVM.Date && x.EmployeeId == requestVM.EmployeeId))
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.WorkerDidNotAssignedToThisSite);
+                }
+
+                if (_db.tbl_AssignWorker.Any(x => x.SiteId == requestVM.SiteId && x.Date == requestVM.Date && x.EmployeeId == requestVM.EmployeeId && x.IsClosed))
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.WorkerAlreadyClosed);
+                }
+
+                #endregion Validation
+
+                if (!response.IsError)
+                {
+                    tbl_AssignWorker assignedWorker = _db.tbl_AssignWorker.Where(x => x.SiteId == requestVM.SiteId && x.Date == requestVM.Date && x.EmployeeId == requestVM.EmployeeId).FirstOrDefault();
+                    if (assignedWorker != null)
+                    {
+                        _db.tbl_AssignWorker.Remove(assignedWorker);
                         _db.SaveChanges();
                         response.Data = true;
                     }

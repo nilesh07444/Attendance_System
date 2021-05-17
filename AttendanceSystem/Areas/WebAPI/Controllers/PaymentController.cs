@@ -17,7 +17,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
         {
             _db = new AttendanceSystemEntities();
         }
-         
+
         [HttpPost]
         [Route("List")]
         public ResponseDataModel<List<PaymentVM>> List(PaymentFilterVM paymentFilterVM)
@@ -27,20 +27,22 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             try
             {
                 long employeeId = base.UTI.EmployeeId;
+                long employeeRoleId = base.UTI.RoleId;
 
                 List<PaymentVM> paymentList = (from emp in _db.tbl_EmployeePayment
-                                             where !emp.IsDeleted && emp.UserId == employeeId
-                                             && emp.PaymentDate >= paymentFilterVM.StartDate && emp.PaymentDate <= paymentFilterVM.EndDate
-                                             select new PaymentVM
-                                             {
+                                               where !emp.IsDeleted
+                                               && emp.PaymentDate >= paymentFilterVM.StartDate && emp.PaymentDate <= paymentFilterVM.EndDate
+                                               && (employeeRoleId == (int)AdminRoles.CompanyAdmin ? (paymentFilterVM.EmployeeId.HasValue ? emp.UserId == paymentFilterVM.EmployeeId : true) : emp.UserId == employeeId)
+                                               select new PaymentVM
+                                               {
 
-                                                 EmployeePaymentId = emp.EmployeePaymentId,
-                                                 UserId = emp.UserId,
-                                                 PaymentDate = emp.PaymentDate,
-                                                 Amount = emp.Amount,
-                                                 PaymentType = emp.PaymentType,
+                                                   EmployeePaymentId = emp.EmployeePaymentId,
+                                                   UserId = emp.UserId,
+                                                   PaymentDate = emp.PaymentDate,
+                                                   Amount = emp.Amount,
+                                                   PaymentType = emp.PaymentType,
 
-                                             }).OrderByDescending(x => x.EmployeePaymentId).ToList();
+                                               }).OrderByDescending(x => x.EmployeePaymentId).ToList();
 
                 response.Data = paymentList;
             }
@@ -64,18 +66,18 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 long employeeId = base.UTI.EmployeeId;
 
                 PaymentVM paymentDetails = (from emp in _db.tbl_EmployeePayment
-                                          where !emp.IsDeleted && emp.UserId == employeeId
-                                          && emp.EmployeePaymentId == id
-                                          select new PaymentVM
-                                          {
+                                            where !emp.IsDeleted && emp.UserId == employeeId
+                                            && emp.EmployeePaymentId == id
+                                            select new PaymentVM
+                                            {
 
-                                              EmployeePaymentId = emp.EmployeePaymentId,
-                                              UserId = emp.UserId,
-                                              PaymentDate = emp.PaymentDate,
-                                              Amount = emp.Amount,
-                                              PaymentType = emp.PaymentType,
+                                                EmployeePaymentId = emp.EmployeePaymentId,
+                                                UserId = emp.UserId,
+                                                PaymentDate = emp.PaymentDate,
+                                                Amount = emp.Amount,
+                                                PaymentType = emp.PaymentType,
 
-                                          }).FirstOrDefault();
+                                            }).FirstOrDefault();
 
                 response.Data = paymentDetails;
             }
@@ -108,8 +110,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                 if (paymentVM.UserId > 0)
                 {
-                    bool isWorkerExist = _db.tbl_Employee.Any(x => x.EmployeeId != paymentVM.UserId && !x.IsDeleted && x.AdminRoleId != (int)AdminRoles.Worker && x.CompanyId == companyId);
-                    if (isWorkerExist)
+                    bool isWorkerExist = _db.tbl_Employee.Any(x => x.EmployeeId == paymentVM.UserId && !x.IsDeleted && x.AdminRoleId == (int)AdminRoles.Worker && x.CompanyId == companyId);
+                    if (!isWorkerExist)
                     {
                         response.IsError = true;
                         response.AddError(ErrorMessage.EmployeeDoesNotExist);

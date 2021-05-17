@@ -61,19 +61,9 @@
           <Property Name="ModifiedBy" Type="bigint" />
           <Property Name="ModifiedDate" Type="datetime" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_AssignWorker' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="tbl_AssignWorker">
           <Key>
             <PropertyRef Name="AssignWorkerId" />
-            <PropertyRef Name="Date" />
-            <PropertyRef Name="SiteId" />
-            <PropertyRef Name="EmployeeId" />
-            <PropertyRef Name="IsClosed" />
-            <PropertyRef Name="CreatedDate" />
-            <PropertyRef Name="CreatedBy" />
-            <PropertyRef Name="ModifiedDate" />
-            <PropertyRef Name="ModifiedBy" />
           </Key>
           <Property Name="AssignWorkerId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Date" Type="datetime" Nullable="false" />
@@ -101,6 +91,11 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_AssignWorker' doe
           <Property Name="TomorrowWorkDetail" Type="nvarchar" MaxLength="500" />
           <Property Name="Remarks" Type="nvarchar" MaxLength="500" />
           <Property Name="LocationFrom" Type="nvarchar" MaxLength="200" />
+          <Property Name="OutLocationFrom" Type="nvarchar" MaxLength="200" />
+          <Property Name="InLatitude" Type="decimal" Precision="11" Scale="8" />
+          <Property Name="InLongitude" Type="decimal" Precision="11" Scale="8" />
+          <Property Name="OutLatitude" Type="decimal" Precision="11" Scale="8" />
+          <Property Name="OutLongitude" Type="decimal" Precision="11" Scale="8" />
           <Property Name="Status" Type="int" Nullable="false" />
           <Property Name="RejectReason" Type="nvarchar" MaxLength="200" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
@@ -647,6 +642,7 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <EntitySet Name="mst_CompanyType" EntityType="Self.mst_CompanyType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_AdminUser" EntityType="Self.tbl_AdminUser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_AssignWorker" EntityType="Self.tbl_AssignWorker" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Attendance" EntityType="Self.tbl_Attendance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Company" EntityType="Self.tbl_Company" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_CompanyFollowup" EntityType="Self.tbl_CompanyFollowup" Schema="dbo" store:Type="Tables" />
@@ -672,19 +668,6 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <EntitySet Name="tbl_SMSPackage" EntityType="Self.tbl_SMSPackage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Sponsor" EntityType="Self.tbl_Sponsor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Testimonial" EntityType="Self.tbl_Testimonial" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="tbl_AssignWorker" EntityType="Self.tbl_AssignWorker" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [tbl_AssignWorker].[AssignWorkerId] AS [AssignWorkerId], 
-    [tbl_AssignWorker].[Date] AS [Date], 
-    [tbl_AssignWorker].[SiteId] AS [SiteId], 
-    [tbl_AssignWorker].[EmployeeId] AS [EmployeeId], 
-    [tbl_AssignWorker].[IsClosed] AS [IsClosed], 
-    [tbl_AssignWorker].[CreatedDate] AS [CreatedDate], 
-    [tbl_AssignWorker].[CreatedBy] AS [CreatedBy], 
-    [tbl_AssignWorker].[ModifiedDate] AS [ModifiedDate], 
-    [tbl_AssignWorker].[ModifiedBy] AS [ModifiedBy]
-    FROM [dbo].[tbl_AssignWorker] AS [tbl_AssignWorker]</DefiningQuery>
-          </EntitySet>
           <EntitySet Name="tbl_SMSLog" EntityType="Self.tbl_SMSLog" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [tbl_SMSLog].[SMSLogId] AS [SMSLogId], 
@@ -779,6 +762,11 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ModifiedBy" Type="Int64" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="OutLocationFrom" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="InLatitude" Type="Decimal" Precision="11" Scale="8" />
+          <Property Name="InLongitude" Type="Decimal" Precision="11" Scale="8" />
+          <Property Name="OutLatitude" Type="Decimal" Precision="11" Scale="8" />
+          <Property Name="OutLongitude" Type="Decimal" Precision="11" Scale="8" />
         </EntityType>
         <EntityType Name="tbl_Company">
           <Key>
@@ -1356,14 +1344,6 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
         <EntityType Name="tbl_AssignWorker">
           <Key>
             <PropertyRef Name="AssignWorkerId" />
-            <PropertyRef Name="Date" />
-            <PropertyRef Name="SiteId" />
-            <PropertyRef Name="EmployeeId" />
-            <PropertyRef Name="IsClosed" />
-            <PropertyRef Name="CreatedDate" />
-            <PropertyRef Name="CreatedBy" />
-            <PropertyRef Name="ModifiedDate" />
-            <PropertyRef Name="ModifiedBy" />
           </Key>
           <Property Name="AssignWorkerId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
@@ -1444,6 +1424,11 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <EntitySetMapping Name="tbl_Attendance">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Attendance">
               <MappingFragment StoreEntitySet="tbl_Attendance">
+                <ScalarProperty Name="OutLongitude" ColumnName="OutLongitude" />
+                <ScalarProperty Name="OutLatitude" ColumnName="OutLatitude" />
+                <ScalarProperty Name="InLongitude" ColumnName="InLongitude" />
+                <ScalarProperty Name="InLatitude" ColumnName="InLatitude" />
+                <ScalarProperty Name="OutLocationFrom" ColumnName="OutLocationFrom" />
                 <ScalarProperty Name="AttendanceId" ColumnName="AttendanceId" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
