@@ -37,6 +37,14 @@ namespace AttendanceSystem.ViewModel
         public TimeSpan InTime { get; set; }
         [Display(Name = "Out Time")]
         public TimeSpan OutTime { get; set; }
+        public decimal? ExtraPerHourPrice { get; set; }
+        public int EmploymentCategory { get; set; }
+        public string EmploymentCategoryText { get; set; }
+        public decimal? InLatitude { get; set; }
+        public decimal? InLongitude { get; set; }
+        public decimal? OutLatitude { get; set; }
+        public decimal? OutLongitude { get; set; }
+
     }
 
     public class AttendanceFilterVM
