@@ -162,13 +162,13 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     objMaterial.ModifiedDate = DateTime.UtcNow;
 
                     _db.SaveChanges();
-                    ReturnMessage = "success";
+                    ReturnMessage = ErrorMessage.Success;
                 }
             }
             catch (Exception ex)
             {
                 string msg = ex.Message.ToString();
-                ReturnMessage = "exception";
+                ReturnMessage = ErrorMessage.Exception;
             }
 
             return ReturnMessage;
@@ -185,23 +185,20 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                 if (objMaterial == null)
                 {
-                    ReturnMessage = "notfound";
+                    ReturnMessage = ErrorMessage.NotFound;
                 }
                 else
                 {
-                    long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
-                    objMaterial.IsDeleted = true;
-                    objMaterial.ModifiedBy = LoggedInUserId;
-                    objMaterial.ModifiedDate = DateTime.UtcNow;
+                    _db.tbl_Material.Remove(objMaterial);
                     _db.SaveChanges();
 
-                    ReturnMessage = "success";
+                    ReturnMessage = ErrorMessage.Success;
                 }
             }
             catch (Exception ex)
             {
                 string msg = ex.Message.ToString();
-                ReturnMessage = "exception";
+                ReturnMessage = ErrorMessage.Exception;
             }
 
             return ReturnMessage;

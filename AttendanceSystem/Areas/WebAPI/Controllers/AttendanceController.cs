@@ -231,18 +231,6 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     response.AddError(ErrorMessage.AttendanceIdIsNotValid);
                 }
 
-                if (attendanceVM.AttendanceDate == null)
-                {
-                    response.IsError = true;
-                    response.AddError(ErrorMessage.AttendanceDateRequired);
-                }
-
-                if (attendanceVM.DayType != ErrorMessage.FullDay && attendanceVM.DayType != ErrorMessage.HalfDay)
-                {
-                    response.IsError = true;
-                    response.AddError(ErrorMessage.AttendanceDayTypeNotValid);
-                }
-
                 if (string.IsNullOrEmpty(attendanceVM.TodayWorkDetail))
                 {
                     response.IsError = true;
@@ -255,37 +243,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     response.AddError(ErrorMessage.TomorrowWorkDetailRequired);
                 }
 
-                TimeSpan time;
-                bool isValidTIme = TimeSpan.TryParse(attendanceVM.InTime.ToString(), out time);
-                if (!isValidTIme || attendanceVM.InTime.ToString() == ErrorMessage.DefaultTime)
-                {
-                    response.IsError = true;
-                    response.AddError(ErrorMessage.InTimeIsNotValid);
-                }
-
-                isValidTIme = TimeSpan.TryParse(attendanceVM.OutTime.ToString(), out time);
-                if (!isValidTIme || attendanceVM.InTime.ToString() == ErrorMessage.DefaultTime)
-                {
-                    response.IsError = true;
-                    response.AddError(ErrorMessage.OutTimeIsNotValid);
-                }
-
-                if (attendanceVM.OutTime < attendanceVM.InTime)
-                {
-                    response.IsError = true;
-                    response.AddError(ErrorMessage.OutTimeIsNotValid);
-                }
-
-
                 if (attendanceVM.AttendanceId > 0)
                 {
-                    bool isAttendanceExist = _db.tbl_Attendance.Any(x => x.AttendanceId != attendanceVM.AttendanceId && !x.IsDeleted && x.Status != (int)AttendanceStatus.Reject && x.AttendanceDate == attendanceVM.AttendanceDate && x.UserId == employeeId);
-                    if (isAttendanceExist)
-                    {
-                        response.IsError = true;
-                        response.AddError(ErrorMessage.AttendanceOnSameDateAlreadyExist);
-                    }
-
                     tbl_Attendance attendanceObject = _db.tbl_Attendance.Where(x => x.AttendanceId == attendanceVM.AttendanceId).FirstOrDefault();
                     if (attendanceObject.Status != (int)AttendanceStatus.Pending)
                     {
@@ -296,16 +255,10 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     if (!response.IsError)
                     {
 
-                        attendanceObject.AttendanceDate = attendanceVM.AttendanceDate;
-                        attendanceObject.DayType = attendanceVM.DayType;
                         attendanceObject.ExtraHours = attendanceVM.ExtraHours;
                         attendanceObject.TodayWorkDetail = attendanceVM.TodayWorkDetail;
                         attendanceObject.TomorrowWorkDetail = attendanceVM.TomorrowWorkDetail;
                         attendanceObject.Remarks = attendanceVM.Remarks;
-                        attendanceObject.LocationFrom = attendanceVM.LocationFrom;
-                        attendanceObject.Status = attendanceVM.Status;
-                        attendanceObject.InTime = attendanceVM.InTime;
-                        attendanceObject.OutTime = attendanceVM.OutTime;
                         attendanceObject.ModifiedBy = base.UTI.EmployeeId;
                         attendanceObject.ModifiedDate = DateTime.UtcNow;
                         _db.SaveChanges();
@@ -356,19 +309,17 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     {
                         tbl_Attendance attendanceObject = _db.tbl_Attendance.Where(x => x.AttendanceId == id && x.UserId == employeeId).FirstOrDefault();
 
-                        if (attendanceObject.Status != (int)LeaveStatus.Pending)
+                        if (attendanceObject.Status == (int)LeaveStatus.Accept)
                         {
                             response.IsError = true;
-                            response.AddError(ErrorMessage.PendingAttendanceCanBeDeleteOnly);
+                            response.AddError(ErrorMessage.AttendanceIsAcceptedCanNotDelete);
                         }
                         #endregion Validation
                         if (!response.IsError)
                         {
                             if (attendanceObject != null)
                             {
-                                attendanceObject.IsDeleted = true;
-                                attendanceObject.ModifiedBy = employeeId;
-                                attendanceObject.ModifiedDate = DateTime.UtcNow;
+                                _db.tbl_Attendance.Remove(attendanceObject);
                                 _db.SaveChanges();
                                 response.Data = true;
                             }

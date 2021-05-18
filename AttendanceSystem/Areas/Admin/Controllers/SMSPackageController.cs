@@ -27,19 +27,19 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             try
             {
                 SMSPackage = (from pck in _db.tbl_SMSPackage
-                           where !pck.IsDeleted
-                           select new SMSPackageVM
-                           {
-                               SMSPackageId = pck.SMSPackageId,
-                               PackageName = pck.PackageName,
-                               PackageAmount = pck.PackageAmount,
-                               AccessDays = pck.AccessDays,
-                               IsActive = pck.IsActive,
-                               PackageImage = pck.PackageImage,
-                               NoOfSMS = pck.NoOfSMS,
-                               PackageColorCode = pck.PackageColorCode,
-                               PackageFontIcon = pck.PackageFontIcon
-                           }).OrderByDescending(x => x.SMSPackageId).ToList();
+                              where !pck.IsDeleted
+                              select new SMSPackageVM
+                              {
+                                  SMSPackageId = pck.SMSPackageId,
+                                  PackageName = pck.PackageName,
+                                  PackageAmount = pck.PackageAmount,
+                                  AccessDays = pck.AccessDays,
+                                  IsActive = pck.IsActive,
+                                  PackageImage = pck.PackageImage,
+                                  NoOfSMS = pck.NoOfSMS,
+                                  PackageColorCode = pck.PackageColorCode,
+                                  PackageFontIcon = pck.PackageFontIcon
+                              }).OrderByDescending(x => x.SMSPackageId).ToList();
             }
             catch (Exception ex)
             {
@@ -53,19 +53,19 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             if (id > 0)
             {
                 SMSPackageVM = (from pkg in _db.tbl_SMSPackage
-                             where pkg.SMSPackageId == id && !pkg.IsDeleted
-                             select new SMSPackageVM
-                             {
-                                 SMSPackageId = pkg.SMSPackageId,
-                                 PackageName = pkg.PackageName,
-                                 PackageAmount = pkg.PackageAmount,
-                                 NoOfSMS = pkg.NoOfSMS,
-                                 AccessDays = pkg.AccessDays,
-                                 PackageImage = pkg.PackageImage,
-                                 IsActive = pkg.IsActive,
-                                 PackageColorCode = pkg.PackageColorCode,
-                                 PackageFontIcon = pkg.PackageFontIcon
-                             }).FirstOrDefault();
+                                where pkg.SMSPackageId == id && !pkg.IsDeleted
+                                select new SMSPackageVM
+                                {
+                                    SMSPackageId = pkg.SMSPackageId,
+                                    PackageName = pkg.PackageName,
+                                    PackageAmount = pkg.PackageAmount,
+                                    NoOfSMS = pkg.NoOfSMS,
+                                    AccessDays = pkg.AccessDays,
+                                    PackageImage = pkg.PackageImage,
+                                    IsActive = pkg.IsActive,
+                                    PackageColorCode = pkg.PackageColorCode,
+                                    PackageFontIcon = pkg.PackageFontIcon
+                                }).FirstOrDefault();
             }
 
             return View(SMSPackageVM);
@@ -117,7 +117,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objSMSPackage.PackageImage = PackageImageFile != null ? fileName : objSMSPackage.PackageImage;
                         objSMSPackage.PackageName = SMSPackageVM.PackageName;
                         objSMSPackage.PackageAmount = SMSPackageVM.PackageAmount;
-                        objSMSPackage.NoOfSMS= SMSPackageVM.NoOfSMS;
+                        objSMSPackage.NoOfSMS = SMSPackageVM.NoOfSMS;
                         objSMSPackage.AccessDays = SMSPackageVM.AccessDays;
                         objSMSPackage.PackageColorCode = SMSPackageVM.PackageColorCode;
                         objSMSPackage.PackageFontIcon = SMSPackageVM.PackageFontIcon;
@@ -161,19 +161,19 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             SMSPackageVM SMSPackageVM = new SMSPackageVM();
 
             SMSPackageVM = (from pkg in _db.tbl_SMSPackage
-                         where pkg.SMSPackageId == id && !pkg.IsDeleted
-                         select new SMSPackageVM
-                         {
-                             SMSPackageId = pkg.SMSPackageId,
-                             PackageName = pkg.PackageName,
-                             PackageAmount = pkg.PackageAmount,
-                             NoOfSMS = pkg.NoOfSMS,
-                             AccessDays = pkg.AccessDays,
-                             PackageImage = pkg.PackageImage,
-                             IsActive = pkg.IsActive,
-                             PackageColorCode = pkg.PackageColorCode,
-                             PackageFontIcon = pkg.PackageFontIcon
-                         }).FirstOrDefault();
+                            where pkg.SMSPackageId == id && !pkg.IsDeleted
+                            select new SMSPackageVM
+                            {
+                                SMSPackageId = pkg.SMSPackageId,
+                                PackageName = pkg.PackageName,
+                                PackageAmount = pkg.PackageAmount,
+                                NoOfSMS = pkg.NoOfSMS,
+                                AccessDays = pkg.AccessDays,
+                                PackageImage = pkg.PackageImage,
+                                IsActive = pkg.IsActive,
+                                PackageColorCode = pkg.PackageColorCode,
+                                PackageFontIcon = pkg.PackageFontIcon
+                            }).FirstOrDefault();
 
             return View(SMSPackageVM);
         }
@@ -202,13 +202,13 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     objSMSPackage.ModifiedDate = DateTime.UtcNow;
 
                     _db.SaveChanges();
-                    ReturnMessage = "success";
+                    ReturnMessage = ErrorMessage.Success;
                 }
             }
             catch (Exception ex)
             {
                 string msg = ex.Message.ToString();
-                ReturnMessage = "exception";
+                ReturnMessage = ErrorMessage.Exception;
             }
 
             return ReturnMessage;
@@ -225,23 +225,30 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                 if (objSMSPackage == null)
                 {
-                    ReturnMessage = "notfound";
+                    ReturnMessage = ErrorMessage.NotFound;
                 }
                 else
                 {
-                    long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
-                    objSMSPackage.IsDeleted = true;
-                    objSMSPackage.ModifiedBy = LoggedInUserId;
-                    objSMSPackage.ModifiedDate = DateTime.UtcNow;
-                    _db.SaveChanges();
+                    if (_db.tbl_CompanySMSPackRenew.Any(x => x.SMSPackageId == SMSPackageId))
+                    {
+                        ReturnMessage = ErrorMessage.PackageAlreadyAssigned;
+                    }
+                    else
+                    {
+                        long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
+                        objSMSPackage.IsDeleted = true;
+                        objSMSPackage.ModifiedBy = LoggedInUserId;
+                        objSMSPackage.ModifiedDate = DateTime.UtcNow;
+                        _db.SaveChanges();
 
-                    ReturnMessage = "success";
+                        ReturnMessage = ErrorMessage.Success;
+                    }
                 }
             }
             catch (Exception ex)
             {
                 string msg = ex.Message.ToString();
-                ReturnMessage = "exception";
+                ReturnMessage = ErrorMessage.Exception;
             }
 
             return ReturnMessage;

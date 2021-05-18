@@ -153,23 +153,27 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                 if (objMaterialCategory == null)
                 {
-                    ReturnMessage = "notfound";
+                    ReturnMessage = ErrorMessage.NotFound;
                 }
                 else
                 {
-                    long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
-                    objMaterialCategory.IsDeleted = true;
-                    objMaterialCategory.ModifiedBy = LoggedInUserId;
-                    objMaterialCategory.ModifiedDate = DateTime.UtcNow;
-                    _db.SaveChanges();
+                    if (_db.tbl_Material.Any(x => x.MaterialCategoryId == MaterialCategoryId))
+                    {
+                        ReturnMessage = ErrorMessage.MaterialExistForThisCategory;
+                    }
+                    else
+                    {
+                        _db.tbl_MaterialCategory.Remove(objMaterialCategory);
+                        _db.SaveChanges();
 
-                    ReturnMessage = "success";
+                        ReturnMessage = ErrorMessage.Success;
+                    }
                 }
             }
             catch (Exception ex)
             {
                 string msg = ex.Message.ToString();
-                ReturnMessage = "exception";
+                ReturnMessage = ErrorMessage.Exception;
             }
 
             return ReturnMessage;

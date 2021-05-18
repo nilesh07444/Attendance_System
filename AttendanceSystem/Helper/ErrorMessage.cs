@@ -45,7 +45,6 @@
         public static string RunningStatusPending = "Pending";
         public static string HolidayOnSameDateAlreadyExist  = "Holiday on same date already exist, Please use another date.";
 
-        public static string LeaveIsIsNotValid = "Leave id is not valid.";
         public static string LeaveDateRequired = "Leave date required";
         public static string StartDateCanNotBeGreaterThanEndDate = "Start date can not be greater than end date";
         public static string LeaveReasonRequired = "Leave reason required";
@@ -71,6 +70,7 @@
         public static string AttendanceIdIsNotValid = "Attendance id is not valid.";
         public static string PendingAttendanceCanBeEditOnly = "Only pending attendance can be edit.";
         public static string PendingAttendanceCanBeDeleteOnly = "Only pending attendance can be Delete.";
+        public static string AttendanceIsAcceptedCanNotDelete = "Attendance is accepted, can not Delete.";
 
         public static double FullDay = 1;
         public static double HalfDay = 0.5;
@@ -97,5 +97,11 @@
         
         public static string AlreadyInForTheDay = "Already in for the day.";
         public static string AlreadyOutForTheDay = "Already out for the day.";
+
+        public static string PackageAlreadyAssigned = "Package already assigned";
+        public static string Success = "success";
+        public static string NotFound = "notfound";
+        public static string Exception = "exception";
+        public static string MaterialExistForThisCategory = "Material exist for this category.";
     }
 }

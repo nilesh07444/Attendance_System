@@ -253,8 +253,6 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             response.Data = false;
             try
             {
-
-
                 #region Validation
                 if (id == 0)
                 {
@@ -265,26 +263,28 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 long employeeId = base.UTI.EmployeeId;
                 tbl_Leave leaveObject = _db.tbl_Leave.Where(x => x.LeaveId == id && x.UserId == employeeId).FirstOrDefault();
 
-                if (leaveObject.LeaveStatus != (int)LeaveStatus.Pending)
+                if (leaveObject == null)
                 {
                     response.IsError = true;
-                    response.AddError(ErrorMessage.PendingLeaveCanBeDeleteOnly);
+                    response.AddError(ErrorMessage.LeaveIdIsNotValid);
                 }
-                #endregion Validation
-                if (!response.IsError)
+                else
                 {
-                    if (leaveObject != null)
-                    {
-                        leaveObject.IsDeleted = true;
-                        leaveObject.ModifiedBy = employeeId;
-                        leaveObject.ModifiedDate = DateTime.UtcNow;
-                        _db.SaveChanges();
-                        response.Data = true;
-                    }
-                    else
+                    if (leaveObject.LeaveStatus != (int)LeaveStatus.Pending)
                     {
                         response.IsError = true;
                         response.AddError(ErrorMessage.PendingLeaveCanBeDeleteOnly);
+                    }
+                    #endregion Validation
+
+                    if (!response.IsError)
+                    {
+                        if (leaveObject != null)
+                        {
+                            _db.tbl_Leave.Remove(leaveObject);
+                            _db.SaveChanges();
+                            response.Data = true;
+                        }
                     }
                 }
             }

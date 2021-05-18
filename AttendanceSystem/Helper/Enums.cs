@@ -30,7 +30,6 @@ namespace AttendanceSystem.Helper
         Pending = 1,
         Accept = 2,
         Reject = 3,
-        Cancelled = 4
     }
 
     public enum EmployeePaymentType

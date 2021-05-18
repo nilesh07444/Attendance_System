@@ -210,13 +210,13 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     objPackage.ModifiedDate = DateTime.UtcNow;
 
                     _db.SaveChanges();
-                    ReturnMessage = "success";
+                    ReturnMessage = ErrorMessage.Success;
                 }
             }
             catch (Exception ex)
             {
                 string msg = ex.Message.ToString();
-                ReturnMessage = "exception";
+                ReturnMessage = ErrorMessage.Exception;
             }
 
             return ReturnMessage;
@@ -233,23 +233,27 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                 if (objPackage == null)
                 {
-                    ReturnMessage = "notfound";
+                    ReturnMessage = ErrorMessage.NotFound;
                 }
                 else
                 {
-                    long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
-                    objPackage.IsDeleted = true;
-                    objPackage.ModifiedBy = LoggedInUserId;
-                    objPackage.ModifiedDate = DateTime.UtcNow;
-                    _db.SaveChanges();
+                    if (_db.tbl_CompanyRenewPayment.Any(x => x.PackageId == objPackage.PackageId))
+                    {
+                        ReturnMessage = ErrorMessage.PackageAlreadyAssigned;
+                    }
+                    else
+                    {
+                        _db.tbl_Package.Remove(objPackage);
+                        _db.SaveChanges();
 
-                    ReturnMessage = "success";
+                        ReturnMessage = ErrorMessage.Success;
+                    }
                 }
             }
             catch (Exception ex)
             {
                 string msg = ex.Message.ToString();
-                ReturnMessage = "exception";
+                ReturnMessage = ErrorMessage.Exception;
             }
 
             return ReturnMessage;
