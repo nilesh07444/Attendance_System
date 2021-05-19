@@ -151,11 +151,19 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                          Status = at.Status,
                                                          RejectReason = at.RejectReason,
                                                          InTime = at.InTime,
-                                                         OutTime = at.OutTime
+                                                         OutTime = at.OutTime,
+                                                         ExtraPerHourPrice = emp.ExtraPerHourPrice,
+                                                         EmploymentCategory = emp.EmploymentCategory,
+                                                         InLatitude = at.InLatitude,
+                                                         InLongitude = at.InLongitude,
+                                                         OutLatitude = at.OutLatitude,
+                                                         OutLongitude = at.OutLongitude
                                                      }).OrderByDescending(x => x.AttendanceDate).ToList();
 
-                attendanceList.ForEach(x => {
+                attendanceList.ForEach(x =>
+                {
                     x.StatusText = CommonMethod.GetEnumDescription((AttendanceStatus)x.Status);
+                    x.EmploymentCategoryText = CommonMethod.GetEnumDescription((EMploymentCategory)x.EmploymentCategory);
                 });
                 response.Data = attendanceList;
             }
@@ -199,9 +207,16 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                  Status = at.Status,
                                                  RejectReason = at.RejectReason,
                                                  InTime = at.InTime,
-                                                 OutTime = at.OutTime
+                                                 OutTime = at.OutTime,
+                                                 ExtraPerHourPrice = emp.ExtraPerHourPrice,
+                                                 EmploymentCategory = emp.EmploymentCategory,
+                                                 InLatitude = at.InLatitude,
+                                                 InLongitude = at.InLongitude,
+                                                 OutLatitude = at.OutLatitude,
+                                                 OutLongitude = at.OutLongitude
                                              }).FirstOrDefault();
                 leaveDetails.StatusText = CommonMethod.GetEnumDescription((AttendanceStatus)leaveDetails.Status);
+                leaveDetails.EmploymentCategoryText = CommonMethod.GetEnumDescription((EMploymentCategory)leaveDetails.EmploymentCategory);
 
                 response.Data = leaveDetails;
             }
@@ -403,7 +418,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 DateTime today = DateTime.UtcNow.Date;
                 TimeSpan defaultTime = TimeSpan.Parse("00:00");
                 #region Validation
-                if (!_db.tbl_Attendance.Any(x => x.AttendanceDate == today && x.InTime != null &&  x.OutTime == defaultTime))
+                if (!_db.tbl_Attendance.Any(x => x.AttendanceDate == today && x.InTime != null && x.OutTime == defaultTime))
                 {
                     response.IsError = true;
                     response.AddError(ErrorMessage.AlreadyOutForTheDay);
@@ -411,7 +426,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 #endregion Validation
                 if (!response.IsError)
                 {
-                    tbl_Attendance attendanceObject = _db.tbl_Attendance.FirstOrDefault(x => x.AttendanceDate == today && x.InTime != null &&   x.OutTime == defaultTime);
+                    tbl_Attendance attendanceObject = _db.tbl_Attendance.FirstOrDefault(x => x.AttendanceDate == today && x.InTime != null && x.OutTime == defaultTime);
                     attendanceObject.OutLocationFrom = outTimeRequestVM.OutLocationFrom;
                     attendanceObject.Status = (int)AttendanceStatus.Pending;
                     attendanceObject.OutTime = DateTime.UtcNow.TimeOfDay;
