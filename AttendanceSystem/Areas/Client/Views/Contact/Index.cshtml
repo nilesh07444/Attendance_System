@@ -1,7 +1,7 @@
 ﻿@{
     ViewBag.Title = "Contact Us";
 }
- 
+
 <!--? Hero Start -->
 <div class="slider-area2">
     <div class="slider-height2 hero-overly2 d-flex align-items-center">
@@ -28,40 +28,45 @@
                 <h2 class="contact-title">Get in Touch</h2>
             </div>
             <div class="col-lg-8">
-                <form class="form-contact contact_form" action="contact_process.php" method="post" id="contactForm" novalidate="novalidate">
+                <form class="form-contact contact_form" id="contactForm" novalidate="novalidate">
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <input class="form-control valid" name="firstname" id="firstname" type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter first name *'" placeholder="Enter First name *">
+                                <input class="form-control valid" id="txtFirstname" type="text" placeholder="Enter First name *">
+                                <span id="spn_Firstname" class="field-validation-valid text-danger"></span>
                             </div>
                         </div>
 
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <input class="form-control valid" name="lastname" id="lastname" type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter last name *'" placeholder="Enter Last name *">
+                                <input class="form-control valid" id="txtLastname" type="text" placeholder="Enter Last name *">
+                                <span id="spn_Lastname" class="field-validation-valid text-danger"></span>
                             </div>
                         </div>
 
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <input class="form-control valid" name="mobileno" id="mobileno" type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Mobile No *'" placeholder="Enter Mobile No *">
+                                <input class="form-control valid" id="txtMobileno" type="text" placeholder="Enter Mobile No *">
+                                <span id="spn_Mobileno" class="field-validation-valid text-danger"></span>
                             </div>
                         </div>
 
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <input class="form-control valid" name="email" id="email" type="email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Email address *'" placeholder="Enter Email address *">
+                                <input class="form-control valid" id="txtEmail" type="email" placeholder="Enter Email address *">
+                                <span id="spn_Email" class="field-validation-valid text-danger"></span>
                             </div>
                         </div>
 
                         <div class="col-12">
                             <div class="form-group">
-                                <textarea class="form-control w-100" name="message" id="message" cols="30" rows="9" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Write Your Message *'" placeholder=" Write Your Message *"></textarea>
+                                <textarea class="form-control w-100" id="txtMessage" cols="30" rows="9" placeholder=" Write Your Message *"></textarea>
+                                <span id="spn_Message" class="field-validation-valid text-danger"></span>
                             </div>
                         </div>
                     </div>
                     <div class="form-group mt-3">
-                        <button type="submit" class="button button-contactForm boxed-btn">Send</button>
+                        <button id="btnContactFormSubmit" type="button" class="button button-contactForm boxed-btn">Send</button>
                     </div>
                 </form>
             </div>
@@ -95,38 +100,109 @@
         </div>
     </div>
 </section>
-<!-- ================ contact section end ================= -->
-@*<script>
-        function initMap() {
-            var uluru = {
-                lat: -25.363,
-                lng: 131.044
-            };
-            var grayStyles = [{
-                featureType: "all",
-                stylers: [{
-                    saturation: -90
-                },
-                {
-                    lightness: 50
-                }
-                ]
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script>
+
+    $(document).on("click", "#btnContactFormSubmit", function () {
+
+        var isvalid = true;
+        var field_required_msg_full = 'This field is required';
+
+        var txtFirstname = $("#txtFirstname").val();
+        var txtLastname = $("#txtLastname").val();
+        var txtMobileno = $("#txtMobileno").val();
+        var txtEmail = $("#txtEmail").val();
+        var txtMessage = $("#txtMessage").val();
+
+        //txtFirstname
+        if (IsEmptyOrNull(txtFirstname)) {
+            $("#spn_Firstname").text(field_required_msg_full);
+            $("#spn_Firstname").show();
+            isvalid = false;
+        }
+        else {
+            $("#spn_Firstname").hide();
+        }
+
+        //txtLastname
+        if (IsEmptyOrNull(txtLastname)) {
+            $("#spn_Lastname").text(field_required_msg_full);
+            $("#spn_Lastname").show();
+            isvalid = false;
+        }
+        else {
+            $("#spn_Lastname").hide();
+        }
+
+        // txtMobileno
+        if (IsEmptyOrNull(txtMobileno)) {
+            $("#spn_Mobileno").text(field_required_msg_full);
+            $("#spn_Mobileno").show();
+            isvalid = false;
+        }
+        else {
+            $("#spn_Mobileno").hide();
+        }
+
+        // txtMessage
+        if (IsEmptyOrNull(txtMessage)) {
+            $("#spn_Message").text(field_required_msg_full);
+            $("#spn_Message").show();
+            isvalid = false;
+        }
+        else {
+            $("#spn_Message").hide();
+        }
+
+        if (!isvalid) { 
+            return false;
+        }
+
+        var ContactFormVM = {
+            "Firstname": txtFirstname,
+            "Lastname": txtLastname,
+            "MobileNo": txtMobileno,
+            "EmailId": txtEmail,
+            "Message": txtMessage
+        };
+
+        var URL = '@Url.Action("SaveContactForm", "Contact")';
+        $.ajax({
+            type: 'POST',
+            async: true,
+            url: URL,
+            data: {
+                ContactDetail: JSON.stringify(ContactFormVM)
             },
-            {
-                elementType: 'labels.text.fill',
-                stylers: [{
-                    color: '#ccdee9'
-                }]
+            success: function (response) {
+                debugger;
+                if (response.IsError) {
+                    alert(response.ErrorMessage);
+                    //StopLoading();
+                }
+                else {
+                    alert("We have received your request.. We will get back to you soon.");
+
+                    $("input.form-control, textarea.form-control").val('');
+                    $(".field-validation-valid").hide();
+                     
+                }
+            },
+            error: function (resultData) {
+                debugger;
+                alert("error");
+                //StopLoading();
             }
-            ];
-            var map = new google.maps.Map(document.getElementById('map'), {
-                center: {
-                    lat: -31.197,
-                    lng: 150.744
-                },
-                zoom: 9,
-                styles: grayStyles,
-                scrollwheel: false
-            });
-        }</script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpfS1oRGreGSBU5HHjMmQ3o5NLw7VdJ6I&amp;callback=initMap"></script>*@
+        });
+
+    });
+
+    function IsEmptyOrNull(value) {
+        if (value == "" || value == undefined || value == NaN)
+            return true;
+        else
+            return false;
+    }
+
+</script>

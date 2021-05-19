@@ -21,7 +21,8 @@ namespace AttendanceSystem.Areas.Client.Controllers
         public ActionResult Index()
         {
             List<HomeImageVM> lstHomeImages = new List<HomeImageVM>();
-            List<PackageVM> lstPackages = new List<PackageVM>();
+            List<PackageVM> lstAccountPackages = new List<PackageVM>();
+            List<SMSPackageVM> lstSMSPackages = new List<SMSPackageVM>();
 
             try
             {
@@ -38,7 +39,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
 
                 //CommonMethod.SendEmail(ToEmail, FromEmail, Subject, bodyhtml);
                 //
-                 
+
                 lstHomeImages = (from hi in _db.tbl_HomeImage
                                  where hi.IsActive
                                  select new HomeImageVM
@@ -50,7 +51,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
                                      IsActive = hi.IsActive,
                                  }).OrderByDescending(x => x.HomeImageId).ToList();
 
-                lstPackages = (from pck in _db.tbl_Package
+                lstAccountPackages = (from pck in _db.tbl_Package
                                where !pck.IsDeleted && pck.IsActive
                                select new PackageVM
                                {
@@ -67,6 +68,19 @@ namespace AttendanceSystem.Areas.Client.Controllers
                                    PackageFontIcon = pck.PackageFontIcon
                                }).OrderByDescending(x => x.PackageId).ToList();
 
+                lstSMSPackages = (from pck in _db.tbl_SMSPackage
+                                  where !pck.IsDeleted && pck.IsActive
+                                  select new SMSPackageVM
+                                  {
+                                      SMSPackageId = pck.SMSPackageId,
+                                      PackageName = pck.PackageName,
+                                      PackageAmount = pck.PackageAmount,
+                                      AccessDays = pck.AccessDays,
+                                      IsActive = pck.IsActive,
+                                      NoOfSMS = pck.NoOfSMS,
+                                      PackageColorCode = pck.PackageColorCode,
+                                      PackageFontIcon = pck.PackageFontIcon
+                                  }).OrderByDescending(x => x.SMSPackageId).ToList();
 
                 if (lstHomeImages != null)
                 {
@@ -74,8 +88,8 @@ namespace AttendanceSystem.Areas.Client.Controllers
                 }
 
                 ViewData["lstHomeImages"] = lstHomeImages;
-                ViewData["lstPackages"] = lstPackages;
-
+                ViewData["lstAccountPackages"] = lstAccountPackages;
+                ViewData["lstSMSPackages"] = lstSMSPackages; 
             }
             catch (Exception ex)
             {

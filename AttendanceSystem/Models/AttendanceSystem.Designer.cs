@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'D:\Dipak\TDS Document\Attendance_System\AttendanceSystem\Models\AttendanceSystem.edmx'. 
+﻿// T4 code generation is enabled for model 'E:\PROJECTS\Kamlesh Lalwani\Attendance System Project\Attendance_System\AttendanceSystem\Models\AttendanceSystem.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

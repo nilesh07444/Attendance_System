@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AttendanceSystem.Models;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,10 +10,43 @@ namespace AttendanceSystem.Areas.Client.Controllers
 {
     public class ContactController : Controller
     {
-        // GET: Client/Contact
+        AttendanceSystemEntities _db; 
+        public ContactController()
+        {
+            _db = new AttendanceSystemEntities(); 
+        }
         public ActionResult Index()
         {
             return View();
         }
+
+        [HttpPost]
+        public ActionResult SaveContactForm(string ContactDetail)
+        {
+            GeneralResponseVM response = new GeneralResponseVM();
+            try
+            {
+                ContactFormVM contactDataVM = JsonConvert.DeserializeObject<ContactFormVM>(ContactDetail);
+
+                tbl_ContactForm objContact = new tbl_ContactForm();
+                objContact.FirstName = contactDataVM.Firstname;
+                objContact.LastName = contactDataVM.Lastname;
+                objContact.MobileNo = contactDataVM.MobileNo;
+                objContact.EmailId = contactDataVM.EmailId;
+                objContact.Message = contactDataVM.Message;
+                objContact.CreatedDate = DateTime.UtcNow;
+                _db.tbl_ContactForm.Add(objContact);
+                _db.SaveChanges();
+                response.IsError = false;  
+
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.ErrorMessage = ex.Message.ToString();
+            }
+            return Json(response);
+        }
+
     }
 }

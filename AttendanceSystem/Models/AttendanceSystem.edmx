@@ -254,6 +254,18 @@
           <Property Name="ModifiedBy" Type="bigint" />
           <Property Name="ModifiedDate" Type="datetime" />
         </EntityType>
+        <EntityType Name="tbl_ContactForm">
+          <Key>
+            <PropertyRef Name="ContactFormId" />
+          </Key>
+          <Property Name="ContactFormId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="MobileNo" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="EmailId" Type="nvarchar" MaxLength="100" />
+          <Property Name="Message" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="tbl_DynamicContent">
           <Key>
             <PropertyRef Name="DynamicContentId" />
@@ -649,6 +661,7 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <EntitySet Name="tbl_CompanyRenewPayment" EntityType="Self.tbl_CompanyRenewPayment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_CompanyRequest" EntityType="Self.tbl_CompanyRequest" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_CompanySMSPackRenew" EntityType="Self.tbl_CompanySMSPackRenew" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_ContactForm" EntityType="Self.tbl_ContactForm" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_DynamicContent" EntityType="Self.tbl_DynamicContent" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Employee" EntityType="Self.tbl_Employee" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_EmployeeBuyTransaction" EntityType="Self.tbl_EmployeeBuyTransaction" Schema="dbo" store:Type="Tables" />
@@ -1241,6 +1254,7 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <EntitySet Name="tbl_Employee" EntityType="AttendanceSystemModel.tbl_Employee" />
           <EntitySet Name="tbl_SMSLog" EntityType="AttendanceSystemModel.tbl_SMSLog" />
           <EntitySet Name="tbl_AssignWorker" EntityType="AttendanceSystemModel.tbl_AssignWorker" />
+          <EntitySet Name="tbl_ContactForm" EntityType="AttendanceSystemModel.tbl_ContactForm" />
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -1354,6 +1368,18 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <Property Name="CreatedBy" Type="Int64" Nullable="false" />
           <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ModifiedBy" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbl_ContactForm">
+          <Key>
+            <PropertyRef Name="ContactFormId" />
+          </Key>
+          <Property Name="ContactFormId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MobileNo" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="EmailId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Message" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -2008,6 +2034,19 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
                 <ScalarProperty Name="SiteId" ColumnName="SiteId" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="AssignWorkerId" ColumnName="AssignWorkerId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_ContactForm">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_ContactForm">
+              <MappingFragment StoreEntitySet="tbl_ContactForm">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="EmailId" ColumnName="EmailId" />
+                <ScalarProperty Name="MobileNo" ColumnName="MobileNo" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="ContactFormId" ColumnName="ContactFormId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

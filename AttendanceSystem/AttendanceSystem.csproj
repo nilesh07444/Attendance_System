@@ -256,6 +256,9 @@
     <Compile Include="Models\tbl_CompanySMSPackRenew.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\tbl_ContactForm.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tbl_DynamicContent.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
@@ -322,11 +325,13 @@
     <Compile Include="ViewModel\CompanySMSPackRenewVM.cs" />
     <Compile Include="ViewModel\CompanyRenewPaymentVM.cs" />
     <Compile Include="ViewModel\CompanyRequestVM.cs" />
+    <Compile Include="ViewModel\ContactFormVM.cs" />
     <Compile Include="ViewModel\DashboardVM.cs" />
     <Compile Include="ViewModel\DynamicContentVM.cs" />
     <Compile Include="ViewModel\EmployeeRatingVM.cs" />
     <Compile Include="ViewModel\EmployeeVM.cs" />
     <Compile Include="ViewModel\FeedbackVM.cs" />
+    <Compile Include="ViewModel\GeneralResponseVM.cs" />
     <Compile Include="ViewModel\HolidayVM.cs" />
     <Compile Include="ViewModel\HomeImageVM.cs" />
     <Compile Include="ViewModel\LeaveVM.cs" />
