@@ -12,10 +12,15 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
     public class PaymentController : BaseUserController
     {
         private readonly AttendanceSystemEntities _db;
-
+        long employeeId;
+        long companyId;
+        long employeeRoleId;
         public PaymentController()
         {
             _db = new AttendanceSystemEntities();
+            employeeId = base.UTI.EmployeeId;
+            companyId = base.UTI.CompanyId;
+            employeeRoleId = base.UTI.RoleId;
         }
 
         [HttpPost]
@@ -26,9 +31,6 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             response.IsError = false;
             try
             {
-                long employeeId = base.UTI.EmployeeId;
-                long employeeRoleId = base.UTI.RoleId;
-
                 List<PaymentVM> paymentList = (from emp in _db.tbl_EmployeePayment
                                                where !emp.IsDeleted
                                                && emp.PaymentDate >= paymentFilterVM.StartDate && emp.PaymentDate <= paymentFilterVM.EndDate
@@ -63,8 +65,6 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             response.IsError = false;
             try
             {
-                long employeeId = base.UTI.EmployeeId;
-
                 PaymentVM paymentDetails = (from emp in _db.tbl_EmployeePayment
                                             where !emp.IsDeleted && emp.UserId == employeeId
                                             && emp.EmployeePaymentId == id
@@ -99,9 +99,6 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             response.Data = false;
             try
             {
-                long employeeId = base.UTI.EmployeeId;
-                long companyId = base.UTI.CompanyId;
-
                 if (paymentVM.UserId == 0)
                 {
                     response.IsError = true;
@@ -144,5 +141,38 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             return response;
         }
 
+        [HttpPost]
+        [Route("DeletedList")]
+        public ResponseDataModel<List<PaymentVM>> DeletedList(PaymentFilterVM paymentFilterVM)
+        {
+            ResponseDataModel<List<PaymentVM>> response = new ResponseDataModel<List<PaymentVM>>();
+            response.IsError = false;
+            try
+            {
+                List<PaymentVM> paymentList = (from emp in _db.tbl_EmployeePayment
+                                               where emp.IsDeleted
+                                               && emp.PaymentDate >= paymentFilterVM.StartDate && emp.PaymentDate <= paymentFilterVM.EndDate
+                                               && (employeeRoleId == (int)AdminRoles.CompanyAdmin ? (paymentFilterVM.EmployeeId.HasValue ? emp.UserId == paymentFilterVM.EmployeeId : true) : emp.UserId == employeeId)
+                                               select new PaymentVM
+                                               {
+
+                                                   EmployeePaymentId = emp.EmployeePaymentId,
+                                                   UserId = emp.UserId,
+                                                   PaymentDate = emp.PaymentDate,
+                                                   Amount = emp.Amount,
+                                                   PaymentType = emp.PaymentType,
+                                                   Remarks = emp.Remarks
+                                               }).OrderByDescending(x => x.EmployeePaymentId).ToList();
+
+                response.Data = paymentList;
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message);
+            }
+
+            return response;
+        }
     }
 }

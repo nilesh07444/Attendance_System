@@ -14,9 +14,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         // GET: Admin/Material
         AttendanceSystemEntities _db;
         public string MaterialDirectoryPath = "";
+        long loggedInUserId;
         public MaterialController()
         {
             _db = new AttendanceSystemEntities();
+            loggedInUserId = clsAdminSession.UserID;
         }
         public ActionResult Index()
         {
@@ -45,7 +47,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                 IsActive = mt.IsActive,
                             }).OrderByDescending(x => x.MaterialId).ToList();
 
-                material.ForEach(x => {
+                material.ForEach(x =>
+                {
                     x.InOutText = materialStatusList.Where(z => z.Value == x.InOut.ToString()).Select(c => c.Text).FirstOrDefault();
                 });
             }
@@ -148,7 +151,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                 if (objMaterial != null)
                 {
-                    long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
+
                     if (Status == "Active")
                     {
                         objMaterial.IsActive = true;
@@ -158,7 +161,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objMaterial.IsActive = false;
                     }
 
-                    objMaterial.ModifiedBy = LoggedInUserId;
+                    objMaterial.ModifiedBy = loggedInUserId;
                     objMaterial.ModifiedDate = DateTime.UtcNow;
 
                     _db.SaveChanges();
@@ -189,7 +192,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 }
                 else
                 {
-                    _db.tbl_Material.Remove(objMaterial);
+                    objMaterial.IsDeleted = true;
+                    objMaterial.ModifiedBy = loggedInUserId;
+                    objMaterial.ModifiedDate = DateTime.UtcNow;
                     _db.SaveChanges();
 
                     ReturnMessage = ErrorMessage.Success;

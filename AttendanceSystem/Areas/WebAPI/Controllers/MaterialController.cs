@@ -13,14 +13,17 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
     public class MaterialController : BaseUserController
     {
         private readonly AttendanceSystemEntities _db;
-
+        long employeeId ;
+        long companyId ;
         public MaterialController()
         {
             _db = new AttendanceSystemEntities();
+            employeeId = base.UTI.EmployeeId;
+            companyId = base.UTI.CompanyId;
         }
 
 
-        [HttpGet]
+        [HttpPost]
         [Route("List")]
         public ResponseDataModel<List<MaterialVM>> List(MaterialFilterVM materialFilterVM)
         {
@@ -177,6 +180,54 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
             return response;
         }
+
+        [HttpPost]
+        [Route("DeletedList")]
+        public ResponseDataModel<List<MaterialVM>> DeletedList(MaterialFilterVM materialFilterVM)
+        {
+            ResponseDataModel<List<MaterialVM>> response = new ResponseDataModel<List<MaterialVM>>();
+            response.IsError = false;
+            try
+            {
+                List<MaterialVM> materialList = (from mt in _db.tbl_Material
+                                                 join mc in _db.tbl_MaterialCategory on mt.MaterialCategoryId equals mc.MaterialCategoryId
+                                                 join st in _db.tbl_Site on mt.SiteId equals st.SiteId
+                                                 where mt.IsDeleted && mt.CompanyId == companyId
+                                                 && (materialFilterVM.SiteId.HasValue ? mt.SiteId == materialFilterVM.SiteId : true)
+                                                 && (materialFilterVM.MaterialCategoryId.HasValue ? mt.MaterialCategoryId == materialFilterVM.MaterialCategoryId : true)
+                                                 && (materialFilterVM.Status.HasValue ? mt.InOut == materialFilterVM.Status : true)
+                                                 && (materialFilterVM.StartDate.HasValue && materialFilterVM.EndDate.HasValue ? mt.MaterialDate >= materialFilterVM.StartDate && mt.MaterialDate <= materialFilterVM.EndDate : true)
+                                                 select new MaterialVM
+                                                 {
+                                                     MaterialId = mt.MaterialId,
+                                                     MaterialCategoryId = mt.MaterialCategoryId.Value,
+                                                     MaterialCategoryText = mc.MaterialCategoryName,
+                                                     MaterialDate = mt.MaterialDate,
+                                                     SiteId = mt.SiteId,
+                                                     SiteName = st.SiteName,
+                                                     Qty = mt.Qty,
+                                                     InOut = mt.InOut,
+                                                     Remarks = mt.Remarks,
+                                                     IsActive = mt.IsActive,
+                                                 }).OrderByDescending(x => x.MaterialId).ToList();
+
+                List<SelectListItem> materialInOutStatusList = GetMaterialStatusList();
+                materialList.ForEach(x =>
+                {
+                    x.InOutText = materialInOutStatusList.Where(z => z.Value == x.InOut.ToString()).Select(c => c.Text).FirstOrDefault();
+                });
+
+                response.Data = materialList;
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message);
+            }
+
+            return response;
+        }
+
         private List<SelectListItem> GetMaterialStatusList()
         {
             string[] paymentTypeArr = Enum.GetNames(typeof(MateriaStatus));
