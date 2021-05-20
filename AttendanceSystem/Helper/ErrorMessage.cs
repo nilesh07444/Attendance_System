@@ -32,6 +32,7 @@
         public static string CompanyPanCardDirectoryPath = "/Images/CompanyPanCard/";
         public static string CompanyLogoDirectoryPath = "/Images/CompanyLogo/";
         public static string CompanyRegisterProofDirectoryPath = "/Images/CompanyRegisterProof/";
+        public static string OurClientDirectoryPath = "/Images/OurClient/";
 
 
         public static string TokenExpired = "Token expired";

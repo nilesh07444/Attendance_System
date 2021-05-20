@@ -63,14 +63,12 @@
                                 <i class="@obj.PackageFontIcon"></i>
                                 <div class="price-value" id="heading_@accountPackageCounter" style="color: @obj.PackageColorCode"> @obj.Amount <span class="month" id="per_@accountPackageCounter">per month</span> </div>
                             </div>
-                            <h3 class="heading" style="color: @obj.PackageColorCode">@obj.PackageName</h3>
+                            <h3 class="heading" style="margin-top: 10px; color: @obj.PackageColorCode">@obj.PackageName</h3>
                             <div class="pricing-content">
                                 <ul>
-                                    <li><b>60GB</b> Disk Space</li>
-                                    <li><b>60</b> Email Accounts</li>
-                                    <li><b>60GB</b> Monthly Bandwidth</li>
-                                    <li><b>15</b> subdomains</li>
-                                    <li><b>20</b> Domains</li>
+                                    <li><b>@obj.AccessDays</b> Access Days</li>
+                                    <li><b>@obj.NoOfEmployee</b> No Of Employee</li>
+                                    <li><b>@obj.NoOfSMS</b> No Of SMS</li>
                                 </ul>
                             </div>
                             <div class="pricingTable-signup">
@@ -85,9 +83,13 @@
     </div>
 }
 
- 
+
 <!--? About Area Start-->
-<div class="support-company-area pt-100 pb-100 section-bg fix" data-background="/Content/client-theme/assets/img/gallery/section_bg02.jpg">
+<section class="support-company-area section-bg fix" id="experience">
+    <img src="/Content/client-theme/assets/img/contrabook/our-services.png" class="img-fluid" alt="Responsive image">
+</section>
+
+<!--<div class="support-company-area pt-100 pb-100 section-bg fix" data-background="/Content/client-theme/assets/img/contrabook/our-services.png">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-xl-6 col-lg-6">
@@ -96,23 +98,23 @@
                 </div>
             </div>
             <div class="col-xl-6 col-lg-6">
-                <div class="right-caption">
-                    <!-- Section Tittle -->
-                    <div class="section-tittle section-tittle2 mb-50">
-                        <span>Our Top Services</span>
-                        <h2>Our Best Services</h2>
-                    </div>
-                    <div class="support-caption">
-                        <p class="pera-top">Mollit anim laborum duis adseu dolor iuyn voluptcate velit ess cillum dolore egru lofrre dsu quality mollit anim laborumuis au dolor in voluptate velit cillu.</p>
-                        <p class="mb-65">Mollit anim laborum.Dvcuis aute serunt  iruxvfg dhjkolohr indd re voluptate velit esscillumlore eu quife nrulla parihatur. Excghcepteur sfwsignjnt occa cupidatat non aute iruxvfg dhjinulpadeserunt moll.</p>
-                        <a href="/about" class="btn post-btn">More About Us</a>
-                    </div>
+                <div class="right-caption">-->
+<!-- Section Tittle -->
+<!--<div class="section-tittle section-tittle2 mb-50">
+                    <span>Our Top Services</span>
+                    <h2>Our Best Services</h2>
+                </div>
+                <div class="support-caption">
+                    <p class="pera-top">Mollit anim laborum duis adseu dolor iuyn voluptcate velit ess cillum dolore egru lofrre dsu quality mollit anim laborumuis au dolor in voluptate velit cillu.</p>
+                    <p class="mb-65">Mollit anim laborum.Dvcuis aute serunt  iruxvfg dhjkolohr indd re voluptate velit esscillumlore eu quife nrulla parihatur. Excghcepteur sfwsignjnt occa cupidatat non aute iruxvfg dhjinulpadeserunt moll.</p>
+                    <a href="/about" class="btn post-btn">More About Us</a>
                 </div>
             </div>
-
         </div>
+
     </div>
 </div>
+</div>-->
 <!-- About Area End-->
 <!-- Package Area End -->
 <!-- SMS Package Area Start -->
@@ -140,14 +142,14 @@
                                 <i class="@obj.PackageFontIcon"></i>
                                 <div class="price-value" id="smsheading_@smsPackageCounter" style="color: @obj.PackageColorCode"> @obj.PackageAmount <span class="month" id="smsper_@smsPackageCounter">per month</span> </div>
                             </div>
-                            <h3 class="heading" style="color: @obj.PackageColorCode">@obj.PackageName</h3>
+                            <h3 class="heading" style="margin-top: 10px; color: @obj.PackageColorCode">@obj.PackageName</h3>
                             <div class="pricing-content">
                                 <ul>
-                                    <li><b>60GB</b> Disk Space</li>
-                                    <li><b>60</b> Email Accounts</li>
-                                    <li><b>60GB</b> Monthly Bandwidth</li>
-                                    <li><b>15</b> subdomains</li>
-                                    <li><b>20</b> Domains</li>
+                                    <li><b>@obj.AccessDays</b> Access Days</li>
+                                    <li><b>@obj.NoOfSMS</b> No Of SMS</li>
+                                    @*<li><b>60GB</b> Monthly Bandwidth</li>
+                                        <li><b>15</b> subdomains</li>
+                                        <li><b>20</b> Domains</li>*@
                                 </ul>
                             </div>
                             <div class="pricingTable-signup">
@@ -162,7 +164,6 @@
     </div>
 }
 <!-- SMS Package Area End -->
-
 <!--? Testimonial Start -->
 <div class="testimonial-area testimonial-padding" data-background="/Content/client-theme/assets/img/gallery/section_bg04.jpg">
     <div class="container ">
@@ -225,7 +226,6 @@
     </div>
 </div>
 <!-- Testimonial End -->
-  
 <!-- Want To work -->
 <section class="wantToWork-area w-padding2 section-bg" data-background="/Content/client-theme/assets/img/gallery/section_bg03.jpg">
     <div class="container">
@@ -245,6 +245,15 @@
 <!-- Brand Area Start -->
 <div class="brand-area pb-140 section-padding30">
     <div class="container">
+        <div class="row">
+            <div class="cl-xl-7 col-lg-8 col-md-10">
+                <!-- Section Tittle -->
+                <div class="section-tittle mb-70">
+                    <span>Our valuable clients</span>
+                    <h2>Our Clients</h2>
+                </div>
+            </div>
+        </div>
         <div class="brand-active brand-border pb-40">
             <div class="single-brand">
                 <img src="~/Content/client-theme/assets/img/gallery/brand1.png" alt="">

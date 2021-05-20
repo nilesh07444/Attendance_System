@@ -179,12 +179,15 @@
 
             if (otpText == "") {
                 alert("Please enter OTP")
+                $.unblockUI();
                 return false;
             }
             if (otpText != OTP) {
                 alert("Invalid OTP")
+                $.unblockUI();
                 return false;
             } else {
+                $.blockUI({ message: '<h4> Please Wait...</h4>' });
                 $("#submit_form").submit();
             }
 
