@@ -450,5 +450,27 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
             return response;
         }
+
+        [HttpGet]
+        [Route("Status")]
+        public ResponseDataModel<bool> Status()
+        {
+            ResponseDataModel<bool> response = new ResponseDataModel<bool>();
+            response.IsError = false;
+            try
+            {
+                DateTime today = DateTime.UtcNow.Date;
+                TimeSpan defaultTime = TimeSpan.Parse("00:00");
+                bool isPresent = _db.tbl_Attendance.Any(x => x.AttendanceDate == today && x.InTime != null && x.OutTime == defaultTime && x.UserId == employeeId);
+                response.Data = isPresent;
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message);
+            }
+
+            return response;
+        }
     }
 }
