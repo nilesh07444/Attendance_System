@@ -43,6 +43,10 @@
                             @Model.PackageFontIcon
                         </div>
                         <div class="form-group row">
+                            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                            @Model.Description
+                        </div>
+                        <div class="form-group row">
                             @Html.LabelFor(model => model.PackageImageFile, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
                             <p><a target="_blank" href="@ErrorMessage.SMSPackageDirectoryPath/@Model.PackageImage"> Click here to view image </a></p>
                         </div>

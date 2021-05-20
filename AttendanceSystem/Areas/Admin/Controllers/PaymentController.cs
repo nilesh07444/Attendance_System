@@ -274,5 +274,54 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
             return Json(new { Status = status, Otp = otp, ErrorMessage = errorMessage }, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult DeletedPayment(int? userRole = null, DateTime? startDate = null, DateTime? endDate = null)
+        {
+            PaymentFilterVM paymentFilterVM = new PaymentFilterVM();
+            if (userRole.HasValue)
+            {
+                paymentFilterVM.UserRole = userRole.Value;
+            }
+
+            if (startDate.HasValue && endDate.HasValue)
+            {
+                paymentFilterVM.StartDate = startDate.Value;
+                paymentFilterVM.EndDate = endDate.Value;
+            }
+
+            try
+            {
+                List<SelectListItem> employeePaymentTypeList = GetEmployeePaymentTypeList();
+
+                long companyId = clsAdminSession.CompanyId;
+                paymentFilterVM.PaymentList = (from empp in _db.tbl_EmployeePayment
+                                               join emp in _db.tbl_Employee on empp.UserId equals emp.EmployeeId
+                                               where emp.CompanyId == companyId && empp.IsDeleted
+                                               && empp.PaymentDate >= paymentFilterVM.StartDate && empp.PaymentDate <= paymentFilterVM.EndDate
+                                               && (paymentFilterVM.UserRole.HasValue ? emp.AdminRoleId == paymentFilterVM.UserRole.Value : true)
+                                               select new PaymentVM
+                                               {
+
+                                                   EmployeePaymentId = empp.EmployeePaymentId,
+                                                   UserId = empp.UserId,
+                                                   PaymentDate = empp.PaymentDate,
+                                                   UserName = emp.FirstName + " " + emp.LastName,
+                                                   Amount = empp.Amount,
+                                                   PaymentType = empp.PaymentType,
+
+                                               }).OrderByDescending(x => x.EmployeePaymentId).ToList();
+
+                paymentFilterVM.PaymentList.ForEach(x =>
+                {
+                    x.PaymentTypeText = employeePaymentTypeList.Where(z => z.Value == x.PaymentType.ToString()).Select(c => c.Text).FirstOrDefault();
+                });
+            }
+            catch (Exception ex)
+            {
+            }
+
+            paymentFilterVM.UserRoleList = GetUserRoleList();
+            return View(paymentFilterVM);
+        }
     }
 }

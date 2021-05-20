@@ -28,5 +28,6 @@ namespace AttendanceSystem.Models
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public string PackageColorCode { get; set; }
         public string PackageFontIcon { get; set; }
+        public string Description { get; set; }
     }
 }

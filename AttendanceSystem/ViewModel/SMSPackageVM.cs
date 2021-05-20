@@ -29,5 +29,8 @@ namespace AttendanceSystem.ViewModel
 
         [Display(Name = "Package Image")]
         public HttpPostedFileBase PackageImageFile { get; set; }
+
+        [Display(Name = "Description")]
+        public string Description { get; set; }
     }
 }

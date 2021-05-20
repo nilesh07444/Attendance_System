@@ -249,5 +249,43 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return lst;
 
         }
+
+        public ActionResult DeletedMaterial()
+        {
+            List<MaterialVM> material = new List<MaterialVM>();
+            try
+            {
+                long companyId = clsAdminSession.CompanyId;
+
+                List<SelectListItem> materialStatusList = GetMaterialStatusList();
+
+                material = (from mt in _db.tbl_Material
+                            join mc in _db.tbl_MaterialCategory on mt.MaterialCategoryId equals mc.MaterialCategoryId
+                            join st in _db.tbl_Site on mt.SiteId equals st.SiteId
+                            where mt.IsDeleted && mt.CompanyId == companyId
+                            select new MaterialVM
+                            {
+                                MaterialId = mt.MaterialId,
+                                MaterialCategoryId = mt.MaterialCategoryId.Value,
+                                MaterialCategoryText = mc.MaterialCategoryName,
+                                MaterialDate = mt.MaterialDate,
+                                SiteId = mt.SiteId,
+                                SiteName = st.SiteName,
+                                Qty = mt.Qty,
+                                InOut = mt.InOut,
+                                Remarks = mt.Remarks,
+                                IsActive = mt.IsActive,
+                            }).OrderByDescending(x => x.MaterialId).ToList();
+
+                material.ForEach(x =>
+                {
+                    x.InOutText = materialStatusList.Where(z => z.Value == x.InOut.ToString()).Select(c => c.Text).FirstOrDefault();
+                });
+            }
+            catch (Exception ex)
+            {
+            }
+            return View(material);
+        }
     }
 }
