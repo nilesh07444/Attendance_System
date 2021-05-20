@@ -79,4 +79,11 @@ namespace AttendanceSystem.ViewModel
         public string TomorrowWorkDetail { get; set; }
         public string Remarks { get; set; }
     }
+
+    public class WorkerAttendanceRequestVM
+    {
+        public int AttendanceType{ get; set; }
+        public long EmployeeId { get; set; }
+        public decimal ExtraHours { get; set; }
+    }
 }

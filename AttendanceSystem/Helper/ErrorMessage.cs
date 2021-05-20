@@ -104,5 +104,12 @@
         public static string NotFound = "notfound";
         public static string Exception = "exception";
         public static string MaterialExistForThisCategory = "Material exist for this category.";
+
+        public static string CheckerCanNotTakeEveningAttendance = "Checker can not take evening attendance.";
+        public static string PayerCanNotTakeMorningOrAfterNoonAttendance = "Payer can not take morning or afternoon attendance.";
+        public static string PayerOrCheckerOnlyCanTakeWorkerAttendance = "Payer or checker only can take worker attendance.";
+        public static string InValidWorkerAttendanceType = "Invalid worker attendance type.";
+        public static string CanNotTakeEveningAttendanceWorkerNotPresentOnAfterNoon = "Can not take evening attendance worker not present on afternoon.";
+        public static string WorketNotAssignedToday = "Worker not assigned today.";
     }
 }

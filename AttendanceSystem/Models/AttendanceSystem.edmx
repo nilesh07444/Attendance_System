@@ -619,6 +619,23 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <Property Name="ModifiedBy" Type="bigint" />
           <Property Name="ModifiedDate" Type="datetime" />
         </EntityType>
+        <EntityType Name="tbl_WorkerAttendance">
+          <Key>
+            <PropertyRef Name="WorkerAttendanceId" />
+          </Key>
+          <Property Name="WorkerAttendanceId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeId" Type="bigint" Nullable="false" />
+          <Property Name="AttendanceDate" Type="datetime" Nullable="false" />
+          <Property Name="IsMorning" Type="bit" Nullable="false" />
+          <Property Name="MorningAttendanceBy" Type="bigint" />
+          <Property Name="MorningAttendanceDate" Type="datetime" />
+          <Property Name="IsAfternoon" Type="bit" Nullable="false" />
+          <Property Name="AfternoonAttendanceBy" Type="bigint" />
+          <Property Name="AfternoonAttendanceDate" Type="datetime" />
+          <Property Name="IsEvening" Type="bit" Nullable="false" />
+          <Property Name="EveningAttendanceBy" Type="bigint" />
+          <Property Name="EveningAttendanceDate" Type="datetime" />
+        </EntityType>
         <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
         <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
@@ -682,6 +699,7 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <EntitySet Name="tbl_SMSPackage" EntityType="Self.tbl_SMSPackage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Sponsor" EntityType="Self.tbl_Sponsor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Testimonial" EntityType="Self.tbl_Testimonial" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_WorkerAttendance" EntityType="Self.tbl_WorkerAttendance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_SMSLog" EntityType="Self.tbl_SMSLog" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [tbl_SMSLog].[SMSLogId] AS [SMSLogId], 
@@ -1257,6 +1275,7 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <EntitySet Name="tbl_SMSLog" EntityType="AttendanceSystemModel.tbl_SMSLog" />
           <EntitySet Name="tbl_AssignWorker" EntityType="AttendanceSystemModel.tbl_AssignWorker" />
           <EntitySet Name="tbl_ContactForm" EntityType="AttendanceSystemModel.tbl_ContactForm" />
+          <EntitySet Name="tbl_WorkerAttendance" EntityType="AttendanceSystemModel.tbl_WorkerAttendance" />
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -1382,6 +1401,23 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <Property Name="EmailId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Message" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="tbl_WorkerAttendance">
+          <Key>
+            <PropertyRef Name="WorkerAttendanceId" />
+          </Key>
+          <Property Name="WorkerAttendanceId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="Int64" Nullable="false" />
+          <Property Name="AttendanceDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsMorning" Type="Boolean" Nullable="false" />
+          <Property Name="MorningAttendanceBy" Type="Int64" />
+          <Property Name="MorningAttendanceDate" Type="DateTime" Precision="3" />
+          <Property Name="IsAfternoon" Type="Boolean" Nullable="false" />
+          <Property Name="AfternoonAttendanceBy" Type="Int64" />
+          <Property Name="AfternoonAttendanceDate" Type="DateTime" Precision="3" />
+          <Property Name="IsEvening" Type="Boolean" Nullable="false" />
+          <Property Name="EveningAttendanceBy" Type="Int64" />
+          <Property Name="EveningAttendanceDate" Type="DateTime" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -2050,6 +2086,24 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="ContactFormId" ColumnName="ContactFormId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_WorkerAttendance">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_WorkerAttendance">
+              <MappingFragment StoreEntitySet="tbl_WorkerAttendance">
+                <ScalarProperty Name="EveningAttendanceDate" ColumnName="EveningAttendanceDate" />
+                <ScalarProperty Name="EveningAttendanceBy" ColumnName="EveningAttendanceBy" />
+                <ScalarProperty Name="IsEvening" ColumnName="IsEvening" />
+                <ScalarProperty Name="AfternoonAttendanceDate" ColumnName="AfternoonAttendanceDate" />
+                <ScalarProperty Name="AfternoonAttendanceBy" ColumnName="AfternoonAttendanceBy" />
+                <ScalarProperty Name="IsAfternoon" ColumnName="IsAfternoon" />
+                <ScalarProperty Name="MorningAttendanceDate" ColumnName="MorningAttendanceDate" />
+                <ScalarProperty Name="MorningAttendanceBy" ColumnName="MorningAttendanceBy" />
+                <ScalarProperty Name="IsMorning" ColumnName="IsMorning" />
+                <ScalarProperty Name="AttendanceDate" ColumnName="AttendanceDate" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="WorkerAttendanceId" ColumnName="WorkerAttendanceId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

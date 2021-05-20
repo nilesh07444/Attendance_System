@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace AttendanceSystem.Helper
+﻿namespace AttendanceSystem.Helper
 {
 
     public enum AdminRoles
@@ -112,6 +107,13 @@ namespace AttendanceSystem.Helper
     {
         StartMonth = 1,
         EndMonth = 12
+    }
+
+    public enum WorkerAttendanceType
+    {
+        Morning = 1,
+        Afternoon = 2,
+        Evening = 3
     }
 }
 
