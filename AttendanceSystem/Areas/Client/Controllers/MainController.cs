@@ -11,7 +11,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
 {
     public class MainController : Controller
     {
-        AttendanceSystemEntities _db;
+        private readonly AttendanceSystemEntities _db;
         public string HomeDirectoryPath = "";
         public MainController()
         {
@@ -23,6 +23,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
             List<HomeImageVM> lstHomeImages = new List<HomeImageVM>();
             List<PackageVM> lstAccountPackages = new List<PackageVM>();
             List<SMSPackageVM> lstSMSPackages = new List<SMSPackageVM>();
+            List<OurClientVM> lstOurClients = new List<OurClientVM>();
 
             try
             {
@@ -52,21 +53,21 @@ namespace AttendanceSystem.Areas.Client.Controllers
                                  }).OrderByDescending(x => x.HomeImageId).ToList();
 
                 lstAccountPackages = (from pck in _db.tbl_Package
-                               where !pck.IsDeleted && pck.IsActive
-                               select new PackageVM
-                               {
-                                   PackageId = pck.PackageId,
-                                   PackageName = pck.PackageName,
-                                   Amount = pck.Amount,
-                                   PackageDescription = pck.PackageDescription,
-                                   AccessDays = pck.AccessDays,
-                                   IsActive = pck.IsActive,
-                                   PackageImage = pck.PackageImage,
-                                   NoOfSMS = pck.NoOfSMS,
-                                   NoOfEmployee = pck.NoOfEmployee,
-                                   PackageColorCode = pck.PackageColorCode,
-                                   PackageFontIcon = pck.PackageFontIcon
-                               }).OrderByDescending(x => x.PackageId).ToList();
+                                      where !pck.IsDeleted && pck.IsActive
+                                      select new PackageVM
+                                      {
+                                          PackageId = pck.PackageId,
+                                          PackageName = pck.PackageName,
+                                          Amount = pck.Amount,
+                                          PackageDescription = pck.PackageDescription,
+                                          AccessDays = pck.AccessDays,
+                                          IsActive = pck.IsActive,
+                                          PackageImage = pck.PackageImage,
+                                          NoOfSMS = pck.NoOfSMS,
+                                          NoOfEmployee = pck.NoOfEmployee,
+                                          PackageColorCode = pck.PackageColorCode,
+                                          PackageFontIcon = pck.PackageFontIcon
+                                      }).OrderByDescending(x => x.PackageId).ToList();
 
                 lstSMSPackages = (from pck in _db.tbl_SMSPackage
                                   where !pck.IsDeleted && pck.IsActive
@@ -82,6 +83,16 @@ namespace AttendanceSystem.Areas.Client.Controllers
                                       PackageFontIcon = pck.PackageFontIcon
                                   }).OrderByDescending(x => x.SMSPackageId).ToList();
 
+                lstOurClients = (from s in _db.tbl_Sponsor
+                                 where !s.IsDeleted && s.IsActive
+                                 select new OurClientVM
+                                 {
+                                     SponsorId = s.SponsorId,
+                                     SponsorName = s.SponsorName,
+                                     SponsorImage = s.SponsorImage,
+                                     SponsorLink = s.SponsorLink
+                                 }).OrderByDescending(x => x.SponsorId).ToList();
+
                 if (lstHomeImages != null)
                 {
                     ViewBag.HomeFirstImage = HomeDirectoryPath + lstHomeImages.FirstOrDefault().HomeImageName;
@@ -89,7 +100,8 @@ namespace AttendanceSystem.Areas.Client.Controllers
 
                 ViewData["lstHomeImages"] = lstHomeImages;
                 ViewData["lstAccountPackages"] = lstAccountPackages;
-                ViewData["lstSMSPackages"] = lstSMSPackages; 
+                ViewData["lstSMSPackages"] = lstSMSPackages;
+                ViewData["lstOurClients"] = lstOurClients;
             }
             catch (Exception ex)
             {

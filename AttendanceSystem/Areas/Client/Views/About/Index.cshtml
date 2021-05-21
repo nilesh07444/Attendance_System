@@ -1,7 +1,17 @@
-﻿
+﻿@using AttendanceSystem.ViewModel
+@using AttendanceSystem.Helper
 @{
     ViewBag.Title = "About Us";
+
+    List<OurClientVM> lstOurClients = ViewData["lstOurClients"] as List<OurClientVM>;
+
 }
+
+<style>
+    .about-details-cap li {
+        list-style: decimal;
+    }
+</style>
 
 <!--? Hero Start -->
 <div class="slider-area2">
@@ -21,105 +31,57 @@
 <div class="about-details section-padding30">
     <div class="container">
         <div class="row">
-            <div class="offset-xl-1 col-lg-8">
+            <div class="offset-xl-1 col-lg-12">
                 <div class="about-details-cap mb-50">
-                    <h4>Our Mission</h4>
-                    <p>
-                        Consectetur adipiscing elit, sued do eiusmod tempor ididunt udfgt labore et dolore magna aliqua. Quis ipsum suspendisces gravida. Risus commodo viverra sebfd dho eiusmod tempor maecenas accumsan lacus. Risus commodo viverra sebfd dho eiusmod tempor maecenas accumsan lacus.
-                    </p>
-                    <p> Risus commodo viverra sebfd dho eiusmod tempor maecenas accumsan lacus. Risus commodo viverra sebfd dho eiusmod tempor maecenas accumsan.</p>
+                    <p>Contract Book powered by Krupa Build Gallery at Godhra Panchmahal is well known firm as building materials suppliers.</p>
+                </div>
+                <div class="about-details-cap mb-50">
+                    <h4>Company's Business Profile</h4>
+                    <p> Krupa Build Gallery is Founded by Mr.Prakash Magnani in the year of 2016.Over the course of its journey, this business has established a firm foothold in it’s industry. </p>
+                    <p>The belief that customer satisfaction is as important as their products and services.They have helped this establishment garner a vast base of customers, which continues to grow day by day. The employees in Krupa Build Gallery are dedicated towards their respective roles and they give a lot of effort to achieve the common vision and larger goals of the company. In the near future, this business aims to expand its line of products and services and cater to a larger client base.The company Occupies a Dealership in Hardware Materials, Building Materials, Electronics & Electrical Products.</p>
+                    <p>As of 1st July 2020 Krupa Build Gallery has Started a new journey of Online Business namely "Shopping & Saving",it has a wide range of Products.We offer you convenience of shopping everything that you need for your home - Be It Fresh Fruits & Vegetables, Pulses, Oil, Packaged Food, Dairy Products, Frozen Items ,Other Grocery Products, household cleaning items,personal care products,Building Materials,Hardware Products,Tiles & Sanitary,Water Tanks & Many more products from a single virtual store.This all products are available on Android app "Shopping & Saving". Right now our services are available only in Godhra,further we will go ahead to Grow our business.</p>
+                    <p>The employees at Krupa Build Gallery are courteous and prompt at providing any assistance. They readily answer any queries or questions that customers may have.</p>
                 </div>
 
                 <div class="about-details-cap mb-50">
-                    <h4>Our Vision</h4>
-                    <p>
-                        Consectetur adipiscing elit, sued do eiusmod tempor ididunt udfgt labore et dolore magna aliqua. Quis ipsum suspendisces gravida. Risus commodo viverra sebfd dho eiusmod tempor maecenas accumsan lacus. Risus commodo viverra sebfd dho eiusmod tempor maecenas accumsan lacus.
-                    </p>
-                    <p> Risus commodo viverra sebfd dho eiusmod tempor maecenas accumsan lacus. Risus commodo viverra sebfd dho eiusmod tempor maecenas accumsan.</p>
+                    <h4>About Founder</h4>
+                    <p>Mr.Prakash Magnani, Managing Director- A successful administrator with the modern methods of marketing management . He created Krupa Build Gallery as a brand and plays major role of its growth. His core competency lies in Land Acquisition.  He has proven himself to be a technocrat, playing a key role in construction framework of various projects and it's procurement.Supervising the sales department and attaching quality benchmarks to make Krupa a bigger brand.</p>
+                    <p>He was born at the year 1980, With Schooling at the age of 16 he joined his Family Business at Gajanan Traders, the firm is wholesale supplier of Coconuts & Match Sticks. With the family business he has done so many types of side businesses like book binding work at school,seasonable business of Kites,Retrivel work of Tata Telephone (WLL) & Relaince Communications (WLL) Under subcontractor,Advertisement on Projector at Four Way Location.Since 2009 he started his journey as Real Estate Agent after 1 year with Real Estate Agency he started a Construction Business in Partnership,From this Industry he got an idea to do something different.So after 5 years he started a new Journey at Krupa Build Gallery as Founder & Managing Director. Now Krupa Build Gallery is well known firm in the market.</p>
                 </div>
+
+                <div class="about-details-cap">
+                    <h4>Products and Services Provided by Krupa Build Gallery</h4>
+                    <h5>Products:</h5>
+                    <ul style="margin-left:50px; margin-bottom: 20px;">
+                        <li>Hardware Materials</li>
+                        <li>Building Materials</li>
+                        <li>Construction Materials & Tools</li>
+                        <li>Electronics & Electricals</li>
+                        <li>Grocery</li>
+                        <li>Vegetables & Fruits</li>
+                        <li>Fashion & Accessories and all type of FMCG Products</li>
+                    </ul>
+
+                    <h5>Services:</h5>
+                    <ul style="margin-left:50px;">
+                        <li>Construction</li>
+                        <li>Architectura1 Plans</li>
+                        <li>Supervision on Construction Sites</li>
+                        <li>Carpentering Work</li>
+                        <li>Real Estate Agent</li>
+                    </ul>
+
+                </div>
+
             </div>
         </div>
     </div>
 </div>
 <!--? About Area Start-->
-<div class="support-company-area pt-100 pb-100 section-bg fix" data-background="/Content/client-theme/assets/img/gallery/section_bg02.jpg">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-xl-6 col-lg-6">
-                <div class="support-location-img">
-                    <img src="/Content/client-theme/assets/img/gallery/about.png" alt="">
-                </div>
-            </div>
-            <div class="col-xl-6 col-lg-6">
-                <div class="right-caption">
-                    <!-- Section Tittle -->
-                    <div class="section-tittle section-tittle2 mb-50">
-                        <span>Our Top Services</span>
-                        <h2>Our Best Services</h2>
-                    </div>
-                    <div class="support-caption">
-                        <p class="pera-top">Mollit anim laborum duis adseu dolor iuyn voluptcate velit ess cillum dolore egru lofrre dsu quality mollit anim laborumuis au dolor in voluptate velit cillu.</p>
-                        <p class="mb-65">Mollit anim laborum.Dvcuis aute serunt  iruxvfg dhjkolohr indd re voluptate velit esscillumlore eu quife nrulla parihatur. Excghcepteur sfwsignjnt occa cupidatat non aute iruxvfg dhjinulpadeserunt moll.</p>
-                        <a href="about.html" class="btn post-btn">More About Us</a>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</div>
+<section class="support-company-area section-bg fix" id="experience">
+    <img src="/Content/client-theme/assets/img/contrabook/our-services.png" class="img-fluid" alt="Responsive image">
+</section>
 <!-- About Area End-->
-<!-- Team Start -->
-<div class="team-area section-padding30">
-    <div class="container">
-        <div class="row">
-            <div class="cl-xl-7 col-lg-8 col-md-10">
-                <!-- Section Tittle -->
-                <div class="section-tittle mb-70">
-                    <span>Our Professional members </span>
-                    <h2>Our Team Mambers</h2>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <!-- single Tem -->
-            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-">
-                <div class="single-team mb-30">
-                    <div class="team-img">
-                        <img src="/Content/client-theme/assets/img/gallery/team2.png" alt="">
-                    </div>
-                    <div class="team-caption">
-                        <h3><a href="#">Ethan Welch</a></h3>
-                        <span>UX Designer</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-">
-                <div class="single-team mb-30">
-                    <div class="team-img">
-                        <img src="/Content/client-theme/assets/img/gallery/team3.png" alt="">
-                    </div>
-                    <div class="team-caption">
-                        <h3><a href="#">Ethan Welch</a></h3>
-                        <span>UX Designer</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-">
-                <div class="single-team mb-30">
-                    <div class="team-img">
-                        <img src="/Content/client-theme/assets/img/gallery/team1.png" alt="">
-                    </div>
-                    <div class="team-caption">
-                        <h3><a href="#">Ethan Welch</a></h3>
-                        <span>UX Designer</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Team End -->
 <!--? Testimonial Start -->
 <div class="testimonial-area testimonial-padding" data-background="/Content/client-theme/assets/img/gallery/section_bg04.jpg">
     <div class="container ">
@@ -182,65 +144,33 @@
     </div>
 </div>
 <!-- Testimonial End -->
-<!-- Coun Down Start -->
-<div class="count-down-area pb-120">
+<!-- Our Clients Start -->
+<div class="brand-area pb-140 section-padding30">
     <div class="container">
-        <div class="row justify-content-between">
-            <div class="col-lg-3 col-md-6 col-sm-6">
-                <!-- Counter Up -->
-                <div class="single-counter text-center">
-                    <span class="counter">8705</span>
-                    <p>Projects Completed</p>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-                <!-- Counter Up -->
-                <div class="single-counter active text-center">
-                    <span class="counter">480</span>
-                    <p> Active Clients</p>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-                <!-- Counter Up -->
-                <div class="single-counter text-center">
-                    <span class="counter">626</span>
-                    <p>Cups of Coffee</p>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-                <!-- Counter Up -->
-                <div class="single-counter text-center">
-                    <span class="counter">9774</span>
-                    <p>Happy Clients</p>
+        <div class="row">
+            <div class="cl-xl-7 col-lg-8 col-md-10">
+                <!-- Section Tittle -->
+                <div class="section-tittle mb-70">
+                    <span>Our valuable clients</span>
+                    <h2>Our Clients</h2>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-<!-- Coun Down End -->
-<!-- Brand Area Start -->
-<div class="brand-area pt-150 pb-140">
-    <div class="container">
         <div class="brand-active brand-border pb-40">
-            <div class="single-brand">
-                <img src="/Content/client-theme/assets/img/gallery/brand1.png" alt="">
-            </div>
-            <div class="single-brand">
-                <img src="/Content/client-theme/assets/img/gallery/brand2.png" alt="">
-            </div>
-            <div class="single-brand">
-                <img src="/Content/client-theme/assets/img/gallery/brand3.png" alt="">
-            </div>
-            <div class="single-brand">
-                <img src="/Content/client-theme/assets/img/gallery/brand4.png" alt="">
-            </div>
-            <div class="single-brand">
-                <img src="/Content/client-theme/assets/img/gallery/brand2.png" alt="">
-            </div>
-            <div class="single-brand">
-                <img src="/Content/client-theme/assets/img/gallery/brand5.png" alt="">
-            </div>
+            @if (lstOurClients != null && lstOurClients.Count > 0)
+            {
+                foreach (OurClientVM obj in lstOurClients)
+                {
+                    string clientLink = !string.IsNullOrEmpty(obj.SponsorLink) ? obj.SponsorLink : "javascript:void(0);";
+                    <div class="single-brand" title="@obj.SponsorName">
+                        <a href="@clientLink">
+                            <img src="@ErrorMessage.OurClientDirectoryPath/@obj.SponsorImage" alt="">
+                        </a>
+                    </div>
+                }
+            }
+
         </div>
     </div>
 </div>
-<!-- Brand Area End -->
+<!-- Our Clients End -->
