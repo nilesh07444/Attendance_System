@@ -635,6 +635,7 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <Property Name="IsEvening" Type="bit" Nullable="false" />
           <Property Name="EveningAttendanceBy" Type="bigint" />
           <Property Name="EveningAttendanceDate" Type="datetime" />
+          <Property Name="ExtraHours" Type="numeric" Precision="18" Scale="2" />
         </EntityType>
         <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
         <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -1418,6 +1419,7 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <Property Name="IsEvening" Type="Boolean" Nullable="false" />
           <Property Name="EveningAttendanceBy" Type="Int64" />
           <Property Name="EveningAttendanceDate" Type="DateTime" Precision="3" />
+          <Property Name="ExtraHours" Type="Decimal" Precision="18" Scale="2" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -2092,6 +2094,7 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <EntitySetMapping Name="tbl_WorkerAttendance">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_WorkerAttendance">
               <MappingFragment StoreEntitySet="tbl_WorkerAttendance">
+                <ScalarProperty Name="ExtraHours" ColumnName="ExtraHours" />
                 <ScalarProperty Name="EveningAttendanceDate" ColumnName="EveningAttendanceDate" />
                 <ScalarProperty Name="EveningAttendanceBy" ColumnName="EveningAttendanceBy" />
                 <ScalarProperty Name="IsEvening" ColumnName="IsEvening" />
