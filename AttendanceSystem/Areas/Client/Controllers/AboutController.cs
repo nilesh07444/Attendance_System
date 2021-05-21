@@ -20,6 +20,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
         public ActionResult Index()
         {
             List<OurClientVM> lstOurClients = new List<OurClientVM>();
+            List<TestimonialVM> lstTestimonials = new List<TestimonialVM>();
 
             try
             {
@@ -33,7 +34,19 @@ namespace AttendanceSystem.Areas.Client.Controllers
                                      SponsorLink = s.SponsorLink
                                  }).OrderByDescending(x => x.SponsorId).ToList();
 
+                lstTestimonials = (from t in _db.tbl_Testimonial
+                                   where t.IsActive
+                                   select new TestimonialVM
+                                   {
+                                       TestimonialId = t.TestimonialId,
+                                       CompanyName = t.CompanyName,
+                                       CompanyPersonName = t.CompanyPersonName,
+                                       FeedbackText = t.FeedbackText,
+                                       IsActive = t.IsActive,
+                                   }).OrderByDescending(x => x.TestimonialId).ToList();
+
                 ViewData["lstOurClients"] = lstOurClients;
+                ViewData["lstTestimonials"] = lstTestimonials;
             }
             catch (Exception ex)
             {

@@ -1,5 +1,9 @@
-﻿@{ 
+﻿@using AttendanceSystem.ViewModel
+@using AttendanceSystem.Helper
+@{
     ViewBag.Title = "Services";
+
+    List<OurClientVM> lstOurClients = ViewData["lstOurClients"] as List<OurClientVM>;
 }
 
 <!--? Hero Start -->
@@ -17,112 +21,40 @@
     </div>
 </div>
 <!-- Hero End -->
-<!--? Categories Area Start -->
-<div class="categories-area section-padding30">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <!-- Section Tittle -->
-                <div class="section-tittle mb-70">
-                    <span>Our Top Services</span>
-                    <h2>Our Best Services</h2>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <div class="single-cat text-center mb-50">
-                    <div class="cat-icon">
-                        <span class="flaticon-development"></span>
-                    </div>
-                    <div class="cat-cap">
-                        <h5><a href="services.html">Strategy Planning </a></h5>
-                        <p>There are many variations of passages of lorem Ipsum available but the new majority have suffered.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <div class="single-cat text-center mb-50">
-                    <div class="cat-icon">
-                        <span class="flaticon-result"></span>
-                    </div>
-                    <div class="cat-cap">
-                        <h5><a href="services.html">Insurance Service</a></h5>
-                        <p>There are many variations of passages of lorem Ipsum available but the new majority have suffered.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <div class="single-cat text-center mb-50">
-                    <div class="cat-icon">
-                        <span class="flaticon-team"></span>
-                    </div>
-                    <div class="cat-cap">
-                        <h5><a href="services.html">Audit & Evaluation</a></h5>
-                        <p>There are many variations of passages of lorem Ipsum available but the new majority have suffered.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <div class="single-cat text-center mb-50">
-                    <div class="cat-icon">
-                        <span class="flaticon-result"></span>
-                    </div>
-                    <div class="cat-cap">
-                        <h5><a href="services.html">Insurance Service</a></h5>
-                        <p>There are many variations of passages of lorem Ipsum available but the new majority have suffered.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <div class="single-cat text-center mb-50">
-                    <div class="cat-icon">
-                        <span class="flaticon-team"></span>
-                    </div>
-                    <div class="cat-cap">
-                        <h5><a href="services.html">Audit & Evaluation</a></h5>
-                        <p>There are many variations of passages of lorem Ipsum available but the new majority have suffered.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <div class="single-cat text-center mb-50">
-                    <div class="cat-icon">
-                        <span class="flaticon-development"></span>
-                    </div>
-                    <div class="cat-cap">
-                        <h5><a href="services.html">Strategy Planning </a></h5>
-                        <p>There are many variations of passages of lorem Ipsum available but the new majority have suffered.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<!-- Services Area Start -->
+<section class="support-company-area section-bg fix" id="experience">
+    <img src="/Content/client-theme/assets/img/contrabook/our-services.png" class="img-fluid" alt="Responsive image">
+</section>
 <!-- Services Area End -->
-<!-- Brand Area Start -->
-<div class="brand-area pb-140">
-    <div class="container">
-        <div class="brand-active brand-border pb-40">
-            <div class="single-brand">
-                <img src="/Content/client-theme/assets/img/gallery/brand1.png" alt="">
+<!-- Our Clients Start -->
+@if (lstOurClients != null && lstOurClients.Count > 0)
+{
+    <div class="brand-area pb-140 section-padding30">
+        <div class="container">
+            <div class="row">
+                <div class="cl-xl-7 col-lg-8 col-md-10">
+                    <!-- Section Tittle -->
+                    <div class="section-tittle mb-70">
+                        <span>Our valuable clients</span>
+                        <h2>Our Clients</h2>
+                    </div>
+                </div>
             </div>
-            <div class="single-brand">
-                <img src="/Content/client-theme/assets/img/gallery/brand2.png" alt="">
-            </div>
-            <div class="single-brand">
-                <img src="/Content/client-theme/assets/img/gallery/brand3.png" alt="">
-            </div>
-            <div class="single-brand">
-                <img src="/Content/client-theme/assets/img/gallery/brand4.png" alt="">
-            </div>
-            <div class="single-brand">
-                <img src="/Content/client-theme/assets/img/gallery/brand2.png" alt="">
-            </div>
-            <div class="single-brand">
-                <img src="/Content/client-theme/assets/img/gallery/brand5.png" alt="">
+            <div class="brand-active brand-border pb-40">
+
+                @foreach (OurClientVM obj in lstOurClients)
+                {
+                    string clientLink = !string.IsNullOrEmpty(obj.SponsorLink) ? obj.SponsorLink : "javascript:void(0);";
+                    <div class="single-brand" title="@obj.SponsorName">
+                        <a href="@clientLink">
+                            <img src="@ErrorMessage.OurClientDirectoryPath/@obj.SponsorImage" alt="">
+                        </a>
+                    </div>
+                }
+
+
             </div>
         </div>
     </div>
-</div>
-<!-- Brand Area End --> 
+}
+<!-- Our Clients End -->

@@ -40,25 +40,25 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
         public ActionResult Add(long id)
         {
-            OurClientVM ourclientVM = new OurClientVM();
+            TestimonialVM objTestimonial = new TestimonialVM();
             if (id > 0)
             {
-                ourclientVM = (from client in _db.tbl_Sponsor
-                               where client.SponsorId == id
-                               select new OurClientVM
-                               {
-                                   SponsorId = client.SponsorId,
-                                   SponsorName = client.SponsorName,
-                                   SponsorImage = client.SponsorImage,
-                                   SponsorLink = client.SponsorLink,
-                                   IsActive = client.IsActive,
-                               }).FirstOrDefault();
+                objTestimonial = (from t in _db.tbl_Testimonial
+                                  where t.TestimonialId == id
+                                  select new TestimonialVM
+                                  {
+                                      TestimonialId = t.TestimonialId,
+                                      CompanyName = t.CompanyName,
+                                      CompanyPersonName = t.CompanyPersonName,
+                                      FeedbackText = t.FeedbackText,
+                                      IsActive = t.IsActive,
+                                  }).FirstOrDefault();
             }
-            return View(ourclientVM);
+            return View(objTestimonial);
         }
 
         [HttpPost]
-        public ActionResult Add(OurClientVM ourclientVM, HttpPostedFileBase SponsorImageFile)
+        public ActionResult Add(TestimonialVM testimonialVM)
         {
             try
             {
@@ -67,58 +67,28 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 {
                     long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
 
-                    string fileName = string.Empty;
-                    string path = Server.MapPath(OurClientDirectoryPath);
-
-                    bool folderExists = Directory.Exists(path);
-                    if (!folderExists)
-                        Directory.CreateDirectory(path);
-
-                    if (SponsorImageFile != null)
+                    if (testimonialVM.TestimonialId > 0)
                     {
-                        // Image file validation
-                        string ext = Path.GetExtension(SponsorImageFile.FileName);
-                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
-                        {
-                            ModelState.AddModelError("SponsorImageFile", ErrorMessage.SelectOnlyImage);
-                            return View(ourclientVM);
-                        }
+                        tbl_Testimonial objTestimonial = _db.tbl_Testimonial.Where(x => x.TestimonialId == testimonialVM.TestimonialId).FirstOrDefault();
+                        objTestimonial.CompanyName = testimonialVM.CompanyName;
+                        objTestimonial.CompanyPersonName = testimonialVM.CompanyPersonName;
+                        objTestimonial.FeedbackText = testimonialVM.FeedbackText;
 
-                        // Save file in folder
-                        fileName = Guid.NewGuid() + "-" + Path.GetFileName(SponsorImageFile.FileName);
-                        SponsorImageFile.SaveAs(path + fileName);
+                        objTestimonial.ModifiedBy = LoggedInUserId;
+                        objTestimonial.ModifiedDate = DateTime.UtcNow;
                     }
                     else
                     {
-                        if (ourclientVM.SponsorId == 0)
-                        {
-                            ModelState.AddModelError("SponsorImageFile", ErrorMessage.ImageRequired);
-                            return View(ourclientVM);
-                        }
-                    }
-
-                    if (ourclientVM.SponsorId > 0)
-                    {
-                        tbl_Sponsor objOurClient = _db.tbl_Sponsor.Where(x => x.SponsorId == ourclientVM.SponsorId).FirstOrDefault();
-                        objOurClient.SponsorImage = SponsorImageFile != null ? fileName : objOurClient.SponsorImage;
-                        objOurClient.SponsorName = ourclientVM.SponsorName;
-                        objOurClient.SponsorLink = ourclientVM.SponsorLink;
-
-                        objOurClient.ModifiedBy = LoggedInUserId;
-                        objOurClient.ModifiedDate = DateTime.UtcNow;
-                    }
-                    else
-                    {
-                        tbl_Sponsor objOurClient = new tbl_Sponsor();
-                        objOurClient.SponsorImage = fileName;
-                        objOurClient.SponsorName = ourclientVM.SponsorName;
-                        objOurClient.SponsorLink = ourclientVM.SponsorLink;
-                        objOurClient.IsActive = true;
-                        objOurClient.CreatedBy = LoggedInUserId;
-                        objOurClient.CreatedDate = DateTime.UtcNow;
-                        objOurClient.ModifiedBy = LoggedInUserId;
-                        objOurClient.ModifiedDate = DateTime.UtcNow;
-                        _db.tbl_Sponsor.Add(objOurClient);
+                        tbl_Testimonial objTestimonial = new tbl_Testimonial();
+                        objTestimonial.CompanyName = testimonialVM.CompanyName;
+                        objTestimonial.CompanyPersonName = testimonialVM.CompanyPersonName;
+                        objTestimonial.FeedbackText = testimonialVM.FeedbackText;
+                        objTestimonial.IsActive = true;
+                        objTestimonial.CreatedBy = LoggedInUserId;
+                        objTestimonial.CreatedDate = DateTime.UtcNow;
+                        objTestimonial.ModifiedBy = LoggedInUserId;
+                        objTestimonial.ModifiedDate = DateTime.UtcNow;
+                        _db.tbl_Testimonial.Add(objTestimonial);
                     }
                     _db.SaveChanges();
 
@@ -132,25 +102,25 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 throw ex;
             }
 
-            return View(ourclientVM);
+            return View(testimonialVM);
         }
 
         [HttpPost]
-        public string DeleteOurClient(int Id)
+        public string DeleteTestimonial(int Id)
         {
             string ReturnMessage = "";
 
             try
             {
-                tbl_Sponsor objOurClient = _db.tbl_Sponsor.Where(x => x.SponsorId == Id).FirstOrDefault();
+                tbl_Testimonial objTestimonial = _db.tbl_Testimonial.Where(x => x.TestimonialId == Id).FirstOrDefault();
 
-                if (objOurClient == null)
+                if (objTestimonial == null)
                 {
                     ReturnMessage = "notfound";
                 }
                 else
                 {
-                    _db.tbl_Sponsor.Remove(objOurClient);
+                    _db.tbl_Testimonial.Remove(objTestimonial);
                     _db.SaveChanges();
 
                     ReturnMessage = "success";
@@ -171,22 +141,22 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             string ReturnMessage = "";
             try
             {
-                tbl_Sponsor objOurClient = _db.tbl_Sponsor.Where(x => x.SponsorId == Id).FirstOrDefault();
+                tbl_Testimonial objTestimonial = _db.tbl_Testimonial.Where(x => x.TestimonialId == Id).FirstOrDefault();
 
-                if (objOurClient != null)
+                if (objTestimonial != null)
                 {
                     long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
                     if (Status == "Active")
                     {
-                        objOurClient.IsActive = true;
+                        objTestimonial.IsActive = true;
                     }
                     else
                     {
-                        objOurClient.IsActive = false;
+                        objTestimonial.IsActive = false;
                     }
 
-                    objOurClient.ModifiedBy = LoggedInUserId;
-                    objOurClient.ModifiedDate = DateTime.UtcNow;
+                    objTestimonial.ModifiedBy = LoggedInUserId;
+                    objTestimonial.ModifiedDate = DateTime.UtcNow;
 
                     _db.SaveChanges();
                     ReturnMessage = "success";

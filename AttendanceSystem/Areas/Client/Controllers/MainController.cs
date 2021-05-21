@@ -24,6 +24,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
             List<PackageVM> lstAccountPackages = new List<PackageVM>();
             List<SMSPackageVM> lstSMSPackages = new List<SMSPackageVM>();
             List<OurClientVM> lstOurClients = new List<OurClientVM>();
+            List<TestimonialVM> lstTestimonials = new List<TestimonialVM>();
 
             try
             {
@@ -93,6 +94,17 @@ namespace AttendanceSystem.Areas.Client.Controllers
                                      SponsorLink = s.SponsorLink
                                  }).OrderByDescending(x => x.SponsorId).ToList();
 
+                lstTestimonials = (from t in _db.tbl_Testimonial
+                                   where t.IsActive
+                                   select new TestimonialVM
+                                   {
+                                       TestimonialId = t.TestimonialId,
+                                       CompanyName = t.CompanyName,
+                                       CompanyPersonName = t.CompanyPersonName,
+                                       FeedbackText = t.FeedbackText,
+                                       IsActive = t.IsActive,
+                                   }).OrderByDescending(x => x.TestimonialId).ToList();
+
                 if (lstHomeImages != null)
                 {
                     ViewBag.HomeFirstImage = HomeDirectoryPath + lstHomeImages.FirstOrDefault().HomeImageName;
@@ -102,6 +114,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
                 ViewData["lstAccountPackages"] = lstAccountPackages;
                 ViewData["lstSMSPackages"] = lstSMSPackages;
                 ViewData["lstOurClients"] = lstOurClients;
+                ViewData["lstTestimonials"] = lstTestimonials;
             }
             catch (Exception ex)
             {
