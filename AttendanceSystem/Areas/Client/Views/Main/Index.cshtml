@@ -67,9 +67,7 @@
                                 <div class="price-value" id="heading_@accountPackageCounter" style="color: @obj.PackageColorCode">
                                     @obj.Amount
                                     @*<span class="month" id="per_@accountPackageCounter">per month</span>*@
-
                                     <i class="month fas fa-rupee-sign"></i>
-
                                 </div>
                             </div>
                             <h3 class="heading" style="margin-top: 10px; color: @obj.PackageColorCode">@obj.PackageName</h3>
@@ -148,7 +146,11 @@
                         <div class="pricingTable">
                             <div id="smspricingTableHeader_@smsPackageCounter" class="pricingTable-header" onmouseover="mouseoverSMS('@smsPackageCounter', '@obj.PackageColorCode')" onmouseout="mouseoutSMS('@smsPackageCounter', '@obj.PackageColorCode')">
                                 <i class="@obj.PackageFontIcon"></i>
-                                <div class="price-value" id="smsheading_@smsPackageCounter" style="color: @obj.PackageColorCode"> @obj.PackageAmount <span class="month" id="smsper_@smsPackageCounter">per month</span> </div>
+                                <div class="price-value" id="smsheading_@smsPackageCounter" style="color: @obj.PackageColorCode">
+                                    @obj.PackageAmount
+                                    @*<span class="month" id="smsper_@smsPackageCounter">per month</span>*@
+                                    <i class="month fas fa-rupee-sign"></i>
+                                </div>
                             </div>
                             <h3 class="heading" style="margin-top: 10px; color: @obj.PackageColorCode">@obj.PackageName</h3>
                             <div class="pricing-content">

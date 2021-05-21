@@ -20,7 +20,7 @@ namespace AttendanceSystem.Models
         public System.DateTime AttendanceDate { get; set; }
         public double DayType { get; set; }
         public System.DateTime InDateTime { get; set; }
-        public System.DateTime OutDateTime { get; set; }
+        public Nullable<System.DateTime> OutDateTime { get; set; }
         public decimal ExtraHours { get; set; }
         public string TodayWorkDetail { get; set; }
         public string TomorrowWorkDetail { get; set; }

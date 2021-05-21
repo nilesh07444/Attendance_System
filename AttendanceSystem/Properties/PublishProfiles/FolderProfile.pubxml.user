@@ -5,7 +5,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <_PublishTargetUrl>D:\Publish\AttendanceSystem</_PublishTargetUrl>
-    <History>True|2021-05-20T06:03:58.1501459Z;True|2021-05-14T23:57:42.3846616+05:30;True|2021-05-14T17:50:04.4569253+05:30;True|2021-05-10T14:37:46.8417074+05:30;True|2021-05-09T23:15:53.2202706+05:30;True|2021-05-06T21:41:55.2378903+05:30;True|2021-05-05T14:38:43.2341268+05:30;True|2021-05-04T18:50:56.5134053+05:30;True|2021-05-02T08:56:36.7094694+05:30;True|2021-04-20T18:36:08.4047912+05:30;</History>
+    <History>True|2021-05-21T11:23:20.4379993Z;True|2021-05-20T11:33:58.1501459+05:30;True|2021-05-14T23:57:42.3846616+05:30;True|2021-05-14T17:50:04.4569253+05:30;True|2021-05-10T14:37:46.8417074+05:30;True|2021-05-09T23:15:53.2202706+05:30;True|2021-05-06T21:41:55.2378903+05:30;True|2021-05-05T14:38:43.2341268+05:30;True|2021-05-04T18:50:56.5134053+05:30;True|2021-05-02T08:56:36.7094694+05:30;True|2021-04-20T18:36:08.4047912+05:30;</History>
   </PropertyGroup>
   <ItemGroup>
     <File Include="Areas/Admin/Views/AccountRenew/Buy.cshtml">
@@ -174,7 +174,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>05/14/2021 00:12:17</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Shared/_Layout.cshtml">
-      <publishTime>05/20/2021 10:37:21</publishTime>
+      <publishTime>05/21/2021 15:19:21</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Site/Add.cshtml">
       <publishTime>01/05/2021 20:32:03</publishTime>
@@ -197,6 +197,12 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     <File Include="Areas/Admin/Views/SMSRenew/Index.cshtml">
       <publishTime>05/05/2021 23:51:24</publishTime>
     </File>
+    <File Include="Areas/Admin/Views/Testimonial/Add.cshtml">
+      <publishTime>05/21/2021 16:20:07</publishTime>
+    </File>
+    <File Include="Areas/Admin/Views/Testimonial/Index.cshtml">
+      <publishTime>05/21/2021 16:18:35</publishTime>
+    </File>
     <File Include="Areas/Admin/Views/web.config">
       <publishTime>04/15/2021 23:40:49</publishTime>
     </File>
@@ -204,7 +210,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>04/15/2021 23:52:03</publishTime>
     </File>
     <File Include="Areas/Client/Views/About/Index.cshtml">
-      <publishTime>04/19/2021 15:27:17</publishTime>
+      <publishTime>05/21/2021 16:46:47</publishTime>
     </File>
     <File Include="Areas/Client/Views/CompanyRequest/Index.cshtml">
       <publishTime>05/16/2021 16:47:55</publishTime>
@@ -222,13 +228,13 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>05/13/2021 15:28:30</publishTime>
     </File>
     <File Include="Areas/Client/Views/Main/Index.cshtml">
-      <publishTime>05/20/2021 10:13:32</publishTime>
+      <publishTime>05/21/2021 16:52:48</publishTime>
     </File>
     <File Include="Areas/Client/Views/PrivacyPolicy/Index.cshtml">
       <publishTime>05/13/2021 15:29:56</publishTime>
     </File>
     <File Include="Areas/Client/Views/Service/Index.cshtml">
-      <publishTime>05/16/2021 16:47:04</publishTime>
+      <publishTime>05/21/2021 16:49:13</publishTime>
     </File>
     <File Include="Areas/Client/Views/Shared/_Layout.cshtml">
       <publishTime>05/16/2021 16:44:42</publishTime>
@@ -258,10 +264,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>09/10/2013 16:29:20</publishTime>
     </File>
     <File Include="bin/AttendanceSystem.dll">
-      <publishTime>05/21/2021 09:59:15</publishTime>
+      <publishTime>05/21/2021 17:58:17</publishTime>
     </File>
     <File Include="bin/AttendanceSystem.pdb">
-      <publishTime>05/21/2021 09:59:15</publishTime>
+      <publishTime>05/21/2021 17:58:17</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>10/23/2017 13:15:18</publishTime>
@@ -3534,7 +3540,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>04/15/2021 23:38:39</publishTime>
     </File>
     <File Include="Models/AttendanceSystem.edmx.diagram">
-      <publishTime>05/21/2021 09:54:52</publishTime>
+      <publishTime>05/21/2021 17:56:17</publishTime>
     </File>
     <File Include="Scripts/bootstrap-multiselect.css">
       <publishTime>01/05/2021 18:29:12</publishTime>
