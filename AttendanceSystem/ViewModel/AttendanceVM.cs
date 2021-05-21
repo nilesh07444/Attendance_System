@@ -27,16 +27,17 @@ namespace AttendanceSystem.ViewModel
         [Display(Name = "Remarks")]
         public string Remarks { get; set; }
         public string LocationFrom { get; set; }
+        public string OutLocationFrom { get; set; }
         [Display(Name = "Status")]
         public int Status { get; set; }
         public string StatusText { get; set; }
         [Display(Name = "Reject Reason")]
         public string RejectReason { get; set; }
         public bool IsActive { get; set; }
-        [Display(Name = "In Time")]
-        public TimeSpan InTime { get; set; }
-        [Display(Name = "Out Time")]
-        public TimeSpan OutTime { get; set; }
+        [Display(Name = "In Date Time")]
+        public DateTime InDateTime { get; set; }
+        [Display(Name = "Out Date Time")]
+        public DateTime OutDateTime { get; set; }
         public decimal? ExtraPerHourPrice { get; set; }
         public int EmploymentCategory { get; set; }
         public string EmploymentCategoryText { get; set; }
@@ -78,6 +79,9 @@ namespace AttendanceSystem.ViewModel
         public string TodayWorkDetail { get; set; }
         public string TomorrowWorkDetail { get; set; }
         public string Remarks { get; set; }
+        public double DayType { get; set; }
+        public decimal NoOfHoursWorked { get; set; }
+        public int NoOfUnitWorked { get; set; }
     }
 
     public class WorkerAttendanceRequestVM

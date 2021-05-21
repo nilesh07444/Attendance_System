@@ -51,5 +51,6 @@ namespace AttendanceSystem.Models
         public Nullable<System.DateTime> UpdatedDate { get; set; }
         public string Pincode { get; set; }
         public string State { get; set; }
+        public int NoOfFreeLeavePerMonth { get; set; }
     }
 }

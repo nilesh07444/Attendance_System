@@ -87,7 +87,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                      IsLeaveForward = emp.IsLeaveForward,
                                                      IsActive = emp.IsActive,
                                                      IsDeleted = emp.IsDeleted,
-                                                     IsFingerprintEnabled = emp.IsFingerprintEnabled
+                                                     IsFingerprintEnabled = emp.IsFingerprintEnabled,
+                                                     NoOfFreeLeavePerMonth = emp.NoOfFreeLeavePerMonth
 
                                                  }).OrderByDescending(x => x.EmployeeId).ToList();
             }
@@ -140,7 +141,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                   IsLeaveForward = emp.IsLeaveForward,
                                   IsActive = emp.IsActive,
                                   IsDeleted = emp.IsDeleted,
-                                  IsFingerprintEnabled = emp.IsFingerprintEnabled
+                                  IsFingerprintEnabled = emp.IsFingerprintEnabled,
+                                  NoOfFreeLeavePerMonth = emp.NoOfFreeLeavePerMonth
 
                               }).FirstOrDefault();
             }
@@ -218,6 +220,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployee.ExtraPerHourPrice = employeeVM.ExtraPerHourPrice;
                         objEmployee.IsLeaveForward = employeeVM.IsLeaveForward;
                         objEmployee.IsFingerprintEnabled = employeeVM.IsFingerprintEnabled;
+                        objEmployee.NoOfFreeLeavePerMonth = employeeVM.NoOfFreeLeavePerMonth;
                         objEmployee.UpdatedBy = loggedInUserId;
                         objEmployee.UpdatedDate = DateTime.UtcNow;
                     }
@@ -254,6 +257,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployee.MonthlySalaryPrice = employeeVM.MonthlySalaryPrice;
                         objEmployee.ExtraPerHourPrice = employeeVM.ExtraPerHourPrice;
                         objEmployee.IsLeaveForward = employeeVM.IsLeaveForward;
+                        objEmployee.NoOfFreeLeavePerMonth = employeeVM.NoOfFreeLeavePerMonth;
                         objEmployee.IsActive = true;
                         objEmployee.IsFingerprintEnabled = employeeVM.IsFingerprintEnabled;
                         objEmployee.CreatedBy = loggedInUserId;
@@ -318,8 +322,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                               IsLeaveForward = emp.IsLeaveForward,
                               IsActive = emp.IsActive,
                               IsDeleted = emp.IsDeleted,
-                              IsFingerprintEnabled = emp.IsFingerprintEnabled
-
+                              IsFingerprintEnabled = emp.IsFingerprintEnabled,
+                              NoOfFreeLeavePerMonth = employeeVM.NoOfFreeLeavePerMonth
                           }).FirstOrDefault();
             return View(employeeVM);
         }

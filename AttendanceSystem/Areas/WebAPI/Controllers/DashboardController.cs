@@ -51,6 +51,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 dashboardCountVM.LastMonthRating = "7/10";
                 dashboardCountVM.PendingSalary = 15000;
                 response.IsError = false;
+                dashboardCountVM.AttendancePendingForApprove = _db.tbl_Attendance.Where(x => x.Status == (int)AttendanceStatus.Pending && x.UserId == employeeId && !x.IsDeleted).Count();
                 response.Data = dashboardCountVM;
             }
             catch (Exception ex)

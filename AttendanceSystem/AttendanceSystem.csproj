@@ -320,6 +320,9 @@
     <Compile Include="Models\tbl_Testimonial.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\tbl_WorkerAttendance.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\AdminProfileVM.cs" />
     <Compile Include="ViewModel\AttendanceVM.cs" />
     <Compile Include="ViewModel\CompanyAdminSettingVM.cs" />

@@ -72,6 +72,9 @@ namespace AttendanceSystem.ViewModel
         public HttpPostedFileBase ProfileImageFile { get; set; }
         public List<SelectListItem> UserRoleList { get; set; }
         public string OTP { get; set; }
+
+        [Display(Name = "Free Leave Per Month")]
+        public int NoOfFreeLeavePerMonth { get; set; }
     }
 
     public class EmployeeFilterVM

@@ -43,10 +43,14 @@ namespace AttendanceSystem.ViewModel.WebAPI.ViewModel
         public string Remarks { get; set; }
         public string ProfilePicture { get; set; }
         public int EmploymentCategory { get; set; }
+        public string EmploymentCategoryText { get; set; }
         public bool IsFingerprintEnabled { get; set; }
         public bool IsLeaveForward { get; set; }
         public string State { get; set; }
         public string Pincode { get; set; }
         public bool IsTrialMode { get; set; }
+        public decimal? MonthlySalaryPrice { get; set; }
+        public decimal? ExtraPerHourPrice { get; set; }
+        public int NoOfFreeLeavePerMonth { get; set; }
     }
 }

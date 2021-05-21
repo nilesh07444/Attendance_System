@@ -195,10 +195,14 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     authenticateVM.Remarks = data.Remarks;
                     authenticateVM.ProfilePicture = domainUrl + ErrorMessage.EmployeeDirectoryPath + data.ProfilePicture;
                     authenticateVM.EmploymentCategory = data.EmploymentCategory;
+                    authenticateVM.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)data.EmploymentCategory);
                     authenticateVM.IsFingerprintEnabled = data.IsFingerprintEnabled;
                     authenticateVM.IsLeaveForward = data.IsLeaveForward;
                     authenticateVM.State = string.Empty;
                     authenticateVM.Pincode = string.Empty;
+                    authenticateVM.MonthlySalaryPrice = data.MonthlySalaryPrice;
+                    authenticateVM.ExtraPerHourPrice = data.ExtraPerHourPrice;
+                    authenticateVM.NoOfFreeLeavePerMonth = data.NoOfFreeLeavePerMonth;
                     response.Data = authenticateVM;
                 }
                 else

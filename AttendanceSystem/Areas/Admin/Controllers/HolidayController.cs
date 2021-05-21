@@ -80,6 +80,13 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         ModelState.AddModelError("", ErrorMessage.HolidayOnSameDateAlreadyExist);
                         return View(HolidayVM);
                     }
+
+                    if (HolidayVM.StartDate.Month!= HolidayVM.EndDate.Month)
+                    {
+                        ModelState.AddModelError("", ErrorMessage.HolidayStartAndEndDateShouldBeforSameMonth);
+                        return View(HolidayVM);
+                    }
+
                     long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
                     long companyId = clsAdminSession.CompanyId;
                     if (HolidayVM.HolidayId > 0)

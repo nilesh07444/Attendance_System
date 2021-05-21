@@ -31,7 +31,6 @@ namespace AttendanceSystem.Models
         public virtual DbSet<mst_CompanyType> mst_CompanyType { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<tbl_AdminUser> tbl_AdminUser { get; set; }
-        public virtual DbSet<tbl_Attendance> tbl_Attendance { get; set; }
         public virtual DbSet<tbl_Company> tbl_Company { get; set; }
         public virtual DbSet<tbl_CompanyFollowup> tbl_CompanyFollowup { get; set; }
         public virtual DbSet<tbl_CompanyRenewPayment> tbl_CompanyRenewPayment { get; set; }
@@ -60,6 +59,7 @@ namespace AttendanceSystem.Models
         public virtual DbSet<tbl_AssignWorker> tbl_AssignWorker { get; set; }
         public virtual DbSet<tbl_ContactForm> tbl_ContactForm { get; set; }
         public virtual DbSet<tbl_WorkerAttendance> tbl_WorkerAttendance { get; set; }
+        public virtual DbSet<tbl_Attendance> tbl_Attendance { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

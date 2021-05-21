@@ -84,8 +84,8 @@
           <Property Name="UserId" Type="bigint" Nullable="false" />
           <Property Name="AttendanceDate" Type="datetime" Nullable="false" />
           <Property Name="DayType" Type="float" Nullable="false" />
-          <Property Name="InTime" Type="time" Precision="7" Nullable="false" />
-          <Property Name="OutTime" Type="time" Precision="7" Nullable="false" />
+          <Property Name="InDateTime" Type="datetime" Nullable="false" />
+          <Property Name="OutDateTime" Type="datetime" Nullable="false" />
           <Property Name="ExtraHours" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="TodayWorkDetail" Type="nvarchar" MaxLength="500" />
           <Property Name="TomorrowWorkDetail" Type="nvarchar" MaxLength="500" />
@@ -98,6 +98,8 @@
           <Property Name="OutLongitude" Type="decimal" Precision="11" Scale="8" />
           <Property Name="Status" Type="int" Nullable="false" />
           <Property Name="RejectReason" Type="nvarchar" MaxLength="200" />
+          <Property Name="NoOfHoursWorked" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="NoOfUnitWorked" Type="int" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="CreatedBy" Type="bigint" Nullable="false" />
@@ -313,6 +315,7 @@
           <Property Name="MonthlySalaryPrice" Type="decimal" Precision="18" Scale="2" />
           <Property Name="ExtraPerHourPrice" Type="decimal" Precision="18" Scale="2" />
           <Property Name="IsLeaveForward" Type="bit" Nullable="false" />
+          <Property Name="NoOfFreeLeavePerMonth" Type="int" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="IsFingerprintEnabled" Type="bit" Nullable="false" />
@@ -635,6 +638,7 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <Property Name="IsEvening" Type="bit" Nullable="false" />
           <Property Name="EveningAttendanceBy" Type="bigint" />
           <Property Name="EveningAttendanceDate" Type="datetime" />
+          <Property Name="ExtraHours" Type="numeric" Precision="18" Scale="2" />
         </EntityType>
         <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
         <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -769,36 +773,6 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ModifiedBy" Type="Int64" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-        </EntityType>
-        <EntityType Name="tbl_Attendance">
-          <Key>
-            <PropertyRef Name="AttendanceId" />
-          </Key>
-          <Property Name="AttendanceId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CompanyId" Type="Int64" Nullable="false" />
-          <Property Name="UserId" Type="Int64" Nullable="false" />
-          <Property Name="AttendanceDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="DayType" Type="Double" Nullable="false" />
-          <Property Name="InTime" Type="Time" Nullable="false" Precision="7" />
-          <Property Name="OutTime" Type="Time" Nullable="false" Precision="7" />
-          <Property Name="ExtraHours" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="TodayWorkDetail" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="TomorrowWorkDetail" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="LocationFrom" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="Status" Type="Int32" Nullable="false" />
-          <Property Name="RejectReason" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int64" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="OutLocationFrom" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="InLatitude" Type="Decimal" Precision="11" Scale="8" />
-          <Property Name="InLongitude" Type="Decimal" Precision="11" Scale="8" />
-          <Property Name="OutLatitude" Type="Decimal" Precision="11" Scale="8" />
-          <Property Name="OutLongitude" Type="Decimal" Precision="11" Scale="8" />
         </EntityType>
         <EntityType Name="tbl_Company">
           <Key>
@@ -1217,7 +1191,6 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <EntitySet Name="mst_CompanyType" EntityType="Self.mst_CompanyType" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
           <EntitySet Name="tbl_AdminUser" EntityType="Self.tbl_AdminUser" />
-          <EntitySet Name="tbl_Attendance" EntityType="Self.tbl_Attendance" />
           <EntitySet Name="tbl_Company" EntityType="Self.tbl_Company" />
           <EntitySet Name="tbl_CompanyFollowup" EntityType="Self.tbl_CompanyFollowup" />
           <EntitySet Name="tbl_CompanyRenewPayment" EntityType="Self.tbl_CompanyRenewPayment" />
@@ -1276,6 +1249,7 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <EntitySet Name="tbl_AssignWorker" EntityType="AttendanceSystemModel.tbl_AssignWorker" />
           <EntitySet Name="tbl_ContactForm" EntityType="AttendanceSystemModel.tbl_ContactForm" />
           <EntitySet Name="tbl_WorkerAttendance" EntityType="AttendanceSystemModel.tbl_WorkerAttendance" />
+          <EntitySet Name="tbl_Attendance" EntityType="AttendanceSystemModel.tbl_Attendance" />
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -1361,6 +1335,7 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
           <Property Name="Pincode" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="State" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="NoOfFreeLeavePerMonth" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="tbl_SMSLog">
           <Key>
@@ -1418,6 +1393,39 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <Property Name="IsEvening" Type="Boolean" Nullable="false" />
           <Property Name="EveningAttendanceBy" Type="Int64" />
           <Property Name="EveningAttendanceDate" Type="DateTime" Precision="3" />
+          <Property Name="ExtraHours" Type="Decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="tbl_Attendance">
+          <Key>
+            <PropertyRef Name="AttendanceId" />
+          </Key>
+          <Property Name="AttendanceId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyId" Type="Int64" Nullable="false" />
+          <Property Name="UserId" Type="Int64" Nullable="false" />
+          <Property Name="AttendanceDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DayType" Type="Double" Nullable="false" />
+          <Property Name="InDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="OutDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ExtraHours" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="TodayWorkDetail" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="TomorrowWorkDetail" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="LocationFrom" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="OutLocationFrom" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="InLatitude" Type="Decimal" Precision="11" Scale="8" />
+          <Property Name="InLongitude" Type="Decimal" Precision="11" Scale="8" />
+          <Property Name="OutLatitude" Type="Decimal" Precision="11" Scale="8" />
+          <Property Name="OutLongitude" Type="Decimal" Precision="11" Scale="8" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+          <Property Name="RejectReason" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="NoOfHoursWorked" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="NoOfUnitWorked" Type="Int32" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int64" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1476,37 +1484,6 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
                 <ScalarProperty Name="AadharCardPhoto" ColumnName="AadharCardPhoto" />
                 <ScalarProperty Name="PanCardNo" ColumnName="PanCardNo" />
                 <ScalarProperty Name="PanCardPhoto" ColumnName="PanCardPhoto" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbl_Attendance">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Attendance">
-              <MappingFragment StoreEntitySet="tbl_Attendance">
-                <ScalarProperty Name="OutLongitude" ColumnName="OutLongitude" />
-                <ScalarProperty Name="OutLatitude" ColumnName="OutLatitude" />
-                <ScalarProperty Name="InLongitude" ColumnName="InLongitude" />
-                <ScalarProperty Name="InLatitude" ColumnName="InLatitude" />
-                <ScalarProperty Name="OutLocationFrom" ColumnName="OutLocationFrom" />
-                <ScalarProperty Name="AttendanceId" ColumnName="AttendanceId" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="AttendanceDate" ColumnName="AttendanceDate" />
-                <ScalarProperty Name="DayType" ColumnName="DayType" />
-                <ScalarProperty Name="InTime" ColumnName="InTime" />
-                <ScalarProperty Name="OutTime" ColumnName="OutTime" />
-                <ScalarProperty Name="ExtraHours" ColumnName="ExtraHours" />
-                <ScalarProperty Name="TodayWorkDetail" ColumnName="TodayWorkDetail" />
-                <ScalarProperty Name="TomorrowWorkDetail" ColumnName="TomorrowWorkDetail" />
-                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
-                <ScalarProperty Name="LocationFrom" ColumnName="LocationFrom" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="RejectReason" ColumnName="RejectReason" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
@@ -2010,6 +1987,7 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <EntitySetMapping Name="tbl_Employee">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Employee">
               <MappingFragment StoreEntitySet="tbl_Employee">
+                <ScalarProperty Name="NoOfFreeLeavePerMonth" ColumnName="NoOfFreeLeavePerMonth" />
                 <ScalarProperty Name="State" ColumnName="State" />
                 <ScalarProperty Name="Pincode" ColumnName="Pincode" />
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
@@ -2092,6 +2070,7 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <EntitySetMapping Name="tbl_WorkerAttendance">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_WorkerAttendance">
               <MappingFragment StoreEntitySet="tbl_WorkerAttendance">
+                <ScalarProperty Name="ExtraHours" ColumnName="ExtraHours" />
                 <ScalarProperty Name="EveningAttendanceDate" ColumnName="EveningAttendanceDate" />
                 <ScalarProperty Name="EveningAttendanceBy" ColumnName="EveningAttendanceBy" />
                 <ScalarProperty Name="IsEvening" ColumnName="IsEvening" />
@@ -2104,6 +2083,39 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
                 <ScalarProperty Name="AttendanceDate" ColumnName="AttendanceDate" />
                 <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
                 <ScalarProperty Name="WorkerAttendanceId" ColumnName="WorkerAttendanceId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_Attendance">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Attendance">
+              <MappingFragment StoreEntitySet="tbl_Attendance">
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="NoOfUnitWorked" ColumnName="NoOfUnitWorked" />
+                <ScalarProperty Name="NoOfHoursWorked" ColumnName="NoOfHoursWorked" />
+                <ScalarProperty Name="RejectReason" ColumnName="RejectReason" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="OutLongitude" ColumnName="OutLongitude" />
+                <ScalarProperty Name="OutLatitude" ColumnName="OutLatitude" />
+                <ScalarProperty Name="InLongitude" ColumnName="InLongitude" />
+                <ScalarProperty Name="InLatitude" ColumnName="InLatitude" />
+                <ScalarProperty Name="OutLocationFrom" ColumnName="OutLocationFrom" />
+                <ScalarProperty Name="LocationFrom" ColumnName="LocationFrom" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="TomorrowWorkDetail" ColumnName="TomorrowWorkDetail" />
+                <ScalarProperty Name="TodayWorkDetail" ColumnName="TodayWorkDetail" />
+                <ScalarProperty Name="ExtraHours" ColumnName="ExtraHours" />
+                <ScalarProperty Name="OutDateTime" ColumnName="OutDateTime" />
+                <ScalarProperty Name="InDateTime" ColumnName="InDateTime" />
+                <ScalarProperty Name="DayType" ColumnName="DayType" />
+                <ScalarProperty Name="AttendanceDate" ColumnName="AttendanceDate" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="AttendanceId" ColumnName="AttendanceId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -63,7 +63,7 @@
         TermsCondition = 3
     }
 
-    public enum EMploymentCategory
+    public enum EmploymentCategory
     {
         DailyBased = 1,
         HourlyBased = 2,
