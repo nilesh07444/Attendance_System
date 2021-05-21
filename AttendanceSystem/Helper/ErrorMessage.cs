@@ -45,10 +45,12 @@
         public static string RunningStatusReject = "Reject";
         public static string RunningStatusPending = "Pending";
         public static string HolidayOnSameDateAlreadyExist  = "Holiday on same date already exist, Please use another date.";
+        public static string HolidayStartAndEndDateShouldBeforSameMonth = "Holiday start and end date should be for same month.";
 
         public static string LeaveDateRequired = "Leave date required";
         public static string StartDateCanNotBeGreaterThanEndDate = "Start date can not be greater than end date";
         public static string LeaveReasonRequired = "Leave reason required";
+        public static string LeaveStartAndEndDateshouldBeForSameMonth = "Leave start and end date should be for same month";
         public static string LeaveOnSameDateAlreadyExist = "Leave on same date already exist";
         public static string LeaveDateCanBeFutureDateOnly = "Leave date can be future date only.";
         public static string LeaveIdIsNotValid = "Leave id is not valid.";
@@ -98,6 +100,9 @@
         
         public static string AlreadyInForTheDay = "Already in for the day.";
         public static string AlreadyOutForTheDay = "Already out for the day.";
+        public static string YouAreOnLeaveForTheday = "You are on leave the day.";
+        public static string PleaseProvideDayType = "Please provide day type.";
+        public static string PleaseProvideNoOfHoursWorked = "Please provide no of hours worked.";
 
         public static string PackageAlreadyAssigned = "Package already assigned";
         public static string Success = "success";

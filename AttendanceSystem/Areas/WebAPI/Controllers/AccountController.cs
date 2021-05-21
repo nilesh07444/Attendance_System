@@ -230,6 +230,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     authenticateVM.Remarks = data.Remarks;
                     authenticateVM.ProfilePicture = ErrorMessage.EmployeeDirectoryPath + data.ProfilePicture;
                     authenticateVM.EmploymentCategory = data.EmploymentCategory;
+                    authenticateVM.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)data.EmploymentCategory);
                     authenticateVM.IsTrialMode = company.IsTrialMode;
                     response.Data = authenticateVM;
 

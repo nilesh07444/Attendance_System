@@ -52,6 +52,12 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     response.AddError(ErrorMessage.LeaveReasonRequired);
                 }
 
+                if (leaveVM.StartDate.Month != leaveVM.EndDate.Month)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.LeaveStartAndEndDateshouldBeForSameMonth);
+                }
+
                 long employeeId = base.UTI.EmployeeId;
                 bool isLeaveExist = _db.tbl_Leave.Any(x => !x.IsDeleted && x.LeaveStatus != (int)LeaveStatus.Reject && x.UserId == employeeId && x.StartDate >= leaveVM.StartDate && x.StartDate <= leaveVM.EndDate);
                 if (isLeaveExist)

@@ -9,7 +9,6 @@
         <EntityTypeShape EntityType="AttendanceSystemModel.mst_CompanyType" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AttendanceSystemModel.sysdiagram" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_AdminUser" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Attendance" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Company" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_CompanyFollowup" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_CompanyRenewPayment" Width="1.5" PointX="8.75" PointY="4.75" IsExpanded="true" />
@@ -38,6 +37,7 @@
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_AssignWorker" Width="1.5" PointX="17.375" PointY="17.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_ContactForm" Width="1.5" PointX="19.375" PointY="0.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_WorkerAttendance" Width="1.5" PointX="0.75" PointY="19.75" />
+        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Attendance" Width="1.5" PointX="19.375" PointY="4.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

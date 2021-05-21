@@ -8,5 +8,6 @@
         public long PendingSalary { get; set; }
         public double thisMonthHoliday { get; set; }
         public string LastMonthRating { get; set; }
+        public int AttendancePendingForApprove { get; set; }
     }
 }

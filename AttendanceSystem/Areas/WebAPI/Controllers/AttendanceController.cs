@@ -56,22 +56,22 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     response.AddError(ErrorMessage.TomorrowWorkDetailRequired);
                 }
 
-                TimeSpan time;
-                bool isValidTIme = TimeSpan.TryParse(attendanceVM.InTime.ToString(), out time);
-                if (!isValidTIme || attendanceVM.InTime.ToString() == ErrorMessage.DefaultTime)
+                DateTime date;
+                bool isValidTIme = DateTime.TryParse(attendanceVM.InDateTime.ToString(), out date);
+                if (!isValidTIme || attendanceVM.InDateTime.ToString() == ErrorMessage.DefaultTime)
                 {
                     response.IsError = true;
                     response.AddError(ErrorMessage.InTimeIsNotValid);
                 }
 
-                isValidTIme = TimeSpan.TryParse(attendanceVM.OutTime.ToString(), out time);
-                if (!isValidTIme || attendanceVM.InTime.ToString() == ErrorMessage.DefaultTime)
+                isValidTIme = DateTime.TryParse(attendanceVM.OutDateTime.ToString(), out date);
+                if (!isValidTIme || attendanceVM.InDateTime.ToString() == ErrorMessage.DefaultTime)
                 {
                     response.IsError = true;
                     response.AddError(ErrorMessage.OutTimeIsNotValid);
                 }
 
-                if (attendanceVM.OutTime < attendanceVM.InTime)
+                if (attendanceVM.OutDateTime < attendanceVM.InDateTime)
                 {
                     response.IsError = true;
                     response.AddError(ErrorMessage.OutTimeIsNotValid);
@@ -99,8 +99,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     attendanceObject.LocationFrom = attendanceVM.LocationFrom;
                     attendanceObject.Status = (int)AttendanceStatus.Pending;
                     attendanceObject.IsActive = true;
-                    attendanceObject.InTime = attendanceVM.InTime;
-                    attendanceObject.OutTime = attendanceVM.OutTime;
+                    attendanceObject.InDateTime = attendanceVM.InDateTime;
+                    attendanceObject.OutDateTime = attendanceVM.OutDateTime;
                     attendanceObject.CreatedBy = employeeId;
                     attendanceObject.CreatedDate = DateTime.UtcNow;
                     attendanceObject.ModifiedBy = employeeId;
@@ -150,8 +150,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                          LocationFrom = at.LocationFrom,
                                                          Status = at.Status,
                                                          RejectReason = at.RejectReason,
-                                                         InTime = at.InTime,
-                                                         OutTime = at.OutTime,
+                                                         InDateTime = at.InDateTime,
+                                                         OutDateTime = at.OutDateTime,
                                                          ExtraPerHourPrice = emp.ExtraPerHourPrice,
                                                          EmploymentCategory = emp.EmploymentCategory,
                                                          InLatitude = at.InLatitude,
@@ -163,7 +163,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 attendanceList.ForEach(x =>
                 {
                     x.StatusText = CommonMethod.GetEnumDescription((AttendanceStatus)x.Status);
-                    x.EmploymentCategoryText = CommonMethod.GetEnumDescription((EMploymentCategory)x.EmploymentCategory);
+                    x.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)x.EmploymentCategory);
                 });
                 response.Data = attendanceList;
             }
@@ -204,10 +204,11 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                  TomorrowWorkDetail = at.TomorrowWorkDetail,
                                                  Remarks = at.Remarks,
                                                  LocationFrom = at.LocationFrom,
+                                                 OutLocationFrom = at.OutLocationFrom,
                                                  Status = at.Status,
                                                  RejectReason = at.RejectReason,
-                                                 InTime = at.InTime,
-                                                 OutTime = at.OutTime,
+                                                 InDateTime = at.InDateTime,
+                                                 OutDateTime = at.OutDateTime,
                                                  ExtraPerHourPrice = emp.ExtraPerHourPrice,
                                                  EmploymentCategory = emp.EmploymentCategory,
                                                  InLatitude = at.InLatitude,
@@ -216,7 +217,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                  OutLongitude = at.OutLongitude
                                              }).FirstOrDefault();
                 leaveDetails.StatusText = CommonMethod.GetEnumDescription((AttendanceStatus)leaveDetails.Status);
-                leaveDetails.EmploymentCategoryText = CommonMethod.GetEnumDescription((EMploymentCategory)leaveDetails.EmploymentCategory);
+                leaveDetails.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)leaveDetails.EmploymentCategory);
 
                 response.Data = leaveDetails;
             }
@@ -366,9 +367,16 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             try
             {
                 DateTime today = DateTime.UtcNow.Date;
-                TimeSpan defaultTime = TimeSpan.Parse("00:00");
+                DateTime defaultTime = DateTime.Parse("00:00");
                 #region Validation
-                if (_db.tbl_Attendance.Any(x => x.AttendanceDate == today && x.InTime != null && x.OutTime == defaultTime))
+
+                if (_db.tbl_Leave.Any(x => x.UserId == employeeId && x.StartDate <= today && x.EndDate >= today && x.LeaveStatus != (int)LeaveStatus.Reject))
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.YouAreOnLeaveForTheday);
+                }
+
+                if (_db.tbl_Attendance.Any(x => x.UserId == employeeId && x.AttendanceDate == today && x.InDateTime != null && x.OutDateTime == defaultTime))
                 {
                     response.IsError = true;
                     response.AddError(ErrorMessage.AlreadyInForTheDay);
@@ -385,7 +393,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     attendanceObject.LocationFrom = inTimeRequestVM.InLocationFrom;
                     attendanceObject.Status = (int)AttendanceStatus.Login;
                     attendanceObject.IsActive = true;
-                    attendanceObject.InTime = DateTime.UtcNow.TimeOfDay;
+                    attendanceObject.InDateTime = DateTime.UtcNow;
                     attendanceObject.InLatitude = inTimeRequestVM.InLatitude;
                     attendanceObject.InLongitude = inTimeRequestVM.InLongitude;
                     attendanceObject.CreatedBy = employeeId;
@@ -416,23 +424,62 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             try
             {
                 DateTime today = DateTime.UtcNow.Date;
-                TimeSpan defaultTime = TimeSpan.Parse("00:00");
+                DateTime defaultTime = DateTime.Parse("00:00");
+                tbl_Employee employeeObj = _db.tbl_Employee.FirstOrDefault(x => x.EmployeeId == employeeId);
+
                 #region Validation
-                if (!_db.tbl_Attendance.Any(x => x.AttendanceDate == today && x.InTime != null && x.OutTime == defaultTime))
+                if (!_db.tbl_Attendance.Any(x => x.UserId == employeeId && x.AttendanceDate == today && x.InDateTime != null && x.OutDateTime == defaultTime))
                 {
                     response.IsError = true;
                     response.AddError(ErrorMessage.AlreadyOutForTheDay);
                 }
+                if (employeeObj.EmploymentCategory == (int)EmploymentCategory.MonthlyBased || employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased)
+                {
+                    if (outTimeRequestVM.DayType == 0)
+                    {
+                        response.IsError = true;
+                        response.AddError(ErrorMessage.PleaseProvideDayType);
+                    }
+                }
+
+                if (employeeObj.EmploymentCategory == (int)EmploymentCategory.HourlyBased && outTimeRequestVM.NoOfHoursWorked == 0)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.PleaseProvideNoOfHoursWorked);
+                }
+
+                if (employeeObj.EmploymentCategory == (int)EmploymentCategory.UnitBased && outTimeRequestVM.NoOfUnitWorked == 0)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.PleaseProvideNoOfHoursWorked);
+                }
+
                 #endregion Validation
                 if (!response.IsError)
                 {
-                    tbl_Attendance attendanceObject = _db.tbl_Attendance.FirstOrDefault(x => x.AttendanceDate == today && x.InTime != null && x.OutTime == defaultTime);
+                    tbl_Attendance attendanceObject = _db.tbl_Attendance.FirstOrDefault(x => x.UserId == employeeId && x.AttendanceDate == today && x.InDateTime != null && x.OutDateTime == defaultTime);
                     attendanceObject.OutLocationFrom = outTimeRequestVM.OutLocationFrom;
                     attendanceObject.Status = (int)AttendanceStatus.Pending;
-                    attendanceObject.OutTime = DateTime.UtcNow.TimeOfDay;
+                    attendanceObject.OutDateTime = DateTime.UtcNow;
                     attendanceObject.OutLatitude = outTimeRequestVM.OutLatitude;
                     attendanceObject.OutLongitude = outTimeRequestVM.OutLongitude;
-                    attendanceObject.ExtraHours = outTimeRequestVM.ExtraHours;
+
+                    if (employeeObj.EmploymentCategory == (int)EmploymentCategory.MonthlyBased || employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased)
+                    {
+                        attendanceObject.DayType = outTimeRequestVM.DayType;
+                        attendanceObject.ExtraHours = outTimeRequestVM.ExtraHours;
+                    }
+
+                    if (employeeObj.EmploymentCategory == (int)EmploymentCategory.HourlyBased)
+                    {
+                        attendanceObject.NoOfHoursWorked = outTimeRequestVM.NoOfHoursWorked;
+                    }
+
+                    if (employeeObj.EmploymentCategory == (int)EmploymentCategory.UnitBased)
+                    {
+                        attendanceObject.NoOfUnitWorked = outTimeRequestVM.NoOfUnitWorked;
+                    }
+
                     attendanceObject.TodayWorkDetail = outTimeRequestVM.TodayWorkDetail;
                     attendanceObject.TomorrowWorkDetail = outTimeRequestVM.TomorrowWorkDetail;
                     attendanceObject.Remarks = outTimeRequestVM.Remarks;
@@ -460,8 +507,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             try
             {
                 DateTime today = DateTime.UtcNow.Date;
-                TimeSpan defaultTime = TimeSpan.Parse("00:00");
-                bool isPresent = _db.tbl_Attendance.Any(x => x.AttendanceDate == today && x.InTime != null && x.OutTime == defaultTime && x.UserId == employeeId);
+                DateTime defaultTime = DateTime.Parse("00:00");
+                bool isPresent = _db.tbl_Attendance.Any(x => x.AttendanceDate == today && x.InDateTime != null && x.OutDateTime == defaultTime && x.UserId == employeeId);
                 response.Data = isPresent;
             }
             catch (Exception ex)

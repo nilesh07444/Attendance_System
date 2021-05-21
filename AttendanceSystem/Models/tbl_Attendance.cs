@@ -19,25 +19,27 @@ namespace AttendanceSystem.Models
         public long UserId { get; set; }
         public System.DateTime AttendanceDate { get; set; }
         public double DayType { get; set; }
-        public System.TimeSpan InTime { get; set; }
-        public System.TimeSpan OutTime { get; set; }
+        public System.DateTime InDateTime { get; set; }
+        public System.DateTime OutDateTime { get; set; }
         public decimal ExtraHours { get; set; }
         public string TodayWorkDetail { get; set; }
         public string TomorrowWorkDetail { get; set; }
         public string Remarks { get; set; }
         public string LocationFrom { get; set; }
+        public string OutLocationFrom { get; set; }
+        public Nullable<decimal> InLatitude { get; set; }
+        public Nullable<decimal> InLongitude { get; set; }
+        public Nullable<decimal> OutLatitude { get; set; }
+        public Nullable<decimal> OutLongitude { get; set; }
         public int Status { get; set; }
         public string RejectReason { get; set; }
+        public Nullable<decimal> NoOfHoursWorked { get; set; }
+        public Nullable<int> NoOfUnitWorked { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
         public long CreatedBy { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public Nullable<long> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
-        public string OutLocationFrom { get; set; }
-        public Nullable<decimal> InLatitude { get; set; }
-        public Nullable<decimal> InLongitude { get; set; }
-        public Nullable<decimal> OutLatitude { get; set; }
-        public Nullable<decimal> OutLongitude { get; set; }
     }
 }
