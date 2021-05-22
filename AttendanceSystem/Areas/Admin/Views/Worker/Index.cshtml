@@ -2,7 +2,7 @@
 @using AttendanceSystem.ViewModel;
 @model AttendanceSystem.ViewModel.EmployeeFilterVM
 @{
-    ViewBag.Title = "Employee";
+    ViewBag.Title = "Worker";
     int counter = 1;
 
     List<SelectListItem> lstEmployeeStatus = new List<SelectListItem>();
@@ -21,35 +21,14 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label>No of Employee</label>
-                                    @Model.NoOfEmployee
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label>Active Employees</label>
-                                    @Model.ActiveEmployee
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="row">
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label>Employee Role</label>
-                                    @Html.DropDownListFor(model => model.UserRole, new SelectList(Model.UserRoleList, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8 required", style = "" })
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
+                           
+                            <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>Employee Status</label>
                                     @Html.DropDownListFor(model => model.UserStatus, new SelectList(lstEmployeeStatus, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8 required", style = "" })
                                 </div>
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col-sm-6">
                                 <div class="form-group">
                                     <label style="padding-top:45px"></label>
                                     <button class="btn btn-primary mr-1" id="btnSearch" type="button">Search</button>
@@ -57,23 +36,20 @@
                             </div>
 
                         </div>
-                        @if (Model.NoOfEmployee > Model.ActiveEmployee)
-                        {
-                            <div class="pull-right">
-                                <a href="/admin/employee/add/0" class="btn btn-icon icon-left btn-primary"><i class="fas fa-plus-circle"></i> Add Employee</a>
-                            </div>
-                        }
+
+                        <div class="pull-right">
+                            <a href="/admin/worker/add/0" class="btn btn-icon icon-left btn-primary"><i class="fas fa-plus-circle"></i> Add Worker</a>
+                        </div>
+
                         <div class="table-responsive">
                             <table class="table table-striped table-hover" id="tableExport" style="width:100%;">
                                 <thead>
                                     <tr>
                                         <td>#</td>
-                                        <th>Employee Image</th>
-                                        <th>Employee Code</th>
-                                        <th>Employee Name</th>
-                                        <th>Role</th>
+                                        <th>Worker Image</th>
+                                        <th>Worker Code</th>
+                                        <th>Worker Name</th>
                                         <th>Mobile No</th>
-                                        <th>Email Id</th>
                                         <th>Active</th>
                                         <th>Action</th>
                                     </tr>
@@ -105,28 +81,19 @@
                                                 </td>
                                                 <td>@obj.EmployeeCode</td>
                                                 <td>@obj.FirstName @obj.LastName</td>
-                                                <td>@obj.AdminRoleText</td>
                                                 <td>@obj.MobileNo</td>
-                                                <td>@obj.Email</td>
                                                 @if (obj.IsActive == true)
                                                 {
                                                     <td><span class="badge badge-success" style="cursor:pointer;" title="Click to Inactive" onclick="fnChangeStatus('@obj.EmployeeId','InActive');">Active</span></td>
                                                 }
                                                 else
                                                 {
-                                                    if (Model.NoOfEmployee > Model.ActiveEmployee)
-                                                    {
-                                                        <td><span class="badge badge-danger" style="cursor:pointer;" title="Click to Active" onclick="fnChangeStatus('@obj.EmployeeId','Active');">InActive</span></td>
-                                                    }
-                                                    else
-                                                    {
-                                                        <td><span class="badge badge-danger" style="cursor:pointer;" title="Active employee exceed">InActive</span></td>
-                                                    }
+                                                    <td><span class="badge badge-danger" style="cursor:pointer;" title="Click to Active" onclick="fnChangeStatus('@obj.EmployeeId','Active');">InActive</span></td>
                                                 }
                                                 <td>
 
-                                                    <a href="/admin/employee/view/@obj.EmployeeId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
-                                                    <a href="/admin/employee/add/@obj.EmployeeId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
+                                                    <a href="/admin/worker/view/@obj.EmployeeId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
+                                                    <a href="/admin/worker/add/@obj.EmployeeId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
                                                     <a href="javascript:void(0);" title="Delete" class="btn btn-icon btn-danger" onclick="fnDeleteEmployee('@obj.EmployeeId')"><i class="fas fa-trash-alt"></i></a>
 
                                                 </td>
@@ -197,7 +164,7 @@
 
                 StartLoading();
 
-                var URL = '@Url.Action("DeleteEmployee", "Employee")';
+                var URL = '@Url.Action("DeleteEmployee", "Worker")';
                 $.ajax({
                     type: 'POST',
                     async: true,
@@ -231,7 +198,7 @@
 
                 //StartLoading();
 
-                var URL = '@Url.Action("ChangeStatus", "Employee")';
+                var URL = '@Url.Action("ChangeStatus", "Worker")';
                 $.ajax({
                     type: 'POST',
                     async: true,
@@ -256,9 +223,8 @@
 
         $('#btnSearch').click(function () {
             var userStatus = $("#UserStatus").val();
-            var userRole = $("#UserRole").val();
             StartLoading();
-            window.location.href = "/admin/employee/Index?userRole=" + userRole + "&userStatus=" + userStatus ;
+            window.location.href = "/admin/worker/Index?userStatus=" + userStatus ;
         });
     })
 
@@ -281,4 +247,4 @@
         $('#activeinactiveModal').modal('show');
     }
 
-</script>
+</script> 

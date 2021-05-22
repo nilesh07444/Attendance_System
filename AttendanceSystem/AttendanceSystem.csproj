@@ -150,6 +150,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\WorkerController.cs" />
     <Compile Include="Areas\Admin\Controllers\EmployeeRatingController.cs" />
     <Compile Include="Areas\Admin\Controllers\FeedbackController.cs" />
     <Compile Include="Areas\Admin\Controllers\OurClientController.cs" />
@@ -1493,6 +1494,9 @@
     <Content Include="Areas\Admin\Views\OurClient\Add.cshtml" />
     <Content Include="Areas\Admin\Views\Testimonial\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Testimonial\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\Worker\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\Worker\View.cshtml" />
+    <Content Include="Areas\Admin\Views\Worker\Index.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />

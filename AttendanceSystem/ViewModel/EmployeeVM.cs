@@ -75,6 +75,8 @@ namespace AttendanceSystem.ViewModel
 
         [Display(Name = "Free Leave Per Month")]
         public int NoOfFreeLeavePerMonth { get; set; }
+
+        public string EmploymentCategoryText { get; set; }
     }
 
     public class EmployeeFilterVM
@@ -83,6 +85,8 @@ namespace AttendanceSystem.ViewModel
         public int? UserStatus { get; set; }
         public List<SelectListItem> UserRoleList { get; set; }
         public List<EmployeeVM> EmployeeList { get; set; }
+        public int NoOfEmployee { get; set; }
+        public int ActiveEmployee { get; set; }
     }
 
 }

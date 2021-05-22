@@ -12,7 +12,7 @@ using System.Web.Mvc;
 
 namespace AttendanceSystem.Areas.Admin.Controllers
 {
-    public class EmployeeController : Controller
+    public class WorkerController : Controller
     {
         AttendanceSystemEntities _db;
         public string employeeDirectoryPath = "";
@@ -23,7 +23,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         bool isTrailMode;
         string defaultPassword;
         // GET: Admin/Employee
-        public EmployeeController()
+        public WorkerController()
         {
             _db = new AttendanceSystemEntities();
             employeeDirectoryPath = ErrorMessage.EmployeeDirectoryPath;
@@ -34,13 +34,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             isTrailMode = clsAdminSession.IsTrialMode;
             defaultPassword = ConfigurationManager.AppSettings["DefaultPassword"].ToString();
         }
-        public ActionResult Index(int? userRole = null, int? userStatus = null)
+        public ActionResult Index(int? userStatus = null)
         {
             EmployeeFilterVM employeeFilterVM = new EmployeeFilterVM();
-            if (userRole.HasValue)
-            {
-                employeeFilterVM.UserRole = userRole.Value;
-            }
 
             if (userStatus.HasValue)
             {
@@ -49,13 +45,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
             try
             {
-                tbl_CompanyRenewPayment companyPackage = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == companyId && DateTime.Today >= x.StartDate && DateTime.Today < x.EndDate).FirstOrDefault();
-
 
                 employeeFilterVM.EmployeeList = (from emp in _db.tbl_Employee
                                                  join rl in _db.mst_AdminRole on emp.AdminRoleId equals rl.AdminRoleId
-                                                 where !emp.IsDeleted && emp.CompanyId == companyId && emp.AdminRoleId != (int)AdminRoles.Worker
-                                                 && (employeeFilterVM.UserRole.HasValue ? emp.AdminRoleId == employeeFilterVM.UserRole.Value : true)
+                                                 where !emp.IsDeleted && emp.CompanyId == companyId && emp.AdminRoleId == (int)AdminRoles.Worker
                                                  && (employeeFilterVM.UserStatus.HasValue ? (employeeFilterVM.UserStatus.Value == (int)UserStatus.Active ? emp.IsActive == true : emp.IsActive == false) : true)
                                                  select new EmployeeVM
                                                  {
@@ -95,13 +88,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                      NoOfFreeLeavePerMonth = emp.NoOfFreeLeavePerMonth
 
                                                  }).OrderByDescending(x => x.EmployeeId).ToList();
-                employeeFilterVM.NoOfEmployee = companyPackage.NoOfEmployee;
             }
             catch (Exception ex)
             {
             }
-            employeeFilterVM.UserRoleList = GetUserRoleList();
-            employeeFilterVM.ActiveEmployee = employeeFilterVM.EmployeeList.Where(x => x.IsActive).Count();
             return View(employeeFilterVM);
         }
 
@@ -153,7 +143,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                               }).FirstOrDefault();
             }
 
-            employeeVM.UserRoleList = GetUserRoleList();
             return View(employeeVM);
         }
 
@@ -200,82 +189,54 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     {
                         tbl_Employee objEmployee = _db.tbl_Employee.Where(x => x.EmployeeId == employeeVM.EmployeeId).FirstOrDefault();
                         objEmployee.ProfilePicture = profileImageFile != null ? fileName : objEmployee.ProfilePicture;
-                        objEmployee.AdminRoleId = employeeVM.AdminRoleId;
                         objEmployee.Prefix = employeeVM.Prefix;
                         objEmployee.FirstName = employeeVM.FirstName;
                         objEmployee.LastName = employeeVM.LastName;
-                        objEmployee.Email = employeeVM.Email;
-                        objEmployee.EmployeeCode = employeeVM.EmployeeCode;
                         objEmployee.MobileNo = employeeVM.MobileNo;
-                        objEmployee.AlternateMobile = employeeVM.AlternateMobile;
                         objEmployee.Address = employeeVM.Address;
                         objEmployee.City = employeeVM.City;
                         objEmployee.Pincode = employeeVM.Pincode;
                         objEmployee.State = employeeVM.State;
-                        objEmployee.Designation = employeeVM.Designation;
                         objEmployee.Dob = employeeVM.Dob;
                         objEmployee.DateOfJoin = employeeVM.DateOfJoin;
                         objEmployee.BloodGroup = employeeVM.BloodGroup;
-                        objEmployee.WorkingTime = employeeVM.WorkingTime;
                         objEmployee.AdharCardNo = employeeVM.AdharCardNo;
-                        objEmployee.DateOfIdCardExpiry = employeeVM.DateOfIdCardExpiry;
-                        objEmployee.Remarks = employeeVM.Remarks;
                         objEmployee.EmploymentCategory = employeeVM.EmploymentCategory;
                         objEmployee.PerCategoryPrice = employeeVM.PerCategoryPrice;
                         objEmployee.MonthlySalaryPrice = employeeVM.MonthlySalaryPrice;
                         objEmployee.ExtraPerHourPrice = employeeVM.ExtraPerHourPrice;
-                        objEmployee.IsLeaveForward = employeeVM.IsLeaveForward;
-                        objEmployee.IsFingerprintEnabled = employeeVM.IsFingerprintEnabled;
-                        objEmployee.NoOfFreeLeavePerMonth = employeeVM.NoOfFreeLeavePerMonth;
                         objEmployee.UpdatedBy = loggedInUserId;
                         objEmployee.UpdatedDate = DateTime.UtcNow;
                     }
                     else
                     {
-                        int noOfEmployee = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == companyId && DateTime.Today >= x.StartDate && DateTime.Today < x.EndDate).Select(x => x.NoOfEmployee).FirstOrDefault();
-                        var empCount = (from emp in _db.tbl_Employee
-                                        where emp.CompanyId == companyId
-                                        select new
-                                        {
-                                            employeeId = emp.EmployeeId,
-                                            isActive = emp.IsActive
-                                        }).ToList();
-
-                        int activeEmployee = empCount.Where(x => x.isActive).Count();
-
+                        int empCount = _db.tbl_Employee.Where(x => x.CompanyId == companyId).Count();
                         tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == companyId).FirstOrDefault();
                         tbl_Employee objEmployee = new tbl_Employee();
                         objEmployee.ProfilePicture = fileName;
                         objEmployee.CompanyId = companyId;
+                        objEmployee.AdminRoleId = (int)AdminRoles.Worker;
                         objEmployee.Password = CommonMethod.Encrypt(defaultPassword, psSult); ;
-                        objEmployee.AdminRoleId = employeeVM.AdminRoleId;
                         objEmployee.Prefix = employeeVM.Prefix;
                         objEmployee.FirstName = employeeVM.FirstName;
                         objEmployee.LastName = employeeVM.LastName;
-                        objEmployee.Email = employeeVM.Email;
-                        objEmployee.EmployeeCode = CommonMethod.getEmployeeCodeFormat(companyId, objCompany.CompanyName, empCount.Count());
+                        objEmployee.EmployeeCode = CommonMethod.getEmployeeCodeFormat(companyId, objCompany.CompanyName, empCount);
                         objEmployee.MobileNo = employeeVM.MobileNo;
-                        objEmployee.AlternateMobile = employeeVM.AlternateMobile;
                         objEmployee.Address = employeeVM.Address;
                         objEmployee.City = employeeVM.City;
                         objEmployee.Pincode = employeeVM.Pincode;
                         objEmployee.State = employeeVM.State;
-                        objEmployee.Designation = employeeVM.Designation;
                         objEmployee.Dob = employeeVM.Dob;
                         objEmployee.DateOfJoin = employeeVM.DateOfJoin;
                         objEmployee.BloodGroup = employeeVM.BloodGroup;
-                        objEmployee.WorkingTime = employeeVM.WorkingTime;
                         objEmployee.AdharCardNo = employeeVM.AdharCardNo;
-                        objEmployee.DateOfIdCardExpiry = employeeVM.DateOfIdCardExpiry;
-                        objEmployee.Remarks = employeeVM.Remarks;
                         objEmployee.EmploymentCategory = employeeVM.EmploymentCategory;
                         objEmployee.PerCategoryPrice = employeeVM.PerCategoryPrice;
                         objEmployee.MonthlySalaryPrice = employeeVM.MonthlySalaryPrice;
                         objEmployee.ExtraPerHourPrice = employeeVM.ExtraPerHourPrice;
                         objEmployee.IsLeaveForward = employeeVM.IsLeaveForward;
                         objEmployee.NoOfFreeLeavePerMonth = employeeVM.NoOfFreeLeavePerMonth;
-                        objEmployee.IsActive = activeEmployee >= noOfEmployee ? false : true;
-                        objEmployee.IsFingerprintEnabled = employeeVM.IsFingerprintEnabled;
+                        objEmployee.IsActive = true;
                         objEmployee.CreatedBy = loggedInUserId;
                         objEmployee.CreatedDate = DateTime.UtcNow;
                         objEmployee.UpdatedBy = loggedInUserId;
@@ -341,6 +302,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                               IsFingerprintEnabled = emp.IsFingerprintEnabled,
                               NoOfFreeLeavePerMonth = employeeVM.NoOfFreeLeavePerMonth
                           }).FirstOrDefault();
+
             employeeVM.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)employeeVM.EmploymentCategory);
             return View(employeeVM);
         }

@@ -1,7 +1,7 @@
 ﻿@using AttendanceSystem.Helper;
 @model AttendanceSystem.ViewModel.EmployeeVM
 @{
-    ViewBag.Title = "Package";
+    ViewBag.Title = "Worker";
 }
 
 <div class="page-body">
@@ -38,53 +38,33 @@
                             </div>
                             <div class="row">
                                 <div class="form-group col-6">
-                                    @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                    @Model.Email
-                                </div>
-                                <div class="form-group col-6">
                                     @Html.LabelFor(model => model.MobileNo, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
                                     @Model.MobileNo
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-6">
-                                    @Html.LabelFor(model => model.AlternateMobile, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                    @Model.AlternateMobile
-                                </div>
-                                <div class="form-group col-6">
-                                    @Html.LabelFor(model => model.Designation, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                    @Model.Designation
-                                </div>
-                            </div>
-                            <div class="row">
                                 <div class="form-group col-6">
                                     @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
                                     @Model.Address
                                 </div>
+                            </div>
+                            <div class="row">
                                 <div class="form-group col-6">
                                     @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
                                     @Model.City
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="form-group col-6">
                                     @Html.LabelFor(model => model.Dob, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
                                     @Model.Dob
                                 </div>
+                            </div>
+                            <div class="row">
                                 <div class="form-group col-6">
                                     @Html.LabelFor(model => model.DateOfJoin, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
                                     @Model.DateOfJoin
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="form-group col-6">
                                     @Html.LabelFor(model => model.BloodGroup, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
                                     @Model.BloodGroup
                                 </div>
-                                <div class="form-group col-6">
-                                    @Html.LabelFor(model => model.WorkingTime, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                    @Model.WorkingTime
-                                </div>
                             </div>
                             <div class="row">
                                 <div class="form-group col-6">
@@ -92,34 +72,14 @@
                                     @Model.AdharCardNo
                                 </div>
                                 <div class="form-group col-6">
-                                    @Html.LabelFor(model => model.DateOfIdCardExpiry, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                    @Model.DateOfIdCardExpiry
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-6">
                                     @Html.LabelFor(model => model.AdharCardNo, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
                                     @Model.AdharCardNo
                                 </div>
-                                <div class="form-group col-6">
-                                    @Html.LabelFor(model => model.DateOfIdCardExpiry, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                    @Model.DateOfIdCardExpiry
-                                </div>
                             </div>
                             <div class="row">
-                                <div class="form-group col-6">
-                                    @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                    @Model.Remarks
-                                </div>
                                 <div class="form-group col-6">
                                     @Html.LabelFor(model => model.EmploymentCategory, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
                                     @Model.EmploymentCategoryText
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-6">
-                                    @Html.LabelFor(model => model.PerCategoryPrice, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                    @Model.PerCategoryPrice
                                 </div>
                                 <div class="form-group col-6">
                                     @Html.LabelFor(model => model.MonthlySalaryPrice, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
@@ -128,19 +88,16 @@
                             </div>
                             <div class="row">
                                 <div class="form-group col-6">
+                                    @Html.LabelFor(model => model.PerCategoryPrice, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                    @Model.PerCategoryPrice
+                                </div>
+                                <div class="form-group col-6">
                                     @Html.LabelFor(model => model.ExtraPerHourPrice, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
                                     @Model.ExtraPerHourPrice
                                 </div>
-                                <div class="form-group col-6">
-                                    @Html.LabelFor(model => model.IsLeaveForward, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                    @Model.IsLeaveForward
-                                </div>
                             </div>
+                           
                             <div class="row">
-                                <div class="form-group col-6">
-                                    @Html.LabelFor(model => model.IsFingerprintEnabled, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                    @Model.IsFingerprintEnabled
-                                </div>
                                 <div class="form-group col-6">
                                     @Html.LabelFor(model => model.ProfileImageFile, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
                                     <p><a target="_blank" href="@ErrorMessage.EmployeeDirectoryPath/@Model.ProfilePicture"> Click here to view image </a></p>

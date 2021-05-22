@@ -37,7 +37,17 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                 if (!response.IsError)
                 {
-                    int empCount = _db.tbl_Employee.Where(x => x.CompanyId == companyId).Count();
+                    int noOfEmployee = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == companyId && DateTime.Today >= x.StartDate && DateTime.Today < x.EndDate).Select(x => x.NoOfEmployee).FirstOrDefault();
+                    var empCount = (from emp in _db.tbl_Employee
+                                    where emp.CompanyId == companyId
+                                    select new
+                                    {
+                                        employeeId = emp.EmployeeId,
+                                        isActive = emp.IsActive
+                                    }).ToList();
+
+                    int activeEmployee = empCount.Where(x => x.isActive).Count();
+
                     tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == companyId).FirstOrDefault();
                     tbl_Employee objEmployee = new tbl_Employee();
                     objEmployee.ProfilePicture = employeeVM.ProfilePicture;
@@ -54,12 +64,12 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     objEmployee.EmploymentCategory = employeeVM.EmploymentCategory;
                     objEmployee.MonthlySalaryPrice = employeeVM.MonthlySalaryPrice;
                     objEmployee.AdharCardNo = employeeVM.AdharCardNo;
-                    objEmployee.EmployeeCode = CommonMethod.getEmployeeCodeFormat(companyId, objCompany.CompanyName, empCount);
+                    objEmployee.EmployeeCode = CommonMethod.getEmployeeCodeFormat(companyId, objCompany.CompanyName, empCount.Count());
                     objEmployee.Address = employeeVM.Address;
                     objEmployee.City = employeeVM.City;
                     objEmployee.Pincode = employeeVM.Pincode;
                     objEmployee.State = employeeVM.State;
-                    objEmployee.IsActive = true;
+                    objEmployee.IsActive = activeEmployee >= noOfEmployee ? false : true; 
                     objEmployee.CreatedBy = employeeId;
                     objEmployee.CreatedDate = DateTime.UtcNow;
                     objEmployee.UpdatedBy = employeeId;
