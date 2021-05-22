@@ -85,7 +85,7 @@
           <Property Name="AttendanceDate" Type="datetime" Nullable="false" />
           <Property Name="DayType" Type="float" Nullable="false" />
           <Property Name="InDateTime" Type="datetime" Nullable="false" />
-          <Property Name="OutDateTime" Type="datetime" Nullable="false" />
+          <Property Name="OutDateTime" Type="datetime" />
           <Property Name="ExtraHours" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="TodayWorkDetail" Type="nvarchar" MaxLength="500" />
           <Property Name="TomorrowWorkDetail" Type="nvarchar" MaxLength="500" />
@@ -613,7 +613,7 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
             <PropertyRef Name="TestimonialId" />
           </Key>
           <Property Name="TestimonialId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="CompanyName" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="CompanyName" Type="nvarchar" MaxLength="200" />
           <Property Name="CompanyPersonName" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="FeedbackText" Type="nvarchar" MaxLength="1000" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
@@ -1172,20 +1172,6 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <Property Name="ModifiedBy" Type="Int64" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
         </EntityType>
-        <EntityType Name="tbl_Testimonial">
-          <Key>
-            <PropertyRef Name="TestimonialId" />
-          </Key>
-          <Property Name="TestimonialId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CompanyName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="CompanyPersonName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="FeedbackText" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int64" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-        </EntityType>
         <EntityContainer Name="AttendanceSystemEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="mst_AdminRole" EntityType="Self.mst_AdminRole" />
           <EntitySet Name="mst_CompanyType" EntityType="Self.mst_CompanyType" />
@@ -1211,7 +1197,6 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <EntitySet Name="tbl_Site" EntityType="Self.tbl_Site" />
           <EntitySet Name="tbl_SMSPackage" EntityType="Self.tbl_SMSPackage" />
           <EntitySet Name="tbl_Sponsor" EntityType="Self.tbl_Sponsor" />
-          <EntitySet Name="tbl_Testimonial" EntityType="Self.tbl_Testimonial" />
           <FunctionImport Name="sp_alterdiagram">
             <Parameter Name="diagramname" Mode="In" Type="String" />
             <Parameter Name="owner_id" Mode="In" Type="Int32" />
@@ -1249,6 +1234,7 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <EntitySet Name="tbl_AssignWorker" EntityType="AttendanceSystemModel.tbl_AssignWorker" />
           <EntitySet Name="tbl_ContactForm" EntityType="AttendanceSystemModel.tbl_ContactForm" />
           <EntitySet Name="tbl_WorkerAttendance" EntityType="AttendanceSystemModel.tbl_WorkerAttendance" />
+          <EntitySet Name="tbl_Testimonial" EntityType="AttendanceSystemModel.tbl_Testimonial" />
           <EntitySet Name="tbl_Attendance" EntityType="AttendanceSystemModel.tbl_Attendance" />
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
@@ -1395,6 +1381,20 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <Property Name="EveningAttendanceDate" Type="DateTime" Precision="3" />
           <Property Name="ExtraHours" Type="Decimal" Precision="18" Scale="2" />
         </EntityType>
+        <EntityType Name="tbl_Testimonial">
+          <Key>
+            <PropertyRef Name="TestimonialId" />
+          </Key>
+          <Property Name="TestimonialId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyPersonName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="FeedbackText" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int64" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+        </EntityType>
         <EntityType Name="tbl_Attendance">
           <Key>
             <PropertyRef Name="AttendanceId" />
@@ -1405,7 +1405,7 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <Property Name="AttendanceDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="DayType" Type="Double" Nullable="false" />
           <Property Name="InDateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="OutDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="OutDateTime" Type="DateTime" Precision="3" />
           <Property Name="ExtraHours" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
           <Property Name="TodayWorkDetail" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="TomorrowWorkDetail" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
@@ -1911,21 +1911,6 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tbl_Testimonial">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Testimonial">
-              <MappingFragment StoreEntitySet="tbl_Testimonial">
-                <ScalarProperty Name="TestimonialId" ColumnName="TestimonialId" />
-                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
-                <ScalarProperty Name="CompanyPersonName" ColumnName="CompanyPersonName" />
-                <ScalarProperty Name="FeedbackText" ColumnName="FeedbackText" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="AttendanceSystemModel.Store.sp_alterdiagram" />
           <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="AttendanceSystemModel.Store.sp_creatediagram" />
           <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="AttendanceSystemModel.Store.sp_dropdiagram" />
@@ -2083,6 +2068,21 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
                 <ScalarProperty Name="AttendanceDate" ColumnName="AttendanceDate" />
                 <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
                 <ScalarProperty Name="WorkerAttendanceId" ColumnName="WorkerAttendanceId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_Testimonial">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Testimonial">
+              <MappingFragment StoreEntitySet="tbl_Testimonial">
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="FeedbackText" ColumnName="FeedbackText" />
+                <ScalarProperty Name="CompanyPersonName" ColumnName="CompanyPersonName" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="TestimonialId" ColumnName="TestimonialId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

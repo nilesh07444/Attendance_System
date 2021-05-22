@@ -37,7 +37,7 @@ namespace AttendanceSystem.ViewModel
         [Display(Name = "In Date Time")]
         public DateTime InDateTime { get; set; }
         [Display(Name = "Out Date Time")]
-        public DateTime OutDateTime { get; set; }
+        public DateTime? OutDateTime { get; set; }
         public decimal? ExtraPerHourPrice { get; set; }
         public int EmploymentCategory { get; set; }
         public string EmploymentCategoryText { get; set; }

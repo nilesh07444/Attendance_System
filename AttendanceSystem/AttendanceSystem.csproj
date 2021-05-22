@@ -172,6 +172,7 @@
     <Compile Include="Areas\Admin\Controllers\PackageController.cs" />
     <Compile Include="Areas\Admin\Controllers\PaymentController.cs" />
     <Compile Include="Areas\Admin\Controllers\SettingController.cs" />
+    <Compile Include="Areas\Admin\Controllers\TestimonialController.cs" />
     <Compile Include="Areas\Client\ClientAreaRegistration.cs" />
     <Compile Include="Areas\Client\Controllers\AboutController.cs" />
     <Compile Include="Areas\Client\Controllers\CompanyRequestController.cs" />
@@ -348,6 +349,7 @@
     <Compile Include="ViewModel\PaymentVM.cs" />
     <Compile Include="ViewModel\OurClientVM.cs" />
     <Compile Include="ViewModel\SuperAdminSettingVM.cs" />
+    <Compile Include="ViewModel\TestimonialVM.cs" />
     <Compile Include="ViewModel\WebAPI\AssignWorkerRequestVM.cs" />
     <Compile Include="ViewModel\WebAPI\ChangePasswordVM.cs" />
     <Compile Include="ViewModel\WebAPI\DashboardCountVM.cs" />
@@ -1489,6 +1491,8 @@
     <Content Include="Areas\Admin\Views\Payment\DeletedPayment.cshtml" />
     <Content Include="Areas\Admin\Views\OurClient\Index.cshtml" />
     <Content Include="Areas\Admin\Views\OurClient\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\Testimonial\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Testimonial\Add.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
