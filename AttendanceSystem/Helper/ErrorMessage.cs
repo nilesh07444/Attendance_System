@@ -104,7 +104,7 @@
         public static string PleaseProvideDayType = "Please provide day type.";
         public static string PleaseProvideNoOfHoursWorked = "Please provide no of hours worked.";
 
-        public static string PackageAlreadyAssigned = "Package already assigned";
+        public static string PackageAlreadyAssigned = "PackageAlreadyAssigned";
         public static string Success = "success";
         public static string NotFound = "notfound";
         public static string Exception = "exception";
