@@ -53,13 +53,13 @@ namespace AttendanceSystem.Models
         public virtual DbSet<tbl_Sponsor> tbl_Sponsor { get; set; }
         public virtual DbSet<tbl_LoginHistory> tbl_LoginHistory { get; set; }
         public virtual DbSet<tbl_EmployeePayment> tbl_EmployeePayment { get; set; }
-        public virtual DbSet<tbl_Employee> tbl_Employee { get; set; }
         public virtual DbSet<tbl_SMSLog> tbl_SMSLog { get; set; }
         public virtual DbSet<tbl_AssignWorker> tbl_AssignWorker { get; set; }
         public virtual DbSet<tbl_ContactForm> tbl_ContactForm { get; set; }
         public virtual DbSet<tbl_WorkerAttendance> tbl_WorkerAttendance { get; set; }
         public virtual DbSet<tbl_Testimonial> tbl_Testimonial { get; set; }
         public virtual DbSet<tbl_Attendance> tbl_Attendance { get; set; }
+        public virtual DbSet<tbl_Employee> tbl_Employee { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

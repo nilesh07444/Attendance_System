@@ -74,7 +74,7 @@ namespace AttendanceSystem.ViewModel
         public string OTP { get; set; }
 
         [Display(Name = "Free Leave Per Month")]
-        public int NoOfFreeLeavePerMonth { get; set; }
+        public decimal NoOfFreeLeavePerMonth { get; set; }
 
         public string EmploymentCategoryText { get; set; }
     }

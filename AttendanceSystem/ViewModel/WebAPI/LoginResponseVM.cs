@@ -51,6 +51,6 @@ namespace AttendanceSystem.ViewModel.WebAPI.ViewModel
         public bool IsTrialMode { get; set; }
         public decimal? MonthlySalaryPrice { get; set; }
         public decimal? ExtraPerHourPrice { get; set; }
-        public int NoOfFreeLeavePerMonth { get; set; }
+        public decimal NoOfFreeLeavePerMonth { get; set; }
     }
 }
