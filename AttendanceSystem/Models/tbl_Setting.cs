@@ -30,5 +30,7 @@ namespace AttendanceSystem.Models
         public string SuperAdminMobileNo { get; set; }
         public string RazorPayKey { get; set; }
         public string RazorPaySecret { get; set; }
+        public string ServiceImage { get; set; }
+        public string HomeImage { get; set; }
     }
 }

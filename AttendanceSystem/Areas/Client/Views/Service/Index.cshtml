@@ -22,39 +22,10 @@
 </div>
 <!-- Hero End -->
 <!-- Services Area Start -->
-<section class="support-company-area section-bg fix" id="experience">
-    <img src="/Content/client-theme/assets/img/contrabook/our-services.png" class="img-fluid" alt="Responsive image">
-</section>
-<!-- Services Area End -->
-<!-- Our Clients Start -->
-@if (lstOurClients != null && lstOurClients.Count > 0)
+@if (ViewBag.ServiceImage != null)
 {
-    <div class="brand-area pb-140 section-padding30">
-        <div class="container">
-            <div class="row">
-                <div class="cl-xl-7 col-lg-8 col-md-10">
-                    <!-- Section Tittle -->
-                    <div class="section-tittle mb-70">
-                        <span>Our valuable clients</span>
-                        <h2>Our Clients</h2>
-                    </div>
-                </div>
-            </div>
-            <div class="brand-active brand-border pb-40">
-
-                @foreach (OurClientVM obj in lstOurClients)
-                {
-                    string clientLink = !string.IsNullOrEmpty(obj.SponsorLink) ? obj.SponsorLink : "javascript:void(0);";
-                    <div class="single-brand" title="@obj.SponsorName">
-                        <a href="@clientLink">
-                            <img src="@ErrorMessage.OurClientDirectoryPath/@obj.SponsorImage" alt="">
-                        </a>
-                    </div>
-                }
-
-
-            </div>
-        </div>
-    </div>
+    <section class="support-company-area section-bg fix" id="experience">
+        <img src="@ViewBag.ServiceImage" class="img-fluid" alt="Responsive image">
+    </section>
 }
-<!-- Our Clients End -->
+<!-- Services Area End -->

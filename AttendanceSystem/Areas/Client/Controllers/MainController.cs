@@ -13,10 +13,12 @@ namespace AttendanceSystem.Areas.Client.Controllers
     {
         private readonly AttendanceSystemEntities _db;
         public string HomeDirectoryPath = "";
+        public string ServiceDirectoryPath = "";
         public MainController()
         {
             _db = new AttendanceSystemEntities();
             HomeDirectoryPath = ErrorMessage.HomeDirectoryPath;
+            ServiceDirectoryPath = ErrorMessage.ServiceDirectoryPath;
         }
         public ActionResult Index()
         {
@@ -29,9 +31,11 @@ namespace AttendanceSystem.Areas.Client.Controllers
             try
             {
 
+                tbl_Setting objGensetting = _db.tbl_Setting.FirstOrDefault();
+
                 //
                 //string ToEmail = "prajapati.nileshbhai@gmail.com";
-                //tbl_Setting objGensetting = _db.tbl_Setting.FirstOrDefault();
+
                 //string FromEmail = objGensetting.SMTPFromEmailId;
                 //string Subject = "Your Registration is Successful - Contract Book";
                 //string bodyhtml = "Following are the detail:<br/>";
@@ -105,9 +109,16 @@ namespace AttendanceSystem.Areas.Client.Controllers
                                        IsActive = t.IsActive,
                                    }).OrderByDescending(x => x.TestimonialId).ToList();
 
-                if (lstHomeImages != null)
+                if (objGensetting != null)
                 {
-                    ViewBag.HomeFirstImage = HomeDirectoryPath + lstHomeImages.FirstOrDefault().HomeImageName;
+                    if (!string.IsNullOrEmpty(objGensetting.HomeImage))
+                    {
+                        ViewBag.HomeFirstImage = HomeDirectoryPath + objGensetting.HomeImage;
+                    }
+                    if (!string.IsNullOrEmpty(objGensetting.ServiceImage))
+                    {
+                        ViewBag.ServiceImage = ServiceDirectoryPath + objGensetting.ServiceImage;
+                    }
                 }
 
                 ViewData["lstHomeImages"] = lstHomeImages;

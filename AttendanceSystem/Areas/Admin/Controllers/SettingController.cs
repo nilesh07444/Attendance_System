@@ -3,7 +3,9 @@ using AttendanceSystem.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using static AttendanceSystem.ViewModel.AccountModels;
 
@@ -13,10 +15,14 @@ namespace AttendanceSystem.Areas.Admin.Controllers
     public class SettingController : Controller
     {
         private readonly AttendanceSystemEntities _db;
+        public string serviceImageDirectoryPath = "";
+        public string homeImageDirectoryPath = "";
         string psSult = ConfigurationManager.AppSettings["PasswordSult"].ToString();
         public SettingController()
         {
             _db = new AttendanceSystemEntities();
+            serviceImageDirectoryPath = ErrorMessage.ServiceDirectoryPath;
+            homeImageDirectoryPath = ErrorMessage.HomeDirectoryPath;
         }
         public ActionResult Index()
         {
@@ -50,12 +56,14 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objSASetting.RazorPayKey = setting.RazorPayKey;
                         objSASetting.RazorPaySecret = setting.RazorPaySecret;
 
+                        objSASetting.ServiceImage = setting.ServiceImage;
+                        objSASetting.HomeImage = setting.HomeImage;
+
                         ViewData["objSASetting"] = objSASetting;
                     }
                     else
                     {
                         // Company Admin Setting
-
 
                         ViewData["objCASetting"] = objCASetting;
                     }
@@ -84,7 +92,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                         AmountPerEmp = (decimal)s.AmountPerEmp,
                                                         AccountPackageBuyGSTPer = (decimal)s.AccountPackageBuyGSTPer,
                                                         SMSPackageBuyGSTPer = (decimal)s.SMSPackageBuyGSTPer,
-                                                        EmployeeBuyGSTPer = (decimal)s.EmployeeBuyGSTPer,                                                                                                                
+                                                        EmployeeBuyGSTPer = (decimal)s.EmployeeBuyGSTPer,
                                                         SMTPHost = s.SMTPHost,
                                                         SMTPPort = s.SMTPPort,
                                                         SMTPEmail = s.SMTPEmail,
@@ -94,10 +102,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                                                         SuperAdminEmailId = s.SuperAdminEmailId,
                                                         SuperAdminMobileNo = s.SuperAdminMobileNo,
-                                                        
+
                                                         RazorPayKey = s.RazorPayKey,
                                                         RazorPaySecret = s.RazorPaySecret,
-                                                        
+                                                        HomeImage = s.HomeImage,
+                                                        ServiceImage = s.ServiceImage
                                                     }).FirstOrDefault();
 
                 return View("~/Areas/Admin/Views/Setting/EditSettingSA.cshtml", objSASetting);
@@ -150,7 +159,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public ActionResult EditSuperAdminSetting(SuperAdminSettingVM settingVM)
+        public ActionResult EditSuperAdminSetting(SuperAdminSettingVM settingVM, HttpPostedFileBase ServiceImageFile, HttpPostedFileBase HomeImageFile)
         {
             try
             {
@@ -159,7 +168,80 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 {
                     long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
 
+                    // Get Setting record
                     tbl_Setting objSetting = _db.tbl_Setting.FirstOrDefault();
+
+                    #region Upload Service Image
+
+                    string servicefileName = objSetting.ServiceImage;
+                    string servicePath = Server.MapPath(serviceImageDirectoryPath);
+
+                    bool folderExists = Directory.Exists(servicePath);
+                    if (!folderExists)
+                        Directory.CreateDirectory(servicePath);
+
+                    if (ServiceImageFile != null)
+                    {
+                        // Image file validation
+                        string ext = Path.GetExtension(ServiceImageFile.FileName);
+                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
+                        {
+                            ModelState.AddModelError("ServiceImageFile", ErrorMessage.SelectOnlyImage);
+                            return View(settingVM);
+                        }
+
+                        // Save file in folder
+                        servicefileName = Guid.NewGuid() + "-" + Path.GetFileName(ServiceImageFile.FileName);
+                        ServiceImageFile.SaveAs(servicePath + servicefileName);
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(objSetting.ServiceImage))
+                        {
+                            ModelState.AddModelError("ServiceImageFile", ErrorMessage.ImageRequired);
+                            return View(settingVM);
+                        }
+                    }
+
+                    #endregion
+
+                    #region Upload Home Image
+
+                    string homefileName = objSetting.HomeImage;
+                    string homePath = Server.MapPath(homeImageDirectoryPath);
+
+                    bool homefolderExists = Directory.Exists(homePath);
+                    if (!homefolderExists)
+                        Directory.CreateDirectory(homePath);
+
+                    if (HomeImageFile != null)
+                    {
+                        // Image file validation
+                        string ext = Path.GetExtension(HomeImageFile.FileName);
+                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
+                        {
+                            ModelState.AddModelError("HomeImageFile", ErrorMessage.SelectOnlyImage);
+                            return View(settingVM);
+                        }
+
+                        // Save file in folder
+                        homefileName = Guid.NewGuid() + "-" + Path.GetFileName(HomeImageFile.FileName);
+                        HomeImageFile.SaveAs(homePath + homefileName);
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(objSetting.HomeImage))
+                        {
+                            ModelState.AddModelError("HomeImageFile", ErrorMessage.ImageRequired);
+                            return View(settingVM);
+                        }
+                    }
+
+                    #endregion
+
+
+                    // Save data
+
                     objSetting.AccountFreeAccessDays = settingVM.AccountFreeAccessDays;
                     objSetting.AmountPerEmp = settingVM.AmountPerEmp;
                     objSetting.AccountPackageBuyGSTPer = settingVM.AccountPackageBuyGSTPer;
@@ -176,6 +258,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     objSetting.SuperAdminMobileNo = settingVM.SuperAdminMobileNo;
                     objSetting.RazorPayKey = settingVM.RazorPayKey;
                     objSetting.RazorPaySecret = settingVM.RazorPaySecret;
+                    objSetting.ServiceImage = servicefileName;
+                    objSetting.HomeImage = homefileName;
 
                     _db.SaveChanges();
 

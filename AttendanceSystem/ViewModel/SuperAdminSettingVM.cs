@@ -40,5 +40,14 @@ namespace AttendanceSystem
         public string RazorPayKey { get; set; }
         [Required, Display(Name = "RazorPay Secret")]
         public string RazorPaySecret { get; set; }
+
+        [Display(Name = "Service Image")]
+        public HttpPostedFileBase ServiceImageFile { get; set; }
+
+        [Display(Name = "Home Image")]
+        public HttpPostedFileBase HomeImageFile { get; set; }
+
+        public string HomeImage { get; set; }
+        public string ServiceImage { get; set; }
     }
 }

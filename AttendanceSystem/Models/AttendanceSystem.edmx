@@ -541,6 +541,8 @@
           <Property Name="SuperAdminMobileNo" Type="nvarchar" MaxLength="15" />
           <Property Name="RazorPayKey" Type="nvarchar" MaxLength="100" />
           <Property Name="RazorPaySecret" Type="nvarchar" MaxLength="100" />
+          <Property Name="ServiceImage" Type="nvarchar" MaxLength="100" />
+          <Property Name="HomeImage" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="tbl_Site">
           <Key>
@@ -1121,6 +1123,8 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <Property Name="SuperAdminMobileNo" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
           <Property Name="RazorPayKey" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="RazorPaySecret" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ServiceImage" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="HomeImage" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tbl_Site">
           <Key>
@@ -1839,6 +1843,8 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <EntitySetMapping Name="tbl_Setting">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Setting">
               <MappingFragment StoreEntitySet="tbl_Setting">
+                <ScalarProperty Name="HomeImage" ColumnName="HomeImage" />
+                <ScalarProperty Name="ServiceImage" ColumnName="ServiceImage" />
                 <ScalarProperty Name="RazorPaySecret" ColumnName="RazorPaySecret" />
                 <ScalarProperty Name="RazorPayKey" ColumnName="RazorPayKey" />
                 <ScalarProperty Name="SuperAdminMobileNo" ColumnName="SuperAdminMobileNo" />
