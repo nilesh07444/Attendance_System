@@ -107,7 +107,9 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 List<LeaveVM> leaveList = (from lv in _db.tbl_Leave
                                            where !lv.IsDeleted
                                            && lv.UserId == employeeId
-                                           && lv.StartDate >= leaveFilterVM.StartDate && lv.StartDate <= leaveFilterVM.EndDate
+                                           && lv.StartDate.Month >= leaveFilterVM.StartMonth
+                                           && lv.StartDate.Month <= leaveFilterVM.EndMonth
+                                           && lv.StartDate.Year == leaveFilterVM.Year
                                            && (leaveFilterVM.LeaveStatus.HasValue ? lv.LeaveStatus == leaveFilterVM.LeaveStatus.Value : true)
                                            select new LeaveVM
                                            {

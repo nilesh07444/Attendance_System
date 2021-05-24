@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="143924d791744324899ea6aecada5bec" Name="Diagram1">
+      <Diagram DiagramId="143924d791744324899ea6aecada5bec" Name="Diagram1" ZoomLevel="86">
         <EntityTypeShape EntityType="AttendanceSystemModel.mst_AdminRole" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AttendanceSystemModel.mst_CompanyType" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AttendanceSystemModel.sysdiagram" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
@@ -30,7 +30,6 @@
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Sponsor" Width="1.5" PointX="16.75" PointY="5.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_LoginHistory" Width="1.5" PointX="17.375" PointY="13.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_EmployeePayment" Width="1.5" PointX="13.375" PointY="17.75" />
-        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_SMSLog" Width="1.5" PointX="15.375" PointY="17.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_AssignWorker" Width="1.5" PointX="17.375" PointY="17.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_ContactForm" Width="1.5" PointX="19.375" PointY="0.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_WorkerAttendance" Width="1.5" PointX="0.75" PointY="19.75" />
@@ -38,6 +37,7 @@
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Attendance" Width="1.5" PointX="19.375" PointY="4.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Employee" Width="1.5" PointX="19.375" PointY="11.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_CompanySMSPackRenew" Width="1.5" PointX="3.375" PointY="14.75" />
+        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_SMSLog" Width="1.5" PointX="21.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

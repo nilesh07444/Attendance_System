@@ -43,19 +43,18 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     response.AddError(ErrorMessage.MonthShouldBeFrom1To12);
                 }
 
-                if (EmployeeRatingFilterVM.StartYear > DateTime.Now.Year || EmployeeRatingFilterVM.EndYear > DateTime.Now.Year)
+                if (EmployeeRatingFilterVM.StartMonth > EmployeeRatingFilterVM.EndMonth)
                 {
                     response.IsError = true;
-                    response.AddError(ErrorMessage.FutureYearNotAllowed);
+                    response.AddError(ErrorMessage.PleaseSelectValidMonth);
                 }
                 List<EmployeeRatingVM> EmployeeRatingList = (from er in _db.tbl_EmployeeRating
                                                              join emp in _db.tbl_Employee on er.EmployeeId equals emp.EmployeeId
                                                              where !emp.IsDeleted &&
                                                             (employeeRole == (int)AdminRoles.CompanyAdmin ? emp.CompanyId == companyId : emp.EmployeeId == employeeId)
                                                              && er.RateMonth >= EmployeeRatingFilterVM.StartMonth
-                                                             && er.RateYear >= EmployeeRatingFilterVM.StartYear
+                                                             && er.RateYear == EmployeeRatingFilterVM.Year
                                                              && er.RateMonth <= EmployeeRatingFilterVM.EndMonth
-                                                             && er.RateYear <= EmployeeRatingFilterVM.EndYear
                                                              select new EmployeeRatingVM
                                                              {
 
@@ -139,9 +138,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                              where !emp.IsDeleted &&
                                                             (employeeRole == (int)AdminRoles.CompanyAdmin ? emp.CompanyId == companyId : emp.EmployeeId == employeeId)
                                                              && er.RateMonth >= EmployeeRatingFilterVM.StartMonth
-                                                             && er.RateYear >= EmployeeRatingFilterVM.StartYear
+                                                             && er.RateYear == EmployeeRatingFilterVM.Year
                                                              && er.RateMonth <= EmployeeRatingFilterVM.EndMonth
-                                                             && er.RateYear <= EmployeeRatingFilterVM.EndYear
                                                              select new EmployeeRatingVM
                                                              {
 

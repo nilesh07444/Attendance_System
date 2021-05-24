@@ -116,5 +116,6 @@
         public static string InValidWorkerAttendanceType = "Invalid worker attendance type.";
         public static string CanNotTakeEveningAttendanceWorkerNotPresentOnAfterNoon = "Can not take evening attendance worker not present on afternoon.";
         public static string WorketNotAssignedToday = "Worker not assigned today.";
+        public static string PleaseSelectValidMonth = "Please select valid month";
     }
 }

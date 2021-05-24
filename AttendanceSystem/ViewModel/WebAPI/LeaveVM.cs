@@ -22,11 +22,13 @@ namespace AttendanceSystem.ViewModel.WebAPI
     {
         public LeaveFilterVM()
         {
-            StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-            EndDate = StartDate.AddMonths(1).AddDays(-1);
+            StartMonth = DateTime.Now.Month;
+            EndMonth = DateTime.Now.Month;
+            Year = DateTime.Now.Year;
         }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public int StartMonth { get; set; }
+        public int EndMonth { get; set; }
+        public int Year { get; set; }
         public int? LeaveStatus { get; set; }
     }
 }

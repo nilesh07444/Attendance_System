@@ -368,7 +368,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             try
             {
                 DateTime today = DateTime.UtcNow.Date;
-                DateTime defaultTime = DateTime.Parse("00:00");
+               
                 #region Validation
 
                 if (_db.tbl_Leave.Any(x => x.UserId == employeeId && x.StartDate <= today && x.EndDate >= today && x.LeaveStatus != (int)LeaveStatus.Reject))
@@ -377,7 +377,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     response.AddError(ErrorMessage.YouAreOnLeaveForTheday);
                 }
 
-                if (_db.tbl_Attendance.Any(x => x.UserId == employeeId && x.AttendanceDate == today && x.InDateTime != null && x.OutDateTime == defaultTime))
+                if (_db.tbl_Attendance.Any(x => x.UserId == employeeId && x.AttendanceDate == today && x.InDateTime != null && x.OutDateTime == null))
                 {
                     response.IsError = true;
                     response.AddError(ErrorMessage.AlreadyInForTheDay);
@@ -425,11 +425,10 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             try
             {
                 DateTime today = DateTime.UtcNow.Date;
-                DateTime defaultTime = DateTime.Parse("00:00");
                 tbl_Employee employeeObj = _db.tbl_Employee.FirstOrDefault(x => x.EmployeeId == employeeId);
 
                 #region Validation
-                if (!_db.tbl_Attendance.Any(x => x.UserId == employeeId && x.AttendanceDate == today && x.InDateTime != null && x.OutDateTime == defaultTime))
+                if (!_db.tbl_Attendance.Any(x => x.UserId == employeeId && x.AttendanceDate == today && x.InDateTime != null && x.OutDateTime == null))
                 {
                     response.IsError = true;
                     response.AddError(ErrorMessage.AlreadyOutForTheDay);
@@ -458,7 +457,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 #endregion Validation
                 if (!response.IsError)
                 {
-                    tbl_Attendance attendanceObject = _db.tbl_Attendance.FirstOrDefault(x => x.UserId == employeeId && x.AttendanceDate == today && x.InDateTime != null && x.OutDateTime == defaultTime);
+                    tbl_Attendance attendanceObject = _db.tbl_Attendance.FirstOrDefault(x => x.UserId == employeeId && x.AttendanceDate == today && x.InDateTime != null && x.OutDateTime == null);
                     attendanceObject.OutLocationFrom = outTimeRequestVM.OutLocationFrom;
                     attendanceObject.Status = (int)AttendanceStatus.Pending;
                     attendanceObject.OutDateTime = DateTime.UtcNow;
@@ -508,8 +507,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             try
             {
                 DateTime today = DateTime.UtcNow.Date;
-                DateTime defaultTime = DateTime.Parse("00:00");
-                bool isPresent = _db.tbl_Attendance.Any(x => x.AttendanceDate == today && x.InDateTime != null && x.OutDateTime == defaultTime && x.UserId == employeeId);
+                bool isPresent = _db.tbl_Attendance.Any(x => x.AttendanceDate == today && x.InDateTime != null && x.OutDateTime == null && x.UserId == employeeId);
                 response.Data = isPresent;
             }
             catch (Exception ex)
