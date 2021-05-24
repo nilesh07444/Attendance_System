@@ -49,7 +49,7 @@
                             </div>
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.Prefix, htmlAttributes: new { @class = "" })
-                                @Html.DropDownListFor(model => model.Prefix, new SelectList(lstPrefix, "Value", "Text"), "- Select -", new { @class = "form-control", style = "width: 100%" })
+                                @Html.DropDownListFor(model => model.Prefix, new SelectList(lstPrefix, "Value", "Text"), "- Select -", new { @class = "form-control required", style = "width: 100%" })
                                 @Html.ValidationMessageFor(model => model.Prefix, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -68,7 +68,7 @@
                         <div class="row">
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.Email, new { @type = "email", @class = "form-control required", @placeholder = "Enter Email" })
+                                @Html.TextBoxFor(model => model.Email, new { @type = "email", @class = "form-control", @placeholder = "Enter Email" })
                                 @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                             </div>
                             <div class="form-group col-6">
@@ -85,7 +85,7 @@
                             </div>
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.Designation, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.Designation, new { @type = "text", @class = "form-control", @placeholder = "Enter Designation" })
+                                @Html.TextBoxFor(model => model.Designation, new { @type = "text", @class = "form-control required", @placeholder = "Enter Designation" })
                                 @Html.ValidationMessageFor(model => model.Designation, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -104,7 +104,7 @@
                         <div class="row">
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.Pincode, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.Pincode, new { @type = "text", @class = "form-control required", @placeholder = "Enter Pincode", @maxlength = "250" })
+                                @Html.TextBoxFor(model => model.Pincode, new { @type = "text", @class = "form-control required", @placeholder = "Enter Pincode", @maxlength = "6" })
                                 @Html.ValidationMessageFor(model => model.Pincode, "", new { @class = "text-danger" })
                             </div>
                             <div class="form-group col-6">
@@ -157,27 +157,27 @@
                                 @Html.ValidationMessageFor(model => model.EmploymentCategory, "", new { @class = "text-danger" })
                             </div>
 
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.PerCategoryPrice, htmlAttributes: new { @class = "" })
+                            <div class="form-group col-6" id="dvPerCatPrice">
+                                @Html.LabelFor(model => model.PerCategoryPrice, htmlAttributes: new { @class = "clsPerCategoryPrice" })
                                 @Html.TextBoxFor(model => model.PerCategoryPrice, new { @type = "text", @class = "form-control required", @placeholder = "Enter Per Category Price", @maxlength = "5", @min = "1" })
                                 @Html.ValidationMessageFor(model => model.PerCategoryPrice, "", new { @class = "text-danger" })
                             </div>
 
                         </div>
-                        <div class="row">
-
-                            <div class="form-group col-6" id="dvMonthlySal">
+                        <div class="row" id="dvMonthlySal">
+                            <div class="form-group col-6">
                                 @Html.LabelFor(model => model.MonthlySalaryPrice, htmlAttributes: new { @class = "" })
                                 @Html.TextBoxFor(model => model.MonthlySalaryPrice, new { @type = "text", @class = "form-control", @placeholder = "Enter Monthly salary Price", @maxlength = "5", @min = "1" })
                                 @Html.ValidationMessageFor(model => model.MonthlySalaryPrice, "", new { @class = "text-danger" })
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.ExtraPerHourPrice, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.ExtraPerHourPrice, new { @type = "text", @class = "form-control required", @placeholder = "Enter Extra Per Hour Price", @maxlength = "5", @min = "1" })
+                                @Html.TextBoxFor(model => model.ExtraPerHourPrice, new { @type = "text", @class = "form-control", @placeholder = "Enter Extra Per Hour Price", @maxlength = "5", @min = "1" })
                                 @Html.ValidationMessageFor(model => model.ExtraPerHourPrice, "", new { @class = "text-danger" })
                             </div>
+                        </div>
+                        <div class="row">
+
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.ProfileImageFile, htmlAttributes: new { @class = "" })
                                 @Html.TextBoxFor(model => model.ProfileImageFile, new { type = "file", @class = "form-control" })
@@ -272,10 +272,28 @@
             var EmploymentCategory = $('#EmploymentCategory').val();
             if (EmploymentCategory == "3") {
                 $("#dvMonthlySal").show();
-                $("#MonthlySalaryPrice").attr("required");
+                $("#dvPerCatPrice").hide();
+                $("#MonthlySalaryPrice").attr("required", true);
+                $("#ExtraPerHourPrice").attr("required", true);
+                $("#MonthlySalaryPrice").Attr("min", 1);
+                $("#ExtraPerHourPrice").Attr("min", 1);
             } else {
                 $("#dvMonthlySal").hide();
-                $("#dvMonthlySal").removeAttr("required");
+                $("#dvPerCatPrice").show();
+                $("#MonthlySalaryPrice").removeAttr("required");
+                $("#MonthlySalaryPrice").removeAttr("min");
+                $("#ExtraPerHourPrice").removeAttr("min");
+                $("#ExtraPerHourPrice").removeAttr("required");
+            }
+
+            if (EmploymentCategory == "1") {
+                $(".clsPerCategoryPrice").html("Per Day Price.")
+            }
+            else if (EmploymentCategory == "2") {
+                $(".clsPerCategoryPrice").html("Per Hour Price.")
+            }
+            else if (EmploymentCategory == "4") {
+                $(".clsPerCategoryPrice").html("Per Unit Price.")
             }
         });
 

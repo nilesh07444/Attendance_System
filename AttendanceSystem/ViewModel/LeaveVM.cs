@@ -31,14 +31,17 @@ namespace AttendanceSystem.ViewModel
     {
         public LeaveFilterVM()
         {
-            StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-            EndDate = StartDate.AddMonths(1).AddDays(-1);
+            StartMonth = DateTime.Now.Month;
+            EndMonth = DateTime.Now.Month;
+            Year = DateTime.Now.Year;
         }
         public int? UserRole { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public int StartMonth { get; set; }
+        public int EndMonth { get; set; }
+        public int Year { get; set; }
         public int? LeaveStatus { get; set; }
         public List<LeaveVM> LeaveList { get; set; }
         public List<SelectListItem> UserRoleList { get; set; }
+        public List<SelectListItem> CalenderMonth { get; set; }
     }
 }

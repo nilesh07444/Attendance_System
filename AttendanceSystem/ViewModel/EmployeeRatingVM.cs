@@ -33,15 +33,18 @@ namespace AttendanceSystem.ViewModel
     {
         public EmployeeRatingFilterVM()
         {
-            Month = DateTime.Now.Month;
+            StartMonth = DateTime.Now.Month;
+            EndMonth = DateTime.Now.Month;
             Year = DateTime.Now.Year;
         }
-        public int? Month { get; set; }
-        public int? Year { get; set; }
+        public int StartMonth { get; set; }
+        public int EndMonth { get; set; }
+        public int Year { get; set; }
         public int? UserRole { get; set; }
         public string EmployeeCode { get; set; }
         public List<SelectListItem> UserRoleList { get; set; }
         public List<EmployeeRatingVM> EmployeeRatingList { get; set; }
+        public List<SelectListItem> CalenderMonth { get; set; }
     }
 
     public class CommonEmployeeRatingFilterVM

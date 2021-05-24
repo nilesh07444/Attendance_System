@@ -247,6 +247,7 @@
           <Property Name="SMSPackageId" Type="bigint" Nullable="false" />
           <Property Name="SMSPackageName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="RenewDate" Type="datetime" Nullable="false" />
+          <Property Name="PackageAmount" Type="numeric" Precision="18" Scale="2" Nullable="false" />
           <Property Name="AccessDays" Type="int" Nullable="false" />
           <Property Name="PackageExpiryDate" Type="datetime" Nullable="false" />
           <Property Name="NoOfSMS" Type="int" />
@@ -907,24 +908,6 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <Property Name="ModifiedBy" Type="Int64" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
         </EntityType>
-        <EntityType Name="tbl_CompanySMSPackRenew">
-          <Key>
-            <PropertyRef Name="CompanySMSPackRenewId" />
-          </Key>
-          <Property Name="CompanySMSPackRenewId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CompanyId" Type="Int64" Nullable="false" />
-          <Property Name="SMSPackageId" Type="Int64" Nullable="false" />
-          <Property Name="SMSPackageName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="RenewDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="AccessDays" Type="Int32" Nullable="false" />
-          <Property Name="PackageExpiryDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int64" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="NoOfSMS" Type="Int32" />
-          <Property Name="RemainingSMS" Type="Int32" />
-        </EntityType>
         <EntityType Name="tbl_DynamicContent">
           <Key>
             <PropertyRef Name="DynamicContentId" />
@@ -1185,7 +1168,6 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <EntitySet Name="tbl_CompanyFollowup" EntityType="Self.tbl_CompanyFollowup" />
           <EntitySet Name="tbl_CompanyRenewPayment" EntityType="Self.tbl_CompanyRenewPayment" />
           <EntitySet Name="tbl_CompanyRequest" EntityType="Self.tbl_CompanyRequest" />
-          <EntitySet Name="tbl_CompanySMSPackRenew" EntityType="Self.tbl_CompanySMSPackRenew" />
           <EntitySet Name="tbl_DynamicContent" EntityType="Self.tbl_DynamicContent" />
           <EntitySet Name="tbl_EmployeeBuyTransaction" EntityType="Self.tbl_EmployeeBuyTransaction" />
           <EntitySet Name="tbl_EmployeeFingerprint" EntityType="Self.tbl_EmployeeFingerprint" />
@@ -1240,6 +1222,7 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <EntitySet Name="tbl_Testimonial" EntityType="AttendanceSystemModel.tbl_Testimonial" />
           <EntitySet Name="tbl_Attendance" EntityType="AttendanceSystemModel.tbl_Attendance" />
           <EntitySet Name="tbl_Employee" EntityType="AttendanceSystemModel.tbl_Employee" />
+          <EntitySet Name="tbl_CompanySMSPackRenew" EntityType="AttendanceSystemModel.tbl_CompanySMSPackRenew" />
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -1430,6 +1413,25 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedBy" Type="Int64" />
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="tbl_CompanySMSPackRenew">
+          <Key>
+            <PropertyRef Name="CompanySMSPackRenewId" />
+          </Key>
+          <Property Name="CompanySMSPackRenewId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyId" Type="Int64" Nullable="false" />
+          <Property Name="SMSPackageId" Type="Int64" Nullable="false" />
+          <Property Name="SMSPackageName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RenewDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PackageAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="AccessDays" Type="Int32" Nullable="false" />
+          <Property Name="PackageExpiryDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="NoOfSMS" Type="Int32" />
+          <Property Name="RemainingSMS" Type="Int32" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int64" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1625,25 +1627,6 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="FreeAccessDays" ColumnName="FreeAccessDays" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbl_CompanySMSPackRenew">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_CompanySMSPackRenew">
-              <MappingFragment StoreEntitySet="tbl_CompanySMSPackRenew">
-                <ScalarProperty Name="RemainingSMS" ColumnName="RemainingSMS" />
-                <ScalarProperty Name="NoOfSMS" ColumnName="NoOfSMS" />
-                <ScalarProperty Name="CompanySMSPackRenewId" ColumnName="CompanySMSPackRenewId" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="SMSPackageId" ColumnName="SMSPackageId" />
-                <ScalarProperty Name="SMSPackageName" ColumnName="SMSPackageName" />
-                <ScalarProperty Name="RenewDate" ColumnName="RenewDate" />
-                <ScalarProperty Name="AccessDays" ColumnName="AccessDays" />
-                <ScalarProperty Name="PackageExpiryDate" ColumnName="PackageExpiryDate" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
@@ -2122,6 +2105,26 @@ warning 6002: The table/view 'db_a72d09_testattendance.dbo.tbl_SMSLog' does not 
                 <ScalarProperty Name="AdminRoleId" ColumnName="AdminRoleId" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_CompanySMSPackRenew">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_CompanySMSPackRenew">
+              <MappingFragment StoreEntitySet="tbl_CompanySMSPackRenew">
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="RemainingSMS" ColumnName="RemainingSMS" />
+                <ScalarProperty Name="NoOfSMS" ColumnName="NoOfSMS" />
+                <ScalarProperty Name="PackageExpiryDate" ColumnName="PackageExpiryDate" />
+                <ScalarProperty Name="AccessDays" ColumnName="AccessDays" />
+                <ScalarProperty Name="PackageAmount" ColumnName="PackageAmount" />
+                <ScalarProperty Name="RenewDate" ColumnName="RenewDate" />
+                <ScalarProperty Name="SMSPackageName" ColumnName="SMSPackageName" />
+                <ScalarProperty Name="SMSPackageId" ColumnName="SMSPackageId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="CompanySMSPackRenewId" ColumnName="CompanySMSPackRenewId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

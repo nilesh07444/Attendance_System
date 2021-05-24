@@ -118,7 +118,23 @@
                             </div>
                             <div class="row">
                                 <div class="form-group col-6">
-                                    @Html.LabelFor(model => model.PerCategoryPrice, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                    @if (Model.EmploymentCategory == (int)EmploymentCategory.DailyBased)
+                                    {
+                                        <label class="col-xl-3 col-md-4" for="PerCategoryPrice">Per Day Price</label>
+                                    }
+                                    else if (Model.EmploymentCategory == (int)EmploymentCategory.HourlyBased)
+                                    {
+                                        <label class="col-xl-3 col-md-4" for="PerCategoryPrice">Per Hour Price</label>
+                                    }
+                                    else if (Model.EmploymentCategory == (int)EmploymentCategory.UnitBased)
+                                    {
+                                        <label class="col-xl-3 col-md-4" for="PerCategoryPrice">Per Unit Price</label>
+                                    }
+                                    else
+                                    {
+                                        @Html.LabelFor(model => model.PerCategoryPrice, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                    }
+
                                     @Model.PerCategoryPrice
                                 </div>
                                 <div class="form-group col-6">

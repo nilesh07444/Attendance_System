@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace AttendanceSystem.Areas.Admin.Controllers
 {
+    [PageAccess]
     public class LeaveController : Controller
     {
         // GET: Admin/Leave
@@ -20,7 +21,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             companyId = clsAdminSession.CompanyId;
             LoggedInUserId = clsAdminSession.UserID;
         }
-        public ActionResult Index(int? userRole = null, int? leaveStatus = null, DateTime? startDate = null, DateTime? endDate = null)
+        public ActionResult Index(int? userRole = null, int? leaveStatus = null, int? startMonth = null, int? endMonth = null, int? year = null)
         {
             LeaveFilterVM leaveFIlterVM = new LeaveFilterVM();
             try
@@ -30,10 +31,15 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 if (leaveStatus.HasValue)
                     leaveFIlterVM.LeaveStatus = leaveStatus.Value;
 
-                if (startDate.HasValue && endDate.HasValue)
+                if (startMonth.HasValue && endMonth.HasValue)
                 {
-                    leaveFIlterVM.StartDate = startDate.Value;
-                    leaveFIlterVM.EndDate = endDate.Value;
+                    leaveFIlterVM.StartMonth = startMonth.Value;
+                    leaveFIlterVM.EndMonth = endMonth.Value;
+                }
+
+                if (year.HasValue)
+                {
+                    leaveFIlterVM.Year = year.Value;
                 }
 
 
@@ -43,7 +49,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                            join cm in _db.tbl_Company on ur.CompanyId equals cm.CompanyId
                                            where !lv.IsDeleted
                                            && cm.CompanyId == companyId
-                                           && lv.StartDate >= leaveFIlterVM.StartDate && lv.StartDate <= leaveFIlterVM.EndDate
+                                           && lv.StartDate.Month >= leaveFIlterVM.StartMonth && lv.StartDate.Month <= leaveFIlterVM.EndMonth
+                                           && lv.StartDate.Year == leaveFIlterVM.Year
                                            && (leaveFIlterVM.LeaveStatus.HasValue ? lv.LeaveStatus == leaveFIlterVM.LeaveStatus.Value : true)
                                            && (leaveFIlterVM.UserRole.HasValue ? ur.AdminRoleId == leaveFIlterVM.UserRole.Value : true)
 
@@ -64,6 +71,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     x.LeaveStatusText = CommonMethod.GetEnumDescription((LeaveStatus)x.LeaveStatus);
                 });
                 leaveFIlterVM.UserRoleList = GetUserRoleList();
+                leaveFIlterVM.CalenderMonth = CommonMethod.GetCalenderMonthList();
             }
             catch (Exception ex)
             {
@@ -165,7 +173,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objleave.ModifiedDate = DateTime.UtcNow;
                         _db.SaveChanges();
                     }
-                     
+
                 }
                 else
                 {

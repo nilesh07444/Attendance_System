@@ -12,6 +12,7 @@ using System.Web.Mvc;
 
 namespace AttendanceSystem.Areas.Admin.Controllers
 {
+    [PageAccess]
     public class EmployeeController : Controller
     {
         AttendanceSystemEntities _db;
@@ -281,6 +282,13 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployee.UpdatedBy = loggedInUserId;
                         objEmployee.UpdatedDate = DateTime.UtcNow;
                         _db.tbl_Employee.Add(objEmployee);
+
+                        if (enviornment != "Development")
+                        {
+                            string msg = "Your credentials for Login are UserId - " + objEmployee.EmployeeCode + ", Password - " + defaultPassword;
+                            string response = CommonMethod.SuperAdminSendSMS(msg, objEmployee.MobileNo, loggedInUserId);
+                        }
+
                     }
                     _db.SaveChanges();
                 }

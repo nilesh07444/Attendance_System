@@ -25,14 +25,20 @@
                         <div class="row">
                             <div class="col-sm-2">
                                 <div class="form-group">
-                                    <label>Start Date</label>
-                                    @Html.TextBoxFor(model => model.StartDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Start Date" })
+                                    <label>Start Month</label>
+                                    @Html.DropDownListFor(model => model.StartMonth, new SelectList(Model.CalenderMonth, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8 required", style = "" })
                                 </div>
                             </div>
                             <div class="col-sm-2">
                                 <div class="form-group">
-                                    <label>End Date</label>
-                                    @Html.TextBoxFor(model => model.EndDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Start Date" })
+                                    <label>End Month</label>
+                                    @Html.DropDownListFor(model => model.EndMonth, new SelectList(Model.CalenderMonth, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8 required", style = "" })
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label>Year</label>
+                                    @Html.TextBoxFor(model => model.Year, new { @type = "number", @class = "form-control required", @placeholder = "Year", @max = "9999", @maxLength = 4 })
                                 </div>
                             </div>
                             <div class="col-sm-2">
@@ -150,17 +156,18 @@
                 return false;
             }
 
-            var startDate = new Date($("#StartDate").val());
-            var endDate = new Date($("#EndDate").val());
-            if (startDate > endDate) {
-                alert("Please select valid date range.");
+            var startMonth = $("#StartMonth").val();
+            var endMonth = $("#EndMonth").val();
+            var year = $("#Year").val();
+            if (startMonth > endMonth) {
+                alert("Please select valid Month.");
                 return false;
             }
 
             var leaveStatus = $("#LeaveStatus").val();
             var userRole = $("#UserRole").val();
             StartLoading();
-            window.location.href = "/admin/leave/Index?userRole=" + userRole + "&leaveStatus=" + leaveStatus + "&startDate=" + $("#StartDate").val() + "&endDate=" + $("#EndDate").val();
+            window.location.href = "/admin/leave/Index?userRole=" + userRole + "&leaveStatus=" + leaveStatus + "&startMonth=" + startMonth + "&endMonth=" + endMonth + "&year=" + year;
         });
 
         $('#btnAccept').click(function () {

@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace AttendanceSystem.Areas.Admin.Controllers
 {
+    [PageAccess]
     public class AccountRenewController : Controller
     {
         AttendanceSystemEntities _db;

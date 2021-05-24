@@ -17,14 +17,14 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Employee List</h4>
+                        <h4>Worker List</h4>
                     </div>
                     <div class="card-body">
                         <div class="row">
-                           
+
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label>Employee Status</label>
+                                    <label>Worker Status</label>
                                     @Html.DropDownListFor(model => model.UserStatus, new SelectList(lstEmployeeStatus, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8 required", style = "" })
                                 </div>
                             </div>
@@ -176,6 +176,8 @@
                         }
                         else if (result == "notfound") {
                             alert("Employee Not Found");
+                        } else if (result == "AlreadyAssigned") {
+                            alert("Worker assigned to site. Can not delete.");
                         }
                         else {
                             alert("Something went wrong. Please try again");
@@ -207,6 +209,9 @@
                         if (result == "success") {
                             alert("Status change Successfully...");
                             window.location.reload();
+                        } else if (result == "AlreadyAssigned")
+                        {
+                            alert("Worker assigned to site. Can not inactive.");
                         }
                         else {
                             alert("Something went wrong. Please try again");

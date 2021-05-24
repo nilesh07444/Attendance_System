@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace AttendanceSystem.Areas.Admin.Controllers
 {
+    [PageAccess]
     public class FeedbackController : Controller
     {
         // GET: Admin/Feedback

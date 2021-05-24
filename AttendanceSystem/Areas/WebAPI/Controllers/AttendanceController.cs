@@ -133,7 +133,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                      join emp in _db.tbl_Employee on at.UserId equals emp.EmployeeId
                                                      where !at.IsDeleted
                                                      && emp.EmployeeId == employeeId
-                                                     && at.AttendanceDate >= attendanceFilterVM.StartDate && at.AttendanceDate <= attendanceFilterVM.EndDate
+                                                     && at.AttendanceDate.Month >= attendanceFilterVM.StartMonth && at.AttendanceDate.Month <= attendanceFilterVM.EndMonth
+                                                     && at.AttendanceDate.Year == attendanceFilterVM.Year
                                                      && (attendanceFilterVM.AttendanceStatus.HasValue ? at.Status == attendanceFilterVM.AttendanceStatus.Value : true)
                                                      select new AttendanceVM
                                                      {

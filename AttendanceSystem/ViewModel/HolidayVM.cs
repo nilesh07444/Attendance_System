@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace AttendanceSystem.ViewModel
 {
@@ -30,11 +31,14 @@ namespace AttendanceSystem.ViewModel
     {
         public HolidayFilterVM()
         {
-            StartDate = new DateTime(DateTime.Now.Year, 1, 1);
-            EndDate = new DateTime(DateTime.Now.Year, 12, 31);
+            StartMonth = DateTime.Now.Month;
+            EndMonth = DateTime.Now.Month;
+            Year = DateTime.Now.Year;
         }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public int StartMonth { get; set; }
+        public int EndMonth { get; set; }
+        public int Year { get; set; }
         public List<HolidayVM> HolidayList { get; set; }
+        public List<SelectListItem> CalenderMonth { get; set; }
     }
 }

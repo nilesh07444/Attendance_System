@@ -11,6 +11,7 @@ using System.Web.Mvc;
 
 namespace AttendanceSystem.Areas.Admin.Controllers
 {
+    [PageAccess]
     public class PaymentController : Controller
     {
         // GET: Admin/Payment

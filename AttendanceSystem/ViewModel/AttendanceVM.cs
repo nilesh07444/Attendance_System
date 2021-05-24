@@ -52,14 +52,17 @@ namespace AttendanceSystem.ViewModel
     {
         public AttendanceFilterVM()
         {
-            StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-            EndDate = StartDate.AddMonths(1).AddDays(-1);
+            StartMonth = DateTime.Now.Month;
+            EndMonth = DateTime.Now.Month;
+            Year = DateTime.Now.Year;
         }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public int StartMonth { get; set; }
+        public int EndMonth { get; set; }
+        public int Year { get; set; }
         public int? AttendanceStatus { get; set; }
         public int? UserId { get; set; }
         public List<SelectListItem> EmployeeList { get; set; }
+        public List<SelectListItem> CalenderMonth { get; set; }
         public List<AttendanceVM> AttendanceList { get; set; }
     }
 

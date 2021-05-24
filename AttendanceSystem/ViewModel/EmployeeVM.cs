@@ -25,14 +25,17 @@ namespace AttendanceSystem.ViewModel
         public string EmployeeCode { get; set; }
         public string Password { get; set; }
         [Required, Display(Name = "Mobile No")]
+        [RegularExpression(@"^([0-9]{10})$", ErrorMessage = "Invalid Mobile Number.")]
         public string MobileNo { get; set; }
         [Display(Name = "Alternate Mobile no")]
+        [RegularExpression(@"^([0-9]{10})$", ErrorMessage = "Invalid Alternate Mobile Number.")]
         public string AlternateMobile { get; set; }
         [Display(Name = "Address")]
         public string Address { get; set; }
         [Display(Name = "City")]
         public string City { get; set; }
         [Display(Name = "Pincode")]
+        [RegularExpression(@"^([0-9]{6})$", ErrorMessage = "Invalid Pincode.")]
         public string Pincode { get; set; }
         [Display(Name = "State")]
         public string State { get; set; }
@@ -47,6 +50,7 @@ namespace AttendanceSystem.ViewModel
         [Display(Name = "Working TIme")]
         public string WorkingTime { get; set; }
         [Display(Name = "Aadhar card No")]
+        [RegularExpression(@"^([0-9]{12})$", ErrorMessage = "Invalid Adhar Card Number.")]
         public string AdharCardNo { get; set; }
         [Display(Name = "Date of Id card Expiry")]
         public DateTime? DateOfIdCardExpiry { get; set; }
@@ -60,7 +64,7 @@ namespace AttendanceSystem.ViewModel
         public decimal PerCategoryPrice { get; set; }
         [Display(Name = "Monthly Salary")]
         public decimal? MonthlySalaryPrice { get; set; }
-        [Required, Display(Name = "Extra Per Hour Price")]
+        [Display(Name = "Extra Per Hour Price")]
         public decimal? ExtraPerHourPrice { get; set; }
         [Display(Name = "Is Leave Forward")]
         public bool IsLeaveForward { get; set; }

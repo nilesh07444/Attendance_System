@@ -199,6 +199,7 @@
     <Compile Include="Areas\WebAPI\Controllers\SiteController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\PaymentController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\ProfileController.cs" />
+    <Compile Include="Areas\WebAPI\Controllers\WorkerAttendanceController.cs" />
     <Compile Include="Filters\JWT\AddChallengeOnUnauthorizedResult.cs" />
     <Compile Include="Filters\JWT\AuthenticationFailureResult.cs" />
     <Compile Include="Filters\JWT\HttpAuthenticationChallengeContextExtensions.cs" />

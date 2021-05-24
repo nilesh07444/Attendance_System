@@ -13,7 +13,6 @@
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_CompanyFollowup" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_CompanyRenewPayment" Width="1.5" PointX="8.75" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_CompanyRequest" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_CompanySMSPackRenew" Width="1.5" PointX="0.75" PointY="10.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_DynamicContent" Width="1.5" PointX="2.75" PointY="10.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_EmployeeBuyTransaction" Width="1.5" PointX="6.75" PointY="10.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_EmployeeFingerprint" Width="1.5" PointX="8.75" PointY="11.75" IsExpanded="true" />
@@ -38,6 +37,7 @@
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Testimonial" Width="1.5" PointX="5.375" PointY="19.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Attendance" Width="1.5" PointX="19.375" PointY="4.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Employee" Width="1.5" PointX="19.375" PointY="11.75" />
+        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_CompanySMSPackRenew" Width="1.5" PointX="3.375" PointY="14.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

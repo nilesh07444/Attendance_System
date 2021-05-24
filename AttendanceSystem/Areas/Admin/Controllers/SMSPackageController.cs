@@ -234,20 +234,13 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 }
                 else
                 {
-                    if (_db.tbl_CompanySMSPackRenew.Any(x => x.SMSPackageId == SMSPackageId))
-                    {
-                        ReturnMessage = ErrorMessage.PackageAlreadyAssigned;
-                    }
-                    else
-                    {
-                        long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
-                        objSMSPackage.IsDeleted = true;
-                        objSMSPackage.ModifiedBy = LoggedInUserId;
-                        objSMSPackage.ModifiedDate = DateTime.UtcNow;
-                        _db.SaveChanges();
+                    long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
+                    objSMSPackage.IsDeleted = true;
+                    objSMSPackage.ModifiedBy = LoggedInUserId;
+                    objSMSPackage.ModifiedDate = DateTime.UtcNow;
+                    _db.SaveChanges();
 
-                        ReturnMessage = ErrorMessage.Success;
-                    }
+                    ReturnMessage = ErrorMessage.Success;
                 }
             }
             catch (Exception ex)

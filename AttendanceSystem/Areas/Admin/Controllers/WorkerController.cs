@@ -12,6 +12,7 @@ using System.Web.Mvc;
 
 namespace AttendanceSystem.Areas.Admin.Controllers
 {
+    [PageAccess]
     public class WorkerController : Controller
     {
         AttendanceSystemEntities _db;
@@ -179,7 +180,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     {
                         if (employeeVM.EmployeeId == 0)
                         {
-                            employeeVM.UserRoleList = GetUserRoleList();
                             ModelState.AddModelError("ProfileImageFile", ErrorMessage.ImageRequired);
                             return View(employeeVM);
                         }
@@ -247,7 +247,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 }
                 else
                 {
-                    employeeVM.UserRoleList = GetUserRoleList();
                     return View(employeeVM);
                 }
             }
@@ -313,9 +312,15 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             string ReturnMessage = "";
             try
             {
+                DateTime today = DateTime.UtcNow.Date;
                 tbl_Employee objEmployee = _db.tbl_Employee.Where(x => x.EmployeeId == Id).FirstOrDefault();
+                bool isAssigned = _db.tbl_AssignWorker.Any(x => x.EmployeeId == Id && x.Date == today);
 
-                if (objEmployee != null)
+                if (isAssigned)
+                {
+                    ReturnMessage = "AlreadyAssigned";
+                }
+                else if (objEmployee != null)
                 {
                     if (Status == "Active")
                     {
@@ -346,12 +351,17 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         public string DeleteEmployee(int EmployeeId)
         {
             string ReturnMessage = "";
-
+            DateTime today = DateTime.UtcNow.Date;
             try
             {
                 tbl_Employee objEmployee = _db.tbl_Employee.Where(x => x.EmployeeId == EmployeeId).FirstOrDefault();
+                bool isAssigned = _db.tbl_AssignWorker.Any(x => x.EmployeeId == EmployeeId && x.Date == today);
 
-                if (objEmployee == null)
+                if (isAssigned)
+                {
+                    ReturnMessage = "AlreadyAssigned";
+                }
+                else if (objEmployee == null)
                 {
                     ReturnMessage = "notfound";
                 }
@@ -373,24 +383,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             }
 
             return ReturnMessage;
-        }
-
-        private List<SelectListItem> GetUserRoleList()
-        {
-            long[] adminRole = new long[] { (long)AdminRoles.CompanyAdmin, (long)AdminRoles.SuperAdmin, (long)AdminRoles.Worker };
-
-            if (clsAdminSession.CompanyTypeId == (int)CompanyType.Banking_OfficeCompany)
-            {
-                adminRole = new long[] { (long)AdminRoles.CompanyAdmin, (long)AdminRoles.SuperAdmin, (long)AdminRoles.Supervisor, (long)AdminRoles.Checker, (long)AdminRoles.Payer, (long)AdminRoles.Worker };
-            }
-            List<SelectListItem> lst = (from ms in _db.mst_AdminRole
-                                        where !adminRole.Contains(ms.AdminRoleId)
-                                        select new SelectListItem
-                                        {
-                                            Text = ms.AdminRoleName,
-                                            Value = ms.AdminRoleId.ToString()
-                                        }).ToList();
-            return lst;
         }
 
         public JsonResult VerifyMobileNo(string mobileNo)
@@ -442,54 +434,5 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
             return Json(new { Status = status, Otp = otp, ErrorMessage = errorMessage }, JsonRequestBehavior.AllowGet);
         }
-
-        public ActionResult LoginHistory(int? employeeId = null)
-        {
-            LoginHistoryFilterVM loginHistoryFilterVM = new LoginHistoryFilterVM();
-
-            try
-            {
-                if (employeeId.HasValue)
-                {
-                    loginHistoryFilterVM.EmployeeId = employeeId.Value;
-                }
-
-                long companyId = clsAdminSession.CompanyId;
-                loginHistoryFilterVM.LoginHistoryList = (from lh in _db.tbl_LoginHistory
-                                                         join emp in _db.tbl_Employee on lh.EmployeeId equals emp.EmployeeId
-                                                         where !emp.IsDeleted && emp.CompanyId == companyId
-                                                         && (loginHistoryFilterVM.EmployeeId.HasValue ? lh.EmployeeId == loginHistoryFilterVM.EmployeeId.Value : true)
-                                                         select new LoginHistoryVM
-                                                         {
-                                                             LoginHistoryId = lh.LoginHistoryId,
-                                                             EmployeeId = lh.EmployeeId,
-                                                             FirstName = emp.FirstName,
-                                                             LastName = emp.LastName,
-                                                             LoginDate = lh.LoginDate,
-                                                             LocationFrom = lh.LocationFrom,
-                                                             SiteId = lh.SiteId
-
-                                                         }).OrderByDescending(x => x.LoginDate).ToList();
-            }
-            catch (Exception ex)
-            {
-            }
-            loginHistoryFilterVM.EmployeeList = GetEmployeeList();
-            return View(loginHistoryFilterVM);
-        }
-
-        private List<SelectListItem> GetEmployeeList()
-        {
-            long companyId = clsAdminSession.CompanyId;
-            List<SelectListItem> lst = (from emp in _db.tbl_Employee
-                                        where !emp.IsDeleted && emp.CompanyId == companyId
-                                        select new SelectListItem
-                                        {
-                                            Text = emp.FirstName + " " + emp.LastName,
-                                            Value = emp.EmployeeId.ToString()
-                                        }).ToList();
-            return lst;
-        }
-
     }
 }

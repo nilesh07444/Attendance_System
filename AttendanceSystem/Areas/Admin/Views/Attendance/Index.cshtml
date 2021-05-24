@@ -25,14 +25,20 @@
                         <div class="row">
                             <div class="col-sm-2">
                                 <div class="form-group">
-                                    <label>Start Date</label>
-                                    @Html.TextBoxFor(model => model.StartDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Start Date" })
+                                    <label>Start Month</label>
+                                    @Html.DropDownListFor(model => model.StartMonth, new SelectList(Model.CalenderMonth, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8 required", style = "" })
                                 </div>
                             </div>
                             <div class="col-sm-2">
                                 <div class="form-group">
-                                    <label>End Date</label>
-                                    @Html.TextBoxFor(model => model.EndDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Start Date" })
+                                    <label>End Month</label>
+                                    @Html.DropDownListFor(model => model.EndMonth, new SelectList(Model.CalenderMonth, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8 required", style = "" })
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label>Year</label>
+                                    @Html.TextBoxFor(model => model.Year, new { @type = "number", @class = "form-control required", @placeholder = "Year", @max = "9999", @maxLength = 4 })
                                 </div>
                             </div>
                             <div class="col-sm-2">
@@ -82,33 +88,33 @@
                                     {
                                         foreach (AttendanceVM obj in Model.AttendanceList)
                                         {
-                                    <tr>
-                                        <td>@counter.</td>
-                                        <td>
-                                            @if (obj.Status == (int)AttendanceStatus.Pending)
-                                            {
-                                                <input type="checkbox" class="chkBox" id='@obj.AttendanceId' name="Select">
-                                            }
-                                        </td>
-                                        <td>@obj.Name</td>
-                                        <td>@obj.AttendanceDate.ToString("dd MMM yyyy")</td>
-                                        <td>@obj.DayType</td>
-                                        <td>@obj.ExtraHours</td>
-                                        <td>@obj.TodayWorkDetail</td>
-                                        <td>@obj.TomorrowWorkDetail</td>
-                                        <td>@obj.LocationFrom</td>
-                                        <td>@obj.StatusText</td>
-                                        <td>
-                                            @if (obj.Status == (int)AttendanceStatus.Pending)
-                                            {
-                                                <a href="/admin/attendance/reject/@obj.AttendanceId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
-                                            }
-                                            else
-                                            {
-                                                <a href="/admin/attendance/reject/@obj.AttendanceId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
-                                            }
-                                        </td>
-                                    </tr>
+                                            <tr>
+                                                <td>@counter.</td>
+                                                <td>
+                                                    @if (obj.Status == (int)AttendanceStatus.Pending)
+                                                    {
+                                                        <input type="checkbox" class="chkBox" id='@obj.AttendanceId' name="Select">
+                                                    }
+                                                </td>
+                                                <td>@obj.Name</td>
+                                                <td>@obj.AttendanceDate.ToString("dd MMM yyyy")</td>
+                                                <td>@obj.DayType</td>
+                                                <td>@obj.ExtraHours</td>
+                                                <td>@obj.TodayWorkDetail</td>
+                                                <td>@obj.TomorrowWorkDetail</td>
+                                                <td>@obj.LocationFrom</td>
+                                                <td>@obj.StatusText</td>
+                                                <td>
+                                                    @if (obj.Status == (int)AttendanceStatus.Pending)
+                                                    {
+                                                        <a href="/admin/attendance/reject/@obj.AttendanceId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a href="/admin/attendance/reject/@obj.AttendanceId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
+                                                    }
+                                                </td>
+                                            </tr>
 
                                             counter++;
                                         }
@@ -154,17 +160,18 @@
                 return false;
             }
 
-            var startDate = new Date($("#StartDate").val());
-            var endDate = new Date($("#EndDate").val());
-            if (startDate > endDate) {
-                alert("Please select valid date range.");
+            var startMonth = $("#StartMonth").val();
+            var endMonth = $("#EndMonth").val();
+            var year = $("#Year").val();
+            if (startMonth > endMonth) {
+                alert("Please select valid Month.");
                 return false;
             }
 
             var attendanceStatus = $("#AttendanceStatus").val();
             var userId = $("#UserId").val();
             StartLoading();
-            window.location.href = "/admin/attendance/Index?userId=" + userId + "&attendanceStatus=" + attendanceStatus + "&startDate=" + $("#StartDate").val() + "&endDate=" + $("#EndDate").val();
+            window.location.href = "/admin/attendance/Index?userId=" + userId + "&attendanceStatus=" + attendanceStatus + "&startMonth=" + startMonth + "&endMonth=" + endMonth + "&year=" + year;
         });
 
          $('#btnAccept').click(function () {

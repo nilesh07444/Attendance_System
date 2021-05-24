@@ -1,6 +1,5 @@
 ﻿using AttendanceSystem.Helper;
 using AttendanceSystem.Models;
-using AttendanceSystem.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -237,17 +236,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 }
                 else
                 {
-                    if (_db.tbl_CompanyRenewPayment.Any(x => x.PackageId == objPackage.PackageId))
-                    {
-                        ReturnMessage = ErrorMessage.PackageAlreadyAssigned;
-                    }
-                    else
-                    {
-                        _db.tbl_Package.Remove(objPackage);
-                        _db.SaveChanges();
+                    _db.tbl_Package.Remove(objPackage);
+                    _db.SaveChanges();
 
-                        ReturnMessage = ErrorMessage.Success;
-                    }
+                    ReturnMessage = ErrorMessage.Success;
                 }
             }
             catch (Exception ex)

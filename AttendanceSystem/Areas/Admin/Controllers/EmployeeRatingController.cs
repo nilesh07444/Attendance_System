@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace AttendanceSystem.Areas.Admin.Controllers
 {
+    [PageAccess]
     public class EmployeeRatingController : Controller
     {
         AttendanceSystemEntities _db;
@@ -16,7 +17,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         {
             _db = new AttendanceSystemEntities();
         }
-        public ActionResult Index(int? year = null, int? month = null, int? userRole = null, string employeeCode = null)
+        public ActionResult Index(int? startMonth = null, int? endMonth = null, int? year = null, int? userRole = null, string employeeCode = null)
         {
             EmployeeRatingFilterVM EmployeeRatingFilterVM = new EmployeeRatingFilterVM();
             if (userRole.HasValue)
@@ -24,8 +25,16 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 EmployeeRatingFilterVM.UserRole = userRole.Value;
             }
 
-            EmployeeRatingFilterVM.Month = month;
-            EmployeeRatingFilterVM.Year = year;
+            if (startMonth.HasValue && endMonth.HasValue)
+            {
+                EmployeeRatingFilterVM.StartMonth = startMonth.Value;
+                EmployeeRatingFilterVM.EndMonth = endMonth.Value;
+            }
+
+            if (year.HasValue)
+            {
+                EmployeeRatingFilterVM.Year = year.Value;
+            }
 
             if (!string.IsNullOrEmpty(employeeCode))
             {
@@ -38,8 +47,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 EmployeeRatingFilterVM.EmployeeRatingList = (from er in _db.tbl_EmployeeRating
                                                              join emp in _db.tbl_Employee on er.EmployeeId equals emp.EmployeeId
                                                              where !emp.IsDeleted && emp.CompanyId == companyId
-                                                             && (EmployeeRatingFilterVM.Month.HasValue ? er.RateMonth == EmployeeRatingFilterVM.Month.Value : true)
-                                                             && (EmployeeRatingFilterVM.Year.HasValue ? er.RateYear == EmployeeRatingFilterVM.Year.Value : true)
+                                                             && er.RateMonth >= EmployeeRatingFilterVM.StartMonth
+                                                             && er.RateMonth <= EmployeeRatingFilterVM.EndMonth
+                                                             && er.RateYear == EmployeeRatingFilterVM.Year
                                                              && (EmployeeRatingFilterVM.UserRole.HasValue ? emp.AdminRoleId == EmployeeRatingFilterVM.UserRole.Value : true)
                                                              && (!string.IsNullOrEmpty(EmployeeRatingFilterVM.EmployeeCode) ? emp.EmployeeCode == EmployeeRatingFilterVM.EmployeeCode : true)
                                                              select new EmployeeRatingVM
@@ -60,6 +70,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             {
             }
             EmployeeRatingFilterVM.UserRoleList = GetUserRoleList();
+            EmployeeRatingFilterVM.CalenderMonth = CommonMethod.GetCalenderMonthList();
             return View(EmployeeRatingFilterVM);
         }
 

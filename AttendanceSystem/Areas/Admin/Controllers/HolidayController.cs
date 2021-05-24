@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace AttendanceSystem.Areas.Admin.Controllers
 {
-
+    [PageAccess]
     public class HolidayController : Controller
     {
         // GET: Admin/Holiday   
@@ -18,19 +18,25 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         {
             _db = new AttendanceSystemEntities();
         }
-        public ActionResult Index(DateTime? startDate = null, DateTime? endDate = null)
+        public ActionResult Index(int? startMonth = null, int? endMonth = null, int? year = null)
         {
             HolidayFilterVM holidayFilterVM = new HolidayFilterVM();
             try
             {
-                if (startDate.HasValue && endDate.HasValue)
+                if (startMonth.HasValue && endMonth.HasValue)
                 {
-                    holidayFilterVM.StartDate = startDate.Value;
-                    holidayFilterVM.EndDate = endDate.Value;
+                    holidayFilterVM.StartMonth = startMonth.Value;
+                    holidayFilterVM.EndMonth = endMonth.Value;
+                }
+
+                if (year.HasValue)
+                {
+                    holidayFilterVM.Year = year.Value;
                 }
 
                 long companyId = clsAdminSession.CompanyId;
                 holidayFilterVM.HolidayList = GetHolidatList(holidayFilterVM);
+                holidayFilterVM.CalenderMonth = CommonMethod.GetCalenderMonthList();
             }
             catch (Exception ex)
             {
@@ -235,8 +241,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             long companyId = clsAdminSession.CompanyId;
             List<HolidayVM> holidayList = (from hd in _db.tbl_Holiday
                                            where !hd.IsDeleted && hd.CompanyId == companyId.ToString()
-                                           && hd.StartDate >= holidayFilterVM.StartDate
-                                           && hd.StartDate <= holidayFilterVM.EndDate
+                                           && hd.StartDate.Month >= holidayFilterVM.StartMonth
+                                           && hd.StartDate.Month <= holidayFilterVM.EndMonth
+                                           && hd.StartDate.Year== holidayFilterVM.Year
                                            select new HolidayVM
                                            {
                                                HolidayId = hd.HolidayId,

@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace AttendanceSystem.Areas.Admin.Controllers
 {
+    [PageAccess]
     public class SMSRenewController : Controller
     {
         AttendanceSystemEntities _db;
@@ -91,6 +92,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objCompanySMSPackRenew.SMSPackageId = objPackage.SMSPackageId;
                         objCompanySMSPackRenew.SMSPackageName = objPackage.PackageName;
                         objCompanySMSPackRenew.RenewDate = DateTime.Now;
+                        objCompanySMSPackRenew.PackageAmount = objPackage.PackageAmount;
                         objCompanySMSPackRenew.AccessDays = objPackage.AccessDays;
                         objCompanySMSPackRenew.PackageExpiryDate = DateTime.Now.AddDays(objPackage.AccessDays);
                         objCompanySMSPackRenew.NoOfSMS = objPackage.NoOfSMS;

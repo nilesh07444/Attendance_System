@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace AttendanceSystem.Areas.Admin.Controllers
 {
+    [PageAccess]
     public class AttendanceController : Controller
     {
         // GET: Admin/Attendance
@@ -20,7 +21,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             companyId = clsAdminSession.CompanyId;
             LoggedInUserId = clsAdminSession.UserID;
         }
-        public ActionResult Index(int? userId = null, int? attendanceStatus = null, DateTime? startDate = null, DateTime? endDate = null)
+        public ActionResult Index(int? userId = null, int? attendanceStatus = null, int? startMonth = null, int? endMonth = null, int? year = null)
         {
             AttendanceFilterVM attendanceFilterVM = new AttendanceFilterVM();
             try
@@ -30,10 +31,15 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 if (attendanceStatus.HasValue)
                     attendanceFilterVM.AttendanceStatus = attendanceStatus.Value;
 
-                if (startDate.HasValue && endDate.HasValue)
+                if (startMonth.HasValue && endMonth.HasValue)
                 {
-                    attendanceFilterVM.StartDate = startDate.Value;
-                    attendanceFilterVM.EndDate = endDate.Value;
+                    attendanceFilterVM.StartMonth = startMonth.Value;
+                    attendanceFilterVM.EndMonth = endMonth.Value;
+                }
+
+                if (year.HasValue)
+                {
+                    attendanceFilterVM.Year = year.Value;
                 }
 
                 long companyId = clsAdminSession.CompanyId;
@@ -46,7 +52,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                      join emp in _db.tbl_Employee on at.UserId equals emp.EmployeeId
                                                      where !at.IsDeleted
                                                      && emp.CompanyId == companyId
-                                                     && at.AttendanceDate >= attendanceFilterVM.StartDate && at.AttendanceDate <= attendanceFilterVM.EndDate
+                                                     && at.AttendanceDate.Month >= attendanceFilterVM.StartMonth && at.AttendanceDate.Month <= attendanceFilterVM.EndMonth
+                                                     && at.AttendanceDate.Year== attendanceFilterVM.Year
                                                      && (attendanceFilterVM.AttendanceStatus.HasValue ? at.Status == attendanceFilterVM.AttendanceStatus.Value : true)
                                                      && (attendanceFilterVM.UserId.HasValue ? emp.EmployeeId == attendanceFilterVM.UserId.Value : true)
                                                      select new AttendanceVM
@@ -67,6 +74,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                      }).OrderByDescending(x => x.AttendanceDate).ToList();
 
                 attendanceFilterVM.EmployeeList = GetEmployeeList();
+                attendanceFilterVM.CalenderMonth =CommonMethod.GetCalenderMonthList();
                 attendanceFilterVM.AttendanceList.ForEach(x =>
                 {
                     x.StatusText = attendanceStatusList.Where(z => z.Value == x.Status.ToString()).Select(c => c.Text).FirstOrDefault();
@@ -204,5 +212,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             }
             return RedirectToAction("index");
         }
+
+       
     }
 }

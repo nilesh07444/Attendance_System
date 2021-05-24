@@ -145,7 +145,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                      join emp in _db.tbl_Employee on at.UserId equals emp.EmployeeId
                                                      where !at.IsDeleted
                                                      && emp.EmployeeId == employeeId
-                                                     && at.AttendanceDate >= attendanceFilterVM.StartDate && at.AttendanceDate <= attendanceFilterVM.EndDate
+                                                     && at.AttendanceDate.Month >= attendanceFilterVM.StartMonth && at.AttendanceDate.Month <= attendanceFilterVM.EndMonth
+                                                     && at.AttendanceDate.Year == attendanceFilterVM.Year
                                                      && (attendanceFilterVM.AttendanceStatus.HasValue ? at.Status == attendanceFilterVM.AttendanceStatus.Value : true)
                                                      select new AttendanceVM
                                                      {
@@ -162,8 +163,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                          LocationFrom = at.LocationFrom,
                                                          Status = at.Status,
                                                          RejectReason = at.RejectReason,
-                                                         InTime = at.InTime,
-                                                         OutTime = at.OutTime,
+                                                         InDateTime = at.InDateTime,
+                                                         OutDateTime = at.OutDateTime,
                                                          ExtraPerHourPrice = emp.ExtraPerHourPrice,
                                                          EmploymentCategory = emp.EmploymentCategory,
                                                          InLatitude = at.InLatitude,
@@ -175,7 +176,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 attendanceList.ForEach(x =>
                 {
                     x.StatusText = CommonMethod.GetEnumDescription((AttendanceStatus)x.Status);
-                    x.EmploymentCategoryText = CommonMethod.GetEnumDescription((EMploymentCategory)x.EmploymentCategory);
+                    x.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)x.EmploymentCategory);
                 });
                 response.Data = attendanceList;
             }

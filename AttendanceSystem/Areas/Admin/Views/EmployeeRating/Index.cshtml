@@ -5,20 +5,6 @@
     ViewBag.Title = "EmployeeRating";
     int counter = 1;
 
-    List<SelectListItem> lstRateMonth = new List<SelectListItem>();
-    lstRateMonth.Add(new SelectListItem { Value = "1", Text = "January" });
-    lstRateMonth.Add(new SelectListItem { Value = "2", Text = "February" });
-    lstRateMonth.Add(new SelectListItem { Value = "3", Text = "March" });
-    lstRateMonth.Add(new SelectListItem { Value = "4", Text = "April" });
-    lstRateMonth.Add(new SelectListItem { Value = "5", Text = "May" });
-    lstRateMonth.Add(new SelectListItem { Value = "6", Text = "Jun" });
-    lstRateMonth.Add(new SelectListItem { Value = "7", Text = "July" });
-    lstRateMonth.Add(new SelectListItem { Value = "8", Text = "August" });
-    lstRateMonth.Add(new SelectListItem { Value = "9", Text = "September" });
-    lstRateMonth.Add(new SelectListItem { Value = "10", Text = "October" });
-    lstRateMonth.Add(new SelectListItem { Value = "11", Text = "November" });
-    lstRateMonth.Add(new SelectListItem { Value = "12", Text = "December" });
-
     List<SelectListItem> lstRateYear = new List<SelectListItem>();
     lstRateYear.Add(new SelectListItem { Value = DateTime.Now.Year.ToString(), Text = DateTime.Now.Year.ToString() });
     lstRateYear.Add(new SelectListItem { Value = (DateTime.Now.Year - 1).ToString(), Text = (DateTime.Now.Year - 1).ToString() });
@@ -46,14 +32,20 @@
                             </div>
                             <div class="col-sm-2">
                                 <div class="form-group">
-                                    <label>Rate Year</label>
-                                    @Html.DropDownListFor(model => model.Year, new SelectList(lstRateYear, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8 required", style = "" })
+                                    <label>Start Month</label>
+                                    @Html.DropDownListFor(model => model.StartMonth, new SelectList(Model.CalenderMonth, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8 required", style = "" })
                                 </div>
                             </div>
                             <div class="col-sm-2">
                                 <div class="form-group">
-                                    <label>Rate Month</label>
-                                    @Html.DropDownListFor(model => model.Month, new SelectList(lstRateMonth, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8 required", style = "" })
+                                    <label>End Month</label>
+                                    @Html.DropDownListFor(model => model.EndMonth, new SelectList(Model.CalenderMonth, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8 required", style = "" })
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label>Year</label>
+                                    @Html.TextBoxFor(model => model.Year, new { @type = "number", @class = "form-control required", @placeholder = "Year", @max = "9999", @maxLength = 4 })
                                 </div>
                             </div>
                             <div class="col-sm-2">
@@ -69,7 +61,7 @@
                                     <button class="btn btn-primary mr-1" id="btnSearch" type="button">Search</button>
                                 </div>
                             </div>
-                            
+
                         </div>
 
                         <div class="pull-right">
@@ -127,11 +119,16 @@
     $(document).ready(function () {
         $('#btnSearch').click(function () {
             var userRole = $("#UserRole").val();
+            var startMonth = $("#StartMonth").val();
+            var endMonth = $("#EndMonth").val();
             var year = $("#Year").val();
-            var month = $("#Month").val();
+            if (startMonth > endMonth) {
+                alert("Please select valid Month.");
+                return false;
+            }
             var employeeCode = $("#EmployeeCode").val();
             StartLoading();
-            window.location.href = "/admin/EmployeeRating/Index?year=" + year + "&month=" + month + "&userRole=" + userRole + "&employeeCode=" + employeeCode;
+            window.location.href = "/admin/EmployeeRating/Index?startMonth=" + startMonth + "&endMonth=" + endMonth + "&year=" + year + "&userRole=" + userRole + "&employeeCode=" + employeeCode;
         });
     })
 </script> 

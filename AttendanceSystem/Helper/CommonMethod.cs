@@ -13,6 +13,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Configuration;
+using System.Web.Mvc;
 
 namespace AttendanceSystem
 {
@@ -633,5 +634,19 @@ namespace AttendanceSystem
 
             }
         }
+        public static List<SelectListItem> GetCalenderMonthList()
+        {
+            string[] calenderMonthArr = Enum.GetNames(typeof(CalenderMonths));
+            var listCalenderMonth = calenderMonthArr.Select((value, key) => new { value, key }).ToDictionary(x => x.key + 1, x => x.value);
+
+            List<SelectListItem> lst = (from pt in listCalenderMonth
+                                        select new SelectListItem
+                                        {
+                                            Text = pt.Value,
+                                            Value = pt.Key.ToString()
+                                        }).ToList();
+            return lst;
+        }
+
     }
 }

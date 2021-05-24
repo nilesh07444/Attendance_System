@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace AttendanceSystem.Areas.Admin.Controllers
 {
+    [PageAccess]
     public class TestimonialController : Controller
     {
         private readonly AttendanceSystemEntities _db;

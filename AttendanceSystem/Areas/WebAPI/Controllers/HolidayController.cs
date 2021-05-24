@@ -1,7 +1,5 @@
-﻿using AttendanceSystem.Helper;
-using AttendanceSystem.Models;
+﻿using AttendanceSystem.Models;
 using AttendanceSystem.ViewModel;
-using AttendanceSystem.ViewModel.WebAPI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,8 +30,9 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                 List<HolidayVM> HolidayList = (from hd in _db.tbl_Holiday
                                                where !hd.IsDeleted && hd.CompanyId == companyid.ToString()
-                                               && hd.StartDate >= holidayFilterVM.StartDate
-                                               && hd.StartDate <= holidayFilterVM.EndDate
+                                               && hd.StartDate.Month >= holidayFilterVM.StartMonth
+                                               && hd.StartDate.Month <= holidayFilterVM.EndMonth
+                                               && hd.StartDate.Year == holidayFilterVM.Year
                                                select new HolidayVM
                                                {
                                                    HolidayId = hd.HolidayId,
@@ -68,19 +67,19 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 long employeeId = base.UTI.EmployeeId;
 
                 HolidayVM holidayDetails = (from hd in _db.tbl_Holiday
-                                        where !hd.IsDeleted
-                                        && hd.HolidayId == id
-                                        select new HolidayVM
-                                        {
-                                            HolidayId = hd.HolidayId,
-                                            StartDate = hd.StartDate,
-                                            EndDate = hd.EndDate,
-                                            HolidayReason = hd.HolidayReason,
-                                            Remark = hd.Remark,
-                                            CompanyId = hd.CompanyId,
-                                            IsActive = hd.IsActive,
-                                            IsDeleted = hd.IsDeleted
-                                        }).FirstOrDefault();
+                                            where !hd.IsDeleted
+                                            && hd.HolidayId == id
+                                            select new HolidayVM
+                                            {
+                                                HolidayId = hd.HolidayId,
+                                                StartDate = hd.StartDate,
+                                                EndDate = hd.EndDate,
+                                                HolidayReason = hd.HolidayReason,
+                                                Remark = hd.Remark,
+                                                CompanyId = hd.CompanyId,
+                                                IsActive = hd.IsActive,
+                                                IsDeleted = hd.IsDeleted
+                                            }).FirstOrDefault();
 
                 response.Data = holidayDetails;
             }

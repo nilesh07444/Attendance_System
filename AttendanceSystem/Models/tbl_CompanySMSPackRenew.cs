@@ -19,13 +19,14 @@ namespace AttendanceSystem.Models
         public long SMSPackageId { get; set; }
         public string SMSPackageName { get; set; }
         public System.DateTime RenewDate { get; set; }
+        public decimal PackageAmount { get; set; }
         public int AccessDays { get; set; }
         public System.DateTime PackageExpiryDate { get; set; }
+        public Nullable<int> NoOfSMS { get; set; }
+        public Nullable<int> RemainingSMS { get; set; }
         public long CreatedBy { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public Nullable<long> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
-        public Nullable<int> NoOfSMS { get; set; }
-        public Nullable<int> RemainingSMS { get; set; }
     }
 }
