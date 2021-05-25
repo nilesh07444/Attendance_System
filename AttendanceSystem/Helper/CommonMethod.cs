@@ -648,5 +648,18 @@ namespace AttendanceSystem
             return lst;
         }
 
+        public static string GetSmsContent(int Id)
+        {
+            AttendanceSystemEntities _db = new AttendanceSystemEntities();
+            var objSms = _db.tbl_SMSContent.Where(o => o.SMSContentId == Id).FirstOrDefault();
+            if (objSms != null)
+            {
+                return objSms.SMSDescription.ToString();
+            }
+            else
+            {
+                return "";
+            }
+        }
     }
 }

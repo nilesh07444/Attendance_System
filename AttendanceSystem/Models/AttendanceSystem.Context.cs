@@ -60,6 +60,7 @@ namespace AttendanceSystem.Models
         public virtual DbSet<tbl_AdminUser> tbl_AdminUser { get; set; }
         public virtual DbSet<tbl_Company> tbl_Company { get; set; }
         public virtual DbSet<tbl_CompanyRequest> tbl_CompanyRequest { get; set; }
+        public virtual DbSet<tbl_SMSContent> tbl_SMSContent { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

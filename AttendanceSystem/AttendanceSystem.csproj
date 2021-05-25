@@ -311,6 +311,9 @@
     <Compile Include="Models\tbl_Site.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\tbl_SMSContent.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tbl_SMSLog.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>

@@ -131,5 +131,13 @@
         November = 11,
         December = 12
     }
+
+    public enum SMSType
+    {
+        SuperAdminLoginOtp = 1,
+        CompanyAdminLoginOtp = 2,
+        EmployeeLoginOtp = 3,
+    }
+
 }
 

@@ -562,6 +562,15 @@
           <Property Name="ModifiedBy" Type="bigint" />
           <Property Name="ModifiedDate" Type="datetime" />
         </EntityType>
+        <EntityType Name="tbl_SMSContent">
+          <Key>
+            <PropertyRef Name="SMSContentId" />
+          </Key>
+          <Property Name="SMSContentId" Type="int" Nullable="false" />
+          <Property Name="SMSTitle" Type="nvarchar" MaxLength="100" />
+          <Property Name="SMSDescription" Type="nvarchar(max)" />
+          <Property Name="SeqNo" Type="int" />
+        </EntityType>
         <EntityType Name="tbl_SMSLog">
           <Key>
             <PropertyRef Name="SMSLogId" />
@@ -699,6 +708,7 @@
           <EntitySet Name="tbl_Package" EntityType="Self.tbl_Package" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Setting" EntityType="Self.tbl_Setting" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Site" EntityType="Self.tbl_Site" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_SMSContent" EntityType="Self.tbl_SMSContent" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_SMSLog" EntityType="Self.tbl_SMSLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_SMSPackage" EntityType="Self.tbl_SMSPackage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Sponsor" EntityType="Self.tbl_Sponsor" Schema="dbo" store:Type="Tables" />
@@ -1086,6 +1096,7 @@
           <EntitySet Name="tbl_AdminUser" EntityType="AttendanceSystemModel.tbl_AdminUser" />
           <EntitySet Name="tbl_Company" EntityType="AttendanceSystemModel.tbl_Company" />
           <EntitySet Name="tbl_CompanyRequest" EntityType="AttendanceSystemModel.tbl_CompanyRequest" />
+          <EntitySet Name="tbl_SMSContent" EntityType="AttendanceSystemModel.tbl_SMSContent" />
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -1418,6 +1429,15 @@
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int64" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="tbl_SMSContent">
+          <Key>
+            <PropertyRef Name="SMSContentId" />
+          </Key>
+          <Property Name="SMSContentId" Type="Int32" Nullable="false" />
+          <Property Name="SMSTitle" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SMSDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SeqNo" Type="Int32" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -2113,6 +2133,16 @@
                 <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
                 <ScalarProperty Name="CompanyTypeId" ColumnName="CompanyTypeId" />
                 <ScalarProperty Name="CompanyRequestId" ColumnName="CompanyRequestId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_SMSContent">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_SMSContent">
+              <MappingFragment StoreEntitySet="tbl_SMSContent">
+                <ScalarProperty Name="SeqNo" ColumnName="SeqNo" />
+                <ScalarProperty Name="SMSDescription" ColumnName="SMSDescription" />
+                <ScalarProperty Name="SMSTitle" ColumnName="SMSTitle" />
+                <ScalarProperty Name="SMSContentId" ColumnName="SMSContentId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

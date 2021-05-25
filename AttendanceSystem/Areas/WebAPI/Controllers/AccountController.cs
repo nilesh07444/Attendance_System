@@ -109,7 +109,11 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                     int num = random.Next(555555, 999999);
                                     if (enviornment != "Development")
                                     {
-                                        string msg = "Your Otp code for Login is " + num;
+                                        int SmsId = (int)SMSType.EmployeeLoginOtp;
+                                        string msg = CommonMethod.GetSmsContent(SmsId);
+
+                                        msg = msg.Replace("{#var#}", num.ToString());
+
                                         msg = HttpUtility.UrlEncode(msg);
                                         string url = CommonMethod.GetSMSUrl().Replace("--MOBILE--", data.MobileNo).Replace("--MSG--", msg);
                                         var json = webClient.DownloadString(url);
