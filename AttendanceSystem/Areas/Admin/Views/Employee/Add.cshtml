@@ -45,6 +45,7 @@
                                 @Html.LabelFor(model => model.AdminRoleId, htmlAttributes: new { @class = "" })
                                 @Html.DropDownListFor(model => model.AdminRoleId, new SelectList(Model.UserRoleList, "Value", "Text"), "- Select -", new { @class = "form-control required" })
                                 @Html.ValidationMessageFor(model => model.AdminRoleId, "", new { @class = "text-danger" })
+                                @Html.HiddenFor(model => model.AdminRoleId)
                                 @Html.HiddenFor(model => model.EmployeeId)
                             </div>
                             <div class="form-group col-6">
@@ -155,6 +156,7 @@
                                 @Html.LabelFor(model => model.EmploymentCategory, htmlAttributes: new { @class = "" })
                                 @Html.DropDownListFor(model => model.EmploymentCategory, new SelectList(lstEmploymentCategory, "Value", "Text"), "- Select -", new { @class = "form-control required" })
                                 @Html.ValidationMessageFor(model => model.EmploymentCategory, "", new { @class = "text-danger" })
+                                @Html.HiddenFor(model => model.EmploymentCategory)
                             </div>
 
                             <div class="form-group col-6" id="dvPerCatPrice">
@@ -165,12 +167,12 @@
 
                         </div>
                         <div class="row">
-                            <div class="form-group col-6"  id="dvMonthlySal">
+                            <div class="form-group col-6" id="dvMonthlySal">
                                 @Html.LabelFor(model => model.MonthlySalaryPrice, htmlAttributes: new { @class = "" })
                                 @Html.TextBoxFor(model => model.MonthlySalaryPrice, new { @type = "text", @class = "form-control", @placeholder = "Enter Monthly salary Price", @maxlength = "5", @min = "1" })
                                 @Html.ValidationMessageFor(model => model.MonthlySalaryPrice, "", new { @class = "text-danger" })
                             </div>
-                            <div class="form-group col-6"  id="dvExtraHours">
+                            <div class="form-group col-6" id="dvExtraHours">
                                 @Html.LabelFor(model => model.ExtraPerHourPrice, htmlAttributes: new { @class = "" })
                                 @Html.TextBoxFor(model => model.ExtraPerHourPrice, new { @type = "text", @class = "form-control", @placeholder = "Enter Extra Per Hour Price", @maxlength = "5", @min = "1" })
                                 @Html.ValidationMessageFor(model => model.ExtraPerHourPrice, "", new { @class = "text-danger" })
@@ -260,8 +262,17 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#dvMonthlySal").hide();
 
+        $("#dvMonthlySal").hide();
+        $("#dvExtraHours").hide();
+        $("#dvPerCatPrice").hide();
+        $("#dvFreeLeave").hide();
+
+        var employeeId = $("#EmployeeId").val();
+        if (employeeId > 0) {
+            $("#AdminRoleId").attr("disabled", true);
+            $("#EmploymentCategory").attr("disabled", true);
+        }
         $('#btnCancel').click(function () {
             window.location.href = "/admin/employee";
         });
@@ -278,8 +289,7 @@
                 $("#MonthlySalaryPrice").Attr("min", 1);
                 $("#ExtraPerHourPrice").Attr("min", 1);
             }
-            else if (EmploymentCategory == "1")
-            {
+            else if (EmploymentCategory == "1") {
                 $("#dvMonthlySal").hide();
                 $("#dvExtraHours").show();
                 $("#dvPerCatPrice").hide();

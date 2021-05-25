@@ -152,8 +152,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                   NoOfFreeLeavePerMonth = emp.NoOfFreeLeavePerMonth
 
                               }).FirstOrDefault();
+                employeeVM.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)employeeVM.EmploymentCategory);
+                employeeVM.AdminRoleText = CommonMethod.GetEnumDescription((AdminRoles)employeeVM.AdminRoleId);
             }
-
+           
             employeeVM.UserRoleList = GetUserRoleList();
             return View(employeeVM);
         }

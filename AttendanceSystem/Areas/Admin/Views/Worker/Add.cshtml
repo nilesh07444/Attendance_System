@@ -210,6 +210,16 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+
+        $("#dvMonthlySal").hide();
+        $("#dvExtraHours").hide();
+        $("#dvPerCatPrice").hide();
+        $("#dvFreeLeave").hide(); 
+        var employeeId = $("#EmployeeId").val();
+
+        if (employeeId > 0) {
+            $("#EmploymentCategory").attr("disabled", true);
+        }
         $("#dvMonthlySal").hide();
 
         $('#btnCancel').click(function () {
