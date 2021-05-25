@@ -205,6 +205,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployee.PerCategoryPrice = employeeVM.PerCategoryPrice;
                         objEmployee.MonthlySalaryPrice = employeeVM.MonthlySalaryPrice;
                         objEmployee.ExtraPerHourPrice = employeeVM.ExtraPerHourPrice;
+                        objEmployee.IsLeaveForward = employeeVM.IsLeaveForward;
+                        objEmployee.NoOfFreeLeavePerMonth = employeeVM.NoOfFreeLeavePerMonth;
                         objEmployee.UpdatedBy = loggedInUserId;
                         objEmployee.UpdatedDate = DateTime.UtcNow;
                     }

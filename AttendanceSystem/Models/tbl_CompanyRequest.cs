@@ -32,11 +32,11 @@ namespace AttendanceSystem.Models
         public string CompanyRegisterProofImage { get; set; }
         public string CompanyDescription { get; set; }
         public string CompanyWebisteUrl { get; set; }
-        public string CompanyCancellationChequePhoto { get; set; }
         public string CompanyAdminPrefix { get; set; }
         public string CompanyAdminFirstName { get; set; }
         public string CompanyAdminMiddleName { get; set; }
         public string CompanyAdminLastName { get; set; }
+        public System.DateTime CompanyAdminDOB { get; set; }
         public string CompanyAdminEmailId { get; set; }
         public string CompanyAdminMobileNo { get; set; }
         public string CompanyAdminAlternateMobileNo { get; set; }
@@ -45,6 +45,7 @@ namespace AttendanceSystem.Models
         public string CompanyAdminPincode { get; set; }
         public string CompanyAdminCity { get; set; }
         public string CompanyAdminState { get; set; }
+        public string CompanyAdminProfilePhoto { get; set; }
         public string CompanyAdminAadharCardNo { get; set; }
         public string CompanyAdminAadharCardPhoto { get; set; }
         public string CompanyAdminPanCardPhoto { get; set; }

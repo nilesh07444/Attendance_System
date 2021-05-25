@@ -178,19 +178,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.CompanyCancellationChequePhotoFile, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                        @if (!string.IsNullOrEmpty(Model.CompanyCancellationChequePhoto))
-                                        {
-                                            <div class="form-group row">
-                                                <p><a target="_blank" href="@ErrorMessage.CancellationChequeDirectoryPath/@Model.CompanyCancellationChequePhoto"> Click here to view image </a></p>
-                                            </div>
-                                        }
-                                    </div>
-                                </div>
-                            </div>
+
 
                             <div class="row">
                                 <div class="col-12">
@@ -239,13 +227,20 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
+                                        @Html.LabelFor(model => model.CompanyAdminDOB, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                        @Model.CompanyAdminDOB.ToString("dd MMM yyyy")
+                                        @Html.HiddenFor(model => model.CompanyAdminDOB)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyAdminMobileNo, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
                                         @Model.CompanyAdminMobileNo
                                         @Html.HiddenFor(model => model.CompanyAdminMobileNo)
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyAdminAlternateMobileNo, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
@@ -253,6 +248,9 @@
                                         @Html.HiddenFor(model => model.CompanyAdminAlternateMobileNo)
                                     </div>
                                 </div>
+                            </div>
+                            <div class="row">
+
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyAdminDesignation, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
@@ -260,8 +258,6 @@
                                         @Html.HiddenFor(model => model.CompanyAdminDesignation)
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyAdminAddress, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
@@ -269,6 +265,9 @@
                                         @Html.HiddenFor(model => model.CompanyAdminAddress)
                                     </div>
                                 </div>
+                            </div>
+                            <div class="row">
+
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyAdminPincode, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
@@ -276,8 +275,6 @@
                                         @Html.HiddenFor(model => model.CompanyAdminPincode)
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyAdminCity, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
@@ -285,11 +282,24 @@
                                         @Html.HiddenFor(model => model.CompanyAdminCity)
                                     </div>
                                 </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyAdminState, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
                                         @Model.CompanyAdminState
                                         @Html.HiddenFor(model => model.CompanyAdminState)
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.CompanyAdminProfilePhotoFile, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                        @if (!string.IsNullOrEmpty(Model.CompanyAdminProfilePhoto))
+                                        {
+                                            <div class="form-group row">
+                                                <p><a target="_blank" href="@ErrorMessage.ProfileDirectoryPath/@Model.CompanyAdminProfilePhoto"> Click here to view image </a></p>
+                                            </div>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -333,6 +343,7 @@
                                     </div>
                                 </div>
                             </div>
+                            
                             <div class="form-group row">
                                 @Html.LabelFor(model => model.RequestStatus, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
                                 @Html.DropDownListFor(model => model.RequestStatus, new SelectList(lstCompanyStatus, "Value", "Text"), "- Select -", new { @class = "form-control required", @style = "width:20%" })

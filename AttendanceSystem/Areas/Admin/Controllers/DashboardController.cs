@@ -23,6 +23,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             {
                 long companyId = clsAdminSession.CompanyId;
                 int roleId = clsAdminSession.RoleID;
+               
 
                 dashboardVM.PendingLeaves = (from lv in _db.tbl_Leave
                                              join ur in _db.tbl_Employee on lv.UserId equals ur.EmployeeId

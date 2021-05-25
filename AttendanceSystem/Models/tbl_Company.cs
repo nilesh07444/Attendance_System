@@ -33,7 +33,6 @@ namespace AttendanceSystem.Models
         public string RegisterProofImage { get; set; }
         public string Description { get; set; }
         public string WebisteUrl { get; set; }
-        public string CancellationChequePhoto { get; set; }
         public int FreeAccessDays { get; set; }
         public bool IsTrialMode { get; set; }
         public Nullable<System.DateTime> TrialExpiryDate { get; set; }

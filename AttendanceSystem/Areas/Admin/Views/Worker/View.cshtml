@@ -96,7 +96,16 @@
                                     @Model.ExtraPerHourPrice
                                 </div>
                             </div>
-                           
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    @Html.LabelFor(model => model.IsLeaveForward, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                    @Model.IsLeaveForward
+                                </div>
+                                <div class="form-group col-6">
+                                    @Html.LabelFor(model => model.NoOfFreeLeavePerMonth, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                    @Model.NoOfFreeLeavePerMonth
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="form-group col-6">
                                     @Html.LabelFor(model => model.ProfileImageFile, htmlAttributes: new { @class = "col-xl-3 col-md-4" })

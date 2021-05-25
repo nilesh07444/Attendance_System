@@ -11,7 +11,7 @@
         <div class="col-12">
             <div class="card card-primary">
                 <div class="card-header">
-                    <h4>@(Model.MaterialCategoryId == 0 ? "Add" : "Edit") MaterialCategory</h4>
+                    <h4>@(Model.MaterialCategoryId == 0 ? "Add" : "Edit") Material Category</h4>
                 </div>
 
                 @using (Html.BeginForm("Add", "MaterialCategory", FormMethod.Post, new { @id = "MaterialCategoryFormId", @class = "", enctype = "multipart/form-data", role = "form" }))

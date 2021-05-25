@@ -34,6 +34,7 @@
         public static string CompanyRegisterProofDirectoryPath = "/Images/CompanyRegisterProof/";
         public static string OurClientDirectoryPath = "/Images/OurClient/";
         public static string ServiceDirectoryPath = "/Images/ServiceImage/";
+        public static string ProfileDirectoryPath = "/Images/Profile/";
 
         public static string TokenExpired = "Token expired";
         public static string InvalidToken = "Invalid token";

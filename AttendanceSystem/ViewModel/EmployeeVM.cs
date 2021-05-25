@@ -20,7 +20,7 @@ namespace AttendanceSystem.ViewModel
         public string FirstName { get; set; }
         [Required, Display(Name = "Last Name")]
         public string LastName { get; set; }
-        [Display(Name = "Email")]
+        [Required, Display(Name = "Email")]
         public string Email { get; set; }
         public string EmployeeCode { get; set; }
         public string Password { get; set; }
@@ -34,7 +34,7 @@ namespace AttendanceSystem.ViewModel
         public string Address { get; set; }
         [Display(Name = "City")]
         public string City { get; set; }
-        [Display(Name = "Pincode")]
+        [Required,Display(Name = "Pincode")]
         [RegularExpression(@"^([0-9]{6})$", ErrorMessage = "Invalid Pincode.")]
         public string Pincode { get; set; }
         [Display(Name = "State")]
@@ -47,9 +47,9 @@ namespace AttendanceSystem.ViewModel
         public DateTime? DateOfJoin { get; set; }
         [Display(Name = "Blood Group")]
         public string BloodGroup { get; set; }
-        [Display(Name = "Working TIme")]
+        [Required,Display(Name = "Working TIme")]
         public string WorkingTime { get; set; }
-        [Display(Name = "Aadhar card No")]
+        [Required, Display(Name = "Aadhar card No")]
         [RegularExpression(@"^([0-9]{12})$", ErrorMessage = "Invalid Adhar Card Number.")]
         public string AdharCardNo { get; set; }
         [Display(Name = "Date of Id card Expiry")]
@@ -72,7 +72,7 @@ namespace AttendanceSystem.ViewModel
         public bool IsDeleted { get; set; }
         [Display(Name = "Finger Print Enabled")]
         public bool IsFingerprintEnabled { get; set; }
-        [Display(Name = "Profile Image")]
+        [Required, Display(Name = "Profile Image")]
         public HttpPostedFileBase ProfileImageFile { get; set; }
         public List<SelectListItem> UserRoleList { get; set; }
         public string OTP { get; set; }

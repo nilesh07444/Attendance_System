@@ -112,6 +112,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 clsAdminSession.CompanyId = data.CompanyId.HasValue ? data.CompanyId.Value : 0;
                 clsAdminSession.CompanyTypeId = companyObj != null ? companyObj.CompanyTypeId : 0;
                 clsAdminSession.IsTrialMode = companyObj != null ? companyObj.IsTrialMode : false;
+                clsAdminSession.CompanyLogo = companyObj != null ? companyObj.CompanyLogoImage : string.Empty;
             }
             catch (Exception ex)
             {

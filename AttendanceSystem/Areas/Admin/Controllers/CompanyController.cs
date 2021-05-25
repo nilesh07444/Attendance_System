@@ -23,7 +23,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         public string companyRegisterProofDirectoryPath = "";
         public string aadharCardDirectoryPath = "";
         public string panCardDirectoryPath = "";
-        public string CancellationChequeDirectoryPath = "";
+        public string CompanyAdminProfileDirectoryPath = "";
         long loggedInUserId ;
         string enviornment;
         public CompanyController()
@@ -36,7 +36,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             companyRegisterProofDirectoryPath = ErrorMessage.CompanyRegisterProofDirectoryPath;
             aadharCardDirectoryPath = ErrorMessage.AdharcardDirectoryPath;
             panCardDirectoryPath = ErrorMessage.PancardDirectoryPath;
-            CancellationChequeDirectoryPath = ErrorMessage.CancellationChequeDirectoryPath;
+            CompanyAdminProfileDirectoryPath = ErrorMessage.ProfileDirectoryPath;
             enviornment = ConfigurationManager.AppSettings["Environment"].ToString();
             loggedInUserId = clsAdminSession.UserID;
         }
@@ -133,11 +133,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                         CompanyRegisterProofImage = cp.CompanyRegisterProofImage,
                                         CompanyDescription = cp.CompanyDescription,
                                         CompanyWebisteUrl = cp.CompanyWebisteUrl,
-                                        CompanyCancellationChequePhoto = cp.CompanyCancellationChequePhoto,
                                         CompanyAdminPrefix = cp.CompanyAdminPrefix,
                                         CompanyAdminFirstName = cp.CompanyAdminFirstName,
                                         CompanyAdminMiddleName = cp.CompanyAdminMiddleName,
                                         CompanyAdminLastName = cp.CompanyAdminLastName,
+                                        CompanyAdminDOB = cp.CompanyAdminDOB,
                                         CompanyAdminEmailId = cp.CompanyAdminEmailId,
                                         CompanyAdminMobileNo = cp.CompanyAdminMobileNo,
                                         CompanyAdminAlternateMobileNo = cp.CompanyAdminAlternateMobileNo,
@@ -146,6 +146,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                         CompanyAdminPincode = cp.CompanyAdminPincode,
                                         CompanyAdminCity = cp.CompanyAdminCity,
                                         CompanyAdminState = cp.CompanyAdminState,
+                                        CompanyAdminProfilePhoto = cp.CompanyAdminProfilePhoto,
                                         CompanyAdminAadharCardNo = cp.CompanyAdminAadharCardNo,
                                         CompanyAdminAadharCardPhoto = cp.CompanyAdminAadharCardPhoto,
                                         CompanyAdminPanCardPhoto = cp.CompanyAdminPanCardPhoto,
@@ -201,7 +202,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objcomp.RegisterProofImage = objCompanyReq.CompanyRegisterProofImage;
                         objcomp.Description = objCompanyReq.CompanyDescription;
                         objcomp.WebisteUrl = objCompanyReq.CompanyWebisteUrl;
-                        objcomp.CancellationChequePhoto = objCompanyReq.CompanyCancellationChequePhoto;
                         objcomp.FreeAccessDays = objCompanyReq.FreeAccessDays;
                         objcomp.IsTrialMode = true;
                         objcomp.TrialExpiryDate = DateTime.Now.AddDays(objCompanyReq.FreeAccessDays);
@@ -233,6 +233,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objAdminUser.LastName = objCompanyReq.CompanyAdminLastName;
                         objAdminUser.UserName = companyCode;
                         objAdminUser.Password = CommonMethod.Encrypt(CommonMethod.RandomString(6, true), psSult);
+                        objAdminUser.DOB = objCompanyReq.CompanyAdminDOB;
                         objAdminUser.EmailId = objCompanyReq.CompanyAdminEmailId;
                         objAdminUser.MobileNo = objCompanyReq.CompanyAdminMobileNo;
                         objAdminUser.AlternateMobileNo = objCompanyReq.CompanyAdminAlternateMobileNo;
@@ -241,6 +242,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objAdminUser.Designation = string.IsNullOrEmpty(objCompanyReq.CompanyAdminDesignation) ? CommonMethod.GetEnumDescription(AdminRoles.CompanyAdmin) : objCompanyReq.CompanyAdminDesignation;
                         objAdminUser.City = objCompanyReq.CompanyAdminCity;
                         objAdminUser.State = objCompanyReq.CompanyAdminState;
+                        objAdminUser.ProfilePhoto= objCompanyReq.CompanyAdminProfilePhoto;
                         objAdminUser.AadharCardNo = objCompanyReq.CompanyAdminAadharCardNo;
                         objAdminUser.PanCardNo = objCompanyReq.CompanyAdminPanCardNo;
                         objAdminUser.AadharCardPhoto = objCompanyReq.CompanyAdminAadharCardPhoto;
@@ -325,12 +327,12 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                            CompanyRegisterProofImage = cp.RegisterProofImage,
                                            CompanyDescription = cp.Description,
                                            CompanyWebisteUrl = cp.WebisteUrl,
-                                           CompanyCancellationChequePhoto = cp.CancellationChequePhoto,
                                            CompanyAdminPrefix = emp.Prefix,
                                            CompanyAdminFirstName = emp.FirstName,
                                            CompanyAdminMiddleName = emp.MIddleName,
                                            CompanyAdminLastName = emp.LastName,
                                            CompanyAdminEmailId = emp.EmailId,
+                                           CompanyAdminDOB = emp.DOB,
                                            CompanyAdminMobileNo = emp.MobileNo,
                                            CompanyAdminAlternateMobileNo = emp.AlternateMobileNo,
                                            CompanyAdminDesignation = emp.Designation,
@@ -338,6 +340,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                            CompanyAdminPincode = emp.Pincode,
                                            CompanyAdminCity = emp.City,
                                            CompanyAdminState = emp.State,
+                                           CompanyAdminProfilePhoto = emp.ProfilePhoto,
                                            CompanyAdminAadharCardNo = emp.AadharCardNo,
                                            CompanyAdminAadharCardPhoto = emp.AadharCardPhoto,
                                            CompanyAdminPanCardPhoto = emp.PanCardPhoto,
@@ -359,7 +362,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             HttpPostedFileBase CompanyPanPhotoFile,
             HttpPostedFileBase CompanyLogoImageFile,
             HttpPostedFileBase CompanyRegisterProofImageFile,
-            HttpPostedFileBase CompanyCancellationChequePhotoFile,
+            HttpPostedFileBase CompanyAdminProfilePhotoFile,
             HttpPostedFileBase CompanyAdminAadharCardPhotoFile,
             HttpPostedFileBase CompanyAdminPanCardPhotoFile)
         {
@@ -371,7 +374,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 {
 
                     string companyGstFileName = string.Empty, companyPanCardFileName = string.Empty, companyLogoFileName = string.Empty, companyRegisterProofFileName = string.Empty,
-                        chqFileName = string.Empty, companyAdminAdharCardFileName = string.Empty, companyAdminPancardFileName = string.Empty;
+                        profileFileName = string.Empty, companyAdminAdharCardFileName = string.Empty, companyAdminPancardFileName = string.Empty;
                     bool folderExists = false;
 
                     #region CompanyGST
@@ -480,38 +483,38 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     }
                     #endregion CompanyRegisterProofImage
 
-                    #region Cancel Cheque Image
+                    #region profileFileImage
 
-                    if (CompanyCancellationChequePhotoFile != null)
+                    if (CompanyAdminProfilePhotoFile != null)
                     {
-                        string cancellationChqPath = Server.MapPath(CancellationChequeDirectoryPath);
+                        string companyAdminProfileDirectoryPath = Server.MapPath(CompanyAdminProfileDirectoryPath);
 
-                        folderExists = Directory.Exists(cancellationChqPath);
+                        folderExists = Directory.Exists(companyAdminProfileDirectoryPath);
                         if (!folderExists)
-                            Directory.CreateDirectory(cancellationChqPath);
+                            Directory.CreateDirectory(companyAdminProfileDirectoryPath);
 
                         // Image file validation
-                        string ext = Path.GetExtension(CompanyCancellationChequePhotoFile.FileName);
+                        string ext = Path.GetExtension(CompanyAdminProfilePhotoFile.FileName);
                         if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
                         {
-                            ModelState.AddModelError("CompanyCancellationChequePhotoFile", ErrorMessage.SelectOnlyImage);
+                            ModelState.AddModelError("CompanyAdminProfilePhotoFile", ErrorMessage.SelectOnlyImage);
                             return View(companyRequestVM);
                         }
 
                         // Save file in folder
-                        chqFileName = Guid.NewGuid() + "-" + Path.GetFileName(CompanyCancellationChequePhotoFile.FileName);
-                        CompanyCancellationChequePhotoFile.SaveAs(cancellationChqPath + chqFileName);
+                        profileFileName = Guid.NewGuid() + "-" + Path.GetFileName(CompanyAdminProfilePhotoFile.FileName);
+                        CompanyAdminProfilePhotoFile.SaveAs(companyAdminProfileDirectoryPath + profileFileName);
                     }
                     else
                     {
-                        if (string.IsNullOrEmpty(companyRequestVM.CompanyCancellationChequePhoto))
+                        if (string.IsNullOrEmpty(companyRequestVM.CompanyAdminProfilePhoto))
                         {
-                            ModelState.AddModelError("CompanyCancellationChequePhotoFile", ErrorMessage.ImageRequired);
+                            ModelState.AddModelError("CompanyAdminProfilePhotoFile", ErrorMessage.ImageRequired);
                             return View(companyRequestVM);
                         }
                     }
 
-                    #endregion ChqImage
+                    #endregion profileFileImage
 
                     #region AdharCardImage
                     if (CompanyAdminAadharCardPhotoFile != null)
@@ -597,7 +600,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     objCompany.RegisterProofImage = !string.IsNullOrEmpty(companyRegisterProofFileName) ? companyRegisterProofFileName : objCompany.RegisterProofImage;
                     objCompany.Description = companyRequestVM.CompanyDescription;
                     objCompany.WebisteUrl = companyRequestVM.CompanyWebisteUrl;
-                    objCompany.CancellationChequePhoto = !string.IsNullOrEmpty(chqFileName) ? chqFileName : objCompany.CancellationChequePhoto; ;
                     objCompany.ModifiedBy = loggedInUserId;
                     objCompany.ModifiedDate = DateTime.UtcNow;
 
@@ -615,6 +617,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     objUser.MIddleName = companyRequestVM.CompanyAdminMiddleName;
                     objUser.LastName = companyRequestVM.CompanyAdminLastName;
                     objUser.EmailId = companyRequestVM.CompanyAdminEmailId;
+                    objUser.DOB = companyRequestVM.CompanyAdminDOB;
                     objUser.MobileNo = companyRequestVM.CompanyAdminMobileNo;
                     objUser.AlternateMobileNo = companyRequestVM.CompanyAdminAlternateMobileNo;
                     objUser.Designation = companyRequestVM.CompanyAdminDesignation;
@@ -622,6 +625,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     objUser.Pincode = companyRequestVM.CompanyAdminPincode;
                     objUser.City = companyRequestVM.CompanyAdminCity;
                     objUser.State = companyRequestVM.CompanyAdminState;
+                    objUser.ProfilePhoto= profileFileName;
                     objUser.AadharCardNo = companyRequestVM.CompanyAdminAadharCardNo;
                     objUser.AadharCardPhoto = companyAdminAdharCardFileName;
                     objUser.PanCardPhoto = companyAdminPancardFileName;
@@ -731,11 +735,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                         CompanyRegisterProofImage = cp.RegisterProofImage,
                                         CompanyDescription = cp.Description,
                                         CompanyWebisteUrl = cp.WebisteUrl,
-                                        CompanyCancellationChequePhoto = cp.CancellationChequePhoto,
                                         CompanyAdminPrefix = emp.Prefix,
                                         CompanyAdminFirstName = emp.FirstName,
                                         CompanyAdminMiddleName = emp.MIddleName,
                                         CompanyAdminLastName = emp.LastName,
+                                        CompanyAdminDOB = emp.DOB,
                                         CompanyAdminEmailId = emp.EmailId,
                                         CompanyAdminMobileNo = emp.MobileNo,
                                         CompanyAdminAlternateMobileNo = emp.AlternateMobileNo,
@@ -744,6 +748,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                         CompanyAdminPincode = emp.Pincode,
                                         CompanyAdminCity = emp.City,
                                         CompanyAdminState = emp.State,
+                                        CompanyAdminProfilePhoto = emp.ProfilePhoto,
                                         CompanyAdminAadharCardNo = emp.AadharCardNo,
                                         CompanyAdminAadharCardPhoto = emp.AadharCardPhoto,
                                         CompanyAdminPanCardPhoto = emp.PanCardPhoto,

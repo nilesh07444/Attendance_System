@@ -156,5 +156,16 @@ namespace AttendanceSystem.Helper
                 HttpContext.Current.Session["IsTrialMode"] = value;
             }
         }
+        public static string CompanyLogo
+        {
+            get
+            {
+                return HttpContext.Current.Session["CompanyLogo"] != null ? Convert.ToString(HttpContext.Current.Session["CompanyLogo"]) : string.Empty;
+            }
+            set
+            {
+                HttpContext.Current.Session["CompanyLogo"] = value;
+            }
+        }
     }
 }

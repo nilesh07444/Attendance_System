@@ -21,7 +21,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
         public string companyRegisterProofDirectoryPath = "";
         public string aadharCardDirectoryPath = "";
         public string panCardDirectoryPath = "";
-        public string CancellationChequeDirectoryPath = "";
+        public string CompanyAdminProfileDirectoryPath = "";
         string enviornment;
         public CompanyRequestController()
         {
@@ -32,7 +32,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
             companyRegisterProofDirectoryPath = ErrorMessage.CompanyRegisterProofDirectoryPath;
             aadharCardDirectoryPath = ErrorMessage.AdharcardDirectoryPath;
             panCardDirectoryPath = ErrorMessage.PancardDirectoryPath;
-            CancellationChequeDirectoryPath = ErrorMessage.CancellationChequeDirectoryPath;
+            CompanyAdminProfileDirectoryPath = ErrorMessage.ProfileDirectoryPath;
             enviornment = ConfigurationManager.AppSettings["Environment"].ToString();
         }
         // GET: Client/CompanyRequest
@@ -49,7 +49,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
             HttpPostedFileBase CompanyPanPhotoFile,
             HttpPostedFileBase CompanyLogoImageFile,
             HttpPostedFileBase CompanyRegisterProofImageFile,
-            HttpPostedFileBase CompanyCancellationChequePhotoFile,
+            HttpPostedFileBase CompanyAdminProfilePhotoFile,
             HttpPostedFileBase CompanyAdminAadharCardPhotoFile,
             HttpPostedFileBase CompanyAdminPanCardPhotoFile)
         {
@@ -70,7 +70,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
 
                     //long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
                     string companyGstFileName = string.Empty, companyPanCardFileName = string.Empty, companyLogoFileName = string.Empty, companyRegisterProofFileName = string.Empty,
-                        chqFileName = string.Empty, companyAdminAdharCardFileName = string.Empty, companyAdminPancardFileName = string.Empty;
+                        profileFileName = string.Empty, companyAdminAdharCardFileName = string.Empty, companyAdminPancardFileName = string.Empty;
                     bool folderExists = false;
 
                     #region CompanyGST
@@ -179,28 +179,28 @@ namespace AttendanceSystem.Areas.Client.Controllers
                     }
                     #endregion CompanyRegisterProofImage
 
-                    #region Cancel Cheque Image
+                    #region profileFileImage
 
-                    if (CompanyCancellationChequePhotoFile != null)
+                    if (CompanyAdminProfilePhotoFile != null)
                     {
-                        string cancellationChqPath = Server.MapPath(CancellationChequeDirectoryPath);
+                        string companyAdminProfileDirectoryPath = Server.MapPath(CompanyAdminProfileDirectoryPath);
 
-                        folderExists = Directory.Exists(cancellationChqPath);
+                        folderExists = Directory.Exists(companyAdminProfileDirectoryPath);
                         if (!folderExists)
-                            Directory.CreateDirectory(cancellationChqPath);
+                            Directory.CreateDirectory(companyAdminProfileDirectoryPath);
 
                         // Image file validation
-                        string ext = Path.GetExtension(CompanyCancellationChequePhotoFile.FileName);
+                        string ext = Path.GetExtension(CompanyAdminProfilePhotoFile.FileName);
                         if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
                         {
-                            ModelState.AddModelError("CompanyCancellationChequePhotoFile", ErrorMessage.SelectOnlyImage);
+                            ModelState.AddModelError("CompanyAdminProfilePhotoFile", ErrorMessage.SelectOnlyImage);
                             companyRequestVM.CompanyTypeList = GetCompanyType();
                             return View(companyRequestVM);
                         }
 
                         // Save file in folder
-                        chqFileName = Guid.NewGuid() + "-" + Path.GetFileName(CompanyCancellationChequePhotoFile.FileName);
-                        CompanyCancellationChequePhotoFile.SaveAs(cancellationChqPath + chqFileName);
+                        profileFileName = Guid.NewGuid() + "-" + Path.GetFileName(CompanyAdminProfilePhotoFile.FileName);
+                        CompanyAdminProfilePhotoFile.SaveAs(companyAdminProfileDirectoryPath + profileFileName);
                     }
                     else
                     {
@@ -209,7 +209,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
                         return View(companyRequestVM);
                     }
 
-                    #endregion ChqImage
+                    #endregion profileFileImage
 
                     #region AdharCardImage
                     if (CompanyAdminAadharCardPhotoFile != null)
@@ -305,7 +305,6 @@ namespace AttendanceSystem.Areas.Client.Controllers
                     objCompany.CompanyRegisterProofImage = companyRegisterProofFileName;
                     objCompany.CompanyDescription = companyRequestVM.CompanyDescription;
                     objCompany.CompanyWebisteUrl = companyRequestVM.CompanyWebisteUrl;
-                    objCompany.CompanyCancellationChequePhoto = chqFileName;
                     objCompany.CompanyAdminPrefix = companyRequestVM.CompanyAdminPrefix;
                     objCompany.CompanyAdminFirstName = companyRequestVM.CompanyAdminFirstName;
                     objCompany.CompanyAdminMiddleName = companyRequestVM.CompanyAdminMiddleName;
@@ -318,6 +317,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
                     objCompany.CompanyAdminPincode = companyRequestVM.CompanyAdminPincode;
                     objCompany.CompanyAdminCity = companyRequestVM.CompanyAdminCity;
                     objCompany.CompanyAdminState = companyRequestVM.CompanyAdminState;
+                    objCompany.CompanyAdminProfilePhoto = profileFileName;
                     objCompany.CompanyAdminAadharCardNo = companyRequestVM.CompanyAdminAadharCardNo;
                     objCompany.CompanyAdminAadharCardPhoto = companyAdminAdharCardFileName;
                     objCompany.CompanyAdminPanCardPhoto = companyAdminPancardFileName;

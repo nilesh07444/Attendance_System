@@ -23,6 +23,7 @@ namespace AttendanceSystem.Models
         public string LastName { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
+        public System.DateTime DOB { get; set; }
         public string EmailId { get; set; }
         public string MobileNo { get; set; }
         public string AlternateMobileNo { get; set; }
@@ -35,6 +36,7 @@ namespace AttendanceSystem.Models
         public string AadharCardPhoto { get; set; }
         public string PanCardNo { get; set; }
         public string PanCardPhoto { get; set; }
+        public string ProfilePhoto { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
         public long CreatedBy { get; set; }

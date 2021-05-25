@@ -1,5 +1,8 @@
 ﻿@using AttendanceSystem.Helper
-
+@{
+    var roleId = clsAdminSession.RoleID;
+    var companyLogo = clsAdminSession.CompanyLogo;
+}
 <!DOCTYPE html>
 <html lang="en">
 <!-- index.html  21 Nov 2019 03:44:50 GMT -->
@@ -50,8 +53,25 @@
                     <li class="dropdown">
                         <a href="#" data-toggle="dropdown"
                            class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-                            <img alt="image" src="~/Content/admin-theme/assets/img/user.png"
-                                 class="user-img-radious-style"> <span class="d-sm-none d-lg-inline-block"></span>
+                            @if (roleId == (int)AdminRoles.SuperAdmin)
+                            {
+                                <img alt="image" src="~/Content/admin-theme/assets/img/logo.png"
+                                     class="user-img-radious-style">
+                            }
+                            else
+                            {
+                                if (string.IsNullOrEmpty(companyLogo))
+                                {
+                                    <img alt="image" src="@ErrorMessage.DefaultImagePath"
+                                         class="user-img-radious-style">
+                                }
+                                else
+                                {
+                                    <img alt="image" src="@ErrorMessage.CompanyLogoDirectoryPath/@companyLogo"
+                                         class="user-img-radious-style">
+                                }
+                            }
+                            <span class="d-sm-none d-lg-inline-block"></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right pullDown">
                             <div class="dropdown-title">Hello @clsAdminSession.FullName</div>
@@ -122,7 +142,7 @@
                                     <li><a class="nav-link" href="/admin/testimonial">Testimonial</a></li>
                                 </ul>
                             </li>
-                            
+
                             <li class="dropdown @(ViewBag.Title == "Feedback" ? "active" : "")">
                                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="file-minus"></i><span>Feedback</span></a>
                                 <ul class="dropdown-menu">
@@ -152,16 +172,18 @@
                                     <li><a class="nav-link" href="/admin/employee/loginhistory">Login History</a></li>
                                 </ul>
                             </li>
-
-                            <li class="dropdown @(ViewBag.Title == "Worker" ? "active" : "")">
-                                <a href="#" class="menu-toggle nav-link has-dropdown">
-                                    <i data-feather="users"></i><span>Worker</span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="nav-link" href="/admin/worker/add/0">Add Worker</a></li>
-                                    <li><a class="nav-link" href="/admin/worker">Worker List</a></li>
-                                </ul>
-                            </li>
+                            if (clsAdminSession.CompanyTypeId == (int)CompanyType.ConstructionCompany)
+                            {
+                                <li class="dropdown @(ViewBag.Title == "Worker" ? "active" : "")">
+                                    <a href="#" class="menu-toggle nav-link has-dropdown">
+                                        <i data-feather="users"></i><span>Worker</span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="nav-link" href="/admin/worker/add/0">Add Worker</a></li>
+                                        <li><a class="nav-link" href="/admin/worker">Worker List</a></li>
+                                    </ul>
+                                </li>
+                            }
                             <li class="dropdown @(ViewBag.Title == "Leave" ? "active" : "")">
                                 <a href="#" class="menu-toggle nav-link has-dropdown">
                                     <i data-feather="briefcase"></i><span>Leave</span>
@@ -199,30 +221,31 @@
                                     <li><a class="nav-link" href="/admin/attendance">Attendance List</a></li>
                                 </ul>
                             </li>
-
-                            <li class="dropdown @(ViewBag.Title == "Site" ? "active" : "")">
-                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="clock"></i><span>Site</span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="nav-link" href="/admin/site/add/0">Add Site</a></li>
-                                    <li><a class="nav-link" href="/admin/site">Site List</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown @(ViewBag.Title == "MaterialCategory" ? "active" : "")">
-                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="box"></i><span>Material Category</span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="nav-link" href="/admin/materialcategory/add/0">Add Material Category</a></li>
-                                    <li><a class="nav-link" href="/admin/materialcategory">Material Category List</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown @(ViewBag.Title == "Material" ? "active" : "")">
-                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="aperture"></i><span>Materials</span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="nav-link" href="/admin/material/add/0">Add Material</a></li>
-                                    <li><a class="nav-link" href="/admin/material">Material List</a></li>
-                                    <li><a class="nav-link" href="/admin/material/deletedmaterial">Deleted Material List</a></li>
-                                </ul>
-                            </li>
-
+                            if (clsAdminSession.CompanyTypeId == (int)CompanyType.ConstructionCompany)
+                            {
+                                <li class="dropdown @(ViewBag.Title == "Site" ? "active" : "")">
+                                    <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="clock"></i><span>Site</span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="nav-link" href="/admin/site/add/0">Add Site</a></li>
+                                        <li><a class="nav-link" href="/admin/site">Site List</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown @(ViewBag.Title == "MaterialCategory" ? "active" : "")">
+                                    <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="box"></i><span>Material Category</span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="nav-link" href="/admin/materialcategory/add/0">Add Material Category</a></li>
+                                        <li><a class="nav-link" href="/admin/materialcategory">Material Category List</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown @(ViewBag.Title == "Material" ? "active" : "")">
+                                    <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="aperture"></i><span>Materials</span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="nav-link" href="/admin/material/add/0">Add Material</a></li>
+                                        <li><a class="nav-link" href="/admin/material">Material List</a></li>
+                                        <li><a class="nav-link" href="/admin/material/deletedmaterial">Deleted Material List</a></li>
+                                    </ul>
+                                </li>
+                            }
                             <li class="dropdown @(ViewBag.Title == "EmployeeRating" ? "active" : "")">
                                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="file-text"></i><span>Employee Rating</span></a>
                                 <ul class="dropdown-menu">

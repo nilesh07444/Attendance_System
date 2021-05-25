@@ -182,15 +182,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label>Cancelled Cheque Photo*</label>
-                                @Html.TextBoxFor(model => model.CompanyCancellationChequePhotoFile, new { type = "file", @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.CompanyCancellationChequePhotoFile, "", new { @class = "error" })
-                            </div>
-                        </div>
-                    </div>
+
 
                     <div class="row">
                         <div class="col-12">
@@ -201,14 +193,14 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Prefix*</label>
-                                @Html.DropDownListFor(model => model.CompanyAdminPrefix, new SelectList(lstPrefix, "Value", "Text"), "- Select -", new { @class = "form-control", style = "width: 100%" })
+                                @Html.DropDownListFor(model => model.CompanyAdminPrefix, new SelectList(lstPrefix, "Value", "Text"), "- Select -", new { @class = "form-control required", style = "width: 100%" })
                                 @Html.ValidationMessageFor(model => model.CompanyAdminPrefix, "", new { @class = "error" })
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>First Name*</label>
-                                @Html.TextBoxFor(model => model.CompanyAdminFirstName, new { @type = "text", @class = "form-control", @placeholder = "Enter First Name" })
+                                @Html.TextBoxFor(model => model.CompanyAdminFirstName, new { @type = "text", @class = "form-control required", @placeholder = "Enter First Name" })
                                 @Html.ValidationMessageFor(model => model.CompanyAdminFirstName, "", new { @class = "error" })
                             </div>
                         </div>
@@ -217,14 +209,14 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Middle Name*</label>
-                                @Html.TextBoxFor(model => model.CompanyAdminMiddleName, new { @type = "text", @class = "form-control", @placeholder = "Enter Middle Name" })
+                                @Html.TextBoxFor(model => model.CompanyAdminMiddleName, new { @type = "text", @class = "form-control required", @placeholder = "Enter Middle Name" })
                                 @Html.ValidationMessageFor(model => model.CompanyAdminMiddleName, "", new { @class = "error" })
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Last Name*</label>
-                                @Html.TextBoxFor(model => model.CompanyAdminLastName, new { @type = "text", @class = "form-control", @placeholder = "Enter Last Name" })
+                                @Html.TextBoxFor(model => model.CompanyAdminLastName, new { @type = "text", @class = "form-control required", @placeholder = "Enter Last Name" })
                                 @Html.ValidationMessageFor(model => model.CompanyAdminLastName, "", new { @class = "error" })
                             </div>
                         </div>
@@ -232,11 +224,20 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
+                                <label>Date of Birth</label>
+                                @Html.TextBoxFor(model => model.CompanyAdminDOB, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Enter Date of Birth" })
+                                @Html.ValidationMessageFor(model => model.CompanyAdminDOB, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
                                 <label>Email Id</label>
-                                @Html.TextBoxFor(model => model.CompanyAdminEmailId, new { @type = "email", @class = "form-control", @placeholder = "Enter Email Id" })
+                                @Html.TextBoxFor(model => model.CompanyAdminEmailId, new { @type = "email", @class = "form-control required", @placeholder = "Enter Email Id" })
                                 @Html.ValidationMessageFor(model => model.CompanyAdminEmailId, "", new { @class = "error" })
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Mobile No*</label>
@@ -244,8 +245,6 @@
                                 @Html.ValidationMessageFor(model => model.CompanyAdminMobileNo, "", new { @class = "error" })
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Alternate Mobile No</label>
@@ -253,6 +252,8 @@
                                 @Html.ValidationMessageFor(model => model.CompanyAdminAlternateMobileNo, "", new { @class = "error" })
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Designation*</label>
@@ -260,8 +261,6 @@
                                 @Html.ValidationMessageFor(model => model.CompanyAdminDesignation, "", new { @class = "error" })
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Address*</label>
@@ -269,6 +268,8 @@
                                 @Html.ValidationMessageFor(model => model.CompanyAdminAddress, "", new { @class = "error" })
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Pincode*</label>
@@ -276,8 +277,6 @@
                                 @Html.ValidationMessageFor(model => model.CompanyAdminPincode, "", new { @class = "error" })
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>City*</label>
@@ -285,11 +284,20 @@
                                 @Html.ValidationMessageFor(model => model.CompanyAdminCity, "", new { @class = "error" })
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>State*</label>
                                 @Html.TextBoxFor(model => model.CompanyAdminState, new { @type = "text", @class = "form-control", @placeholder = "Enter State" })
                                 @Html.ValidationMessageFor(model => model.CompanyAdminState, "", new { @class = "error" })
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Company Admin Profile Photo*</label>
+                                @Html.TextBoxFor(model => model.CompanyAdminProfilePhotoFile, new { type = "file", @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.CompanyAdminProfilePhotoFile, "", new { @class = "error" })
                             </div>
                         </div>
                     </div>

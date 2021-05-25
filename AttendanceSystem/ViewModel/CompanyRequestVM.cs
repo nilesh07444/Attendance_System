@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web;
 using System.Web.Mvc;
@@ -65,10 +66,6 @@ namespace AttendanceSystem.ViewModel
         [Display(Name = "Company website Url")]
         public string CompanyWebisteUrl { get; set; }
 
-        [Display(Name = "Company Cancel Cheque Photo")]
-        public HttpPostedFileBase CompanyCancellationChequePhotoFile { get; set; }
-        public string CompanyCancellationChequePhoto { get; set; }
-
         [Required, Display(Name = "Prefix")]
         public string CompanyAdminPrefix { get; set; }
 
@@ -80,6 +77,8 @@ namespace AttendanceSystem.ViewModel
 
         [Required, Display(Name = "Last Name")]
         public string CompanyAdminLastName { get; set; }
+        [Required, Display(Name = "Company Admin Date Of Birth")]
+        public DateTime CompanyAdminDOB { get; set; }
 
         [Display(Name = "Email Id")]
         public string CompanyAdminEmailId { get; set; }
@@ -107,6 +106,10 @@ namespace AttendanceSystem.ViewModel
 
         [Required, Display(Name = "Aadhar Card No")]
         public string CompanyAdminAadharCardNo { get; set; }
+
+        [Display(Name = "Profile Photo")]
+        public HttpPostedFileBase CompanyAdminProfilePhotoFile { get; set; }
+        public string CompanyAdminProfilePhoto { get; set; }
 
         [Display(Name = "Aadhar Card Photo")]
         public HttpPostedFileBase CompanyAdminAadharCardPhotoFile { get; set; }

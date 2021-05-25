@@ -45,6 +45,8 @@ namespace AttendanceSystem.ViewModel
         public decimal? InLongitude { get; set; }
         public decimal? OutLatitude { get; set; }
         public decimal? OutLongitude { get; set; }
+        public decimal NoOfHoursWorked { get; set; }
+        public int NoOfUnitWorked { get; set; }
 
     }
 

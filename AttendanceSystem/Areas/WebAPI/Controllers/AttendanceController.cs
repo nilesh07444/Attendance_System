@@ -240,7 +240,6 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             response.Data = false;
             try
             {
-                long employeeId = base.UTI.EmployeeId;
                 #region Validation
                 if (attendanceVM.AttendanceId == 0)
                 {
@@ -258,6 +257,27 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 {
                     response.IsError = true;
                     response.AddError(ErrorMessage.TomorrowWorkDetailRequired);
+                }
+
+                tbl_Employee employeeObj = _db.tbl_Employee.FirstOrDefault(x => x.EmployeeId == employeeId);
+                if (employeeObj.EmploymentCategory == (int)EmploymentCategory.MonthlyBased || employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased)
+                {
+                    if (attendanceVM.DayType == 0)
+                    {
+                        response.IsError = true;
+                        response.AddError(ErrorMessage.PleaseProvideDayType);
+                    }
+                }
+                if (employeeObj.EmploymentCategory == (int)EmploymentCategory.HourlyBased && attendanceVM.NoOfHoursWorked == 0)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.PleaseProvideNoOfHoursWorked);
+                }
+
+                if (employeeObj.EmploymentCategory == (int)EmploymentCategory.UnitBased && attendanceVM.NoOfUnitWorked == 0)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.PleaseProvideNoOfHoursWorked);
                 }
 
                 if (attendanceVM.AttendanceId > 0)
@@ -278,6 +298,23 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         attendanceObject.Remarks = attendanceVM.Remarks;
                         attendanceObject.ModifiedBy = base.UTI.EmployeeId;
                         attendanceObject.ModifiedDate = DateTime.UtcNow;
+
+                        if (employeeObj.EmploymentCategory == (int)EmploymentCategory.MonthlyBased || employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased)
+                        {
+                            attendanceObject.DayType = attendanceVM.DayType;
+                            attendanceObject.ExtraHours = attendanceVM.ExtraHours;
+                        }
+
+                        if (employeeObj.EmploymentCategory == (int)EmploymentCategory.HourlyBased)
+                        {
+                            attendanceObject.NoOfHoursWorked = attendanceVM.NoOfHoursWorked;
+                        }
+
+                        if (employeeObj.EmploymentCategory == (int)EmploymentCategory.UnitBased)
+                        {
+                            attendanceObject.NoOfUnitWorked = attendanceVM.NoOfUnitWorked;
+                        }
+
                         _db.SaveChanges();
                         response.Data = true;
                     }
