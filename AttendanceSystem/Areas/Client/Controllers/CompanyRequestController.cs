@@ -23,6 +23,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
         public string panCardDirectoryPath = "";
         public string CompanyAdminProfileDirectoryPath = "";
         string enviornment;
+        bool? setOtp ;
         public CompanyRequestController()
         {
             _db = new AttendanceSystemEntities();
@@ -34,6 +35,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
             panCardDirectoryPath = ErrorMessage.PancardDirectoryPath;
             CompanyAdminProfileDirectoryPath = ErrorMessage.ProfileDirectoryPath;
             enviornment = ConfigurationManager.AppSettings["Environment"].ToString();
+            setOtp = Convert.ToBoolean(ConfigurationManager.AppSettings["SetOtp"].ToString());
         }
         // GET: Client/CompanyRequest
         public ActionResult Index()
@@ -428,7 +430,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
                 errorMessage = ex.Message.ToString();
             }
 
-            return Json(new { Status = status, Otp = otp, ErrorMessage = errorMessage }, JsonRequestBehavior.AllowGet);
+            return Json(new { Status = status, Otp = otp, ErrorMessage = errorMessage, SetOtp = setOtp }, JsonRequestBehavior.AllowGet);
         }
     }
 }

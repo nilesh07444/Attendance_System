@@ -149,7 +149,9 @@
                             $("#dv_login").hide();
                             $("#dv_otp").show();
                             $("#OTP").val(data.Otp);
-                            $("#TextOTP").val(data.Otp);
+                            if (data.SetOtp) {
+                                $("#TextOTP").val(data.Otp);
+                            }
                             $("#btn_OtpSubmit").attr("disabled", false)
                         }
                         else {

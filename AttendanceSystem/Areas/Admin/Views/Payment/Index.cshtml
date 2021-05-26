@@ -168,7 +168,9 @@
                          if (data.Status == 1) {
                              $('#OtpModal').modal('show');
                              $("#OTP").val(data.Otp);
-                             $("#TextOTP").val(data.Otp);
+                             if (data.SetOtp) {
+                                 $("#TextOTP").val(data.Otp);
+                             }
                          }
                          else {
                              alert(data.ErrorMessage);

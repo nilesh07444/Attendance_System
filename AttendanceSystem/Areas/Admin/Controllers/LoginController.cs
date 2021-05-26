@@ -13,6 +13,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         AttendanceSystemEntities _db;
         string psSult = ConfigurationManager.AppSettings["PasswordSult"].ToString();
         string enviornment = ConfigurationManager.AppSettings["Environment"].ToString();
+        bool? setOtp = Convert.ToBoolean(ConfigurationManager.AppSettings["SetOtp"].ToString());
         public LoginController()
         {
             _db = new AttendanceSystemEntities();
@@ -85,7 +86,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 errorMessage = ex.Message.ToString();
             }
 
-            return Json(new { Status = status, Otp = otp, ErrorMessage = errorMessage }, JsonRequestBehavior.AllowGet);
+            return Json(new { Status = status, Otp = otp, ErrorMessage = errorMessage, SetOtp = setOtp }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -113,6 +114,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 clsAdminSession.CompanyTypeId = companyObj != null ? companyObj.CompanyTypeId : 0;
                 clsAdminSession.IsTrialMode = companyObj != null ? companyObj.IsTrialMode : false;
                 clsAdminSession.CompanyLogo = companyObj != null ? companyObj.CompanyLogoImage : string.Empty;
+                clsAdminSession.SetOtp = setOtp != null ? setOtp.Value : false;
             }
             catch (Exception ex)
             {
@@ -188,7 +190,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 errorMessage = ex.Message.ToString();
             }
 
-            return Json(new { Status = status, UserName = userName, Otp = otp, ErrorMessage = errorMessage }, JsonRequestBehavior.AllowGet);
+            return Json(new { Status = status, UserName = userName, Otp = otp, ErrorMessage = errorMessage, SetOtp = setOtp }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Signout()

@@ -611,7 +611,7 @@ namespace AttendanceSystem
                 int SMTpPort = Convert.ToInt32(objGensetting.SMTPPort);
                 string SMTPEMail = objGensetting.SMTPEmail;
                 string SMTPPwd = objGensetting.SMTPPassword;
-                 
+
                 mailMessage.IsBodyHtml = true;
                 // System.Net.Mail.MailMessage mailMessage = (System.Net.Mail.MailMessage)mailMsg;
 
@@ -623,7 +623,7 @@ namespace AttendanceSystem
                     client.UseDefaultCredentials = false;
                     client.Host = objGensetting.SMTPHost;
                     client.Port = Convert.ToInt32(objGensetting.SMTPPort);
-                    client.Credentials = new NetworkCredential(SMTPEMail, SMTPPwd); 
+                    client.Credentials = new NetworkCredential(SMTPEMail, SMTPPwd);
                     client.DeliveryMethod = SmtpDeliveryMethod.Network;
                     mailMessage.IsBodyHtml = true;
                     client.Send(mailMessage);
@@ -660,6 +660,12 @@ namespace AttendanceSystem
             {
                 return "";
             }
+        }
+
+        public static string GetCurrentDomain()
+        {
+            var request = HttpContext.Current.Request;
+            return request.Url.Scheme + "://" + request.Url.Authority;
         }
     }
 }

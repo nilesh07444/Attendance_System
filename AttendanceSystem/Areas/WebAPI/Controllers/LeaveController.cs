@@ -34,12 +34,6 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     response.AddError(ErrorMessage.LeaveDateRequired);
                 }
 
-                if (leaveVM.StartDate < DateTime.Now.Date || leaveVM.EndDate < DateTime.Now.Date)
-                {
-                    response.IsError = true;
-                    response.AddError(ErrorMessage.LeaveDateCanBeFutureDateOnly);
-                }
-
                 if (leaveVM.EndDate < leaveVM.StartDate)
                 {
                     response.IsError = true;

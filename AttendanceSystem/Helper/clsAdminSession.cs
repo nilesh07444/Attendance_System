@@ -167,5 +167,16 @@ namespace AttendanceSystem.Helper
                 HttpContext.Current.Session["CompanyLogo"] = value;
             }
         }
+        public static bool SetOtp
+        {
+            get
+            {
+                return HttpContext.Current.Session["SetOtp"] != null ? Convert.ToBoolean(HttpContext.Current.Session["SetOtp"]) : false;
+            }
+            set
+            {
+                HttpContext.Current.Session["SetOtp"] = value;
+            }
+        }
     }
 }

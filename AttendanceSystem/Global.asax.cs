@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Newtonsoft.Json;
+using System;
+using System.Globalization;
 using System.Text;
-using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -22,6 +21,13 @@ namespace AttendanceSystem
             var formatters = GlobalConfiguration.Configuration.Formatters;
             formatters.Remove(formatters.XmlFormatter);
 
+            GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings =
+                new JsonSerializerSettings
+                {
+                    DateFormatHandling = DateFormatHandling.IsoDateFormat,
+                    DateTimeZoneHandling = DateTimeZoneHandling.Unspecified,
+                    Culture = CultureInfo.GetCultureInfo("fr-FR")
+                };
         }
 
         protected void Application_Error(object sender, EventArgs e)
@@ -32,7 +38,7 @@ namespace AttendanceSystem
             StringBuilder errormessage = new StringBuilder();
             errormessage.Append(exception.Message);
             errormessage.Append(line);
-            errormessage.Append(exception.InnerException!=null? exception.InnerException.Message:string.Empty);
+            errormessage.Append(exception.InnerException != null ? exception.InnerException.Message : string.Empty);
             errormessage.Append(line);
             errormessage.Append(exception.StackTrace);
             CommonMethod.AppLog(errormessage.ToString());

@@ -99,7 +99,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                             if (!response.IsError)
                             {
-                               
+
                                 loginResponseVM.IsFingerprintEnabled = data.IsFingerprintEnabled;
                                 loginResponseVM.EmployeeId = data.EmployeeId;
 
@@ -232,7 +232,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     authenticateVM.AdharCardNo = data.AdharCardNo;
                     authenticateVM.DateOfIdCardExpiry = data.DateOfIdCardExpiry;
                     authenticateVM.Remarks = data.Remarks;
-                    authenticateVM.ProfilePicture = ErrorMessage.EmployeeDirectoryPath + data.ProfilePicture;
+                    authenticateVM.ProfilePicture = CommonMethod.GetCurrentDomain() + ErrorMessage.EmployeeDirectoryPath + data.ProfilePicture;
                     authenticateVM.EmploymentCategory = data.EmploymentCategory;
                     authenticateVM.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)data.EmploymentCategory);
                     authenticateVM.IsTrialMode = company.IsTrialMode;

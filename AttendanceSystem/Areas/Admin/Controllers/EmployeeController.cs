@@ -203,12 +203,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     {
                         tbl_Employee objEmployee = _db.tbl_Employee.Where(x => x.EmployeeId == employeeVM.EmployeeId).FirstOrDefault();
                         objEmployee.ProfilePicture = profileImageFile != null ? fileName : objEmployee.ProfilePicture;
-                        objEmployee.AdminRoleId = employeeVM.AdminRoleId;
                         objEmployee.Prefix = employeeVM.Prefix;
                         objEmployee.FirstName = employeeVM.FirstName;
                         objEmployee.LastName = employeeVM.LastName;
                         objEmployee.Email = employeeVM.Email;
-                        objEmployee.EmployeeCode = employeeVM.EmployeeCode;
                         objEmployee.MobileNo = employeeVM.MobileNo;
                         objEmployee.AlternateMobile = employeeVM.AlternateMobile;
                         objEmployee.Address = employeeVM.Address;
@@ -223,7 +221,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployee.AdharCardNo = employeeVM.AdharCardNo;
                         objEmployee.DateOfIdCardExpiry = employeeVM.DateOfIdCardExpiry;
                         objEmployee.Remarks = employeeVM.Remarks;
-                        objEmployee.EmploymentCategory = employeeVM.EmploymentCategory;
                         objEmployee.PerCategoryPrice = employeeVM.PerCategoryPrice;
                         objEmployee.MonthlySalaryPrice = employeeVM.MonthlySalaryPrice;
                         objEmployee.ExtraPerHourPrice = employeeVM.ExtraPerHourPrice;
@@ -488,7 +485,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 errorMessage = ex.Message.ToString();
             }
 
-            return Json(new { Status = status, Otp = otp, ErrorMessage = errorMessage }, JsonRequestBehavior.AllowGet);
+            return Json(new { Status = status, Otp = otp, ErrorMessage = errorMessage, SetOtp = clsAdminSession.SetOtp }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult LoginHistory(int? employeeId = null)

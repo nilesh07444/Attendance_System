@@ -215,11 +215,14 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                  InLatitude = at.InLatitude,
                                                  InLongitude = at.InLongitude,
                                                  OutLatitude = at.OutLatitude,
-                                                 OutLongitude = at.OutLongitude
+                                                 OutLongitude = at.OutLongitude,
+                                                 NoOfHoursWorked = at.NoOfHoursWorked.HasValue ? at.NoOfHoursWorked.Value : 0,
+                                                 NoOfUnitWorked = at.NoOfUnitWorked.HasValue ? at.NoOfUnitWorked.Value : 0
                                              }).FirstOrDefault();
                 leaveDetails.StatusText = CommonMethod.GetEnumDescription((AttendanceStatus)leaveDetails.Status);
                 leaveDetails.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)leaveDetails.EmploymentCategory);
-
+                leaveDetails.InDateTime = Convert.ToDateTime(CommonMethod.ConvertFromUTCNew(leaveDetails.InDateTime));
+                leaveDetails.OutDateTime = Convert.ToDateTime(CommonMethod.ConvertFromUTCNew(leaveDetails.OutDateTime));
                 response.Data = leaveDetails;
             }
             catch (Exception ex)
@@ -405,7 +408,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             try
             {
                 DateTime today = DateTime.UtcNow.Date;
-               
+
                 #region Validation
 
                 if (_db.tbl_Leave.Any(x => x.UserId == employeeId && x.StartDate <= today && x.EndDate >= today && x.LeaveStatus != (int)LeaveStatus.Reject))

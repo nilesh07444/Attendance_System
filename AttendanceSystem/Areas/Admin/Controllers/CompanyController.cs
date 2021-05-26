@@ -703,7 +703,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 errorMessage = ex.Message.ToString();
             }
 
-            return Json(new { Status = status, Otp = otp, ErrorMessage = errorMessage }, JsonRequestBehavior.AllowGet);
+            return Json(new { Status = status, Otp = otp, ErrorMessage = errorMessage, SetOtp = clsAdminSession.SetOtp }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult View(long id)
