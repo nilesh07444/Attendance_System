@@ -165,6 +165,14 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 {
                     x.StatusText = CommonMethod.GetEnumDescription((AttendanceStatus)x.Status);
                     x.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)x.EmploymentCategory);
+                    if (x.DayType == 1)
+                    {
+                        x.DayTypeText = CommonMethod.GetEnumDescription(DayType.FullDay);
+                    }
+                    else if(x.DayType == 0.5)
+                    {
+                        x.DayTypeText = CommonMethod.GetEnumDescription(DayType.HalfDay);
+                    }
                 });
                 response.Data = attendanceList;
             }
@@ -223,6 +231,14 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 leaveDetails.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)leaveDetails.EmploymentCategory);
                 leaveDetails.InDateTime = Convert.ToDateTime(CommonMethod.ConvertFromUTCNew(leaveDetails.InDateTime));
                 leaveDetails.OutDateTime = Convert.ToDateTime(CommonMethod.ConvertFromUTCNew(leaveDetails.OutDateTime));
+                if (leaveDetails.DayType == 1)
+                {
+                    leaveDetails.DayTypeText = CommonMethod.GetEnumDescription(DayType.FullDay);
+                }
+                else if (leaveDetails.DayType == 0.5)
+                {
+                    leaveDetails.DayTypeText = CommonMethod.GetEnumDescription(DayType.HalfDay);
+                }
                 response.Data = leaveDetails;
             }
             catch (Exception ex)

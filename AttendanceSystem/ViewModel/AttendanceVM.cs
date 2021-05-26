@@ -18,6 +18,7 @@ namespace AttendanceSystem.ViewModel
         public DateTime AttendanceDate { get; set; }
         [Display(Name = "Day Type")]
         public double DayType { get; set; }
+        public string DayTypeText { get; set; }
         [Display(Name = "Extra Hours")]
         public decimal ExtraHours { get; set; }
         [Display(Name = "Today Work detail")]

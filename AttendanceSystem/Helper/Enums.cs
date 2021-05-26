@@ -1,4 +1,6 @@
-﻿namespace AttendanceSystem.Helper
+﻿using System.ComponentModel;
+
+namespace AttendanceSystem.Helper
 {
 
     public enum AdminRoles
@@ -139,5 +141,13 @@
         EmployeeLoginOtp = 3,
     }
 
+    public enum DayType
+    {
+        [Description("Full Day")]
+        FullDay = 1,
+        [Description("Half Day")]
+        HalfDay = 2
+
+    }
 }
 
