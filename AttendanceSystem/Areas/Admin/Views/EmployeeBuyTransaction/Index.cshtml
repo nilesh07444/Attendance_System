@@ -1,0 +1,71 @@
+﻿@using AttendanceSystem.Helper
+@using AttendanceSystem.ViewModel;
+@model List<AttendanceSystem.ViewModel.EmployeeBuyTransactionVM>
+@{
+    ViewBag.Title = "BuyEmployee";
+    int counter = 1;
+}
+
+
+<section class="section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Buy Employee List</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="pull-right">
+                            <a href="/admin/employeebuytransaction/buy" class="btn btn-icon icon-left btn-primary"><i class="fas fa-plus-circle"></i> Buy Employee</a>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover" id="tableExport" style="width:100%;">
+                                <thead>
+                                    <tr>
+                                        <td>#</td>
+                                        <th>No Of Employee</th>
+                                        <th>Amount Per Employee</th>
+                                        <th>Total Paid Amount</th>
+                                        <th>Expiry Date</th>
+                                        <th>Payment Gateway Transaction Id</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null && Model.Count > 0)
+                                    {
+                                        foreach (EmployeeBuyTransactionVM obj in Model)
+                                        {
+                                            <tr>
+                                                <td>@counter.</td>
+                                                <td>@obj.NoOfEmpToBuy</td>
+                                                <td>@obj.AmountPerEmp</td>
+                                                <td>@obj.TotalPaidAmount</td>
+                                                <td>@obj.ExpiryDate</td>
+                                                <td>@obj.PaymentGatewayTransactionId</td>
+                                            </tr>
+
+                                            counter++;
+                                        }
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+         
+    })
+
+</script> 

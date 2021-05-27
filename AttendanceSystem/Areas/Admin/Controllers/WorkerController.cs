@@ -89,6 +89,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                      NoOfFreeLeavePerMonth = emp.NoOfFreeLeavePerMonth
 
                                                  }).OrderByDescending(x => x.EmployeeId).ToList();
+                employeeFilterVM.NoOfEmployee = _db.tbl_Employee.Where(x => x.CompanyId == companyId && x.IsActive).Count();
+                employeeFilterVM.ActiveEmployee = employeeFilterVM.EmployeeList.Where(x => x.IsActive).Count();
             }
             catch (Exception ex)
             {
@@ -212,7 +214,17 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     }
                     else
                     {
-                        int empCount = _db.tbl_Employee.Where(x => x.CompanyId == companyId).Count();
+                        int noOfEmployee = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == companyId && DateTime.Today >= x.StartDate && DateTime.Today < x.EndDate).Select(x => x.NoOfEmployee).FirstOrDefault();
+                        var empCount = (from emp in _db.tbl_Employee
+                                        where emp.CompanyId == companyId
+                                        select new
+                                        {
+                                            employeeId = emp.EmployeeId,
+                                            isActive = emp.IsActive
+                                        }).ToList();
+
+                        int activeEmployee = empCount.Where(x => x.isActive).Count();
+
                         tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == companyId).FirstOrDefault();
                         tbl_Employee objEmployee = new tbl_Employee();
                         objEmployee.ProfilePicture = fileName;
@@ -222,7 +234,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployee.Prefix = employeeVM.Prefix;
                         objEmployee.FirstName = employeeVM.FirstName;
                         objEmployee.LastName = employeeVM.LastName;
-                        objEmployee.EmployeeCode = CommonMethod.getEmployeeCodeFormat(companyId, objCompany.CompanyName, empCount);
+                        objEmployee.EmployeeCode = CommonMethod.getEmployeeCodeFormat(companyId, objCompany.CompanyName, empCount.Count());
                         objEmployee.MobileNo = employeeVM.MobileNo;
                         objEmployee.Address = employeeVM.Address;
                         objEmployee.City = employeeVM.City;
@@ -238,7 +250,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployee.ExtraPerHourPrice = employeeVM.ExtraPerHourPrice;
                         objEmployee.IsLeaveForward = employeeVM.IsLeaveForward;
                         objEmployee.NoOfFreeLeavePerMonth = employeeVM.NoOfFreeLeavePerMonth;
-                        objEmployee.IsActive = true;
+                        objEmployee.IsActive = activeEmployee >= noOfEmployee ? false : true;
                         objEmployee.CreatedBy = loggedInUserId;
                         objEmployee.CreatedDate = DateTime.UtcNow;
                         objEmployee.UpdatedBy = loggedInUserId;

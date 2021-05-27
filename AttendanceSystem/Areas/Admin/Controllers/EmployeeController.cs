@@ -96,7 +96,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                      NoOfFreeLeavePerMonth = emp.NoOfFreeLeavePerMonth
 
                                                  }).OrderByDescending(x => x.EmployeeId).ToList();
-                employeeFilterVM.NoOfEmployee = companyPackage.NoOfEmployee;
+                employeeFilterVM.NoOfEmployee = _db.tbl_Employee.Where(x => x.CompanyId == companyId && x.IsActive).Count();
             }
             catch (Exception ex)
             {
@@ -155,7 +155,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 employeeVM.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)employeeVM.EmploymentCategory);
                 employeeVM.AdminRoleText = CommonMethod.GetEnumDescription((AdminRoles)employeeVM.AdminRoleId);
             }
-           
+
             employeeVM.UserRoleList = GetUserRoleList();
             return View(employeeVM);
         }
