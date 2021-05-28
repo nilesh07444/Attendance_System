@@ -38,6 +38,18 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             {
 
                 #region validation
+                if (employeeVM.EmploymentCategory == 0)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.EmploymentCategoryRequired);
+                }
+
+                if (employeeVM.WorkerTypeId == 0)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.WorketTypeRequired);
+                }
+
                 if (employeeVM.EmploymentCategory == (int)EmploymentCategory.DailyBased && employeeVM.PerCategoryPrice == 0)
                 {
                     response.IsError = true;

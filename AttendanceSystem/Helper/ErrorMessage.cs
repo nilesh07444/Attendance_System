@@ -126,6 +126,8 @@
         public static string MonthlySalaryRequiredForMonthlyBasedWorker = "Monthly salary required for monthly based worker.";
         public static string ExtraPerHourPriceRequired = "Extra per hour price required.";
         public static string PerUnitPriceRequiredForUnitBasedWorker = "Per unit price required for unit based worker.";
+        public static string EmploymentCategoryRequired = "Employment category required.";
+        public static string WorketTypeRequired = "Worker type required.";
 
     }
 }
