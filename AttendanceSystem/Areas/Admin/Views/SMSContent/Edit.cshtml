@@ -1,0 +1,53 @@
+﻿@model SMSContentVM
+@{
+    ViewBag.Title = "SMSContent";
+}
+
+<section class="section">
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h4>Edit SMS Content</h4>
+                </div>
+
+                @using (Html.BeginForm("Edit", "SMSContent", FormMethod.Post, new { @id = "SMSContentFormId", @class = "", enctype = "multipart/form-data", role = "form" }))
+                {
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.SMSTitle, htmlAttributes: new { @class = "" })
+                                @Html.EditorFor(model => model.SMSTitle, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter SMS Title" } })
+                                @Html.ValidationMessageFor(model => model.SMSTitle, "", new { @class = "text-danger" })
+                                @Html.HiddenFor(model => model.SMSContentId)
+                            </div>
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.SeqNo, htmlAttributes: new { @class = "" })
+                                @Html.EditorFor(model => model.SeqNo, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Seq number", @maxlength = "10" } })
+                                @Html.ValidationMessageFor(model => model.SeqNo, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SMSDescription, htmlAttributes: new { @class = "" })
+                            @Html.TextAreaFor(model => model.SMSDescription, 10, 5, new { @class = "form-control", @placeholder = "Enter SMS Description" })                            
+                            @Html.ValidationMessageFor(model => model.SMSDescription, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="card-footer text-center">
+                        <button class="btn btn-primary mr-1" type="submit">Submit</button>
+                        <a href="/admin/smscontent" class="btn btn-secondary">Cancel</a>
+                    </div>
+
+                }
+
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+@*<script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>*@

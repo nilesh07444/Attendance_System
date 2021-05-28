@@ -152,6 +152,7 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\EmployeeBuyTransactionController.cs" />
     <Compile Include="Areas\Admin\Controllers\WorkerTypeController.cs" />
+    <Compile Include="Areas\Admin\Controllers\SMSContentController.cs" />
     <Compile Include="Areas\Admin\Controllers\WorkerController.cs" />
     <Compile Include="Areas\Admin\Controllers\EmployeeRatingController.cs" />
     <Compile Include="Areas\Admin\Controllers\FeedbackController.cs" />
@@ -355,6 +356,7 @@
     <Compile Include="ViewModel\WorkerTypeVM.cs" />
     <Compile Include="ViewModel\MaterialVM.cs" />
     <Compile Include="ViewModel\MaterialCategoryVM.cs" />
+    <Compile Include="ViewModel\SMSContentVM.cs" />
     <Compile Include="ViewModel\SMSPackageVM.cs" />
     <Compile Include="ViewModel\SiteVM.cs" />
     <Compile Include="ViewModel\PackageVM.cs" />
