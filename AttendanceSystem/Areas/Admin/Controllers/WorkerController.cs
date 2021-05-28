@@ -49,6 +49,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                 employeeFilterVM.EmployeeList = (from emp in _db.tbl_Employee
                                                  join rl in _db.mst_AdminRole on emp.AdminRoleId equals rl.AdminRoleId
+                                                 join wt in _db.tbl_WorkerType on emp.WorkerTypeId equals wt.WorkerTypeId
+                                                 into wtc
+                                                 from w in wtc.DefaultIfEmpty()
                                                  where !emp.IsDeleted && emp.CompanyId == companyId && emp.AdminRoleId == (int)AdminRoles.Worker
                                                  && (employeeFilterVM.UserStatus.HasValue ? (employeeFilterVM.UserStatus.Value == (int)UserStatus.Active ? emp.IsActive == true : emp.IsActive == false) : true)
                                                  select new EmployeeVM
@@ -86,7 +89,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                      IsActive = emp.IsActive,
                                                      IsDeleted = emp.IsDeleted,
                                                      IsFingerprintEnabled = emp.IsFingerprintEnabled,
-                                                     NoOfFreeLeavePerMonth = emp.NoOfFreeLeavePerMonth
+                                                     NoOfFreeLeavePerMonth = emp.NoOfFreeLeavePerMonth,
+                                                     WorkerTypeId = emp.WorkerTypeId,
+                                                     WorkerTypeText = w.WorkerTypeName
 
                                                  }).OrderByDescending(x => x.EmployeeId).ToList();
                 employeeFilterVM.NoOfEmployee = _db.tbl_Employee.Where(x => x.CompanyId == companyId && x.IsActive).Count();
@@ -141,11 +146,13 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                   IsActive = emp.IsActive,
                                   IsDeleted = emp.IsDeleted,
                                   IsFingerprintEnabled = emp.IsFingerprintEnabled,
-                                  NoOfFreeLeavePerMonth = emp.NoOfFreeLeavePerMonth
+                                  NoOfFreeLeavePerMonth = emp.NoOfFreeLeavePerMonth,
+                                  WorkerTypeId = emp.WorkerTypeId
 
                               }).FirstOrDefault();
             }
 
+            employeeVM.WorkerTypeList = GetWorkerTypeList();
             return View(employeeVM);
         }
 
@@ -204,6 +211,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployee.BloodGroup = employeeVM.BloodGroup;
                         objEmployee.AdharCardNo = employeeVM.AdharCardNo;
                         objEmployee.EmploymentCategory = employeeVM.EmploymentCategory;
+                        objEmployee.WorkerTypeId = employeeVM.WorkerTypeId;
                         objEmployee.PerCategoryPrice = employeeVM.PerCategoryPrice;
                         objEmployee.MonthlySalaryPrice = employeeVM.MonthlySalaryPrice;
                         objEmployee.ExtraPerHourPrice = employeeVM.ExtraPerHourPrice;
@@ -249,6 +257,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployee.MonthlySalaryPrice = employeeVM.MonthlySalaryPrice;
                         objEmployee.ExtraPerHourPrice = employeeVM.ExtraPerHourPrice;
                         objEmployee.IsLeaveForward = employeeVM.IsLeaveForward;
+                        objEmployee.WorkerTypeId = employeeVM.WorkerTypeId;
                         objEmployee.NoOfFreeLeavePerMonth = employeeVM.NoOfFreeLeavePerMonth;
                         objEmployee.IsActive = activeEmployee >= noOfEmployee ? false : true;
                         objEmployee.CreatedBy = loggedInUserId;
@@ -279,6 +288,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
             employeeVM = (from emp in _db.tbl_Employee
                           join rl in _db.mst_AdminRole on emp.AdminRoleId equals rl.AdminRoleId
+                          join wt in _db.tbl_WorkerType on emp.WorkerTypeId equals wt.WorkerTypeId into wtc
+                          from w in wtc.DefaultIfEmpty()
                           where !emp.IsDeleted && emp.EmployeeId == id
                           select new EmployeeVM
                           {
@@ -313,7 +324,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                               IsActive = emp.IsActive,
                               IsDeleted = emp.IsDeleted,
                               IsFingerprintEnabled = emp.IsFingerprintEnabled,
-                              NoOfFreeLeavePerMonth = employeeVM.NoOfFreeLeavePerMonth
+                              NoOfFreeLeavePerMonth = emp.NoOfFreeLeavePerMonth,
+                              WorkerTypeId = emp.WorkerTypeId,
+                              WorkerTypeText = w.WorkerTypeName
                           }).FirstOrDefault();
 
             employeeVM.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)employeeVM.EmploymentCategory);
@@ -447,6 +460,18 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             }
 
             return Json(new { Status = status, Otp = otp, ErrorMessage = errorMessage, SetOtp = clsAdminSession.SetOtp }, JsonRequestBehavior.AllowGet);
+        }
+
+        private List<SelectListItem> GetWorkerTypeList()
+        { 
+            List<SelectListItem> lst = (from wt in _db.tbl_WorkerType
+                                        where wt.IsActive && !wt.IsDeleted && wt.CompanyId == companyId
+                                        select new SelectListItem
+                                        {
+                                            Text = wt.WorkerTypeName,
+                                            Value = wt.WorkerTypeId.ToString()
+                                        }).ToList();
+            return lst;
         }
     }
 }

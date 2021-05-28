@@ -16,12 +16,15 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
         string psSult;
         long employeeId;
         string defaultPassword;
+        long companyId;
+
         public EmployeeController()
         {
             _db = new AttendanceSystemEntities();
             psSult = ConfigurationManager.AppSettings["PasswordSult"].ToString();
             employeeId = base.UTI.EmployeeId;
-            defaultPassword = ConfigurationManager.AppSettings["DefaultPassword"].ToString(); ;
+            defaultPassword = ConfigurationManager.AppSettings["DefaultPassword"].ToString();
+            companyId = base.UTI.CompanyId;
         }
 
         [HttpPost]
@@ -33,8 +36,39 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             response.Data = false;
             try
             {
-                long employeeId = base.UTI.EmployeeId;
-                long companyId = base.UTI.CompanyId;
+
+                #region validation
+                if (employeeVM.EmploymentCategory == (int)EmploymentCategory.DailyBased && employeeVM.PerCategoryPrice == 0)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.PerDayPriceRequiredForDailyBasedWorker);
+                }
+                else if (employeeVM.EmploymentCategory == (int)EmploymentCategory.DailyBased && employeeVM.ExtraPerHourPrice == 0)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.ExtraPerHourPriceRequired);
+                }
+                else if (employeeVM.EmploymentCategory == (int)EmploymentCategory.HourlyBased && employeeVM.PerCategoryPrice == 0)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.PerhourPriceRequiredForHourlyBasedWorker);
+                }
+                else if (employeeVM.EmploymentCategory == (int)EmploymentCategory.MonthlyBased && employeeVM.MonthlySalaryPrice == 0)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.MonthlySalaryRequiredForMonthlyBasedWorker);
+                }
+                else if (employeeVM.EmploymentCategory == (int)EmploymentCategory.MonthlyBased && employeeVM.ExtraPerHourPrice== 0)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.ExtraPerHourPriceRequired);
+                }
+                else if (employeeVM.EmploymentCategory == (int)EmploymentCategory.UnitBased && employeeVM.PerCategoryPrice == 0)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.PerUnitPriceRequiredForUnitBasedWorker);
+                }
+                #endregion validation
 
                 if (!response.IsError)
                 {
@@ -64,13 +98,15 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     objEmployee.BloodGroup = employeeVM.BloodGroup;
                     objEmployee.EmploymentCategory = employeeVM.EmploymentCategory;
                     objEmployee.MonthlySalaryPrice = employeeVM.MonthlySalaryPrice;
+                    objEmployee.PerCategoryPrice = employeeVM.PerCategoryPrice;
+                    objEmployee.ExtraPerHourPrice = employeeVM.ExtraPerHourPrice;
                     objEmployee.AdharCardNo = employeeVM.AdharCardNo;
                     objEmployee.EmployeeCode = CommonMethod.getEmployeeCodeFormat(companyId, objCompany.CompanyName, empCount.Count());
                     objEmployee.Address = employeeVM.Address;
                     objEmployee.City = employeeVM.City;
                     objEmployee.Pincode = employeeVM.Pincode;
                     objEmployee.State = employeeVM.State;
-                    objEmployee.IsActive = activeEmployee >= noOfEmployee ? false : true; 
+                    objEmployee.IsActive = activeEmployee >= noOfEmployee ? false : true;
                     objEmployee.CreatedBy = employeeId;
                     objEmployee.CreatedDate = DateTime.UtcNow;
                     objEmployee.UpdatedBy = employeeId;
@@ -97,8 +133,6 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             response.IsError = false;
             try
             {
-                long companyId = base.UTI.CompanyId;
-
                 List<EmployeeVM> workerList = (from emp in _db.tbl_Employee
                                                where !emp.IsDeleted && emp.CompanyId == companyId
                                                && emp.AdminRoleId == (int)AdminRoles.Worker
@@ -116,6 +150,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                    DateOfJoin = emp.DateOfJoin,
                                                    BloodGroup = emp.BloodGroup,
                                                    EmploymentCategory = emp.EmploymentCategory,
+                                                   PerCategoryPrice = emp.PerCategoryPrice,
+                                                   ExtraPerHourPrice = emp.ExtraPerHourPrice,
                                                    MonthlySalaryPrice = emp.MonthlySalaryPrice,
                                                    AdharCardNo = emp.AdharCardNo,
                                                    Address = emp.Address,
@@ -124,6 +160,10 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                    State = emp.State,
                                                    IsActive = true,
                                                }).ToList();
+                workerList.ForEach(x => {
+                    x.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)x.EmploymentCategory);
+                });
+
                 response.Data = workerList;
             }
             catch (Exception ex)
@@ -163,6 +203,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                 DateOfJoin = emp.DateOfJoin,
                                                 BloodGroup = emp.BloodGroup,
                                                 EmploymentCategory = emp.EmploymentCategory,
+                                                PerCategoryPrice = emp.PerCategoryPrice,
+                                                ExtraPerHourPrice = emp.ExtraPerHourPrice,
                                                 MonthlySalaryPrice = emp.MonthlySalaryPrice,
                                                 AdharCardNo = emp.AdharCardNo,
                                                 Address = emp.Address,
@@ -172,6 +214,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                 IsActive = true,
                                             }).FirstOrDefault();
 
+                workerDetails.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)workerDetails.EmploymentCategory);
                 response.Data = workerDetails;
             }
             catch (Exception ex)
@@ -192,15 +235,43 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             response.Data = false;
             try
             {
-                long employeeId = base.UTI.EmployeeId;
-                long companyId = base.UTI.CompanyId;
-
+                #region validation
                 if (employeeVM.EmployeeId == 0)
                 {
                     response.IsError = true;
                     response.AddError(ErrorMessage.EmployeeIdIsNotValid);
                 }
-
+                if (employeeVM.EmploymentCategory == (int)EmploymentCategory.DailyBased && employeeVM.PerCategoryPrice == 0)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.PerDayPriceRequiredForDailyBasedWorker);
+                }
+                else if (employeeVM.EmploymentCategory == (int)EmploymentCategory.DailyBased && employeeVM.ExtraPerHourPrice == 0)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.ExtraPerHourPriceRequired);
+                }
+                else if (employeeVM.EmploymentCategory == (int)EmploymentCategory.HourlyBased && employeeVM.PerCategoryPrice == 0)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.PerhourPriceRequiredForHourlyBasedWorker);
+                }
+                else if (employeeVM.EmploymentCategory == (int)EmploymentCategory.MonthlyBased && employeeVM.MonthlySalaryPrice == 0)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.MonthlySalaryRequiredForMonthlyBasedWorker);
+                }
+                else if (employeeVM.EmploymentCategory == (int)EmploymentCategory.MonthlyBased && employeeVM.ExtraPerHourPrice == 0)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.ExtraPerHourPriceRequired);
+                }
+                else if (employeeVM.EmploymentCategory == (int)EmploymentCategory.UnitBased && employeeVM.PerCategoryPrice == 0)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.PerUnitPriceRequiredForUnitBasedWorker);
+                }
+                #endregion validation
                 if (employeeVM.EmployeeId > 0)
                 {
                     bool isWorkerExist = _db.tbl_Employee.Any(x => x.EmployeeId == employeeVM.EmployeeId && !x.IsDeleted && x.AdminRoleId == (int)AdminRoles.Worker && x.CompanyId == companyId);
@@ -225,6 +296,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         employeeObject.BloodGroup = employeeVM.BloodGroup;
                         employeeObject.EmploymentCategory = employeeVM.EmploymentCategory;
                         employeeObject.MonthlySalaryPrice = employeeVM.MonthlySalaryPrice;
+                        employeeObject.PerCategoryPrice = employeeVM.PerCategoryPrice;
+                        employeeObject.ExtraPerHourPrice = employeeVM.ExtraPerHourPrice;
                         employeeObject.AdharCardNo = employeeVM.AdharCardNo;
                         employeeObject.Address = employeeVM.Address;
                         employeeObject.City = employeeVM.City;

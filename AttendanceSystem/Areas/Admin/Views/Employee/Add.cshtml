@@ -182,7 +182,7 @@
 
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.ProfileImageFile, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.ProfileImageFile, new { type = "file", @class = "form-control required" })
+                                @Html.TextBoxFor(model => model.ProfileImageFile, new { type = "file", @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.ProfileImageFile, "", new { @class = "text-danger" })
                             </div>
 
@@ -263,62 +263,24 @@
 <script type="text/javascript">
     $(document).ready(function () {
 
-        $("#dvMonthlySal").hide();
-        $("#dvExtraHours").hide();
-        $("#dvPerCatPrice").hide();
-        $("#dvFreeLeave").hide();
-
+        fnShowHideBasedOnEmploymentCategory();
         var employeeId = $("#EmployeeId").val();
         if (employeeId > 0) {
             $("#AdminRoleId").attr("disabled", true);
             $("#EmploymentCategory").attr("disabled", true);
+        } else {
+            $("#ProfileImageFile").addClass("required");
+            $("#dvMonthlySal").hide();
+            $("#dvExtraHours").hide();
+            $("#dvPerCatPrice").hide();
+            $("#dvFreeLeave").hide();
         }
         $('#btnCancel').click(function () {
             window.location.href = "/admin/employee";
         });
 
         $('#EmploymentCategory').change(function () {
-            var EmploymentCategory = $('#EmploymentCategory').val();
-            if (EmploymentCategory == "3") {
-                $("#dvMonthlySal").show();
-                $("#dvExtraHours").show();
-                $("#dvFreeLeave").show();
-                $("#dvPerCatPrice").hide();
-                $("#MonthlySalaryPrice").attr("required", true);
-                $("#ExtraPerHourPrice").attr("required", true);
-                $("#MonthlySalaryPrice").Attr("min", 1);
-                $("#ExtraPerHourPrice").Attr("min", 1);
-            }
-            else if (EmploymentCategory == "1") {
-                $("#dvMonthlySal").hide();
-                $("#dvExtraHours").show();
-                $("#dvPerCatPrice").hide();
-                $("#dvFreeLeave").hide();
-                $("#MonthlySalaryPrice").removeAttr("required", true);
-                $("#ExtraPerHourPrice").attr("required", true);
-                $("#MonthlySalaryPrice").removeAttr("min");
-                $("#ExtraPerHourPrice").Attr("min", 1);
-            }
-            else {
-                $("#dvMonthlySal").hide();
-                $("#dvExtraHours").hide();
-                $("#dvPerCatPrice").show();
-                $("#dvFreeLeave").hide();
-                $("#MonthlySalaryPrice").removeAttr("required");
-                $("#MonthlySalaryPrice").removeAttr("min");
-                $("#ExtraPerHourPrice").removeAttr("min");
-                $("#ExtraPerHourPrice").removeAttr("required");
-            }
-
-            if (EmploymentCategory == "1") {
-                $(".clsPerCategoryPrice").html("Per Day Price.")
-            }
-            else if (EmploymentCategory == "2") {
-                $(".clsPerCategoryPrice").html("Per Hour Price.")
-            }
-            else if (EmploymentCategory == "4") {
-                $(".clsPerCategoryPrice").html("Per Unit Price.")
-            }
+            fnShowHideBasedOnEmploymentCategory();
         });
 
         $('#btnSubmit').click(function () {
@@ -381,4 +343,51 @@
         });
 
     })
+
+
+    function fnShowHideBasedOnEmploymentCategory() {
+        var EmploymentCategory = $('#EmploymentCategory').val();
+        if (EmploymentCategory == "3") {
+            $("#dvMonthlySal").show();
+            $("#dvExtraHours").show();
+            $("#dvFreeLeave").show();
+            $("#dvPerCatPrice").hide();
+            $("#MonthlySalaryPrice").attr("required", true);
+            $("#ExtraPerHourPrice").attr("required", true);
+            $("#MonthlySalaryPrice").attr("min", 1);
+            $("#ExtraPerHourPrice").attr("min", 1);
+        }
+        else if (EmploymentCategory == "1") {
+            $("#dvMonthlySal").hide();
+            $("#dvExtraHours").show();
+            $("#dvPerCatPrice").show();
+            $("#dvFreeLeave").hide();
+            $("#MonthlySalaryPrice").removeAttr("required", true);
+            $("#ExtraPerHourPrice").attr("required", true);
+            $("#MonthlySalaryPrice").removeAttr("min");
+            $("#ExtraPerHourPrice").attr("min", 1);
+            $("#PerCategoryPrice").attr("min", 1);
+        }
+        else {
+            $("#dvMonthlySal").hide();
+            $("#dvExtraHours").hide();
+            $("#dvPerCatPrice").show();
+            $("#dvFreeLeave").hide();
+            $("#MonthlySalaryPrice").removeAttr("required");
+            $("#MonthlySalaryPrice").removeAttr("min");
+            $("#ExtraPerHourPrice").removeAttr("min");
+            $("#ExtraPerHourPrice").removeAttr("required");
+            $("#PerCategoryPrice").attr("min", 1);
+        }
+
+        if (EmploymentCategory == "1") {
+            $(".clsPerCategoryPrice").html("Per Day Price.")
+        }
+        else if (EmploymentCategory == "2") {
+            $(".clsPerCategoryPrice").html("Per Hour Price.")
+        }
+        else if (EmploymentCategory == "4") {
+            $(".clsPerCategoryPrice").html("Per Unit Price.")
+        }
+    }
 </script>

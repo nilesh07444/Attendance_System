@@ -20,7 +20,7 @@ namespace AttendanceSystem.ViewModel
         public string FirstName { get; set; }
         [Required, Display(Name = "Last Name")]
         public string LastName { get; set; }
-        [Required, Display(Name = "Email")]
+        [Display(Name = "Email")]
         public string Email { get; set; }
         public string EmployeeCode { get; set; }
         public string Password { get; set; }
@@ -47,7 +47,7 @@ namespace AttendanceSystem.ViewModel
         public DateTime? DateOfJoin { get; set; }
         [Display(Name = "Blood Group")]
         public string BloodGroup { get; set; }
-        [Required,Display(Name = "Working TIme")]
+        [Display(Name = "Working TIme")]
         public string WorkingTime { get; set; }
         [Required, Display(Name = "Aadhar card No")]
         [RegularExpression(@"^([0-9]{12})$", ErrorMessage = "Invalid Adhar Card Number.")]
@@ -72,7 +72,7 @@ namespace AttendanceSystem.ViewModel
         public bool IsDeleted { get; set; }
         [Display(Name = "Finger Print Enabled")]
         public bool IsFingerprintEnabled { get; set; }
-        [Required, Display(Name = "Profile Image")]
+        [Display(Name = "Profile Image")]
         public HttpPostedFileBase ProfileImageFile { get; set; }
         public List<SelectListItem> UserRoleList { get; set; }
         public string OTP { get; set; }
@@ -81,6 +81,10 @@ namespace AttendanceSystem.ViewModel
         public decimal NoOfFreeLeavePerMonth { get; set; }
 
         public string EmploymentCategoryText { get; set; }
+        [Display(Name = "Worker Type")]
+        public long? WorkerTypeId { get; set; }
+        public string WorkerTypeText { get; set; }
+        public List<SelectListItem> WorkerTypeList { get; set; }
     }
 
     public class EmployeeFilterVM
