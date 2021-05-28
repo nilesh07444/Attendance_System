@@ -18,9 +18,8 @@
                         <div class="row">
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.SMSTitle, htmlAttributes: new { @class = "" })
-                                @Html.EditorFor(model => model.SMSTitle, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter SMS Title" } })
+                                @Html.EditorFor(model => model.SMSTitle, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter SMS Title", maxlength = "100", @readonly = "readonly" } })
                                 @Html.ValidationMessageFor(model => model.SMSTitle, "", new { @class = "text-danger" })
-                                @Html.HiddenFor(model => model.SMSContentId)
                             </div>
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.SeqNo, htmlAttributes: new { @class = "" })
@@ -30,16 +29,21 @@
                         </div>
                         <div class="form-group">
                             @Html.LabelFor(model => model.SMSDescription, htmlAttributes: new { @class = "" })
-                            @Html.TextAreaFor(model => model.SMSDescription, 10, 5, new { @class = "form-control", @placeholder = "Enter SMS Description" })                            
+                            @Html.TextAreaFor(model => model.SMSDescription, 10, 5, new { @class = "form-control", @placeholder = "Enter SMS Description", maxlength = "5000" })
                             @Html.ValidationMessageFor(model => model.SMSDescription, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "" })
+                            @Html.TextAreaFor(model => model.Remarks, 20, 10, new { @class = "form-control", @placeholder = "Enter Remarks", maxlength = "5000" })
+                            @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
                         </div>
                     </div>
 
                     <div class="card-footer text-center">
+                        @Html.HiddenFor(model => model.SMSContentId)
                         <button class="btn btn-primary mr-1" type="submit">Submit</button>
                         <a href="/admin/smscontent" class="btn btn-secondary">Cancel</a>
                     </div>
-
                 }
 
             </div>
@@ -47,7 +51,3 @@
     </div>
 
 </section>
-
-<script src="~/Scripts/jquery-3.4.1.min.js"></script>
-@*<script src="~/Scripts/jquery.validate.min.js"></script>
-    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>*@

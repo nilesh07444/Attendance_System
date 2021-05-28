@@ -18,5 +18,6 @@ namespace AttendanceSystem.Models
         public string SMSTitle { get; set; }
         public string SMSDescription { get; set; }
         public Nullable<int> SeqNo { get; set; }
+        public string Remarks { get; set; }
     }
 }

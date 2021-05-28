@@ -18,6 +18,7 @@ namespace AttendanceSystem
         [Required]
         [Display(Name = "Sequence Number *")]
         public int? SeqNo { get; set; }
-         
+        [Display(Name = "Remarks")]
+        public string Remarks { get; set; }
     }
 }

@@ -573,6 +573,7 @@
           <Property Name="SMSTitle" Type="nvarchar" MaxLength="100" />
           <Property Name="SMSDescription" Type="nvarchar(max)" />
           <Property Name="SeqNo" Type="int" />
+          <Property Name="Remarks" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="tbl_SMSLog">
           <Key>
@@ -1461,6 +1462,7 @@
           <Property Name="SMSTitle" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="SMSDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="SeqNo" Type="Int32" />
+          <Property Name="Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tbl_WorkerType">
           <Key>
@@ -2180,6 +2182,7 @@
           <EntitySetMapping Name="tbl_SMSContent">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_SMSContent">
               <MappingFragment StoreEntitySet="tbl_SMSContent">
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
                 <ScalarProperty Name="SeqNo" ColumnName="SeqNo" />
                 <ScalarProperty Name="SMSDescription" ColumnName="SMSDescription" />
                 <ScalarProperty Name="SMSTitle" ColumnName="SMSTitle" />
