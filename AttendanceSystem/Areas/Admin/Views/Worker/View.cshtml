@@ -22,54 +22,58 @@
                                     @Model.AdminRoleText
                                 </div>
                                 <div class="form-group col-6">
-                                    @Html.LabelFor(model => model.Prefix, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                    @Model.Prefix
+                                    @Html.LabelFor(model => model.WorkerTypeId, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                    @Model.WorkerTypeText
                                 </div>
                             </div>
                             <div class="row">
+                                <div class="form-group col-6">
+                                    @Html.LabelFor(model => model.Prefix, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                    @Model.Prefix
+                                </div>
                                 <div class="form-group col-6">
                                     @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
                                     @Model.FirstName
                                 </div>
+                               
+                            </div>
+                            <div class="row">
                                 <div class="form-group col-6">
                                     @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
                                     @Model.LastName
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="form-group col-6">
                                     @Html.LabelFor(model => model.MobileNo, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
                                     @Model.MobileNo
                                 </div>
+                                
+                            </div>
+                            <div class="row">
                                 <div class="form-group col-6">
                                     @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
                                     @Model.Address
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="form-group col-6">
                                     @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
                                     @Model.City
                                 </div>
+                                
+                            </div>
+                            <div class="row">
                                 <div class="form-group col-6">
                                     @Html.LabelFor(model => model.Dob, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
                                     @Model.Dob
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="form-group col-6">
                                     @Html.LabelFor(model => model.DateOfJoin, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
                                     @Model.DateOfJoin
                                 </div>
-                                <div class="form-group col-6">
-                                    @Html.LabelFor(model => model.BloodGroup, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                    @Model.BloodGroup
-                                </div>
+                               
                             </div>
                             <div class="row">
                                 <div class="form-group col-6">
-                                    @Html.LabelFor(model => model.AdharCardNo, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                    @Model.AdharCardNo
+                                    @Html.LabelFor(model => model.BloodGroup, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                    @Model.BloodGroup
                                 </div>
                                 <div class="form-group col-6">
                                     @Html.LabelFor(model => model.AdharCardNo, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
@@ -88,8 +92,26 @@
                             </div>
                             <div class="row">
                                 <div class="form-group col-6">
-                                    @Html.LabelFor(model => model.PerCategoryPrice, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                    @Model.PerCategoryPrice
+                                    <div class="form-group col-6">
+                                        @if (Model.EmploymentCategory == (int)EmploymentCategory.DailyBased)
+                                        {
+                                            <label class="col-xl-3 col-md-4" for="PerCategoryPrice">Per Day Price</label>
+                                        }
+                                        else if (Model.EmploymentCategory == (int)EmploymentCategory.HourlyBased)
+                                        {
+                                            <label class="col-xl-3 col-md-4" for="PerCategoryPrice">Per Hour Price</label>
+                                        }
+                                        else if (Model.EmploymentCategory == (int)EmploymentCategory.UnitBased)
+                                        {
+                                            <label class="col-xl-3 col-md-4" for="PerCategoryPrice">Per Unit Price</label>
+                                        }
+                                        else
+                                        {
+                                            @Html.LabelFor(model => model.PerCategoryPrice, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                        }
+
+                                        @Model.PerCategoryPrice
+                                    </div>
                                 </div>
                                 <div class="form-group col-6">
                                     @Html.LabelFor(model => model.ExtraPerHourPrice, htmlAttributes: new { @class = "col-xl-3 col-md-4" })

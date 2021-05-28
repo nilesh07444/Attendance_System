@@ -151,6 +151,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\EmployeeBuyTransactionController.cs" />
+    <Compile Include="Areas\Admin\Controllers\WorkerTypeController.cs" />
     <Compile Include="Areas\Admin\Controllers\WorkerController.cs" />
     <Compile Include="Areas\Admin\Controllers\EmployeeRatingController.cs" />
     <Compile Include="Areas\Admin\Controllers\FeedbackController.cs" />
@@ -330,6 +331,9 @@
     <Compile Include="Models\tbl_WorkerAttendance.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\tbl_WorkerType.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\AdminProfileVM.cs" />
     <Compile Include="ViewModel\AttendanceVM.cs" />
     <Compile Include="ViewModel\CompanyAdminSettingVM.cs" />
@@ -348,6 +352,7 @@
     <Compile Include="ViewModel\HomeImageVM.cs" />
     <Compile Include="ViewModel\LeaveVM.cs" />
     <Compile Include="ViewModel\LoginHistoryVM.cs" />
+    <Compile Include="ViewModel\WorkerTypeVM.cs" />
     <Compile Include="ViewModel\MaterialVM.cs" />
     <Compile Include="ViewModel\MaterialCategoryVM.cs" />
     <Compile Include="ViewModel\SMSPackageVM.cs" />
@@ -1505,6 +1510,8 @@
     <Content Include="Areas\Admin\Views\Worker\Index.cshtml" />
     <Content Include="Areas\Admin\Views\EmployeeBuyTransaction\Buy.cshtml" />
     <Content Include="Areas\Admin\Views\EmployeeBuyTransaction\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\WorkerType\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\WorkerType\Add.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />

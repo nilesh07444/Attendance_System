@@ -245,6 +245,13 @@
                                         <li><a class="nav-link" href="/admin/material/deletedmaterial">Deleted Material List</a></li>
                                     </ul>
                                 </li>
+                                <li class="dropdown @(ViewBag.Title == "WorkerType" ? "active" : "")">
+                                    <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="box"></i><span>Worker Type</span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="nav-link" href="/admin/workertype/add/0">Add Worker Type</a></li>
+                                        <li><a class="nav-link" href="/admin/workertype">Worker Type List</a></li>
+                                    </ul>
+                                </li>
                             }
                             <li class="dropdown @(ViewBag.Title == "EmployeeRating" ? "active" : "")">
                                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="file-text"></i><span>Employee Rating</span></a>

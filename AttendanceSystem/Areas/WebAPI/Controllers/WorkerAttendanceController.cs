@@ -71,6 +71,9 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     response.IsError = true;
                     response.AddError(ErrorMessage.CanNotTakeEveningAttendanceWorkerNotPresentOnAfterNoon);
                 }
+
+
+
                 #endregion Validation
                 if (!response.IsError)
                 {
