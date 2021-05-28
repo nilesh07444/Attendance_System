@@ -26,7 +26,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                              SMSTitle = s.SMSTitle,
                                              SMSDescription = s.SMSDescription,
                                              SeqNo = s.SeqNo,
-                                             //Remarks = ""
+                                             Remarks = s.Remarks
                                          }).OrderBy(x => x.SeqNo).ToList();
             return View(lstSMS);
         }
@@ -41,7 +41,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                        SMSTitle = s.SMSTitle,
                                        SMSDescription = s.SMSDescription,
                                        SeqNo = s.SeqNo,
-                                       //Remarks = ""
+                                       Remarks = s.Remarks
                                    }).FirstOrDefault();
             return View(objSMS);
         }
@@ -60,7 +60,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     objSMSContent.SMSTitle = smsVM.SMSTitle;
                     objSMSContent.SMSDescription = smsVM.SMSDescription;
                     objSMSContent.SeqNo = smsVM.SeqNo;
-                    //objSMSContent.Remarks = smsVM.Remarks;
+                    objSMSContent.Remarks = smsVM.Remarks;
 
                     _db.SaveChanges();
 
