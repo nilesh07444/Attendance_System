@@ -11,7 +11,7 @@
         <div class="col-12">
             <div class="card card-primary">
                 <div class="card-header">
-                    <h4>@(Model.WorkerTypeId == 0 ? "Add" : "Edit") Material Category</h4>
+                    <h4>@(Model.WorkerTypeId == 0 ? "Add" : "Edit") Worker Type</h4>
                 </div>
 
                 @using (Html.BeginForm("Add", "WorkerType", FormMethod.Post, new { @id = "WorkerTypeFormId", @class = "", enctype = "multipart/form-data", role = "form" }))
@@ -28,7 +28,7 @@
                         </div>
                         <div class="form-group">
                             @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "" })
-                            @Html.TextAreaFor(model => model.Description, 10, 5, new { @class = "form-control", @placeholder = "Enter Package Description", maxlength = "250" })
+                            @Html.TextAreaFor(model => model.Description, 10, 5, new { @class = "form-control", @placeholder = "Enter Description", maxlength = "250" })
                             @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                         </div>
                     </div>
