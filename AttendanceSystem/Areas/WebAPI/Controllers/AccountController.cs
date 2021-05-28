@@ -112,6 +112,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                         int SmsId = (int)SMSType.EmployeeLoginOtp;
                                         string msg = CommonMethod.GetSmsContent(SmsId);
 
+                                        msg = msg.Replace("<br>", "\r\n");
                                         msg = msg.Replace("{#var#}", num.ToString());
 
                                         msg = HttpUtility.UrlEncode(msg);

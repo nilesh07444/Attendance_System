@@ -10,7 +10,7 @@
         <div class="col-12">
             <div class="card card-primary">
                 <div class="card-header">
-                    <h4>@(Model.SMSPackageId == 0 ? "Add" : "Edit") SMSPackage</h4>
+                    <h4>@(Model.SMSPackageId == 0 ? "Add" : "Edit") SMS Package</h4>
                 </div>
 
                 @using (Html.BeginForm("Add", "SMSPackage", FormMethod.Post, new { @id = "SMSPackageFormId", @class = "", enctype = "multipart/form-data", role = "form" }))

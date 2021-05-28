@@ -150,6 +150,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\SMSContentController.cs" />
     <Compile Include="Areas\Admin\Controllers\WorkerController.cs" />
     <Compile Include="Areas\Admin\Controllers\EmployeeRatingController.cs" />
     <Compile Include="Areas\Admin\Controllers\FeedbackController.cs" />
@@ -348,6 +349,7 @@
     <Compile Include="ViewModel\LoginHistoryVM.cs" />
     <Compile Include="ViewModel\MaterialVM.cs" />
     <Compile Include="ViewModel\MaterialCategoryVM.cs" />
+    <Compile Include="ViewModel\SMSContentVM.cs" />
     <Compile Include="ViewModel\SMSPackageVM.cs" />
     <Compile Include="ViewModel\SiteVM.cs" />
     <Compile Include="ViewModel\PackageVM.cs" />
@@ -1501,6 +1503,8 @@
     <Content Include="Areas\Admin\Views\Worker\Add.cshtml" />
     <Content Include="Areas\Admin\Views\Worker\View.cshtml" />
     <Content Include="Areas\Admin\Views\Worker\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\SMSContent\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\SMSContent\Edit.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
