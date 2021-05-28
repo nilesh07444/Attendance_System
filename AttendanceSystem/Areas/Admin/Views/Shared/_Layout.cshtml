@@ -270,6 +270,13 @@
                                     <li><a class="nav-link" href="/admin/smsrenew">SMS Package Renew List</a></li>
                                 </ul>
                             </li>
+                            <li class="dropdown @(ViewBag.Title == "BuyEmployee" ? "active" : "")">
+                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="cpu"></i><span>Buy Employee</span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="nav-link" href="/admin/employeebuytransaction/buy">Buy Employee</a></li>
+                                    <li><a class="nav-link" href="/admin/employeebuytransaction">Buy Employee List</a></li>
+                                </ul>
+                            </li>
 
                             <li class="dropdown @(ViewBag.Title == "Setting" ? "active" : "")">
                                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="settings"></i><span>Setting</span></a>

@@ -1,0 +1,100 @@
+﻿@using AttendanceSystem.Helper;
+@model AttendanceSystem.ViewModel.EmployeeBuyTransactionVM
+@{
+    ViewBag.Title = "BuyEmployee";
+}
+
+<section class="section">
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h4>Buy Employee</h4>
+                </div>
+                @if (string.IsNullOrEmpty(Model.ErrorMessage))
+                {
+                    using (Html.BeginForm("Buy", "EmployeeBuyTransaction", FormMethod.Post, new { @id = "BuyEmployeeFormId", @class = "", enctype = "multipart/form-data", role = "form" }))
+                    {
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    @Html.LabelFor(model => model.NoOfEmpToBuy, htmlAttributes: new { @class = "" })
+                                    @Html.TextBoxFor(model => model.NoOfEmpToBuy, new { @type = "number", @class = "form-control required", @placeholder = "Enter no of employee", @min = 1 })
+                                    @Html.ValidationMessageFor(model => model.NoOfEmpToBuy, "", new { @class = "text-danger" })
+                                    @Html.HiddenFor(model => model.EmployeeBuyTransactionId)
+                                    @Html.HiddenFor(model => model.CompanyId)
+                                </div>
+                                <div class="form-group col-6">
+                                    @Html.LabelFor(model => model.AmountPerEmp, htmlAttributes: new { @class = "" })
+                                    @Html.TextBoxFor(model => model.AmountPerEmp, new { @type = "number", @class = "form-control required disabled", @placeholder = "Enter amount per employee", @min = 1 })
+                                    @Html.ValidationMessageFor(model => model.AmountPerEmp, "", new { @class = "text-danger" })
+                                    @Html.HiddenFor(model => model.AmountPerEmp)
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    @Html.LabelFor(model => model.RemainingDays, htmlAttributes: new { @class = "" })
+                                    @Html.TextBoxFor(model => model.RemainingDays, new { @type = "number", @class = "form-control required disabled", @placeholder = "Days", @min = 1 })
+                                    @Html.ValidationMessageFor(model => model.RemainingDays, "", new { @class = "text-danger" })
+                                    @Html.HiddenFor(model => model.RemainingDays)
+                                </div>
+                                <div class="form-group col-6">
+                                    @Html.LabelFor(model => model.TotalPaidAmount, htmlAttributes: new { @class = "" })
+                                    @Html.TextBoxFor(model => model.TotalPaidAmount, new { @type = "number", @class = "form-control required disabled", @placeholder = "Enter total paid amount", @min = 1 })
+                                    @Html.ValidationMessageFor(model => model.TotalPaidAmount, "", new { @class = "text-danger" })
+                                    @Html.HiddenFor(model => model.TotalPaidAmount)
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-footer text-center">
+                            <button class="btn btn-primary mr-1" type="submit" id="btnSubmit">Submit</button>
+                            <a href="/admin/employeebuytransaction" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="card-body">
+                        <div class="row">
+                            <label class="text-danger">@Model.ErrorMessage </label>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#btnCancel').click(function () {
+            window.location.href = "/admin/employeebuytransaction";
+        });
+
+        $('#btnSubmit').click(function () {
+            if ($("#BuyEmployeeFormId").valid()) {
+                $.blockUI({ message: '<h4> Please Wait...</h4>' });
+            }
+            else {
+                return false;
+            }
+
+        });
+
+        $('#NoOfEmpToBuy').change(function () {
+            var noOfEmpToBuy = $("#NoOfEmpToBuy").val();
+            var amountPerEmp = $("#AmountPerEmp").val();
+            var remainingDays = $("#RemainingDays").val();
+
+            var totalAmount = (parseFloat(noOfEmpToBuy) * parseFloat(amountPerEmp)) * parseFloat(remainingDays);
+            $("#TotalPaidAmount").val(totalAmount.toFixed(2));
+        });
+    })
+</script>

@@ -21,6 +21,21 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label>No of Employee</label>
+                                    @Model.NoOfEmployee
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label>Active Employees</label>
+                                    @Model.ActiveEmployee
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
 
                             <div class="col-sm-6">
                                 <div class="form-group">
@@ -59,45 +74,52 @@
                                     {
                                         foreach (EmployeeVM obj in Model.EmployeeList)
                                         {
-                                            <tr>
-                                                <td>@counter.</td>
-                                                <td>
-                                                    @if (!string.IsNullOrEmpty(obj.ProfilePicture))
-                                                    {
-                                                        if (File.Exists(Server.MapPath(ErrorMessage.EmployeeDirectoryPath + obj.ProfilePicture)))
-                                                        {
-                                                            <img src="@ErrorMessage.EmployeeDirectoryPath/@obj.ProfilePicture" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height:40px;" />
-                                                        }
-                                                        else
-                                                        {
-                                                            <img src="@ErrorMessage.DefaultImagePath" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height: 40px;" />
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        <img src="@ErrorMessage.DefaultImagePath" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height: 40px;" />
-                                                    }
-
-                                                </td>
-                                                <td>@obj.EmployeeCode</td>
-                                                <td>@obj.FirstName @obj.LastName</td>
-                                                <td>@obj.MobileNo</td>
-                                                @if (obj.IsActive == true)
+                                    <tr>
+                                        <td>@counter.</td>
+                                        <td>
+                                            @if (!string.IsNullOrEmpty(obj.ProfilePicture))
+                                            {
+                                                if (File.Exists(Server.MapPath(ErrorMessage.EmployeeDirectoryPath + obj.ProfilePicture)))
                                                 {
-                                                    <td><span class="badge badge-success" style="cursor:pointer;" title="Click to Inactive" onclick="fnChangeStatus('@obj.EmployeeId','InActive');">Active</span></td>
+                                                    <img src="@ErrorMessage.EmployeeDirectoryPath/@obj.ProfilePicture" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height:40px;" />
                                                 }
                                                 else
                                                 {
-                                                    <td><span class="badge badge-danger" style="cursor:pointer;" title="Click to Active" onclick="fnChangeStatus('@obj.EmployeeId','Active');">InActive</span></td>
+                                                    <img src="@ErrorMessage.DefaultImagePath" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height: 40px;" />
                                                 }
-                                                <td>
+                                            }
+                                            else
+                                            {
+                                                <img src="@ErrorMessage.DefaultImagePath" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height: 40px;" />
+                                            }
 
-                                                    <a href="/admin/worker/view/@obj.EmployeeId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
-                                                    <a href="/admin/worker/add/@obj.EmployeeId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
-                                                    <a href="javascript:void(0);" title="Delete" class="btn btn-icon btn-danger" onclick="fnDeleteEmployee('@obj.EmployeeId')"><i class="fas fa-trash-alt"></i></a>
+                                        </td>
+                                        <td>@obj.EmployeeCode</td>
+                                        <td>@obj.FirstName @obj.LastName</td>
+                                        <td>@obj.MobileNo</td>
+                                        @if (obj.IsActive == true)
+                                        {
+                                            <td><span class="badge badge-success" style="cursor:pointer;" title="Click to Inactive" onclick="fnChangeStatus('@obj.EmployeeId','InActive');">Active</span></td>
+                                        }
+                                        else
+                                        {
+                                            if (Model.NoOfEmployee > Model.ActiveEmployee)
+                                            {
+                                                <td><span class="badge badge-danger" style="cursor:pointer;" title="Click to Active" onclick="fnChangeStatus('@obj.EmployeeId','Active');">InActive</span></td>
+                                            }
+                                            else
+                                            {
+                                                <td><span class="badge badge-danger" style="cursor:pointer;" title="Active employee exceed">InActive</span></td>
+                                            }
+                                        }
+                                        <td>
 
-                                                </td>
-                                            </tr>
+                                            <a href="/admin/worker/view/@obj.EmployeeId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
+                                            <a href="/admin/worker/add/@obj.EmployeeId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
+                                            <a href="javascript:void(0);" title="Delete" class="btn btn-icon btn-danger" onclick="fnDeleteEmployee('@obj.EmployeeId')"><i class="fas fa-trash-alt"></i></a>
+
+                                        </td>
+                                    </tr>
 
                                             counter++;
                                         }

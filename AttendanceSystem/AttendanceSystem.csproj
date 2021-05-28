@@ -150,6 +150,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\EmployeeBuyTransactionController.cs" />
     <Compile Include="Areas\Admin\Controllers\SMSContentController.cs" />
     <Compile Include="Areas\Admin\Controllers\WorkerController.cs" />
     <Compile Include="Areas\Admin\Controllers\EmployeeRatingController.cs" />
@@ -333,6 +334,7 @@
     <Compile Include="ViewModel\AdminProfileVM.cs" />
     <Compile Include="ViewModel\AttendanceVM.cs" />
     <Compile Include="ViewModel\CompanyAdminSettingVM.cs" />
+    <Compile Include="ViewModel\EmployeeBuyTransactionVM.cs" />
     <Compile Include="ViewModel\CompanySMSPackRenewVM.cs" />
     <Compile Include="ViewModel\CompanyRenewPaymentVM.cs" />
     <Compile Include="ViewModel\CompanyRequestVM.cs" />
@@ -1503,8 +1505,8 @@
     <Content Include="Areas\Admin\Views\Worker\Add.cshtml" />
     <Content Include="Areas\Admin\Views\Worker\View.cshtml" />
     <Content Include="Areas\Admin\Views\Worker\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\SMSContent\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\SMSContent\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\EmployeeBuyTransaction\Buy.cshtml" />
+    <Content Include="Areas\Admin\Views\EmployeeBuyTransaction\Index.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
