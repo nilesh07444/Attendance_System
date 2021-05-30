@@ -21,7 +21,6 @@
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Material" Width="1.5" PointX="6.75" PointY="14.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_MaterialCategory" Width="1.5" PointX="14.75" PointY="8.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Package" Width="1.5" PointX="14.75" PointY="12.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Setting" Width="1.5" PointX="8.75" PointY="15.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Site" Width="1.5" PointX="10.75" PointY="15.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_SMSPackage" Width="1.5" PointX="16.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Sponsor" Width="1.5" PointX="16.75" PointY="5.75" IsExpanded="true" />
@@ -40,6 +39,7 @@
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_CompanyRequest" Width="1.5" PointX="7.375" PointY="21.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_SMSContent" Width="1.5" PointX="0.75" PointY="6.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_WorkerType" Width="1.5" PointX="9.375" PointY="21.75" />
+        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Setting" Width="1.5" PointX="11.375" PointY="21.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

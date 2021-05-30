@@ -115,6 +115,10 @@ namespace AttendanceSystem.Areas.Client.Controllers
                     {
                         ViewBag.HomeFirstImage = HomeDirectoryPath + objGensetting.HomeImage;
                     }
+                    if (!string.IsNullOrEmpty(objGensetting.HomeImage2))
+                    {
+                        ViewBag.HomeImage2 = HomeDirectoryPath + objGensetting.HomeImage2;
+                    }
                     if (!string.IsNullOrEmpty(objGensetting.ServiceImage))
                     {
                         ViewBag.ServiceImage = ServiceDirectoryPath + objGensetting.ServiceImage;

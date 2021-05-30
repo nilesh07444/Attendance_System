@@ -73,6 +73,18 @@
                                     <p><a target="_blank" href="@ErrorMessage.HomeDirectoryPath/@Model.HomeImage"> Click here to view image </a></p>
                                 }
                             </div>
+
+                            <div class="form-group col-4">
+                                @Html.LabelFor(model => model.HomeImageFile2, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.HomeImageFile2, new { type = "file", @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.HomeImageFile2, "", new { @class = "text-danger" })
+
+                                @if (!string.IsNullOrEmpty(Model.HomeImage2))
+                                {
+                                    <p><a target="_blank" href="@ErrorMessage.HomeDirectoryPath/@Model.HomeImage2"> Click here to view image </a></p>
+                                }
+                            </div>
+
                         </div>
                     </div>
 
@@ -154,22 +166,29 @@
 
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h4>Razor Pay Information</h4>
+                        <h4>Stripe Payment Gateway Information</h4>
                     </div>
 
                     <div class="card-body">
                         <div class="row">
                             <div class="form-group col-4">
-                                @Html.LabelFor(model => model.RazorPayKey, htmlAttributes: new { @class = "" })
-                                @Html.EditorFor(model => model.RazorPayKey, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Razor Pay Key", maxlength = "50" } })
-                                @Html.ValidationMessageFor(model => model.RazorPayKey, "", new { @class = "text-danger" })
+                                @Html.LabelFor(model => model.StripeSandboxModeAPIKey, htmlAttributes: new { @class = "" })
+                                @Html.EditorFor(model => model.StripeSandboxModeAPIKey, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Stripe Sandbox Mode API Key", maxlength = "50" } })
+                                @Html.ValidationMessageFor(model => model.StripeSandboxModeAPIKey, "", new { @class = "text-danger" })
                             </div>
 
                             <div class="form-group col-4">
-                                @Html.LabelFor(model => model.RazorPaySecret, htmlAttributes: new { @class = "" })
-                                @Html.EditorFor(model => model.RazorPaySecret, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Razor Pay Secret", maxlength = "50" } })
-                                @Html.ValidationMessageFor(model => model.RazorPaySecret, "", new { @class = "text-danger" })
+                                @Html.LabelFor(model => model.StripeLiveModeAPIKey, htmlAttributes: new { @class = "" })
+                                @Html.EditorFor(model => model.StripeLiveModeAPIKey, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Stripe Live Mode API Key", maxlength = "50" } })
+                                @Html.ValidationMessageFor(model => model.StripeLiveModeAPIKey, "", new { @class = "text-danger" })
                             </div>
+
+                            <div class="form-group col-4">
+                                @Html.LabelFor(model => model.IsStripeLiveMode, htmlAttributes: new { @class = "" })
+                                @Html.EditorFor(model => model.IsStripeLiveMode, new { htmlAttributes = new { @class = "form-control", @placeholder = "Is Stripe Live Mode ?" } })
+                                @Html.ValidationMessageFor(model => model.IsStripeLiveMode, "", new { @class = "text-danger" })
+                            </div>
+
                         </div>
                     </div>
 
@@ -187,9 +206,4 @@
     </div>
 
 </section>
-
-<script src="~/Scripts/jquery-3.4.1.min.js"></script>
-
-<script type="text/javascript">
-
-</script>
+ 

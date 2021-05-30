@@ -36,10 +36,15 @@ namespace AttendanceSystem
         public string SuperAdminEmailId { get; set; }
         [Required, Display(Name = "Super Admin Mobile No")]
         public string SuperAdminMobileNo { get; set; }
-        [Required, Display(Name = "RazorPay Key")]
-        public string RazorPayKey { get; set; }
-        [Required, Display(Name = "RazorPay Secret")]
-        public string RazorPaySecret { get; set; }
+
+        [Required, Display(Name = "Is Stripe Live Mode ?")]
+        public bool? IsStripeLiveMode { get; set; }
+
+        [Required, Display(Name = "Stripe Sandbox Mode API Key")]
+        public string StripeSandboxModeAPIKey { get; set; }
+
+        [Required, Display(Name = "Stripe Live Mode API Key")]
+        public string StripeLiveModeAPIKey { get; set; }
 
         [Display(Name = "Service Image")]
         public HttpPostedFileBase ServiceImageFile { get; set; }
@@ -47,7 +52,11 @@ namespace AttendanceSystem
         [Display(Name = "Home Image")]
         public HttpPostedFileBase HomeImageFile { get; set; }
 
+        [Display(Name = "Home Image 2")]
+        public HttpPostedFileBase HomeImageFile2 { get; set; }
+
         public string HomeImage { get; set; }
+        public string HomeImage2 { get; set; }
         public string ServiceImage { get; set; }
     }
 }

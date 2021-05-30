@@ -4,6 +4,97 @@
     List<PackageVM> lstAccountPackages = ViewData["lstAccountPackages"] as List<PackageVM>;
 }
 
+<style>
+    a {
+        text-decoration: none;
+    }
+
+    .pricingTable {
+        text-align: center;
+        background: #fff;
+        margin: 0 -15px;
+        box-shadow: 0 0 10px #ababab;
+        padding-bottom: 40px;
+        border-radius: 10px;
+        color: #cad0de;
+        transform: scale(1);
+        transition: all .5s ease 0s
+    }
+
+        .pricingTable:hover {
+            transform: scale(1.05);
+            z-index: 1
+        }
+
+        .pricingTable .pricingTable-header {
+            padding: 40px 0;
+            background: #f5f6f9;
+            border-radius: 10px 10px 50% 50%;
+            transition: all .5s ease 0s
+        }
+
+        .pricingTable:hover .pricingTable-header {
+            background: #ff9624
+        }
+
+        .pricingTable .pricingTable-header i {
+            font-size: 50px;
+            color: #858c9a;
+            margin-bottom: 10px;
+            transition: all .5s ease 0s
+        }
+
+        .pricingTable .price-value {
+            font-size: 35px;
+            color: #ff9624;
+            transition: all .5s ease 0s
+        }
+
+        .pricingTable .month {
+            display: block;
+            font-size: 14px;
+            color: #cad0de
+        }
+
+        .pricingTable:hover .month,
+        .pricingTable:hover .price-value,
+        .pricingTable:hover .pricingTable-header i {
+            color: #fff
+        }
+
+        .pricingTable .heading {
+            font-size: 24px;
+            color: #ff9624;
+            margin-bottom: 20px;
+            text-transform: uppercase
+        }
+
+        .pricingTable .pricing-content ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 30px
+        }
+
+            .pricingTable .pricing-content ul li {
+                line-height: 30px;
+                color: #a7a8aa
+            }
+
+        .pricingTable .pricingTable-signup a {
+            display: inline-block;
+            font-size: 15px;
+            color: #fff;
+            padding: 10px 35px;
+            border-radius: 20px;
+            background: #ffa442;
+            text-transform: uppercase;
+            transition: all .3s ease 0s
+        }
+
+            .pricingTable .pricingTable-signup a:hover {
+                box-shadow: 0 0 10px #ffa442
+            }
+</style>
 
 <section class="section">
 
@@ -17,41 +108,35 @@
 
             @if (lstAccountPackages != null && lstAccountPackages.Count > 0)
             {
+                int accountPackageCounter = 1;
                 foreach (PackageVM obj in lstAccountPackages)
                 {
-                    <div class="col-12 col-md-4 col-lg-4">
-                        <div class="pricing pricing-highlight">
-                            <div class="pricing-title">
-                                @obj.PackageName
-                            </div>
-                            <div class="pricing-padding">
-                                <div class="pricing-price">
-                                    <div>@obj.Amount /-</div>
-                                </div>
-                                <div class="pricing-details">
-                                    <div class="pricing-item">
-                                        <div class="pricing-item-icon"><i class="fas fa-check"></i></div>
-                                        <div class="pricing-item-label">@obj.PackageName</div>
-                                    </div>
-                                    <div class="pricing-item">
-                                        <div class="pricing-item-icon"><i class="fas fa-check"></i></div>
-                                        <div class="pricing-item-label">@obj.AccessDays days access</div>
-                                    </div>
-                                    <div class="pricing-item">
-                                        <div class="pricing-item-icon"><i class="fas fa-check"></i></div>
-                                        <div class="pricing-item-label">@obj.NoOfEmployee Employee Accessible</div>
-                                    </div>
-                                    <div class="pricing-item">
-                                        <div class="pricing-item-icon"><i class="fas fa-check"></i></div>
-                                        <div class="pricing-item-label">@obj.NoOfSMS SMS Usage</div>
-                                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <div class="pricingTable">
+                            <div id="pricingTableHeader_@accountPackageCounter" class="pricingTable-header" onmouseover="mouseover('@accountPackageCounter', '@obj.PackageColorCode')" onmouseout="mouseout('@accountPackageCounter', '@obj.PackageColorCode')">
+                                <i class="@obj.PackageFontIcon"></i>
+                                <div class="price-value" id="heading_@accountPackageCounter" style="color: @obj.PackageColorCode">
+                                    @obj.Amount
+                                    @*<span class="month" id="per_@accountPackageCounter">per month</span>*@
+                                    <i class="month fas fa-rupee-sign"></i>
                                 </div>
                             </div>
-                            <div class="pricing-cta">
-                                <a href="javascript:void(0);" onclick="fnBuyNowPackage('@obj.PackageId', '@obj.PackageName')">Buy Now <i class="fas fa-arrow-right"></i></a>
+                            <h3 class="heading" style="margin-top: 10px; color: @obj.PackageColorCode">@obj.PackageName</h3>
+                            <div class="pricing-content">
+                                <ul>
+                                    <li><b>@obj.AccessDays</b> Access Days</li>
+                                    <li><b>@obj.NoOfEmployee</b> No Of Employee</li>
+                                    <li><b>@obj.NoOfSMS</b> No Of SMS</li>
+                                </ul>
+                            </div>
+                            <div class="pricingTable-signup">
+                                <a target="_blank" href="/admin/login" style="background: @obj.PackageColorCode" onclick="fnBuyNowPackage('@obj.PackageId', '@obj.PackageName')">
+                                    Buy Now <i class="fas fa-arrow-right"></i>
+                                </a>
                             </div>
                         </div>
                     </div>
+                    { accountPackageCounter++; }
 
                 }
             }
@@ -63,6 +148,19 @@
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 
 <script type="text/javascript">
+
+    function mouseover(counter, colorcode) {
+        $("#pricingTableHeader_" + counter).css("background", colorcode);
+        $("#heading_" + counter).css("color", "white");
+        $("#per_" + counter).css("color", "white");
+    }
+
+    function mouseout(counter, colorcode) {
+        $("#pricingTableHeader_" + counter).css("background", "#f5f6f9");
+        $("#heading_" + counter).css("color", colorcode);
+        $("#per_" + counter).css("color", colorcode);
+    }
+
 
     function fnBuyNowPackage(packageId, packageName) {
         var r = confirm("Are you sure want to buy '" + packageName + "' package ?");

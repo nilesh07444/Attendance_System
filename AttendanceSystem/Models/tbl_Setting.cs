@@ -28,9 +28,11 @@ namespace AttendanceSystem.Models
         public string SMTPFromEmailId { get; set; }
         public string SuperAdminEmailId { get; set; }
         public string SuperAdminMobileNo { get; set; }
-        public string RazorPayKey { get; set; }
-        public string RazorPaySecret { get; set; }
         public string ServiceImage { get; set; }
         public string HomeImage { get; set; }
+        public string HomeImage2 { get; set; }
+        public string StripeSandboxModeAPIKey { get; set; }
+        public string StripeLiveModeAPIKey { get; set; }
+        public Nullable<bool> IsStripeLiveMode { get; set; }
     }
 }

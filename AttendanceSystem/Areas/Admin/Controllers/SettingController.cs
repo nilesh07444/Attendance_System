@@ -53,11 +53,13 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objSASetting.SMTPFromEmailId = setting.SMTPFromEmailId;
                         objSASetting.SuperAdminEmailId = setting.SuperAdminEmailId;
                         objSASetting.SuperAdminMobileNo = setting.SuperAdminMobileNo;
-                        objSASetting.RazorPayKey = setting.RazorPayKey;
-                        objSASetting.RazorPaySecret = setting.RazorPaySecret;
+                        objSASetting.StripeSandboxModeAPIKey = setting.StripeSandboxModeAPIKey;
+                        objSASetting.StripeLiveModeAPIKey = setting.StripeLiveModeAPIKey;
+                        objSASetting.IsStripeLiveMode = setting.IsStripeLiveMode;
 
                         objSASetting.ServiceImage = setting.ServiceImage;
                         objSASetting.HomeImage = setting.HomeImage;
+                        objSASetting.HomeImage2 = setting.HomeImage2;
 
                         ViewData["objSASetting"] = objSASetting;
                     }
@@ -103,9 +105,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                         SuperAdminEmailId = s.SuperAdminEmailId,
                                                         SuperAdminMobileNo = s.SuperAdminMobileNo,
 
-                                                        RazorPayKey = s.RazorPayKey,
-                                                        RazorPaySecret = s.RazorPaySecret,
+                                                        IsStripeLiveMode = s.IsStripeLiveMode,
+                                                        StripeSandboxModeAPIKey = s.StripeSandboxModeAPIKey,
+                                                        StripeLiveModeAPIKey = s.StripeLiveModeAPIKey,
                                                         HomeImage = s.HomeImage,
+                                                        HomeImage2 = s.HomeImage2,
                                                         ServiceImage = s.ServiceImage
                                                     }).FirstOrDefault();
 
@@ -159,7 +163,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public ActionResult EditSuperAdminSetting(SuperAdminSettingVM settingVM, HttpPostedFileBase ServiceImageFile, HttpPostedFileBase HomeImageFile)
+        public ActionResult EditSuperAdminSetting(SuperAdminSettingVM settingVM, HttpPostedFileBase ServiceImageFile, HttpPostedFileBase HomeImageFile, HttpPostedFileBase HomeImageFile2)
         {
             try
             {
@@ -239,6 +243,34 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                     #endregion
 
+                    #region Upload Home Image 2
+
+                    string homefileName2 = objSetting.HomeImage2; 
+                      
+                    if (HomeImageFile2 != null)
+                    {
+                        // Image file validation
+                        string ext = Path.GetExtension(HomeImageFile2.FileName);
+                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
+                        {
+                            ModelState.AddModelError("HomeImageFile2", ErrorMessage.SelectOnlyImage);
+                            return View(settingVM);
+                        }
+
+                        // Save file in folder
+                        homefileName2 = Guid.NewGuid() + "-" + Path.GetFileName(HomeImageFile2.FileName);
+                        HomeImageFile2.SaveAs(homePath + homefileName2);
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(objSetting.HomeImage2))
+                        {
+                            ModelState.AddModelError("HomeImageFile2", ErrorMessage.ImageRequired);
+                            return View(settingVM);
+                        }
+                    }
+
+                    #endregion
 
                     // Save data
 
@@ -256,10 +288,12 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     objSetting.SMTPFromEmailId = settingVM.SMTPFromEmailId;
                     objSetting.SuperAdminEmailId = settingVM.SuperAdminEmailId;
                     objSetting.SuperAdminMobileNo = settingVM.SuperAdminMobileNo;
-                    objSetting.RazorPayKey = settingVM.RazorPayKey;
-                    objSetting.RazorPaySecret = settingVM.RazorPaySecret;
+                    objSetting.IsStripeLiveMode = settingVM.IsStripeLiveMode;
+                    objSetting.StripeSandboxModeAPIKey = settingVM.StripeSandboxModeAPIKey;
+                    objSetting.StripeLiveModeAPIKey = settingVM.StripeLiveModeAPIKey;
                     objSetting.ServiceImage = servicefileName;
                     objSetting.HomeImage = homefileName;
+                    objSetting.HomeImage2 = homefileName2;
 
                     _db.SaveChanges();
 

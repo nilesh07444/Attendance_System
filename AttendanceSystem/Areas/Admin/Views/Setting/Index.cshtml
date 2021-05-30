@@ -61,8 +61,13 @@
                                 </div>
 
                                 <div class="form-group col-4">
-                                    <label>Home Image</label>
+                                    <label>Home Image 1</label>
                                     <p><a target="_blank" href="@ErrorMessage.HomeDirectoryPath/@objSASetting.HomeImage"> Click here to view image </a></p>
+                                </div>
+
+                                <div class="form-group col-4">
+                                    <label>Home Image 2</label>
+                                    <p><a target="_blank" href="@ErrorMessage.HomeDirectoryPath/@objSASetting.HomeImage2"> Click here to view image </a></p>
                                 </div>
 
                             </div>
@@ -143,7 +148,7 @@
 
                     <div class="card">
                         <div class="card-header">
-                            <h4>Razor Pay Information</h4>
+                            <h4>Stripe Payment Gateway Information</h4>
                             <div class="card-header-action">
                                 <a href="/admin/setting/edit" class="btn btn-primary">Edit</a>
                             </div>
@@ -152,14 +157,20 @@
 
                             <div class="row">
                                 <div class="form-group col-4">
-                                    <label>Razor Pay Key</label>
-                                    <p>@objSASetting.RazorPayKey</p>
+                                    <label>Stripe Sandbox Mode API Key</label>
+                                    <p>@objSASetting.StripeSandboxModeAPIKey</p>
                                 </div>
 
                                 <div class="form-group col-4">
-                                    <label>Razor Pay Secret</label>
-                                    <p>@objSASetting.RazorPaySecret</p>
+                                    <label>Stripe Live Mode API Key</label>
+                                    <p>@objSASetting.StripeLiveModeAPIKey</p>
                                 </div>
+
+                                <div class="form-group col-4">
+                                    <label>Is Stripe Live Mode ?</label>
+                                    <p>@(objSASetting.IsStripeLiveMode == true ? "Yes" : "No" )</p>
+                                </div>
+
                             </div>
 
                         </div>

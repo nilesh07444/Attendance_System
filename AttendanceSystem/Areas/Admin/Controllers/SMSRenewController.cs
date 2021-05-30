@@ -49,16 +49,18 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             try
             {
                 lstSMSPackages = (from sms in _db.tbl_SMSPackage
-                                      where !sms.IsDeleted && sms.IsActive
-                                      select new SMSPackageVM
-                                      {
-                                          SMSPackageId = sms.SMSPackageId,
-                                          PackageName = sms.PackageName,
-                                          PackageImage = sms.PackageImage,
-                                          PackageAmount = sms.PackageAmount,
-                                          AccessDays = sms.AccessDays,
-                                          NoOfSMS = sms.NoOfSMS
-                                      }).OrderByDescending(x => x.SMSPackageId).ToList();
+                                  where !sms.IsDeleted && sms.IsActive
+                                  select new SMSPackageVM
+                                  {
+                                      SMSPackageId = sms.SMSPackageId,
+                                      PackageName = sms.PackageName,
+                                      PackageImage = sms.PackageImage,
+                                      PackageAmount = sms.PackageAmount,
+                                      AccessDays = sms.AccessDays,
+                                      NoOfSMS = sms.NoOfSMS,
+                                      PackageColorCode = sms.PackageColorCode,
+                                      PackageFontIcon = sms.PackageFontIcon
+                                  }).OrderByDescending(x => x.SMSPackageId).ToList();
 
                 ViewData["lstSMSPackages"] = lstSMSPackages;
 
@@ -81,7 +83,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             {
                 if (packageBuyVM != null && packageBuyVM.PackageId != 0)
                 {
-                    
+
                     // Get selected package detail
                     tbl_SMSPackage objPackage = _db.tbl_SMSPackage.Where(x => x.SMSPackageId == packageBuyVM.PackageId).FirstOrDefault();
 

@@ -70,7 +70,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                           IsActive = pck.IsActive,
                                           PackageImage = pck.PackageImage,
                                           NoOfSMS = pck.NoOfSMS,
-                                          NoOfEmployee = pck.NoOfEmployee
+                                          NoOfEmployee = pck.NoOfEmployee,
+                                          PackageColorCode = pck.PackageColorCode,
+                                          PackageFontIcon = pck.PackageFontIcon
                                       }).OrderByDescending(x => x.PackageId).ToList();
 
                 ViewData["lstAccountPackages"] = lstAccountPackages;
@@ -128,9 +130,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     tbl_Package objPackage = _db.tbl_Package.Where(x => x.PackageId == packageBuyVM.PackageId).FirstOrDefault();
 
                     // Get last bought package of company
-                    tbl_CompanyRenewPayment objLastBoughtPackage = _db.tbl_CompanyRenewPayment.Where(x=>x.CompanyId == clsAdminSession.CompanyId)
-                                                                                                .OrderByDescending(x=>x.CompanyRegistrationPaymentId).FirstOrDefault();
-                     
+                    tbl_CompanyRenewPayment objLastBoughtPackage = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == clsAdminSession.CompanyId)
+                                                                                                .OrderByDescending(x => x.CompanyRegistrationPaymentId).FirstOrDefault();
+
                     if (objPackage != null)
                     {
                         tbl_CompanyRenewPayment objCompanyRenewPayment = new tbl_CompanyRenewPayment();
