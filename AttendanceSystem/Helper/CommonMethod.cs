@@ -3,6 +3,7 @@ using AttendanceSystem.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -666,6 +667,25 @@ namespace AttendanceSystem
         {
             var request = HttpContext.Current.Request;
             return request.Url.Scheme + "://" + request.Url.Authority;
+        }
+
+        public static string GetFormatterAmount(Decimal? Amt)
+        {
+            string ConvertedString = "";
+            if (Amt != null)
+            {
+                double ammountDouble = Convert.ToDouble(Amt);
+
+                bool isInt = ammountDouble % 1 == 0;
+
+                string format = "{0:N}";
+                if (isInt)
+                    format = "{0:N0}";
+
+                CultureInfo cultureInfo = new CultureInfo("en-IN");
+                ConvertedString = string.Format(cultureInfo, format, ammountDouble);
+            }
+            return ConvertedString;
         }
     }
 }

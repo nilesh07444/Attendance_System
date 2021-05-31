@@ -65,8 +65,8 @@
                             <div id="pricingTableHeader_@accountPackageCounter" class="pricingTable-header" onmouseover="mouseover('@accountPackageCounter', '@obj.PackageColorCode')" onmouseout="mouseout('@accountPackageCounter', '@obj.PackageColorCode')">
                                 <i class="@obj.PackageFontIcon"></i>
                                 <div class="price-value" id="heading_@accountPackageCounter" style="color: @obj.PackageColorCode">
-                                    @obj.Amount
-                                    @*<span class="month" id="per_@accountPackageCounter">per month</span>*@
+                                    @{ string strPackageAmount = CommonMethod.GetFormatterAmount(obj.Amount); }
+                                    @strPackageAmount 
                                     <i class="month fas fa-rupee-sign"></i>
                                 </div>
                             </div>
@@ -149,8 +149,8 @@
                             <div id="smspricingTableHeader_@smsPackageCounter" class="pricingTable-header" onmouseover="mouseoverSMS('@smsPackageCounter', '@obj.PackageColorCode')" onmouseout="mouseoutSMS('@smsPackageCounter', '@obj.PackageColorCode')">
                                 <i class="@obj.PackageFontIcon"></i>
                                 <div class="price-value" id="smsheading_@smsPackageCounter" style="color: @obj.PackageColorCode">
-                                    @obj.PackageAmount
-                                    @*<span class="month" id="smsper_@smsPackageCounter">per month</span>*@
+                                    @{ string strPackageAmount = CommonMethod.GetFormatterAmount(obj.PackageAmount); }
+                                    @strPackageAmount  
                                     <i class="month fas fa-rupee-sign"></i>
                                 </div>
                             </div>
