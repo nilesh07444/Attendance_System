@@ -272,6 +272,17 @@
           <Property Name="Message" Type="nvarchar(max)" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
         </EntityType>
+        <EntityType Name="tbl_Conversion">
+          <Key>
+            <PropertyRef Name="ConversionId" />
+          </Key>
+          <Property Name="ConversionId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DateOfConversion" Type="datetime" Nullable="false" />
+          <Property Name="Month" Type="int" Nullable="false" />
+          <Property Name="Year" Type="int" Nullable="false" />
+          <Property Name="CompanyId" Type="bigint" Nullable="false" />
+          <Property Name="CreatedBy" Type="bigint" Nullable="false" />
+        </EntityType>
         <EntityType Name="tbl_DynamicContent">
           <Key>
             <PropertyRef Name="DynamicContentId" />
@@ -360,11 +371,17 @@
             <PropertyRef Name="EmployeePaymentId" />
           </Key>
           <Property Name="EmployeePaymentId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyId" Type="bigint" Nullable="false" />
           <Property Name="UserId" Type="bigint" Nullable="false" />
+          <Property Name="AttendanceId" Type="bigint" />
           <Property Name="PaymentDate" Type="datetime" Nullable="false" />
-          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="PaymentType" Type="int" Nullable="false" />
+          <Property Name="PaymentType" Type="int" />
+          <Property Name="CreditOrDebitText" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CreditAmount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="DebitAmount" Type="decimal" Precision="18" Scale="2" />
           <Property Name="Remarks" Type="nvarchar" MaxLength="500" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProcessStatusText" Type="nvarchar" MaxLength="50" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="CreatedBy" Type="bigint" Nullable="false" />
@@ -713,6 +730,7 @@
           <EntitySet Name="tbl_CompanyRequest" EntityType="Self.tbl_CompanyRequest" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_CompanySMSPackRenew" EntityType="Self.tbl_CompanySMSPackRenew" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_ContactForm" EntityType="Self.tbl_ContactForm" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_Conversion" EntityType="Self.tbl_Conversion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_DynamicContent" EntityType="Self.tbl_DynamicContent" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Employee" EntityType="Self.tbl_Employee" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_EmployeeBuyTransaction" EntityType="Self.tbl_EmployeeBuyTransaction" Schema="dbo" store:Type="Tables" />
@@ -1084,7 +1102,6 @@
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
           <EntitySet Name="tbl_LoginHistory" EntityType="AttendanceSystemModel.tbl_LoginHistory" />
-          <EntitySet Name="tbl_EmployeePayment" EntityType="AttendanceSystemModel.tbl_EmployeePayment" />
           <EntitySet Name="tbl_AssignWorker" EntityType="AttendanceSystemModel.tbl_AssignWorker" />
           <EntitySet Name="tbl_ContactForm" EntityType="AttendanceSystemModel.tbl_ContactForm" />
           <EntitySet Name="tbl_WorkerAttendance" EntityType="AttendanceSystemModel.tbl_WorkerAttendance" />
@@ -1099,6 +1116,8 @@
           <EntitySet Name="tbl_SMSContent" EntityType="AttendanceSystemModel.tbl_SMSContent" />
           <EntitySet Name="tbl_WorkerType" EntityType="AttendanceSystemModel.tbl_WorkerType" />
           <EntitySet Name="tbl_Setting" EntityType="AttendanceSystemModel.tbl_Setting" />
+          <EntitySet Name="tbl_Conversion" EntityType="AttendanceSystemModel.tbl_Conversion" />
+          <EntitySet Name="tbl_EmployeePayment" EntityType="AttendanceSystemModel.tbl_EmployeePayment" />
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -1126,22 +1145,6 @@
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ModifiedBy" Type="Int64" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-        </EntityType>
-        <EntityType Name="tbl_EmployeePayment">
-          <Key>
-            <PropertyRef Name="EmployeePaymentId" />
-          </Key>
-          <Property Name="EmployeePaymentId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="Int64" Nullable="false" />
-          <Property Name="PaymentDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="PaymentType" Type="Int32" Nullable="false" />
-          <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int64" />
         </EntityType>
         <EntityType Name="tbl_AssignWorker">
           <Key>
@@ -1482,6 +1485,39 @@
           <Property Name="StripeSandboxModeAPIKey" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="StripeLiveModeAPIKey" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IsStripeLiveMode" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="tbl_Conversion">
+          <Key>
+            <PropertyRef Name="ConversionId" />
+          </Key>
+          <Property Name="ConversionId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DateOfConversion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Month" Type="Int32" Nullable="false" />
+          <Property Name="Year" Type="Int32" Nullable="false" />
+          <Property Name="CompanyId" Type="Int64" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbl_EmployeePayment">
+          <Key>
+            <PropertyRef Name="EmployeePaymentId" />
+          </Key>
+          <Property Name="EmployeePaymentId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyId" Type="Int64" Nullable="false" />
+          <Property Name="UserId" Type="Int64" Nullable="false" />
+          <Property Name="AttendanceId" Type="Int64" />
+          <Property Name="PaymentDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PaymentType" Type="Int32" />
+          <Property Name="CreditOrDebitText" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreditAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="DebitAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProcessStatusText" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int64" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1841,23 +1877,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tbl_EmployeePayment">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_EmployeePayment">
-              <MappingFragment StoreEntitySet="tbl_EmployeePayment">
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
-                <ScalarProperty Name="PaymentType" ColumnName="PaymentType" />
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="EmployeePaymentId" ColumnName="EmployeePaymentId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="tbl_AssignWorker">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_AssignWorker">
               <MappingFragment StoreEntitySet="tbl_AssignWorker">
@@ -2209,6 +2228,41 @@
                 <ScalarProperty Name="AmountPerEmp" ColumnName="AmountPerEmp" />
                 <ScalarProperty Name="AccountFreeAccessDays" ColumnName="AccountFreeAccessDays" />
                 <ScalarProperty Name="SettingId" ColumnName="SettingId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_Conversion">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Conversion">
+              <MappingFragment StoreEntitySet="tbl_Conversion">
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="Month" ColumnName="Month" />
+                <ScalarProperty Name="DateOfConversion" ColumnName="DateOfConversion" />
+                <ScalarProperty Name="ConversionId" ColumnName="ConversionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_EmployeePayment">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_EmployeePayment">
+              <MappingFragment StoreEntitySet="tbl_EmployeePayment">
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ProcessStatusText" ColumnName="ProcessStatusText" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="DebitAmount" ColumnName="DebitAmount" />
+                <ScalarProperty Name="CreditAmount" ColumnName="CreditAmount" />
+                <ScalarProperty Name="CreditOrDebitText" ColumnName="CreditOrDebitText" />
+                <ScalarProperty Name="PaymentType" ColumnName="PaymentType" />
+                <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
+                <ScalarProperty Name="AttendanceId" ColumnName="AttendanceId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="EmployeePaymentId" ColumnName="EmployeePaymentId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

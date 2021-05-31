@@ -40,9 +40,9 @@
                                 @Html.ValidationMessageFor(model => model.PaymentDate, "", new { @class = "text-danger" })
                             </div>
                             <div class="form-group col-6">
-                                @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.Amount, new { @type = "number", @class = "form-control required", @placeholder = "Enter Amount", @maxlength = "10", @min = 1 })
-                                @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+                                @Html.LabelFor(model => model.DebitAmount, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.DebitAmount, new { @type = "number", @class = "form-control required", @placeholder = "Enter Amount", @maxlength = "10", @min = 1 })
+                                @Html.ValidationMessageFor(model => model.DebitAmount, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="form-group">

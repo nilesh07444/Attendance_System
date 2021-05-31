@@ -15,11 +15,17 @@ namespace AttendanceSystem.Models
     public partial class tbl_EmployeePayment
     {
         public long EmployeePaymentId { get; set; }
+        public long CompanyId { get; set; }
         public long UserId { get; set; }
+        public Nullable<long> AttendanceId { get; set; }
         public System.DateTime PaymentDate { get; set; }
-        public decimal Amount { get; set; }
-        public int PaymentType { get; set; }
+        public Nullable<int> PaymentType { get; set; }
+        public string CreditOrDebitText { get; set; }
+        public Nullable<decimal> CreditAmount { get; set; }
+        public Nullable<decimal> DebitAmount { get; set; }
         public string Remarks { get; set; }
+        public string Status { get; set; }
+        public string ProcessStatusText { get; set; }
         public bool IsDeleted { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public long CreatedBy { get; set; }

@@ -86,7 +86,7 @@ namespace AttendanceSystem.Helper
     }
 
     public enum FeedbackStatus
-    {
+    {        
         Pending = 1,
         Resolved = 2,
         NotResolved = 3
@@ -147,7 +147,5 @@ namespace AttendanceSystem.Helper
         FullDay = 1,
         [Description("Half Day")]
         HalfDay = 2
-
     }
 }
-

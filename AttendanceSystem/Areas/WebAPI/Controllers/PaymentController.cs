@@ -32,18 +32,17 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             try
             {
                 List<PaymentVM> paymentList = (from emp in _db.tbl_EmployeePayment
-                                               where !emp.IsDeleted
+                                               where !emp.IsDeleted && emp.CreditOrDebitText.ToLower() == "debit"
                                                && emp.PaymentDate >= paymentFilterVM.StartDate && emp.PaymentDate <= paymentFilterVM.EndDate
                                                && (employeeRoleId == (int)AdminRoles.CompanyAdmin ? (paymentFilterVM.EmployeeId.HasValue ? emp.UserId == paymentFilterVM.EmployeeId : true) : emp.UserId == employeeId)
                                                select new PaymentVM
                                                {
-
                                                    EmployeePaymentId = emp.EmployeePaymentId,
                                                    UserId = emp.UserId,
                                                    PaymentDate = emp.PaymentDate,
-                                                   Amount = emp.Amount,
+                                                   DebitAmount = emp.DebitAmount,
                                                    PaymentType = emp.PaymentType,
-                                                   Remarks=emp.Remarks
+                                                   Remarks = emp.Remarks
                                                }).OrderByDescending(x => x.EmployeePaymentId).ToList();
 
                 response.Data = paymentList;
@@ -73,8 +72,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                                                 EmployeePaymentId = emp.EmployeePaymentId,
                                                 UserId = emp.UserId,
-                                                PaymentDate = emp.PaymentDate,
-                                                Amount = emp.Amount,
+                                                PaymentDate = emp.PaymentDate, 
+                                                DebitAmount = emp.DebitAmount,
                                                 PaymentType = emp.PaymentType,
                                                 Remarks = emp.Remarks
                                             }).FirstOrDefault();
@@ -116,11 +115,12 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                     if (!response.IsError)
                     {
-
                         tbl_EmployeePayment objEmployeePayment = new tbl_EmployeePayment();
+                        objEmployeePayment.CompanyId = companyId;
                         objEmployeePayment.UserId = paymentVM.UserId;
-                        objEmployeePayment.PaymentDate = paymentVM.PaymentDate;
-                        objEmployeePayment.Amount = paymentVM.Amount;
+                        objEmployeePayment.PaymentDate = DateTime.UtcNow; //paymentVM.PaymentDate;
+                        objEmployeePayment.CreditOrDebitText = "Debit";
+                        objEmployeePayment.DebitAmount = paymentVM.DebitAmount;
                         objEmployeePayment.PaymentType = paymentVM.PaymentType;
                         objEmployeePayment.CreatedBy = employeeId;
                         objEmployeePayment.CreatedDate = DateTime.UtcNow;
@@ -141,38 +141,5 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             return response;
         }
 
-        [HttpPost]
-        [Route("DeletedList")]
-        public ResponseDataModel<List<PaymentVM>> DeletedList(PaymentFilterVM paymentFilterVM)
-        {
-            ResponseDataModel<List<PaymentVM>> response = new ResponseDataModel<List<PaymentVM>>();
-            response.IsError = false;
-            try
-            {
-                List<PaymentVM> paymentList = (from emp in _db.tbl_EmployeePayment
-                                               where emp.IsDeleted
-                                               && emp.PaymentDate >= paymentFilterVM.StartDate && emp.PaymentDate <= paymentFilterVM.EndDate
-                                               && (employeeRoleId == (int)AdminRoles.CompanyAdmin ? (paymentFilterVM.EmployeeId.HasValue ? emp.UserId == paymentFilterVM.EmployeeId : true) : emp.UserId == employeeId)
-                                               select new PaymentVM
-                                               {
-
-                                                   EmployeePaymentId = emp.EmployeePaymentId,
-                                                   UserId = emp.UserId,
-                                                   PaymentDate = emp.PaymentDate,
-                                                   Amount = emp.Amount,
-                                                   PaymentType = emp.PaymentType,
-                                                   Remarks = emp.Remarks
-                                               }).OrderByDescending(x => x.EmployeePaymentId).ToList();
-
-                response.Data = paymentList;
-            }
-            catch (Exception ex)
-            {
-                response.IsError = true;
-                response.AddError(ex.Message);
-            }
-
-            return response;
-        }
     }
 }

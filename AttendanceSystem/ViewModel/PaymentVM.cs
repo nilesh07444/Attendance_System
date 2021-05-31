@@ -17,10 +17,12 @@ namespace AttendanceSystem.ViewModel
         [Required, Display(Name = "Employee")]
         public long UserId { get; set; }
         public string UserName { get; set; }
-        [Required, Display(Name = "Amount")]
-        public decimal Amount { get; set; }
+        [Display(Name = "Credit Amount")]
+        public decimal? CreditAmount { get; set; }
+        [Display(Name = "Debit Amount")]
+        public decimal? DebitAmount { get; set; }
         [Required, Display(Name = "Payment Type")]
-        public int PaymentType { get; set; }
+        public int? PaymentType { get; set; }
         public string PaymentTypeText { get; set; }
         public List<SelectListItem> EmployeeList { get; set; }
         public List<SelectListItem> EmployeePaymentTypeList { get; set; }

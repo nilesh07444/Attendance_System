@@ -267,6 +267,9 @@
     <Compile Include="Models\tbl_ContactForm.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\tbl_Conversion.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tbl_DynamicContent.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>

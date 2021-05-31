@@ -1,11 +1,9 @@
-﻿@using AttendanceSystem.Helper
-@using AttendanceSystem.ViewModel;
+﻿@using AttendanceSystem.ViewModel;
 @model AttendanceSystem.ViewModel.PaymentFilterVM
 @{
     ViewBag.Title = "Payment";
     int counter = 1;
 }
-
 
 <section class="section">
     <div class="section-body">
@@ -70,7 +68,7 @@
                                                 <td>@counter.</td>
                                                 <td>@obj.UserName</td>
                                                 <td>@obj.PaymentDate.ToString("dd MMM yyyy")</td>
-                                                <td>@obj.Amount</td>
+                                                <td>@obj.DebitAmount</td>
                                                 <td>@obj.PaymentTypeText</td>
                                                 <td>
 

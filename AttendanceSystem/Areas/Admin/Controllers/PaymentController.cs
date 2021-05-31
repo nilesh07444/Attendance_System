@@ -43,7 +43,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 long companyId = clsAdminSession.CompanyId;
                 paymentFilterVM.PaymentList = (from empp in _db.tbl_EmployeePayment
                                                join emp in _db.tbl_Employee on empp.UserId equals emp.EmployeeId
-                                               where !emp.IsDeleted && emp.CompanyId == companyId && !empp.IsDeleted
+                                               where !emp.IsDeleted && emp.CompanyId == companyId && !empp.IsDeleted && empp.CreditOrDebitText.ToLower() == "debit"
                                                && empp.PaymentDate >= paymentFilterVM.StartDate && empp.PaymentDate <= paymentFilterVM.EndDate
                                                && (paymentFilterVM.UserRole.HasValue ? emp.AdminRoleId == paymentFilterVM.UserRole.Value : true)
                                                select new PaymentVM
@@ -53,9 +53,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                    UserId = empp.UserId,
                                                    PaymentDate = empp.PaymentDate,
                                                    UserName = emp.FirstName + " " + emp.LastName,
-                                                   Amount = empp.Amount,
+                                                   DebitAmount = empp.DebitAmount,
+                                                   CreditAmount = empp.CreditAmount,
                                                    PaymentType = empp.PaymentType,
-
                                                }).OrderByDescending(x => x.EmployeePaymentId).ToList();
 
                 paymentFilterVM.PaymentList.ForEach(x =>
@@ -84,8 +84,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                  EmployeePaymentId = empp.EmployeePaymentId,
                                  UserId = empp.UserId,
                                  PaymentDate = empp.PaymentDate,
-                                 UserName = emp.FirstName + " " + emp.LastName,
-                                 Amount = empp.Amount,
+                                 UserName = emp.FirstName + " " + emp.LastName, 
+                                 DebitAmount = empp.DebitAmount,
                                  PaymentType = empp.PaymentType,
                                  Remarks = empp.Remarks
                              }).FirstOrDefault();
@@ -112,7 +112,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         tbl_EmployeePayment objEmployeePayment = _db.tbl_EmployeePayment.Where(x => x.EmployeePaymentId == paymentVM.EmployeePaymentId).FirstOrDefault();
 
                         objEmployeePayment.PaymentDate = paymentVM.PaymentDate;
-                        objEmployeePayment.Amount = paymentVM.Amount;
+                        objEmployeePayment.DebitAmount = paymentVM.DebitAmount;
                         objEmployeePayment.PaymentType = paymentVM.PaymentType;
                         objEmployeePayment.Remarks = paymentVM.Remarks;
                         objEmployeePayment.ModifiedBy = LoggedInUserId;
@@ -121,9 +121,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     else
                     {
                         tbl_EmployeePayment objEmployeePayment = new tbl_EmployeePayment();
+                        objEmployeePayment.CompanyId = companyId;
                         objEmployeePayment.UserId = paymentVM.UserId;
                         objEmployeePayment.PaymentDate = paymentVM.PaymentDate;
-                        objEmployeePayment.Amount = paymentVM.Amount;
+                        objEmployeePayment.CreditOrDebitText = "Debit";
+                        objEmployeePayment.DebitAmount = paymentVM.DebitAmount;
                         objEmployeePayment.PaymentType = paymentVM.PaymentType;
                         objEmployeePayment.Remarks = paymentVM.Remarks;
                         objEmployeePayment.CreatedBy = LoggedInUserId;
@@ -169,7 +171,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                         where !emp.IsDeleted && emp.CompanyId == companyId
                                         select new SelectListItem
                                         {
-                                            Text = emp.FirstName + " " + emp.LastName,
+                                            Text = emp.FirstName + " " + emp.LastName + " (" + emp.EmployeeCode + " )",
                                             Value = emp.EmployeeId.ToString()
                                         }).ToList();
             return lst;
@@ -307,9 +309,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                    UserId = empp.UserId,
                                                    PaymentDate = empp.PaymentDate,
                                                    UserName = emp.FirstName + " " + emp.LastName,
-                                                   Amount = empp.Amount,
+                                                   CreditAmount = empp.CreditAmount,
+                                                   DebitAmount = empp.DebitAmount,
                                                    PaymentType = empp.PaymentType,
-
                                                }).OrderByDescending(x => x.EmployeePaymentId).ToList();
 
                 paymentFilterVM.PaymentList.ForEach(x =>
