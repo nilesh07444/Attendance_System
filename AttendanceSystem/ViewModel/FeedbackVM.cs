@@ -15,6 +15,7 @@ namespace AttendanceSystem.ViewModel
         [Required, Display(Name = "Feedback Type")]
         public int FeedbackType { get; set; }
         public string FeedbackTypeText { get; set; }
+        [Display(Name = "Feedback Status")]
         public int FeedbackStatus { get; set; }
         public string FeedbackStatusText { get; set; }
         [Required, Display(Name = "Feedback")]

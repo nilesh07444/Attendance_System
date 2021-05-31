@@ -60,7 +60,8 @@
                             }
                             else
                             {
-                                if (string.IsNullOrEmpty(companyLogo))
+
+                                if (string.IsNullOrEmpty(companyLogo) || !File.Exists(Server.MapPath(ErrorMessage.CompanyLogoDirectoryPath + companyLogo)))
                                 {
                                     <img alt="image" src="@ErrorMessage.DefaultImagePath"
                                          class="user-img-radious-style">
@@ -82,10 +83,13 @@
                                 <i class="fas fa-bolt"></i>
                                 Change Password
                             </a>
-                            <a href="/admin/setting" class="dropdown-item has-icon">
-                                <i class="fas fa-cog"></i>
-                                Setting
-                            </a>
+                            @if (clsAdminSession.RoleID == (int)AdminRoles.SuperAdmin)
+                            {
+                                <a href="/admin/setting" class="dropdown-item has-icon">
+                                    <i class="fas fa-cog"></i>
+                                    Setting
+                                </a>
+                            }
                             <div class="dropdown-divider"></div>
                             <a href="/admin/login/signout" class="dropdown-item has-icon text-danger">
                                 <i class="fas fa-sign-out-alt"></i>
@@ -285,12 +289,12 @@
                                 </ul>
                             </li>
 
-                            <li class="dropdown @(ViewBag.Title == "Setting" ? "active" : "")">
+                            @*<li class="dropdown @(ViewBag.Title == "Setting" ? "active" : "")">
                                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="settings"></i><span>Setting</span></a>
                                 <ul class="dropdown-menu">
                                     <li><a class="nav-link" href="/admin/setting">General</a></li>
                                 </ul>
-                            </li>
+                            </li>*@
                             <li class="dropdown @(ViewBag.Title == "Feedback" ? "active" : "")">
                                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="file-minus"></i><span>Feedback</span></a>
                                 <ul class="dropdown-menu">
@@ -326,7 +330,7 @@
             </footer>
         </div>
     </div>
-    <!-- General JS Scripts --> 
+    <!-- General JS Scripts -->
     <script src="~/Content/admin-theme/assets/js/app.min.js"></script>
     <!-- JS Libraies -->
     <script src="~/Content/admin-theme/assets/bundles/apexcharts/apexcharts.min.js"></script>
@@ -336,7 +340,7 @@
     <script src="~/Content/admin-theme/assets/js/scripts.js"></script>
     <!-- Custom JS File -->
     <script src="~/Content/admin-theme/assets/js/custom.js"></script>
-    <script src="~/Scripts/jquery.validate.min.js"></script> 
+    <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
     <!-- Datatable - JS - start -->
@@ -351,7 +355,7 @@
     <script src="~/Content/admin-theme/assets/js/page/datatables.js"></script>
     <!-- Datatable - JS - End -->
     <script src="~/Scripts/jquery.blockUI.js"></script>
-     
+
     <script>
 
         function StartLoading() {

@@ -16,7 +16,7 @@ namespace AttendanceSystem
         public decimal Amount { get; set; }
         [Required, Display(Name = "Package Description")]
         public string PackageDescription { get; set; }
-        [Required, Display(Name = "Acess Days")]
+        [Required, Display(Name = "Access Days")]
         public int AccessDays { get; set; }
         public string PackageImage { get; set; }
         public bool IsActive { get; set; }

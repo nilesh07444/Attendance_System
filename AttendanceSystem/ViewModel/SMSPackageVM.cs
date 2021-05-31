@@ -15,7 +15,7 @@ namespace AttendanceSystem.ViewModel
         [Required, Display(Name = "Package Amount")]
         public decimal PackageAmount { get; set; }
        
-        [Required, Display(Name = "Acess Days")]
+        [Required, Display(Name = "Access Days")]
         public int AccessDays { get; set; }
         [Required, Display(Name = "No Of SMS")]
         public int NoOfSMS { get; set; }

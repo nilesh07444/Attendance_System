@@ -148,9 +148,13 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                   Remarks = fb.Remarks,
                                   SuperAdminFeedbackText = fb.SuperAdminFeedbackText,
                                   IsDeleted = fb.IsDeleted,
-                                  IsActive = fb.IsActive
+                                  IsActive = fb.IsActive,
+                                  CreatedDate = fb.CreatedDate
                               }).FirstOrDefault();
 
+
+                List<SelectListItem> feedBackStatusList = GetFeedbackStatusList();
+                feedbackVM.FeedbackStatusText = feedBackStatusList.Where(z => z.Value == feedbackVM.FeedbackStatus.ToString()).Select(z => z.Text).FirstOrDefault();
 
                 feedbackVM.FeedbackTypeText = CommonMethod.GetEnumDescription((FeedbackType)feedbackVM.FeedbackType);
                 feedbackVM.FeedBackStatusList = GetFeedbackStatusList();
