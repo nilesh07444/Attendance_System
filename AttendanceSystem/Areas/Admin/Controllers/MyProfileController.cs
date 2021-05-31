@@ -55,7 +55,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                   CompanyAdminMiddleName = emp.MIddleName,
                                   CompanyAdminLastName = emp.LastName,
                                   CompanyAdminEmailId = emp.EmailId,
-                                  CompanyAdminDOB = emp.DOB,
+                                  dtCompanyAdminDOB = emp.DOB,
                                   CompanyAdminMobileNo = emp.MobileNo,
                                   CompanyAdminAlternateMobileNo = emp.AlternateMobileNo,
                                   CompanyAdminDesignation = emp.Designation,

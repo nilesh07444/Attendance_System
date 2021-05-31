@@ -70,7 +70,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     response.IsError = true;
                     response.AddError(ErrorMessage.MonthlySalaryRequiredForMonthlyBasedWorker);
                 }
-                else if (employeeVM.EmploymentCategory == (int)EmploymentCategory.MonthlyBased && employeeVM.ExtraPerHourPrice== 0)
+                else if (employeeVM.EmploymentCategory == (int)EmploymentCategory.MonthlyBased && employeeVM.ExtraPerHourPrice == 0)
                 {
                     response.IsError = true;
                     response.AddError(ErrorMessage.ExtraPerHourPriceRequired);
@@ -139,7 +139,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
         [HttpGet]
         [Route("ListWorkers")]
-        public ResponseDataModel<List<EmployeeVM>> ListWorkers()
+        public ResponseDataModel<List<EmployeeVM>> ListWorkers(string searchText = "")
         {
             ResponseDataModel<List<EmployeeVM>> response = new ResponseDataModel<List<EmployeeVM>>();
             response.IsError = false;
@@ -148,6 +148,9 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 List<EmployeeVM> workerList = (from emp in _db.tbl_Employee
                                                where !emp.IsDeleted && emp.CompanyId == companyId
                                                && emp.AdminRoleId == (int)AdminRoles.Worker
+                                               && (!string.IsNullOrEmpty(searchText) ? (emp.EmployeeCode.Contains(searchText)
+                                               || emp.FirstName.Contains(searchText)
+                                               || emp.LastName.Contains(searchText)) : true)
                                                select new EmployeeVM
                                                {
                                                    EmployeeId = emp.EmployeeId,
@@ -170,9 +173,10 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                    City = emp.City,
                                                    Pincode = emp.Pincode,
                                                    State = emp.State,
-                                                   IsActive = true,
+                                                   IsActive = emp.IsActive,
                                                }).ToList();
-                workerList.ForEach(x => {
+                workerList.ForEach(x =>
+                {
                     x.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)x.EmploymentCategory);
                 });
 

@@ -145,7 +145,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
                     }
                     else
                     {
-                        ModelState.AddModelError("CompanyPhotoFile", ErrorMessage.ImageRequired);
+                        ModelState.AddModelError("CompanyLogoImageFile", ErrorMessage.ImageRequired);
                         companyRequestVM.CompanyTypeList = GetCompanyType();
                         return View(companyRequestVM);
                     }

@@ -137,7 +137,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                         CompanyAdminFirstName = cp.CompanyAdminFirstName,
                                         CompanyAdminMiddleName = cp.CompanyAdminMiddleName,
                                         CompanyAdminLastName = cp.CompanyAdminLastName,
-                                        CompanyAdminDOB = cp.CompanyAdminDOB,
+                                        dtCompanyAdminDOB = cp.CompanyAdminDOB,
                                         CompanyAdminEmailId = cp.CompanyAdminEmailId,
                                         CompanyAdminMobileNo = cp.CompanyAdminMobileNo,
                                         CompanyAdminAlternateMobileNo = cp.CompanyAdminAlternateMobileNo,
@@ -332,7 +332,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                            CompanyAdminMiddleName = emp.MIddleName,
                                            CompanyAdminLastName = emp.LastName,
                                            CompanyAdminEmailId = emp.EmailId,
-                                           CompanyAdminDOB = emp.DOB,
+                                           dtCompanyAdminDOB = emp.DOB,
                                            CompanyAdminMobileNo = emp.MobileNo,
                                            CompanyAdminAlternateMobileNo = emp.AlternateMobileNo,
                                            CompanyAdminDesignation = emp.Designation,
@@ -617,7 +617,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     objUser.MIddleName = companyRequestVM.CompanyAdminMiddleName;
                     objUser.LastName = companyRequestVM.CompanyAdminLastName;
                     objUser.EmailId = companyRequestVM.CompanyAdminEmailId;
-                    objUser.DOB = companyRequestVM.CompanyAdminDOB;
+
+                    DateTime dob_date = DateTime.ParseExact(companyRequestVM.CompanyAdminDOB, "dd/MM/yyyy", null);
+
+                    objUser.DOB = dob_date; // companyRequestVM.CompanyAdminDOB;
                     objUser.MobileNo = companyRequestVM.CompanyAdminMobileNo;
                     objUser.AlternateMobileNo = companyRequestVM.CompanyAdminAlternateMobileNo;
                     objUser.Designation = companyRequestVM.CompanyAdminDesignation;
@@ -739,7 +742,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                         CompanyAdminFirstName = emp.FirstName,
                                         CompanyAdminMiddleName = emp.MIddleName,
                                         CompanyAdminLastName = emp.LastName,
-                                        CompanyAdminDOB = emp.DOB,
+                                        dtCompanyAdminDOB = emp.DOB,
                                         CompanyAdminEmailId = emp.EmailId,
                                         CompanyAdminMobileNo = emp.MobileNo,
                                         CompanyAdminAlternateMobileNo = emp.AlternateMobileNo,

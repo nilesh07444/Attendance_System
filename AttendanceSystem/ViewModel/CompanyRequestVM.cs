@@ -12,19 +12,23 @@ namespace AttendanceSystem.ViewModel
         public long CompanyRequestId { get; set; }
 
 
-        [Required, Display(Name = "Company Type")]
+        [Display(Name = "Company Type")]
+        [Required(ErrorMessage = "This field is required")]
         public long? CompanyTypeId { get; set; }
 
         [MinLength(2)]
-        [Required, Display(Name = "Company Name")]
+        [Required(ErrorMessage = "This field is required")]
+        [Display(Name = "Company Name")]
         [RegularExpression("^[a-zA-Z\\s]+", ErrorMessage = "special characters are not allowed.")]
 
         public string CompanyName { get; set; }
 
-        [Required, Display(Name = "Company EmailId")]
+        [Display(Name = "Company EmailId")]
+        [Required(ErrorMessage = "This field is required")]
         public string CompanyEmailId { get; set; }
 
-        [Required, Display(Name = "Company ContactNo No")]
+        [Display(Name = "Company ContactNo No")]
+        [Required(ErrorMessage = "This field is required")]
         public string CompanyContactNo { get; set; }
 
         [Display(Name = "Company Alternate Mobile No")]
@@ -37,21 +41,30 @@ namespace AttendanceSystem.ViewModel
         [Display(Name = "Company GST Photo")]
         public HttpPostedFileBase CompanyGSTPhotoFile { get; set; }
         public string CompanyGSTPhoto { get; set; }
-
-        [Required, Display(Name = "Company Pan Card No")]
+        
+        [Display(Name = "Company Pan Card No")]
+        [Required(ErrorMessage = "This field is required")]
         [RegularExpression("^([A-Za-z]){5}([0-9]){4}([A-Za-z]){1}$", ErrorMessage = "Invalid PAN No")]
         public string CompanyPanNo { get; set; }
 
         [Display(Name = "Company Pan Card Photo")]
         public HttpPostedFileBase CompanyPanPhotoFile { get; set; }
         public string CompanyPanPhoto { get; set; }
-        [Required, Display(Name = "Company Address")]
+
+        [Display(Name = "Company Address")]
+        [Required(ErrorMessage = "This field is required")]
         public string CompanyAddress { get; set; }
-        [Required, Display(Name = "Company Pincode")]
+
+        [Display(Name = "Company Pincode")]
+        [Required(ErrorMessage = "This field is required")]
         public string CompanyPincode { get; set; }
-        [Required, Display(Name = "Company City")]
+        
+        [Display(Name = "Company City")]
+        [Required(ErrorMessage = "This field is required")]
         public string CompanyCity { get; set; }
-        [Required, Display(Name = "Company State")]
+        
+        [Display(Name = "Company State")]
+        [Required(ErrorMessage = "This field is required")]
         public string CompanyState { get; set; }
 
         [Display(Name = "Company Logo Image")]
@@ -61,50 +74,67 @@ namespace AttendanceSystem.ViewModel
         [Display(Name = "Company Register Proof Image")]
         public HttpPostedFileBase CompanyRegisterProofImageFile { get; set; }
         public string CompanyRegisterProofImage { get; set; }
-        [Required, Display(Name = "Company Description")]
+
+        [Display(Name = "Company Description")]
+        [Required(ErrorMessage = "This field is required")]
         public string CompanyDescription { get; set; }
+
         [Display(Name = "Company website Url")]
+        [Url]
         public string CompanyWebisteUrl { get; set; }
 
-        [Required, Display(Name = "Prefix")]
+        [Display(Name = "Prefix")]
+        [Required(ErrorMessage = "This field is required")]
         public string CompanyAdminPrefix { get; set; }
 
-        [Required, Display(Name = "First Name")]
+        [Display(Name = "First Name")]
+        [Required(ErrorMessage = "This field is required")]
         public string CompanyAdminFirstName { get; set; }
 
-        [Required, Display(Name = "Middle Name")]
+        [Display(Name = "Middle Name")]
+        [Required(ErrorMessage = "This field is required")]
         public string CompanyAdminMiddleName { get; set; }
 
-        [Required, Display(Name = "Last Name")]
+        [Display(Name = "Last Name")]
+        [Required(ErrorMessage = "This field is required")]
         public string CompanyAdminLastName { get; set; }
-        [Required, Display(Name = "Company Admin Date Of Birth")]
-        public DateTime CompanyAdminDOB { get; set; }
+
+        [Display(Name = "Company Admin Date Of Birth")]
+        [Required(ErrorMessage = "This field is required")]
+        public string CompanyAdminDOB { get; set; }
 
         [Display(Name = "Email Id")]
         public string CompanyAdminEmailId { get; set; }
 
-        [Required, Display(Name = "Mobile No")]
+        [Display(Name = "Mobile No")]
+        [Required(ErrorMessage = "This field is required")]
         public string CompanyAdminMobileNo { get; set; }
 
         [Display(Name = "Alternate Mobile No")]
         public string CompanyAdminAlternateMobileNo { get; set; }
 
-        [Required, Display(Name = "Designation")]
+        [Display(Name = "Designation")]
+        [Required(ErrorMessage = "This field is required")]
         public string CompanyAdminDesignation { get; set; }
 
-        [Required, Display(Name = "Address")]
+        [Display(Name = "Address")]
+        [Required(ErrorMessage = "This field is required")]
         public string CompanyAdminAddress { get; set; }
 
-        [Required, Display(Name = "Pincode")]
+        [Display(Name = "Pincode")]
+        [Required(ErrorMessage = "This field is required")]
         public string CompanyAdminPincode { get; set; }
 
-        [Required, Display(Name = "City")]
+        [Display(Name = "City")]
+        [Required(ErrorMessage = "This field is required")]
         public string CompanyAdminCity { get; set; }
 
-        [Required, Display(Name = "State")]
+        [Display(Name = "State")]
+        [Required(ErrorMessage = "This field is required")]
         public string CompanyAdminState { get; set; }
 
-        [Required, Display(Name = "Aadhar Card No")]
+        [Display(Name = "Aadhar Card No")]
+        [Required(ErrorMessage = "This field is required")]
         public string CompanyAdminAadharCardNo { get; set; }
 
         [Display(Name = "Profile Photo")]
@@ -115,7 +145,8 @@ namespace AttendanceSystem.ViewModel
         public HttpPostedFileBase CompanyAdminAadharCardPhotoFile { get; set; }
         public string CompanyAdminAadharCardPhoto { get; set; }
 
-        [Required,Display(Name = "Pan Card No")]
+        [Display(Name = "Pan Card No")]
+        [Required(ErrorMessage = "This field is required")]
         public string CompanyAdminPanCardNo { get; set; }
 
         [Display(Name = "Pan Card Photo")]
@@ -135,6 +166,9 @@ namespace AttendanceSystem.ViewModel
         public string OTP { get; set; }
         [Display(Name = "I accept the terms and conditions.")]
         public bool IsAccept { get; set; }
+
+        //
+        public DateTime dtCompanyAdminDOB { get; set; }
     }
 
     public class CompanyRequestFilterVM
@@ -186,5 +220,8 @@ namespace AttendanceSystem.ViewModel
 
         [Display(Name = "Company Code")]
         public string CompanyCode { get; set; }
+
+        
+        
     }
 }
