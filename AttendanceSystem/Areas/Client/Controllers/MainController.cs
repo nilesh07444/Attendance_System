@@ -4,6 +4,7 @@ using AttendanceSystem.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -30,6 +31,24 @@ namespace AttendanceSystem.Areas.Client.Controllers
 
             try
             {
+                //using (WebClient webClient = new WebClient())
+                //{
+                //    int SmsId = (int)SMSType.SuperAdminLoginOTP;
+                //    string msg = CommonMethod.GetSmsContent(SmsId);
+                //    msg = msg.Replace("{#var#}", "987654");
+
+                //    msg = HttpUtility.UrlEncode(msg);
+                //    string url = CommonMethod.GetSMSUrl().Replace("--MOBILE--", "9106490735").Replace("--MSG--", msg);
+                //    var json = webClient.DownloadString(url);
+                //    if (json.Contains("invalidnumber"))
+                //    {
+                //        bool IsError = true;
+                //    }
+                //    else
+                //    {
+                //        bool IsError = false;
+                //    }
+                //}
 
                 tbl_Setting objGensetting = _db.tbl_Setting.FirstOrDefault();
 
