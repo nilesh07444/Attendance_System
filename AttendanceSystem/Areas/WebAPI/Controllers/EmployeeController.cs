@@ -19,12 +19,13 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
         long employeeId;
         string defaultPassword;
         long companyId;
-
+        string domainUrl = string.Empty;
         public EmployeeController()
         {
             _db = new AttendanceSystemEntities();
             psSult = ConfigurationManager.AppSettings["PasswordSult"].ToString();
             defaultPassword = ConfigurationManager.AppSettings["DefaultPassword"].ToString();
+            domainUrl = ConfigurationManager.AppSettings["DomainUrl"].ToString();
         }
 
         [HttpPost]
@@ -159,7 +160,6 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                {
                                                    EmployeeId = emp.EmployeeId,
                                                    EmployeeCode = emp.EmployeeCode,
-                                                   ProfilePicture = emp.ProfilePicture,
                                                    CompanyId = emp.CompanyId,
                                                    Prefix = emp.Prefix,
                                                    FirstName = emp.FirstName,
@@ -178,6 +178,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                    Pincode = emp.Pincode,
                                                    State = emp.State,
                                                    IsActive = emp.IsActive,
+                                                   ProfilePicture = !string.IsNullOrEmpty(emp.ProfilePicture) ? domainUrl + ErrorMessage.EmployeeDirectoryPath + emp.ProfilePicture : string.Empty
                                                }).ToList();
                 workerList.ForEach(x =>
                 {
@@ -213,7 +214,6 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                             {
                                                 EmployeeId = emp.EmployeeId,
                                                 EmployeeCode = emp.EmployeeCode,
-                                                ProfilePicture = emp.ProfilePicture,
                                                 CompanyId = emp.CompanyId,
                                                 Prefix = emp.Prefix,
                                                 FirstName = emp.FirstName,
@@ -231,7 +231,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                 City = emp.City,
                                                 Pincode = emp.Pincode,
                                                 State = emp.State,
-                                                IsActive = true,
+                                                IsActive = emp.IsActive,
+                                                ProfilePicture = !string.IsNullOrEmpty(emp.ProfilePicture) ? domainUrl + ErrorMessage.EmployeeDirectoryPath + emp.ProfilePicture : string.Empty
                                             }).FirstOrDefault();
 
                 workerDetails.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)workerDetails.EmploymentCategory);
@@ -360,7 +361,6 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                {
                                                    EmployeeId = emp.EmployeeId,
                                                    EmployeeCode = emp.EmployeeCode,
-                                                   ProfilePicture = emp.ProfilePicture,
                                                    CompanyId = emp.CompanyId,
                                                    Prefix = emp.Prefix,
                                                    FirstName = emp.FirstName,
@@ -376,7 +376,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                    City = emp.City,
                                                    Pincode = emp.Pincode,
                                                    State = emp.State,
-                                                   IsActive = true,
+                                                   IsActive = emp.IsActive,
+                                                   ProfilePicture = !string.IsNullOrEmpty(emp.ProfilePicture) ? domainUrl + ErrorMessage.EmployeeDirectoryPath + emp.ProfilePicture : string.Empty
                                                }).ToList();
                 response.Data = workerList;
             }
@@ -413,7 +414,6 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                select new EmployeeVM
                                                {
                                                    EmployeeId = emp.EmployeeId,
-                                                   ProfilePicture = emp.ProfilePicture,
                                                    CompanyId = emp.CompanyId,
                                                    Prefix = emp.Prefix,
                                                    FirstName = emp.FirstName,
@@ -430,10 +430,11 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                    City = emp.City,
                                                    Pincode = emp.Pincode,
                                                    State = emp.State,
-                                                   IsActive = true,
+                                                   IsActive = emp.IsActive,
                                                    ExtraPerHourPrice = emp.ExtraPerHourPrice,
                                                    WorkerTypeId = emp.WorkerTypeId,
-                                                   WorkerTypeText = w.WorkerTypeName
+                                                   WorkerTypeText = w.WorkerTypeName,
+                                                   ProfilePicture = !string.IsNullOrEmpty(emp.ProfilePicture) ? domainUrl + ErrorMessage.EmployeeDirectoryPath + emp.ProfilePicture : string.Empty
                                                }).ToList();
 
                 workerList.ForEach(x =>
@@ -471,7 +472,6 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                select new EmployeeVM
                                                {
                                                    EmployeeId = emp.EmployeeId,
-                                                   ProfilePicture = emp.ProfilePicture,
                                                    CompanyId = emp.CompanyId,
                                                    Prefix = emp.Prefix,
                                                    FirstName = emp.FirstName,
@@ -488,7 +488,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                    City = emp.City,
                                                    Pincode = emp.Pincode,
                                                    State = emp.State,
-                                                   IsActive = true,
+                                                   IsActive = emp.IsActive,
+                                                   ProfilePicture = !string.IsNullOrEmpty(emp.ProfilePicture) ? domainUrl + ErrorMessage.EmployeeDirectoryPath + emp.ProfilePicture : string.Empty
                                                }).ToList();
                 response.Data = workerList;
             }
@@ -694,7 +695,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             {
                 employeeId = base.UTI.EmployeeId;
                 //Create the Directory.
-                string path = HttpContext.Current.Server.MapPath("~"+ ErrorMessage.EmployeeDirectoryPath);
+                string path = HttpContext.Current.Server.MapPath("~" + ErrorMessage.EmployeeDirectoryPath);
                 //ErrorMessage.EmployeeDirectoryPath;
                 bool folderExists = Directory.Exists(path);
                 if (!folderExists)
@@ -715,7 +716,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                     int fileNameLength = profileImageFile.FileName.Length;
                     // Save file in folder
-                    string fileNameforConcate = fileNameLength > 50 ? profileImageFile.FileName.Substring(fileNameLength - 50, 50): profileImageFile.FileName;
+                    string fileNameforConcate = fileNameLength > 50 ? profileImageFile.FileName.Substring(fileNameLength - 50, 50) : profileImageFile.FileName;
                     string fileName = Guid.NewGuid() + "-" + fileNameforConcate;
                     profileImageFile.SaveAs(path + fileName);
 
