@@ -95,5 +95,7 @@ namespace AttendanceSystem.ViewModel
         public int AttendanceType{ get; set; }
         public long EmployeeId { get; set; }
         public decimal ExtraHours { get; set; }
+        public decimal NoOfHoursWorked { get; set; }
+        public int NoOfUnitWorked { get; set; }
     }
 }

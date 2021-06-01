@@ -1,4 +1,5 @@
-﻿using AttendanceSystem.Helper;
+﻿using AttendanceSystem.Filters.JWT;
+using AttendanceSystem.Helper;
 using AttendanceSystem.Models;
 using AttendanceSystem.ViewModel;
 using System;
@@ -22,15 +23,15 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
         {
             _db = new AttendanceSystemEntities();
             psSult = ConfigurationManager.AppSettings["PasswordSult"].ToString();
-            employeeId = base.UTI.EmployeeId;
             defaultPassword = ConfigurationManager.AppSettings["DefaultPassword"].ToString();
-            companyId = base.UTI.CompanyId;
         }
 
         [HttpPost]
         [Route("AddWorker")]
         public ResponseDataModel<bool> AddWorker(EmployeeVM employeeVM)
         {
+            employeeId = base.UTI.EmployeeId;
+            companyId = base.UTI.CompanyId;
             ResponseDataModel<bool> response = new ResponseDataModel<bool>();
             response.IsError = false;
             response.Data = false;
@@ -119,6 +120,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     objEmployee.Pincode = employeeVM.Pincode;
                     objEmployee.State = employeeVM.State;
                     objEmployee.IsActive = activeEmployee >= noOfEmployee ? false : true;
+                    objEmployee.WorkerTypeId = employeeVM.WorkerTypeId;
                     objEmployee.CreatedBy = employeeId;
                     objEmployee.CreatedDate = DateTime.UtcNow;
                     objEmployee.UpdatedBy = employeeId;
@@ -141,6 +143,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
         [Route("ListWorkers")]
         public ResponseDataModel<List<EmployeeVM>> ListWorkers(string searchText = "")
         {
+            companyId = base.UTI.CompanyId;
             ResponseDataModel<List<EmployeeVM>> response = new ResponseDataModel<List<EmployeeVM>>();
             response.IsError = false;
             try
@@ -199,7 +202,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             response.IsError = false;
             try
             {
-                long companyId = base.UTI.CompanyId;
+               companyId = base.UTI.CompanyId;
 
                 EmployeeVM workerDetails = (from emp in _db.tbl_Employee
                                             where !emp.IsDeleted && emp.CompanyId == companyId
@@ -249,6 +252,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             ResponseDataModel<bool> response = new ResponseDataModel<bool>();
             response.IsError = false;
             response.Data = false;
+            employeeId = base.UTI.EmployeeId;
+            companyId = base.UTI.CompanyId;
             try
             {
                 #region validation
@@ -343,7 +348,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             response.IsError = false;
             try
             {
-                long companyId = base.UTI.CompanyId;
+                companyId = base.UTI.CompanyId;
 
                 List<EmployeeVM> workerList = (from emp in _db.tbl_Employee
                                                where !emp.IsDeleted && emp.IsActive && emp.CompanyId == companyId
@@ -391,12 +396,16 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             response.IsError = false;
             try
             {
-                long companyId = base.UTI.CompanyId;
+                companyId = base.UTI.CompanyId;
 
                 List<EmployeeVM> workerList = (from emp in _db.tbl_Employee
                                                join wk in _db.tbl_AssignWorker.Where(x => x.SiteId == requestVM.SiteId && x.Date == requestVM.Date)
                                                on emp.EmployeeId equals wk.EmployeeId into lfwk
                                                from wkr in lfwk.DefaultIfEmpty()
+
+                                               join wt in _db.tbl_WorkerType on emp.WorkerTypeId equals wt.WorkerTypeId into wtc
+                                               from w in wtc.DefaultIfEmpty()
+
                                                where !emp.IsDeleted && emp.CompanyId == companyId
                                                && emp.AdminRoleId == (int)AdminRoles.Worker
                                                && wkr == null
@@ -421,7 +430,15 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                    Pincode = emp.Pincode,
                                                    State = emp.State,
                                                    IsActive = true,
+                                                   ExtraPerHourPrice = emp.ExtraPerHourPrice,
+                                                   WorkerTypeId = emp.WorkerTypeId,
+                                                   WorkerTypeText = w.WorkerTypeName
                                                }).ToList();
+
+                workerList.ForEach(x =>
+                {
+                    x.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)x.EmploymentCategory);
+                });
                 response.Data = workerList;
             }
             catch (Exception ex)
@@ -441,7 +458,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             response.IsError = false;
             try
             {
-                long companyId = base.UTI.CompanyId;
+                companyId = base.UTI.CompanyId;
 
                 List<EmployeeVM> workerList = (from emp in _db.tbl_Employee
                                                join wk in _db.tbl_AssignWorker
@@ -491,7 +508,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             response.IsError = false;
             try
             {
-                long companyId = base.UTI.CompanyId;
+                employeeId = base.UTI.EmployeeId;
+                companyId = base.UTI.CompanyId;
 
                 #region Validation
                 if (requestVM.Date != DateTime.Today)
@@ -501,6 +519,12 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 }
 
                 if (!_db.tbl_Site.Any(x => x.CompanyId == companyId && x.SiteId == requestVM.SiteId && x.IsActive && !x.IsDeleted))
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.SiteDoesNotExistForCurrentCompany);
+                }
+
+                if (_db.tbl_Employee.Any(x => x.CompanyId != companyId && requestVM.WorkerList.Contains(x.EmployeeId)))
                 {
                     response.IsError = true;
                     response.AddError(ErrorMessage.SiteDoesNotExistForCurrentCompany);
@@ -547,7 +571,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             response.IsError = false;
             try
             {
-                long companyId = base.UTI.CompanyId;
+                employeeId = base.UTI.EmployeeId;
+                companyId = base.UTI.CompanyId;
 
                 #region Validation
                 if (requestVM.Date != DateTime.Today)
@@ -607,7 +632,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             response.IsError = false;
             try
             {
-                long companyId = base.UTI.CompanyId;
+                employeeId = base.UTI.EmployeeId;
+                companyId = base.UTI.CompanyId;
 
                 #region Validation
                 if (requestVM.Date != DateTime.Today)

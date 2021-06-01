@@ -98,6 +98,7 @@
         public static string SiteDoesNotExistForCurrentCompany = "Site does not exist for current company.";
         public static string WorkerAlreadyClosed = "Worker already closed.";
         public static string WorkerDidNotAssignedToThisSite = "Worker did not assigned to this site.";
+        public static string InvalidWorkersSelectedToAssign = "Invalid workers selected to assign.";
         
         public static string AlreadyInForTheDay = "Already in for the day.";
         public static string AlreadyOutForTheDay = "Already out for the day.";
@@ -129,5 +130,8 @@
         public static string EmploymentCategoryRequired = "Employment category required.";
         public static string WorketTypeRequired = "Worker type required.";
 
+        public static string WorkerMorningAttendanceAlreadyDone = "Worker morning attendance already done.";
+        public static string WorkerAfternoonAttendanceAlreadyDone = "Worker afternoon attendance already done.";
+        public static string WorkerEveningAttendanceAlreadyDone = "Worker evening attendance already done.";
     }
 }

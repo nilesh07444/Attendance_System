@@ -65,14 +65,46 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     response.AddError(ErrorMessage.InValidWorkerAttendanceType);
                 }
 
+                if (workerAttendanceRequestVM.AttendanceType == (int)WorkerAttendanceType.Morning
+                    && _db.tbl_WorkerAttendance.Any(x => x.EmployeeId == workerAttendanceRequestVM.EmployeeId && x.AttendanceDate == today && x.IsMorning))
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.WorkerMorningAttendanceAlreadyDone);
+                }
+                else if (workerAttendanceRequestVM.AttendanceType == (int)WorkerAttendanceType.Afternoon
+                    && _db.tbl_WorkerAttendance.Any(x => x.EmployeeId == workerAttendanceRequestVM.EmployeeId && x.AttendanceDate == today && x.IsAfternoon))
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.WorkerAfternoonAttendanceAlreadyDone);
+                }
+                else if (workerAttendanceRequestVM.AttendanceType == (int)WorkerAttendanceType.Evening
+                    && _db.tbl_WorkerAttendance.Any(x => x.EmployeeId == workerAttendanceRequestVM.EmployeeId && x.AttendanceDate == today && x.IsEvening))
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.WorkerEveningAttendanceAlreadyDone);
+                }
+
                 if (workerAttendanceRequestVM.AttendanceType == (int)WorkerAttendanceType.Evening
-                    && !(_db.tbl_WorkerAttendance.Any(x => x.EmployeeId == workerAttendanceRequestVM.EmployeeId && x.IsAfternoon)))
+                    && !(_db.tbl_WorkerAttendance.Any(x => x.EmployeeId == workerAttendanceRequestVM.EmployeeId && x.AttendanceDate == today && x.IsAfternoon)))
                 {
                     response.IsError = true;
                     response.AddError(ErrorMessage.CanNotTakeEveningAttendanceWorkerNotPresentOnAfterNoon);
                 }
 
+                tbl_Employee employeeObj = _db.tbl_Employee.FirstOrDefault(x => x.EmployeeId == employeeId);
+                if (workerAttendanceRequestVM.AttendanceType == (int)WorkerAttendanceType.Evening
+                    && employeeObj.EmploymentCategory == (int)EmploymentCategory.HourlyBased && workerAttendanceRequestVM.NoOfHoursWorked == 0)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.PleaseProvideNoOfHoursWorked);
+                }
 
+                if (workerAttendanceRequestVM.AttendanceType == (int)WorkerAttendanceType.Evening
+                    && employeeObj.EmploymentCategory == (int)EmploymentCategory.UnitBased && workerAttendanceRequestVM.NoOfUnitWorked == 0)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.PleaseProvideNoOfHoursWorked);
+                }
 
                 #endregion Validation
                 if (!response.IsError)
@@ -86,7 +118,16 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                             attendanceObject.IsEvening = true;
                             attendanceObject.EveningAttendanceBy = employeeId;
                             attendanceObject.EveningAttendanceDate = DateTime.UtcNow;
-                            attendanceObject.ExtraHours = workerAttendanceRequestVM.ExtraHours;
+
+                            if (employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased || employeeObj.EmploymentCategory == (int)EmploymentCategory.MonthlyBased)
+                                attendanceObject.ExtraHours = workerAttendanceRequestVM.ExtraHours;
+
+                            if (employeeObj.EmploymentCategory == (int)EmploymentCategory.HourlyBased)
+                                attendanceObject.NoOfHoursWorked = workerAttendanceRequestVM.NoOfHoursWorked;
+
+                            if (employeeObj.EmploymentCategory == (int)EmploymentCategory.UnitBased)
+                                attendanceObject.NoOfHoursWorked = workerAttendanceRequestVM.NoOfUnitWorked;
+
                         }
                         else if (workerAttendanceRequestVM.AttendanceType == (int)WorkerAttendanceType.Afternoon)
                         {
@@ -192,7 +233,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             return response;
         }
 
-      
-        
+
+
     }
 }

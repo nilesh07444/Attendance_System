@@ -670,6 +670,8 @@
           <Property Name="EveningAttendanceBy" Type="bigint" />
           <Property Name="EveningAttendanceDate" Type="datetime" />
           <Property Name="ExtraHours" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="NoOfHoursWorked" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="NoOfUnitWorked" Type="int" />
         </EntityType>
         <EntityType Name="tbl_WorkerType">
           <Key>
@@ -1189,6 +1191,8 @@
           <Property Name="EveningAttendanceBy" Type="Int64" />
           <Property Name="EveningAttendanceDate" Type="DateTime" Precision="3" />
           <Property Name="ExtraHours" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="NoOfHoursWorked" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="NoOfUnitWorked" Type="Int32" />
         </EntityType>
         <EntityType Name="tbl_Testimonial">
           <Key>
@@ -1908,6 +1912,8 @@
           <EntitySetMapping Name="tbl_WorkerAttendance">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_WorkerAttendance">
               <MappingFragment StoreEntitySet="tbl_WorkerAttendance">
+                <ScalarProperty Name="NoOfUnitWorked" ColumnName="NoOfUnitWorked" />
+                <ScalarProperty Name="NoOfHoursWorked" ColumnName="NoOfHoursWorked" />
                 <ScalarProperty Name="ExtraHours" ColumnName="ExtraHours" />
                 <ScalarProperty Name="EveningAttendanceDate" ColumnName="EveningAttendanceDate" />
                 <ScalarProperty Name="EveningAttendanceBy" ColumnName="EveningAttendanceBy" />

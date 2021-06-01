@@ -27,5 +27,7 @@ namespace AttendanceSystem.Models
         public Nullable<long> EveningAttendanceBy { get; set; }
         public Nullable<System.DateTime> EveningAttendanceDate { get; set; }
         public Nullable<decimal> ExtraHours { get; set; }
+        public Nullable<decimal> NoOfHoursWorked { get; set; }
+        public Nullable<int> NoOfUnitWorked { get; set; }
     }
 }
