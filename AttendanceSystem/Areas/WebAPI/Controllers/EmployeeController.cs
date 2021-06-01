@@ -1,11 +1,12 @@
-﻿using AttendanceSystem.Filters.JWT;
-using AttendanceSystem.Helper;
+﻿using AttendanceSystem.Helper;
 using AttendanceSystem.Models;
 using AttendanceSystem.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
+using System.Web;
 using System.Web.Http;
 
 namespace AttendanceSystem.Areas.WebAPI.Controllers
@@ -202,7 +203,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             response.IsError = false;
             try
             {
-               companyId = base.UTI.CompanyId;
+                companyId = base.UTI.CompanyId;
 
                 EmployeeVM workerDetails = (from emp in _db.tbl_Employee
                                             where !emp.IsDeleted && emp.CompanyId == companyId
@@ -670,6 +671,61 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         _db.tbl_AssignWorker.Remove(assignedWorker);
                         _db.SaveChanges();
                         response.Data = true;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message);
+            }
+
+            return response;
+        }
+
+        [Route("SaveProfileImage/{id}")]
+        [HttpPost]
+        public ResponseDataModel<bool> SaveProfileImage(int id)
+        {
+            ResponseDataModel<bool> response = new ResponseDataModel<bool>();
+            response.IsError = false;
+            try
+            {
+                employeeId = base.UTI.EmployeeId;
+                //Create the Directory.
+                string path = HttpContext.Current.Server.MapPath("~"+ ErrorMessage.EmployeeDirectoryPath);
+                //ErrorMessage.EmployeeDirectoryPath;
+                bool folderExists = Directory.Exists(path);
+                if (!folderExists)
+                    Directory.CreateDirectory(path);
+
+                //Fetch the File.
+                HttpPostedFile profileImageFile = HttpContext.Current.Request.Files[0];
+
+                if (profileImageFile != null)
+                {
+                    // Image file validation
+                    string ext = Path.GetExtension(profileImageFile.FileName);
+                    if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
+                    {
+                        response.IsError = true;
+                        response.AddError(ErrorMessage.SelectOnlyImage);
+                    }
+
+                    int fileNameLength = profileImageFile.FileName.Length;
+                    // Save file in folder
+                    string fileNameforConcate = fileNameLength > 50 ? profileImageFile.FileName.Substring(fileNameLength - 50, 50): profileImageFile.FileName;
+                    string fileName = Guid.NewGuid() + "-" + fileNameforConcate;
+                    profileImageFile.SaveAs(path + fileName);
+
+                    tbl_Employee objEmployee = _db.tbl_Employee.Where(x => x.EmployeeId == id).FirstOrDefault();
+                    if (objEmployee != null)
+                    {
+                        objEmployee.ProfilePicture = profileImageFile != null ? fileName : objEmployee.ProfilePicture;
+                        objEmployee.UpdatedBy = employeeId;
+                        objEmployee.UpdatedDate = DateTime.UtcNow;
+                        _db.SaveChanges();
                     }
                 }
 
