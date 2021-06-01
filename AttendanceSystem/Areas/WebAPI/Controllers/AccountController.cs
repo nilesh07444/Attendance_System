@@ -109,7 +109,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                     int num = random.Next(555555, 999999);
                                     if (enviornment != "Development")
                                     {
-                                        int SmsId = (int)SMSType.EmployeeLoginOtp;
+                                        int SmsId = (int)SMSType.EmployeeLoginOTP;
                                         string msg = CommonMethod.GetSmsContent(SmsId);
                                         msg = msg.Replace("{#var#}", num.ToString());
 

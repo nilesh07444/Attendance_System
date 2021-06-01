@@ -86,7 +86,7 @@ namespace AttendanceSystem.Helper
     }
 
     public enum FeedbackStatus
-    {        
+    {
         Pending = 1,
         Resolved = 2,
         NotResolved = 3
@@ -136,9 +136,22 @@ namespace AttendanceSystem.Helper
 
     public enum SMSType
     {
-        SuperAdminLoginOtp = 1,
-        CompanyAdminLoginOtp = 2,
-        EmployeeLoginOtp = 3,
+        SuperAdminLoginOTP = 1,
+        CompanyAdminLoginOTP = 2,
+        EmployeeLoginOTP = 3,
+        ForgetPasswordOTP = 4,
+        ChangePasswordOTP = 5,
+        CompanyProfileEditOTP = 6,
+        CompanyRequest = 7,
+        CompanyRequestAccepted = 8,
+        CompanyRequestRejected = 9,
+        PackageBuy = 10,
+        EmployeeCreate = 11,
+        AttendanceRejected = 12,
+        LeaveApproved = 13,
+        LeaveRejected = 14,
+        PaymentOTP = 15,
+        EmployeeProfileEditOTP = 16
     }
 
     public enum DayType
