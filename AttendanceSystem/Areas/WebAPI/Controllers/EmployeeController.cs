@@ -29,13 +29,13 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
         [HttpPost]
         [Route("AddWorker")]
-        public ResponseDataModel<bool> AddWorker(EmployeeVM employeeVM)
+        public ResponseDataModel<long> AddWorker(EmployeeVM employeeVM)
         {
             employeeId = base.UTI.EmployeeId;
             companyId = base.UTI.CompanyId;
-            ResponseDataModel<bool> response = new ResponseDataModel<bool>();
+            ResponseDataModel<long> response = new ResponseDataModel<long>();
             response.IsError = false;
-            response.Data = false;
+            response.Data = 0;
             try
             {
 
@@ -128,7 +128,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     objEmployee.UpdatedDate = DateTime.UtcNow;
                     _db.tbl_Employee.Add(objEmployee);
                     _db.SaveChanges();
-                    response.Data = true;
+                    response.Data = objEmployee.EmployeeId;
                 }
             }
             catch (Exception ex)
