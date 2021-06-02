@@ -202,6 +202,7 @@
     <Compile Include="Areas\WebAPI\Controllers\SiteController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\PaymentController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\ProfileController.cs" />
+    <Compile Include="Areas\WebAPI\Controllers\WorkerController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\WorkerAttendanceController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\WorkerTypeController.cs" />
     <Compile Include="Filters\JWT\AddChallengeOnUnauthorizedResult.cs" />

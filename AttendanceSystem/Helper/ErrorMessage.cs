@@ -45,7 +45,7 @@
         public static string RunningStatusApprove = "Approve";
         public static string RunningStatusReject = "Reject";
         public static string RunningStatusPending = "Pending";
-        public static string HolidayOnSameDateAlreadyExist  = "Holiday on same date already exist, Please use another date.";
+        public static string HolidayOnSameDateAlreadyExist = "Holiday on same date already exist, Please use another date.";
         public static string HolidayStartAndEndDateShouldBeforSameMonth = "Holiday start and end date should be for same month.";
 
         public static string LeaveDateRequired = "Leave date required";
@@ -65,8 +65,8 @@
         public static string MaterialInOutNotValid = "Material in/out is not valid.";
 
         public static string AttendanceDateRequired = "Attendance date required";
-        public static string AttendanceDayTypeNotValid= "Attendance day type not valid";
-        public static string TodayWorkDetailRequired= "Today work detail required";
+        public static string AttendanceDayTypeNotValid = "Attendance day type not valid";
+        public static string TodayWorkDetailRequired = "Today work detail required";
         public static string TomorrowWorkDetailRequired = "Tomorrow work detail required";
         public static string InTimeIsNotValid = "In time is not valid";
         public static string OutTimeIsNotValid = "Out time is not valid";
@@ -80,9 +80,9 @@
         public static double HalfDay = 0.5;
         public static string DefaultTime = "00:00:00";
 
-        public static string EmployeeRatingAlreadyExist  = "Employee rating already exist.";
-        public static string MonthShouldBeFrom1To12   = "Month should be from 1 to 12.";
-        public static string FutureYearNotAllowed  = "Future year not allowed.";
+        public static string EmployeeRatingAlreadyExist = "Employee rating already exist.";
+        public static string MonthShouldBeFrom1To12 = "Month should be from 1 to 12.";
+        public static string FutureYearNotAllowed = "Future year not allowed.";
         public static string MobileNoNotFoundForTheCompany = "Mobile no not found for the company.";
         public static string EmployeeIdIsNotValid = "Employee id is not valid.";
         public static string EmployeeDoesNotExist = "Employee does not exist.";
@@ -99,7 +99,8 @@
         public static string WorkerAlreadyClosed = "Worker already closed.";
         public static string WorkerDidNotAssignedToThisSite = "Worker did not assigned to this site.";
         public static string InvalidWorkersSelectedToAssign = "Invalid workers selected to assign.";
-        
+        public static string WorkerFingerprintLimitReached = "Worker fingerprint limit reached";
+
         public static string AlreadyInForTheDay = "Already in for the day.";
         public static string AlreadyOutForTheDay = "Already out for the day.";
         public static string YouAreOnLeaveForTheday = "You are on leave the day.";

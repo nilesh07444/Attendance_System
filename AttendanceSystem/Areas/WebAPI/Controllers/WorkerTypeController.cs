@@ -16,8 +16,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
         {
             _db = new AttendanceSystemEntities();
         }
-
-
+         
         [HttpGet]
         [Route("List")]
         public ResponseDataModel<List<ViewModel.WorkerTypeVM>> List()

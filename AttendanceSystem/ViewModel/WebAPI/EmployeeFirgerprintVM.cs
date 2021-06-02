@@ -9,6 +9,6 @@ namespace AttendanceSystem
     {
         public long EmployeeId { get; set; }
         public string ISOCode { get; set; }
-
+        public string BitmapCode { get; set; }
     }
 }

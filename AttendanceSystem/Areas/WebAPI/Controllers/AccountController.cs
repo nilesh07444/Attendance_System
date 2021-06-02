@@ -469,6 +469,62 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             return response;
         }
 
+        [HttpGet]
+        [Route("GetEmployeeFingerPrintList/{Id}")]
+        public ResponseDataModel<List<EmployeeFirgerprintVM>> GetEmployeeFingerPrintList(long Id)
+        {
+            ResponseDataModel<List<EmployeeFirgerprintVM>> response = new ResponseDataModel<List<EmployeeFirgerprintVM>>();
+            try
+            {
+                if (Id > 0)
+                {
+                    List<EmployeeFirgerprintVM> lstEmployeeFingerPrints = (from f in _db.tbl_EmployeeFingerprint
+                                                                           where f.EmployeeId == Id
+                                                                           select new EmployeeFirgerprintVM
+                                                                           {
+                                                                               EmployeeId = f.EmployeeId,
+                                                                               ISOCode = f.ISOCode
+                                                                           }).ToList();
+                    response.Data = lstEmployeeFingerPrints;
+                }
+                else
+                {
+                    response.IsError = true;
+                    response.AddError("Employee Id not found");
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message);
+            }
+
+            return response;
+        }
+
+        [HttpGet]
+        [Route("GetAllEmployeeFingerPrintList")]
+        public ResponseDataModel<List<EmployeeFirgerprintVM>> GetAllEmployeeFingerPrintList()
+        {
+            ResponseDataModel<List<EmployeeFirgerprintVM>> response = new ResponseDataModel<List<EmployeeFirgerprintVM>>();
+            try
+            {
+                List<EmployeeFirgerprintVM> lstEmployeeFingerPrints = (from f in _db.tbl_EmployeeFingerprint
+                                                                       select new EmployeeFirgerprintVM
+                                                                       {
+                                                                           EmployeeId = f.EmployeeId,
+                                                                           ISOCode = f.ISOCode
+                                                                       }).ToList();
+                response.Data = lstEmployeeFingerPrints;
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message);
+            }
+
+            return response;
+        }
 
     }
 }

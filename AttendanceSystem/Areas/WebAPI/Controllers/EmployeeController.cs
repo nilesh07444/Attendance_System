@@ -153,6 +153,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             response.IsError = false;
             try
             {
+                int maximumEmployeeFingerprint = Convert.ToInt32(ConfigurationManager.AppSettings["MaximumEmployeeFingerprint"].ToString());
+
                 List<EmployeeVM> workerList = (from emp in _db.tbl_Employee
                                                where !emp.IsDeleted && emp.CompanyId == companyId
                                                && emp.AdminRoleId == (int)AdminRoles.Worker
@@ -181,7 +183,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                    Pincode = emp.Pincode,
                                                    State = emp.State,
                                                    IsActive = emp.IsActive,
-                                                   ProfilePicture = !string.IsNullOrEmpty(emp.ProfilePicture) ? domainUrl + ErrorMessage.EmployeeDirectoryPath + emp.ProfilePicture : string.Empty
+                                                   ProfilePicture = !string.IsNullOrEmpty(emp.ProfilePicture) ? domainUrl + ErrorMessage.EmployeeDirectoryPath + emp.ProfilePicture : string.Empty,
+                                                   IsFingerprintLimitExceed = (_db.tbl_EmployeeFingerprint.Where(x => x.EmployeeId == emp.EmployeeId).Count() >= maximumEmployeeFingerprint)
                                                }).ToList();
                 workerList.ForEach(x =>
                 {

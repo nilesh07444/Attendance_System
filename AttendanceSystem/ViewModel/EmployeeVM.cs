@@ -34,7 +34,7 @@ namespace AttendanceSystem.ViewModel
         public string Address { get; set; }
         [Display(Name = "City")]
         public string City { get; set; }
-        [Required,Display(Name = "Pincode")]
+        [Required, Display(Name = "Pincode")]
         [RegularExpression(@"^([0-9]{6})$", ErrorMessage = "Invalid Pincode.")]
         public string Pincode { get; set; }
         [Display(Name = "State")]
@@ -85,6 +85,9 @@ namespace AttendanceSystem.ViewModel
         public long? WorkerTypeId { get; set; }
         public string WorkerTypeText { get; set; }
         public List<SelectListItem> WorkerTypeList { get; set; }
+
+        //
+        public bool IsFingerprintLimitExceed { get; set; }
     }
 
     public class EmployeeFilterVM
