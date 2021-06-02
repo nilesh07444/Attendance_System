@@ -12,6 +12,7 @@ namespace AttendanceSystem.ViewModel.WebAPI
         public long UserId { get; set; }
         public decimal? DebitAmount { get; set; }
         public int? PaymentType { get; set; }
+        public string PaymentTypeText { get; set; }
         public string Remarks { get; set; }
     }
     public class PaymentFilterVM
@@ -24,5 +25,17 @@ namespace AttendanceSystem.ViewModel.WebAPI
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public long? EmployeeId { get; set; }
+    }
+
+    public class WorkerPaymentFilterVM
+    {
+        public WorkerPaymentFilterVM()
+        {
+            StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            EndDate = StartDate.AddMonths(1).AddDays(-1);
+        }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public List<long> EmployeeIds { get; set; }
     }
 }

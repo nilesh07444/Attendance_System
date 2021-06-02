@@ -169,7 +169,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     {
                         x.DayTypeText = CommonMethod.GetEnumDescription(DayType.FullDay);
                     }
-                    else if(x.DayType == 0.5)
+                    else if (x.DayType == 0.5)
                     {
                         x.DayTypeText = CommonMethod.GetEnumDescription(DayType.HalfDay);
                     }
@@ -305,7 +305,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     if (attendanceObject.Status != (int)AttendanceStatus.Pending)
                     {
                         response.IsError = true;
-                        response.AddError(ErrorMessage.PendingLeaveCanBeEditOnly);
+                        response.AddError(ErrorMessage.PendingAttendanceCanBeEditOnly);
                     }
                     #endregion Validation
                     if (!response.IsError)
@@ -335,6 +335,30 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         }
 
                         _db.SaveChanges();
+
+                        if (employeeObj.EmploymentCategory != (int)EmploymentCategory.MonthlyBased)
+                        {
+                            tbl_EmployeePayment objEmployeePayment = _db.tbl_EmployeePayment.Where(x => x.AttendanceId == attendanceObject.AttendanceId).FirstOrDefault();
+                            if (objEmployeePayment != null)
+                            {
+                                if (employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased)
+                                {
+                                    objEmployeePayment.CreditAmount = (employeeObj.PerCategoryPrice) + (employeeObj.ExtraPerHourPrice * attendanceVM.ExtraHours);
+                                }
+                                else if (employeeObj.EmploymentCategory == (int)EmploymentCategory.HourlyBased)
+                                {
+                                    objEmployeePayment.CreditAmount = employeeObj.PerCategoryPrice * attendanceVM.NoOfHoursWorked;
+                                }
+                                else if (employeeObj.EmploymentCategory == (int)EmploymentCategory.UnitBased)
+                                {
+                                    objEmployeePayment.CreditAmount = employeeObj.PerCategoryPrice * attendanceVM.NoOfUnitWorked;
+                                }
+
+                                _db.SaveChanges();
+                            }
+
+                        }
+
                         response.Data = true;
                     }
                 }
@@ -542,6 +566,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     attendanceObject.ModifiedBy = employeeId;
                     attendanceObject.ModifiedDate = DateTime.UtcNow;
                     _db.SaveChanges();
+
                     response.Data = true;
                 }
             }

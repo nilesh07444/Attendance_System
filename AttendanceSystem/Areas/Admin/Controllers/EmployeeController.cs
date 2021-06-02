@@ -274,7 +274,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployee.ExtraPerHourPrice = employeeVM.ExtraPerHourPrice;
                         objEmployee.IsLeaveForward = employeeVM.IsLeaveForward;
                         objEmployee.NoOfFreeLeavePerMonth = employeeVM.NoOfFreeLeavePerMonth;
-                        objEmployee.IsActive = activeEmployee >= noOfEmployee ? false : true;
+                        objEmployee.IsActive = isTrailMode ? true : (activeEmployee >= noOfEmployee ? false : true);
                         objEmployee.IsFingerprintEnabled = employeeVM.IsFingerprintEnabled;
                         objEmployee.CreatedBy = loggedInUserId;
                         objEmployee.CreatedDate = DateTime.UtcNow;

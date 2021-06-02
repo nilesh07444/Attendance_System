@@ -203,7 +203,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         RoleId = data.AdminRoleId,
                         UserName = data.FirstName + " " + data.LastName,
                         CompanyId = data.CompanyId,
-                        CompanyTypeId = company.CompanyTypeId
+                        CompanyTypeId = company.CompanyTypeId,
+                        IsTrailMode = company.IsTrialMode
                     };
 
                     JWTAccessTokenVM tokenVM = new JWTAccessTokenVM();

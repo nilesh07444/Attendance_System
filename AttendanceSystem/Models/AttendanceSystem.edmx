@@ -673,6 +673,28 @@
           <Property Name="NoOfHoursWorked" Type="numeric" Precision="18" Scale="2" />
           <Property Name="NoOfUnitWorked" Type="int" />
         </EntityType>
+        <EntityType Name="tbl_WorkerPayment">
+          <Key>
+            <PropertyRef Name="WorkerPaymentId" />
+          </Key>
+          <Property Name="WorkerPaymentId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyId" Type="bigint" Nullable="false" />
+          <Property Name="UserId" Type="bigint" Nullable="false" />
+          <Property Name="AttendanceId" Type="bigint" />
+          <Property Name="PaymentDate" Type="datetime" Nullable="false" />
+          <Property Name="PaymentType" Type="int" />
+          <Property Name="CreditOrDebitText" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CreditAmount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="DebitAmount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Remarks" Type="nvarchar" MaxLength="500" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProcessStatusText" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="CreatedBy" Type="bigint" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="ModifiedBy" Type="bigint" />
+        </EntityType>
         <EntityType Name="tbl_WorkerType">
           <Key>
             <PropertyRef Name="WorkerTypeId" />
@@ -755,6 +777,7 @@
           <EntitySet Name="tbl_Sponsor" EntityType="Self.tbl_Sponsor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Testimonial" EntityType="Self.tbl_Testimonial" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_WorkerAttendance" EntityType="Self.tbl_WorkerAttendance" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_WorkerPayment" EntityType="Self.tbl_WorkerPayment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_WorkerType" EntityType="Self.tbl_WorkerType" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -1120,6 +1143,7 @@
           <EntitySet Name="tbl_Setting" EntityType="AttendanceSystemModel.tbl_Setting" />
           <EntitySet Name="tbl_Conversion" EntityType="AttendanceSystemModel.tbl_Conversion" />
           <EntitySet Name="tbl_EmployeePayment" EntityType="AttendanceSystemModel.tbl_EmployeePayment" />
+          <EntitySet Name="tbl_WorkerPayment" EntityType="AttendanceSystemModel.tbl_WorkerPayment" />
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -1506,6 +1530,28 @@
             <PropertyRef Name="EmployeePaymentId" />
           </Key>
           <Property Name="EmployeePaymentId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyId" Type="Int64" Nullable="false" />
+          <Property Name="UserId" Type="Int64" Nullable="false" />
+          <Property Name="AttendanceId" Type="Int64" />
+          <Property Name="PaymentDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PaymentType" Type="Int32" />
+          <Property Name="CreditOrDebitText" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreditAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="DebitAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProcessStatusText" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int64" />
+        </EntityType>
+        <EntityType Name="tbl_WorkerPayment">
+          <Key>
+            <PropertyRef Name="WorkerPaymentId" />
+          </Key>
+          <Property Name="WorkerPaymentId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CompanyId" Type="Int64" Nullable="false" />
           <Property Name="UserId" Type="Int64" Nullable="false" />
           <Property Name="AttendanceId" Type="Int64" />
@@ -2269,6 +2315,29 @@
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="EmployeePaymentId" ColumnName="EmployeePaymentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_WorkerPayment">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_WorkerPayment">
+              <MappingFragment StoreEntitySet="tbl_WorkerPayment">
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ProcessStatusText" ColumnName="ProcessStatusText" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="DebitAmount" ColumnName="DebitAmount" />
+                <ScalarProperty Name="CreditAmount" ColumnName="CreditAmount" />
+                <ScalarProperty Name="CreditOrDebitText" ColumnName="CreditOrDebitText" />
+                <ScalarProperty Name="PaymentType" ColumnName="PaymentType" />
+                <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
+                <ScalarProperty Name="AttendanceId" ColumnName="AttendanceId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="WorkerPaymentId" ColumnName="WorkerPaymentId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

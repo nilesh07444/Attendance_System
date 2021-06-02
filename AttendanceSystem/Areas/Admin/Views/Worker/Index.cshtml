@@ -4,7 +4,7 @@
 @{
     ViewBag.Title = "Worker";
     int counter = 1;
-
+    var isTrailMode = clsAdminSession.IsTrialMode;
     List<SelectListItem> lstEmployeeStatus = new List<SelectListItem>();
     lstEmployeeStatus.Add(new SelectListItem { Value = "1", Text = "Active" });
     lstEmployeeStatus.Add(new SelectListItem { Value = "0", Text = "InActive" });
@@ -103,7 +103,7 @@
                                         }
                                         else
                                         {
-                                            if (Model.NoOfEmployee > Model.ActiveEmployee)
+                                            if (isTrailMode || Model.NoOfEmployee > Model.ActiveEmployee)
                                             {
                                                 <td><span class="badge badge-danger" style="cursor:pointer;" title="Click to Active" onclick="fnChangeStatus('@obj.EmployeeId','Active');">InActive</span></td>
                                             }

@@ -20,6 +20,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
         string defaultPassword;
         long companyId;
         string domainUrl = string.Empty;
+        bool isTrailMode;
         public EmployeeController()
         {
             _db = new AttendanceSystemEntities();
@@ -34,6 +35,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
         {
             employeeId = base.UTI.EmployeeId;
             companyId = base.UTI.CompanyId;
+            isTrailMode = base.UTI.IsTrailMode;
+
             ResponseDataModel<long> response = new ResponseDataModel<long>();
             response.IsError = false;
             response.Data = 0;
@@ -121,7 +124,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     objEmployee.City = employeeVM.City;
                     objEmployee.Pincode = employeeVM.Pincode;
                     objEmployee.State = employeeVM.State;
-                    objEmployee.IsActive = activeEmployee >= noOfEmployee ? false : true;
+                    objEmployee.IsActive = isTrailMode ? true : (activeEmployee >= noOfEmployee ? false : true);
                     objEmployee.WorkerTypeId = employeeVM.WorkerTypeId;
                     objEmployee.CreatedBy = employeeId;
                     objEmployee.CreatedDate = DateTime.UtcNow;

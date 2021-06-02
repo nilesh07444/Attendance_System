@@ -55,9 +55,8 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label>Company Type*</label>
-                                @Html.DropDownList("CompanyTypeId", new SelectList(Model.CompanyTypeList, "Value", "Text"), "- select -", new { @class = "form-control required" })
+                                @Html.DropDownListFor(model => model.CompanyTypeId, new SelectList(Model.CompanyTypeList, "Value", "Text"), "- Select -", new { @class = "form-control required" })
                                 @Html.ValidationMessageFor(model => model.CompanyTypeId, "", new { @class = "error" })
-
                             </div>
                         </div>
                     </div>
@@ -161,7 +160,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Pan card Photo*</label>
-                                @Html.TextBoxFor(model => model.CompanyPanPhotoFile, new { type = "file", @class = "form-control" })
+                                @Html.TextBoxFor(model => model.CompanyPanPhotoFile, new { type = "file", @class = "form-control required" })
                                 @Html.ValidationMessageFor(model => model.CompanyPanPhotoFile, "", new { @class = "error" })
                             </div>
                         </div>
@@ -170,14 +169,14 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Company Logo*</label>
-                                @Html.TextBoxFor(model => model.CompanyLogoImageFile, new { type = "file", @class = "form-control" })
+                                @Html.TextBoxFor(model => model.CompanyLogoImageFile, new { type = "file", @class = "form-control required" })
                                 @Html.ValidationMessageFor(model => model.CompanyLogoImageFile, "", new { @class = "error" })
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Company Register Proof*</label>
-                                @Html.TextBoxFor(model => model.CompanyRegisterProofImageFile, new { type = "file", @class = "form-control" })
+                                @Html.TextBoxFor(model => model.CompanyRegisterProofImageFile, new { type = "file", @class = "form-control required" })
                                 @Html.ValidationMessageFor(model => model.CompanyRegisterProofImageFile, "", new { @class = "error" })
                             </div>
                         </div>
@@ -226,7 +225,7 @@
                             <div class="form-group">
                                 <label>Date of Birth</label>
                                 @Html.TextBoxFor(model => model.CompanyAdminDOB, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Enter Date of Birth" })
-                                @Html.ValidationMessageFor(model => model.CompanyAdminDOB, "", new { @class = "text-danger" })
+                                @Html.ValidationMessageFor(model => model.CompanyAdminDOB, "", new { @class = "error" })
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -296,7 +295,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Company Admin Profile Photo*</label>
-                                @Html.TextBoxFor(model => model.CompanyAdminProfilePhotoFile, new { type = "file", @class = "form-control" })
+                                @Html.TextBoxFor(model => model.CompanyAdminProfilePhotoFile, new { type = "file", @class = "form-control required" })
                                 @Html.ValidationMessageFor(model => model.CompanyAdminProfilePhotoFile, "", new { @class = "error" })
                             </div>
                         </div>
@@ -312,7 +311,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Aadhar card Photo*</label>
-                                @Html.TextBoxFor(model => model.CompanyAdminAadharCardPhotoFile, new { type = "file", @class = "form-control" })
+                                @Html.TextBoxFor(model => model.CompanyAdminAadharCardPhotoFile, new { type = "file", @class = "form-control required" })
                                 @Html.ValidationMessageFor(model => model.CompanyAdminAadharCardPhotoFile, "", new { @class = "error" })
                             </div>
                         </div>
@@ -328,7 +327,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Pan card Photo*</label>
-                                @Html.TextBoxFor(model => model.CompanyAdminPanCardPhotoFile, new { type = "file", @class = "form-control" })
+                                @Html.TextBoxFor(model => model.CompanyAdminPanCardPhotoFile, new { type = "file", @class = "form-control required" })
                                 @Html.ValidationMessageFor(model => model.CompanyAdminPanCardPhotoFile, "", new { @class = "error" })
                             </div>
                         </div>

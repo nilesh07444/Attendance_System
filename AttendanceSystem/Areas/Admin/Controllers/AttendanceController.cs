@@ -120,7 +120,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             try
             {
                 long loggedinUser = clsAdminSession.UserID;
-                List<tbl_Attendance> attendanceList = _db.tbl_Attendance.Where(x => ids.Contains(x.AttendanceId.ToString())).ToList();
+                string[] ids_array = ids.Split(',');
+                List<tbl_Attendance> attendanceList = _db.tbl_Attendance.Where(x => ids_array.Contains(x.AttendanceId.ToString())).ToList();
 
                 if (attendanceList != null)
                 {
@@ -129,6 +130,44 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         attendance.Status = (int)LeaveStatus.Accept;
                         attendance.ModifiedBy = loggedinUser;
                         attendance.ModifiedDate = DateTime.UtcNow;
+
+                        tbl_Employee employeeObj = _db.tbl_Employee.Where(x => x.EmployeeId == attendance.UserId).FirstOrDefault();
+
+                        if (employeeObj.EmploymentCategory != (int)EmploymentCategory.MonthlyBased)
+                        {
+                            tbl_EmployeePayment objEmployeePayment = new tbl_EmployeePayment();
+                            objEmployeePayment.CompanyId = attendance.CompanyId;
+                            objEmployeePayment.UserId = attendance.UserId;
+                            objEmployeePayment.AttendanceId = attendance.AttendanceId;
+                            objEmployeePayment.PaymentDate = attendance.AttendanceDate;
+                            objEmployeePayment.PaymentType = (int)EmployeePaymentType.Salary;
+                            objEmployeePayment.CreditOrDebitText = ErrorMessage.Credit;
+                            objEmployeePayment.DebitAmount = 0;
+                            objEmployeePayment.Remarks = ErrorMessage.AutoCreditOnAttendanceAccept;
+                            //objEmployeePayment.Status=
+                            //objEmployeePayment.ProcessStatusText
+                            objEmployeePayment.CreatedDate = DateTime.UtcNow;
+                            objEmployeePayment.CreatedBy = loggedinUser;
+                            objEmployeePayment.ModifiedDate = DateTime.UtcNow;
+                            objEmployeePayment.ModifiedBy = loggedinUser;
+
+                            if (employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased)
+                            {
+                                objEmployeePayment.CreditAmount = (employeeObj.PerCategoryPrice) + (employeeObj.ExtraPerHourPrice * attendance.ExtraHours);
+                            }
+                            else if (employeeObj.EmploymentCategory == (int)EmploymentCategory.HourlyBased)
+                            {
+                                objEmployeePayment.CreditAmount = employeeObj.PerCategoryPrice * attendance.NoOfHoursWorked;
+                            }
+                            else if (employeeObj.EmploymentCategory == (int)EmploymentCategory.UnitBased)
+                            {
+                                objEmployeePayment.CreditAmount = employeeObj.PerCategoryPrice * attendance.NoOfUnitWorked;
+                            }
+                            _db.tbl_EmployeePayment.Add(objEmployeePayment);
+                            _db.SaveChanges();
+
+                        }
+
                     });
 
                     _db.SaveChanges();

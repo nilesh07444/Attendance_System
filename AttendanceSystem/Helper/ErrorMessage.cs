@@ -133,5 +133,10 @@
         public static string WorkerMorningAttendanceAlreadyDone = "Worker morning attendance already done.";
         public static string WorkerAfternoonAttendanceAlreadyDone = "Worker afternoon attendance already done.";
         public static string WorkerEveningAttendanceAlreadyDone = "Worker evening attendance already done.";
+
+        public static string Credit = "Credit";
+        public static string Debit = "Debit";
+        public static string AutoCreditOnAttendanceAccept = "Auto credit on attendance accept";
+        public static string AutoCreditOnEveningAttendance = "Auto credit on evening attendance";
     }
 }

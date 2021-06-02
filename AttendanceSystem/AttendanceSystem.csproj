@@ -336,6 +336,9 @@
     <Compile Include="Models\tbl_WorkerAttendance.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\tbl_WorkerPayment.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tbl_WorkerType.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>

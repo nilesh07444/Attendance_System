@@ -259,7 +259,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployee.IsLeaveForward = employeeVM.IsLeaveForward;
                         objEmployee.WorkerTypeId = employeeVM.WorkerTypeId;
                         objEmployee.NoOfFreeLeavePerMonth = employeeVM.NoOfFreeLeavePerMonth;
-                        objEmployee.IsActive = activeEmployee >= noOfEmployee ? false : true;
+                        objEmployee.IsActive = isTrailMode ? true : (activeEmployee >= noOfEmployee ? false : true);
                         objEmployee.CreatedBy = loggedInUserId;
                         objEmployee.CreatedDate = DateTime.UtcNow;
                         objEmployee.UpdatedBy = loggedInUserId;
@@ -463,7 +463,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         }
 
         private List<SelectListItem> GetWorkerTypeList()
-        { 
+        {
             List<SelectListItem> lst = (from wt in _db.tbl_WorkerType
                                         where wt.IsActive && !wt.IsDeleted && wt.CompanyId == companyId
                                         select new SelectListItem

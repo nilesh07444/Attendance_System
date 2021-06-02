@@ -163,6 +163,41 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         _db.tbl_WorkerAttendance.Add(attendanceObject);
                         _db.SaveChanges();
                     }
+
+                    if (employeeObj.EmploymentCategory != (int)EmploymentCategory.MonthlyBased && workerAttendanceRequestVM.AttendanceType == (int)WorkerAttendanceType.Evening)
+                    {
+                        tbl_WorkerPayment objWorkerPayment = new tbl_WorkerPayment();
+                        objWorkerPayment.CompanyId = companyId;
+                        objWorkerPayment.UserId = attendanceObject.EmployeeId;
+                        objWorkerPayment.AttendanceId = attendanceObject.WorkerAttendanceId;
+                        objWorkerPayment.PaymentDate = attendanceObject.AttendanceDate;
+                        objWorkerPayment.PaymentType = (int)EmployeePaymentType.Salary;
+                        objWorkerPayment.CreditOrDebitText = ErrorMessage.Credit;
+                        objWorkerPayment.DebitAmount = 0;
+                        objWorkerPayment.Remarks = ErrorMessage.AutoCreditOnEveningAttendance;
+                        //objEmployeePayment.Status=
+                        //objEmployeePayment.ProcessStatusText
+                        objWorkerPayment.CreatedDate = DateTime.UtcNow;
+                        objWorkerPayment.CreatedBy = employeeId;
+                        objWorkerPayment.ModifiedDate = DateTime.UtcNow;
+                        objWorkerPayment.ModifiedBy = employeeId;
+
+                        if (employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased)
+                        {
+                            objWorkerPayment.CreditAmount = (employeeObj.PerCategoryPrice) + (employeeObj.ExtraPerHourPrice * workerAttendanceRequestVM.ExtraHours);
+                        }
+                        else if (employeeObj.EmploymentCategory == (int)EmploymentCategory.HourlyBased)
+                        {
+                            objWorkerPayment.CreditAmount = employeeObj.PerCategoryPrice * workerAttendanceRequestVM.NoOfHoursWorked;
+                        }
+                        else if (employeeObj.EmploymentCategory == (int)EmploymentCategory.UnitBased)
+                        {
+                            objWorkerPayment.CreditAmount = employeeObj.PerCategoryPrice * workerAttendanceRequestVM.NoOfUnitWorked;
+                        }
+                        _db.tbl_WorkerPayment.Add(objWorkerPayment);
+                        _db.SaveChanges();
+
+                    }
                     response.Data = true;
                 }
             }

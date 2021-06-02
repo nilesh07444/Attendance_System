@@ -41,6 +41,7 @@
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Setting" Width="1.5" PointX="11.375" PointY="21.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Conversion" Width="1.5" PointX="13.375" PointY="17.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_EmployeePayment" Width="1.5" PointX="13.375" PointY="20.75" />
+        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_WorkerPayment" Width="1.5" PointX="21.375" PointY="13.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
