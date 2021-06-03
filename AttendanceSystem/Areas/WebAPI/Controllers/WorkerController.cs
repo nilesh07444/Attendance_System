@@ -86,7 +86,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                 List<EmployeeVM> workerList = (from emp in _db.tbl_Employee
                                                where !emp.IsDeleted && emp.IsActive
-                                               && emp.WorkerTypeId == (int)AdminRoles.Worker
+                                               && emp.AdminRoleId == (int)AdminRoles.Worker
                                                && emp.CompanyId == companyId
                                                && (!string.IsNullOrEmpty(searchText) ? (emp.EmployeeCode.Contains(searchText)
                                                || emp.FirstName.Contains(searchText)
