@@ -227,7 +227,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                            && st.Date == workerAttendanceFilterVM.AttendanceDate
                                                            && at.AttendanceDate == workerAttendanceFilterVM.AttendanceDate
                                                            && (workerAttendanceFilterVM.SiteId.HasValue ? st.SiteId == workerAttendanceFilterVM.SiteId.Value : true)
-                                                           && (!string.IsNullOrEmpty(workerAttendanceFilterVM.WorkerName) ? (emp.FirstName + " " + emp.FirstName).Contains(workerAttendanceFilterVM.WorkerName) : true)
+                                                           && (workerAttendanceFilterVM.EmployeeId.HasValue ? at.EmployeeId == workerAttendanceFilterVM.EmployeeId.Value : true)
                                                            select new WorkerAttendanceVM
                                                            {
                                                                AttendanceId = at.WorkerAttendanceId,

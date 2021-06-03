@@ -106,7 +106,7 @@ namespace AttendanceSystem.ViewModel
         }
         public DateTime AttendanceDate { get; set; }
         public int? SiteId { get; set; }
-        public string WorkerName { get; set; }
+        public long? EmployeeId { get; set; }
     }
 
     public class WorkerAttendanceVM

@@ -71,7 +71,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 List<PaymentVM> paymentList = (from emp in _db.tbl_EmployeePayment
                                                where !emp.IsDeleted && emp.DebitAmount > 0
                                                && emp.PaymentDate >= workerPaymentFilterVM.StartDate && emp.PaymentDate <= workerPaymentFilterVM.EndDate
-                                               && workerPaymentFilterVM.EmployeeIds.Count > 0 ? workerPaymentFilterVM.EmployeeIds.Contains(emp.UserId) : true
+                                               && (workerPaymentFilterVM.EmployeeIds.Count > 0 ? workerPaymentFilterVM.EmployeeIds.Contains(emp.UserId) : true)
                                                select new PaymentVM
                                                {
                                                    EmployeePaymentId = emp.EmployeePaymentId,
