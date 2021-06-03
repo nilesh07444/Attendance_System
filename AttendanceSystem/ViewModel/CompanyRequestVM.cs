@@ -29,9 +29,11 @@ namespace AttendanceSystem.ViewModel
 
         [Display(Name = "Company ContactNo No")]
         [Required(ErrorMessage = "This field is required")]
+        [RegularExpression(@"^([0-9]{10})$", ErrorMessage = "Invalid Company Contact Number.")]
         public string CompanyContactNo { get; set; }
 
         [Display(Name = "Company Alternate Mobile No")]
+        [RegularExpression(@"^([0-9]{10})$", ErrorMessage = "Invalid Company Alternate Mobile No.")]
         public string CompanyAlternateContactNo { get; set; }
 
         [Display(Name = "Company GST No")]
@@ -57,6 +59,7 @@ namespace AttendanceSystem.ViewModel
 
         [Display(Name = "Company Pincode")]
         [Required(ErrorMessage = "This field is required")]
+        [RegularExpression(@"^([0-9]{6})$", ErrorMessage = "Invalid Pincode.")]
         public string CompanyPincode { get; set; }
         
         [Display(Name = "Company City")]
@@ -108,9 +111,11 @@ namespace AttendanceSystem.ViewModel
 
         [Display(Name = "Mobile No")]
         [Required(ErrorMessage = "This field is required")]
+        [RegularExpression(@"^([0-9]{10})$", ErrorMessage = "Invalid Mobile Number.")]
         public string CompanyAdminMobileNo { get; set; }
 
         [Display(Name = "Alternate Mobile No")]
+        [RegularExpression(@"^([0-9]{10})$", ErrorMessage = "Invalid Alternate Mobile Number.")]
         public string CompanyAdminAlternateMobileNo { get; set; }
 
         [Display(Name = "Designation")]
@@ -123,6 +128,7 @@ namespace AttendanceSystem.ViewModel
 
         [Display(Name = "Pincode")]
         [Required(ErrorMessage = "This field is required")]
+        [RegularExpression(@"^([0-9]{6})$", ErrorMessage = "Invalid Pincode.")]
         public string CompanyAdminPincode { get; set; }
 
         [Display(Name = "City")]
@@ -135,6 +141,7 @@ namespace AttendanceSystem.ViewModel
 
         [Display(Name = "Aadhar Card No")]
         [Required(ErrorMessage = "This field is required")]
+        [RegularExpression(@"^([0-9]{12})$", ErrorMessage = "Invalid Adhar Card No.")]
         public string CompanyAdminAadharCardNo { get; set; }
 
         [Display(Name = "Profile Photo")]
@@ -147,6 +154,7 @@ namespace AttendanceSystem.ViewModel
 
         [Display(Name = "Pan Card No")]
         [Required(ErrorMessage = "This field is required")]
+        [RegularExpression("^([A-Za-z]){5}([0-9]){4}([A-Za-z]){1}$", ErrorMessage = "Invalid PAN No")]
         public string CompanyAdminPanCardNo { get; set; }
 
         [Display(Name = "Pan Card Photo")]

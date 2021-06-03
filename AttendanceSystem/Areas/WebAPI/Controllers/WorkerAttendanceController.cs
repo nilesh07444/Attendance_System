@@ -17,20 +17,20 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
         public WorkerAttendanceController()
         {
             _db = new AttendanceSystemEntities();
-            employeeId = base.UTI.EmployeeId;
-            companyId = base.UTI.CompanyId;
-            roleId = base.UTI.RoleId;
+
+
         }
 
         [HttpPost]
         [Route("Add")]
-        public ResponseDataModel<bool> Add(WorkerAttendanceRequestVM workerAttendanceRequestVM)
+        public ResponseDataModel<string> Add(WorkerAttendanceRequestVM workerAttendanceRequestVM)
         {
-            ResponseDataModel<bool> response = new ResponseDataModel<bool>();
+            ResponseDataModel<string> response = new ResponseDataModel<string>();
             response.IsError = false;
-            response.Data = false;
+            response.Data = string.Empty;
             try
             {
+                roleId = base.UTI.RoleId;
                 DateTime today = DateTime.UtcNow.Date;
                 #region Validation
                 if (!_db.tbl_AssignWorker.Any(x => x.EmployeeId == workerAttendanceRequestVM.EmployeeId && x.Date == today))
@@ -198,7 +198,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         _db.SaveChanges();
 
                     }
-                    response.Data = true;
+                    response.Data = employeeObj.FirstName + " " + employeeObj.LastName;
                 }
             }
             catch (Exception ex)
@@ -212,50 +212,40 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
         [HttpPost]
         [Route("List")]
-        public ResponseDataModel<List<AttendanceVM>> List(AttendanceFilterVM attendanceFilterVM)
+        public ResponseDataModel<List<WorkerAttendanceVM>> List(WorkerAttendanceFilterVM workerAttendanceFilterVM)
         {
-            ResponseDataModel<List<AttendanceVM>> response = new ResponseDataModel<List<AttendanceVM>>();
+            ResponseDataModel<List<WorkerAttendanceVM>> response = new ResponseDataModel<List<WorkerAttendanceVM>>();
             response.IsError = false;
             try
             {
-                long employeeId = base.UTI.EmployeeId;
+                companyId = base.UTI.CompanyId;
 
-                List<AttendanceVM> attendanceList = (from at in _db.tbl_Attendance
-                                                     join emp in _db.tbl_Employee on at.UserId equals emp.EmployeeId
-                                                     where !at.IsDeleted
-                                                     && emp.EmployeeId == employeeId
-                                                     && at.AttendanceDate.Month >= attendanceFilterVM.StartMonth && at.AttendanceDate.Month <= attendanceFilterVM.EndMonth
-                                                     && at.AttendanceDate.Year == attendanceFilterVM.Year
-                                                     && (attendanceFilterVM.AttendanceStatus.HasValue ? at.Status == attendanceFilterVM.AttendanceStatus.Value : true)
-                                                     select new AttendanceVM
-                                                     {
-                                                         AttendanceId = at.AttendanceId,
-                                                         CompanyId = at.CompanyId,
-                                                         UserId = at.UserId,
-                                                         Name = emp.FirstName + " " + emp.LastName,
-                                                         AttendanceDate = at.AttendanceDate,
-                                                         DayType = at.DayType,
-                                                         ExtraHours = at.ExtraHours,
-                                                         TodayWorkDetail = at.TodayWorkDetail,
-                                                         TomorrowWorkDetail = at.TomorrowWorkDetail,
-                                                         Remarks = at.Remarks,
-                                                         LocationFrom = at.LocationFrom,
-                                                         Status = at.Status,
-                                                         RejectReason = at.RejectReason,
-                                                         InDateTime = at.InDateTime,
-                                                         OutDateTime = at.OutDateTime,
-                                                         ExtraPerHourPrice = emp.ExtraPerHourPrice,
-                                                         EmploymentCategory = emp.EmploymentCategory,
-                                                         InLatitude = at.InLatitude,
-                                                         InLongitude = at.InLongitude,
-                                                         OutLatitude = at.OutLatitude,
-                                                         OutLongitude = at.OutLongitude
-                                                     }).OrderByDescending(x => x.AttendanceDate).ToList();
+                List<WorkerAttendanceVM> attendanceList = (from at in _db.tbl_WorkerAttendance
+                                                           join emp in _db.tbl_Employee on at.EmployeeId equals emp.EmployeeId
+                                                           join st in _db.tbl_AssignWorker on at.EmployeeId equals st.EmployeeId
+                                                           where emp.CompanyId == companyId
+                                                           && st.Date == workerAttendanceFilterVM.AttendanceDate
+                                                           && at.AttendanceDate == workerAttendanceFilterVM.AttendanceDate
+                                                           && (workerAttendanceFilterVM.SiteId.HasValue ? st.SiteId == workerAttendanceFilterVM.SiteId.Value : true)
+                                                           && (!string.IsNullOrEmpty(workerAttendanceFilterVM.WorkerName) ? (emp.FirstName + " " + emp.FirstName).Contains(workerAttendanceFilterVM.WorkerName) : true)
+                                                           select new WorkerAttendanceVM
+                                                           {
+                                                               AttendanceId = at.WorkerAttendanceId,
+                                                               CompanyId = emp.CompanyId,
+                                                               EmployeeId = emp.EmployeeId,
+                                                               Name = emp.FirstName + " " + emp.LastName,
+                                                               AttendanceDate = at.AttendanceDate,
+                                                               EmploymentCategory = emp.EmploymentCategory,
+                                                               IsMorning = at.IsMorning,
+                                                               IsAfternoon = at.IsAfternoon,
+                                                               IsEvening = at.IsEvening,
+                                                               ProfilePicture = emp.ProfilePicture
+                                                           }).OrderByDescending(x => x.AttendanceDate).ToList();
 
                 attendanceList.ForEach(x =>
                 {
-                    x.StatusText = CommonMethod.GetEnumDescription((AttendanceStatus)x.Status);
                     x.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)x.EmploymentCategory);
+                    x.ProfilePicture = (!string.IsNullOrEmpty(x.ProfilePicture) ? CommonMethod.GetCurrentDomain() + ErrorMessage.EmployeeDirectoryPath + x.ProfilePicture : string.Empty);
                 });
                 response.Data = attendanceList;
             }

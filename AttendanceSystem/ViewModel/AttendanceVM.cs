@@ -98,4 +98,29 @@ namespace AttendanceSystem.ViewModel
         public decimal NoOfHoursWorked { get; set; }
         public int NoOfUnitWorked { get; set; }
     }
+    public class WorkerAttendanceFilterVM
+    {
+        public WorkerAttendanceFilterVM()
+        {
+            AttendanceDate = DateTime.UtcNow.Date;
+        }
+        public DateTime AttendanceDate { get; set; }
+        public int? SiteId { get; set; }
+        public string WorkerName { get; set; }
+    }
+
+    public class WorkerAttendanceVM
+    {
+        public long AttendanceId { get; set; }
+        public long CompanyId { get; set; }
+        public long EmployeeId { get; set; }
+        public string Name { get; set; }
+        public DateTime AttendanceDate { get; set; }
+        public string ProfilePicture { get; set; }
+        public int EmploymentCategory { get; set; }
+        public string EmploymentCategoryText { get; set; }
+        public bool IsMorning { get; set; }
+        public bool IsAfternoon { get; set; }
+        public bool IsEvening { get; set; }
+    }
 }
