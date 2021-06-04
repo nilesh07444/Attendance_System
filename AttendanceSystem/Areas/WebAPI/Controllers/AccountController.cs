@@ -510,6 +510,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             try
             {
                 List<EmployeeFirgerprintVM> lstEmployeeFingerPrints = (from f in _db.tbl_EmployeeFingerprint
+                                                                       join e in _db.tbl_Employee on f.EmployeeId equals e.EmployeeId
+                                                                       where e.AdminRoleId == (int)AdminRoles.Worker
                                                                        select new EmployeeFirgerprintVM
                                                                        {
                                                                            EmployeeId = f.EmployeeId,
