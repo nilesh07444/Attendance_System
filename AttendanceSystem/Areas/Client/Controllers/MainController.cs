@@ -33,12 +33,12 @@ namespace AttendanceSystem.Areas.Client.Controllers
             {
                 //using (WebClient webClient = new WebClient())
                 //{
-                //    int SmsId = (int)SMSType.SuperAdminLoginOTP;
+                //    int SmsId = (int)SMSType.;
                 //    string msg = CommonMethod.GetSmsContent(SmsId);
-                //    msg = msg.Replace("{#var#}", "987654");
-
+                //    msg = msg.Replace("{#var#}", "444555");
+                //    msg = msg.Replace("\r\n", "\n");
                 //    msg = HttpUtility.UrlEncode(msg);
-                //    string url = CommonMethod.GetSMSUrl().Replace("--MOBILE--", "9106490735").Replace("--MSG--", msg);
+                //    string url = CommonMethod.GetSMSUrl().Replace("--MOBILE--", "9824936252").Replace("--MSG--", msg);
                 //    var json = webClient.DownloadString(url);
                 //    if (json.Contains("invalidnumber"))
                 //    {
