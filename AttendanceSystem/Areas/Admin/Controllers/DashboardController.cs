@@ -106,242 +106,309 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         /// Conversion of Employment Types: Employee, Supervisor, Checker, Payer
         /// </summary>
         /// <returns></returns>
-        public ActionResult ConversionOfEmployeeUsers(int month, int year)
+        public JsonResult ConversionOfEmployeeUsers(int month, int year)
         {
-            // tbl_Conversion, tbl_EmployeePayment
-            List<tbl_EmployeePayment> inProcessEmployeePaymentList = _db.tbl_EmployeePayment.Where(x => x.ProcessStatusText == ErrorMessage.InProgress && x.Month == month && x.Year == year).ToList();
-            inProcessEmployeePaymentList.ForEach(x =>
-            {
-                _db.tbl_EmployeePayment.Remove(x);
-            });
-
-            long loggedinUser = clsAdminSession.UserID;
+            int status = 1;
+            string errorMessage = string.Empty;
             int companyId = (int)clsAdminSession.CompanyId;
-            int companyTypeId = (int)clsAdminSession.CompanyTypeId;
-            DateTime firstDayOfMonth = new DateTime(year, month, 1);
-            DateTime lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
-            double totalDaysinMonth = DateTime.DaysInMonth(year, month);
-
-            List<double> currentMonthHolidays = _db.tbl_Holiday.Where(x => x.CompanyId == companyId.ToString() && x.StartDate >= firstDayOfMonth && x.EndDate <= lastDayOfMonth).Select(x => (x.EndDate - x.StartDate).TotalDays).ToList();
-            double holidays = currentMonthHolidays.Sum();
-            // For Only Employees
-
-            // Get All Employees
-            List<tbl_Employee> lstEmployees = _db.tbl_Employee.Where(x => x.CompanyId == companyId && !x.IsDeleted && x.AdminRoleId != (int)AdminRoles.Worker).ToList();
-
-            List<tbl_EmployeePayment> paymentList = (from epp in _db.tbl_EmployeePayment
-                                                     join emp in lstEmployees.Where(x => x.EmploymentCategory != (int)EmploymentCategory.MonthlyBased) on epp.UserId equals emp.EmployeeId
-                                                     where epp.Month == month
-                                                     && epp.Year == year
-                                                     select epp).ToList();
-            var paymentGroup = paymentList.GroupBy(l => l.UserId)
-                .Select(cl => new
-                {
-                    EmployeeId = cl.First().UserId,
-                    SumOfDebit = cl.Sum(c => c.DebitAmount),
-                    SumOfCredit = cl.Sum(c => c.CreditAmount)
-                }).ToList();
-
             int nextMonth = month == 12 ? 1 : month + 1;
             int dateYear = month == 12 ? year + 1 : year;
             DateTime openDate = new DateTime(dateYear, nextMonth, 1);
-
-            paymentGroup.ForEach(x =>
+            try
             {
-                tbl_EmployeePayment objEmployeePayment = new tbl_EmployeePayment();
-                objEmployeePayment.CompanyId = companyId;
-                objEmployeePayment.UserId = x.EmployeeId;
-                objEmployeePayment.PaymentDate = openDate;
-                //objEmployeePayment.PaymentType = (int)EmployeePaymentType.Salary;
-                objEmployeePayment.CreditOrDebitText = ErrorMessage.Credit;
-                objEmployeePayment.DebitAmount = 0;
-                objEmployeePayment.CreditAmount = x.SumOfCredit - x.SumOfDebit;
-                objEmployeePayment.Remarks = ErrorMessage.MonthlyConversion;
-                objEmployeePayment.Month = nextMonth;
-                objEmployeePayment.Year = year;
-                objEmployeePayment.Status = ErrorMessage.Open;
-                objEmployeePayment.ProcessStatusText = ErrorMessage.InProgress;
-                objEmployeePayment.CreatedDate = DateTime.UtcNow;
-                objEmployeePayment.CreatedBy = loggedinUser;
-                objEmployeePayment.ModifiedDate = DateTime.UtcNow;
-                objEmployeePayment.ModifiedBy = loggedinUser;
-
-                _db.tbl_EmployeePayment.Add(objEmployeePayment);
-                _db.SaveChanges();
-            });
-
-            lstEmployees.Where(x => x.EmploymentCategory == (int)EmploymentCategory.MonthlyBased).ToList().ForEach(x =>
-            {
-                double presentDays = _db.tbl_Attendance.Where(y => y.UserId == x.EmployeeId && y.AttendanceDate >= firstDayOfMonth && y.AttendanceDate <= lastDayOfMonth).Select(z => z.DayType).Sum();
-                decimal extraHours = _db.tbl_Attendance.Where(y => y.UserId == x.EmployeeId && y.AttendanceDate >= firstDayOfMonth && y.AttendanceDate <= lastDayOfMonth).Select(z => z.ExtraHours).Sum();
-                double absentDays = totalDaysinMonth - presentDays;
-                double deductedLeave = absentDays - holidays - (double)x.NoOfFreeLeavePerMonth;
-                double monthlySalary = (double)x.MonthlySalaryPrice;
-                double advancePaid = (double)_db.tbl_EmployeePayment.Where(e => e.UserId == x.EmployeeId
-                                        && e.Month == month
-                                        && e.Year == year
-                                        && e.DebitAmount > 0).Select(e => e.DebitAmount).Sum();
-                double extraHourSalary = Convert.ToDouble(extraHours * x.ExtraPerHourPrice);
-
-                monthlySalary = monthlySalary + extraHourSalary - advancePaid;
-                if (deductedLeave > 0)
+                if (month == DateTime.Now.Month && year == DateTime.Now.Year)
                 {
-                    double perDaySalary = monthlySalary / totalDaysinMonth;
-                    double deductedSalary = deductedLeave * perDaySalary;
-                    monthlySalary = (monthlySalary - deductedSalary);
+                    status = 0;
+                    errorMessage = ErrorMessage.CanNotStartCurrentMonthConversion;
+                }
+                if (_db.tbl_Attendance.Any(x => x.CompanyId == companyId && x.AttendanceDate.Month == nextMonth && x.AttendanceDate.Year == dateYear && x.Status == (int)AttendanceStatus.Pending))
+                {
+                    status = 0;
+                    errorMessage = ErrorMessage.AttendancePendingForAcceptCanNotCompleteConversion;
                 }
 
-                tbl_EmployeePayment objEmployeePayment = new tbl_EmployeePayment();
-                objEmployeePayment.CompanyId = companyId;
-                objEmployeePayment.UserId = x.EmployeeId;
-                objEmployeePayment.PaymentDate = openDate;
-                //objEmployeePayment.PaymentType = (int)EmployeePaymentType.Salary;
-                objEmployeePayment.CreditOrDebitText = ErrorMessage.Credit;
-                objEmployeePayment.DebitAmount = 0;
-                objEmployeePayment.CreditAmount = (decimal)monthlySalary;
-                objEmployeePayment.Remarks = ErrorMessage.MonthlyConversion;
-                objEmployeePayment.Month = nextMonth;
-                objEmployeePayment.Year = year;
-                objEmployeePayment.Status = ErrorMessage.Open;
-                objEmployeePayment.ProcessStatusText = ErrorMessage.InProgress;
-                objEmployeePayment.CreatedDate = DateTime.UtcNow;
-                objEmployeePayment.CreatedBy = loggedinUser;
-                objEmployeePayment.ModifiedDate = DateTime.UtcNow;
-                objEmployeePayment.ModifiedBy = loggedinUser;
+                List<long> employeeIds = _db.tbl_Employee.Where(x => x.CompanyId == companyId && x.AdminRoleId != (int)AdminRoles.Worker).Select(x => x.EmployeeId).ToList();
 
-                _db.tbl_EmployeePayment.Add(objEmployeePayment);
-                _db.SaveChanges();
+                if (_db.tbl_Leave.Any(x => employeeIds.Contains(x.UserId) && x.StartDate.Month == month && x.StartDate.Year == year && x.LeaveStatus == (int)LeaveStatus.Pending))
+                {
+                    status = 0;
+                    errorMessage = !string.IsNullOrEmpty(errorMessage) ? errorMessage + ", " + ErrorMessage.LeavePendingForAcceptCanNotCompleteConversion : ErrorMessage.LeavePendingForAcceptCanNotCompleteConversion;
+                }
 
-            });
+                if (status == 1)
+                {
+                    // tbl_Conversion, tbl_EmployeePayment
+                    List<tbl_EmployeePayment> inProcessEmployeePaymentList = _db.tbl_EmployeePayment.Where(x => x.CompanyId == companyId && x.ProcessStatusText == ErrorMessage.InProgress && x.Month == nextMonth && x.Year == dateYear).ToList();
+                    inProcessEmployeePaymentList.ForEach(x =>
+                    {
+                        _db.tbl_EmployeePayment.Remove(x);
+                        _db.SaveChanges();
+                    });
+
+                    long loggedinUser = clsAdminSession.UserID;
+                    DateTime firstDayOfMonth = new DateTime(year, month, 1);
+                    DateTime lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
+                    double totalDaysinMonth = DateTime.DaysInMonth(year, month);
+
+                    var currentMonthHolidays = _db.tbl_Holiday.Where(x => x.CompanyId == companyId.ToString() && x.StartDate >= firstDayOfMonth && x.EndDate <= lastDayOfMonth).ToList();
+                    double holidays = currentMonthHolidays.Select(x => (x.EndDate - x.StartDate).TotalDays).Sum();
+                    // For Only Employees
+
+                    // Get All Employees
+                    List<tbl_Employee> lstEmployees = _db.tbl_Employee.Where(x => x.CompanyId == companyId && !x.IsDeleted && x.AdminRoleId != (int)AdminRoles.Worker).ToList();
+                    List<long> employeeIdsExceptMonthly = lstEmployees.Where(x => x.EmploymentCategory != (int)EmploymentCategory.MonthlyBased).Select(x => x.EmployeeId).ToList();
+                    List<tbl_EmployeePayment> paymentList = (from epp in _db.tbl_EmployeePayment
+                                                             where
+                                                             employeeIdsExceptMonthly.Contains(epp.UserId)
+                                                             && epp.Month == month
+                                                             && epp.Year == year
+                                                             select epp).ToList();
+                    var paymentGroup = paymentList.GroupBy(l => l.UserId)
+                        .Select(cl => new
+                        {
+                            EmployeeId = cl.First().UserId,
+                            SumOfDebit = cl.Sum(c => c.DebitAmount),
+                            SumOfCredit = cl.Sum(c => c.CreditAmount)
+                        }).ToList();
 
 
-            List<tbl_EmployeePayment> employeePaymentList = _db.tbl_EmployeePayment.Where(x => x.ProcessStatusText == ErrorMessage.InProgress && x.Month == month && x.Year == year).ToList();
-            employeePaymentList.ForEach(x =>
+
+                    paymentGroup.ForEach(x =>
+                    {
+                        tbl_EmployeePayment objEmployeePayment = new tbl_EmployeePayment();
+                        objEmployeePayment.CompanyId = companyId;
+                        objEmployeePayment.UserId = x.EmployeeId;
+                        objEmployeePayment.PaymentDate = openDate;
+                        //objEmployeePayment.PaymentType = (int)EmployeePaymentType.Salary;
+                        objEmployeePayment.CreditOrDebitText = ErrorMessage.Credit;
+                        objEmployeePayment.DebitAmount = 0;
+                        objEmployeePayment.CreditAmount = x.SumOfCredit - x.SumOfDebit;
+                        objEmployeePayment.Remarks = ErrorMessage.MonthlyConversion;
+                        objEmployeePayment.Month = nextMonth;
+                        objEmployeePayment.Year = year;
+                        objEmployeePayment.Status = ErrorMessage.Open;
+                        objEmployeePayment.ProcessStatusText = ErrorMessage.InProgress;
+                        objEmployeePayment.CreatedDate = DateTime.UtcNow;
+                        objEmployeePayment.CreatedBy = loggedinUser;
+                        objEmployeePayment.ModifiedDate = DateTime.UtcNow;
+                        objEmployeePayment.ModifiedBy = loggedinUser;
+
+                        _db.tbl_EmployeePayment.Add(objEmployeePayment);
+                        _db.SaveChanges();
+                    });
+
+                    lstEmployees.Where(x => x.EmploymentCategory == (int)EmploymentCategory.MonthlyBased).ToList().ForEach(x =>
+                    {
+                        List<tbl_Attendance> attendanceList = _db.tbl_Attendance.Where(y => y.UserId == x.EmployeeId && y.AttendanceDate >= firstDayOfMonth && y.AttendanceDate <= lastDayOfMonth).ToList();
+                        double presentDays = attendanceList.Count > 0 ? attendanceList.Select(z => z.DayType).Sum() : 0;
+                        decimal extraHours = attendanceList.Count > 0 ? attendanceList.Select(z => z.ExtraHours).Sum() : 0;
+                        double absentDays = totalDaysinMonth - presentDays;
+                        double deductedLeave = absentDays - holidays - (double)x.NoOfFreeLeavePerMonth;
+                        double monthlySalary = (double)x.MonthlySalaryPrice;
+                        List<decimal> debitAmountList = _db.tbl_EmployeePayment.Where(e => e.UserId == x.EmployeeId
+                                                && e.Month == month
+                                                && e.Year == year
+                                                && e.DebitAmount > 0).Select(e => e.DebitAmount.HasValue ? e.DebitAmount.Value : 0).ToList();
+                        double advancePaid = Convert.ToDouble(debitAmountList.Count > 0 ? debitAmountList.Sum() : 0);
+                        double extraHourSalary = Convert.ToDouble(extraHours * x.ExtraPerHourPrice);
+
+                        monthlySalary = monthlySalary + extraHourSalary - advancePaid;
+                        if (deductedLeave > 0)
+                        {
+                            double perDaySalary = monthlySalary / totalDaysinMonth;
+                            double deductedSalary = deductedLeave * perDaySalary;
+                            monthlySalary = (monthlySalary - deductedSalary);
+                        }
+
+                        tbl_EmployeePayment objEmployeePayment = new tbl_EmployeePayment();
+                        objEmployeePayment.CompanyId = companyId;
+                        objEmployeePayment.UserId = x.EmployeeId;
+                        objEmployeePayment.PaymentDate = openDate;
+                        //objEmployeePayment.PaymentType = (int)EmployeePaymentType.Salary;
+                        objEmployeePayment.CreditOrDebitText = ErrorMessage.Credit;
+                        objEmployeePayment.DebitAmount = 0;
+                        objEmployeePayment.CreditAmount = (decimal)monthlySalary;
+                        objEmployeePayment.Remarks = ErrorMessage.MonthlyConversion;
+                        objEmployeePayment.Month = nextMonth;
+                        objEmployeePayment.Year = year;
+                        objEmployeePayment.Status = ErrorMessage.Open;
+                        objEmployeePayment.ProcessStatusText = ErrorMessage.InProgress;
+                        objEmployeePayment.CreatedDate = DateTime.UtcNow;
+                        objEmployeePayment.CreatedBy = loggedinUser;
+                        objEmployeePayment.ModifiedDate = DateTime.UtcNow;
+                        objEmployeePayment.ModifiedBy = loggedinUser;
+
+                        _db.tbl_EmployeePayment.Add(objEmployeePayment);
+                        _db.SaveChanges();
+
+                    });
+
+
+                    List<tbl_EmployeePayment> employeePaymentList = _db.tbl_EmployeePayment.Where(x => x.ProcessStatusText == ErrorMessage.InProgress && x.Month == nextMonth && x.Year == dateYear).ToList();
+                    employeePaymentList.ForEach(x =>
+                    {
+                        x.ProcessStatusText = ErrorMessage.Complete;
+                        _db.SaveChanges();
+                    });
+                }
+            }
+            catch (Exception ex)
             {
-                x.ProcessStatusText = ErrorMessage.Complete;
-                _db.SaveChanges();
-            });
+                status = 0;
+                errorMessage = ex.Message.ToString();
+            }
 
-            return View();
+            return Json(new { Status = status, ErrorMessage = errorMessage }, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult ConversionOfWorkerUsers(int month, int year)
+        public JsonResult ConversionOfWorkerUsers(int month, int year)
         {
-
-            List<tbl_WorkerPayment> inProcessWorkerPaymentList = _db.tbl_WorkerPayment.Where(x => x.ProcessStatusText == ErrorMessage.InProgress && x.Month == month && x.Year == year).ToList();
-            inProcessWorkerPaymentList.ForEach(x =>
-            {
-                _db.tbl_WorkerPayment.Remove(x);
-            });
-
-            long loggedinUser = clsAdminSession.UserID;
+            int status = 1;
+            string errorMessage = string.Empty;
             int companyId = (int)clsAdminSession.CompanyId;
-            int companyTypeId = (int)clsAdminSession.CompanyTypeId;
-            DateTime firstDayOfMonth = new DateTime(year, month, 1);
-            DateTime lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
-            double totalDaysinMonth = DateTime.DaysInMonth(year, month);
             int nextMonth = month == 12 ? 1 : month + 1;
             int dateyear = month == 12 ? year + 1 : year;
             DateTime openDate = new DateTime(dateyear, nextMonth, 1);
-
-            List<double> currentMonthHolidays = _db.tbl_Holiday.Where(x => x.CompanyId == companyId.ToString() && x.StartDate >= firstDayOfMonth && x.EndDate <= lastDayOfMonth).Select(x => (x.EndDate - x.StartDate).TotalDays).ToList();
-            double holidays = currentMonthHolidays.Sum();
-            // For Only Employees
-
-            // Get All Employees
-            List<tbl_Employee> lstWorkers = _db.tbl_Employee.Where(x => x.CompanyId == companyId && !x.IsDeleted && x.AdminRoleId == (int)AdminRoles.Worker).ToList();
-
-            List<tbl_WorkerPayment> paymentList = (from epp in _db.tbl_WorkerPayment
-                                                   join emp in lstWorkers.Where(x => x.EmploymentCategory != (int)EmploymentCategory.MonthlyBased) on epp.UserId equals emp.EmployeeId
-                                                   where epp.Month == month
-                                                   && epp.Year == year
-                                                   select epp).ToList();
-            var paymentGroup = paymentList.GroupBy(l => l.UserId)
-                .Select(cl => new
-                {
-                    EmployeeId = cl.First().UserId,
-                    SumOfDebit = cl.Sum(c => c.DebitAmount),
-                    SumOfCredit = cl.Sum(c => c.CreditAmount)
-                }).ToList();
-
-
-            paymentGroup.ForEach(x =>
+            try
             {
-                tbl_WorkerPayment objWorkerPayment = new tbl_WorkerPayment();
-                objWorkerPayment.CompanyId = companyId;
-                objWorkerPayment.UserId = x.EmployeeId;
-                objWorkerPayment.PaymentDate = openDate;
-                //objEmployeePayment.PaymentType = (int)EmployeePaymentType.Salary;
-                objWorkerPayment.CreditOrDebitText = ErrorMessage.Credit;
-                objWorkerPayment.DebitAmount = 0;
-                objWorkerPayment.CreditAmount = x.SumOfCredit - x.SumOfDebit;
-                objWorkerPayment.Remarks = ErrorMessage.MonthlyConversion;
-                objWorkerPayment.Month = nextMonth;
-                objWorkerPayment.Year = year;
-                objWorkerPayment.Status = ErrorMessage.Open;
-                objWorkerPayment.ProcessStatusText = ErrorMessage.InProgress;
-                objWorkerPayment.CreatedDate = DateTime.UtcNow;
-                objWorkerPayment.CreatedBy = loggedinUser;
-                objWorkerPayment.ModifiedDate = DateTime.UtcNow;
-                objWorkerPayment.ModifiedBy = loggedinUser;
-
-                _db.tbl_WorkerPayment.Add(objWorkerPayment);
-                _db.SaveChanges();
-            });
-
-            lstWorkers.Where(x => x.EmploymentCategory == (int)EmploymentCategory.MonthlyBased).ToList().ForEach(x =>
-            {
-                double presentDays = _db.tbl_WorkerAttendance.Where(y => y.EmployeeId == x.EmployeeId && y.AttendanceDate >= firstDayOfMonth && y.AttendanceDate <= lastDayOfMonth).Count();
-                decimal extraHours = _db.tbl_WorkerAttendance.Where(y => y.EmployeeId == x.EmployeeId && y.AttendanceDate >= firstDayOfMonth && y.AttendanceDate <= lastDayOfMonth).Select(z => z.ExtraHours.HasValue ? z.ExtraHours.Value : 0).Sum();
-                double absentDays = totalDaysinMonth - presentDays;
-                double deductedLeave = absentDays - holidays - (double)x.NoOfFreeLeavePerMonth;
-                double monthlySalary = (double)x.MonthlySalaryPrice;
-                double advancePaid = (double)_db.tbl_EmployeePayment.Where(e => e.UserId == x.EmployeeId
-                                        && e.Month == month
-                                        && e.Year == year
-                                        && e.DebitAmount > 0).Select(e => e.DebitAmount).Sum();
-
-                double extraHourSalary = Convert.ToDouble(extraHours * x.ExtraPerHourPrice);
-
-                monthlySalary = monthlySalary + extraHourSalary - advancePaid;
-                if (deductedLeave > 0)
+                if (month == DateTime.Now.Month && year == DateTime.Now.Year)
                 {
-                    double perDaySalary = monthlySalary / totalDaysinMonth;
-                    double deductedSalary = deductedLeave * perDaySalary;
-                    monthlySalary = (monthlySalary - deductedSalary);
+                    status = 0;
+                    errorMessage = ErrorMessage.CanNotStartCurrentMonthConversion;
+                }
+                List<long> workerIds = _db.tbl_Employee.Where(x => x.CompanyId == companyId && x.AdminRoleId == (int)AdminRoles.Worker).Select(x => x.EmployeeId).ToList();
+                if (_db.tbl_Leave.Any(x => workerIds.Contains(x.UserId) && x.StartDate.Month == month && x.StartDate.Year == year && x.LeaveStatus == (int)LeaveStatus.Pending))
+                {
+                    status = 0;
+                    errorMessage = ErrorMessage.LeavePendingForAcceptCanNotCompleteConversion;
                 }
 
-                tbl_WorkerPayment objWorkerPayment = new tbl_WorkerPayment();
-                objWorkerPayment.CompanyId = companyId;
-                objWorkerPayment.UserId = x.EmployeeId;
-                objWorkerPayment.PaymentDate = openDate;
-                //objEmployeePayment.PaymentType = (int)EmployeePaymentType.Salary;
-                objWorkerPayment.CreditOrDebitText = ErrorMessage.Credit;
-                objWorkerPayment.DebitAmount = 0;
-                objWorkerPayment.CreditAmount = (decimal)monthlySalary;
-                objWorkerPayment.Remarks = ErrorMessage.MonthlyConversion;
-                objWorkerPayment.Month = nextMonth;
-                objWorkerPayment.Year = year;
-                objWorkerPayment.Status = ErrorMessage.Open;
-                objWorkerPayment.ProcessStatusText = ErrorMessage.InProgress;
-                objWorkerPayment.CreatedDate = DateTime.UtcNow;
-                objWorkerPayment.CreatedBy = loggedinUser;
-                objWorkerPayment.ModifiedDate = DateTime.UtcNow;
-                objWorkerPayment.ModifiedBy = loggedinUser;
+                if (status == 1)
+                {
+                    List<tbl_WorkerPayment> inProcessWorkerPaymentList = _db.tbl_WorkerPayment.Where(x => x.CompanyId == companyId && x.ProcessStatusText == ErrorMessage.InProgress && x.Month == nextMonth && x.Year == dateyear).ToList();
+                    inProcessWorkerPaymentList.ForEach(x =>
+                    {
+                        _db.tbl_WorkerPayment.Remove(x);
+                        _db.SaveChanges();
+                    });
 
-                _db.tbl_WorkerPayment.Add(objWorkerPayment);
-                _db.SaveChanges();
+                    long loggedinUser = clsAdminSession.UserID;
 
-            });
+                    int companyTypeId = (int)clsAdminSession.CompanyTypeId;
+                    DateTime firstDayOfMonth = new DateTime(year, month, 1);
+                    DateTime lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
+                    double totalDaysinMonth = DateTime.DaysInMonth(year, month);
 
 
-            List<tbl_WorkerPayment> workerPaymentList = _db.tbl_WorkerPayment.Where(x => x.ProcessStatusText == ErrorMessage.InProgress && x.Month == month && x.Year == year).ToList();
-            workerPaymentList.ForEach(x =>
+                    List<double> currentMonthHolidays = _db.tbl_Holiday.Where(x => x.CompanyId == companyId.ToString() && x.StartDate >= firstDayOfMonth && x.EndDate <= lastDayOfMonth).Select(x => (x.EndDate - x.StartDate).TotalDays).ToList();
+                    double holidays = currentMonthHolidays.Sum();
+                    // For Only Employees
+
+                    // Get All Employees
+                    List<tbl_Employee> lstWorkers = _db.tbl_Employee.Where(x => x.CompanyId == companyId && !x.IsDeleted && x.AdminRoleId == (int)AdminRoles.Worker).ToList();
+
+                    List<tbl_WorkerPayment> paymentList = (from epp in _db.tbl_WorkerPayment
+                                                           join emp in lstWorkers.Where(x => x.EmploymentCategory != (int)EmploymentCategory.MonthlyBased) on epp.UserId equals emp.EmployeeId
+                                                           where epp.Month == month
+                                                           && epp.Year == year
+                                                           select epp).ToList();
+                    var paymentGroup = paymentList.GroupBy(l => l.UserId)
+                        .Select(cl => new
+                        {
+                            EmployeeId = cl.First().UserId,
+                            SumOfDebit = cl.Sum(c => c.DebitAmount),
+                            SumOfCredit = cl.Sum(c => c.CreditAmount)
+                        }).ToList();
+
+
+                    paymentGroup.ForEach(x =>
+                    {
+                        tbl_WorkerPayment objWorkerPayment = new tbl_WorkerPayment();
+                        objWorkerPayment.CompanyId = companyId;
+                        objWorkerPayment.UserId = x.EmployeeId;
+                        objWorkerPayment.PaymentDate = openDate;
+                        //objEmployeePayment.PaymentType = (int)EmployeePaymentType.Salary;
+                        objWorkerPayment.CreditOrDebitText = ErrorMessage.Credit;
+                        objWorkerPayment.DebitAmount = 0;
+                        objWorkerPayment.CreditAmount = x.SumOfCredit - x.SumOfDebit;
+                        objWorkerPayment.Remarks = ErrorMessage.MonthlyConversion;
+                        objWorkerPayment.Month = nextMonth;
+                        objWorkerPayment.Year = year;
+                        objWorkerPayment.Status = ErrorMessage.Open;
+                        objWorkerPayment.ProcessStatusText = ErrorMessage.InProgress;
+                        objWorkerPayment.CreatedDate = DateTime.UtcNow;
+                        objWorkerPayment.CreatedBy = loggedinUser;
+                        objWorkerPayment.ModifiedDate = DateTime.UtcNow;
+                        objWorkerPayment.ModifiedBy = loggedinUser;
+
+                        _db.tbl_WorkerPayment.Add(objWorkerPayment);
+                        _db.SaveChanges();
+                    });
+
+                    lstWorkers.Where(x => x.EmploymentCategory == (int)EmploymentCategory.MonthlyBased).ToList().ForEach(x =>
+                    {
+                        //double presentDays = _db.tbl_WorkerAttendance.Where(y => y.EmployeeId == x.EmployeeId && y.AttendanceDate >= firstDayOfMonth && y.AttendanceDate <= lastDayOfMonth).Count();
+                        //decimal extraHours = _db.tbl_WorkerAttendance.Where(y => y.EmployeeId == x.EmployeeId && y.AttendanceDate >= firstDayOfMonth && y.AttendanceDate <= lastDayOfMonth).Select(z => z.ExtraHours.HasValue ? z.ExtraHours.Value : 0).Sum();
+                        List<tbl_WorkerAttendance> attendanceList = _db.tbl_WorkerAttendance.Where(y => y.EmployeeId == x.EmployeeId && y.AttendanceDate >= firstDayOfMonth && y.AttendanceDate <= lastDayOfMonth).ToList();
+                        double presentDays = attendanceList.Count;
+                        decimal extraHours = attendanceList.Count > 0 ? attendanceList.Select(z => z.ExtraHours.HasValue ? z.ExtraHours.Value : 0).Sum() : 0;
+                        double absentDays = totalDaysinMonth - presentDays;
+                        double deductedLeave = absentDays - holidays - (double)x.NoOfFreeLeavePerMonth;
+                        double monthlySalary = (double)x.MonthlySalaryPrice;
+                        double advancePaid = (double)_db.tbl_EmployeePayment.Where(e => e.UserId == x.EmployeeId
+                                                && e.Month == month
+                                                && e.Year == year
+                                                && e.DebitAmount > 0).Select(e => e.DebitAmount).Sum();
+
+                        double extraHourSalary = Convert.ToDouble(extraHours * x.ExtraPerHourPrice);
+
+                        monthlySalary = monthlySalary + extraHourSalary - advancePaid;
+                        if (deductedLeave > 0)
+                        {
+                            double perDaySalary = monthlySalary / totalDaysinMonth;
+                            double deductedSalary = deductedLeave * perDaySalary;
+                            monthlySalary = (monthlySalary - deductedSalary);
+                        }
+
+                        tbl_WorkerPayment objWorkerPayment = new tbl_WorkerPayment();
+                        objWorkerPayment.CompanyId = companyId;
+                        objWorkerPayment.UserId = x.EmployeeId;
+                        objWorkerPayment.PaymentDate = openDate;
+                        //objEmployeePayment.PaymentType = (int)EmployeePaymentType.Salary;
+                        objWorkerPayment.CreditOrDebitText = ErrorMessage.Credit;
+                        objWorkerPayment.DebitAmount = 0;
+                        objWorkerPayment.CreditAmount = (decimal)monthlySalary;
+                        objWorkerPayment.Remarks = ErrorMessage.MonthlyConversion;
+                        objWorkerPayment.Month = nextMonth;
+                        objWorkerPayment.Year = year;
+                        objWorkerPayment.Status = ErrorMessage.Open;
+                        objWorkerPayment.ProcessStatusText = ErrorMessage.InProgress;
+                        objWorkerPayment.CreatedDate = DateTime.UtcNow;
+                        objWorkerPayment.CreatedBy = loggedinUser;
+                        objWorkerPayment.ModifiedDate = DateTime.UtcNow;
+                        objWorkerPayment.ModifiedBy = loggedinUser;
+
+                        _db.tbl_WorkerPayment.Add(objWorkerPayment);
+                        _db.SaveChanges();
+
+                    });
+
+
+                    List<tbl_WorkerPayment> workerPaymentList = _db.tbl_WorkerPayment.Where(x => x.ProcessStatusText == ErrorMessage.InProgress && x.Month == nextMonth && x.Year == dateyear).ToList();
+                    workerPaymentList.ForEach(x =>
+                    {
+                        x.ProcessStatusText = ErrorMessage.Complete;
+                        _db.SaveChanges();
+                    });
+                }
+            }
+            catch (Exception ex)
             {
-                x.ProcessStatusText = ErrorMessage.Complete;
-                _db.SaveChanges();
-            });
-            return View();
+                status = 0;
+                errorMessage = ex.Message.ToString();
+            }
+
+            return Json(new { Status = status, ErrorMessage = errorMessage }, JsonRequestBehavior.AllowGet);
         }
 
         private List<SelectListItem> GetCalenderMonthList()

@@ -144,5 +144,8 @@
         public static string Open = "Open";
         public static string InProgress = "Inprogress";
         public static string Complete = "Complete";
+        public static string LeavePendingForAcceptCanNotCompleteConversion = "Some of leave are pending for accept, so you can not start conversion";
+        public static string AttendancePendingForAcceptCanNotCompleteConversion = "Some of attendance are pending for accept, so you can not start conversion";
+        public static string CanNotStartCurrentMonthConversion = "You can not start current month conversion";
     }
 }

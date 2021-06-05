@@ -279,15 +279,12 @@
                     async: true,
                     url: URL + "?month=" + month + "&year=" + year ,
                     success: function (result) {
-                        if (result == "success") {
+                        if (result.Status == 1) {
                             alert("Conversion complete successfully");
-                            window.location.reload();
-                        }
-                        else if (result == "notfound") {
-                            alert("Employee Not Found");
                         }
                         else {
-                            alert("Something went wrong. Please try again");
+                            
+                            alert(result.ErrorMessage);
                         }
 
                        StopLoading();
@@ -309,15 +306,11 @@
                     async: true,
                     url: URL + "?month=" + month + "&year=" + year ,
                     success: function (result) {
-                        if (result == "success") {
+                        if (result.Status == 1) {
                             alert("Conversion complete successfully");
-                            window.location.reload();
-                        }
-                        else if (result == "notfound") {
-                            alert("Employee Not Found");
                         }
                         else {
-                            alert("Something went wrong. Please try again");
+                            alert(result.ErrorMessage);
                         }
 
                        StopLoading();
