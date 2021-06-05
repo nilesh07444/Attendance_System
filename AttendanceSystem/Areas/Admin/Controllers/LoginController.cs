@@ -3,6 +3,8 @@ using AttendanceSystem.Models;
 using System;
 using System.Configuration;
 using System.Linq;
+using System.Text.RegularExpressions;
+using System.Web;
 using System.Web.Mvc;
 using static AttendanceSystem.ViewModel.AccountModels;
 
@@ -48,8 +50,26 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         int num = random.Next(555555, 999999);
                         if (enviornment != "Development")
                         {
-                            string msg = "Your Otp code for Login is " + num;
-                            var json = CommonMethod.SuperAdminSendSMS(msg, data.MobileNo, -1);
+                            string msg = string.Empty;
+
+                            if (data.AdminUserRoleId == (int)AdminRoles.SuperAdmin)
+                            {
+                                int SmsId = (int)SMSType.SuperAdminLoginOTP;
+                                msg = CommonMethod.GetSmsContent(SmsId);
+
+                                Regex regReplace = new Regex("{#var#}");
+                                msg = regReplace.Replace(msg, data.FirstName + " " + data.LastName, 1);
+                                msg = regReplace.Replace(msg, num.ToString(), 1);
+                            }
+                            else
+                            {
+                                int SmsId = (int)SMSType.CompanyAdminLoginOTP;
+                                msg = CommonMethod.GetSmsContent(SmsId);
+
+                                msg = msg.Replace("{#var#}", num.ToString());
+                            }
+                            msg = msg.Replace("\r\n", "\n");
+                            var json = CommonMethod.SendSMSWithoutLog(msg, data.MobileNo);
                             if (json.Contains("invalidnumber"))
                             {
                                 status = 0;
@@ -58,7 +78,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                             else
                             {
                                 status = 1;
-
                                 otp = num.ToString();
                             }
                         }
@@ -165,8 +184,26 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 {
                     Random random = new Random();
                     int num = random.Next(555555, 999999);
-                    string msg = "Your Otp code for Login is " + num;
-                    var json = CommonMethod.SuperAdminSendSMS(msg, data.MobileNo, -1);
+
+                    var json = string.Empty;
+                    int SmsId = (int)SMSType.ForgetPasswordOTP;
+                    string msg = CommonMethod.GetSmsContent(SmsId);
+
+                    Regex regReplace = new Regex("{#var#}");
+                    msg = regReplace.Replace(msg, data.FirstName + " " + data.LastName, 1);
+                    msg = regReplace.Replace(msg, num.ToString(), 1);
+
+                    msg = msg.Replace("\r\n", "\n");
+
+                    if (data.AdminUserRoleId == (int)AdminRoles.SuperAdmin)
+                    {
+                        json = CommonMethod.SendSMSWithoutLog(msg, data.MobileNo);
+                    }
+                    else
+                    {
+                        json = CommonMethod.SendSMSWithoutLog(msg, data.MobileNo);
+                    }
+
                     if (json.Contains("invalidnumber"))
                     {
                         status = 0;

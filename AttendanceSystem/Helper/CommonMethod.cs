@@ -490,7 +490,7 @@ namespace AttendanceSystem
             return empCode;
         }
 
-        public static string SuperAdminSendSMS(string msg, string mobileNo, long employeeId)
+        public static string SendSMSWithoutLog(string msg, string mobileNo)
         {
             using (WebClient webClient = new WebClient())
             {
@@ -498,6 +498,7 @@ namespace AttendanceSystem
                 string url = GetSMSUrl().Replace("--MOBILE--", mobileNo).Replace("--MSG--", msg);
                 var json = webClient.DownloadString(url);
 
+                /*
                 AttendanceSystemEntities _db = new AttendanceSystemEntities();
                 tbl_SMSLog smsLog = new tbl_SMSLog();
                 smsLog.Message = msg;
@@ -506,6 +507,8 @@ namespace AttendanceSystem
                 smsLog.CreatedDate = DateTime.UtcNow;
                 _db.tbl_SMSLog.Add(smsLog);
                 _db.SaveChanges();
+                */
+
                 return json;
             }
         }
@@ -582,7 +585,7 @@ namespace AttendanceSystem
                 else
                 {
                     response.IsError = false;
-                    response.Data = SuperAdminSendSMS(msg, mobileNo, employeeId);
+                    response.Data = SendSMSWithoutLog(msg, mobileNo);
                 }
             }
             catch (Exception ex)

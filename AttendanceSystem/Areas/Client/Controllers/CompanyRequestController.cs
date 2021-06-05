@@ -340,6 +340,27 @@ namespace AttendanceSystem.Areas.Client.Controllers
 
                     _db.SaveChanges();
 
+
+                    #endregion
+
+                    #region Send SMS
+
+                    int SmsId = (int)SMSType.CompanyRequest;
+                    string msg = CommonMethod.GetSmsContent(SmsId);
+                    msg = msg.Replace("\r\n", "\n");
+
+                    var json = CommonMethod.SendSMSWithoutLog(msg, companyRequestVM.CompanyAdminMobileNo);
+                    if (json.Contains("invalidnumber"))
+                    {
+                        //status = 0;
+                        //errorMessage = ErrorMessage.InvalidMobileNo;
+                    }
+                    else
+                    {
+                        //status = 1;
+                        //otp = num.ToString();
+                    }
+
                     #endregion
 
                     return RedirectToAction("ThankYou");

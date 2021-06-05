@@ -700,7 +700,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     if (enviornment != "Development")
                     {
                         string msg = "Your Otp code for Login is " + num;
-                        var json = CommonMethod.SuperAdminSendSMS(msg, mobileNo, loggedInUserId);
+                        var json = CommonMethod.SendSMSWithoutLog(msg, mobileNo);
                         if (json.Contains("invalidnumber"))
                         {
                             status = 0;

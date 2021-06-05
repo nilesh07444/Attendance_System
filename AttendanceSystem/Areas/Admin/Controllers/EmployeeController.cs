@@ -285,7 +285,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         if (enviornment != "Development")
                         {
                             string msg = "Your credentials for Login are UserId - " + objEmployee.EmployeeCode + ", Password - " + defaultPassword;
-                            string response = CommonMethod.SuperAdminSendSMS(msg, objEmployee.MobileNo, loggedInUserId);
+                            string response = CommonMethod.SendSMSWithoutLog(msg, objEmployee.MobileNo);
                         }
 
                     }
