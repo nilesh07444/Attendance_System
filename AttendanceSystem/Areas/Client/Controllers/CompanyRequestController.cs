@@ -315,6 +315,8 @@ namespace AttendanceSystem.Areas.Client.Controllers
                     objCompany.CompanyAdminMobileNo = companyRequestVM.CompanyAdminMobileNo;
                     objCompany.CompanyAdminAlternateMobileNo = companyRequestVM.CompanyAdminAlternateMobileNo;
                     objCompany.CompanyAdminDesignation = companyRequestVM.CompanyAdminDesignation;
+                    objCompany.CompanyAdminDOB = DateTime.Now;
+                    objCompany.CompanyAdminDOB = Convert.ToDateTime(companyRequestVM.CompanyAdminDOB);
                     objCompany.CompanyAdminAddress = companyRequestVM.CompanyAdminAddress;
                     objCompany.CompanyAdminPincode = companyRequestVM.CompanyAdminPincode;
                     objCompany.CompanyAdminCity = companyRequestVM.CompanyAdminCity;
