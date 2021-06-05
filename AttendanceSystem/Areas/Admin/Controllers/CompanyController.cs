@@ -26,6 +26,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         public string CompanyAdminProfileDirectoryPath = "";
         long loggedInUserId ;
         string enviornment;
+        string defaultPassword;
         public CompanyController()
         {
             _db = new AttendanceSystemEntities();
@@ -39,6 +40,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             CompanyAdminProfileDirectoryPath = ErrorMessage.ProfileDirectoryPath;
             enviornment = ConfigurationManager.AppSettings["Environment"].ToString();
             loggedInUserId = clsAdminSession.UserID;
+            defaultPassword = ConfigurationManager.AppSettings["DefaultPassword"].ToString();
         }
         // GET: Admin/Company
         public ActionResult Registered()
@@ -156,6 +158,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                         FreeAccessDays = cp.FreeAccessDays,
                                         CompanyTypeText = ct.CompanyTypeName
                                     }).FirstOrDefault();
+
+                companyRequestVM.CompanyAdminDOB = companyRequestVM.dtCompanyAdminDOB.ToString("dd MMM yyyy");
             }
             catch (Exception ex)
             {
@@ -232,7 +236,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objAdminUser.MIddleName = objCompanyReq.CompanyAdminMiddleName;
                         objAdminUser.LastName = objCompanyReq.CompanyAdminLastName;
                         objAdminUser.UserName = companyCode;
-                        objAdminUser.Password = CommonMethod.Encrypt(CommonMethod.RandomString(6, true), psSult);
+                        objAdminUser.Password = CommonMethod.Encrypt(defaultPassword, psSult);
                         objAdminUser.DOB = objCompanyReq.CompanyAdminDOB;
                         objAdminUser.EmailId = objCompanyReq.CompanyAdminEmailId;
                         objAdminUser.MobileNo = objCompanyReq.CompanyAdminMobileNo;

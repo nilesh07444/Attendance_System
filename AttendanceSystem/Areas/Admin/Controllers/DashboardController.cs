@@ -65,26 +65,33 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     dashboardVM.Worker = _db.tbl_Employee.Where(x => x.CompanyId == companyId && x.IsActive && !x.IsDeleted && x.AdminRoleId == (int)AdminRoles.Worker).Count();
                 }
 
-                int currentMonth = DateTime.Now.Month;
-                int currentYear = DateTime.Now.Year;
-                List<SelectListItem> lstCalenderMonths = GetCalenderMonthList();
-                var pendingMonthsList = (from mn in lstCalenderMonths
-                                     join cn in _db.tbl_Conversion on mn.Value equals cn.Month.ToString() into cnm
-                                     from c in cnm.DefaultIfEmpty()
-                                     where currentMonth == 12 ? c.Year == currentYear - 1 : c.Year == currentYear
-                                     && cnm == null
-                                     select new
-                                     {
-                                         Month = mn.Value,
-                                         MonthName = mn.Text,
-                                         Year = currentMonth == 12 ? currentYear - 1 : currentYear
-                                     }).ToList();
+                if (roleId == (int)AdminRoles.CompanyAdmin)
+                {
+                    int currentMonth = DateTime.Now.Month;
+                    int currentYear = DateTime.Now.Year;
+                    int applyYear = currentMonth == 1 ? currentYear - 1 : currentYear;
+                    int applyMonth = currentMonth - 1;
 
-                var pendingMonth = pendingMonthsList.Select(x => x).OrderBy(x => x.Year).ThenBy(x => x.Month).FirstOrDefault();
-                dashboardVM.Month =Convert.ToInt16(pendingMonth.Month);
-                dashboardVM.MonthName = pendingMonth.MonthName;
-                dashboardVM.Year = pendingMonth.Year;
+                    List<SelectListItem> lstCalenderMonths = GetCalenderMonthList();
+                    tbl_Conversion lastConversion = _db.tbl_Conversion.Where(x => x.CompanyId == companyId).OrderByDescending(x => x.Year).ThenByDescending(x => x.Month).FirstOrDefault();
+                    if (lastConversion == null)
+                    {
+                        dashboardVM.Month = Convert.ToInt16(applyMonth);
+                        dashboardVM.MonthName = CommonMethod.GetEnumDescription((CalenderMonths)applyMonth);
+                        dashboardVM.Year = applyYear;
+                    }
+                    else
+                    {
+                        dashboardVM.Month = lastConversion.Month == 12 ? 1 : lastConversion.Month + 1;
+                        dashboardVM.MonthName = CommonMethod.GetEnumDescription((CalenderMonths)dashboardVM.Month);
+                        dashboardVM.Year = lastConversion.Month == 12 ? lastConversion.Year + 1 : lastConversion.Year;
+                    }
 
+                    dashboardVM.AllowForEmployee = _db.tbl_Attendance.Any(x => x.CompanyId == companyId);
+                    List<long> workerIds = _db.tbl_Employee.Where(x => x.CompanyId == companyId && x.AdminRoleId == (int)AdminRoles.Worker).Select(x => x.EmployeeId).ToList();
+                    dashboardVM.AllowForWorker = workerIds.Count > 0 ? _db.tbl_WorkerAttendance.Any(x => workerIds.Contains(x.EmployeeId)) : false;
+
+                }
             }
             catch (Exception ex)
             {
