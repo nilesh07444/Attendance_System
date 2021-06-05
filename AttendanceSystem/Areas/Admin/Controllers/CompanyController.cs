@@ -96,8 +96,29 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                              CompanyAdminLastName = cp.CompanyAdminLastName,
                                                              CompanyAdminMobileNo = cp.CompanyAdminMobileNo,
                                                              CompanyAdminCity = cp.CompanyAdminCity,
-                                                             CompanyAdminState = cp.CompanyAdminState
+                                                             CompanyAdminState = cp.CompanyAdminState,
+                                                             RequestStatus = cp.RequestStatus
                                                          }).ToList();
+
+                if (companyRequestFilterVM.companyRequest != null && companyRequestFilterVM.companyRequest.Count > 0)
+                {
+                    companyRequestFilterVM.companyRequest.ForEach(req => {
+
+                        if (req.RequestStatus == (int)CompanyRequestStatus.Pending)
+                        {
+                            req.RequestStatusText = "Pending";
+                        }
+                        else if (req.RequestStatus == (int)CompanyRequestStatus.Accept)
+                        {
+                            req.RequestStatusText = "Accept";
+                        }
+                        else if (req.RequestStatus == (int)CompanyRequestStatus.Reject)
+                        {
+                            req.RequestStatusText = "Reject";
+                        }
+                    });
+                }
+
             }
             catch (Exception ex)
             {

@@ -177,6 +177,7 @@ namespace AttendanceSystem.ViewModel
 
         //
         public DateTime dtCompanyAdminDOB { get; set; }
+        public string RequestStatusText { get; set; }
     }
 
     public class CompanyRequestFilterVM

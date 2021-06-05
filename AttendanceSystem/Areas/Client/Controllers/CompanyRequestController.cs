@@ -64,13 +64,12 @@ namespace AttendanceSystem.Areas.Client.Controllers
                     #region validation
                     if (companyRequestVM.CompanyName.Replace(" ", string.Empty).Length < 2)
                     {
-                        ModelState.AddModelError("", ErrorMessage.CompanyNameMinimum2CharacterRequired);
+                        ModelState.AddModelError("CompanyName", ErrorMessage.CompanyNameMinimum2CharacterRequired);
                         companyRequestVM.CompanyTypeList = GetCompanyType();
                         return View(companyRequestVM);
                     }
                     #endregion validation
-
-                    //long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
+                     
                     string companyGstFileName = string.Empty, companyPanCardFileName = string.Empty, companyLogoFileName = string.Empty, companyRegisterProofFileName = string.Empty,
                         profileFileName = string.Empty, companyAdminAdharCardFileName = string.Empty, companyAdminPancardFileName = string.Empty;
                     bool folderExists = false;
@@ -289,6 +288,9 @@ namespace AttendanceSystem.Areas.Client.Controllers
 
                     #region Create Company Request
 
+                    //DateTime dob_date = DateTime.ParseExact(companyRequestVM.dtCompanyAdminDOB.ToString(), "dd/MM/yyyy", null);
+                    DateTime dob_date = DateTime.Now;
+
                     tbl_CompanyRequest objCompany = new tbl_CompanyRequest();
                     objCompany.CompanyTypeId = Convert.ToInt64(companyRequestVM.CompanyTypeId);
                     objCompany.CompanyName = companyRequestVM.CompanyName;
@@ -313,6 +315,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
                     objCompany.CompanyAdminLastName = companyRequestVM.CompanyAdminLastName;
                     objCompany.CompanyAdminEmailId = companyRequestVM.CompanyAdminEmailId;
                     objCompany.CompanyAdminMobileNo = companyRequestVM.CompanyAdminMobileNo;
+                    objCompany.CompanyAdminDOB = dob_date;
                     objCompany.CompanyAdminAlternateMobileNo = companyRequestVM.CompanyAdminAlternateMobileNo;
                     objCompany.CompanyAdminDesignation = companyRequestVM.CompanyAdminDesignation;
                     objCompany.CompanyAdminDOB = DateTime.Now;
