@@ -2,6 +2,7 @@
 using AttendanceSystem.Models;
 using AttendanceSystem.ViewModel;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using static AttendanceSystem.ViewModel.AccountModels;
@@ -23,7 +24,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             {
                 long companyId = clsAdminSession.CompanyId;
                 int roleId = clsAdminSession.RoleID;
-               
+
 
                 dashboardVM.PendingLeaves = (from lv in _db.tbl_Leave
                                              join ur in _db.tbl_Employee on lv.UserId equals ur.EmployeeId
@@ -73,6 +74,100 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return View(dashboardVM);
         }
 
+
+        /// <summary>
+        /// Conversion of Employment Types: Employee, Supervisor, Checker, Payer
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult ConversionOfEmployeeUsers()
+        {
+            // tbl_Conversion, tbl_EmployeePayment
+
+            int companyId = (int)clsAdminSession.CompanyId;
+            int companyTypeId = (int)clsAdminSession.CompanyTypeId;
+
+            if (companyTypeId == (int)CompanyType.Banking_OfficeCompany)
+            {
+                // For Only Employees
+
+                // Get All Employees
+                List<tbl_Employee> lstEmployees = _db.tbl_Employee.Where(x => x.CompanyId == companyId && !x.IsDeleted).ToList();
+
+                if (lstEmployees != null && lstEmployees.Count > 0)
+                {
+                    // Insert Month wise closing for all employees
+                    lstEmployees.ForEach(emp =>
+                    {
+
+                        long employeeId = emp.EmployeeId;
+                        long employmentCategory = emp.EmploymentCategory;
+
+                        if (employmentCategory == (int)EmploymentCategory.MonthlyBased)
+                        {
+
+                        }
+                        else if (employmentCategory == (int)EmploymentCategory.DailyBased)
+                        {
+
+                        }
+                        else if (employmentCategory == (int)EmploymentCategory.HourlyBased)
+                        {
+                        }
+                        else if (employmentCategory == (int)EmploymentCategory.UnitBased)
+                        {
+
+                        }
+
+                    });
+
+                    // Insert Conversion entry
+
+                }
+
+            }
+            else if (companyTypeId == (int)CompanyType.ConstructionCompany)
+            {
+                // For Employee, Checker, Payer & Supervisor
+
+                // Get All Employees
+                List<tbl_Employee> lstEmployees = _db.tbl_Employee.Where(x => x.CompanyId == companyId).ToList();
+
+                if (lstEmployees != null && lstEmployees.Count > 0)
+                {
+                    lstEmployees.ForEach(emp =>
+                    {
+
+                        long employeeId = emp.EmployeeId;
+                        long employmentCategory = emp.EmploymentCategory;
+
+                        if (employmentCategory == (int)EmploymentCategory.MonthlyBased)
+                        {
+                        }
+                        else if (employmentCategory == (int)EmploymentCategory.DailyBased)
+                        {
+
+                        }
+                        else if (employmentCategory == (int)EmploymentCategory.HourlyBased)
+                        {
+
+                        }
+                        else if (employmentCategory == (int)EmploymentCategory.UnitBased)
+                        {
+
+                        }
+
+                    });
+                }
+
+            }
+
+            return View();
+        }
+
+        public ActionResult ConversionOfWorkerUsers()
+        {
+            return View();
+        }
 
     }
 }
