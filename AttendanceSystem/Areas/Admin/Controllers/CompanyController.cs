@@ -24,7 +24,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         public string aadharCardDirectoryPath = "";
         public string panCardDirectoryPath = "";
         public string CompanyAdminProfileDirectoryPath = "";
-        long loggedInUserId ;
+        long loggedInUserId;
         string enviornment;
         string defaultPassword;
         public CompanyController()
@@ -102,7 +102,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                 if (companyRequestFilterVM.companyRequest != null && companyRequestFilterVM.companyRequest.Count > 0)
                 {
-                    companyRequestFilterVM.companyRequest.ForEach(req => {
+                    companyRequestFilterVM.companyRequest.ForEach(req =>
+                    {
 
                         if (req.RequestStatus == (int)CompanyRequestStatus.Pending)
                         {
@@ -203,11 +204,26 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     objCompanyReq.ModifiedDate = DateTime.UtcNow;
                     _db.SaveChanges();
 
+                    #region Send Reject SMS
+                    if (companyRequestVM.RequestStatus == (int)CompanyRequestStatus.Reject)
+                    {
+                        int SmsId = (int)SMSType.CompanyRequestRejected;
+                        string msg = CommonMethod.GetSmsContent(SmsId);
+
+                        Regex regReplace = new Regex("{#var#}");
+                        msg = regReplace.Replace(msg, objCompanyReq.CompanyAdminFirstName + " " + objCompanyReq.CompanyAdminLastName, 1);
+                        msg = regReplace.Replace(msg, companyRequestVM.RejectReason, 1);
+
+                        msg = msg.Replace("\r\n", "\n");
+
+                        var json = CommonMethod.SendSMSWithoutLog(msg, objCompanyReq.CompanyAdminMobileNo);
+                    }
+                    #endregion
+
                     if (companyRequestVM.RequestStatus == (int)CompanyRequestStatus.Accept)
                     {
 
                         tbl_Company objcomp = new tbl_Company();
-
 
                         objcomp.CompanyTypeId = objCompanyReq.CompanyTypeId;
                         objcomp.CompanyName = objCompanyReq.CompanyName;
@@ -267,7 +283,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objAdminUser.Designation = string.IsNullOrEmpty(objCompanyReq.CompanyAdminDesignation) ? CommonMethod.GetEnumDescription(AdminRoles.CompanyAdmin) : objCompanyReq.CompanyAdminDesignation;
                         objAdminUser.City = objCompanyReq.CompanyAdminCity;
                         objAdminUser.State = objCompanyReq.CompanyAdminState;
-                        objAdminUser.ProfilePhoto= objCompanyReq.CompanyAdminProfilePhoto;
+                        objAdminUser.ProfilePhoto = objCompanyReq.CompanyAdminProfilePhoto;
                         objAdminUser.AadharCardNo = objCompanyReq.CompanyAdminAadharCardNo;
                         objAdminUser.PanCardNo = objCompanyReq.CompanyAdminPanCardNo;
                         objAdminUser.AadharCardPhoto = objCompanyReq.CompanyAdminAadharCardPhoto;
@@ -279,6 +295,24 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objAdminUser.ModifiedDate = DateTime.UtcNow;
                         _db.tbl_AdminUser.Add(objAdminUser);
                         _db.SaveChanges();
+
+
+                        #region Send Accept SMS
+                        if (companyRequestVM.RequestStatus == (int)CompanyRequestStatus.Accept)
+                        {
+                            int SmsId = (int)SMSType.CompanyRequestAccepted;
+                            string msg = CommonMethod.GetSmsContent(SmsId);
+
+                            Regex regReplace = new Regex("{#var#}");
+                            msg = regReplace.Replace(msg, objCompanyReq.CompanyAdminFirstName + " " + objCompanyReq.CompanyAdminLastName, 1);
+                            msg = regReplace.Replace(msg, objAdminUser.UserName, 1);
+                            msg = regReplace.Replace(msg, CommonMethod.Decrypt(objAdminUser.Password, psSult), 1);
+
+                            msg = msg.Replace("\r\n", "\n");
+
+                            var json = CommonMethod.SendSMSWithoutLog(msg, objCompanyReq.CompanyAdminMobileNo);
+                        }
+                        #endregion
                     }
                 }
                 else
@@ -393,7 +427,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         {
             try
             {
-               
+
                 IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
                 if (ModelState.IsValid)
                 {
@@ -653,7 +687,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     objUser.Pincode = companyRequestVM.CompanyAdminPincode;
                     objUser.City = companyRequestVM.CompanyAdminCity;
                     objUser.State = companyRequestVM.CompanyAdminState;
-                    objUser.ProfilePhoto= profileFileName;
+                    objUser.ProfilePhoto = profileFileName;
                     objUser.AadharCardNo = companyRequestVM.CompanyAdminAadharCardNo;
                     objUser.AadharCardPhoto = companyAdminAdharCardFileName;
                     objUser.PanCardPhoto = companyAdminPancardFileName;
