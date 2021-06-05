@@ -73,7 +73,7 @@
                                         <th>Employee Name</th>
                                         <th>Role</th>
                                         <th>Mobile No</th>
-                                        <th>Email Id</th>
+                                        <th>Category</th>
                                         <th>Active</th>
                                         <th>Action</th>
                                     </tr>
@@ -107,7 +107,7 @@
                                                 <td>@obj.FirstName @obj.LastName</td>
                                                 <td>@obj.AdminRoleText</td>
                                                 <td>@obj.MobileNo</td>
-                                                <td>@obj.Email</td>
+                                                <td>@obj.EmploymentCategoryText</td>
                                                 @if (obj.IsActive == true)
                                                 {
                                                     <td><span class="badge badge-success" style="cursor:pointer;" title="Click to Inactive" onclick="fnChangeStatus('@obj.EmployeeId','InActive');">Active</span></td>
