@@ -7,6 +7,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -234,6 +235,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployee.NoOfFreeLeavePerMonth = employeeVM.NoOfFreeLeavePerMonth;
                         objEmployee.UpdatedBy = loggedInUserId;
                         objEmployee.UpdatedDate = DateTime.UtcNow;
+                        _db.SaveChanges();
                     }
                     else
                     {
@@ -286,15 +288,31 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployee.UpdatedBy = loggedInUserId;
                         objEmployee.UpdatedDate = DateTime.UtcNow;
                         _db.tbl_Employee.Add(objEmployee);
+                        _db.SaveChanges();
 
-                        if (enviornment != "Development")
-                        {
-                            string msg = "Your credentials for Login are UserId - " + objEmployee.EmployeeCode + ", Password - " + defaultPassword;
-                            string response = CommonMethod.SendSMSWithoutLog(msg, objEmployee.MobileNo);
-                        }
+                        #region Send SMS of Create Employee
+
+                        var json = string.Empty;
+                        int SmsId = (int)SMSType.EmployeeCreate;
+                        string msg = CommonMethod.GetSmsContent(SmsId);
+
+                        string employmentCategoryText = objEmployee.EmploymentCategory.ToString(); // TODO: change
+
+                        Regex regReplace = new Regex("{#var#}");
+                        msg = regReplace.Replace(msg, objEmployee.FirstName + " " + objEmployee.LastName, 1);
+                        msg = regReplace.Replace(msg, objCompany.CompanyName, 1);
+                        msg = regReplace.Replace(msg, objEmployee.EmployeeCode, 1);
+                        msg = regReplace.Replace(msg, CommonMethod.Encrypt(objEmployee.Password, psSult), 1);
+                        msg = regReplace.Replace(msg, "SALARY QUERY TO NILESH", 1); //TODO change
+                        msg = regReplace.Replace(msg, employmentCategoryText, 1);
+                        msg = msg.Replace("\r\n", "\n");
+
+                        json = CommonMethod.SendSMSWithoutLog(msg, objEmployee.MobileNo);
+
+                        #endregion
 
                     }
-                    _db.SaveChanges();
+
                 }
                 else
                 {
