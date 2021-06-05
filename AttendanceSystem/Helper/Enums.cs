@@ -67,9 +67,13 @@ namespace AttendanceSystem.Helper
 
     public enum EmploymentCategory
     {
+        [Description("Daily Based")]
         DailyBased = 1,
+        [Description("Hourly Based")]
         HourlyBased = 2,
+        [Description("Monthly Based")]
         MonthlyBased = 3,
+        [Description("Unit Based")]
         UnitBased = 4
     }
 

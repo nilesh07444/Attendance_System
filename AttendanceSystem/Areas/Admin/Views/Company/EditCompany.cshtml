@@ -198,24 +198,6 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.CompanyCancellationChequePhotoFile, htmlAttributes: new { @class = "" })
-                                        @Html.TextBoxFor(model => model.CompanyCancellationChequePhotoFile, new { type = "file", @class = "form-control" })
-                                        @Html.ValidationMessageFor(model => model.CompanyCancellationChequePhotoFile, "", new { @class = "error" })
-                                        @Html.HiddenFor(model => model.CompanyCancellationChequePhoto)
-                                        @if (!string.IsNullOrEmpty(Model.CompanyCancellationChequePhoto))
-                                        {
-                                            <div class="form-group row">
-                                                <lable class="col-xl-3 col-md-4"></lable>
-                                                <p><a target="_blank" href="@ErrorMessage.CancellationChequeDirectoryPath/@Model.CompanyCancellationChequePhoto"> Click here to view image </a></p>
-                                            </div>
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
                                 <div class="col-12">
                                     <h5>Company Admin Information</h5>
                                 </div>
@@ -255,11 +237,21 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
+                                        @Html.LabelFor(model => model.CompanyAdminDOB, htmlAttributes: new { @class = "" })
+                                        @Html.TextBoxFor(model => model.CompanyAdminDOB, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Enter Date of Birth" })
+                                        @Html.ValidationMessageFor(model => model.CompanyAdminDOB, "", new { @class = "error" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyAdminEmailId, htmlAttributes: new { @class = "" })
                                         @Html.TextBoxFor(model => model.CompanyAdminEmailId, new { @type = "email", @class = "form-control", @placeholder = "Enter Email Id" })
                                         @Html.ValidationMessageFor(model => model.CompanyAdminEmailId, "", new { @class = "error" })
                                     </div>
                                 </div>
+
+                            </div>
+                            <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyAdminMobileNo, htmlAttributes: new { @class = "" })
@@ -267,8 +259,6 @@
                                         @Html.ValidationMessageFor(model => model.CompanyAdminMobileNo, "", new { @class = "error" })
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyAdminAlternateMobileNo, htmlAttributes: new { @class = "" })
@@ -276,6 +266,9 @@
                                         @Html.ValidationMessageFor(model => model.CompanyAdminAlternateMobileNo, "", new { @class = "error" })
                                     </div>
                                 </div>
+
+                            </div>
+                            <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyAdminDesignation, htmlAttributes: new { @class = "" })
@@ -283,8 +276,6 @@
                                         @Html.ValidationMessageFor(model => model.CompanyAdminDesignation, "", new { @class = "error" })
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyAdminAddress, htmlAttributes: new { @class = "" })
@@ -292,6 +283,9 @@
                                         @Html.ValidationMessageFor(model => model.CompanyAdminAddress, "", new { @class = "error" })
                                     </div>
                                 </div>
+
+                            </div>
+                            <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyAdminPincode, htmlAttributes: new { @class = "" })
@@ -299,8 +293,6 @@
                                         @Html.ValidationMessageFor(model => model.CompanyAdminPincode, "", new { @class = "error" })
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyAdminCity, htmlAttributes: new { @class = "" })
@@ -308,11 +300,29 @@
                                         @Html.ValidationMessageFor(model => model.CompanyAdminCity, "", new { @class = "error" })
                                     </div>
                                 </div>
+
+                            </div>
+                            <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyAdminState, htmlAttributes: new { @class = "" })
                                         @Html.TextBoxFor(model => model.CompanyAdminState, new { @type = "text", @class = "form-control", @placeholder = "Enter State" })
                                         @Html.ValidationMessageFor(model => model.CompanyAdminState, "", new { @class = "error" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.CompanyAdminProfilePhotoFile, htmlAttributes: new { @class = "" })
+                                        @Html.TextBoxFor(model => model.CompanyAdminProfilePhotoFile, new { type = "file", @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.CompanyAdminProfilePhotoFile, "", new { @class = "error" })
+                                        @Html.HiddenFor(model => model.CompanyAdminProfilePhoto)
+                                        @if (!string.IsNullOrEmpty(Model.CompanyAdminProfilePhoto))
+                                        {
+                                            <div class="form-group row">
+                                                <lable class="col-xl-3 col-md-4"></lable>
+                                                <p><a target="_blank" href="@ErrorMessage.ProfileDirectoryPath/@Model.CompanyAdminProfilePhoto"> Click here to view image </a></p>
+                                            </div>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -340,40 +350,40 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.CompanyAdminPanCardNo, htmlAttributes: new { @class = "" })
-                                        @Html.TextBoxFor(model => model.CompanyAdminPanCardNo, new { @type = "text", @class = "form-control", @placeholder = "Enter Pan Card No", @maxlength = "10" })
-                                        @Html.ValidationMessageFor(model => model.CompanyAdminPanCardNo, "", new { @class = "error" })
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.CompanyAdminPanCardNo, htmlAttributes: new { @class = "" })
+                                            @Html.TextBoxFor(model => model.CompanyAdminPanCardNo, new { @type = "text", @class = "form-control", @placeholder = "Enter Pan Card No", @maxlength = "10" })
+                                            @Html.ValidationMessageFor(model => model.CompanyAdminPanCardNo, "", new { @class = "error" })
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.CompanyAdminPanCardPhotoFile, htmlAttributes: new { @class = "" })
+                                            @Html.TextBoxFor(model => model.CompanyAdminPanCardPhotoFile, new { type = "file", @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.CompanyAdminPanCardPhotoFile, "", new { @class = "error" })
+                                            @Html.HiddenFor(model => model.CompanyAdminPanCardPhoto)
+                                            @if (!string.IsNullOrEmpty(Model.CompanyAdminPanCardPhoto))
+                                            {
+                                                <div class="form-group row">
+                                                    <lable class="col-xl-3 col-md-4"></lable>
+                                                    <p><a target="_blank" href="@ErrorMessage.PancardDirectoryPath/@Model.CompanyAdminPanCardPhoto"> Click here to view image </a></p>
+                                                </div>
+                                            }
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.CompanyAdminPanCardPhotoFile, htmlAttributes: new { @class = "" })
-                                        @Html.TextBoxFor(model => model.CompanyAdminPanCardPhotoFile, new { type = "file", @class = "form-control" })
-                                        @Html.ValidationMessageFor(model => model.CompanyAdminPanCardPhotoFile, "", new { @class = "error" })
-                                        @Html.HiddenFor(model => model.CompanyAdminPanCardPhoto)
-                                        @if (!string.IsNullOrEmpty(Model.CompanyAdminPanCardPhoto))
-                                        {
-                                            <div class="form-group row">
-                                                <lable class="col-xl-3 col-md-4"></lable>
-                                                <p><a target="_blank" href="@ErrorMessage.PancardDirectoryPath/@Model.CompanyAdminPanCardPhoto"> Click here to view image </a></p>
-                                            </div>
-                                        }
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="form-group row">
-                                <lable class="col-xl-3 col-md-4"></lable>
-                                <button type="submit" class="btn btn-primary" style="margin-right:10px;" id="btnSubmit">Submit</button>
-                                <button type="button" class="btn btn-danger" id="btnCancel">Cancel</button>
-                                @Html.HiddenFor(model => model.OTP)
+                                <div class="form-group row">
+                                    <lable class="col-xl-3 col-md-4"></lable>
+                                    <button type="submit" class="btn btn-primary" style="margin-right:10px;" id="btnSubmit">Submit</button>
+                                    <button type="button" class="btn btn-danger" id="btnCancel">Cancel</button>
+                                    @Html.HiddenFor(model => model.OTP)
+                                </div>
+                                }
                             </div>
-                        }
-                    </div>
-                </div>
+                        </div>
             </div>
         </div>
     </div>

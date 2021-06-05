@@ -407,6 +407,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                            FreeAccessDays = cp.FreeAccessDays,
                                            CompanyTypeText = ct.CompanyTypeName
                                        }).FirstOrDefault();
+
+                registeredCompanyVM.CompanyAdminDOB = registeredCompanyVM.dtCompanyAdminDOB.ToString("yyyy-MM-dd");
             }
             catch (Exception ex)
             {
@@ -677,7 +679,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     objUser.LastName = companyRequestVM.CompanyAdminLastName;
                     objUser.EmailId = companyRequestVM.CompanyAdminEmailId;
 
-                    DateTime dob_date = DateTime.ParseExact(companyRequestVM.CompanyAdminDOB, "dd/MM/yyyy", null);
+                    DateTime dob_date = DateTime.ParseExact(companyRequestVM.CompanyAdminDOB, "yyyy-MM-dd", null);
 
                     objUser.DOB = dob_date; // companyRequestVM.CompanyAdminDOB;
                     objUser.MobileNo = companyRequestVM.CompanyAdminMobileNo;
@@ -687,10 +689,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     objUser.Pincode = companyRequestVM.CompanyAdminPincode;
                     objUser.City = companyRequestVM.CompanyAdminCity;
                     objUser.State = companyRequestVM.CompanyAdminState;
-                    objUser.ProfilePhoto = profileFileName;
+                    objUser.ProfilePhoto = !string.IsNullOrEmpty(profileFileName) ? profileFileName : objUser.ProfilePhoto; 
                     objUser.AadharCardNo = companyRequestVM.CompanyAdminAadharCardNo;
-                    objUser.AadharCardPhoto = companyAdminAdharCardFileName;
-                    objUser.PanCardPhoto = companyAdminPancardFileName;
+                    objUser.AadharCardPhoto = !string.IsNullOrEmpty(companyAdminAdharCardFileName) ? companyAdminAdharCardFileName : objUser.AadharCardPhoto; 
+                    objUser.PanCardPhoto = !string.IsNullOrEmpty(companyAdminPancardFileName) ? companyAdminPancardFileName : objUser.PanCardPhoto; 
                     objUser.PanCardNo = companyRequestVM.CompanyAdminPanCardNo;
                     objUser.ModifiedBy = loggedInUserId;
                     objUser.ModifiedDate = DateTime.UtcNow;
