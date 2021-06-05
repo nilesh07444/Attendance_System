@@ -212,7 +212,113 @@
                 </div>
             }
         </div>
-    }
-    </section>
 
+        <div class="row ">
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="card">
+                    <div class="card-statistic-4">
+                        <div class="align-items-center justify-content-between">
+                            <div class="pull-left">
+                                @Model.MonthName - @Model.Year
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="card">
+                    <div class="card-statistic-4">
+                        <div class="align-items-center justify-content-between">
+                            <div class="pull-right">
+                                @Html.HiddenFor(m => m.Month)
+                                @Html.HiddenFor(m => m.Year)
+                                <button class="btn btn-primary mr-1" id="btnEmployee" type="button">Employee Conversion</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="card">
+                    <div class="card-statistic-4">
+                        <div class="align-items-center justify-content-between">
+                            <div class="pull-right">
+                                <button class="btn btn-primary mr-1" id="btnWorker" type="button">Worker Conversion</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</section>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+        $('#btnEmployee').click(function () {
+                StartLoading();
+                var month = $("#Month").val();
+                var year = $("#Year").val();
+                var URL = '@Url.Action("ConversionOfEmployeeUsers", "Dashboard")';
+                $.ajax({
+                    type: 'POST',
+                    async: true,
+                    url: URL + "?month=" + month + "&year=" + year ,
+                    success: function (result) {
+                        if (result == "success") {
+                            alert("Conversion complete successfully");
+                            window.location.reload();
+                        }
+                        else if (result == "notfound") {
+                            alert("Employee Not Found");
+                        }
+                        else {
+                            alert("Something went wrong. Please try again");
+                        }
+
+                       StopLoading();
+                    },
+                    error: function (resultData) {
+                       StopLoading();
+                    }
+                });
+        });
+
+        $('#btnWorker').click(function () {
+
+            StartLoading();
+            var month = $("#Month").val();
+            var year = $("#Year").val();
+                var URL = '@Url.Action("ConversionOfWorkerUsers", "Dashboard")';
+                $.ajax({
+                    type: 'POST',
+                    async: true,
+                    url: URL + "?month=" + month + "&year=" + year ,
+                    success: function (result) {
+                        if (result == "success") {
+                            alert("Conversion complete successfully");
+                            window.location.reload();
+                        }
+                        else if (result == "notfound") {
+                            alert("Employee Not Found");
+                        }
+                        else {
+                            alert("Something went wrong. Please try again");
+                        }
+
+                       StopLoading();
+                    },
+                    error: function (resultData) {
+                       StopLoading();
+                    }
+                });
+        });
+
+
+    })
+
+</script>
 

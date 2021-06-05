@@ -49,7 +49,6 @@ namespace AttendanceSystem.Models
         public virtual DbSet<tbl_LoginHistory> tbl_LoginHistory { get; set; }
         public virtual DbSet<tbl_AssignWorker> tbl_AssignWorker { get; set; }
         public virtual DbSet<tbl_ContactForm> tbl_ContactForm { get; set; }
-        public virtual DbSet<tbl_WorkerAttendance> tbl_WorkerAttendance { get; set; }
         public virtual DbSet<tbl_Testimonial> tbl_Testimonial { get; set; }
         public virtual DbSet<tbl_Attendance> tbl_Attendance { get; set; }
         public virtual DbSet<tbl_Employee> tbl_Employee { get; set; }
@@ -62,6 +61,7 @@ namespace AttendanceSystem.Models
         public virtual DbSet<tbl_WorkerType> tbl_WorkerType { get; set; }
         public virtual DbSet<tbl_Setting> tbl_Setting { get; set; }
         public virtual DbSet<tbl_Conversion> tbl_Conversion { get; set; }
+        public virtual DbSet<tbl_WorkerAttendance> tbl_WorkerAttendance { get; set; }
         public virtual DbSet<tbl_EmployeePayment> tbl_EmployeePayment { get; set; }
         public virtual DbSet<tbl_WorkerPayment> tbl_WorkerPayment { get; set; }
     

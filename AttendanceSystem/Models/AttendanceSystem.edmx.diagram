@@ -27,7 +27,6 @@
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_LoginHistory" Width="1.5" PointX="17.375" PointY="13.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_AssignWorker" Width="1.5" PointX="17.375" PointY="17.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_ContactForm" Width="1.5" PointX="19.375" PointY="0.75" />
-        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_WorkerAttendance" Width="1.5" PointX="0.75" PointY="19.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Testimonial" Width="1.5" PointX="5.375" PointY="19.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Attendance" Width="1.5" PointX="19.375" PointY="4.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Employee" Width="1.5" PointX="19.375" PointY="11.75" />
@@ -40,6 +39,7 @@
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_WorkerType" Width="1.5" PointX="9.375" PointY="21.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Setting" Width="1.5" PointX="11.375" PointY="21.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Conversion" Width="1.5" PointX="13.375" PointY="17.75" />
+        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_WorkerAttendance" Width="1.5" PointX="0.75" PointY="19.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_EmployeePayment" Width="1.5" PointX="13.375" PointY="20.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_WorkerPayment" Width="1.5" PointX="21.375" PointY="13.75" />
       </Diagram>

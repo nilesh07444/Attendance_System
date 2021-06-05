@@ -53,7 +53,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                      where !at.IsDeleted
                                                      && emp.CompanyId == companyId
                                                      && at.AttendanceDate.Month >= attendanceFilterVM.StartMonth && at.AttendanceDate.Month <= attendanceFilterVM.EndMonth
-                                                     && at.AttendanceDate.Year== attendanceFilterVM.Year
+                                                     && at.AttendanceDate.Year == attendanceFilterVM.Year
                                                      && (attendanceFilterVM.AttendanceStatus.HasValue ? at.Status == attendanceFilterVM.AttendanceStatus.Value : true)
                                                      && (attendanceFilterVM.UserId.HasValue ? emp.EmployeeId == attendanceFilterVM.UserId.Value : true)
                                                      select new AttendanceVM
@@ -74,7 +74,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                      }).OrderByDescending(x => x.AttendanceDate).ToList();
 
                 attendanceFilterVM.EmployeeList = GetEmployeeList();
-                attendanceFilterVM.CalenderMonth =CommonMethod.GetCalenderMonthList();
+                attendanceFilterVM.CalenderMonth = CommonMethod.GetCalenderMonthList();
                 attendanceFilterVM.AttendanceList.ForEach(x =>
                 {
                     x.StatusText = attendanceStatusList.Where(z => z.Value == x.Status.ToString()).Select(c => c.Text).FirstOrDefault();
@@ -144,6 +144,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                             objEmployeePayment.CreditOrDebitText = ErrorMessage.Credit;
                             objEmployeePayment.DebitAmount = 0;
                             objEmployeePayment.Remarks = ErrorMessage.AutoCreditOnAttendanceAccept;
+                            objEmployeePayment.Month = attendance.AttendanceDate.Month;
+                            objEmployeePayment.Year = attendance.AttendanceDate.Year;
                             //objEmployeePayment.Status=
                             //objEmployeePayment.ProcessStatusText
                             objEmployeePayment.CreatedDate = DateTime.UtcNow;
@@ -252,6 +254,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return RedirectToAction("index");
         }
 
-       
+
     }
 }

@@ -120,6 +120,7 @@
         public static string CanNotTakeEveningAttendanceWorkerNotPresentOnAfterNoon = "Can not take evening attendance worker not present on afternoon.";
         public static string WorketNotAssignedToday = "Worker not assigned today.";
         public static string PleaseSelectValidMonth = "Please select valid month";
+        public static string SiteRequired = "Please select site";
 
         public static string PleaseBuyAccountPackage = "Please buy account package.";
         public static string WorkerExistForThisWorkerType = "Worker exist for this worker type.";
@@ -139,5 +140,9 @@
         public static string Debit = "Debit";
         public static string AutoCreditOnAttendanceAccept = "Auto credit on attendance accept";
         public static string AutoCreditOnEveningAttendance = "Auto credit on evening attendance";
+        public static string MonthlyConversion = "Monthly conversion.";
+        public static string Open = "Open";
+        public static string InProgress = "Inprogress";
+        public static string Complete = "Complete";
     }
 }

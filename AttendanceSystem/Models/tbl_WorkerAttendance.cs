@@ -18,12 +18,15 @@ namespace AttendanceSystem.Models
         public long EmployeeId { get; set; }
         public System.DateTime AttendanceDate { get; set; }
         public bool IsMorning { get; set; }
+        public Nullable<long> MorningSiteId { get; set; }
         public Nullable<long> MorningAttendanceBy { get; set; }
         public Nullable<System.DateTime> MorningAttendanceDate { get; set; }
         public bool IsAfternoon { get; set; }
+        public Nullable<long> AfternoonSiteId { get; set; }
         public Nullable<long> AfternoonAttendanceBy { get; set; }
         public Nullable<System.DateTime> AfternoonAttendanceDate { get; set; }
         public bool IsEvening { get; set; }
+        public Nullable<long> EveningSiteId { get; set; }
         public Nullable<long> EveningAttendanceBy { get; set; }
         public Nullable<System.DateTime> EveningAttendanceDate { get; set; }
         public Nullable<decimal> ExtraHours { get; set; }

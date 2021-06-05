@@ -33,6 +33,11 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 roleId = base.UTI.RoleId;
                 DateTime today = DateTime.UtcNow.Date;
                 #region Validation
+                if (workerAttendanceRequestVM.SiteId == 0)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.SiteRequired);
+                }
                 if (!_db.tbl_AssignWorker.Any(x => x.EmployeeId == workerAttendanceRequestVM.EmployeeId && x.Date == today))
                 {
                     response.IsError = true;
@@ -118,6 +123,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                             attendanceObject.IsEvening = true;
                             attendanceObject.EveningAttendanceBy = employeeId;
                             attendanceObject.EveningAttendanceDate = DateTime.UtcNow;
+                            attendanceObject.EveningSiteId = workerAttendanceRequestVM.SiteId;
 
                             if (employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased || employeeObj.EmploymentCategory == (int)EmploymentCategory.MonthlyBased)
                                 attendanceObject.ExtraHours = workerAttendanceRequestVM.ExtraHours;
@@ -134,12 +140,14 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                             attendanceObject.IsAfternoon = true;
                             attendanceObject.AfternoonAttendanceBy = employeeId;
                             attendanceObject.AfternoonAttendanceDate = DateTime.UtcNow;
+                            attendanceObject.AfternoonSiteId = workerAttendanceRequestVM.SiteId;
                         }
                         else if (workerAttendanceRequestVM.AttendanceType == (int)WorkerAttendanceType.Morning)
                         {
                             attendanceObject.IsMorning = true;
                             attendanceObject.MorningAttendanceBy = employeeId;
                             attendanceObject.MorningAttendanceDate = DateTime.UtcNow;
+                            attendanceObject.MorningSiteId = workerAttendanceRequestVM.SiteId;
                         }
                         _db.SaveChanges();
                     }
@@ -153,12 +161,14 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                             attendanceObject.IsAfternoon = true;
                             attendanceObject.AfternoonAttendanceBy = employeeId;
                             attendanceObject.AfternoonAttendanceDate = DateTime.UtcNow;
+                            attendanceObject.AfternoonSiteId = workerAttendanceRequestVM.SiteId;
                         }
                         else if (workerAttendanceRequestVM.AttendanceType == (int)WorkerAttendanceType.Morning)
                         {
                             attendanceObject.IsMorning = true;
                             attendanceObject.MorningAttendanceBy = employeeId;
                             attendanceObject.MorningAttendanceDate = DateTime.UtcNow;
+                            attendanceObject.MorningSiteId = workerAttendanceRequestVM.SiteId;
                         }
                         _db.tbl_WorkerAttendance.Add(attendanceObject);
                         _db.SaveChanges();
@@ -175,6 +185,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         objWorkerPayment.CreditOrDebitText = ErrorMessage.Credit;
                         objWorkerPayment.DebitAmount = 0;
                         objWorkerPayment.Remarks = ErrorMessage.AutoCreditOnEveningAttendance;
+                        objWorkerPayment.Month = attendanceObject.AttendanceDate.Month;
+                        objWorkerPayment.Year = attendanceObject.AttendanceDate.Year;
                         //objEmployeePayment.Status=
                         //objEmployeePayment.ProcessStatusText
                         objWorkerPayment.CreatedDate = DateTime.UtcNow;
@@ -222,11 +234,11 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                 List<WorkerAttendanceVM> attendanceList = (from at in _db.tbl_WorkerAttendance
                                                            join emp in _db.tbl_Employee on at.EmployeeId equals emp.EmployeeId
-                                                           join st in _db.tbl_AssignWorker on at.EmployeeId equals st.EmployeeId
                                                            where emp.CompanyId == companyId
-                                                           && st.Date == workerAttendanceFilterVM.AttendanceDate
                                                            && at.AttendanceDate == workerAttendanceFilterVM.AttendanceDate
-                                                           && (workerAttendanceFilterVM.SiteId.HasValue ? st.SiteId == workerAttendanceFilterVM.SiteId.Value : true)
+                                                           && (at.MorningSiteId == workerAttendanceFilterVM.SiteId
+                                                           || at.AfternoonSiteId == workerAttendanceFilterVM.SiteId
+                                                           || at.EveningSiteId == workerAttendanceFilterVM.SiteId)
                                                            && (workerAttendanceFilterVM.EmployeeId.HasValue ? at.EmployeeId == workerAttendanceFilterVM.EmployeeId.Value : true)
                                                            select new WorkerAttendanceVM
                                                            {
@@ -236,9 +248,9 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                                Name = emp.FirstName + " " + emp.LastName,
                                                                AttendanceDate = at.AttendanceDate,
                                                                EmploymentCategory = emp.EmploymentCategory,
-                                                               IsMorning = at.IsMorning,
-                                                               IsAfternoon = at.IsAfternoon,
-                                                               IsEvening = at.IsEvening,
+                                                               IsMorning = (at.IsMorning && at.MorningSiteId == workerAttendanceFilterVM.SiteId ? true : false),
+                                                               IsAfternoon = (at.IsAfternoon && at.AfternoonSiteId == workerAttendanceFilterVM.SiteId ? true : false),
+                                                               IsEvening = (at.IsEvening && at.EveningSiteId == workerAttendanceFilterVM.SiteId ? true : false),
                                                                ProfilePicture = emp.ProfilePicture
                                                            }).OrderByDescending(x => x.AttendanceDate).ToList();
 

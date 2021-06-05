@@ -18,6 +18,9 @@ namespace AttendanceSystem.ViewModel
         public long Payer { get; set; }
         public long Worker { get; set; }
         public bool IsOfficeCompany { get; set; }
+        public string MonthName { get; set; }
+        public int Month { get; set; }
+        public int Year { get; set; }
 
 
 

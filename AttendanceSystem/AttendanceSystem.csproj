@@ -346,6 +346,7 @@
     <Compile Include="ViewModel\AdminProfileVM.cs" />
     <Compile Include="ViewModel\AttendanceVM.cs" />
     <Compile Include="ViewModel\CompanyAdminSettingVM.cs" />
+    <Compile Include="ViewModel\ConvertionFilterVM.cs" />
     <Compile Include="ViewModel\EmployeeBuyTransactionVM.cs" />
     <Compile Include="ViewModel\CompanySMSPackRenewVM.cs" />
     <Compile Include="ViewModel\CompanyRenewPaymentVM.cs" />

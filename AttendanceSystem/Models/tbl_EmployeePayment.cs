@@ -18,6 +18,8 @@ namespace AttendanceSystem.Models
         public long CompanyId { get; set; }
         public long UserId { get; set; }
         public Nullable<long> AttendanceId { get; set; }
+        public int Month { get; set; }
+        public int Year { get; set; }
         public System.DateTime PaymentDate { get; set; }
         public Nullable<int> PaymentType { get; set; }
         public string CreditOrDebitText { get; set; }

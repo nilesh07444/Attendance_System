@@ -97,6 +97,7 @@ namespace AttendanceSystem.ViewModel
         public decimal ExtraHours { get; set; }
         public decimal NoOfHoursWorked { get; set; }
         public int NoOfUnitWorked { get; set; }
+        public long SiteId { get; set; }
     }
     public class WorkerAttendanceFilterVM
     {
@@ -105,7 +106,7 @@ namespace AttendanceSystem.ViewModel
             AttendanceDate = DateTime.UtcNow.Date;
         }
         public DateTime AttendanceDate { get; set; }
-        public int? SiteId { get; set; }
+        public int SiteId { get; set; }
         public long? EmployeeId { get; set; }
     }
 
