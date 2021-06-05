@@ -6,6 +6,7 @@ using System;
 using System.Configuration;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Http;
 
@@ -55,32 +56,29 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                         if (data != null)
                         {
+                            Random random = new Random();
+                            int num = random.Next(555555, 999999);
+                             
+                            int SmsId = (int)SMSType.ChangePasswordOTP;
+                            string msg = CommonMethod.GetSmsContent(SmsId);
 
-                            using (WebClient webClient = new WebClient())
+                            Regex regReplace = new Regex("{#var#}");
+                            msg = regReplace.Replace(msg, data.FirstName + " " + data.LastName, 1);
+                            msg = regReplace.Replace(msg, num.ToString(), 1);
+
+                            msg = msg.Replace("\r\n", "\n");
+
+                            var json = CommonMethod.SendSMSWithoutLog(msg, data.MobileNo);
+                            if (json.Contains("invalidnumber"))
                             {
-                                Random random = new Random();
-                                int num = random.Next(555555, 999999);
-                                if (enviornment != "Development")
-                                {
-                                    string msg = "Your Otp code for change password is " + num;
-                                    msg = HttpUtility.UrlEncode(msg);
-                                    string url = CommonMethod.GetSMSUrl().Replace("--MOBILE--", data.MobileNo).Replace("--MSG--", msg);
-                                    var json = webClient.DownloadString(url);
-                                    if (json.Contains("invalidnumber"))
-                                    {
-                                        response.IsError = true;
-                                        response.AddError(ErrorMessage.InvalidMobileNo);
-                                    }
-                                    else
-                                    {
-                                        loginResponseVM.OTP = num.ToString();
-                                    }
-                                }
-                                else
-                                {
-                                    loginResponseVM.OTP = num.ToString();
-                                }
+                                response.IsError = true;
+                                response.AddError(ErrorMessage.InvalidMobileNo);
                             }
+                            else
+                            {
+                                loginResponseVM.OTP = num.ToString();
+                            }
+                             
                             loginResponseVM.EmployeeId = employeeId;
                             loginResponseVM.IsFingerprintEnabled = data.IsFingerprintEnabled;
 
@@ -236,31 +234,30 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     loginResponseVM.IsFingerprintEnabled = data.IsFingerprintEnabled;
                     loginResponseVM.EmployeeId = data.EmployeeId;
 
-                    using (WebClient webClient = new WebClient())
+                    Random random = new Random();
+                    int num = random.Next(555555, 999999);
+
+                    int SmsId = (int)SMSType.ChangePasswordOTP;
+                    string msg = CommonMethod.GetSmsContent(SmsId);
+
+                    Regex regReplace = new Regex("{#var#}");
+                    msg = regReplace.Replace(msg, data.FirstName + " " + data.LastName, 1);
+                    msg = regReplace.Replace(msg, num.ToString(), 1);
+
+                    msg = msg.Replace("\r\n", "\n");
+
+                    var json = CommonMethod.SendSMSWithoutLog(msg, data.MobileNo);
+                    
+                    if (json.Contains("invalidnumber"))
                     {
-                        Random random = new Random();
-                        int num = random.Next(555555, 999999);
-                        if (enviornment != "Development")
-                        {
-                            string msg = "Your Otp code for Login is " + num;
-                            msg = HttpUtility.UrlEncode(msg);
-                            string url = CommonMethod.GetSMSUrl().Replace("--MOBILE--", data.MobileNo).Replace("--MSG--", msg);
-                            var json = webClient.DownloadString(url);
-                            if (json.Contains("invalidnumber"))
-                            {
-                                response.IsError = true;
-                                response.AddError(ErrorMessage.InvalidMobileNo);
-                            }
-                            else
-                            {
-                                loginResponseVM.OTP = num.ToString();
-                            }
-                        }
-                        else
-                        {
-                            loginResponseVM.OTP = num.ToString();
-                        }
+                        response.IsError = true;
+                        response.AddError(ErrorMessage.InvalidMobileNo);
                     }
+                    else
+                    {
+                        loginResponseVM.OTP = num.ToString();
+                    }
+
                     response.Data = loginResponseVM;
                 }
                 else

@@ -4,6 +4,7 @@ using AttendanceSystem.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
 
 namespace AttendanceSystem.Areas.Admin.Controllers
@@ -108,6 +109,23 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         leave.LeaveStatus = (int)LeaveStatus.Accept;
                         leave.ModifiedBy = loggedinUser;
                         leave.ModifiedDate = DateTime.UtcNow;
+
+                        #region Send SMS
+
+                        int SmsId = (int)SMSType.LeaveApproved;
+                        string msg = CommonMethod.GetSmsContent(SmsId);
+
+                        tbl_Employee objEmployee = _db.tbl_Employee.Where(x => x.EmployeeId == leave.UserId).FirstOrDefault();
+                        Regex regReplace = new Regex("{#var#}");
+                        msg = regReplace.Replace(msg, objEmployee.FirstName + " " + objEmployee.LastName, 1);
+                        msg = regReplace.Replace(msg, leave.StartDate.ToString("dd/MM/yyyy") + " to " + leave.EndDate.ToString("dd/MM/yyyy"), 1);
+
+                        msg = msg.Replace("\r\n", "\n");
+
+                        var json = CommonMethod.SendSMSWithoutLog(msg, objEmployee.MobileNo);
+
+                        #endregion
+
                     });
 
                     _db.SaveChanges();
@@ -172,6 +190,41 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objleave.ModifiedBy = LoggedInUserId;
                         objleave.ModifiedDate = DateTime.UtcNow;
                         _db.SaveChanges();
+
+                        #region Send SMS of Accept/Reject
+
+                        tbl_Employee objEmployee = _db.tbl_Employee.Where(x => x.EmployeeId == objleave.UserId).FirstOrDefault();
+
+                        if (leaveVM.LeaveStatus == (int)LeaveStatus.Accept)
+                        {
+                            int SmsId = (int)SMSType.LeaveApproved;
+                            string msg = CommonMethod.GetSmsContent(SmsId);
+
+                            Regex regReplace = new Regex("{#var#}");
+                            msg = regReplace.Replace(msg, objEmployee.FirstName + " " + objEmployee.LastName, 1);
+                            msg = regReplace.Replace(msg, objleave.StartDate.ToString("dd/MM/yyyy") + " to " + objleave.EndDate.ToString("dd/MM/yyyy"), 1);
+
+                            msg = msg.Replace("\r\n", "\n");
+
+                            var json = CommonMethod.SendSMSWithoutLog(msg, objEmployee.MobileNo);
+                        }
+                        if (leaveVM.LeaveStatus == (int)LeaveStatus.Reject)
+                        {
+                            int SmsId = (int)SMSType.LeaveApproved;
+                            string msg = CommonMethod.GetSmsContent(SmsId);
+
+                            Regex regReplace = new Regex("{#var#}");
+                            msg = regReplace.Replace(msg, objEmployee.FirstName + " " + objEmployee.LastName, 1);
+                            msg = regReplace.Replace(msg, leaveVM.RejectReason, 1);
+
+                            msg = msg.Replace("\r\n", "\n");
+
+                            var json = CommonMethod.SendSMSWithoutLog(msg, objEmployee.MobileNo);
+                        }
+
+
+                        #endregion
+
                     }
 
                 }

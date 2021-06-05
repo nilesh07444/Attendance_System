@@ -4,6 +4,7 @@ using AttendanceSystem.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
 
 namespace AttendanceSystem.Areas.Admin.Controllers
@@ -214,8 +215,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                     OutDateTime = at.OutDateTime,
                                 }).FirstOrDefault();
 
-                attendanceVM.InDateTime = attendanceVM.InDateTime!=null? Convert.ToDateTime(CommonMethod.ConvertFromUTC(attendanceVM.InDateTime)): attendanceVM.InDateTime;
-                attendanceVM.OutDateTime = attendanceVM.OutDateTime!=null? Convert.ToDateTime(CommonMethod.ConvertFromUTC(attendanceVM.OutDateTime)): attendanceVM.OutDateTime;
+                attendanceVM.InDateTime = attendanceVM.InDateTime != null ? Convert.ToDateTime(CommonMethod.ConvertFromUTC(attendanceVM.InDateTime)) : attendanceVM.InDateTime;
+                attendanceVM.OutDateTime = attendanceVM.OutDateTime != null ? Convert.ToDateTime(CommonMethod.ConvertFromUTC(attendanceVM.OutDateTime)) : attendanceVM.OutDateTime;
                 attendanceVM.StatusText = CommonMethod.GetEnumDescription((AttendanceStatus)attendanceVM.Status);
                 attendanceVM.DayTypeText = attendanceVM.DayType == 1 ? CommonMethod.GetEnumDescription(DayType.FullDay) : CommonMethod.GetEnumDescription(DayType.HalfDay);
             }
@@ -243,6 +244,23 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objAttendance.ModifiedBy = LoggedInUserId;
                         objAttendance.ModifiedDate = DateTime.UtcNow;
                         _db.SaveChanges();
+
+                        if (attendanceVM.Status == (int)AttendanceStatus.Reject)
+                        {
+                            tbl_Employee objEmployee = _db.tbl_Employee.Where(x => x.EmployeeId == objAttendance.UserId).FirstOrDefault();
+
+                            int SmsId = (int)SMSType.AttendanceRejected;
+                            string msg = CommonMethod.GetSmsContent(SmsId);
+
+                            Regex regReplace = new Regex("{#var#}");
+                            msg = regReplace.Replace(msg, objEmployee.FirstName + " " + objEmployee.LastName, 1);
+                            msg = regReplace.Replace(msg, objAttendance.RejectReason, 1);
+
+                            msg = msg.Replace("\r\n", "\n");
+
+                            var json = CommonMethod.SendSMSWithoutLog(msg, objEmployee.MobileNo);
+                        }
+
                     }
 
                 }

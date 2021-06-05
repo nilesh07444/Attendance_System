@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -231,37 +232,40 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             string otp = string.Empty;
             try
             {
-                string mobileNo = _db.tbl_Employee.Where(x => x.EmployeeId == employeeId).Select(x => x.MobileNo).FirstOrDefault();
+                tbl_Employee objEmployee = _db.tbl_Employee.Where(x => x.EmployeeId == employeeId).FirstOrDefault();
+                string mobileNo = objEmployee.MobileNo;
+
                 if (!string.IsNullOrEmpty(mobileNo))
                 {
-                    using (WebClient webClient = new WebClient())
-                    {
-                        Random random = new Random();
-                        int num = random.Next(555555, 999999);
-                        if (enviornment != "Development")
-                        {
-                            string msg = "Your Otp code for Login is " + num;
-                            msg = HttpUtility.UrlEncode(msg);
-                            string url = CommonMethod.GetSMSUrl().Replace("--MOBILE--", mobileNo).Replace("--MSG--", msg);
-                            var json = webClient.DownloadString(url);
-                            if (json.Contains("invalidnumber"))
-                            {
-                                status = 0;
-                                errorMessage = ErrorMessage.InvalidMobileNo;
-                            }
-                            else
-                            {
-                                status = 1;
+                    #region Send SMS
 
-                                otp = num.ToString();
-                            }
-                        }
-                        else
-                        {
-                            status = 1;
-                            otp = num.ToString();
-                        }
+                    Random random = new Random();
+                    int num = random.Next(555555, 999999);
+
+                    int SmsId = (int)SMSType.PaymentOTP;
+                    string msg = CommonMethod.GetSmsContent(SmsId);
+
+                    Regex regReplace = new Regex("{#var#}");
+                    msg = regReplace.Replace(msg, objEmployee.FirstName + " " + objEmployee.LastName, 1);
+                    msg = regReplace.Replace(msg, num.ToString(), 1);
+
+                    msg = msg.Replace("\r\n", "\n");
+
+                    var json = CommonMethod.SendSMSWithoutLog(msg, mobileNo);
+
+                    if (json.Contains("invalidnumber"))
+                    {
+                        status = 0;
+                        errorMessage = ErrorMessage.InvalidMobileNo;
                     }
+                    else
+                    {
+                        status = 1;
+                        otp = num.ToString();
+                    }
+
+                    #endregion
+                     
                 }
                 else
                 {

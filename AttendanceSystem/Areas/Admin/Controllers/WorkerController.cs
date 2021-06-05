@@ -7,6 +7,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -419,39 +420,35 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             string otp = string.Empty;
             try
             {
+                #region Send SMS
 
-                using (WebClient webClient = new WebClient())
+                Random random = new Random();
+                int num = random.Next(555555, 999999);
+
+                int SmsId = (int)SMSType.EmployeeProfileEditOTP;
+                string msg = CommonMethod.GetSmsContent(SmsId);
+
+                Regex regReplace = new Regex("{#var#}");
+                msg = regReplace.Replace(msg, "Dear", 1);
+                msg = regReplace.Replace(msg, num.ToString(), 1);
+
+                msg = msg.Replace("\r\n", "\n");
+
+                var json = CommonMethod.SendSMSWithoutLog(msg, mobileNo);
+
+                if (json.Contains("invalidnumber"))
                 {
-                    Random random = new Random();
-                    int num = random.Next(555555, 999999);
-                    if (enviornment != "Development")
-                    {
-                        string msg = "Your Otp code for Login is " + num;
-                        ResponseDataModel<string> response = CommonMethod.SendSMS(msg, mobileNo, companyId, loggedInUserId, isTrailMode);
-                        var json = response.Data;
-                        if (response.IsError)
-                        {
-                            status = 0;
-                            errorMessage = string.Join(", ", response.ErrorData);
-                        }
-                        else if (json.Contains("invalidnumber"))
-                        {
-                            status = 0;
-                            errorMessage = ErrorMessage.InvalidMobileNo;
-                        }
-                        else
-                        {
-                            status = 1;
-                            otp = num.ToString();
-                        }
-                    }
-                    else
-                    {
-                        status = 1;
-                        otp = num.ToString();
-                    }
+                    status = 0;
+                    errorMessage = ErrorMessage.InvalidMobileNo;
+                }
+                else
+                {
+                    status = 1;
+                    otp = num.ToString();
                 }
 
+                #endregion
+                 
             }
             catch (Exception ex)
             {
