@@ -689,10 +689,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     objUser.Pincode = companyRequestVM.CompanyAdminPincode;
                     objUser.City = companyRequestVM.CompanyAdminCity;
                     objUser.State = companyRequestVM.CompanyAdminState;
-                    objUser.ProfilePhoto = !string.IsNullOrEmpty(profileFileName) ? profileFileName : objUser.ProfilePhoto; 
+                    objUser.ProfilePhoto = !string.IsNullOrEmpty(profileFileName) ? profileFileName : objUser.ProfilePhoto;
                     objUser.AadharCardNo = companyRequestVM.CompanyAdminAadharCardNo;
-                    objUser.AadharCardPhoto = !string.IsNullOrEmpty(companyAdminAdharCardFileName) ? companyAdminAdharCardFileName : objUser.AadharCardPhoto; 
-                    objUser.PanCardPhoto = !string.IsNullOrEmpty(companyAdminPancardFileName) ? companyAdminPancardFileName : objUser.PanCardPhoto; 
+                    objUser.AadharCardPhoto = !string.IsNullOrEmpty(companyAdminAdharCardFileName) ? companyAdminAdharCardFileName : objUser.AadharCardPhoto;
+                    objUser.PanCardPhoto = !string.IsNullOrEmpty(companyAdminPancardFileName) ? companyAdminPancardFileName : objUser.PanCardPhoto;
                     objUser.PanCardNo = companyRequestVM.CompanyAdminPanCardNo;
                     objUser.ModifiedBy = loggedInUserId;
                     objUser.ModifiedDate = DateTime.UtcNow;
@@ -726,34 +726,43 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             string otp = string.Empty;
             try
             {
-                string mobileNo = (from cmp in _db.tbl_Company
-                                   join emp in _db.tbl_AdminUser on cmp.CompanyCode equals emp.UserName
-                                   select emp.MobileNo).FirstOrDefault();
+                tbl_AdminUser objCompanyAdmin = _db.tbl_AdminUser.Where(x => x.CompanyId == companyId).FirstOrDefault();
+                string mobileNo = objCompanyAdmin.MobileNo;
+
+                //string mobileNo = (from cmp in _db.tbl_Company
+                //                   join emp in _db.tbl_AdminUser on cmp.CompanyCode equals emp.UserName
+                //                   select emp.MobileNo).FirstOrDefault();
+
                 if (!string.IsNullOrEmpty(mobileNo))
                 {
+
+
                     Random random = new Random();
                     int num = random.Next(555555, 999999);
-                    if (enviornment != "Development")
-                    {
-                        string msg = "Your Otp code for Login is " + num;
-                        var json = CommonMethod.SendSMSWithoutLog(msg, mobileNo);
-                        if (json.Contains("invalidnumber"))
-                        {
-                            status = 0;
-                            errorMessage = ErrorMessage.InvalidMobileNo;
-                        }
-                        else
-                        {
-                            status = 1;
 
-                            otp = num.ToString();
-                        }
+                    int SmsId = (int)SMSType.CompanyProfileEditOTP;
+                    string msg = CommonMethod.GetSmsContent(SmsId);
+
+                    Regex regReplace = new Regex("{#var#}");
+                    msg = regReplace.Replace(msg, objCompanyAdmin.FirstName + " " + objCompanyAdmin.LastName, 1);
+                    msg = regReplace.Replace(msg, num.ToString(), 1);
+
+                    msg = msg.Replace("\r\n", "\n");
+
+                    var json = CommonMethod.SendSMSWithoutLog(msg, mobileNo);
+
+                    if (json.Contains("invalidnumber"))
+                    {
+                        status = 0;
+                        errorMessage = ErrorMessage.InvalidMobileNo;
                     }
                     else
                     {
                         status = 1;
+
                         otp = num.ToString();
                     }
+
                 }
                 else
                 {
