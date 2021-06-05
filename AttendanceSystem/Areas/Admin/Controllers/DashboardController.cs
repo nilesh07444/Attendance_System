@@ -87,9 +87,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         dashboardVM.Year = lastConversion.Month == 12 ? lastConversion.Year + 1 : lastConversion.Year;
                     }
 
-                    dashboardVM.AllowForEmployee = _db.tbl_Attendance.Any(x => x.CompanyId == companyId);
+                    dashboardVM.AllowForEmployee = _db.tbl_Attendance.Any(x => x.CompanyId == companyId && x.AttendanceDate.Month == applyMonth && x.AttendanceDate.Year == applyYear);
                     List<long> workerIds = _db.tbl_Employee.Where(x => x.CompanyId == companyId && x.AdminRoleId == (int)AdminRoles.Worker).Select(x => x.EmployeeId).ToList();
-                    dashboardVM.AllowForWorker = workerIds.Count > 0 ? _db.tbl_WorkerAttendance.Any(x => workerIds.Contains(x.EmployeeId)) : false;
+                    dashboardVM.AllowForWorker = workerIds.Count > 0 ? _db.tbl_WorkerAttendance.Any(x => workerIds.Contains(x.EmployeeId) && x.AttendanceDate.Month == applyMonth && x.AttendanceDate.Year == applyYear) : false;
 
                 }
             }

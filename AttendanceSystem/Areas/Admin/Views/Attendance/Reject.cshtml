@@ -7,7 +7,7 @@
     lstAttendanceStatus.Add(new SelectListItem { Value = "2", Text = "Accept" });
     lstAttendanceStatus.Add(new SelectListItem { Value = "3", Text = "Reject" });
 }
-   
+
 
 <div class="page-body">
 
@@ -44,7 +44,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.DayType, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                        @Model.DayType
+                                       @Model.DayTypeText
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
@@ -58,13 +58,13 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.TodayWorkDetail, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                        @Model.DayType
+                                        @Model.TodayWorkDetail
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.TomorrowWorkDetail, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                        @Model.ExtraHours
+                                        @Model.TomorrowWorkDetail
                                     </div>
                                 </div>
                             </div>
@@ -72,13 +72,13 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                        @Model.DayType
+                                        @Model.Remarks
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        @Html.LabelFor(model => model.InTime, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                        @Model.InTime - @Model.OutTime
+                                        @Html.LabelFor(model => model.InDateTime, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                        @Model.InDateTime
                                     </div>
                                 </div>
                             </div>
@@ -89,7 +89,12 @@
                                         @Model.StatusText
                                     </div>
                                 </div>
-
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.OutDateTime, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                        @Model.OutDateTime
+                                    </div>
+                                </div>
                             </div>
                             if (Model.Status == (int)AttendanceStatus.Reject)
                             {

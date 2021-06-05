@@ -209,10 +209,15 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                     Remarks = at.Remarks,
                                     LocationFrom = at.LocationFrom,
                                     Status = at.Status,
-                                    RejectReason = at.RejectReason
+                                    RejectReason = at.RejectReason,
+                                    InDateTime = at.InDateTime,
+                                    OutDateTime = at.OutDateTime,
                                 }).FirstOrDefault();
 
+                attendanceVM.InDateTime = attendanceVM.InDateTime!=null? Convert.ToDateTime(CommonMethod.ConvertFromUTC(attendanceVM.InDateTime)): attendanceVM.InDateTime;
+                attendanceVM.OutDateTime = attendanceVM.OutDateTime!=null? Convert.ToDateTime(CommonMethod.ConvertFromUTC(attendanceVM.OutDateTime)): attendanceVM.OutDateTime;
                 attendanceVM.StatusText = CommonMethod.GetEnumDescription((AttendanceStatus)attendanceVM.Status);
+                attendanceVM.DayTypeText = attendanceVM.DayType == 1 ? CommonMethod.GetEnumDescription(DayType.FullDay) : CommonMethod.GetEnumDescription(DayType.HalfDay);
             }
             catch (Exception ex)
             {
