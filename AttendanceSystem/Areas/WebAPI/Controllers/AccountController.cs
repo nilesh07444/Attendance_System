@@ -103,33 +103,36 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                 loginResponseVM.IsFingerprintEnabled = data.IsFingerprintEnabled;
                                 loginResponseVM.EmployeeId = data.EmployeeId;
 
-                                using (WebClient webClient = new WebClient())
+                                if (!loginResponseVM.IsFingerprintEnabled)
                                 {
-                                    Random random = new Random();
-                                    int num = random.Next(555555, 999999);
-                                    if (enviornment != "Development")
+                                    using (WebClient webClient = new WebClient())
                                     {
-                                        int SmsId = (int)SMSType.EmployeeLoginOTP;
-                                        string msg = CommonMethod.GetSmsContent(SmsId);
-                                        msg = msg.Replace("{#var#}", num.ToString());
-                                        msg = msg.Replace("\r\n", "\n");
-
-                                        msg = HttpUtility.UrlEncode(msg);
-                                        string url = CommonMethod.GetSMSUrl().Replace("--MOBILE--", data.MobileNo).Replace("--MSG--", msg);
-                                        var json = webClient.DownloadString(url);
-                                        if (json.Contains("invalidnumber"))
+                                        Random random = new Random();
+                                        int num = random.Next(555555, 999999);
+                                        if (enviornment != "Development")
                                         {
-                                            response.IsError = true;
-                                            response.AddError(ErrorMessage.InvalidMobileNo);
+                                            int SmsId = (int)SMSType.EmployeeLoginOTP;
+                                            string msg = CommonMethod.GetSmsContent(SmsId);
+                                            msg = msg.Replace("{#var#}", num.ToString());
+                                            msg = msg.Replace("\r\n", "\n");
+
+                                            msg = HttpUtility.UrlEncode(msg);
+                                            string url = CommonMethod.GetSMSUrl().Replace("--MOBILE--", data.MobileNo).Replace("--MSG--", msg);
+                                            var json = webClient.DownloadString(url);
+                                            if (json.Contains("invalidnumber"))
+                                            {
+                                                response.IsError = true;
+                                                response.AddError(ErrorMessage.InvalidMobileNo);
+                                            }
+                                            else
+                                            {
+                                                loginResponseVM.OTP = num.ToString();
+                                            }
                                         }
                                         else
                                         {
                                             loginResponseVM.OTP = num.ToString();
                                         }
-                                    }
-                                    else
-                                    {
-                                        loginResponseVM.OTP = num.ToString();
                                     }
                                 }
                             }
