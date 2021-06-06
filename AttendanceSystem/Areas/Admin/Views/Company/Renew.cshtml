@@ -1,9 +1,7 @@
 ﻿@using AttendanceSystem.ViewModel;
 @model List<AttendanceSystem.ViewModel.CompanyRenewPaymentVM>
-@{
-    /**/
-
-    ViewBag.Title = "Registered";
+@{     
+    ViewBag.Title = "Company";
     int counter = 1;
 }
 
@@ -12,8 +10,13 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
+                    <div class="card-header" style="background-color: #425C59;">
+                        <h4 style="color: #FFCEA3;">Renew Company List</h4>
+                    </div>
+                </div>
+                <div class="card">
                     <div class="card-header">
-                        <h4>Renew Company List</h4>
+                        <h4>Renew Company</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -21,15 +24,13 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>CompanyName </th>
+                                        <th>Company Name </th>
                                         <th>Amount</th>
-                                        <th>PaymentFor</th>
-                                        <th>PaymentGatewayResponseId</th>
-                                        <th>StartDate</th>
-                                        <th>EndDate</th>
-                                        <th>AccessDays</th>
-                                        <th>PackageId</th>
-                                        <th>PackageName</th>
+                                        <th>Payment For</th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
+                                        <th>Access Days</th>
+                                        <th>Package Name</th>
 
                                     </tr>
                                 </thead>
@@ -44,11 +45,9 @@
                                                 <td>@obj.CompanyName</td>
                                                 <td>@obj.Amount</td>
                                                 <td>@obj.PaymentFor</td>
-                                                <td>@obj.PaymentGatewayResponseId</td>
                                                 <td>@obj.StartDate</td>
                                                 <td>@obj.EndDate</td>
                                                 <td>@obj.AccessDays</td>
-                                                <td>@obj.PackageId</td>
                                                 <td>@obj.PackageName</td>
                                             </tr>
                                             counter++;

@@ -25,7 +25,7 @@
         public static string PancardDirectoryPath = "/Images/Pancard/";
         public static string AdharcardDirectoryPath = "/Images/Adharcard/";
         public static string GSTDirectoryPath = "/Images/GST/";
-        public static string CompanyDirectoryPath = "/Images/CompanyPhoto/";
+        public static string CompanyDirectoryPath = "/Images/CompanyLogo/";
         public static string CancellationChequeDirectoryPath = "/Images/CancellationCheque/";
         public static string EmployeeDirectoryPath = "/Images/Employee/";
         public static string CompanyGSTDirectoryPath = "/Images/CompanyGST/";

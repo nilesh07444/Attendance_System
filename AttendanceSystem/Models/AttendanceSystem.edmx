@@ -447,7 +447,6 @@
             <PropertyRef Name="HomeImageId" />
           </Key>
           <Property Name="HomeImageId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="HomeImageName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="HeadingText1" Type="nvarchar" MaxLength="500" />
           <Property Name="HeadingText2" Type="nvarchar" MaxLength="500" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
@@ -945,20 +944,6 @@
           <Property Name="ModifiedBy" Type="Int64" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
         </EntityType>
-        <EntityType Name="tbl_HomeImage">
-          <Key>
-            <PropertyRef Name="HomeImageId" />
-          </Key>
-          <Property Name="HomeImageId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="HomeImageName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="HeadingText1" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="HeadingText2" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int64" />
-        </EntityType>
         <EntityType Name="tbl_Leave">
           <Key>
             <PropertyRef Name="LeaveId" />
@@ -1095,7 +1080,6 @@
           <EntitySet Name="tbl_EmployeeRating" EntityType="Self.tbl_EmployeeRating" />
           <EntitySet Name="tbl_Feedback" EntityType="Self.tbl_Feedback" />
           <EntitySet Name="tbl_Holiday" EntityType="Self.tbl_Holiday" />
-          <EntitySet Name="tbl_HomeImage" EntityType="Self.tbl_HomeImage" />
           <EntitySet Name="tbl_Leave" EntityType="Self.tbl_Leave" />
           <EntitySet Name="tbl_Material" EntityType="Self.tbl_Material" />
           <EntitySet Name="tbl_MaterialCategory" EntityType="Self.tbl_MaterialCategory" />
@@ -1151,6 +1135,7 @@
           <EntitySet Name="tbl_WorkerAttendance" EntityType="AttendanceSystemModel.tbl_WorkerAttendance" />
           <EntitySet Name="tbl_EmployeePayment" EntityType="AttendanceSystemModel.tbl_EmployeePayment" />
           <EntitySet Name="tbl_WorkerPayment" EntityType="AttendanceSystemModel.tbl_WorkerPayment" />
+          <EntitySet Name="tbl_HomeImage" EntityType="AttendanceSystemModel.tbl_HomeImage" />
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -1583,6 +1568,19 @@
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int64" />
         </EntityType>
+        <EntityType Name="tbl_HomeImage">
+          <Key>
+            <PropertyRef Name="HomeImageId" />
+          </Key>
+          <Property Name="HomeImageId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HeadingText1" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="HeadingText2" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int64" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1751,21 +1749,6 @@
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbl_HomeImage">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_HomeImage">
-              <MappingFragment StoreEntitySet="tbl_HomeImage">
-                <ScalarProperty Name="HomeImageId" ColumnName="HomeImageId" />
-                <ScalarProperty Name="HomeImageName" ColumnName="HomeImageName" />
-                <ScalarProperty Name="HeadingText1" ColumnName="HeadingText1" />
-                <ScalarProperty Name="HeadingText2" ColumnName="HeadingText2" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2359,6 +2342,20 @@
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="WorkerPaymentId" ColumnName="WorkerPaymentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_HomeImage">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_HomeImage">
+              <MappingFragment StoreEntitySet="tbl_HomeImage">
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="HeadingText2" ColumnName="HeadingText2" />
+                <ScalarProperty Name="HeadingText1" ColumnName="HeadingText1" />
+                <ScalarProperty Name="HomeImageId" ColumnName="HomeImageId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

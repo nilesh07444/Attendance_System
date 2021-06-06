@@ -28,8 +28,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 homeImages = (from hi in _db.tbl_HomeImage
                               select new HomeImageVM
                               {
-                                  HomeImageId = hi.HomeImageId,
-                                  HomeImageName = hi.HomeImageName,
+                                  HomeImageId = hi.HomeImageId, 
                                   HeadingText1 = hi.HeadingText1,
                                   HeadingText2 = hi.HeadingText2,
                                   IsActive = hi.IsActive,
@@ -50,8 +49,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                where hi.HomeImageId == id
                                select new HomeImageVM
                                {
-                                   HomeImageId = hi.HomeImageId,
-                                   HomeImageName = hi.HomeImageName,
+                                   HomeImageId = hi.HomeImageId, 
                                    HeadingText1 = hi.HeadingText1,
                                    HeadingText2 = hi.HeadingText2,
                                    IsActive = hi.IsActive,
@@ -61,7 +59,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public ActionResult Add(HomeImageVM homeImageVM, HttpPostedFileBase HomeImageFile)
+        public ActionResult Add(HomeImageVM homeImageVM)
         {
             try
             {
@@ -69,41 +67,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
                     long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
-
-                    string fileName = string.Empty;
-                    string path = Server.MapPath(HomeDirectoryPath);
-
-                    bool folderExists = Directory.Exists(path);
-                    if (!folderExists)
-                        Directory.CreateDirectory(path);
-
-                    if (HomeImageFile != null)
-                    {
-                        // Image file validation
-                        string ext = Path.GetExtension(HomeImageFile.FileName);
-                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
-                        {
-                            ModelState.AddModelError("HomeImageFile", ErrorMessage.SelectOnlyImage);
-                            return View(homeImageVM);
-                        }
-
-                        // Save file in folder
-                        fileName = Guid.NewGuid() + "-" + Path.GetFileName(HomeImageFile.FileName);
-                        HomeImageFile.SaveAs(path + fileName);
-                    }
-                    else
-                    {
-                        if (homeImageVM.HomeImageId == 0)
-                        {
-                            ModelState.AddModelError("HomeImageFile", ErrorMessage.ImageRequired);
-                            return View(homeImageVM);
-                        }
-                    }
-
+                     
                     if (homeImageVM.HomeImageId > 0)
                     {
                         tbl_HomeImage objHome = _db.tbl_HomeImage.Where(x => x.HomeImageId == homeImageVM.HomeImageId).FirstOrDefault();
-                        objHome.HomeImageName = HomeImageFile != null ? fileName : objHome.HomeImageName;
+                    
                         objHome.HeadingText1 = homeImageVM.HeadingText1;
                         objHome.HeadingText2 = homeImageVM.HeadingText2;
 
@@ -114,8 +82,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     {
                         tbl_HomeImage objHome = new tbl_HomeImage();
                         objHome.HeadingText1 = homeImageVM.HeadingText1;
-                        objHome.HeadingText2 = homeImageVM.HeadingText2;
-                        objHome.HomeImageName = fileName;
+                        objHome.HeadingText2 = homeImageVM.HeadingText2; 
                         objHome.IsActive = true;
                         objHome.CreatedBy = LoggedInUserId;
                         objHome.CreatedDate = DateTime.UtcNow;

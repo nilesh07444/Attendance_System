@@ -11,10 +11,15 @@ namespace AttendanceSystem
         public long TestimonialId { get; set; }
         [Display(Name = "Company Name")]
         public string CompanyName { get; set; }
-        [Required, Display(Name = "Contact Person Name")]
+
+        [Display(Name = "Contact Person Name *")]
+        [Required(ErrorMessage ="This field is required")]
         public string CompanyPersonName { get; set; }
-        [Required, Display(Name = "Feedback")]
+        
+        [Display(Name = "Feedback *")]
+        [Required(ErrorMessage = "This field is required")]
         public string FeedbackText { get; set; }
+
         public bool IsActive { get; set; }
     }
 }

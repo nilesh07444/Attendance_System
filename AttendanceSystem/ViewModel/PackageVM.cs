@@ -9,30 +9,43 @@ namespace AttendanceSystem
     public class PackageVM
     {
         public long PackageId { get; set; }
-        [Required, Display(Name = "Package Name")]
+        [Display(Name = "Package Name *")]
+        [Required(ErrorMessage = "This field is required")]
         public string PackageName { get; set; }
 
-        [Required, Display(Name = "Package Amount")]
+        [Display(Name = "Package Amount *")]
+        [Required(ErrorMessage = "This field is required")]
         public decimal Amount { get; set; }
-        [Required, Display(Name = "Package Description")]
+
+        [Display(Name = "Package Description *")]
+        [Required(ErrorMessage = "This field is required")]
         public string PackageDescription { get; set; }
-        [Required, Display(Name = "Access Days")]
+
+        [Display(Name = "Access Days *")]
+        [Required(ErrorMessage = "This field is required")]
         public int AccessDays { get; set; }
+
         public string PackageImage { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
 
         [Display(Name = "Package Image")]
         public HttpPostedFileBase PackageImageFile { get; set; }
-        [Display(Name = "No of SMS")]
+
+        [Display(Name = "No of SMS *")]
+        [Required(ErrorMessage = "This field is required")]
         public int NoOfSMS { get; set; }
-        [Display(Name = "No of Employee")]
+
+        [Display(Name = "No of Employee *")]
+        [Required(ErrorMessage = "This field is required")]
         public int NoOfEmployee { get; set; }
 
-        [Display(Name = "Package Color Code")]
+        [Display(Name = "Package Color Code *")]
+        [Required(ErrorMessage = "This field is required")]
         public string PackageColorCode { get; set; }
 
-        [Display(Name = "Package Font Icon")]
+        [Display(Name = "Package Font Icon *")]
+        [Required(ErrorMessage = "This field is required")]
         public string PackageFontIcon { get; set; }
 
     }

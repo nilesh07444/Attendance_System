@@ -12,22 +12,22 @@ namespace AttendanceSystem.ViewModel
         public long CompanyRequestId { get; set; }
 
 
-        [Display(Name = "Company Type")]
+        [Display(Name = "Company Type *")]
         [Required(ErrorMessage = "This field is required")]
         public long? CompanyTypeId { get; set; }
 
         [MinLength(2)]
         [Required(ErrorMessage = "This field is required")]
-        [Display(Name = "Company Name")]
+        [Display(Name = "Company Name *")]
         [RegularExpression("^[a-zA-Z\\s]+", ErrorMessage = "special characters are not allowed.")]
 
         public string CompanyName { get; set; }
 
-        [Display(Name = "Company EmailId")]
+        [Display(Name = "Company Email Id *")]
         [Required(ErrorMessage = "This field is required")]
         public string CompanyEmailId { get; set; }
 
-        [Display(Name = "Company ContactNo No")]
+        [Display(Name = "Company Contact No *")]
         [Required(ErrorMessage = "This field is required")]
         [RegularExpression(@"^([0-9]{10})$", ErrorMessage = "Invalid Company Contact Number.")]
         public string CompanyContactNo { get; set; }
@@ -53,20 +53,20 @@ namespace AttendanceSystem.ViewModel
         public HttpPostedFileBase CompanyPanPhotoFile { get; set; }
         public string CompanyPanPhoto { get; set; }
 
-        [Display(Name = "Company Address")]
+        [Display(Name = "Company Address *")]
         [Required(ErrorMessage = "This field is required")]
         public string CompanyAddress { get; set; }
 
-        [Display(Name = "Company Pincode")]
+        [Display(Name = "Company Pincode *")]
         [Required(ErrorMessage = "This field is required")]
         [RegularExpression(@"^([0-9]{6})$", ErrorMessage = "Invalid Pincode.")]
         public string CompanyPincode { get; set; }
         
-        [Display(Name = "Company City")]
+        [Display(Name = "Company City *")]
         [Required(ErrorMessage = "This field is required")]
         public string CompanyCity { get; set; }
         
-        [Display(Name = "Company State")]
+        [Display(Name = "Company State *")]
         [Required(ErrorMessage = "This field is required")]
         public string CompanyState { get; set; }
 
@@ -78,7 +78,7 @@ namespace AttendanceSystem.ViewModel
         public HttpPostedFileBase CompanyRegisterProofImageFile { get; set; }
         public string CompanyRegisterProofImage { get; set; }
 
-        [Display(Name = "Company Description")]
+        [Display(Name = "Company Description *")]
         [Required(ErrorMessage = "This field is required")]
         public string CompanyDescription { get; set; }
 
@@ -86,30 +86,30 @@ namespace AttendanceSystem.ViewModel
         [Url]
         public string CompanyWebisteUrl { get; set; }
 
-        [Display(Name = "Prefix")]
+        [Display(Name = "Prefix *")]
         [Required(ErrorMessage = "This field is required")]
         public string CompanyAdminPrefix { get; set; }
 
-        [Display(Name = "First Name")]
+        [Display(Name = "First Name *")]
         [Required(ErrorMessage = "This field is required")]
         public string CompanyAdminFirstName { get; set; }
 
-        [Display(Name = "Middle Name")]
+        [Display(Name = "Middle Name *")]
         [Required(ErrorMessage = "This field is required")]
         public string CompanyAdminMiddleName { get; set; }
 
-        [Display(Name = "Last Name")]
+        [Display(Name = "Last Name *")]
         [Required(ErrorMessage = "This field is required")]
         public string CompanyAdminLastName { get; set; }
 
-        [Display(Name = "Company Admin Date Of Birth")]
+        [Display(Name = "Company Admin Date Of Birth *")]
         [Required(ErrorMessage = "This field is required")]
         public string CompanyAdminDOB { get; set; }
 
         [Display(Name = "Email Id")]
         public string CompanyAdminEmailId { get; set; }
 
-        [Display(Name = "Mobile No")]
+        [Display(Name = "Mobile No *")]
         [Required(ErrorMessage = "This field is required")]
         [RegularExpression(@"^([0-9]{10})$", ErrorMessage = "Invalid Mobile Number.")]
         public string CompanyAdminMobileNo { get; set; }
@@ -152,7 +152,7 @@ namespace AttendanceSystem.ViewModel
         public HttpPostedFileBase CompanyAdminAadharCardPhotoFile { get; set; }
         public string CompanyAdminAadharCardPhoto { get; set; }
 
-        [Display(Name = "Pan Card No")]
+        [Display(Name = "Pan Card No *")]
         [Required(ErrorMessage = "This field is required")]
         [RegularExpression("^([A-Za-z]){5}([0-9]){4}([A-Za-z]){1}$", ErrorMessage = "Invalid PAN No")]
         public string CompanyAdminPanCardNo { get; set; }
@@ -169,7 +169,7 @@ namespace AttendanceSystem.ViewModel
 
         public string CompanyTypeText { get; set; }
 
-        [Display(Name = "Company Code")]
+        [Display(Name = "Company Code *")]
         public string CompanyCode { get; set; }
         public string OTP { get; set; }
         [Display(Name = "I accept the terms and conditions.")]

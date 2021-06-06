@@ -1,18 +1,18 @@
-﻿@using AttendanceSystem.Helper;
-@model AttendanceSystem.ViewModel.FeedbackVM
+﻿@model AttendanceSystem.ViewModel.FeedbackVM
 @{
     ViewBag.Title = "Feedback";
 }
 
-<section class="section">
-
+<section class="section"> 
     <div class="row">
         <div class="col-12">
-            <div class="card card-primary">
-                <div class="card-header">
-                    <h4>@(Model.FeedbackId == 0 ? "Add" : "Edit") Feedback</h4>
+            <div class="card">
+                <div class="card-header" style="background-color: #425C59;">
+                    <h4 style="color: #FFCEA3;">@(Model.FeedbackId == 0 ? "Add" : "Edit") Feedback</h4>
                 </div>
-
+            </div>
+            <div class="card card-primary">
+                  
                 @using (Html.BeginForm("Add", "Feedback", FormMethod.Post, new { @id = "FeedbackFormId", @class = "", enctype = "multipart/form-data", role = "form" }))
                 {
                     <div class="card-body">
@@ -45,13 +45,11 @@
 
             </div>
         </div>
-    </div>
-
+    </div> 
 </section>
 
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
-
-
+ 
 <script type="text/javascript">
     $(document).ready(function () {
         $('#btnCancel').click(function () {
@@ -64,9 +62,7 @@
             }
             else {
                 return false;
-            }
-
-        });
-
+            } 
+        }); 
     })
 </script>

@@ -1,73 +1,76 @@
-﻿@using AttendanceSystem.Helper;
-@model AttendanceSystem.ViewModel.SMSPackageVM
+﻿@model AttendanceSystem.ViewModel.SMSPackageVM
 @{
-
+    ViewBag.Title = "SMSPackage";
 }
 
 <section class="section">
 
     <div class="row">
         <div class="col-12">
-            <div class="card card-primary">
-                <div class="card-header">
-                    <h4>@(Model.SMSPackageId == 0 ? "Add" : "Edit") SMS Package</h4>
+
+            <div class="card">
+                <div class="card-header" style="background-color: #425C59;">
+                    <h4 style="color: #FFCEA3;">@(Model.SMSPackageId == 0 ? "Add" : "Edit") SMS Package</h4>
                 </div>
+            </div>
+
+            <div class="card card-primary">
 
                 @using (Html.BeginForm("Add", "SMSPackage", FormMethod.Post, new { @id = "SMSPackageFormId", @class = "", enctype = "multipart/form-data", role = "form" }))
                 {
-                <div class="card-body">
-                    <div class="row">
-                        <div class="form-group col-6">
-                            @Html.LabelFor(model => model.PackageName, htmlAttributes: new { @class = "" })
-                            @Html.EditorFor(model => model.PackageName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter SMS Package Name ", maxlength = "200", @autofocus = "autofocus" } })
-                            @Html.ValidationMessageFor(model => model.PackageName, "", new { @class = "text-danger" })
-                            @Html.HiddenFor(model => model.SMSPackageId)
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.PackageName, htmlAttributes: new { @class = "" })
+                                @Html.EditorFor(model => model.PackageName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Package Name ", maxlength = "200", @autofocus = "autofocus" } })
+                                @Html.ValidationMessageFor(model => model.PackageName, "", new { @class = "text-danger" })
+                                @Html.HiddenFor(model => model.SMSPackageId)
+                            </div>
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.PackageAmount, htmlAttributes: new { @class = "" })
+                                @Html.EditorFor(model => model.PackageAmount, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Amount", maxlength = "10", @min = "1" } })
+                                @Html.ValidationMessageFor(model => model.PackageAmount, "", new { @class = "text-danger" })
+                            </div>
                         </div>
-                        <div class="form-group col-6">
-                            @Html.LabelFor(model => model.PackageAmount, htmlAttributes: new { @class = "" })
-                            @Html.EditorFor(model => model.PackageAmount, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter SMSPackage Amount", maxlength = "10", @min = "1" } })
-                            @Html.ValidationMessageFor(model => model.PackageAmount, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-6">
-                            @Html.LabelFor(model => model.NoOfSMS, htmlAttributes: new { @class = "" })
-                            @Html.EditorFor(model => model.NoOfSMS, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter No Of SMS", maxlength = "10", @min = "1" } })
-                            @Html.ValidationMessageFor(model => model.NoOfSMS, "", new { @class = "text-danger" })
-                        </div>
-                        <div class="form-group col-6">
-                            @Html.LabelFor(model => model.AccessDays, htmlAttributes: new { @class = "" })
-                            @Html.EditorFor(model => model.AccessDays, new { htmlAttributes = new { @class = "form-control", @min = 1, @placeholder = "Enter Access Days", @maxlength = "10" } })
-                            @Html.ValidationMessageFor(model => model.AccessDays, "", new { @class = "text-danger" })
-                        </div>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.NoOfSMS, htmlAttributes: new { @class = "" })
+                                @Html.EditorFor(model => model.NoOfSMS, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter No Of SMS", maxlength = "10", @min = "1" } })
+                                @Html.ValidationMessageFor(model => model.NoOfSMS, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.AccessDays, htmlAttributes: new { @class = "" })
+                                @Html.EditorFor(model => model.AccessDays, new { htmlAttributes = new { @class = "form-control", @min = 1, @placeholder = "Enter Access Days", @maxlength = "10" } })
+                                @Html.ValidationMessageFor(model => model.AccessDays, "", new { @class = "text-danger" })
+                            </div>
 
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-6">
-                            @Html.LabelFor(model => model.PackageColorCode, htmlAttributes: new { @class = "" })
-                            @Html.EditorFor(model => model.PackageColorCode, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Package Color Code", maxlength = "7" } })
-                            @Html.ValidationMessageFor(model => model.PackageColorCode, "", new { @class = "text-danger" })
                         </div>
-                        <div class="form-group col-6">
-                            @Html.LabelFor(model => model.PackageFontIcon, htmlAttributes: new { @class = "" })
-                            @Html.EditorFor(model => model.PackageFontIcon, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Package Font Icon" } })
-                            @Html.ValidationMessageFor(model => model.PackageFontIcon, "", new { @class = "text-danger" })
-                        </div>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.PackageColorCode, htmlAttributes: new { @class = "" })
+                                @Html.EditorFor(model => model.PackageColorCode, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Package Color Code", maxlength = "7" } })
+                                @Html.ValidationMessageFor(model => model.PackageColorCode, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.PackageFontIcon, htmlAttributes: new { @class = "" })
+                                @Html.EditorFor(model => model.PackageFontIcon, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Package Font Icon" } })
+                                @Html.ValidationMessageFor(model => model.PackageFontIcon, "", new { @class = "text-danger" })
+                            </div>
 
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "" })
-                        @Html.TextAreaFor(model => model.Description, 10, 5, new { @class = "form-control", @placeholder = "Enter Description", maxlength = "250" })
-                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-6">
-                            @Html.LabelFor(model => model.PackageImageFile, htmlAttributes: new { @class = "" })
-                            @Html.TextBoxFor(model => model.PackageImageFile, new { type = "file", @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.PackageImageFile, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "" })
+                            @Html.TextAreaFor(model => model.Description, 10, 5, new { @class = "form-control", @placeholder = "Enter Description", maxlength = "250" })
+                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.PackageImageFile, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.PackageImageFile, new { type = "file", @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.PackageImageFile, "", new { @class = "text-danger" })
+                            </div>
                         </div>
                     </div>
-                </div>
 
                     <div class="card-footer text-center">
                         <button class="btn btn-primary mr-1" type="submit">Submit</button>
@@ -84,8 +87,7 @@
 </section>
 
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
-
-
+ 
 <script type="text/javascript">
     $(document).ready(function () {
         $('#btnCancel').click(function () {

@@ -26,51 +26,82 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 long loggedInUserId = clsAdminSession.UserID;
                 int loggedInRoleID = clsAdminSession.RoleID;
 
-                objProfile = (from emp in _db.tbl_AdminUser
-                              join cp in _db.tbl_Company on emp.CompanyId equals cp.CompanyId
-                              join ct in _db.mst_CompanyType on cp.CompanyTypeId equals ct.CompanyTypeId
-                              where emp.AdminUserId == loggedInUserId
-                              select new CompanyRequestVM
-                              {
-                                  CompanyId = cp.CompanyId,
-                                  CompanyTypeId = cp.CompanyTypeId,
-                                  CompanyName = cp.CompanyName,
-                                  CompanyEmailId = cp.EmailId,
-                                  CompanyContactNo = cp.ContactNo,
-                                  CompanyAlternateContactNo = cp.AlternateContactNo,
-                                  CompanyGSTNo = cp.GSTNo,
-                                  CompanyGSTPhoto = cp.GSTPhoto,
-                                  CompanyPanNo = cp.PanNo,
-                                  CompanyPanPhoto = cp.PanPhoto,
-                                  CompanyAddress = cp.Address,
-                                  CompanyPincode = cp.Pincode,
-                                  CompanyCity = cp.City,
-                                  CompanyState = cp.State,
-                                  CompanyLogoImage = cp.CompanyLogoImage,
-                                  CompanyRegisterProofImage = cp.RegisterProofImage,
-                                  CompanyDescription = cp.Description,
-                                  CompanyWebisteUrl = cp.WebisteUrl,
-                                  CompanyAdminPrefix = emp.Prefix,
-                                  CompanyAdminFirstName = emp.FirstName,
-                                  CompanyAdminMiddleName = emp.MIddleName,
-                                  CompanyAdminLastName = emp.LastName,
-                                  CompanyAdminEmailId = emp.EmailId,
-                                  dtCompanyAdminDOB = emp.DOB,
-                                  CompanyAdminMobileNo = emp.MobileNo,
-                                  CompanyAdminAlternateMobileNo = emp.AlternateMobileNo,
-                                  CompanyAdminDesignation = emp.Designation,
-                                  CompanyAdminAddress = emp.Address,
-                                  CompanyAdminPincode = emp.Pincode,
-                                  CompanyAdminCity = emp.City,
-                                  CompanyAdminState = emp.State,
-                                  CompanyAdminProfilePhoto = emp.ProfilePhoto,
-                                  CompanyAdminAadharCardNo = emp.AadharCardNo,
-                                  CompanyAdminAadharCardPhoto = emp.AadharCardPhoto,
-                                  CompanyAdminPanCardPhoto = emp.PanCardPhoto,
-                                  CompanyAdminPanCardNo = emp.PanCardNo,
-                                  FreeAccessDays = cp.FreeAccessDays,
-                                  CompanyTypeText = ct.CompanyTypeName
-                              }).FirstOrDefault();
+                if (loggedInRoleID == (int)AdminRoles.SuperAdmin)
+                {
+                    objProfile = (from emp in _db.tbl_AdminUser 
+                                  where emp.AdminUserId == loggedInUserId
+                                  select new CompanyRequestVM
+                                  {                                       
+                                      CompanyAdminPrefix = emp.Prefix,
+                                      CompanyAdminFirstName = emp.FirstName,
+                                      CompanyAdminMiddleName = emp.MIddleName,
+                                      CompanyAdminLastName = emp.LastName,
+                                      CompanyAdminEmailId = emp.EmailId,
+                                      dtCompanyAdminDOB = emp.DOB,
+                                      CompanyAdminMobileNo = emp.MobileNo,
+                                      CompanyAdminAlternateMobileNo = emp.AlternateMobileNo,
+                                      CompanyAdminDesignation = emp.Designation,
+                                      CompanyAdminAddress = emp.Address,
+                                      CompanyAdminPincode = emp.Pincode,
+                                      CompanyAdminCity = emp.City,
+                                      CompanyAdminState = emp.State,
+                                      CompanyAdminProfilePhoto = emp.ProfilePhoto,
+                                      CompanyAdminAadharCardNo = emp.AadharCardNo,
+                                      CompanyAdminAadharCardPhoto = emp.AadharCardPhoto,
+                                      CompanyAdminPanCardPhoto = emp.PanCardPhoto,
+                                      CompanyAdminPanCardNo = emp.PanCardNo,                                      
+                                  }).FirstOrDefault();
+                }
+                else
+                {
+
+                    objProfile = (from emp in _db.tbl_AdminUser
+                                  join cp in _db.tbl_Company on emp.CompanyId equals cp.CompanyId
+                                  join ct in _db.mst_CompanyType on cp.CompanyTypeId equals ct.CompanyTypeId
+                                  where emp.AdminUserId == loggedInUserId
+                                  select new CompanyRequestVM
+                                  {
+                                      CompanyId = cp.CompanyId,
+                                      CompanyTypeId = cp.CompanyTypeId,
+                                      CompanyName = cp.CompanyName,
+                                      CompanyEmailId = cp.EmailId,
+                                      CompanyContactNo = cp.ContactNo,
+                                      CompanyAlternateContactNo = cp.AlternateContactNo,
+                                      CompanyGSTNo = cp.GSTNo,
+                                      CompanyGSTPhoto = cp.GSTPhoto,
+                                      CompanyPanNo = cp.PanNo,
+                                      CompanyPanPhoto = cp.PanPhoto,
+                                      CompanyAddress = cp.Address,
+                                      CompanyPincode = cp.Pincode,
+                                      CompanyCity = cp.City,
+                                      CompanyState = cp.State,
+                                      CompanyLogoImage = cp.CompanyLogoImage,
+                                      CompanyRegisterProofImage = cp.RegisterProofImage,
+                                      CompanyDescription = cp.Description,
+                                      CompanyWebisteUrl = cp.WebisteUrl,
+                                      CompanyAdminPrefix = emp.Prefix,
+                                      CompanyAdminFirstName = emp.FirstName,
+                                      CompanyAdminMiddleName = emp.MIddleName,
+                                      CompanyAdminLastName = emp.LastName,
+                                      CompanyAdminEmailId = emp.EmailId,
+                                      dtCompanyAdminDOB = emp.DOB,
+                                      CompanyAdminMobileNo = emp.MobileNo,
+                                      CompanyAdminAlternateMobileNo = emp.AlternateMobileNo,
+                                      CompanyAdminDesignation = emp.Designation,
+                                      CompanyAdminAddress = emp.Address,
+                                      CompanyAdminPincode = emp.Pincode,
+                                      CompanyAdminCity = emp.City,
+                                      CompanyAdminState = emp.State,
+                                      CompanyAdminProfilePhoto = emp.ProfilePhoto,
+                                      CompanyAdminAadharCardNo = emp.AadharCardNo,
+                                      CompanyAdminAadharCardPhoto = emp.AadharCardPhoto,
+                                      CompanyAdminPanCardPhoto = emp.PanCardPhoto,
+                                      CompanyAdminPanCardNo = emp.PanCardNo,
+                                      FreeAccessDays = cp.FreeAccessDays,
+                                      CompanyTypeText = ct.CompanyTypeName
+                                  }).FirstOrDefault();
+
+                }
 
             }
             catch (Exception ex)

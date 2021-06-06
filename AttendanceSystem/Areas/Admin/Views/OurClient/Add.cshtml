@@ -13,9 +13,12 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="card">
-                    <div class="card-header">
-                        <h5>Add Our Client</h5>
+                    <div class="card-header" style="background-color: #425C59;">
+                        <h4 style="color: #FFCEA3;">@(Model.SponsorId > 0 ? "Edit" : "Add") Our Client</h4>
                     </div>
+                </div>
+                <div class="card">
+
                     <div class="card-body">
                         @using (Html.BeginForm("Add", "OurClient", FormMethod.Post, new { @id = "OurClientFormId", @class = "needs-validation", enctype = "multipart/form-data", role = "form" }))
                         {

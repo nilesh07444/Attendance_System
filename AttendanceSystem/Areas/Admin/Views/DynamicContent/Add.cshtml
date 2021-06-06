@@ -14,11 +14,13 @@
 
     <div class="row">
         <div class="col-12">
-            <div class="card card-primary">
-                <div class="card-header">
-                    <h4>Add Dynamic Content</h4>
+            <div class="card">
+                <div class="card-header" style="background-color: #425C59;">
+                    <h4 style="color: #FFCEA3;">Add Dynamic Content</h4>
                 </div>
-
+            </div>
+            <div class="card card-primary">
+                  
                 @using (Html.BeginForm("Add", "DynamicContent", FormMethod.Post, new { @id = "DynamicContentFormId", @class = "", enctype = "multipart/form-data", role = "form" }))
                 {
                     <div class="card-body">

@@ -1,5 +1,4 @@
-﻿@using AttendanceSystem.Helper;
-@model TestimonialVM
+﻿@model TestimonialVM
 @{
     ViewBag.Title = "WebsiteContent";
 }
@@ -8,11 +7,13 @@
 
     <div class="row">
         <div class="col-12">
-            <div class="card card-primary">
-                <div class="card-header">
-                    <h4>@(Model.TestimonialId == 0 ? "Add" : "Edit") Testimonial</h4>
+            <div class="card">
+                <div class="card-header" style="background-color: #425C59;">
+                    <h4 style="color: #FFCEA3;">@(Model.TestimonialId == 0 ? "Add" : "Edit") Testimonial</h4>
                 </div>
-
+            </div>
+            <div class="card card-primary">
+                 
                 @using (Html.BeginForm("Add", "Testimonial", FormMethod.Post, new { @id = "TestimonialFormId", @class = "", enctype = "multipart/form-data", role = "form" }))
                 {
                     <div class="card-body">

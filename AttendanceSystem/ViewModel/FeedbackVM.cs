@@ -9,25 +9,39 @@ namespace AttendanceSystem.ViewModel
     {
 
         public long FeedbackId { get; set; }
-        [Required, Display(Name = "Company")]
+        
+        [Display(Name = "Company *")]
+        [Required(ErrorMessage = "This field is required")]
         public long CompanyId { get; set; }
         public string CompanyName { get; set; }
-        [Required, Display(Name = "Feedback Type")]
+        
+        [Display(Name = "Feedback Type *")]
+        [Required(ErrorMessage = "This field is required")]
         public int FeedbackType { get; set; }
         public string FeedbackTypeText { get; set; }
-        [Display(Name = "Feedback Status")]
+        
+        [Display(Name = "Feedback Status *")]
+        [Required(ErrorMessage = "This field is required")]
         public int FeedbackStatus { get; set; }
+        
         public string FeedbackStatusText { get; set; }
-        [Required, Display(Name = "Feedback")]
+        
+        [Display(Name = "Feedback *")]
+        [Required(ErrorMessage = "This field is required")]
         public string FeedbackText { get; set; }
-        [Required, Display(Name = "Remark")]
+        
+        [Display(Name = "Remark")]
         public string Remarks { get; set; }
+        
         [Display(Name = "Super Admin Feedback")]
         public string SuperAdminFeedbackText { get; set; }
+        
         public bool IsDeleted { get; set; }
         public bool IsActive { get; set; }
+        
         [Display(Name = "Feedback Date")]
         public DateTime CreatedDate { get; set; }
+        
         public List<SelectListItem> FeedBackTypeList { get; set; }
         public List<SelectListItem> FeedBackStatusList { get; set; }
     }

@@ -51,8 +51,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
                                  where hi.IsActive
                                  select new HomeImageVM
                                  {
-                                     HomeImageId = hi.HomeImageId,
-                                     HomeImageName = hi.HomeImageName,
+                                     HomeImageId = hi.HomeImageId, 
                                      HeadingText1 = hi.HeadingText1,
                                      HeadingText2 = hi.HeadingText2,
                                      IsActive = hi.IsActive,

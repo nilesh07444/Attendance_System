@@ -10,11 +10,14 @@
         <div class="col-12">
             @using (Html.BeginForm("EditSuperAdminSetting", "Setting", FormMethod.Post, new { @id = "SettingFormId", @class = "", enctype = "multipart/form-data", role = "form" }))
             {
-                <div class="card card-primary">
-                    <div class="card-header">
-                        <h4>Edit General Setting</h4>
+                <div class="card">
+                    <div class="card-header" style="background-color: #425C59;">
+                        <h4 style="color: #FFCEA3;">Edit General Setting</h4>
                     </div>
+                </div>
 
+                <div class="card card-primary">
+                      
                     <div class="card-body">
                         <div class="row">
                             <div class="form-group col-4">

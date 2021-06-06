@@ -9,28 +9,40 @@ namespace AttendanceSystem.ViewModel
     public class SMSPackageVM
     {
         public long SMSPackageId { get; set; }
-        [Required, Display(Name = "Package Name")]
+        [Display(Name = "Package Name *")]
+        [Required(ErrorMessage = "This field is required")]
         public string PackageName { get; set; }
 
-        [Required, Display(Name = "Package Amount")]
+        [Display(Name = "Package Amount *")]
+        [Required(ErrorMessage = "This field is required")]
         public decimal PackageAmount { get; set; }
-       
-        [Required, Display(Name = "Access Days")]
+
+        [Display(Name = "Access Days *")]
+        [Required(ErrorMessage = "This field is required")]
         public int AccessDays { get; set; }
-        [Required, Display(Name = "No Of SMS")]
+
+        [Display(Name = "No Of SMS *")]
+        [Required(ErrorMessage = "This field is required")]
         public int NoOfSMS { get; set; }
-        [Required, Display(Name = "Color Code")]
+
+        [Display(Name = "Color Code *")]
+        [Required(ErrorMessage = "This field is required")]
         public string PackageColorCode { get; set; }
-        [Required, Display(Name = "Font Icon")]
+
+        [Display(Name = "Font Icon *")]
+        [Required(ErrorMessage = "This field is required")]
         public string PackageFontIcon { get; set; }
-        public string PackageImage { get; set; }
-        public bool IsActive { get; set; }
-        public bool IsDeleted { get; set; }
 
         [Display(Name = "Package Image")]
         public HttpPostedFileBase PackageImageFile { get; set; }
 
-        [Display(Name = "Description")]
+        [Display(Name = "Description *")]
+        [Required(ErrorMessage = "This field is required")]
         public string Description { get; set; }
+
+        public string PackageImage { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsDeleted { get; set; }
+
     }
 }

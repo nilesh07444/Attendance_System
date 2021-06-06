@@ -1,6 +1,7 @@
 ﻿@using AttendanceSystem.Helper;
 @model AttendanceSystem.ViewModel.CompanyRequestVM
 @{
+    ViewBag.Title = "Company";
 
     List<SelectListItem> lstPrefix = new List<SelectListItem>();
 
@@ -18,8 +19,20 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="card">
-                    <div class="card-header">
-                        <h5>Company Details</h5>
+                    <div class="card-header" style="background-color: #425C59;">
+                        <h4 style="color: #FFCEA3;">Edit Company - @Model.CompanyName</h4>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header" style="display:block;"> 
+                        <div class="pull-left">
+                            <h5>Company Information</h5>
+                        </div>
+                        <div class="pull-right">
+                            <a href="/admin/company/registered" class="btn btn-warning pull-right"><i class="fas fa-backward"></i> Back</a>
+                        </div>
+
                     </div>
                     <div class="card-body">
                         @using (Html.BeginForm("EditCompany", "company", FormMethod.Post, new { @id = "CompanyEditForm", @class = "needs-validation", enctype = "multipart/form-data", role = "form" }))
@@ -28,15 +41,15 @@
                             @Html.HiddenFor(model => model.CompanyName)
                             @Html.HiddenFor(model => model.CompanyTypeId)
                             @Html.HiddenFor(model => model.CompanyTypeText)
-                            <div class="row">
-                                <div class="col-12">
-                                    <h5>Company Information</h5>
-                                </div>
-                            </div>
+                            @*<div class="row">
+                                    <div class="col-12">
+                                        <h5>Company Information</h5>
+                                    </div>
+                                </div>*@
                             <div class="row">
                                 <div class="form-group col-6">
                                     @Html.LabelFor(model => model.CompanyTypeId, htmlAttributes: new { @class = "" })
-                                    @Model.CompanyTypeText
+                                    <p>@Model.CompanyTypeText</p>
                                 </div>
                                 <div class="form-group col-6">
                                     @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "" })
@@ -133,10 +146,7 @@
                                         @Html.HiddenFor(model => model.CompanyGSTPhoto)
                                         @if (!string.IsNullOrEmpty(Model.CompanyGSTPhoto))
                                         {
-                                            <div class="form-group row">
-                                                <lable class="col-xl-3 col-md-4"></lable>
-                                                <p><a target="_blank" href="@ErrorMessage.CompanyGSTDirectoryPath/@Model.CompanyGSTPhoto"> Click here to view image </a></p>
-                                            </div>
+                                            <p><a target="_blank" href="@ErrorMessage.CompanyGSTDirectoryPath/@Model.CompanyGSTPhoto"> Click here to view image </a></p>
                                         }
                                     </div>
                                 </div>
@@ -157,10 +167,7 @@
                                         @Html.HiddenFor(model => model.CompanyPanPhoto)
                                         @if (!string.IsNullOrEmpty(Model.CompanyPanPhoto))
                                         {
-                                            <div class="form-group row">
-                                                <lable class="col-xl-3 col-md-4"></lable>
-                                                <p><a target="_blank" href="@ErrorMessage.CompanyPanCardDirectoryPath/@Model.CompanyPanPhoto"> Click here to view image </a></p>
-                                            </div>
+                                            <p><a target="_blank" href="@ErrorMessage.CompanyPanCardDirectoryPath/@Model.CompanyPanPhoto"> Click here to view image </a></p>
                                         }
                                     </div>
                                 </div>
@@ -174,10 +181,7 @@
                                         @Html.HiddenFor(model => model.CompanyLogoImage)
                                         @if (!string.IsNullOrEmpty(Model.CompanyLogoImage))
                                         {
-                                            <div class="form-group row">
-                                                <lable class="col-xl-3 col-md-4"></lable>
-                                                <p><a target="_blank" href="@ErrorMessage.CompanyLogoDirectoryPath/@Model.CompanyLogoImage"> Click here to view image </a></p>
-                                            </div>
+                                            <p><a target="_blank" href="@ErrorMessage.CompanyLogoDirectoryPath/@Model.CompanyLogoImage"> Click here to view image </a></p>
                                         }
                                     </div>
                                 </div>
@@ -189,18 +193,14 @@
                                         @Html.HiddenFor(model => model.CompanyRegisterProofImage)
                                         @if (!string.IsNullOrEmpty(Model.CompanyRegisterProofImage))
                                         {
-                                            <div class="form-group row">
-                                                <lable class="col-xl-3 col-md-4"></lable>
-                                                <p><a target="_blank" href="@ErrorMessage.CompanyRegisterProofDirectoryPath/@Model.CompanyRegisterProofImage"> Click here to view image </a></p>
-                                            </div>
+                                            <p><a target="_blank" href="@ErrorMessage.CompanyRegisterProofDirectoryPath/@Model.CompanyRegisterProofImage"> Click here to view image </a></p>
                                         }
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-12">
-                                    <h5>Company Admin Information</h5>
-                                </div>
+                            <hr />
+                            <div class="card-header" style="padding-left:0;">
+                                <h5>Company Admin Information</h5>
                             </div>
                             <div class="row">
                                 <div class="col-sm-6">
@@ -318,10 +318,7 @@
                                         @Html.HiddenFor(model => model.CompanyAdminProfilePhoto)
                                         @if (!string.IsNullOrEmpty(Model.CompanyAdminProfilePhoto))
                                         {
-                                            <div class="form-group row">
-                                                <lable class="col-xl-3 col-md-4"></lable>
-                                                <p><a target="_blank" href="@ErrorMessage.ProfileDirectoryPath/@Model.CompanyAdminProfilePhoto"> Click here to view image </a></p>
-                                            </div>
+                                            <p><a target="_blank" href="@ErrorMessage.ProfileDirectoryPath/@Model.CompanyAdminProfilePhoto"> Click here to view image </a></p>
                                         }
                                     </div>
                                 </div>
@@ -342,48 +339,42 @@
                                         @Html.HiddenFor(model => model.CompanyAdminAadharCardPhoto)
                                         @if (!string.IsNullOrEmpty(Model.CompanyAdminAadharCardPhoto))
                                         {
-                                            <div class="form-group row">
-                                                <lable class="col-xl-3 col-md-4"></lable>
-                                                <p><a target="_blank" href="@ErrorMessage.AdharcardDirectoryPath/@Model.CompanyAdminAadharCardPhoto"> Click here to view image </a></p>
-                                            </div>
+                                            <p><a target="_blank" href="@ErrorMessage.AdharcardDirectoryPath/@Model.CompanyAdminAadharCardPhoto"> Click here to view image </a></p>
                                         }
                                     </div>
                                 </div>
                             </div>
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model.CompanyAdminPanCardNo, htmlAttributes: new { @class = "" })
-                                            @Html.TextBoxFor(model => model.CompanyAdminPanCardNo, new { @type = "text", @class = "form-control", @placeholder = "Enter Pan Card No", @maxlength = "10" })
-                                            @Html.ValidationMessageFor(model => model.CompanyAdminPanCardNo, "", new { @class = "error" })
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model.CompanyAdminPanCardPhotoFile, htmlAttributes: new { @class = "" })
-                                            @Html.TextBoxFor(model => model.CompanyAdminPanCardPhotoFile, new { type = "file", @class = "form-control" })
-                                            @Html.ValidationMessageFor(model => model.CompanyAdminPanCardPhotoFile, "", new { @class = "error" })
-                                            @Html.HiddenFor(model => model.CompanyAdminPanCardPhoto)
-                                            @if (!string.IsNullOrEmpty(Model.CompanyAdminPanCardPhoto))
-                                            {
-                                                <div class="form-group row">
-                                                    <lable class="col-xl-3 col-md-4"></lable>
-                                                    <p><a target="_blank" href="@ErrorMessage.PancardDirectoryPath/@Model.CompanyAdminPanCardPhoto"> Click here to view image </a></p>
-                                                </div>
-                                            }
-                                        </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.CompanyAdminPanCardNo, htmlAttributes: new { @class = "" })
+                                        @Html.TextBoxFor(model => model.CompanyAdminPanCardNo, new { @type = "text", @class = "form-control", @placeholder = "Enter Pan Card No", @maxlength = "10" })
+                                        @Html.ValidationMessageFor(model => model.CompanyAdminPanCardNo, "", new { @class = "error" })
                                     </div>
                                 </div>
-
-                                <div class="form-group row">
-                                    <lable class="col-xl-3 col-md-4"></lable>
-                                    <button type="submit" class="btn btn-primary" style="margin-right:10px;" id="btnSubmit">Submit</button>
-                                    <button type="button" class="btn btn-danger" id="btnCancel">Cancel</button>
-                                    @Html.HiddenFor(model => model.OTP)
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.CompanyAdminPanCardPhotoFile, htmlAttributes: new { @class = "" })
+                                        @Html.TextBoxFor(model => model.CompanyAdminPanCardPhotoFile, new { type = "file", @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.CompanyAdminPanCardPhotoFile, "", new { @class = "error" })
+                                        @Html.HiddenFor(model => model.CompanyAdminPanCardPhoto)
+                                        @if (!string.IsNullOrEmpty(Model.CompanyAdminPanCardPhoto))
+                                        {
+                                            <p><a target="_blank" href="@ErrorMessage.PancardDirectoryPath/@Model.CompanyAdminPanCardPhoto"> Click here to view image </a></p>
+                                        }
+                                    </div>
                                 </div>
-                                }
                             </div>
-                        </div>
+
+                            <div class="card-footer text-center">
+                                <button type="submit" class="btn btn-primary" style="margin-right:10px;" id="btnSubmit">Submit</button>
+                                <button type="button" class="btn btn-danger" id="btnCancel">Cancel</button>
+                                @Html.HiddenFor(model => model.OTP)
+                            </div>
+
+                        }
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -432,7 +423,7 @@
 
         $('#btnSubmit').click(function () {
             if ($("#CompanyEditForm").valid()) {
-              
+
                 var companyId = $("#CompanyId").val();
                 StartLoading();
 

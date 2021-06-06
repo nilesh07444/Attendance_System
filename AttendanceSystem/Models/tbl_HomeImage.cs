@@ -15,7 +15,6 @@ namespace AttendanceSystem.Models
     public partial class tbl_HomeImage
     {
         public long HomeImageId { get; set; }
-        public string HomeImageName { get; set; }
         public string HeadingText1 { get; set; }
         public string HeadingText2 { get; set; }
         public bool IsActive { get; set; }

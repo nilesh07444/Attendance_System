@@ -7,19 +7,16 @@ namespace AttendanceSystem
 {
     public class HomeImageVM
     {
-        public long HomeImageId { get; set; }
-        
+        public long HomeImageId { get; set; }        
+
         [Display(Name = "Heading Text 1")]
+        [Required(ErrorMessage ="This field is required")]
         public string HeadingText1 { get; set; }
+
         [Display(Name = "Heading Text 2")]
         public string HeadingText2 { get; set; }
         public bool IsActive { get; set; }
-        [Display(Name = "Home Image")]
-        public HttpPostedFileBase HomeImageFile { get; set; }
-
-        // Additional fields
-        public string ImageUrl { get; set; }
-        public string HomeImageName { get; set; }
+        
     }
 
     public class AdvertiseImageVM

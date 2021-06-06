@@ -1,21 +1,34 @@
 ﻿@using AttendanceSystem.Helper;
 @model PackageVM
 @{
-
+    ViewBag.Title = "Package";
 }
 
 <section class="section">
 
     <div class="row">
         <div class="col-12">
+
+            <div class="card">
+                <div class="card-header" style="background-color: #425C59;">
+                    <h4 style="color: #FFCEA3;">@(Model.PackageId == 0 ? "Add" : "Edit") Package</h4>
+                </div>
+            </div>
+
             <div class="card card-primary">
-                <div class="card-header">
-                    <h4>@(Model.PackageId == 0 ? "Add" : "Edit") Package</h4>
+                <div class="card-header" style="display: block;">
+                    <div class="pull-left">
+                        <h5>Package Information</h5>
+                    </div>
+                    <div class="pull-right">
+                        <a href="/admin/package" class="btn btn-warning pull-right"><i class="fas fa-backward"></i> Back</a>
+                    </div>
                 </div>
 
                 @using (Html.BeginForm("Add", "Package", FormMethod.Post, new { @id = "PackageFormId", @class = "", enctype = "multipart/form-data", role = "form" }))
                 {
                     <div class="card-body">
+
                         <div class="row">
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.PackageName, htmlAttributes: new { @class = "" })
@@ -37,12 +50,12 @@
                         <div class="row">
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.NoOfSMS, htmlAttributes: new { @class = "" })
-                                @Html.EditorFor(model => model.NoOfSMS, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter No of SMS", @maxlength = "10" } })
+                                @Html.EditorFor(model => model.NoOfSMS, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter No of SMS", @maxlength = "10", @min = "1" } })
                                 @Html.ValidationMessageFor(model => model.NoOfSMS, "", new { @class = "text-danger" })
                             </div>
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.NoOfEmployee, htmlAttributes: new { @class = "" })
-                                @Html.EditorFor(model => model.NoOfEmployee, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter No of Employee", @maxlength = "10" } })
+                                @Html.EditorFor(model => model.NoOfEmployee, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter No of Employee", @maxlength = "10", @min = "1" } })
                                 @Html.ValidationMessageFor(model => model.NoOfEmployee, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -56,6 +69,12 @@
                                 @Html.LabelFor(model => model.PackageImageFile, htmlAttributes: new { @class = "" })
                                 @Html.TextBoxFor(model => model.PackageImageFile, new { type = "file", @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.PackageImageFile, "", new { @class = "text-danger" })
+                                <p>
+                                    @if (!string.IsNullOrEmpty(Model.PackageImage))
+                                    {
+                                        <a target="_blank" href="@ErrorMessage.PackageDirectoryPath/@Model.PackageImage">Click here to view image</a>
+                                    }
+                                </p>
                             </div>
                         </div>
 
@@ -89,8 +108,7 @@
 </section>
 
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
-
-
+ 
 <script type="text/javascript">
     $(document).ready(function () {
         $('#btnCancel').click(function () {

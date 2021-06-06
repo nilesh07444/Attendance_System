@@ -10,18 +10,23 @@ namespace AttendanceSystem
     public class DynamicContentVM
     {
         public long DynamicContentId { get; set; }
-        [Required]
+        
         [Display(Name = "Content Type *")]
+        [Required(ErrorMessage ="This field is required")]
         public int DynamicContentType { get; set; }
-        [Required]
+         
         [Display(Name = "Content Title *")]
+        [Required(ErrorMessage = "This field is required")]
         public string ContentTitle { get; set; }
-        [Required]
+         
         [Display(Name = "Content Description *")]
+        [Required(ErrorMessage = "This field is required")]
         public string ContentDescription { get; set; }
-        [Required]
+
         [Display(Name = "Sequence Number *")]
+        [Required(ErrorMessage = "This field is required")]
         public int? SeqNo { get; set; }
+
         public DateTime? CreatedDate { get; set; }
         public DateTime? ModifiedDate { get; set; }
 

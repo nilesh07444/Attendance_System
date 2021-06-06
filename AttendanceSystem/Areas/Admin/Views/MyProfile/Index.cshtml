@@ -12,9 +12,12 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="card">
-                    <div class="card-header">
-                        <h5>My Profile</h5>
+                    <div class="card-header" style="background-color: #425C59;">
+                        <h4 style="color: #FFCEA3;">My Profile</h4>
                     </div>
+                </div>
+                <div class="card">
+
                     <div class="card-body">
 
                         <div class="row">
@@ -55,7 +58,7 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     @Html.LabelFor(model => model.CompanyAdminDOB, htmlAttributes: new { @class = "" }) :
-                                    @Model.CompanyAdminDOB.ToString("dd MMM yyyy")
+                                    @Model.dtCompanyAdminDOB.ToString("dd MMM yyyy")
                                 </div>
                             </div>
                         </div>
@@ -164,150 +167,154 @@
 
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-header">
-                        <h5>Company Profile</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "" }) :
-                                    @Model.CompanyName
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.CompanyTypeId, htmlAttributes: new { @class = "" }) :
-                                    @Model.CompanyTypeText
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.CompanyEmailId, htmlAttributes: new { @class = "" }) :
-                                    @Model.CompanyEmailId
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.CompanyContactNo, htmlAttributes: new { @class = "" }) :
-                                    @Model.CompanyContactNo
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.CompanyAlternateContactNo, htmlAttributes: new { @class = "" }) :
-                                    @Model.CompanyAlternateContactNo
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.CompanyWebisteUrl, htmlAttributes: new { @class = "" }) :
-                                    @Model.CompanyWebisteUrl
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.CompanyDescription, htmlAttributes: new { @class = "" }) :
-                            @Model.CompanyDescription
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.CompanyAddress, htmlAttributes: new { @class = "" }) :
-                                    @Model.CompanyAddress
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.CompanyPincode, htmlAttributes: new { @class = "" }) :
-                                    @Model.CompanyPincode
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.CompanyState, htmlAttributes: new { @class = "" }) :
-                                    @Model.CompanyState
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.CompanyCity, htmlAttributes: new { @class = "" }) :
-                                    @Model.CompanyCity
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.CompanyGSTNo, htmlAttributes: new { @class = "" }) :
-                                    @Model.CompanyGSTNo
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.CompanyGSTPhotoFile, htmlAttributes: new { @class = "" }) :
-                                    @if (!string.IsNullOrEmpty(Model.CompanyGSTPhoto))
-                                    {
-                                        <div class="form-group row">
-                                            <p><a target="_blank" href="@ErrorMessage.CompanyGSTDirectoryPath/@Model.CompanyGSTPhoto"> Click here to view image </a></p>
-                                        </div>
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.CompanyPanNo, htmlAttributes: new { @class = "" }) :
-                                    @Model.CompanyPanNo
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.CompanyPanPhotoFile, htmlAttributes: new { @class = "" }) :
-                                    @if (!string.IsNullOrEmpty(Model.CompanyPanPhoto))
-                                    {
-                                        <div class="form-group row">
-                                            <p><a target="_blank" href="@ErrorMessage.CompanyPanCardDirectoryPath/@Model.CompanyPanPhoto"> Click here to view image </a></p>
-                                        </div>
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.CompanyLogoImageFile, htmlAttributes: new { @class = "" }) :
-                                    @if (!string.IsNullOrEmpty(Model.CompanyLogoImage))
-                                    {
-                                        <div class="form-group row">
-                                            <p><a target="_blank" href="@ErrorMessage.CompanyLogoDirectoryPath/@Model.CompanyLogoImage"> Click here to view image </a></p>
-                                        </div>
-                                    }
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.CompanyRegisterProofImageFile, htmlAttributes: new { @class = "" }) :
-                                    @if (!string.IsNullOrEmpty(Model.CompanyRegisterProofImage))
-                                    {
-                                        <div class="form-group row">
-                                            <p><a target="_blank" href="@ErrorMessage.CompanyRegisterProofDirectoryPath/@Model.CompanyRegisterProofImage"> Click here to view image </a></p>
-                                        </div>
-                                    }
-                                </div>
-                            </div>
-                        </div>
 
+                @if (clsAdminSession.RoleID == (int)AdminRoles.CompanyAdmin)
+                {
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Company Profile</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "" }) :
+                                        @Model.CompanyName
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.CompanyTypeId, htmlAttributes: new { @class = "" }) :
+                                        @Model.CompanyTypeText
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.CompanyEmailId, htmlAttributes: new { @class = "" }) :
+                                        @Model.CompanyEmailId
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.CompanyContactNo, htmlAttributes: new { @class = "" }) :
+                                        @Model.CompanyContactNo
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.CompanyAlternateContactNo, htmlAttributes: new { @class = "" }) :
+                                        @Model.CompanyAlternateContactNo
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.CompanyWebisteUrl, htmlAttributes: new { @class = "" }) :
+                                        @Model.CompanyWebisteUrl
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.CompanyDescription, htmlAttributes: new { @class = "" }) :
+                                @Model.CompanyDescription
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.CompanyAddress, htmlAttributes: new { @class = "" }) :
+                                        @Model.CompanyAddress
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.CompanyPincode, htmlAttributes: new { @class = "" }) :
+                                        @Model.CompanyPincode
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.CompanyState, htmlAttributes: new { @class = "" }) :
+                                        @Model.CompanyState
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.CompanyCity, htmlAttributes: new { @class = "" }) :
+                                        @Model.CompanyCity
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.CompanyGSTNo, htmlAttributes: new { @class = "" }) :
+                                        @Model.CompanyGSTNo
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.CompanyGSTPhotoFile, htmlAttributes: new { @class = "" }) :
+                                        @if (!string.IsNullOrEmpty(Model.CompanyGSTPhoto))
+                                        {
+                                            <div class="form-group row">
+                                                <p><a target="_blank" href="@ErrorMessage.CompanyGSTDirectoryPath/@Model.CompanyGSTPhoto"> Click here to view image </a></p>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.CompanyPanNo, htmlAttributes: new { @class = "" }) :
+                                        @Model.CompanyPanNo
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.CompanyPanPhotoFile, htmlAttributes: new { @class = "" }) :
+                                        @if (!string.IsNullOrEmpty(Model.CompanyPanPhoto))
+                                        {
+                                            <div class="form-group row">
+                                                <p><a target="_blank" href="@ErrorMessage.CompanyPanCardDirectoryPath/@Model.CompanyPanPhoto"> Click here to view image </a></p>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.CompanyLogoImageFile, htmlAttributes: new { @class = "" }) :
+                                        @if (!string.IsNullOrEmpty(Model.CompanyLogoImage))
+                                        {
+                                            <div class="form-group row">
+                                                <p><a target="_blank" href="@ErrorMessage.CompanyLogoDirectoryPath/@Model.CompanyLogoImage"> Click here to view image </a></p>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.CompanyRegisterProofImageFile, htmlAttributes: new { @class = "" }) :
+                                        @if (!string.IsNullOrEmpty(Model.CompanyRegisterProofImage))
+                                        {
+                                            <div class="form-group row">
+                                                <p><a target="_blank" href="@ErrorMessage.CompanyRegisterProofDirectoryPath/@Model.CompanyRegisterProofImage"> Click here to view image </a></p>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
-                </div>
+                }
             </div>
         </div>
     </div>

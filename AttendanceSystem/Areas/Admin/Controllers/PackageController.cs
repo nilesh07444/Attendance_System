@@ -12,7 +12,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
     [PageAccess]
     public class PackageController : Controller
     {
-        // GET: Admin/Package
+   
         AttendanceSystemEntities _db;
         public string packageDirectoryPath = "";
         public PackageController()
@@ -179,7 +179,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                              PackageImage = pkg.PackageImage,
                              IsActive = pkg.IsActive,
                              NoOfSMS = pkg.NoOfSMS,
-                             NoOfEmployee = pkg.NoOfEmployee
+                             NoOfEmployee = pkg.NoOfEmployee,
+                             PackageColorCode = pkg.PackageColorCode,
+                             PackageFontIcon = pkg.PackageFontIcon
                          }).FirstOrDefault();
 
             return View(packageVM);
