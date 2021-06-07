@@ -237,7 +237,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
         private List<SelectListItem> GetMaterialStatusList()
         {
-            string[] materialStatusArr = Enum.GetNames(typeof(MateriaStatus));
+            string[] materialStatusArr = Enum.GetNames(typeof(MaterialStatus));
             var listMaterialStatus = materialStatusArr.Select((value, key) => new { value, key }).ToDictionary(x => x.key + 1, x => x.value);
 
             List<SelectListItem> lst = (from pt in listMaterialStatus

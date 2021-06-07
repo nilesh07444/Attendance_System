@@ -157,18 +157,25 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     // Get All Employees
                     List<tbl_Employee> lstEmployees = _db.tbl_Employee.Where(x => x.CompanyId == companyId && !x.IsDeleted && x.AdminRoleId != (int)AdminRoles.Worker).ToList();
                     List<long> employeeIdsExceptMonthly = lstEmployees.Where(x => x.EmploymentCategory != (int)EmploymentCategory.MonthlyBased).Select(x => x.EmployeeId).ToList();
-                    List<tbl_EmployeePayment> paymentList = (from epp in _db.tbl_EmployeePayment
-                                                             where
-                                                             employeeIdsExceptMonthly.Contains(epp.UserId)
-                                                             && epp.Month == month
-                                                             && epp.Year == year
-                                                             select epp).ToList();
-                    var paymentGroup = paymentList.GroupBy(l => l.UserId)
+                    var paymentList = (from emp in lstEmployees
+                                       join epp in _db.tbl_EmployeePayment on emp.EmployeeId equals epp.UserId into p
+                                       from ep in p.DefaultIfEmpty()
+                                       where
+                                       emp.EmploymentCategory != (int)EmploymentCategory.MonthlyBased
+                                       && ep.Month == month
+                                       && ep.Year == year
+                                       select new
+                                       {
+                                           EmployeeId = emp.EmployeeId,
+                                           DebitAmount = ep.DebitAmount,
+                                           CreditAmount = ep.CreditAmount
+                                       }).ToList();
+                    var paymentGroup = paymentList.GroupBy(l => l.EmployeeId)
                         .Select(cl => new
                         {
-                            EmployeeId = cl.First().UserId,
-                            SumOfDebit = cl.Sum(c => c.DebitAmount),
-                            SumOfCredit = cl.Sum(c => c.CreditAmount)
+                            EmployeeId = cl.First().EmployeeId,
+                            SumOfDebit = cl.Sum(c => c.DebitAmount != null ? c.DebitAmount : 0),
+                            SumOfCredit = cl.Sum(c => c.CreditAmount != null ? c.CreditAmount : 0)
                         }).ToList();
 
 
@@ -258,7 +265,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 errorMessage = ex.Message.ToString();
             }
 
-            return Json(new { Status = status, ErrorMessage = errorMessage }, JsonRequestBehavior.AllowGet);
+            return Json(new
+            {
+                Status = status,
+                ErrorMessage = errorMessage
+            }, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult ConversionOfWorkerUsers(int month, int year)

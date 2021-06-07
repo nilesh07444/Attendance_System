@@ -45,4 +45,20 @@ namespace AttendanceSystem.ViewModel
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
     }
+
+    public class MaterialReportVM
+    {
+        public long MaterialId { get; set; }
+        public long CompanyId { get; set; }
+        public long MaterialCategoryId { get; set; }
+        public string MaterialCategoryText { get; set; }
+        public DateTime MaterialDate { get; set; }
+        public long SiteId { get; set; }
+        public string SiteName { get; set; }
+        public decimal InWard { get; set; }
+        public decimal OutWard { get; set; }
+        public decimal Qty { get; set; }
+        public int InOut { get; set; }
+        public string Remarks { get; set; }
+    }
 }

@@ -20,7 +20,7 @@
                         <div class="row">
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.MaterialCategoryName, htmlAttributes: new { @class = "" })
-                                @Html.EditorFor(model => model.MaterialCategoryName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter MaterialCategory Name ", maxlength = "200", @autofocus = "autofocus" } })
+                                @Html.EditorFor(model => model.MaterialCategoryName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Material Category Name ", maxlength = "200", @autofocus = "autofocus" } })
                                 @Html.ValidationMessageFor(model => model.MaterialCategoryName, "", new { @class = "text-danger" })
                                 @Html.HiddenFor(model => model.MaterialCategoryId)
                             </div>
@@ -28,7 +28,7 @@
                         </div>
                         <div class="form-group">
                             @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "" })
-                            @Html.TextAreaFor(model => model.Description, 10, 5, new { @class = "form-control", @placeholder = "Enter Package Description", maxlength = "250" })
+                            @Html.TextAreaFor(model => model.Description, 10, 5, new { @class = "form-control", @placeholder = "Enter Material Category Description", maxlength = "250" })
                             @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                         </div>
                     </div>

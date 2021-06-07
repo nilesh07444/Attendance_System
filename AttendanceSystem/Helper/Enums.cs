@@ -103,7 +103,7 @@ namespace AttendanceSystem.Helper
         NotInterested = 3
     }
 
-    public enum MateriaStatus
+    public enum MaterialStatus
     {
         In = 1,
         Out = 2
