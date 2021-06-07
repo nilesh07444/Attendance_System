@@ -38,4 +38,29 @@ namespace AttendanceSystem.ViewModel.WebAPI
         public DateTime EndDate { get; set; }
         public List<long> EmployeeIds { get; set; }
     }
+
+    public class PaymentReportFilterVM
+    {
+        public int StartMonth { get; set; }
+        public int EndMonth { get; set; }
+        public int Year { get; set; }
+    }
+
+    public class WorkerPaymentReportFilterVM
+    {
+        public int StartMonth { get; set; }
+        public int EndMonth { get; set; }
+        public int Year { get; set; }
+        public long EmployeeId { get; set; }
+    }
+
+    public class PaymentReportVM
+    {
+        public DateTime Date { get; set; }
+        public decimal Opening { get; set; }
+        public decimal Credit { get; set; }
+        public decimal Debit { get; set; }
+        public decimal Closing { get; set; }
+        public string Remark { get; set; }
+    }
 }

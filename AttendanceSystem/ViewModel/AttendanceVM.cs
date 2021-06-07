@@ -124,4 +124,18 @@ namespace AttendanceSystem.ViewModel
         public bool IsAfternoon { get; set; }
         public bool IsEvening { get; set; }
     }
+
+    public class WorkerAttendanceReportFilterVM
+    {
+        public WorkerAttendanceReportFilterVM()
+        {
+            StartDate = DateTime.UtcNow.Date;
+            EndDate = DateTime.UtcNow.Date;
+        }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public int SiteId { get; set; }
+        public long? EmployeeId { get; set; }
+    }
+
 }

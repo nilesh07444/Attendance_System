@@ -5,8 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace AttendanceSystem.Areas.WebAPI.Controllers
@@ -124,5 +122,62 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             return response;
         }
 
+        [HttpGet]
+        [Route("GetAllEmployeeFingerPrintList")]
+        public ResponseDataModel<List<EmployeeFirgerprintVM>> GetAllEmployeeFingerPrintList()
+        {
+            ResponseDataModel<List<EmployeeFirgerprintVM>> response = new ResponseDataModel<List<EmployeeFirgerprintVM>>();
+            try
+            {
+                companyId = base.UTI.CompanyId;
+                List<EmployeeFirgerprintVM> lstEmployeeFingerPrints = (from f in _db.tbl_EmployeeFingerprint
+                                                                       join e in _db.tbl_Employee on f.EmployeeId equals e.EmployeeId
+                                                                       where e.AdminRoleId == (int)AdminRoles.Worker
+                                                                       && e.CompanyId == companyId
+                                                                       select new EmployeeFirgerprintVM
+                                                                       {
+                                                                           EmployeeId = f.EmployeeId,
+                                                                           ISOCode = f.ISOCode
+                                                                       }).ToList();
+                response.Data = lstEmployeeFingerPrints;
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message);
+            }
+
+            return response;
+        }
+
+        [HttpGet]
+        [Route("GetAssignedEmployeeFingerPrintList/{siteId}")]
+        public ResponseDataModel<List<EmployeeFirgerprintVM>> GetAssignedEmployeeFingerPrintList(long siteId)
+        {
+            ResponseDataModel<List<EmployeeFirgerprintVM>> response = new ResponseDataModel<List<EmployeeFirgerprintVM>>();
+            try
+            {
+                companyId = base.UTI.CompanyId;
+                List<EmployeeFirgerprintVM> lstEmployeeFingerPrints = (from f in _db.tbl_EmployeeFingerprint
+                                                                       join e in _db.tbl_Employee on f.EmployeeId equals e.EmployeeId
+                                                                       join aw in _db.tbl_AssignWorker on e.EmployeeId equals aw.EmployeeId
+                                                                       where e.AdminRoleId == (int)AdminRoles.Worker
+                                                                       && e.CompanyId == companyId
+                                                                       && aw.Date == DateTime.UtcNow.Date
+                                                                       select new EmployeeFirgerprintVM
+                                                                       {
+                                                                           EmployeeId = f.EmployeeId,
+                                                                           ISOCode = f.ISOCode
+                                                                       }).ToList();
+                response.Data = lstEmployeeFingerPrints;
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message);
+            }
+
+            return response;
+        }
     }
 }

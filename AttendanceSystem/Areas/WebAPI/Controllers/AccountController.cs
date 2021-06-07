@@ -492,31 +492,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             return response;
         }
 
-        [HttpGet]
-        [Route("GetAllEmployeeFingerPrintList")]
-        public ResponseDataModel<List<EmployeeFirgerprintVM>> GetAllEmployeeFingerPrintList()
-        {
-            ResponseDataModel<List<EmployeeFirgerprintVM>> response = new ResponseDataModel<List<EmployeeFirgerprintVM>>();
-            try
-            {
-                List<EmployeeFirgerprintVM> lstEmployeeFingerPrints = (from f in _db.tbl_EmployeeFingerprint
-                                                                       join e in _db.tbl_Employee on f.EmployeeId equals e.EmployeeId
-                                                                       where e.AdminRoleId == (int)AdminRoles.Worker
-                                                                       select new EmployeeFirgerprintVM
-                                                                       {
-                                                                           EmployeeId = f.EmployeeId,
-                                                                           ISOCode = f.ISOCode
-                                                                       }).ToList();
-                response.Data = lstEmployeeFingerPrints;
-            }
-            catch (Exception ex)
-            {
-                response.IsError = true;
-                response.AddError(ex.Message);
-            }
-
-            return response;
-        }
+       
 
     }
 }

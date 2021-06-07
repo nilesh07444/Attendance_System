@@ -1,9 +1,13 @@
 ﻿using AttendanceSystem.Helper;
 using AttendanceSystem.Models;
 using AttendanceSystem.ViewModel;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Web;
 using System.Web.Http;
 
 namespace AttendanceSystem.Areas.WebAPI.Controllers
@@ -270,7 +274,216 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             return response;
         }
 
+        [HttpPost]
+        [Route("Report")]
+        public ResponseDataModel<List<WorkerAttendanceVM>> Report(WorkerAttendanceReportFilterVM workerAttendanceReportFilterVM)
+        {
+            ResponseDataModel<List<WorkerAttendanceVM>> response = new ResponseDataModel<List<WorkerAttendanceVM>>();
+            response.IsError = false;
+            try
+            {
+                companyId = base.UTI.CompanyId;
+
+                List<WorkerAttendanceVM> attendanceList = (from at in _db.tbl_WorkerAttendance
+                                                           join emp in _db.tbl_Employee on at.EmployeeId equals emp.EmployeeId
+                                                           where emp.CompanyId == companyId
+                                                           && at.AttendanceDate >= workerAttendanceReportFilterVM.StartDate && at.AttendanceDate<= workerAttendanceReportFilterVM.EndDate
+                                                           && (at.MorningSiteId == workerAttendanceReportFilterVM.SiteId
+                                                           || at.AfternoonSiteId == workerAttendanceReportFilterVM.SiteId
+                                                           || at.EveningSiteId == workerAttendanceReportFilterVM.SiteId)
+                                                           && (workerAttendanceReportFilterVM.EmployeeId.HasValue ? at.EmployeeId == workerAttendanceReportFilterVM.EmployeeId.Value : true)
+                                                           select new WorkerAttendanceVM
+                                                           {
+                                                               AttendanceId = at.WorkerAttendanceId,
+                                                               CompanyId = emp.CompanyId,
+                                                               EmployeeId = emp.EmployeeId,
+                                                               Name = emp.FirstName + " " + emp.LastName,
+                                                               AttendanceDate = at.AttendanceDate,
+                                                               EmploymentCategory = emp.EmploymentCategory,
+                                                               IsMorning = (at.IsMorning && at.MorningSiteId == workerAttendanceReportFilterVM.SiteId ? true : false),
+                                                               IsAfternoon = (at.IsAfternoon && at.AfternoonSiteId == workerAttendanceReportFilterVM.SiteId ? true : false),
+                                                               IsEvening = (at.IsEvening && at.EveningSiteId == workerAttendanceReportFilterVM.SiteId ? true : false),
+                                                               ProfilePicture = emp.ProfilePicture
+                                                           }).OrderByDescending(x => x.AttendanceDate).ToList();
+
+                attendanceList.ForEach(x =>
+                {
+                    x.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)x.EmploymentCategory);
+                    x.ProfilePicture = (!string.IsNullOrEmpty(x.ProfilePicture) ? CommonMethod.GetCurrentDomain() + ErrorMessage.EmployeeDirectoryPath + x.ProfilePicture : string.Empty);
+                });
+                response.Data = attendanceList;
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message);
+            }
+
+            return response;
+        }
+
+        [HttpPost]
+        [Route("ListDownload")]
+        public ResponseDataModel<string> ListDownload(WorkerAttendanceReportFilterVM workerAttendanceReportFilterVM)
+        {
+            ResponseDataModel<string> response = new ResponseDataModel<string>();
+            try
+            {
+
+                ExcelPackage excel = new ExcelPackage();
+                long companyId = base.UTI.CompanyId;
+                bool hasrecord = false;
+                List<WorkerAttendanceVM> attendanceList = (from at in _db.tbl_WorkerAttendance
+                                                           join emp in _db.tbl_Employee on at.EmployeeId equals emp.EmployeeId
+                                                           where emp.CompanyId == companyId
+                                                           && at.AttendanceDate >= workerAttendanceReportFilterVM.StartDate && at.AttendanceDate <= workerAttendanceReportFilterVM.EndDate
+                                                           && (at.MorningSiteId == workerAttendanceReportFilterVM.SiteId
+                                                           || at.AfternoonSiteId == workerAttendanceReportFilterVM.SiteId
+                                                           || at.EveningSiteId == workerAttendanceReportFilterVM.SiteId)
+                                                           && (workerAttendanceReportFilterVM.EmployeeId.HasValue ? at.EmployeeId == workerAttendanceReportFilterVM.EmployeeId.Value : true)
+                                                           select new WorkerAttendanceVM
+                                                           {
+                                                               AttendanceId = at.WorkerAttendanceId,
+                                                               CompanyId = emp.CompanyId,
+                                                               EmployeeId = emp.EmployeeId,
+                                                               Name = emp.FirstName + " " + emp.LastName,
+                                                               AttendanceDate = at.AttendanceDate,
+                                                               EmploymentCategory = emp.EmploymentCategory,
+                                                               IsMorning = (at.IsMorning && at.MorningSiteId == workerAttendanceReportFilterVM.SiteId ? true : false),
+                                                               IsAfternoon = (at.IsAfternoon && at.AfternoonSiteId == workerAttendanceReportFilterVM.SiteId ? true : false),
+                                                               IsEvening = (at.IsEvening && at.EveningSiteId == workerAttendanceReportFilterVM.SiteId ? true : false),
+                                                               ProfilePicture = emp.ProfilePicture
+                                                           }).OrderByDescending(x => x.AttendanceDate).ToList();
+                attendanceList.ForEach(x =>
+                {
+                    x.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)x.EmploymentCategory);
+                    x.ProfilePicture = (!string.IsNullOrEmpty(x.ProfilePicture) ? CommonMethod.GetCurrentDomain() + ErrorMessage.EmployeeDirectoryPath + x.ProfilePicture : string.Empty);
+                });
+
+                string[] arrycolmns = new string[] { "Name", "Date", "Morning", "Afternoon", "Evening" };
+
+                var workSheet = excel.Workbook.Worksheets.Add("Report");
+                workSheet.Cells[1, 1].Style.Font.Bold = true;
+                workSheet.Cells[1, 1].Style.Font.Size = 20;
+                workSheet.Cells[1, 1].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+                workSheet.Cells[1, 1].Value = "Worker Attendance Report: " + workerAttendanceReportFilterVM.StartDate.ToString("dd-MM-yyyy") + " to " + workerAttendanceReportFilterVM.EndDate.ToString("dd-MM-yyyy");
+                for (var col = 1; col < arrycolmns.Length + 1; col++)
+                {
+                    workSheet.Cells[2, col].Style.Font.Bold = true;
+                    workSheet.Cells[2, col].Style.Font.Size = 12;
+                    workSheet.Cells[2, col].Value = arrycolmns[col - 1];
+                    workSheet.Cells[2, col].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    workSheet.Cells[2, col].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                    workSheet.Cells[2, col].AutoFitColumns(30, 70);
+                    workSheet.Cells[2, col].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    workSheet.Cells[2, col].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                    workSheet.Cells[2, col].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    workSheet.Cells[2, col].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    workSheet.Cells[2, col].Style.WrapText = true;
+                }
+
+                int row1 = 1;
+
+                if (attendanceList != null && attendanceList.Count() > 0)
+                {
+                    hasrecord = true;
+                    foreach (var attendance in attendanceList)
+                    {
+                        workSheet.Cells[row1 + 2, 1].Style.Font.Bold = false;
+                        workSheet.Cells[row1 + 2, 1].Style.Font.Size = 12;
+                        workSheet.Cells[row1 + 2, 1].Value = attendance.Name;
+                        workSheet.Cells[row1 + 2, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        workSheet.Cells[row1 + 2, 1].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                        workSheet.Cells[row1 + 2, 1].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[row1 + 2, 1].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[row1 + 2, 1].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[row1 + 2, 1].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[row1 + 2, 1].Style.WrapText = true;
+                        workSheet.Cells[row1 + 2, 1].AutoFitColumns(30, 70);
+
+                        workSheet.Cells[row1 + 2, 2].Style.Font.Bold = false;
+                        workSheet.Cells[row1 + 2, 2].Style.Font.Size = 12;
+                        workSheet.Cells[row1 + 2, 2].Value = attendance.AttendanceDate.ToString("dd-MM-yyyy");
+                        workSheet.Cells[row1 + 2, 2].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        workSheet.Cells[row1 + 2, 2].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                        workSheet.Cells[row1 + 2, 2].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[row1 + 2, 2].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[row1 + 2, 2].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[row1 + 2, 2].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[row1 + 2, 2].Style.WrapText = true;
+                        workSheet.Cells[row1 + 2, 2].AutoFitColumns(30, 70);
+
+                        workSheet.Cells[row1 + 2, 3].Style.Font.Bold = false;
+                        workSheet.Cells[row1 + 2, 3].Style.Font.Size = 12;
+                        workSheet.Cells[row1 + 2, 3].Value = attendance.IsMorning;
+                        workSheet.Cells[row1 + 2, 3].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        workSheet.Cells[row1 + 2, 3].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                        workSheet.Cells[row1 + 2, 3].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[row1 + 2, 3].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[row1 + 2, 3].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[row1 + 2, 3].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[row1 + 2, 3].Style.WrapText = true;
+                        workSheet.Cells[row1 + 2, 3].AutoFitColumns(30, 70);
 
 
+
+                        workSheet.Cells[row1 + 2, 4].Style.Font.Bold = false;
+                        workSheet.Cells[row1 + 2, 4].Style.Font.Size = 12;
+                        workSheet.Cells[row1 + 2, 4].Value = attendance.IsAfternoon;
+                        workSheet.Cells[row1 + 2, 4].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        workSheet.Cells[row1 + 2, 4].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                        workSheet.Cells[row1 + 2, 4].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[row1 + 2, 4].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[row1 + 2, 4].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[row1 + 2, 4].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[row1 + 2, 4].Style.WrapText = true;
+                        workSheet.Cells[row1 + 2, 4].AutoFitColumns(30, 70);
+
+
+                        workSheet.Cells[row1 + 2, 5].Style.Font.Bold = false;
+                        workSheet.Cells[row1 + 2, 5].Style.Font.Size = 12;
+                        workSheet.Cells[row1 + 2, 5].Value = attendance.IsEvening;
+                        workSheet.Cells[row1 + 2, 5].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        workSheet.Cells[row1 + 2, 5].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                        workSheet.Cells[row1 + 2, 5].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[row1 + 2, 5].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[row1 + 2, 5].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[row1 + 2, 5].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        workSheet.Cells[row1 + 2, 5].Style.WrapText = true;
+                        workSheet.Cells[row1 + 2, 5].AutoFitColumns(30, 70);
+                        row1 = row1 + 1;
+                    }
+                }
+
+                string guidstr = Guid.NewGuid().ToString();
+                guidstr = guidstr.Substring(0, 5);
+
+                string documentPath = HttpContext.Current.Server.MapPath(ErrorMessage.DocumentDirectoryPath);
+
+                bool folderExists = Directory.Exists(documentPath);
+                if (!folderExists)
+                    Directory.CreateDirectory(documentPath);
+
+                string flname = "WorkerAttendance_" + workerAttendanceReportFilterVM.StartDate.ToString("dd-MM-yyyy") + "_" + workerAttendanceReportFilterVM.EndDate.ToString("dd-MM-yyyy") + guidstr + ".xlsx";
+                excel.SaveAs(new FileInfo(documentPath + flname));
+                if (hasrecord == true)
+                {
+                    response.Data = CommonMethod.GetCurrentDomain() + ErrorMessage.DocumentDirectoryPath + flname;
+                }
+                else
+                {
+                    response.Data = "";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                response.AddError(ex.Message.ToString());
+                return response;
+            }
+
+            return response;
+
+        }
     }
 }

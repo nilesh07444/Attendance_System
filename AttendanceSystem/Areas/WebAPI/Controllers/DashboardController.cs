@@ -2,6 +2,7 @@
 using AttendanceSystem.Models;
 using AttendanceSystem.ViewModel.WebAPI;
 using System;
+using System.Data.Entity.SqlServer;
 using System.Linq;
 using System.Web.Http;
 
@@ -48,7 +49,12 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 dashboardCountVM.TotalAbsent = currentMonthWorkingDays - dashboardCountVM.TotalAttendance - (int.Parse(dashboardCountVM.thisMonthHoliday.ToString()));
 
                 dashboardCountVM.LeavePendingForApprove = _db.tbl_Leave.Where(x => x.UserId == employeeId && !x.IsDeleted && x.LeaveStatus == (int)LeaveStatus.Pending).Count();
-                dashboardCountVM.LastMonthRating = "7/10";
+
+                int LastMonth = DateTime.Now.Month == 1 ? 12 : DateTime.Now.Month - 1;
+                int year = DateTime.Now.Month == 1 ? DateTime.Now.Year - 1 : DateTime.Now.Year;
+                tbl_EmployeeRating employeeRatingObject = _db.tbl_EmployeeRating.Where(x => x.EmployeeId == employeeId && x.RateMonth == LastMonth && x.RateYear == year).FirstOrDefault();
+                dashboardCountVM.LastMonthRating = (employeeRatingObject != null ? SqlFunctions.StringConvert((new decimal[] { employeeRatingObject.BehaviourRate, employeeRatingObject.RegularityRate, employeeRatingObject.WorkRate }).Average(), 4, 2) : "0") + "/10";
+                
                 dashboardCountVM.PendingSalary = 15000;
                 response.IsError = false;
                 dashboardCountVM.AttendancePendingForApprove = _db.tbl_Attendance.Where(x => x.Status == (int)AttendanceStatus.Pending && x.UserId == employeeId && !x.IsDeleted).Count();
