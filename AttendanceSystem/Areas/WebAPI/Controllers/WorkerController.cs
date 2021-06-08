@@ -151,19 +151,21 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("GetAssignedEmployeeFingerPrintList/{siteId}")]
-        public ResponseDataModel<List<EmployeeFirgerprintVM>> GetAssignedEmployeeFingerPrintList(long siteId)
+        [Route("GetAssignedEmployeeFingerPrintList/{id}")]
+        public ResponseDataModel<List<EmployeeFirgerprintVM>> GetAssignedEmployeeFingerPrintList(long id)
         {
             ResponseDataModel<List<EmployeeFirgerprintVM>> response = new ResponseDataModel<List<EmployeeFirgerprintVM>>();
             try
             {
+                DateTime today = DateTime.UtcNow.Date;
                 companyId = base.UTI.CompanyId;
                 List<EmployeeFirgerprintVM> lstEmployeeFingerPrints = (from f in _db.tbl_EmployeeFingerprint
                                                                        join e in _db.tbl_Employee on f.EmployeeId equals e.EmployeeId
                                                                        join aw in _db.tbl_AssignWorker on e.EmployeeId equals aw.EmployeeId
                                                                        where e.AdminRoleId == (int)AdminRoles.Worker
                                                                        && e.CompanyId == companyId
-                                                                       && aw.Date == DateTime.UtcNow.Date
+                                                                       && aw.Date == today
+                                                                       && aw.SiteId == id
                                                                        select new EmployeeFirgerprintVM
                                                                        {
                                                                            EmployeeId = f.EmployeeId,
