@@ -21,14 +21,23 @@ namespace AttendanceSystem.Models
         public Nullable<long> MorningSiteId { get; set; }
         public Nullable<long> MorningAttendanceBy { get; set; }
         public Nullable<System.DateTime> MorningAttendanceDate { get; set; }
+        public Nullable<decimal> MorningLatitude { get; set; }
+        public Nullable<decimal> MorningLongitude { get; set; }
+        public string MorningLocationFrom { get; set; }
         public bool IsAfternoon { get; set; }
         public Nullable<long> AfternoonSiteId { get; set; }
         public Nullable<long> AfternoonAttendanceBy { get; set; }
         public Nullable<System.DateTime> AfternoonAttendanceDate { get; set; }
+        public Nullable<decimal> AfternoonLatitude { get; set; }
+        public Nullable<decimal> AfternoonLongitude { get; set; }
+        public string AfternoonLocationFrom { get; set; }
         public bool IsEvening { get; set; }
         public Nullable<long> EveningSiteId { get; set; }
         public Nullable<long> EveningAttendanceBy { get; set; }
         public Nullable<System.DateTime> EveningAttendanceDate { get; set; }
+        public Nullable<decimal> EveningLatitude { get; set; }
+        public Nullable<decimal> EveningLongitude { get; set; }
+        public string EveningLocationFrom { get; set; }
         public Nullable<decimal> ExtraHours { get; set; }
         public Nullable<decimal> NoOfHoursWorked { get; set; }
         public Nullable<int> NoOfUnitWorked { get; set; }

@@ -20,5 +20,7 @@ namespace AttendanceSystem.Models
         public int Year { get; set; }
         public long CompanyId { get; set; }
         public long CreatedBy { get; set; }
+        public bool IsEmployeeDone { get; set; }
+        public bool IsWorkerDone { get; set; }
     }
 }

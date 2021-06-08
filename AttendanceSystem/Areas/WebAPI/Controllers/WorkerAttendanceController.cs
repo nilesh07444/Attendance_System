@@ -128,6 +128,9 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                             attendanceObject.EveningAttendanceBy = employeeId;
                             attendanceObject.EveningAttendanceDate = DateTime.UtcNow;
                             attendanceObject.EveningSiteId = workerAttendanceRequestVM.SiteId;
+                            attendanceObject.EveningLatitude = workerAttendanceRequestVM.Latitude;
+                            attendanceObject.EveningLongitude = workerAttendanceRequestVM.Longitude;
+                            attendanceObject.EveningLocationFrom = workerAttendanceRequestVM.LocationFrom;
 
                             if (employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased || employeeObj.EmploymentCategory == (int)EmploymentCategory.MonthlyBased)
                                 attendanceObject.ExtraHours = workerAttendanceRequestVM.ExtraHours;
@@ -145,6 +148,9 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                             attendanceObject.AfternoonAttendanceBy = employeeId;
                             attendanceObject.AfternoonAttendanceDate = DateTime.UtcNow;
                             attendanceObject.AfternoonSiteId = workerAttendanceRequestVM.SiteId;
+                            attendanceObject.AfternoonLatitude = workerAttendanceRequestVM.Latitude;
+                            attendanceObject.AfternoonLongitude = workerAttendanceRequestVM.Longitude;
+                            attendanceObject.AfternoonLocationFrom = workerAttendanceRequestVM.LocationFrom;
                         }
                         else if (workerAttendanceRequestVM.AttendanceType == (int)WorkerAttendanceType.Morning)
                         {
@@ -152,6 +158,9 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                             attendanceObject.MorningAttendanceBy = employeeId;
                             attendanceObject.MorningAttendanceDate = DateTime.UtcNow;
                             attendanceObject.MorningSiteId = workerAttendanceRequestVM.SiteId;
+                            attendanceObject.MorningLatitude = workerAttendanceRequestVM.Latitude;
+                            attendanceObject.MorningLongitude = workerAttendanceRequestVM.Longitude;
+                            attendanceObject.MorningLocationFrom = workerAttendanceRequestVM.LocationFrom;
                         }
                         _db.SaveChanges();
                     }
@@ -166,6 +175,9 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                             attendanceObject.AfternoonAttendanceBy = employeeId;
                             attendanceObject.AfternoonAttendanceDate = DateTime.UtcNow;
                             attendanceObject.AfternoonSiteId = workerAttendanceRequestVM.SiteId;
+                            attendanceObject.AfternoonLatitude = workerAttendanceRequestVM.Latitude;
+                            attendanceObject.AfternoonLongitude = workerAttendanceRequestVM.Longitude;
+                            attendanceObject.AfternoonLocationFrom = workerAttendanceRequestVM.LocationFrom;
                         }
                         else if (workerAttendanceRequestVM.AttendanceType == (int)WorkerAttendanceType.Morning)
                         {
@@ -173,6 +185,9 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                             attendanceObject.MorningAttendanceBy = employeeId;
                             attendanceObject.MorningAttendanceDate = DateTime.UtcNow;
                             attendanceObject.MorningSiteId = workerAttendanceRequestVM.SiteId;
+                            attendanceObject.MorningLatitude = workerAttendanceRequestVM.Latitude;
+                            attendanceObject.MorningLongitude = workerAttendanceRequestVM.Longitude;
+                            attendanceObject.MorningLocationFrom = workerAttendanceRequestVM.LocationFrom;
                         }
                         _db.tbl_WorkerAttendance.Add(attendanceObject);
                         _db.SaveChanges();
