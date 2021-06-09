@@ -2572,7 +2572,8 @@ p, ul:not(.list-unstyled), ol {
 
 .form-control, .input-group-text, .custom-select, .custom-file-label {
     background-color: #fdfdff;
-    border-color: #e4e6fc
+    border-color: #425C59;
+    border-width:1.6px;
 }
 
     .form-control:focus, .input-group-text:focus, .custom-select:focus, .custom-file-label:focus {
@@ -10124,7 +10125,7 @@ body:not(.sidebar-mini) .sidebar-style-2 .sidebar-menu li.active ul.dropdown-men
 }
 
 .theme-white .btn-primary {
-    background-color: #6777ef;
+    background-color: #6777ef; 
     border-color: transparent !important;
     color: #fff
 }
@@ -11311,4 +11312,12 @@ label.error {
 
 .card-header h5 {
     color: #000000;
+}
+
+table thead tr:first-child {
+    background-color: #425C59 !important; 
+}
+
+table thead th, table thead td {
+    color: #FFCEA3 !important;
 }

@@ -16,13 +16,13 @@
             </div>
 
             <div class="card card-primary">
-                <div class="card-header" style="display: block;">
-                    <div class="pull-left">
+                <div class="card-header">
+                    @*<div class="pull-left">
                         <h5>Package Information</h5>
-                    </div>
-                    <div class="pull-right">
+                    </div>*@
+                    @*<div class="pull-right">
                         <a href="/admin/package" class="btn btn-warning pull-right"><i class="fas fa-backward"></i> Back</a>
-                    </div>
+                    </div>*@
                 </div>
 
                 @using (Html.BeginForm("Add", "Package", FormMethod.Post, new { @id = "PackageFormId", @class = "", enctype = "multipart/form-data", role = "form" }))
@@ -94,7 +94,7 @@
                     </div>
 
                     <div class="card-footer text-center">
-                        <button class="btn btn-primary mr-1" type="submit">Submit</button>
+                        <button class="btn btn-success mr-1" type="submit">Submit</button>
                         <a href="/admin/package" class="btn btn-secondary">Cancel</a>
                     </div>
 
