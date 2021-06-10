@@ -520,7 +520,9 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 companyId = base.UTI.CompanyId;
 
                 #region Validation
-                if (requestVM.Date != DateTime.Today)
+                DateTime indianCurrentDateTime = CommonMethod.ConvertFromUTCToIndianDateTime(DateTime.UtcNow);
+
+                if (requestVM.Date.Date != indianCurrentDateTime.Date)
                 {
                     response.IsError = true;
                     response.AddError(ErrorMessage.WorkerCanAssignForTodayOnly);
