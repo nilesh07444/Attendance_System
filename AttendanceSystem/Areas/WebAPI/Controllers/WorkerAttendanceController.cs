@@ -100,7 +100,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     response.AddError(ErrorMessage.CanNotTakeEveningAttendanceWorkerNotPresentOnAfterNoon);
                 }
 
-                tbl_Employee employeeObj = _db.tbl_Employee.FirstOrDefault(x => x.EmployeeId == employeeId);
+                tbl_Employee employeeObj = _db.tbl_Employee.Where(x => x.EmployeeId == workerAttendanceRequestVM.EmployeeId).FirstOrDefault();
                 if (workerAttendanceRequestVM.AttendanceType == (int)WorkerAttendanceType.Evening
                     && employeeObj.EmploymentCategory == (int)EmploymentCategory.HourlyBased && workerAttendanceRequestVM.NoOfHoursWorked == 0)
                 {
