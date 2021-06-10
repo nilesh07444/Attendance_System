@@ -181,5 +181,39 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
             return response;
         }
+
+        [HttpGet]
+        [Route("GetWorkerPendingSalary/{id}")]
+        public ResponseDataModel<EmployeePendingSalaryVM> GetWorkerPendingSalary(long id)
+        {
+            ResponseDataModel<EmployeePendingSalaryVM> response = new ResponseDataModel<EmployeePendingSalaryVM>();
+            try
+            {
+                DateTime today = DateTime.UtcNow.Date;
+                companyId = base.UTI.CompanyId;
+
+
+                EmployeePendingSalaryVM employeeDetails = (from e in _db.tbl_Employee
+                                                           where e.EmployeeId == id
+                                                           select new EmployeePendingSalaryVM
+                                                           {
+                                                               EmployeeId = e.EmployeeId,
+                                                               EmploymentCategory = e.EmploymentCategory,
+                                                               PerCategoryPrice = e.PerCategoryPrice,
+                                                               ExtraPerHourPrice = e.ExtraPerHourPrice
+                                                           }).FirstOrDefault();
+
+                employeeDetails.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)employeeDetails.EmploymentCategory);
+                employeeDetails.PendingSalary = _db.tbl_WorkerPayment.Any(x => x.UserId == id) ? _db.tbl_WorkerPayment.Where(x => x.UserId == id).Select(x => x.CreditAmount - x.DebitAmount).Sum() : 0;
+                response.Data = employeeDetails;
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message);
+            }
+
+            return response;
+        }
     }
 }

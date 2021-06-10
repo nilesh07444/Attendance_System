@@ -215,7 +215,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                         if (employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased)
                         {
-                            objWorkerPayment.CreditAmount = (employeeObj.PerCategoryPrice) + (employeeObj.ExtraPerHourPrice * workerAttendanceRequestVM.ExtraHours);
+                            objWorkerPayment.CreditAmount = (attendanceObject.IsMorning && attendanceObject.IsAfternoon && attendanceObject.IsEvening ? (employeeObj.PerCategoryPrice) : (employeeObj.PerCategoryPrice / 2)) + (employeeObj.ExtraPerHourPrice * workerAttendanceRequestVM.ExtraHours);
                         }
                         else if (employeeObj.EmploymentCategory == (int)EmploymentCategory.HourlyBased)
                         {
@@ -227,6 +227,30 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         }
                         _db.tbl_WorkerPayment.Add(objWorkerPayment);
                         _db.SaveChanges();
+
+
+                        if (workerAttendanceRequestVM.TodaySalary.HasValue && workerAttendanceRequestVM.TodaySalary.Value > 0 && employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased)
+                        {
+                            tbl_WorkerPayment objWorkerPaymentDebit = new tbl_WorkerPayment();
+                            objWorkerPaymentDebit.CompanyId = companyId;
+                            objWorkerPaymentDebit.UserId = attendanceObject.EmployeeId;
+                            objWorkerPaymentDebit.AttendanceId = attendanceObject.WorkerAttendanceId;
+                            objWorkerPaymentDebit.PaymentDate = attendanceObject.AttendanceDate;
+                            objWorkerPaymentDebit.PaymentType = (int)EmployeePaymentType.Salary;
+                            objWorkerPaymentDebit.CreditOrDebitText = ErrorMessage.Debit;
+                            objWorkerPaymentDebit.DebitAmount = workerAttendanceRequestVM.TodaySalary.Value;
+                            objWorkerPaymentDebit.Remarks = ErrorMessage.AutoCreditOnEveningAttendance;
+                            objWorkerPaymentDebit.Month = attendanceObject.AttendanceDate.Month;
+                            objWorkerPaymentDebit.Year = attendanceObject.AttendanceDate.Year;
+                            objWorkerPaymentDebit.CreatedDate = DateTime.UtcNow;
+                            objWorkerPaymentDebit.CreatedBy = employeeId;
+                            objWorkerPaymentDebit.ModifiedDate = DateTime.UtcNow;
+                            objWorkerPaymentDebit.ModifiedBy = employeeId;
+                            objWorkerPaymentDebit.CreditAmount = 0;
+
+                            _db.tbl_WorkerPayment.Add(objWorkerPayment);
+                            _db.SaveChanges();
+                        }
 
                     }
                     response.Data = employeeObj.FirstName + " " + employeeObj.LastName;
@@ -302,7 +326,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 List<WorkerAttendanceVM> attendanceList = (from at in _db.tbl_WorkerAttendance
                                                            join emp in _db.tbl_Employee on at.EmployeeId equals emp.EmployeeId
                                                            where emp.CompanyId == companyId
-                                                           && at.AttendanceDate >= workerAttendanceReportFilterVM.StartDate && at.AttendanceDate<= workerAttendanceReportFilterVM.EndDate
+                                                           && at.AttendanceDate >= workerAttendanceReportFilterVM.StartDate && at.AttendanceDate <= workerAttendanceReportFilterVM.EndDate
                                                            && (at.MorningSiteId == workerAttendanceReportFilterVM.SiteId
                                                            || at.AfternoonSiteId == workerAttendanceReportFilterVM.SiteId
                                                            || at.EveningSiteId == workerAttendanceReportFilterVM.SiteId)

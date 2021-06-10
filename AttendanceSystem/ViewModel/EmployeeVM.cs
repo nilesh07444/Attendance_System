@@ -100,4 +100,13 @@ namespace AttendanceSystem.ViewModel
         public int ActiveEmployee { get; set; }
     }
 
+    public class EmployeePendingSalaryVM
+    {
+        public long EmployeeId { get; set; }
+        public int EmploymentCategory { get; set; }
+        public string EmploymentCategoryText { get; set; }
+        public decimal PerCategoryPrice { get; set; }
+        public decimal? ExtraPerHourPrice { get; set; }
+        public decimal? PendingSalary { get; set; }
+    }
 }
