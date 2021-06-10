@@ -98,6 +98,7 @@ namespace AttendanceSystem.ViewModel
         public decimal NoOfHoursWorked { get; set; }
         public int NoOfUnitWorked { get; set; }
         public long SiteId { get; set; }
+        public decimal? TodaySalary { get; set; }
 
         public string LocationFrom { get; set; }
         public decimal Latitude { get; set; }
