@@ -53,6 +53,13 @@ namespace AttendanceSystem
             return dt;
         }
 
+        public static DateTime ConvertFromUTCToIndianDateTime(DateTime utcDateTime)
+        {            
+            TimeZoneInfo indTimeZone = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
+            DateTime dateTimeAsTimeZone = TimeZoneInfo.ConvertTimeFromUtc(utcDateTime, indTimeZone); 
+            return dateTimeAsTimeZone;
+        }
+
         public static DateTime ConvertToUTC(DateTime dateTime, string timeZone)
         {
             TimeZoneInfo nzTimeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZone);

@@ -4,12 +4,12 @@
 
 <!--? Hero Start -->
 <div class="slider-area2">
-    <div class="slider-height2 hero-overly2 d-flex align-items-center">
+    <div class="slider-height2 d-flex align-items-center" style="background-image: url(/Content/client-theme/assets/img/contrabook/hero_contactus.png)">
         <div class="container">
             <div class="row">
                 <div class="col-xl-12">
                     <div class="hero-cap hero-cap2 text-center">
-                        <h2>Contact Us</h2>
+                        @*<h2>Contact Us</h2>*@
                     </div>
                 </div>
             </div>
@@ -155,7 +155,7 @@
             $("#spn_Message").hide();
         }
 
-        if (!isvalid) { 
+        if (!isvalid) {
             return false;
         }
 
@@ -186,7 +186,7 @@
 
                     $("input.form-control, textarea.form-control").val('');
                     $(".field-validation-valid").hide();
-                     
+
                 }
             },
             error: function (resultData) {
