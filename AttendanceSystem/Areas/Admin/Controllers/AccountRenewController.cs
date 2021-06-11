@@ -3,6 +3,7 @@ using AttendanceSystem.Models;
 using AttendanceSystem.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -58,6 +59,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             List<PackageVM> lstAccountPackages = new List<PackageVM>();
             try
             {
+                ViewBag.StripePublishKey = ConfigurationManager.AppSettings["stripePublishableKey"];
                 lstAccountPackages = (from pck in _db.tbl_Package
                                       where !pck.IsDeleted && pck.IsActive
                                       select new PackageVM
