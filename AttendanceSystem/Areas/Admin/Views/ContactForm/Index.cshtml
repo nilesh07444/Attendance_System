@@ -1,0 +1,64 @@
+﻿@using AttendanceSystem.Helper
+@using Newtonsoft.Json;
+@using AttendanceSystem.ViewModel;
+@model List<ContactFormVM>
+@{
+    ViewBag.Title = "Contact";
+    int counter = 1;
+}
+
+<section class="section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12">
+
+                <div class="card">
+                    <div class="card-header" style="background-color: #425C59;">
+                        <h4 style="color: #FFCEA3;">Contact Form List</h4>
+                    </div>
+                </div>
+
+                <div class="card">
+
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover" id="tableExport" style="width:100%;">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Mobile No</th>
+                                        <th>EmailId</th>
+                                        <th>Message</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @if (Model != null && Model.Count > 0)
+                                    {
+                                        foreach (ContactFormVM obj in Model)
+                                        {
+                                            <tr class="gradeX">
+                                                <td>@counter.</td>
+                                                <td>@obj.Firstname</td>
+                                                <td>@obj.Lastname</td>
+                                                <td>@obj.MobileNo</td>
+                                                <td>@obj.EmailId</td>
+                                                <td>@obj.Message</td>
+
+                                            </tr>
+                                            counter++;
+                                        }
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+ 

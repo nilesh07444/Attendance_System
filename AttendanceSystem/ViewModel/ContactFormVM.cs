@@ -12,5 +12,7 @@ namespace AttendanceSystem
         public string MobileNo { get; set; }
         public string EmailId { get; set; }
         public string Message { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public long ContactFormId { get; set; }
     }
 }
