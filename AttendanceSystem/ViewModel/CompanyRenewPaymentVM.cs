@@ -28,4 +28,10 @@ namespace AttendanceSystem.ViewModel
         public long PackageId { get; set; }
     }
 
+    public class CompanyRenewFilterVM
+    {
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public List<CompanyRenewPaymentVM> CompanyRenewList { get; set; }
+    }
 }

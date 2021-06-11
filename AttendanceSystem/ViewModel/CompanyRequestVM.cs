@@ -233,4 +233,13 @@ namespace AttendanceSystem.ViewModel
         
         
     }
+
+    public class CompanyRegisteredFilterVM
+    {
+        public long? CompanyTypeId { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public List<RegisteredCompanyVM> RegisteredCompanyList { get; set; }
+        public List<SelectListItem> CompanyTypeList { get; set; }
+    }
 }

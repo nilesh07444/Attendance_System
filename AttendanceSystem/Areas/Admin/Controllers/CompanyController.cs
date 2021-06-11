@@ -43,32 +43,42 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             defaultPassword = ConfigurationManager.AppSettings["DefaultPassword"].ToString();
         }
         // GET: Admin/Company
-        public ActionResult Registered()
+        public ActionResult Registered(long? companyTypeId, DateTime? startDate, DateTime? endDate)
         {
-            List<RegisteredCompanyVM> registeredCompanyVM = new List<RegisteredCompanyVM>();
+
+            CompanyRegisteredFilterVM companyRegisteredFilterVM = new CompanyRegisteredFilterVM()
+            {
+                CompanyTypeId = companyTypeId,
+                StartDate = startDate,
+                EndDate = endDate
+            };
+
             try
             {
-                registeredCompanyVM = (from cp in _db.tbl_Company
-                                       join ct in _db.mst_CompanyType on cp.CompanyTypeId equals ct.CompanyTypeId
-                                       where cp.IsActive
-                                       select new RegisteredCompanyVM
-                                       {
-                                           CompanyId = cp.CompanyId,
-                                           CompanyTypeText = ct.CompanyTypeName,
-                                           CompanyName = cp.CompanyName,
-                                           City = cp.City,
-                                           State = cp.State,
-                                           GSTNo = cp.GSTNo,
-                                           CompanyLogoImage = cp.CompanyLogoImage,
-                                           CompanyCode = cp.CompanyCode
-                                       }).ToList();
+                companyRegisteredFilterVM.RegisteredCompanyList = (from cp in _db.tbl_Company
+                                                                   join ct in _db.mst_CompanyType on cp.CompanyTypeId equals ct.CompanyTypeId
+                                                                   where cp.IsActive
+                                                                   && (companyRegisteredFilterVM.CompanyTypeId.HasValue ? cp.CompanyTypeId == companyRegisteredFilterVM.CompanyTypeId.Value : true)
+                                                                   && ((companyRegisteredFilterVM.StartDate.HasValue && companyRegisteredFilterVM.EndDate.HasValue) ? (cp.CreatedDate >= companyRegisteredFilterVM.StartDate.Value && cp.CreatedDate <= companyRegisteredFilterVM.EndDate.Value) : true)
+                                                                   select new RegisteredCompanyVM
+                                                                   {
+                                                                       CompanyId = cp.CompanyId,
+                                                                       CompanyTypeText = ct.CompanyTypeName,
+                                                                       CompanyName = cp.CompanyName,
+                                                                       City = cp.City,
+                                                                       State = cp.State,
+                                                                       GSTNo = cp.GSTNo,
+                                                                       CompanyLogoImage = cp.CompanyLogoImage,
+                                                                       CompanyCode = cp.CompanyCode
+                                                                   }).ToList();
             }
             catch (Exception ex)
             {
                 string ErrorMessage = ex.Message.ToString();
                 throw ex;
             }
-            return View(registeredCompanyVM);
+            companyRegisteredFilterVM.CompanyTypeList = GetCompanyType();
+            return View(companyRegisteredFilterVM);
         }
 
         public ActionResult Requests(int? status)
@@ -327,34 +337,41 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             }
             return RedirectToAction("Requests");
         }
-        public ActionResult Renew()
+        public ActionResult Renew(DateTime? startDate, DateTime? endDate)
         {
-            List<CompanyRenewPaymentVM> companyRenewPaymentVM = new List<CompanyRenewPaymentVM>();
+            CompanyRenewFilterVM companyRenewFilterVM = new CompanyRenewFilterVM()
+            {
+                StartDate = startDate,
+                EndDate = endDate
+            };
+
             try
             {
-                companyRenewPaymentVM = (from cp in _db.tbl_CompanyRenewPayment
-                                         join cm in _db.tbl_Company on cp.CompanyId equals cm.CompanyId
-                                         select new CompanyRenewPaymentVM
-                                         {
-                                             CompanyRegistrationPaymentId = cp.CompanyRegistrationPaymentId,
-                                             CompanyId = cp.CompanyId,
-                                             CompanyName = cm.CompanyName,
-                                             Amount = cp.Amount,
-                                             PaymentFor = cp.PaymentFor,
-                                             PaymentGatewayResponseId = cp.PaymentGatewayResponseId,
-                                             StartDate = cp.StartDate,
-                                             EndDate = cp.EndDate,
-                                             AccessDays = cp.AccessDays,
-                                             PackageId = cp.PackageId,
-                                             PackageName = cp.PackageName
-                                         }).OrderByDescending(x => x.CompanyRegistrationPaymentId).ToList();
+                companyRenewFilterVM.CompanyRenewList = (from cp in _db.tbl_CompanyRenewPayment
+                                                         join cm in _db.tbl_Company on cp.CompanyId equals cm.CompanyId
+                                                         where companyRenewFilterVM.StartDate.HasValue && companyRenewFilterVM.EndDate.HasValue ?
+                                                         cp.StartDate >= companyRenewFilterVM.StartDate.Value && cp.EndDate <= companyRenewFilterVM.EndDate.Value : true
+                                                         select new CompanyRenewPaymentVM
+                                                         {
+                                                             CompanyRegistrationPaymentId = cp.CompanyRegistrationPaymentId,
+                                                             CompanyId = cp.CompanyId,
+                                                             CompanyName = cm.CompanyName,
+                                                             Amount = cp.Amount,
+                                                             PaymentFor = cp.PaymentFor,
+                                                             PaymentGatewayResponseId = cp.PaymentGatewayResponseId,
+                                                             StartDate = cp.StartDate,
+                                                             EndDate = cp.EndDate,
+                                                             AccessDays = cp.AccessDays,
+                                                             PackageId = cp.PackageId,
+                                                             PackageName = cp.PackageName
+                                                         }).OrderByDescending(x => x.CompanyRegistrationPaymentId).ToList();
             }
             catch (Exception ex)
             {
                 string ErrorMessage = ex.Message.ToString();
                 throw ex;
             }
-            return View(companyRenewPaymentVM);
+            return View(companyRenewFilterVM);
         }
 
         public ActionResult EditCompany(long id)
@@ -853,7 +870,17 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return companyCode;
         }
 
+        private List<SelectListItem> GetCompanyType()
+        {
 
+            List<SelectListItem> lst = (from ms in _db.mst_CompanyType
+                                        select new SelectListItem
+                                        {
+                                            Text = ms.CompanyTypeName,
+                                            Value = ms.CompanyTypeId.ToString()
+                                        }).ToList();
+            return lst;
+        }
 
     }
 }
