@@ -406,17 +406,17 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             {
                 companyId = base.UTI.CompanyId;
 
+
+                List<long> assignedEmployeeIds = _db.tbl_AssignWorker.Where(x => x.Date == requestVM.Date && !x.IsClosed).Select(x => x.EmployeeId).ToList();
+
                 List<EmployeeVM> workerList = (from emp in _db.tbl_Employee
-                                               join wk in _db.tbl_AssignWorker.Where(x => x.SiteId == requestVM.SiteId && x.Date == requestVM.Date)
-                                               on emp.EmployeeId equals wk.EmployeeId into lfwk
-                                               from wkr in lfwk.DefaultIfEmpty()
 
                                                join wt in _db.tbl_WorkerType on emp.WorkerTypeId equals wt.WorkerTypeId into wtc
                                                from w in wtc.DefaultIfEmpty()
 
                                                where !emp.IsDeleted && emp.CompanyId == companyId
                                                && emp.AdminRoleId == (int)AdminRoles.Worker
-                                               && wkr == null
+                                               && !assignedEmployeeIds.Contains(emp.EmployeeId)
                                                select new EmployeeVM
                                                {
                                                    EmployeeId = emp.EmployeeId,
@@ -539,6 +539,12 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     response.IsError = true;
                     response.AddError(ErrorMessage.SiteDoesNotExistForCurrentCompany);
                 }
+
+                if (_db.tbl_AssignWorker.Any(x => x.Date == requestVM.Date && !x.IsClosed && requestVM.WorkerList.Contains(x.EmployeeId)))
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.WorkerAlreadyAssigned);
+                }
                 #endregion Validation
 
                 if (!response.IsError)
@@ -556,6 +562,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         assignedWorker.ModifiedBy = employeeId;
                         assignedWorker.ModifiedDate = DateTime.UtcNow;
                         listAssignedWorker.Add(assignedWorker);
+
                     });
 
                     _db.tbl_AssignWorker.AddRange(listAssignedWorker);
@@ -603,22 +610,73 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     response.AddError(ErrorMessage.WorkerDidNotAssignedToThisSite);
                 }
 
-                if (_db.tbl_AssignWorker.Any(x => x.SiteId == requestVM.SiteId && x.Date == requestVM.Date && x.EmployeeId == requestVM.EmployeeId && x.IsClosed))
+                if (_db.tbl_AssignWorker.Any(x => x.SiteId == requestVM.SiteId && x.Date == requestVM.Date && x.EmployeeId == requestVM.EmployeeId && x.IsClosed)
+                    && !_db.tbl_AssignWorker.Any(x => x.SiteId == requestVM.SiteId && x.Date == requestVM.Date && x.EmployeeId == requestVM.EmployeeId && !x.IsClosed
+                    ))
                 {
                     response.IsError = true;
                     response.AddError(ErrorMessage.WorkerAlreadyClosed);
                 }
 
+                tbl_WorkerAttendance attendanceObject = _db.tbl_WorkerAttendance.Where(x => x.EmployeeId == requestVM.EmployeeId && x.AttendanceDate == requestVM.Date && !x.IsClosed).FirstOrDefault();
+                if (attendanceObject == null)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.WorkerAttendancePendingCanNotClose);
+                }
+
+
+                if (attendanceObject != null && ((attendanceObject.IsMorning && !attendanceObject.IsAfternoon) || (!attendanceObject.IsMorning && attendanceObject.IsAfternoon && !attendanceObject.IsEvening)))
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.WorkerAttendancePendingCanNotClose);
+                }
+
+                tbl_Employee employeeObj = _db.tbl_Employee.Where(x => x.EmployeeId == requestVM.EmployeeId).FirstOrDefault();
+                if (employeeObj.EmploymentCategory == (int)EmploymentCategory.HourlyBased || employeeObj.EmploymentCategory == (int)EmploymentCategory.UnitBased)
+                {
+                    if (attendanceObject != null && (!attendanceObject.IsMorning || !attendanceObject.IsAfternoon || !attendanceObject.IsEvening))
+                    {
+                        response.IsError = true;
+                        response.AddError(ErrorMessage.WorkerAttendancePendingCanNotClose);
+                    }
+                }
                 #endregion Validation
 
                 if (!response.IsError)
                 {
-                    tbl_AssignWorker assignedWorker = _db.tbl_AssignWorker.Where(x => x.SiteId == requestVM.SiteId && x.Date == requestVM.Date && x.EmployeeId == requestVM.EmployeeId).FirstOrDefault();
+                    tbl_AssignWorker assignedWorker = _db.tbl_AssignWorker.Where(x => x.SiteId == requestVM.SiteId && x.Date == requestVM.Date && x.EmployeeId == requestVM.EmployeeId && !x.IsClosed).FirstOrDefault();
                     if (assignedWorker != null)
                     {
                         assignedWorker.IsClosed = true;
                         assignedWorker.ModifiedBy = employeeId;
                         assignedWorker.ModifiedDate = DateTime.UtcNow;
+
+
+                        //tbl_WorkerAttendance workerAttendance = _db.tbl_WorkerAttendance.Where(x => x.AttendanceDate == requestVM.Date && x.EmployeeId == requestVM.EmployeeId && !x.IsEvening).FirstOrDefault();
+                        if (attendanceObject != null && employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased)
+                        {
+                            tbl_WorkerPayment objWorkerPayment = new tbl_WorkerPayment();
+                            objWorkerPayment.CompanyId = companyId;
+                            objWorkerPayment.UserId = requestVM.EmployeeId;
+                            objWorkerPayment.AttendanceId = attendanceObject.WorkerAttendanceId;
+                            objWorkerPayment.PaymentDate = attendanceObject.AttendanceDate;
+                            objWorkerPayment.PaymentType = (int)EmployeePaymentType.Salary;
+                            objWorkerPayment.CreditOrDebitText = ErrorMessage.Credit;
+                            objWorkerPayment.DebitAmount = 0;
+                            objWorkerPayment.Remarks = ErrorMessage.AutoCreditOnEveningAttendance;
+                            objWorkerPayment.Month = attendanceObject.AttendanceDate.Month;
+                            objWorkerPayment.Year = attendanceObject.AttendanceDate.Year;
+                            objWorkerPayment.CreatedDate = DateTime.UtcNow;
+                            objWorkerPayment.CreatedBy = employeeId;
+                            objWorkerPayment.ModifiedDate = DateTime.UtcNow;
+                            objWorkerPayment.ModifiedBy = employeeId;
+                            objWorkerPayment.CreditAmount = (attendanceObject.IsMorning && attendanceObject.IsAfternoon && attendanceObject.IsEvening ? (employeeObj.PerCategoryPrice) : (employeeObj.PerCategoryPrice / 2));
+                            _db.tbl_WorkerPayment.Add(objWorkerPayment);
+
+                            attendanceObject.IsClosed = true;
+
+                        }
                         _db.SaveChanges();
                         response.Data = true;
                     }

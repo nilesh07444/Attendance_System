@@ -687,6 +687,7 @@
           <Property Name="ExtraHours" Type="numeric" Precision="18" Scale="2" />
           <Property Name="NoOfHoursWorked" Type="numeric" Precision="18" Scale="2" />
           <Property Name="NoOfUnitWorked" Type="int" />
+          <Property Name="IsClosed" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="tbl_WorkerPayment">
           <Key>
@@ -1602,6 +1603,7 @@
           <Property Name="ExtraHours" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="NoOfHoursWorked" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="NoOfUnitWorked" Type="Int32" />
+          <Property Name="IsClosed" Type="Boolean" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -2362,6 +2364,7 @@
           <EntitySetMapping Name="tbl_WorkerAttendance">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_WorkerAttendance">
               <MappingFragment StoreEntitySet="tbl_WorkerAttendance">
+                <ScalarProperty Name="IsClosed" ColumnName="IsClosed" />
                 <ScalarProperty Name="NoOfUnitWorked" ColumnName="NoOfUnitWorked" />
                 <ScalarProperty Name="NoOfHoursWorked" ColumnName="NoOfHoursWorked" />
                 <ScalarProperty Name="ExtraHours" ColumnName="ExtraHours" />

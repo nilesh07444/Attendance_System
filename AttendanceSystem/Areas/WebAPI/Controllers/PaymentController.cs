@@ -23,15 +23,13 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
         public PaymentController()
         {
             _db = new AttendanceSystemEntities();
-            employeeId = base.UTI.EmployeeId;
-            companyId = base.UTI.CompanyId;
-            employeeRoleId = base.UTI.RoleId;
         }
 
         [HttpPost]
         [Route("OwnPaymentList")]
         public ResponseDataModel<List<PaymentVM>> OwnPaymentList(PaymentFilterVM paymentFilterVM)
         {
+            employeeId = base.UTI.EmployeeId;
             ResponseDataModel<List<PaymentVM>> response = new ResponseDataModel<List<PaymentVM>>();
             response.IsError = false;
             try
@@ -106,6 +104,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
         [Route("Detail/{id}")]
         public ResponseDataModel<PaymentVM> Detail(long id)
         {
+            employeeId = base.UTI.EmployeeId;
             ResponseDataModel<PaymentVM> response = new ResponseDataModel<PaymentVM>();
             response.IsError = false;
             try
@@ -139,6 +138,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
         [Route("Add")]
         public ResponseDataModel<bool> Add(PaymentVM paymentVM)
         {
+            employeeId = base.UTI.EmployeeId;
+            companyId = base.UTI.CompanyId;
             ResponseDataModel<bool> response = new ResponseDataModel<bool>();
             response.IsError = false;
             response.Data = false;
@@ -428,6 +429,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
         [Route("PaymentReport")]
         public ResponseDataModel<List<PaymentReportVM>> PaymentReport(PaymentReportFilterVM paymentReportFilterVM)
         {
+            employeeId = base.UTI.EmployeeId;
             ResponseDataModel<List<PaymentReportVM>> response = new ResponseDataModel<List<PaymentReportVM>>();
             response.IsError = false;
 
@@ -479,7 +481,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             ResponseDataModel<string> response = new ResponseDataModel<string>();
             try
             {
-
+                employeeId = base.UTI.EmployeeId;
                 ExcelPackage excel = new ExcelPackage();
                 long companyId = base.UTI.CompanyId;
                 bool hasrecord = false;

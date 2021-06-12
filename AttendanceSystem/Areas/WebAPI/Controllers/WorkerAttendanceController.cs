@@ -35,6 +35,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             try
             {
                 roleId = base.UTI.RoleId;
+                employeeId = base.UTI.EmployeeId;
                 DateTime today = DateTime.UtcNow.Date;
                 #region Validation
                 if (workerAttendanceRequestVM.SiteId == 0)
@@ -42,7 +43,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     response.IsError = true;
                     response.AddError(ErrorMessage.SiteRequired);
                 }
-                if (!_db.tbl_AssignWorker.Any(x => x.EmployeeId == workerAttendanceRequestVM.EmployeeId && x.Date == today))
+                if (!_db.tbl_AssignWorker.Any(x => x.EmployeeId == workerAttendanceRequestVM.EmployeeId && x.SiteId == workerAttendanceRequestVM.SiteId && x.Date == today && !x.IsClosed))
                 {
                     response.IsError = true;
                     response.AddError(ErrorMessage.WorketNotAssignedToday);
@@ -74,27 +75,34 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     response.AddError(ErrorMessage.InValidWorkerAttendanceType);
                 }
 
+                tbl_WorkerAttendance attendanceObject = _db.tbl_WorkerAttendance.Where(x => x.EmployeeId == workerAttendanceRequestVM.EmployeeId && x.AttendanceDate == today && !x.IsClosed).FirstOrDefault();
+                if (attendanceObject == null && workerAttendanceRequestVM.AttendanceType == (int)WorkerAttendanceType.Evening)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.CanNotTakeEveningAttendanceWorkerNotPresentOnMorningOrAfterNoon);
+                }
+
                 if (workerAttendanceRequestVM.AttendanceType == (int)WorkerAttendanceType.Morning
-                    && _db.tbl_WorkerAttendance.Any(x => x.EmployeeId == workerAttendanceRequestVM.EmployeeId && x.AttendanceDate == today && x.IsMorning))
+                    && attendanceObject != null && attendanceObject.IsMorning)
                 {
                     response.IsError = true;
                     response.AddError(ErrorMessage.WorkerMorningAttendanceAlreadyDone);
                 }
                 else if (workerAttendanceRequestVM.AttendanceType == (int)WorkerAttendanceType.Afternoon
-                    && _db.tbl_WorkerAttendance.Any(x => x.EmployeeId == workerAttendanceRequestVM.EmployeeId && x.AttendanceDate == today && x.IsAfternoon))
+                    && attendanceObject != null && attendanceObject.IsAfternoon)
                 {
                     response.IsError = true;
                     response.AddError(ErrorMessage.WorkerAfternoonAttendanceAlreadyDone);
                 }
                 else if (workerAttendanceRequestVM.AttendanceType == (int)WorkerAttendanceType.Evening
-                    && _db.tbl_WorkerAttendance.Any(x => x.EmployeeId == workerAttendanceRequestVM.EmployeeId && x.AttendanceDate == today && x.IsEvening))
+                    && attendanceObject != null && attendanceObject.IsEvening)
                 {
                     response.IsError = true;
                     response.AddError(ErrorMessage.WorkerEveningAttendanceAlreadyDone);
                 }
 
                 if (workerAttendanceRequestVM.AttendanceType == (int)WorkerAttendanceType.Evening
-                    && !(_db.tbl_WorkerAttendance.Any(x => x.EmployeeId == workerAttendanceRequestVM.EmployeeId && x.AttendanceDate == today && x.IsAfternoon)))
+                    && attendanceObject != null && !attendanceObject.IsAfternoon)
                 {
                     response.IsError = true;
                     response.AddError(ErrorMessage.CanNotTakeEveningAttendanceWorkerNotPresentOnAfterNoon);
@@ -118,8 +126,6 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 #endregion Validation
                 if (!response.IsError)
                 {
-                    tbl_WorkerAttendance attendanceObject = _db.tbl_WorkerAttendance.FirstOrDefault(x => x.AttendanceDate == today && x.EmployeeId == workerAttendanceRequestVM.EmployeeId);
-
                     if (attendanceObject != null)
                     {
                         if (workerAttendanceRequestVM.AttendanceType == (int)WorkerAttendanceType.Evening)
@@ -131,7 +137,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                             attendanceObject.EveningLatitude = workerAttendanceRequestVM.Latitude;
                             attendanceObject.EveningLongitude = workerAttendanceRequestVM.Longitude;
                             attendanceObject.EveningLocationFrom = workerAttendanceRequestVM.LocationFrom;
-
+                            attendanceObject.IsClosed = true;
                             if (employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased || employeeObj.EmploymentCategory == (int)EmploymentCategory.MonthlyBased)
                                 attendanceObject.ExtraHours = workerAttendanceRequestVM.ExtraHours;
 
@@ -140,6 +146,12 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                             if (employeeObj.EmploymentCategory == (int)EmploymentCategory.UnitBased)
                                 attendanceObject.NoOfHoursWorked = workerAttendanceRequestVM.NoOfUnitWorked;
+
+                            tbl_AssignWorker assignedWorker = _db.tbl_AssignWorker.Where(x => x.SiteId == workerAttendanceRequestVM.SiteId && x.Date == today && x.EmployeeId == workerAttendanceRequestVM.EmployeeId && !x.IsClosed).FirstOrDefault();
+                            if (assignedWorker != null)
+                            {
+                                assignedWorker.IsClosed = true;
+                            }
 
                         }
                         else if (workerAttendanceRequestVM.AttendanceType == (int)WorkerAttendanceType.Afternoon)
@@ -162,6 +174,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                             attendanceObject.MorningLongitude = workerAttendanceRequestVM.Longitude;
                             attendanceObject.MorningLocationFrom = workerAttendanceRequestVM.LocationFrom;
                         }
+
+                        
                         _db.SaveChanges();
                     }
                     else
@@ -195,39 +209,39 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                     if (employeeObj.EmploymentCategory != (int)EmploymentCategory.MonthlyBased && workerAttendanceRequestVM.AttendanceType == (int)WorkerAttendanceType.Evening)
                     {
-                        tbl_WorkerPayment objWorkerPayment = new tbl_WorkerPayment();
-                        objWorkerPayment.CompanyId = companyId;
-                        objWorkerPayment.UserId = attendanceObject.EmployeeId;
-                        objWorkerPayment.AttendanceId = attendanceObject.WorkerAttendanceId;
-                        objWorkerPayment.PaymentDate = attendanceObject.AttendanceDate;
-                        objWorkerPayment.PaymentType = (int)EmployeePaymentType.Salary;
-                        objWorkerPayment.CreditOrDebitText = ErrorMessage.Credit;
-                        objWorkerPayment.DebitAmount = 0;
-                        objWorkerPayment.Remarks = ErrorMessage.AutoCreditOnEveningAttendance;
-                        objWorkerPayment.Month = attendanceObject.AttendanceDate.Month;
-                        objWorkerPayment.Year = attendanceObject.AttendanceDate.Year;
-                        //objEmployeePayment.Status=
-                        //objEmployeePayment.ProcessStatusText
-                        objWorkerPayment.CreatedDate = DateTime.UtcNow;
-                        objWorkerPayment.CreatedBy = employeeId;
-                        objWorkerPayment.ModifiedDate = DateTime.UtcNow;
-                        objWorkerPayment.ModifiedBy = employeeId;
+                        if (!_db.tbl_WorkerPayment.Any(x => x.UserId == attendanceObject.EmployeeId && x.AttendanceId == attendanceObject.WorkerAttendanceId))
+                        {
+                            tbl_WorkerPayment objWorkerPayment = new tbl_WorkerPayment();
+                            objWorkerPayment.CompanyId = companyId;
+                            objWorkerPayment.UserId = attendanceObject.EmployeeId;
+                            objWorkerPayment.AttendanceId = attendanceObject.WorkerAttendanceId;
+                            objWorkerPayment.PaymentDate = attendanceObject.AttendanceDate;
+                            objWorkerPayment.PaymentType = (int)EmployeePaymentType.Salary;
+                            objWorkerPayment.CreditOrDebitText = ErrorMessage.Credit;
+                            objWorkerPayment.DebitAmount = 0;
+                            objWorkerPayment.Remarks = ErrorMessage.AutoCreditOnEveningAttendance;
+                            objWorkerPayment.Month = attendanceObject.AttendanceDate.Month;
+                            objWorkerPayment.Year = attendanceObject.AttendanceDate.Year;
+                            objWorkerPayment.CreatedDate = DateTime.UtcNow;
+                            objWorkerPayment.CreatedBy = employeeId;
+                            objWorkerPayment.ModifiedDate = DateTime.UtcNow;
+                            objWorkerPayment.ModifiedBy = employeeId;
 
-                        if (employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased)
-                        {
-                            objWorkerPayment.CreditAmount = (attendanceObject.IsMorning && attendanceObject.IsAfternoon && attendanceObject.IsEvening ? (employeeObj.PerCategoryPrice) : (employeeObj.PerCategoryPrice / 2)) + (employeeObj.ExtraPerHourPrice * workerAttendanceRequestVM.ExtraHours);
+                            if (employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased)
+                            {
+                                objWorkerPayment.CreditAmount = (attendanceObject.IsMorning && attendanceObject.IsAfternoon && attendanceObject.IsEvening ? (employeeObj.PerCategoryPrice) : (employeeObj.PerCategoryPrice / 2)) + (employeeObj.ExtraPerHourPrice * workerAttendanceRequestVM.ExtraHours);
+                            }
+                            else if (employeeObj.EmploymentCategory == (int)EmploymentCategory.HourlyBased)
+                            {
+                                objWorkerPayment.CreditAmount = employeeObj.PerCategoryPrice * workerAttendanceRequestVM.NoOfHoursWorked;
+                            }
+                            else if (employeeObj.EmploymentCategory == (int)EmploymentCategory.UnitBased)
+                            {
+                                objWorkerPayment.CreditAmount = employeeObj.PerCategoryPrice * workerAttendanceRequestVM.NoOfUnitWorked;
+                            }
+                            _db.tbl_WorkerPayment.Add(objWorkerPayment);
+                            _db.SaveChanges();
                         }
-                        else if (employeeObj.EmploymentCategory == (int)EmploymentCategory.HourlyBased)
-                        {
-                            objWorkerPayment.CreditAmount = employeeObj.PerCategoryPrice * workerAttendanceRequestVM.NoOfHoursWorked;
-                        }
-                        else if (employeeObj.EmploymentCategory == (int)EmploymentCategory.UnitBased)
-                        {
-                            objWorkerPayment.CreditAmount = employeeObj.PerCategoryPrice * workerAttendanceRequestVM.NoOfUnitWorked;
-                        }
-                        _db.tbl_WorkerPayment.Add(objWorkerPayment);
-                        _db.SaveChanges();
-
 
                         if (workerAttendanceRequestVM.TodaySalary.HasValue && workerAttendanceRequestVM.TodaySalary.Value > 0 && employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased)
                         {
@@ -248,7 +262,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                             objWorkerPaymentDebit.ModifiedBy = employeeId;
                             objWorkerPaymentDebit.CreditAmount = 0;
 
-                            _db.tbl_WorkerPayment.Add(objWorkerPayment);
+                            _db.tbl_WorkerPayment.Add(objWorkerPaymentDebit);
                             _db.SaveChanges();
                         }
 

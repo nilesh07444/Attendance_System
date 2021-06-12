@@ -6,9 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using System.Net;
 using System.Text.RegularExpressions;
-using System.Web;
 using System.Web.Http;
 
 namespace AttendanceSystem.Areas.WebAPI.Controllers

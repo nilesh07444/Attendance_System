@@ -119,6 +119,7 @@
         public static string PayerOrCheckerOnlyCanTakeWorkerAttendance = "Payer or checker only can take worker attendance.";
         public static string InValidWorkerAttendanceType = "Invalid worker attendance type.";
         public static string CanNotTakeEveningAttendanceWorkerNotPresentOnAfterNoon = "Can not take evening attendance worker not present on afternoon.";
+        public static string CanNotTakeEveningAttendanceWorkerNotPresentOnMorningOrAfterNoon = "Can not take evening attendance worker not present on morning or afternoon.";
         public static string WorketNotAssignedToday = "Worker not assigned today.";
         public static string PleaseSelectValidMonth = "Please select valid month";
         public static string SiteRequired = "Please select site";
@@ -148,5 +149,9 @@
         public static string LeavePendingForAcceptCanNotCompleteConversion = "Some of leave are pending for accept, so you can not start conversion";
         public static string AttendancePendingForAcceptCanNotCompleteConversion = "Some of attendance are pending for accept, so you can not start conversion";
         public static string CanNotStartCurrentMonthConversion = "You can not start current month conversion";
+        public static string WorkerAlreadyAssigned = "Worker already assigned";
+        public static string WorkerAttendancePendingCanNotClose = "Worker attendance pending, can not close.";
+        public static string WorkerAttendanceNotExistCanNotClose = "Worker attendance does not exist, can not close.";
+        public static string WorkerAttendanceAreNotClosedCanNotCompleteConversion = "Some of worker attendance are not closed , so you can not start conversion";
     }
 }
