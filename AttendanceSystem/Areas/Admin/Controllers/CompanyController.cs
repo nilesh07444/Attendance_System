@@ -57,7 +57,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             {
                 companyRegisteredFilterVM.RegisteredCompanyList = (from cp in _db.tbl_Company
                                                                    join ct in _db.mst_CompanyType on cp.CompanyTypeId equals ct.CompanyTypeId
-                                                                   where cp.IsActive
+                                                                   where !cp.IsDeleted
                                                                    && (companyRegisteredFilterVM.CompanyTypeId.HasValue ? cp.CompanyTypeId == companyRegisteredFilterVM.CompanyTypeId.Value : true)
                                                                    && ((companyRegisteredFilterVM.StartDate.HasValue && companyRegisteredFilterVM.EndDate.HasValue) ? (cp.CreatedDate >= companyRegisteredFilterVM.StartDate.Value && cp.CreatedDate <= companyRegisteredFilterVM.EndDate.Value) : true)
                                                                    select new RegisteredCompanyVM
@@ -69,7 +69,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                                        State = cp.State,
                                                                        GSTNo = cp.GSTNo,
                                                                        CompanyLogoImage = cp.CompanyLogoImage,
-                                                                       CompanyCode = cp.CompanyCode
+                                                                       CompanyCode = cp.CompanyCode,
+                                                                       IsActive = cp.IsActive
                                                                    }).ToList();
             }
             catch (Exception ex)
@@ -853,6 +854,42 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 throw ex;
             }
             return View(companyRequestVM);
+        }
+
+        [HttpPost]
+        public string ChangeStatus(long Id, string Status)
+        {
+            string ReturnMessage = "";
+            try
+            {
+                tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == Id).FirstOrDefault();
+
+                if (objCompany != null)
+                {
+                    long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
+                    if (Status == "Active")
+                    {
+                        objCompany.IsActive = true;
+                    }
+                    else
+                    {
+                        objCompany.IsActive = false;
+                    }
+
+                    objCompany.ModifiedBy = LoggedInUserId;
+                    objCompany.ModifiedDate = DateTime.UtcNow;
+
+                    _db.SaveChanges();
+                    ReturnMessage = ErrorMessage.Success;
+                }
+            }
+            catch (Exception ex)
+            {
+                string msg = ex.Message.ToString();
+                ReturnMessage = ErrorMessage.Exception;
+            }
+
+            return ReturnMessage;
         }
 
         private string getCompanyCodeFormat(long companyId, string companyName)

@@ -33,7 +33,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-2">
+                            <div class="col-sm-3">
                                 <div class="form-group">
                                     <label>Company Type</label>
                                     @Html.DropDownListFor(model => model.CompanyTypeId, new SelectList(Model.CompanyTypeList, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8 required", style = "" })
@@ -58,7 +58,7 @@
                                         <th>Company Code</th>
                                         <th>City</th>
                                         <th>State</th>
-                                        <th>GST No</th>
+                                        <th>Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -92,7 +92,14 @@
                                                 <td>@obj.CompanyCode</td>
                                                 <td>@obj.City</td>
                                                 <td>@obj.State</td>
-                                                <td>@obj.GSTNo</td>
+                                                @if (obj.IsActive == true)
+                                                {
+                                                    <td><span class="badge badge-success" style="cursor:pointer;" title="Click to Inactive" onclick="fnChangeStatus('@obj.CompanyId', 'InActive');">Active</span></td>
+                                                }
+                                                else
+                                                {
+                                                    <td><span class="badge badge-danger" style="cursor:pointer;" title="Click to Active" onclick="fnChangeStatus('@obj.CompanyId','Active');">InActive</span></td>
+                                                }
                                                 <td>
 
                                                     <a href="/admin/company/view/@obj.CompanyId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
@@ -115,6 +122,27 @@
         </div>
     </div>
 </section>
+
+<div class="modal fade open" id="activeinactiveModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Status Confirm</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to active ?
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" id="hdndataId" />
+                <input type="hidden" id="hdnstatus" />
+                <button data-dismiss="modal" class="btn btn-primary" type="button">Close</button>
+                <button id="btnChangeStatus" class="btn btn-danger" type="button">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
@@ -123,11 +151,57 @@
     $(document).ready(function () {
         $('#btnSearch').click(function () {
             var startDate = $("#StartDate").val();
-            var endDate= $("#EndDate").val();
+            var endDate = $("#EndDate").val();
             var companyTypeId = $("#CompanyTypeId").val();
             StartLoading();
-            window.location.href = "/admin/company/registered?companyTypeId=" + companyTypeId + "&startDate=" + startDate + "&endDate=" + endDate ;
+            window.location.href = "/admin/company/registered?companyTypeId=" + companyTypeId + "&startDate=" + startDate + "&endDate=" + endDate;
         });
     })
+
+    function fnChangeStatus(HomeImage_Id, status) {
+        jQuery("#hdndataId").val(HomeImage_Id);
+        jQuery("#hdnstatus").val(status);
+        if (status == "Active") {
+            $('#btnChangeStatus').html("Active");
+            $('#activeinactiveModal .modal-body').html(" Are you sure you want to make active ?");
+        }
+        else {
+            $('#btnChangeStatus').html("Inactive");
+            $('#activeinactiveModal .modal-body').html(" Are you sure you want to make inactive ?");
+        }
+        $('#activeinactiveModal').modal('show');
+    }
+
+    $('#btnChangeStatus').click(function () {
+
+            var Id = jQuery("#hdndataId").val();
+            if (Id != "" && Id != null) {
+                $('#activeinactiveModal').modal('hide');
+
+                //StartLoading();
+
+                var URL = '@Url.Action("ChangeStatus", "Company")';
+                $.ajax({
+                    type: 'POST',
+                    async: true,
+                    url: URL + "?Id=" + Id+"&Status="+jQuery("#hdnstatus").val(),
+                    success: function (result) {
+                        if (result == "success") {
+                            alert("Status change Successfully...");
+                            window.location.reload();
+                        }
+                        else {
+                            alert("Something went wrong. Please try again");
+                        }
+
+                       //StopLoading();
+                    },
+                    error: function (resultData) {
+                        //StopLoading();
+                    }
+                });
+            }
+    });
+
 </script>
 

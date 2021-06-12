@@ -230,8 +230,8 @@ namespace AttendanceSystem.ViewModel
         [Display(Name = "Company Code")]
         public string CompanyCode { get; set; }
 
-        
-        
+        public bool IsActive { get; set; }
+
     }
 
     public class CompanyRegisteredFilterVM
