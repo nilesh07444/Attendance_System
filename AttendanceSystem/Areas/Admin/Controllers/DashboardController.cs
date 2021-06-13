@@ -354,11 +354,20 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     status = 0;
                     errorMessage = ErrorMessage.CanNotStartCurrentMonthConversion;
                 }
+
+              
+
                 List<long> workerIds = _db.tbl_Employee.Where(x => x.CompanyId == companyId && x.AdminRoleId == (int)AdminRoles.Worker).Select(x => x.EmployeeId).ToList();
                 if (_db.tbl_Leave.Any(x => workerIds.Contains(x.UserId) && x.StartDate.Month == month && x.StartDate.Year == year && x.LeaveStatus == (int)LeaveStatus.Pending))
                 {
                     status = 0;
                     errorMessage = ErrorMessage.LeavePendingForAcceptCanNotCompleteConversion;
+                }
+
+                if (_db.tbl_WorkerAttendance.Any(x => workerIds.Contains(x.EmployeeId) && x.AttendanceDate.Month == nextMonth && x.AttendanceDate.Year == dateyear && !x.IsClosed))
+                {
+                    status = 0;
+                    errorMessage = ErrorMessage.WorkerAttendanceAreNotClosedCanNotCompleteConversion;
                 }
 
                 if (status == 1)
@@ -384,19 +393,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                     // Get All Employees
                     List<tbl_Employee> lstWorkers = _db.tbl_Employee.Where(x => x.CompanyId == companyId && !x.IsDeleted && x.AdminRoleId == (int)AdminRoles.Worker).ToList();
-
-                    //List<tbl_WorkerPayment> paymentList = (from epp in _db.tbl_WorkerPayment
-                    //                                       join emp in lstWorkers.Where(x => x.EmploymentCategory != (int)EmploymentCategory.MonthlyBased) on epp.UserId equals emp.EmployeeId
-                    //                                       where epp.Month == month
-                    //                                       && epp.Year == year
-                    //                                       select epp).ToList();
-                    //var paymentGroup = paymentList.GroupBy(l => l.UserId)
-                    //    .Select(cl => new
-                    //    {
-                    //        EmployeeId = cl.First().UserId,
-                    //        SumOfDebit = cl.Sum(c => c.DebitAmount),
-                    //        SumOfCredit = cl.Sum(c => c.CreditAmount)
-                    //    }).ToList();
 
                     List<long> employeeIdsExceptMonthly = lstWorkers.Where(x => x.EmploymentCategory != (int)EmploymentCategory.MonthlyBased).Select(x => x.EmployeeId).ToList();
                     var paymentList = (from emp in lstWorkers
@@ -449,10 +445,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                     lstWorkers.Where(x => x.EmploymentCategory == (int)EmploymentCategory.MonthlyBased).ToList().ForEach(x =>
                     {
-                        //double presentDays = _db.tbl_WorkerAttendance.Where(y => y.EmployeeId == x.EmployeeId && y.AttendanceDate >= firstDayOfMonth && y.AttendanceDate <= lastDayOfMonth).Count();
-                        //decimal extraHours = _db.tbl_WorkerAttendance.Where(y => y.EmployeeId == x.EmployeeId && y.AttendanceDate >= firstDayOfMonth && y.AttendanceDate <= lastDayOfMonth).Select(z => z.ExtraHours.HasValue ? z.ExtraHours.Value : 0).Sum();
-                        //List<tbl_WorkerAttendance> attendanceList = _db.tbl_WorkerAttendance.Where(y => y.EmployeeId == x.EmployeeId && y.AttendanceDate >= firstDayOfMonth && y.AttendanceDate <= lastDayOfMonth).ToList();
-
                         var dayTypeAttendanceList = (from at in _db.tbl_WorkerAttendance
                                                      where at.EmployeeId == x.EmployeeId
                                                      && at.AttendanceDate >= firstDayOfMonth
