@@ -55,6 +55,43 @@ namespace AttendanceSystem
         [Display(Name = "Home Image 2")]
         public HttpPostedFileBase HomeImageFile2 { get; set; }
 
+        // HERO IMAGES - START
+
+        [Display(Name = "About Page Image")]
+        public HttpPostedFileBase HeroAboutPageImageFile { get; set; }
+
+        [Display(Name = "Contact Page Image")]
+        public HttpPostedFileBase HeroContactPageImageFile { get; set; }
+
+        [Display(Name = "Terms Condition Page Image")]
+        public HttpPostedFileBase HeroTermsConditionPageImageFile { get; set; }
+
+        [Display(Name = "FAQ Page Image")]
+        public HttpPostedFileBase HeroFAQPageImageFile { get; set; }
+
+        [Display(Name = "Service Page Image")]
+        public HttpPostedFileBase HeroServicePageImageFile { get; set; }
+
+        [Display(Name = "Privacy Policy Page Image")]
+        public HttpPostedFileBase HeroPrivacyPolicyPageImageFile { get; set; }
+
+        [Display(Name = "How To Use Page Image")]
+        public HttpPostedFileBase HeroHowToUsePageImageFile { get; set; }
+
+        [Display(Name = "Company Request Page Image")]
+        public HttpPostedFileBase HeroCompanyRequestPageImageFile { get; set; }
+
+        public string HeroAboutPageImageName { get; set; }
+        public string HeroContactPageImageName { get; set; }
+        public string HeroTermsConditionPageImageName { get; set; }
+        public string HeroFAQPageImageName { get; set; }
+        public string HeroServicePageImageName { get; set; }
+        public string HeroPrivacyPolicyPageImageName { get; set; }
+        public string HeroHowToUsePageImageName { get; set; }
+        public string HeroCompanyRequestPageImageName { get; set; }
+
+        // HERO IMAGES - END
+
         public string HomeImage { get; set; }
         public string HomeImage2 { get; set; }
         public string ServiceImage { get; set; }

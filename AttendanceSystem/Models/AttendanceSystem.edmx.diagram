@@ -36,12 +36,12 @@
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_CompanyRequest" Width="1.5" PointX="7.375" PointY="21.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_SMSContent" Width="1.5" PointX="0.75" PointY="6.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_WorkerType" Width="1.5" PointX="9.375" PointY="21.75" />
-        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Setting" Width="1.5" PointX="11.375" PointY="21.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Conversion" Width="1.5" PointX="13.375" PointY="17.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_EmployeePayment" Width="1.5" PointX="13.375" PointY="20.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_WorkerPayment" Width="1.5" PointX="21.375" PointY="13.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_HomeImage" Width="1.5" PointX="15.375" PointY="21.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_WorkerAttendance" Width="1.5" PointX="0.75" PointY="19.75" />
+        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Setting" Width="1.5" PointX="17.375" PointY="21.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
