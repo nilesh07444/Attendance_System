@@ -24,6 +24,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
         public string CompanyAdminProfileDirectoryPath = "";
         string enviornment;
         bool? setOtp ;
+
         public CompanyRequestController()
         {
             _db = new AttendanceSystemEntities();
@@ -37,11 +38,15 @@ namespace AttendanceSystem.Areas.Client.Controllers
             enviornment = ConfigurationManager.AppSettings["Environment"].ToString();
             setOtp = Convert.ToBoolean(ConfigurationManager.AppSettings["SetOtp"].ToString());
         }
-        // GET: Client/CompanyRequest
+         
         public ActionResult Index()
         {
             CompanyRequestVM companyRequestVM = new CompanyRequestVM();
             companyRequestVM.CompanyTypeList = GetCompanyType();
+
+            var HeroImageName = _db.tbl_Setting.FirstOrDefault().HeroCompanyRequestPageImageName;
+            ViewBag.HeroUrl = ErrorMessage.HeroDirectoryPath + HeroImageName;
+
             return View(companyRequestVM);
         }
 

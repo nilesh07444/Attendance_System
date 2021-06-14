@@ -77,7 +77,7 @@
         public static string PendingAttendanceCanBeEditOnly = "Only pending attendance can be edit.";
         public static string PendingAttendanceCanBeDeleteOnly = "Only pending attendance can be Delete.";
         public static string AttendanceIsAcceptedCanNotDelete = "Attendance is accepted, can not Delete.";
-
+        public static string CanNotTakeMorningAttendanceAfterAfterNoonAttendance = "You Can Not Take Morning Attendance After taken AfterNoon Attendance";
         public static double FullDay = 1;
         public static double HalfDay = 0.5;
         public static string DefaultTime = "00:00:00";

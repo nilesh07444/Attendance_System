@@ -1,4 +1,5 @@
-﻿using AttendanceSystem.Models;
+﻿using AttendanceSystem.Helper;
+using AttendanceSystem.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -11,12 +12,23 @@ namespace AttendanceSystem.Areas.Client.Controllers
     public class ContactController : Controller
     {
         AttendanceSystemEntities _db; 
+
         public ContactController()
         {
             _db = new AttendanceSystemEntities(); 
         }
+        
         public ActionResult Index()
         {
+            try
+            {
+                var HeroImageName = _db.tbl_Setting.FirstOrDefault().HeroContactPageImageName;
+                ViewBag.HeroUrl = ErrorMessage.HeroDirectoryPath + HeroImageName;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             return View();
         }
 

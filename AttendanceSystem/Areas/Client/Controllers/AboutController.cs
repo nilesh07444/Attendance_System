@@ -47,6 +47,9 @@ namespace AttendanceSystem.Areas.Client.Controllers
 
                 ViewData["lstOurClients"] = lstOurClients;
                 ViewData["lstTestimonials"] = lstTestimonials;
+
+                var HeroImageName = _db.tbl_Setting.FirstOrDefault().HeroAboutPageImageName;
+                ViewBag.HeroUrl = ErrorMessage.HeroDirectoryPath + HeroImageName;
             }
             catch (Exception ex)
             {

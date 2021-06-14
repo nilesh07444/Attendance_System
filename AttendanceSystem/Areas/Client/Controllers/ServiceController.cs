@@ -44,6 +44,10 @@ namespace AttendanceSystem.Areas.Client.Controllers
                                  }).OrderByDescending(x => x.SponsorId).ToList();
 
                 ViewData["lstOurClients"] = lstOurClients;
+
+                var HeroImageName = _db.tbl_Setting.FirstOrDefault().HeroServicePageImageName;
+                ViewBag.HeroUrl = ErrorMessage.HeroDirectoryPath + HeroImageName;
+
             }
             catch (Exception ex)
             {

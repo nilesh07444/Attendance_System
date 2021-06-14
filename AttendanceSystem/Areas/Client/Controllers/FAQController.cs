@@ -19,6 +19,10 @@ namespace AttendanceSystem.Areas.Client.Controllers
         {
             List<tbl_DynamicContent> lstContent = _db.tbl_DynamicContent.Where(x => x.DynamicContentType == (int)DynamicContents.FAQ).OrderBy(x => x.SeqNo).ToList();
             ViewData["lstContent"] = lstContent;
+
+            var HeroImageName = _db.tbl_Setting.FirstOrDefault().HeroFAQPageImageName;
+            ViewBag.HeroUrl = ErrorMessage.HeroDirectoryPath + HeroImageName;
+
             return View();
         }
     }
