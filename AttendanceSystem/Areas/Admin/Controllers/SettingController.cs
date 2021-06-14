@@ -17,13 +17,17 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         private readonly AttendanceSystemEntities _db;
         public string serviceImageDirectoryPath = "";
         public string homeImageDirectoryPath = "";
+        public string heroImageDirectoryPath = "";
         string psSult = ConfigurationManager.AppSettings["PasswordSult"].ToString();
+
         public SettingController()
         {
             _db = new AttendanceSystemEntities();
             serviceImageDirectoryPath = ErrorMessage.ServiceDirectoryPath;
             homeImageDirectoryPath = ErrorMessage.HomeDirectoryPath;
+            heroImageDirectoryPath = ErrorMessage.HeroDirectoryPath;
         }
+
         public ActionResult Index()
         {
             SuperAdminSettingVM objSASetting = new SuperAdminSettingVM();
@@ -60,6 +64,15 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objSASetting.ServiceImage = setting.ServiceImage;
                         objSASetting.HomeImage = setting.HomeImage;
                         objSASetting.HomeImage2 = setting.HomeImage2;
+
+                        objSASetting.HeroAboutPageImageName = setting.HeroAboutPageImageName;
+                        objSASetting.HeroContactPageImageName = setting.HeroContactPageImageName;
+                        objSASetting.HeroTermsConditionPageImageName = setting.HeroTermsConditionPageImageName;
+                        objSASetting.HeroFAQPageImageName = setting.HeroFAQPageImageName;
+                        objSASetting.HeroServicePageImageName = setting.HeroServicePageImageName;
+                        objSASetting.HeroPrivacyPolicyPageImageName = setting.HeroPrivacyPolicyPageImageName;
+                        objSASetting.HeroHowToUsePageImageName = setting.HeroHowToUsePageImageName;
+                        objSASetting.HeroCompanyRequestPageImageName = setting.HeroCompanyRequestPageImageName;
 
                         ViewData["objSASetting"] = objSASetting;
                     }
@@ -110,7 +123,17 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                         StripeLiveModeAPIKey = s.StripeLiveModeAPIKey,
                                                         HomeImage = s.HomeImage,
                                                         HomeImage2 = s.HomeImage2,
-                                                        ServiceImage = s.ServiceImage
+                                                        ServiceImage = s.ServiceImage,
+
+                                                        HeroAboutPageImageName = s.HeroAboutPageImageName,
+                                                        HeroContactPageImageName = s.HeroContactPageImageName,
+                                                        HeroTermsConditionPageImageName = s.HeroTermsConditionPageImageName,
+                                                        HeroFAQPageImageName = s.HeroFAQPageImageName,
+                                                        HeroServicePageImageName = s.HeroServicePageImageName,
+                                                        HeroPrivacyPolicyPageImageName = s.HeroPrivacyPolicyPageImageName,
+                                                        HeroHowToUsePageImageName = s.HeroHowToUsePageImageName,
+                                                        HeroCompanyRequestPageImageName = s.HeroCompanyRequestPageImageName,
+
                                                     }).FirstOrDefault();
 
                 return View("~/Areas/Admin/Views/Setting/EditSettingSA.cshtml", objSASetting);
@@ -163,7 +186,19 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public ActionResult EditSuperAdminSetting(SuperAdminSettingVM settingVM, HttpPostedFileBase ServiceImageFile, HttpPostedFileBase HomeImageFile, HttpPostedFileBase HomeImageFile2)
+        public ActionResult EditSuperAdminSetting(SuperAdminSettingVM settingVM,
+            HttpPostedFileBase ServiceImageFile,
+            HttpPostedFileBase HomeImageFile,
+            HttpPostedFileBase HomeImageFile2,
+
+            HttpPostedFileBase HeroAboutPageImageFile,
+            HttpPostedFileBase HeroContactPageImageFile,
+            HttpPostedFileBase HeroTermsConditionPageImageFile,
+            HttpPostedFileBase HeroFAQPageImageFile,
+            HttpPostedFileBase HeroServicePageImageFile,
+            HttpPostedFileBase HeroPrivacyPolicyPageImageFile,
+            HttpPostedFileBase HeroHowToUsePageImageFile,
+            HttpPostedFileBase HeroCompanyRequestPageImageFile)
         {
             try
             {
@@ -175,14 +210,247 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     // Get Setting record
                     tbl_Setting objSetting = _db.tbl_Setting.FirstOrDefault();
 
+                    #region Upload HERO - About Page Image
+
+                    string heroAboutPageFileName = objSetting.HeroAboutPageImageName;
+                    string heroPath = Server.MapPath(heroImageDirectoryPath);
+
+                    bool folderExists = Directory.Exists(heroPath);
+                    if (!folderExists)
+                        Directory.CreateDirectory(heroPath);
+
+                    if (HeroAboutPageImageFile != null)
+                    {
+                        // Image file validation
+                        string ext = Path.GetExtension(HeroAboutPageImageFile.FileName);
+                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
+                        {
+                            ModelState.AddModelError("HeroAboutPageImageFile", ErrorMessage.SelectOnlyImage);
+                            return View(settingVM);
+                        }
+
+                        // Save file in folder
+                        heroAboutPageFileName = Guid.NewGuid() + "-" + Path.GetFileName(HeroAboutPageImageFile.FileName);
+                        HeroAboutPageImageFile.SaveAs(heroPath + heroAboutPageFileName);
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(objSetting.HeroAboutPageImageName))
+                        {
+                            ModelState.AddModelError("HeroAboutPageImageFile", ErrorMessage.ImageRequired);
+                            return View(settingVM);
+                        }
+                    }
+
+                    #endregion
+
+                    #region Upload HERO - Contact Page Image
+
+                    string heroContactPageFileName = objSetting.HeroContactPageImageName;
+
+                    if (HeroContactPageImageFile != null)
+                    {
+                        // Image file validation
+                        string ext = Path.GetExtension(HeroContactPageImageFile.FileName);
+                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
+                        {
+                            ModelState.AddModelError("HeroContactPageImageFile", ErrorMessage.SelectOnlyImage);
+                            return View(settingVM);
+                        }
+
+                        // Save file in folder
+                        heroContactPageFileName = Guid.NewGuid() + "-" + Path.GetFileName(HeroContactPageImageFile.FileName);
+                        HeroContactPageImageFile.SaveAs(heroPath + heroContactPageFileName);
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(objSetting.HeroContactPageImageName))
+                        {
+                            ModelState.AddModelError("HeroContactPageImageFile", ErrorMessage.ImageRequired);
+                            return View(settingVM);
+                        }
+                    }
+
+                    #endregion
+
+                    #region Upload HERO - Terms Condition Page Image
+
+                    string heroTermsConditionPageFileName = objSetting.HeroTermsConditionPageImageName;
+
+                    if (HeroTermsConditionPageImageFile != null)
+                    {
+                        // Image file validation
+                        string ext = Path.GetExtension(HeroTermsConditionPageImageFile.FileName);
+                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
+                        {
+                            ModelState.AddModelError("HeroTermsConditionPageImageFile", ErrorMessage.SelectOnlyImage);
+                            return View(settingVM);
+                        }
+
+                        // Save file in folder
+                        heroTermsConditionPageFileName = Guid.NewGuid() + "-" + Path.GetFileName(HeroTermsConditionPageImageFile.FileName);
+                        HeroTermsConditionPageImageFile.SaveAs(heroPath + heroTermsConditionPageFileName);
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(objSetting.HeroTermsConditionPageImageName))
+                        {
+                            ModelState.AddModelError("HeroTermsConditionPageImageFile", ErrorMessage.ImageRequired);
+                            return View(settingVM);
+                        }
+                    }
+
+                    #endregion
+
+                    #region Upload HERO - FAQ Page Image
+
+                    string heroFAQPageFileName = objSetting.HeroFAQPageImageName;
+
+                    if (HeroFAQPageImageFile != null)
+                    {
+                        // Image file validation
+                        string ext = Path.GetExtension(HeroFAQPageImageFile.FileName);
+                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
+                        {
+                            ModelState.AddModelError("HeroFAQPageImageFile", ErrorMessage.SelectOnlyImage);
+                            return View(settingVM);
+                        }
+
+                        // Save file in folder
+                        heroFAQPageFileName = Guid.NewGuid() + "-" + Path.GetFileName(HeroFAQPageImageFile.FileName);
+                        HeroFAQPageImageFile.SaveAs(heroPath + heroFAQPageFileName);
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(objSetting.HeroFAQPageImageName))
+                        {
+                            ModelState.AddModelError("HeroFAQPageImageFile", ErrorMessage.ImageRequired);
+                            return View(settingVM);
+                        }
+                    }
+
+                    #endregion
+
+                    #region Upload HERO - Service Page Image
+
+                    string heroServicePageFileName = objSetting.HeroServicePageImageName;
+
+                    if (HeroServicePageImageFile != null)
+                    {
+                        // Image file validation
+                        string ext = Path.GetExtension(HeroServicePageImageFile.FileName);
+                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
+                        {
+                            ModelState.AddModelError("HeroServicePageImageFile", ErrorMessage.SelectOnlyImage);
+                            return View(settingVM);
+                        }
+
+                        // Save file in folder
+                        heroServicePageFileName = Guid.NewGuid() + "-" + Path.GetFileName(HeroServicePageImageFile.FileName);
+                        HeroServicePageImageFile.SaveAs(heroPath + heroServicePageFileName);
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(objSetting.HeroServicePageImageName))
+                        {
+                            ModelState.AddModelError("HeroServicePageImageFile", ErrorMessage.ImageRequired);
+                            return View(settingVM);
+                        }
+                    }
+
+                    #endregion
+
+                    #region Upload HERO - Privacy Policy Page Image
+
+                    string heroPrivacyPolicyPageFileName = objSetting.HeroPrivacyPolicyPageImageName;
+
+                    if (HeroPrivacyPolicyPageImageFile != null)
+                    {
+                        // Image file validation
+                        string ext = Path.GetExtension(HeroPrivacyPolicyPageImageFile.FileName);
+                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
+                        {
+                            ModelState.AddModelError("HeroPrivacyPolicyPageImageFile", ErrorMessage.SelectOnlyImage);
+                            return View(settingVM);
+                        }
+
+                        // Save file in folder
+                        heroPrivacyPolicyPageFileName = Guid.NewGuid() + "-" + Path.GetFileName(HeroPrivacyPolicyPageImageFile.FileName);
+                        HeroPrivacyPolicyPageImageFile.SaveAs(heroPath + heroPrivacyPolicyPageFileName);
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(objSetting.HeroPrivacyPolicyPageImageName))
+                        {
+                            ModelState.AddModelError("HeroPrivacyPolicyPageImageFile", ErrorMessage.ImageRequired);
+                            return View(settingVM);
+                        }
+                    }
+
+                    #endregion
+
+                    #region Upload HERO - How to Use Page Image
+
+                    string heroHowToUsePageFileName = objSetting.HeroHowToUsePageImageName;
+
+                    if (HeroHowToUsePageImageFile != null)
+                    {
+                        // Image file validation
+                        string ext = Path.GetExtension(HeroHowToUsePageImageFile.FileName);
+                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
+                        {
+                            ModelState.AddModelError("HeroHowToUsePageImageFile", ErrorMessage.SelectOnlyImage);
+                            return View(settingVM);
+                        }
+
+                        // Save file in folder
+                        heroHowToUsePageFileName = Guid.NewGuid() + "-" + Path.GetFileName(HeroHowToUsePageImageFile.FileName);
+                        HeroHowToUsePageImageFile.SaveAs(heroPath + heroHowToUsePageFileName);
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(objSetting.HeroHowToUsePageImageName))
+                        {
+                            ModelState.AddModelError("HeroHowToUsePageImageFile", ErrorMessage.ImageRequired);
+                            return View(settingVM);
+                        }
+                    }
+
+                    #endregion
+
+                    #region Upload HERO - Company Request
+
+                    string heroCompanyRequestFileName = objSetting.HeroCompanyRequestPageImageName;
+
+                    if (HeroCompanyRequestPageImageFile != null)
+                    {
+                        // Image file validation
+                        string ext = Path.GetExtension(HeroCompanyRequestPageImageFile.FileName);
+                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
+                        {
+                            ModelState.AddModelError("HeroCompanyRequestPageImageFile", ErrorMessage.SelectOnlyImage);
+                            return View(settingVM);
+                        }
+
+                        // Save file in folder
+                        heroCompanyRequestFileName = Guid.NewGuid() + "-" + Path.GetFileName(HeroCompanyRequestPageImageFile.FileName);
+                        HeroCompanyRequestPageImageFile.SaveAs(heroPath + heroCompanyRequestFileName);
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(objSetting.HeroCompanyRequestPageImageName))
+                        {
+                            ModelState.AddModelError("HeroCompanyRequestPageImageFile", ErrorMessage.ImageRequired);
+                            return View(settingVM);
+                        }
+                    }
+
+                    #endregion
+
                     #region Upload Service Image
 
                     string servicefileName = objSetting.ServiceImage;
                     string servicePath = Server.MapPath(serviceImageDirectoryPath);
-
-                    bool folderExists = Directory.Exists(servicePath);
-                    if (!folderExists)
-                        Directory.CreateDirectory(servicePath);
 
                     if (ServiceImageFile != null)
                     {
@@ -245,8 +513,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                     #region Upload Home Image 2
 
-                    string homefileName2 = objSetting.HomeImage2; 
-                      
+                    string homefileName2 = objSetting.HomeImage2;
+
                     if (HomeImageFile2 != null)
                     {
                         // Image file validation
@@ -294,6 +562,15 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     objSetting.ServiceImage = servicefileName;
                     objSetting.HomeImage = homefileName;
                     objSetting.HomeImage2 = homefileName2;
+
+                    objSetting.HeroAboutPageImageName = heroAboutPageFileName;
+                    objSetting.HeroContactPageImageName = heroContactPageFileName;
+                    objSetting.HeroTermsConditionPageImageName = heroTermsConditionPageFileName;
+                    objSetting.HeroFAQPageImageName = heroFAQPageFileName;
+                    objSetting.HeroServicePageImageName = heroServicePageFileName;
+                    objSetting.HeroPrivacyPolicyPageImageName = heroPrivacyPolicyPageFileName;
+                    objSetting.HeroHowToUsePageImageName = heroHowToUsePageFileName;
+                    objSetting.HeroCompanyRequestPageImageName = heroCompanyRequestFileName;
 
                     _db.SaveChanges();
 

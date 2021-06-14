@@ -4833,7 +4833,7 @@ h6 .badge {
         }
 
             .navbar .nav-link.nav-link-user img {
-                width: 30px
+                width: 50px
             }
 
             .navbar .nav-link.nav-link-user:after {
@@ -4841,8 +4841,8 @@ h6 .badge {
             }
 
             .navbar .nav-link.nav-link-user .user-img-radious-style {
-                border-radius: 6px;
-                box-shadow: 4px 3px 6px 0 rgba(0,0,0,0.2)
+                border-radius: 90px;
+                box-shadow: 4px 3px 6px 0 rgba(0,0,0,0.5)
             }
 
         .navbar .nav-link.nav-link-img {
@@ -5984,7 +5984,8 @@ pre {
     top: 0;
     height: 100%;
     width: 250px;
-    background-color: #fff;
+    /*background-color: #fff;*/
+    background-color: #425A49; /* changed by nilesh */
     z-index: 880;
     left: 0
 }
@@ -6513,7 +6514,8 @@ body.layout-3 .main-footer {
             padding: 0 20px;
             width: 100%;
             letter-spacing: 0.3px;
-            color: #60686f;
+            /*color: #60686f;*/
+            color: #FFCEA3; /* changed by nilesh */
             font-weight: 600;
             text-decoration: none
         }
@@ -6545,12 +6547,12 @@ body.layout-3 .main-footer {
             }
 
             .main-sidebar .sidebar-menu li a:hover {
-                background-color: #f2f5f8
+                /*background-color: #f2f5f8*/
             }
 
         .main-sidebar .sidebar-menu li.active a {
             font-weight: 600;
-            background-color: #fcfcfd
+            /*background-color: #fcfcfd*/
         }
 
         .main-sidebar .sidebar-menu li.active ul.dropdown-menu {
@@ -6562,7 +6564,7 @@ body.layout-3 .main-footer {
         }
 
             .main-sidebar .sidebar-menu li.active > ul.dropdown-menu li a:hover {
-                background-color: #fcfcfd
+                /*background-color: #fcfcfd*/
             }
 
         .main-sidebar .sidebar-menu li ul.dropdown-menu {
@@ -6577,19 +6579,20 @@ body.layout-3 .main-footer {
         }
 
             .main-sidebar .sidebar-menu li ul.dropdown-menu li a {
-                color: #60686f;
+                /*color: #60686f;*/
+                color: #FFCEA3; /* changed by nilesh */
                 height: 35px;
                 padding-left: 50px;
                 font-weight: 400
             }
 
                 .main-sidebar .sidebar-menu li ul.dropdown-menu li a:hover {
-                    color: #6777ef;
-                    background-color: inherit
+                    /*color: #6777ef;*/
+                    /*background-color: inherit*/
                 }
 
                     .main-sidebar .sidebar-menu li ul.dropdown-menu li a:hover:before {
-                        color: #6777ef;
+                        /*color: #6777ef;*/
                         font-weight: 600;
                         left: 35px
                     }
@@ -6606,12 +6609,12 @@ body.layout-3 .main-footer {
                 }
 
             .main-sidebar .sidebar-menu li ul.dropdown-menu li.active > a {
-                color: #6777ef;
+                /*color: #6777ef;*/
                 font-weight: 600
             }
 
                 .main-sidebar .sidebar-menu li ul.dropdown-menu li.active > a:before {
-                    color: #6777ef;
+                    /*color: #6777ef;*/
                     font-weight: 600
                 }
 
@@ -6670,7 +6673,7 @@ body:not(.sidebar-mini) .sidebar-style-1 .sidebar-menu li.active ul.dropdown-men
 
     body:not(.sidebar-mini) .sidebar-style-1 .sidebar-menu li.active ul.dropdown-menu li a:hover {
         background-color: #6777ef;
-        color: #fff
+        /*color: #fff*/
     }
 
 body:not(.sidebar-mini) .sidebar-style-1 .sidebar-menu li.active ul.dropdown-menu li.active a {
@@ -8596,7 +8599,7 @@ body:not(.sidebar-mini) .sidebar-style-2 .sidebar-menu li.active ul.dropdown-men
     }
 
 .light-sidebar .main-sidebar .sidebar-menu li ul.dropdown-menu li a:hover {
-    color: #454546
+    /*color: #454546*/
 }
 
     .light-sidebar .main-sidebar .sidebar-menu li ul.dropdown-menu li a:hover::before {
@@ -10254,7 +10257,8 @@ body:not(.sidebar-mini) .sidebar-style-2 .sidebar-menu li.active ul.dropdown-men
 }
 
 .theme-white .navbar {
-    background-color: #fff;
+    /*background-color: #fff;*/
+    background-color: #425A49; /* changed by nilesh */
     box-shadow: 15px 9px 25px 0 rgba(0,0,0,0.1)
 }
 

@@ -17,7 +17,7 @@
                 </div>
 
                 <div class="card card-primary">
-                      
+
                     <div class="card-body">
                         <div class="row">
                             <div class="form-group col-4">
@@ -197,6 +197,116 @@
 
                 </div>
 
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h4>Hero Images of Frontend Pages</h4>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="row">
+
+                            <div class="form-group col-4">
+                                @Html.LabelFor(model => model.HeroAboutPageImageFile, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.HeroAboutPageImageFile, new { type = "file", @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.HeroAboutPageImageFile, "", new { @class = "text-danger" })
+
+                                @if (!string.IsNullOrEmpty(Model.HeroAboutPageImageName))
+                                {
+                                    <p><a target="_blank" href="@ErrorMessage.HeroDirectoryPath/@Model.HeroAboutPageImageName"> Click here to view image </a></p>
+                                }
+                            </div>
+
+                            <div class="form-group col-4">
+                                @Html.LabelFor(model => model.HeroContactPageImageFile, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.HeroContactPageImageFile, new { type = "file", @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.HeroContactPageImageFile, "", new { @class = "text-danger" })
+
+                                @if (!string.IsNullOrEmpty(Model.HeroContactPageImageName))
+                                {
+                                    <p><a target="_blank" href="@ErrorMessage.HeroDirectoryPath/@Model.HeroContactPageImageName"> Click here to view image </a></p>
+                                }
+                            </div>
+
+                            <div class="form-group col-4">
+                                @Html.LabelFor(model => model.HeroTermsConditionPageImageFile, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.HeroTermsConditionPageImageFile, new { type = "file", @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.HeroTermsConditionPageImageFile, "", new { @class = "text-danger" })
+
+                                @if (!string.IsNullOrEmpty(Model.HeroTermsConditionPageImageName))
+                                {
+                                    <p><a target="_blank" href="@ErrorMessage.HeroDirectoryPath/@Model.HeroTermsConditionPageImageName"> Click here to view image </a></p>
+                                }
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="form-group col-4">
+                                @Html.LabelFor(model => model.HeroFAQPageImageFile, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.HeroFAQPageImageFile, new { type = "file", @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.HeroFAQPageImageFile, "", new { @class = "text-danger" })
+
+                                @if (!string.IsNullOrEmpty(Model.HeroFAQPageImageName))
+                                {
+                                    <p><a target="_blank" href="@ErrorMessage.HeroDirectoryPath/@Model.HeroFAQPageImageName"> Click here to view image </a></p>
+                                }
+                            </div>
+
+                            <div class="form-group col-4">
+                                @Html.LabelFor(model => model.HeroServicePageImageFile, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.HeroServicePageImageFile, new { type = "file", @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.HeroServicePageImageFile, "", new { @class = "text-danger" })
+
+                                @if (!string.IsNullOrEmpty(Model.HeroServicePageImageName))
+                                {
+                                    <p><a target="_blank" href="@ErrorMessage.HeroDirectoryPath/@Model.HeroServicePageImageName"> Click here to view image </a></p>
+                                }
+                            </div>
+
+                            <div class="form-group col-4">
+                                @Html.LabelFor(model => model.HeroPrivacyPolicyPageImageFile, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.HeroPrivacyPolicyPageImageFile, new { type = "file", @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.HeroPrivacyPolicyPageImageFile, "", new { @class = "text-danger" })
+
+                                @if (!string.IsNullOrEmpty(Model.HeroPrivacyPolicyPageImageName))
+                                {
+                                    <p><a target="_blank" href="@ErrorMessage.HeroDirectoryPath/@Model.HeroPrivacyPolicyPageImageName"> Click here to view image </a></p>
+                                }
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="form-group col-4">
+                                @Html.LabelFor(model => model.HeroHowToUsePageImageFile, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.HeroHowToUsePageImageFile, new { type = "file", @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.HeroHowToUsePageImageFile, "", new { @class = "text-danger" })
+
+                                @if (!string.IsNullOrEmpty(Model.HeroHowToUsePageImageName))
+                                {
+                                    <p><a target="_blank" href="@ErrorMessage.HeroDirectoryPath/@Model.HeroHowToUsePageImageName"> Click here to view image </a></p>
+                                }
+                            </div>
+
+                            <div class="form-group col-4">
+                                @Html.LabelFor(model => model.HeroCompanyRequestPageImageFile, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.HeroCompanyRequestPageImageFile, new { type = "file", @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.HeroCompanyRequestPageImageFile, "", new { @class = "text-danger" })
+
+                                @if (!string.IsNullOrEmpty(Model.HeroCompanyRequestPageImageName))
+                                {
+                                    <p><a target="_blank" href="@ErrorMessage.HeroDirectoryPath/@Model.HeroCompanyRequestPageImageName"> Click here to view image </a></p>
+                                }
+                            </div>
+                              
+                        </div>
+
+                    </div>
+
+                </div>
+
                 <div class="card">
                     <div class="card-footer text-center">
                         @Html.HiddenFor(model => model.SettingId)
@@ -209,4 +319,4 @@
     </div>
 
 </section>
- 
+

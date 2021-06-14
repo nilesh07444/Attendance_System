@@ -20,6 +20,7 @@
         public static string DefaultImagePath = "/Images/default_image.png";
         public static string DefaultUserImagePath = "/Images/default_user_image.png";
         public static string HomeDirectoryPath = "/Images/HomeImage/";
+        public static string HeroDirectoryPath = "/Images/HeroImage/";
         public static string PackageDirectoryPath = "/Images/PackageImage/";
         public static string SMSPackageDirectoryPath = "/Images/SMSPackageImage/";
         public static string PancardDirectoryPath = "/Images/Pancard/";
