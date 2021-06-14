@@ -21,8 +21,6 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
         public WorkerAttendanceController()
         {
             _db = new AttendanceSystemEntities();
-
-
         }
 
         [HttpPost]
@@ -36,6 +34,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             {
                 roleId = base.UTI.RoleId;
                 employeeId = base.UTI.EmployeeId;
+                companyId = base.UTI.CompanyId;
                 DateTime today = DateTime.UtcNow.Date;
                 #region Validation
                 if (workerAttendanceRequestVM.SiteId == 0)
@@ -175,7 +174,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                             attendanceObject.MorningLocationFrom = workerAttendanceRequestVM.LocationFrom;
                         }
 
-                        
+
                         _db.SaveChanges();
                     }
                     else
@@ -218,7 +217,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                             objWorkerPayment.PaymentDate = attendanceObject.AttendanceDate;
                             objWorkerPayment.PaymentType = (int)EmployeePaymentType.Salary;
                             objWorkerPayment.CreditOrDebitText = ErrorMessage.Credit;
-                            objWorkerPayment.DebitAmount = 0;
+                            objWorkerPayment.DebitAmount = workerAttendanceRequestVM.TodaySalary.HasValue && employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased ? workerAttendanceRequestVM.TodaySalary.Value : 0;
                             objWorkerPayment.Remarks = ErrorMessage.AutoCreditOnEveningAttendance;
                             objWorkerPayment.Month = attendanceObject.AttendanceDate.Month;
                             objWorkerPayment.Year = attendanceObject.AttendanceDate.Year;
@@ -243,28 +242,28 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                             _db.SaveChanges();
                         }
 
-                        if (workerAttendanceRequestVM.TodaySalary.HasValue && workerAttendanceRequestVM.TodaySalary.Value > 0 && employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased)
-                        {
-                            tbl_WorkerPayment objWorkerPaymentDebit = new tbl_WorkerPayment();
-                            objWorkerPaymentDebit.CompanyId = companyId;
-                            objWorkerPaymentDebit.UserId = attendanceObject.EmployeeId;
-                            objWorkerPaymentDebit.AttendanceId = attendanceObject.WorkerAttendanceId;
-                            objWorkerPaymentDebit.PaymentDate = attendanceObject.AttendanceDate;
-                            objWorkerPaymentDebit.PaymentType = (int)EmployeePaymentType.Salary;
-                            objWorkerPaymentDebit.CreditOrDebitText = ErrorMessage.Debit;
-                            objWorkerPaymentDebit.DebitAmount = workerAttendanceRequestVM.TodaySalary.Value;
-                            objWorkerPaymentDebit.Remarks = ErrorMessage.AutoCreditOnEveningAttendance;
-                            objWorkerPaymentDebit.Month = attendanceObject.AttendanceDate.Month;
-                            objWorkerPaymentDebit.Year = attendanceObject.AttendanceDate.Year;
-                            objWorkerPaymentDebit.CreatedDate = DateTime.UtcNow;
-                            objWorkerPaymentDebit.CreatedBy = employeeId;
-                            objWorkerPaymentDebit.ModifiedDate = DateTime.UtcNow;
-                            objWorkerPaymentDebit.ModifiedBy = employeeId;
-                            objWorkerPaymentDebit.CreditAmount = 0;
+                        //if (workerAttendanceRequestVM.TodaySalary.HasValue && workerAttendanceRequestVM.TodaySalary.Value > 0 && employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased)
+                        //{
+                        //    tbl_WorkerPayment objWorkerPaymentDebit = new tbl_WorkerPayment();
+                        //    objWorkerPaymentDebit.CompanyId = companyId;
+                        //    objWorkerPaymentDebit.UserId = attendanceObject.EmployeeId;
+                        //    objWorkerPaymentDebit.AttendanceId = attendanceObject.WorkerAttendanceId;
+                        //    objWorkerPaymentDebit.PaymentDate = attendanceObject.AttendanceDate;
+                        //    objWorkerPaymentDebit.PaymentType = (int)EmployeePaymentType.Salary;
+                        //    objWorkerPaymentDebit.CreditOrDebitText = ErrorMessage.Debit;
+                        //    objWorkerPaymentDebit.DebitAmount = workerAttendanceRequestVM.TodaySalary.Value;
+                        //    objWorkerPaymentDebit.Remarks = ErrorMessage.AutoCreditOnEveningAttendance;
+                        //    objWorkerPaymentDebit.Month = attendanceObject.AttendanceDate.Month;
+                        //    objWorkerPaymentDebit.Year = attendanceObject.AttendanceDate.Year;
+                        //    objWorkerPaymentDebit.CreatedDate = DateTime.UtcNow;
+                        //    objWorkerPaymentDebit.CreatedBy = employeeId;
+                        //    objWorkerPaymentDebit.ModifiedDate = DateTime.UtcNow;
+                        //    objWorkerPaymentDebit.ModifiedBy = employeeId;
+                        //    objWorkerPaymentDebit.CreditAmount = 0;
 
-                            _db.tbl_WorkerPayment.Add(objWorkerPaymentDebit);
-                            _db.SaveChanges();
-                        }
+                        //    _db.tbl_WorkerPayment.Add(objWorkerPaymentDebit);
+                        //    _db.SaveChanges();
+                        //}
 
                     }
                     response.Data = employeeObj.FirstName + " " + employeeObj.LastName;

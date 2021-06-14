@@ -33,51 +33,51 @@
                     <div class="card-body">
 
                         @*<div class="row">
-                            <div class="form-group col-4" style=" background-color: #425C59; border-radius: 10px;">
-                                <label style=" color: #FFCEA3; margin-top: 8px; font-size: 17px;">Compnay Name</label>
-                            </div>
+            <div class="form-group col-4" style=" background-color: #425C59; border-radius: 10px;">
+                <label style=" color: #FFCEA3; margin-top: 8px; font-size: 17px;">Compnay Name</label>
+            </div>
 
-                            <div class="form-group col-8">
-                                <input type="text" class="form-control" style=" border-radius: 10px;" />
-                            </div>
+            <div class="form-group col-8">
+                <input type="text" class="form-control" style=" border-radius: 10px;" />
+            </div>
 
-                        </div>
+        </div>
 
-                        <div class="row">
-                            <div class="form-group col-4" style=" background-color: #425C59; border-radius: 10px;">
-                                <label style=" color: #FFCEA3; margin-top: 8px; font-size: 17px;">Compnay Type</label>
-                            </div>
+        <div class="row">
+            <div class="form-group col-4" style=" background-color: #425C59; border-radius: 10px;">
+                <label style=" color: #FFCEA3; margin-top: 8px; font-size: 17px;">Compnay Type</label>
+            </div>
 
-                            <div class="form-group col-8">
-                                <input type="text" class="form-control" style=" border-radius: 10px;" />
-                            </div>
+            <div class="form-group col-8">
+                <input type="text" class="form-control" style=" border-radius: 10px;" />
+            </div>
 
-                        </div>
+        </div>
 
-                        <div class="row">
+        <div class="row">
 
-                            <div class="form-group col-4" style=" background-color: #425C59; border-radius: 10px;">
-                                <label style=" color: #FFCEA3; margin-top: 8px; font-size: 17px;">Company Email Id</label>
-                            </div>
+            <div class="form-group col-4" style=" background-color: #425C59; border-radius: 10px;">
+                <label style=" color: #FFCEA3; margin-top: 8px; font-size: 17px;">Company Email Id</label>
+            </div>
 
 
-                            <div class="form-group col-8">
-                                <input type="text" class="form-control" style=" border-radius: 10px;" />
-                            </div>
+            <div class="form-group col-8">
+                <input type="text" class="form-control" style=" border-radius: 10px;" />
+            </div>
 
-                        </div>
+        </div>
 
-                        <div class="row">
+        <div class="row">
 
-                            <div class="form-group col-4" style=" background-color: #425C59; border-radius: 10px;">
-                                <label style=" color: #FFCEA3; margin-top: 8px; font-size: 17px;">Company Contact No</label>
-                            </div>
+            <div class="form-group col-4" style=" background-color: #425C59; border-radius: 10px;">
+                <label style=" color: #FFCEA3; margin-top: 8px; font-size: 17px;">Company Contact No</label>
+            </div>
 
-                            <div class="form-group col-8">
-                                <input type="text" class="form-control" style=" border-radius: 10px;" />
-                            </div>
+            <div class="form-group col-8">
+                <input type="text" class="form-control" style=" border-radius: 10px;" />
+            </div>
 
-                        </div>*@
+        </div>*@
 
                         <div class="row">
                             <div class="form-group col-6">
@@ -127,22 +127,21 @@
                                 @Html.LabelFor(model => model.CompanyAddress) :
                                 <p>@Model.CompanyAddress</p>
                             </div>
-
                             <div class="form-group col-6">
-                                @Html.LabelFor(model => model.CompanyPincode) :
-                                <p>@Model.CompanyPincode</p>
+                                @Html.LabelFor(model => model.CompanyCity) :
+                                <p>@Model.CompanyCity</p>
                             </div>
+
                         </div>
 
                         <div class="row">
                             <div class="form-group col-6">
+                                @Html.LabelFor(model => model.CompanyPincode) :
+                                <p>@Model.CompanyPincode</p>
+                            </div>
+                            <div class="form-group col-6">
                                 @Html.LabelFor(model => model.CompanyState) :
                                 <p>@Model.CompanyState</p>
-                            </div>
-
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.CompanyCity) :
-                                <p>@Model.CompanyCity</p>
                             </div>
                         </div>
 
@@ -261,13 +260,12 @@
 
                         <div class="row">
                             <div class="form-group col-6">
-                                @Html.LabelFor(model => model.CompanyAdminPincode) :
-                                <p>@Model.CompanyAdminPincode</p>
-                            </div>
-
-                            <div class="form-group col-6">
                                 @Html.LabelFor(model => model.CompanyAdminCity) :
                                 <p>@Model.CompanyAdminCity</p>
+                            </div>
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.CompanyAdminPincode) :
+                                <p>@Model.CompanyAdminPincode</p>
                             </div>
                         </div>
 
@@ -285,22 +283,6 @@
                                 }
                             </div>
                         </div>
-
-                        <div class="row">
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.CompanyAdminPanCardNo) :
-                                <p>@Model.CompanyAdminPanCardNo</p>
-                            </div>
-
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.CompanyAdminPanCardPhotoFile) :
-                                @if (!string.IsNullOrEmpty(Model.CompanyAdminPanCardPhoto))
-                                {
-                                    <p><a target="_blank" href="@ErrorMessage.PancardDirectoryPath/@Model.CompanyAdminPanCardPhoto"> Click here to view image </a></p>
-                                }
-                            </div>
-                        </div>
-
                         <div class="row">
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.CompanyAdminAadharCardNo) :
@@ -312,6 +294,20 @@
                                 @if (!string.IsNullOrEmpty(Model.CompanyAdminPanCardPhoto))
                                 {
                                     <p><a target="_blank" href="@ErrorMessage.AdharcardDirectoryPath/@Model.CompanyAdminAadharCardPhoto"> Click here to view image </a></p>
+                                }
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.CompanyAdminPanCardNo) :
+                                <p>@Model.CompanyAdminPanCardNo</p>
+                            </div>
+
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.CompanyAdminPanCardPhotoFile) :
+                                @if (!string.IsNullOrEmpty(Model.CompanyAdminPanCardPhoto))
+                                {
+                                    <p><a target="_blank" href="@ErrorMessage.PancardDirectoryPath/@Model.CompanyAdminPanCardPhoto"> Click here to view image </a></p>
                                 }
                             </div>
                         </div>

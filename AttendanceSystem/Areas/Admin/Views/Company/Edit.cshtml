@@ -92,25 +92,26 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
+                                        @Html.LabelFor(model => model.CompanyCity, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                        @Model.CompanyCity
+                                        @Html.HiddenFor(model => model.CompanyCity)
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyPincode, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
                                         @Model.CompanyPincode
                                         @Html.HiddenFor(model => model.CompanyPincode)
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyState, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
                                         @Model.CompanyState
                                         @Html.HiddenFor(model => model.CompanyState)
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.CompanyCity, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                        @Model.CompanyCity
-                                        @Html.HiddenFor(model => model.CompanyCity)
                                     </div>
                                 </div>
                             </div>
@@ -267,14 +268,6 @@
                                 </div>
                             </div>
                             <div class="row">
-
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.CompanyAdminPincode, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                        @Model.CompanyAdminPincode
-                                        @Html.HiddenFor(model => model.CompanyAdminPincode)
-                                    </div>
-                                </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyAdminCity, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
@@ -282,6 +275,14 @@
                                         @Html.HiddenFor(model => model.CompanyAdminCity)
                                     </div>
                                 </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.CompanyAdminPincode, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                        @Model.CompanyAdminPincode
+                                        @Html.HiddenFor(model => model.CompanyAdminPincode)
+                                    </div>
+                                </div>
+
                             </div>
                             <div class="row">
                                 <div class="col-sm-6">

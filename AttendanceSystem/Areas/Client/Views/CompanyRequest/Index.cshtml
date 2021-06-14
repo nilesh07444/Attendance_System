@@ -111,20 +111,21 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Pincode*</label>
-                                @Html.TextBoxFor(model => model.CompanyPincode, new { @type = "Text", @class = "form-control", @placeholder = "Enter Pincode", @maxlength = "6" })
-                                @Html.ValidationMessageFor(model => model.CompanyPincode, "", new { @class = "error" })
+                                <label>City*</label>
+                                @Html.TextBoxFor(model => model.CompanyCity, new { @type = "Text", @class = "form-control", @placeholder = "Enter City", @maxlength = "20" })
+                                @Html.ValidationMessageFor(model => model.CompanyCity, "", new { @class = "error" })
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>City*</label>
-                                @Html.TextBoxFor(model => model.CompanyCity, new { @type = "Text", @class = "form-control", @placeholder = "Enter City", @maxlength = "20" })
-                                @Html.ValidationMessageFor(model => model.CompanyCity, "", new { @class = "error" })
+                                <label>Pincode*</label>
+                                @Html.TextBoxFor(model => model.CompanyPincode, new { @type = "Text", @class = "form-control", @placeholder = "Enter Pincode", @maxlength = "6" })
+                                @Html.ValidationMessageFor(model => model.CompanyPincode, "", new { @class = "error" })
                             </div>
                         </div>
+
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>State*</label>
@@ -223,16 +224,16 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Date of Birth</label>
-                                @Html.TextBoxFor(model => model.CompanyAdminDOB, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Enter Date of Birth" })
-                                @Html.ValidationMessageFor(model => model.CompanyAdminDOB, "", new { @class = "error" })
+                                <label>Email Id</label>
+                                @Html.TextBoxFor(model => model.CompanyAdminEmailId, new { @type = "email", @class = "form-control required", @placeholder = "Enter Email Id" })
+                                @Html.ValidationMessageFor(model => model.CompanyAdminEmailId, "", new { @class = "error" })
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Email Id</label>
-                                @Html.TextBoxFor(model => model.CompanyAdminEmailId, new { @type = "email", @class = "form-control required", @placeholder = "Enter Email Id" })
-                                @Html.ValidationMessageFor(model => model.CompanyAdminEmailId, "", new { @class = "error" })
+                                <label>Date of Birth</label>
+                                @Html.TextBoxFor(model => model.CompanyAdminDOB, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Enter Date of Birth" })
+                                @Html.ValidationMessageFor(model => model.CompanyAdminDOB, "", new { @class = "error" })
                             </div>
                         </div>
                     </div>
@@ -271,16 +272,16 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Pincode*</label>
-                                @Html.TextBoxFor(model => model.CompanyAdminPincode, new { @type = "Text", @class = "form-control", @placeholder = "Enter Pincode", @maxlength = "6" })
-                                @Html.ValidationMessageFor(model => model.CompanyAdminPincode, "", new { @class = "error" })
+                                <label>City*</label>
+                                @Html.TextBoxFor(model => model.CompanyAdminCity, new { @type = "text", @class = "form-control", @placeholder = "Enter City" })
+                                @Html.ValidationMessageFor(model => model.CompanyAdminCity, "", new { @class = "error" })
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>City*</label>
-                                @Html.TextBoxFor(model => model.CompanyAdminCity, new { @type = "text", @class = "form-control", @placeholder = "Enter City" })
-                                @Html.ValidationMessageFor(model => model.CompanyAdminCity, "", new { @class = "error" })
+                                <label>Pincode*</label>
+                                @Html.TextBoxFor(model => model.CompanyAdminPincode, new { @type = "Text", @class = "form-control", @placeholder = "Enter Pincode", @maxlength = "6" })
+                                @Html.ValidationMessageFor(model => model.CompanyAdminPincode, "", new { @class = "error" })
                             </div>
                         </div>
                     </div>
@@ -303,22 +304,6 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Aadhar card  No*</label>
-                                @Html.TextBoxFor(model => model.CompanyAdminAadharCardNo, new { @type = "text", @class = "form-control", @placeholder = "Enter Aadhar card No", @maxlength = "12" })
-                                @Html.ValidationMessageFor(model => model.CompanyAdminAadharCardNo, "", new { @class = "error" })
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label>Aadhar card Photo*</label>
-                                @Html.TextBoxFor(model => model.CompanyAdminAadharCardPhotoFile, new { type = "file", @class = "form-control required" })
-                                @Html.ValidationMessageFor(model => model.CompanyAdminAadharCardPhotoFile, "", new { @class = "error" })
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
                                 <label>Pan Card No</label>
                                 @Html.TextBoxFor(model => model.CompanyAdminPanCardNo, new { @type = "text", @class = "form-control", @placeholder = "Enter Pan Card No", @maxlength = "10" })
                                 @Html.ValidationMessageFor(model => model.CompanyAdminPanCardNo, "", new { @class = "error" })
@@ -332,6 +317,23 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Aadhar card  No*</label>
+                                @Html.TextBoxFor(model => model.CompanyAdminAadharCardNo, new { @type = "text", @class = "form-control", @placeholder = "Enter Aadhar card No", @maxlength = "12" })
+                                @Html.ValidationMessageFor(model => model.CompanyAdminAadharCardNo, "", new { @class = "error" })
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Aadhar card Photo*</label>
+                                @Html.TextBoxFor(model => model.CompanyAdminAadharCardPhotoFile, new { type = "file", @class = "form-control required" })
+                                @Html.ValidationMessageFor(model => model.CompanyAdminAadharCardPhotoFile, "", new { @class = "error" })
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
