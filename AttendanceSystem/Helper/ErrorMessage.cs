@@ -102,6 +102,7 @@
         public static string WorkerDidNotAssignedToThisSite = "Worker did not assigned to this site.";
         public static string InvalidWorkersSelectedToAssign = "Invalid workers selected to assign.";
         public static string WorkerFingerprintLimitReached = "Worker fingerprint limit reached";
+        public static string WorkerAttendanceAlreadyTakenCanNotremove = "Worker attendance already taken, can not remove.";
 
         public static string AlreadyInForTheDay = "Already in for the day.";
         public static string AlreadyOutForTheDay = "Already out for the day.";
