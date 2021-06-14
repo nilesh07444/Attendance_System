@@ -81,6 +81,12 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     response.AddError(ErrorMessage.CanNotTakeEveningAttendanceWorkerNotPresentOnMorningOrAfterNoon);
                 }
 
+                if (attendanceObject != null && !attendanceObject.IsMorning && workerAttendanceRequestVM.AttendanceType == (int)WorkerAttendanceType.Afternoon)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.CanNotTakeMorningAttendanceAfterAfterNoonAttendance);
+                }
+
                 if (workerAttendanceRequestVM.AttendanceType == (int)WorkerAttendanceType.Morning
                     && attendanceObject != null && attendanceObject.IsMorning)
                 {
