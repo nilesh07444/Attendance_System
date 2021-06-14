@@ -722,10 +722,16 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     response.AddError(ErrorMessage.WorkerDidNotAssignedToThisSite);
                 }
 
-                if (_db.tbl_AssignWorker.Any(x => x.SiteId == requestVM.SiteId && x.Date == requestVM.Date && x.EmployeeId == requestVM.EmployeeId && x.IsClosed))
+                if (!_db.tbl_AssignWorker.Any(x => x.SiteId == requestVM.SiteId && x.Date == requestVM.Date && x.EmployeeId == requestVM.EmployeeId && !x.IsClosed))
                 {
                     response.IsError = true;
                     response.AddError(ErrorMessage.WorkerAlreadyClosed);
+                }
+
+                if (_db.tbl_WorkerAttendance.Any(x => x.EmployeeId == requestVM.EmployeeId && x.AttendanceDate == requestVM.Date && !x.IsClosed))
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.WorkerAttendanceAlreadyTakenCanNotremove);
                 }
 
                 #endregion Validation
