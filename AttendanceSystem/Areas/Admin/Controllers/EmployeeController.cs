@@ -250,11 +250,13 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                         int activeEmployee = empCount.Where(x => x.isActive).Count();
 
+                        string password = defaultPassword;
+
                         tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == companyId).FirstOrDefault();
                         tbl_Employee objEmployee = new tbl_Employee();
                         objEmployee.ProfilePicture = fileName;
                         objEmployee.CompanyId = companyId;
-                        objEmployee.Password = CommonMethod.Encrypt(defaultPassword, psSult); ;
+                        objEmployee.Password = CommonMethod.Encrypt(password, psSult);
                         objEmployee.AdminRoleId = employeeVM.AdminRoleId;
                         objEmployee.Prefix = employeeVM.Prefix;
                         objEmployee.FirstName = employeeVM.FirstName;
@@ -296,14 +298,32 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         int SmsId = (int)SMSType.EmployeeCreate;
                         string msg = CommonMethod.GetSmsContent(SmsId);
 
-                        string employmentCategoryText = objEmployee.EmploymentCategory.ToString(); // TODO: change
+                        string employmentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)objEmployee.EmploymentCategory);
+                        string salaryText = Convert.ToString(objEmployee.PerCategoryPrice);
+
+                        if (objEmployee.EmploymentCategory == (int)EmploymentCategory.MonthlyBased)
+                        {
+                            salaryText = salaryText + ErrorMessage.PerMonth;
+                        }
+                        else if (objEmployee.EmploymentCategory == (int)EmploymentCategory.DailyBased)
+                        {
+                            salaryText = salaryText + ErrorMessage.PerDay;
+                        }
+                        else if (objEmployee.EmploymentCategory == (int)EmploymentCategory.HourlyBased)
+                        {
+                            salaryText = salaryText + ErrorMessage.PerHour;
+                        }
+                        else if (objEmployee.EmploymentCategory == (int)EmploymentCategory.UnitBased)
+                        {
+                            salaryText = salaryText + ErrorMessage.PerUnit;
+                        }
 
                         Regex regReplace = new Regex("{#var#}");
                         msg = regReplace.Replace(msg, objEmployee.FirstName + " " + objEmployee.LastName, 1);
                         msg = regReplace.Replace(msg, objCompany.CompanyName, 1);
                         msg = regReplace.Replace(msg, objEmployee.EmployeeCode, 1);
-                        msg = regReplace.Replace(msg, CommonMethod.Encrypt(objEmployee.Password, psSult), 1);
-                        msg = regReplace.Replace(msg, "SALARY QUERY TO NILESH", 1); //TODO change
+                        msg = regReplace.Replace(msg, password, 1);
+                        msg = regReplace.Replace(msg, salaryText, 1);
                         msg = regReplace.Replace(msg, employmentCategoryText, 1);
                         msg = msg.Replace("\r\n", "\n");
 
@@ -496,7 +516,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 }
 
                 #endregion
-                 
+
             }
             catch (Exception ex)
             {

@@ -155,5 +155,11 @@
         public static string WorkerAttendancePendingCanNotClose = "Worker attendance pending, can not close.";
         public static string WorkerAttendanceNotExistCanNotClose = "Worker attendance does not exist, can not close.";
         public static string WorkerAttendanceAreNotClosedCanNotCompleteConversion = "Some of worker attendance are not closed , so you can not start conversion";
+
+        public static string PerMonth = "Per Month";
+        public static string PerDay = "Per Day";
+        public static string PerUnit = "Per Unit";
+        public static string PerHour = "Per Hour";
+
     }
 }
