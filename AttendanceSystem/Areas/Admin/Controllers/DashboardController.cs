@@ -24,49 +24,53 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 long companyId = clsAdminSession.CompanyId;
                 int roleId = clsAdminSession.RoleID;
 
-
-                dashboardVM.PendingLeaves = (from lv in _db.tbl_Leave
-                                             join ur in _db.tbl_Employee on lv.UserId equals ur.EmployeeId
-                                             where !lv.IsDeleted
-                                             && ur.CompanyId == companyId
-                                             && lv.LeaveStatus == (int)LeaveStatus.Pending
-                                             select lv.LeaveId
-                                            ).Count();
-
-                dashboardVM.PendingAttendance = (from at in _db.tbl_Attendance
-                                                 join ur in _db.tbl_Employee on at.UserId equals ur.EmployeeId
-                                                 where !at.IsDeleted
-                                                 && ur.CompanyId == companyId
-                                                 && at.Status == (int)AttendanceStatus.Pending
-                                                 select at.AttendanceId
-                                           ).Count();
-
-                dashboardVM.AccountExpiryDate = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == companyId).Select(z => z.EndDate).FirstOrDefault();
-
-                var startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-                var endDate = startDate.AddMonths(1).AddDays(-1);
-                dashboardVM.ThisMonthHoliday = _db.tbl_Holiday.Where(x => x.CompanyId == companyId.ToString() && x.IsActive && !x.IsDeleted && x.StartDate >= startDate && x.StartDate <= endDate).Count();
-
-                tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == companyId).FirstOrDefault();
-                if (objCompany != null)
-                {
-                    if (objCompany.CompanyTypeId == (int)CompanyType.Banking_OfficeCompany)
-                        dashboardVM.IsOfficeCompany = true;
-                    else
-                        dashboardVM.IsOfficeCompany = false;
-                }
-
-                dashboardVM.Employee = _db.tbl_Employee.Where(x => x.CompanyId == companyId && x.IsActive && !x.IsDeleted && x.AdminRoleId == (int)AdminRoles.Employee).Count();
-                if (!dashboardVM.IsOfficeCompany)
-                {
-                    dashboardVM.Supervisor = _db.tbl_Employee.Where(x => x.CompanyId == companyId && x.IsActive && !x.IsDeleted && x.AdminRoleId == (int)AdminRoles.Supervisor).Count();
-                    dashboardVM.Checker = _db.tbl_Employee.Where(x => x.CompanyId == companyId && x.IsActive && !x.IsDeleted && x.AdminRoleId == (int)AdminRoles.Checker).Count();
-                    dashboardVM.Payer = _db.tbl_Employee.Where(x => x.CompanyId == companyId && x.IsActive && !x.IsDeleted && x.AdminRoleId == (int)AdminRoles.Payer).Count();
-                    dashboardVM.Worker = _db.tbl_Employee.Where(x => x.CompanyId == companyId && x.IsActive && !x.IsDeleted && x.AdminRoleId == (int)AdminRoles.Worker).Count();
-                }
-
                 if (roleId == (int)AdminRoles.CompanyAdmin)
                 {
+                    dashboardVM.SMSLeft = _db.tbl_CompanySMSPackRenew.Where(x => x.CompanyId == companyId
+                     && x.RenewDate <= DateTime.Now
+                     && x.PackageExpiryDate > DateTime.Now).Select(x => x.RemainingSMS).FirstOrDefault();
+
+                    dashboardVM.PendingLeaves = (from lv in _db.tbl_Leave
+                                                 join ur in _db.tbl_Employee on lv.UserId equals ur.EmployeeId
+                                                 where !lv.IsDeleted
+                                                 && ur.CompanyId == companyId
+                                                 && lv.LeaveStatus == (int)LeaveStatus.Pending
+                                                 select lv.LeaveId
+                                            ).Count();
+
+                    dashboardVM.PendingAttendance = (from at in _db.tbl_Attendance
+                                                     join ur in _db.tbl_Employee on at.UserId equals ur.EmployeeId
+                                                     where !at.IsDeleted
+                                                     && ur.CompanyId == companyId
+                                                     && at.Status == (int)AttendanceStatus.Pending
+                                                     select at.AttendanceId
+                                               ).Count();
+
+                    dashboardVM.AccountExpiryDate = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == companyId).Select(z => z.EndDate).FirstOrDefault();
+
+                    var startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                    var endDate = startDate.AddMonths(1).AddDays(-1);
+                    dashboardVM.ThisMonthHoliday = _db.tbl_Holiday.Where(x => x.CompanyId == companyId.ToString() && x.IsActive && !x.IsDeleted && x.StartDate >= startDate && x.StartDate <= endDate).Count();
+
+                    tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == companyId).FirstOrDefault();
+                    if (objCompany != null)
+                    {
+                        if (objCompany.CompanyTypeId == (int)CompanyType.Banking_OfficeCompany)
+                            dashboardVM.IsOfficeCompany = true;
+                        else
+                            dashboardVM.IsOfficeCompany = false;
+                    }
+
+                    dashboardVM.Employee = _db.tbl_Employee.Where(x => x.CompanyId == companyId && x.IsActive && !x.IsDeleted && x.AdminRoleId == (int)AdminRoles.Employee).Count();
+                    if (!dashboardVM.IsOfficeCompany)
+                    {
+                        dashboardVM.Supervisor = _db.tbl_Employee.Where(x => x.CompanyId == companyId && x.IsActive && !x.IsDeleted && x.AdminRoleId == (int)AdminRoles.Supervisor).Count();
+                        dashboardVM.Checker = _db.tbl_Employee.Where(x => x.CompanyId == companyId && x.IsActive && !x.IsDeleted && x.AdminRoleId == (int)AdminRoles.Checker).Count();
+                        dashboardVM.Payer = _db.tbl_Employee.Where(x => x.CompanyId == companyId && x.IsActive && !x.IsDeleted && x.AdminRoleId == (int)AdminRoles.Payer).Count();
+                        dashboardVM.Worker = _db.tbl_Employee.Where(x => x.CompanyId == companyId && x.IsActive && !x.IsDeleted && x.AdminRoleId == (int)AdminRoles.Worker).Count();
+                    }
+
+
                     int currentMonth = DateTime.Now.Month;
                     int currentYear = DateTime.Now.Year;
                     int applyYear = currentMonth == 1 ? currentYear - 1 : currentYear;
@@ -130,6 +134,19 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     dashboardVM.AllowForEmployee = _db.tbl_Attendance.Any(x => x.CompanyId == companyId && x.AttendanceDate.Month == applyMonth && x.AttendanceDate.Year == applyYear);
                     dashboardVM.AllowForWorker = workerIds.Count > 0 ? _db.tbl_WorkerAttendance.Any(x => workerIds.Contains(x.EmployeeId) && x.AttendanceDate.Month == applyMonth && x.AttendanceDate.Year == applyYear) : false;
 
+                }
+
+                if (roleId == (int)AdminRoles.SuperAdmin)
+                {
+                    List<tbl_CompanyRequest> companyRequestList = _db.tbl_CompanyRequest.ToList();
+                    dashboardVM.TotalCustomer = companyRequestList.Count();
+                    dashboardVM.PendingCompanyRequest = companyRequestList.Where(x => x.RequestStatus == (int)CompanyRequestStatus.Pending).Count();
+                    dashboardVM.AccountPackage = _db.tbl_Package.Where(x => x.IsActive && !x.IsDeleted).Count();
+                    dashboardVM.SMSPackage = _db.tbl_SMSPackage.Where(x => x.IsActive && !x.IsDeleted).Count();
+                    dashboardVM.FeedBack_QueryPending = _db.tbl_Feedback.Where(x => x.IsActive && !x.IsDeleted && x.FeedbackStatus == (int)FeedbackStatus.Pending).Count();
+                    dashboardVM.TotalClientRegistration = companyRequestList.Where(x => x.RequestStatus == (int)CompanyRequestStatus.Accept).Count();
+                    dashboardVM.TotalClientForConstruction = companyRequestList.Where(x => x.RequestStatus == (int)CompanyRequestStatus.Accept && x.CompanyTypeId == (int)CompanyType.ConstructionCompany).Count();
+                    dashboardVM.TotalClientForOffice = companyRequestList.Where(x => x.RequestStatus == (int)CompanyRequestStatus.Accept && x.CompanyTypeId == (int)CompanyType.Banking_OfficeCompany).Count();
                 }
             }
             catch (Exception ex)
@@ -203,7 +220,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                        equals new { Id = epp.UserId, month = epp.Month, year = epp.Year }
                                        into jointData
                                        from jointRecord in jointData.DefaultIfEmpty()
-                                        
+
                                        where
                                        employeeIdsExceptMonthly.Contains(emp.EmployeeId)
                                        select new
@@ -355,7 +372,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     errorMessage = ErrorMessage.CanNotStartCurrentMonthConversion;
                 }
 
-              
+
 
                 List<long> workerIds = _db.tbl_Employee.Where(x => x.CompanyId == companyId && x.AdminRoleId == (int)AdminRoles.Worker).Select(x => x.EmployeeId).ToList();
                 if (_db.tbl_Leave.Any(x => workerIds.Contains(x.UserId) && x.StartDate.Month == month && x.StartDate.Year == year && x.LeaveStatus == (int)LeaveStatus.Pending))

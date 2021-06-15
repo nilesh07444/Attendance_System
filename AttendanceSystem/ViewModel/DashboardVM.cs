@@ -7,6 +7,7 @@ namespace AttendanceSystem.ViewModel
 {
     public class DashboardVM
     {
+        public int? SMSLeft { get; set; }
         public long PendingLeaves { get; set; }
         public long PendingAttendance { get; set; }
         public DateTime AccountExpiryDate { get; set; }
@@ -24,6 +25,15 @@ namespace AttendanceSystem.ViewModel
         public bool AllowForWorker { get; set; }
         public bool AllowForEmployee { get; set; }
 
+
+        public long TotalCustomer { get; set; }
+        public long PendingCompanyRequest { get; set; }
+        public long AccountPackage { get; set; }
+        public long SMSPackage { get; set; }
+        public long FeedBack_QueryPending { get; set; }
+        public long TotalClientRegistration { get; set; }
+        public long TotalClientForConstruction { get; set; }
+        public long TotalClientForOffice { get; set; }
 
     }
 }

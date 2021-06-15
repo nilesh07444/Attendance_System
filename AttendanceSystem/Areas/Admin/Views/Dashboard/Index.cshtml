@@ -9,51 +9,6 @@
     @if (clsAdminSession.RoleID == (int)AdminRoles.CompanyAdmin)
     {
         <div class="row ">
-
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                <div class="card">
-                    <div class="card-statistic-4">
-                        <div class="align-items-center justify-content-between">
-                            <div class="row ">
-                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
-                                    <div class="card-content">
-                                        <h5 class="font-15">Pending Leaves</h5>
-                                        <h2 class="mb-3 font-18">@Model.PendingLeaves</h2>
-
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
-                                    <div class="banner-img">
-                                        <img src="~/Content/admin-theme/assets/img/banner/1.png" alt="">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                <div class="card">
-                    <div class="card-statistic-4">
-                        <div class="align-items-center justify-content-between">
-                            <div class="row ">
-                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
-                                    <div class="card-content">
-                                        <h5 class="font-15"> Pending Attendance</h5>
-                                        <h2 class="mb-3 font-18">@Model.PendingAttendance</h2>
-
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
-                                    <div class="banner-img">
-                                        <img src="~/Content/admin-theme/assets/img/banner/2.png" alt="">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
                 <div class="card">
                     <div class="card-statistic-4">
@@ -83,7 +38,74 @@
                             <div class="row ">
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
                                     <div class="card-content">
-                                        <h5 class="font-15">This Month Holiday</h5>
+                                        <h5 class="font-15">SMS Left</h5>
+                                        <h2 class="mb-3 font-18">@Model.SMSLeft</h2>
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
+                                    <div class="banner-img">
+                                        <img src="~/Content/admin-theme/assets/img/banner/3.png" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="card">
+                    <div class="card-statistic-4">
+                        <div class="align-items-center justify-content-between">
+                            <div class="row ">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
+                                    <div class="card-content">
+                                        <h5 class="font-15"> Pending Attendance</h5>
+                                        <h2 class="mb-3 font-18">@Model.PendingAttendance</h2>
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
+                                    <div class="banner-img">
+                                        <img src="~/Content/admin-theme/assets/img/banner/2.png" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="card">
+                    <div class="card-statistic-4">
+                        <div class="align-items-center justify-content-between">
+                            <div class="row ">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
+                                    <div class="card-content">
+                                        <h5 class="font-15">Pending Leaves</h5>
+                                        <h2 class="mb-3 font-18">@Model.PendingLeaves</h2>
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
+                                    <div class="banner-img">
+                                        <img src="~/Content/admin-theme/assets/img/banner/1.png" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="card">
+                    <div class="card-statistic-4">
+                        <div class="align-items-center justify-content-between">
+                            <div class="row ">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
+                                    <div class="card-content">
+                                        <h5 class="font-15">Current Month Holiday</h5>
                                         <h2 class="mb-3 font-18">@Model.ThisMonthHoliday</h2>
                                     </div>
                                 </div>
@@ -219,7 +241,7 @@
                     <div class="card-statistic-4">
                         <div class="align-items-center justify-content-between">
                             <div class="pull-left">
-                              Conversion For @Model.MonthName - @Model.Year
+                                Conversion For @Model.MonthName - @Model.Year
                                 @Html.HiddenFor(m => m.Month)
                                 @Html.HiddenFor(m => m.Year)
                             </div>
@@ -262,6 +284,193 @@
             }
         </div>
     }
+
+    @if (clsAdminSession.RoleID == (int)AdminRoles.SuperAdmin)
+    {
+        <div class="row ">
+
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="card">
+                    <div class="card-statistic-4">
+                        <div class="align-items-center justify-content-between">
+                            <div class="row ">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
+                                    <div class="card-content">
+                                        <h5 class="font-15">Total Customers</h5>
+                                        <h2 class="mb-3 font-18">@Model.TotalCustomer</h2>
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
+                                    <div class="banner-img">
+                                        <img src="~/Content/admin-theme/assets/img/banner/1.png" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="card">
+                    <div class="card-statistic-4">
+                        <div class="align-items-center justify-content-between">
+                            <div class="row ">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
+                                    <div class="card-content">
+                                        <h5 class="font-15"> Pending Company Request</h5>
+                                        <h2 class="mb-3 font-18">@Model.PendingCompanyRequest</h2>
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
+                                    <div class="banner-img">
+                                        <img src="~/Content/admin-theme/assets/img/banner/2.png" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="card">
+                    <div class="card-statistic-4">
+                        <div class="align-items-center justify-content-between">
+                            <div class="row ">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
+                                    <div class="card-content">
+                                        <h5 class="font-15">Account Package</h5>
+                                        <h2 class="mb-3 font-18">@Model.AccountPackage</h2>
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
+                                    <div class="banner-img">
+                                        <img src="~/Content/admin-theme/assets/img/banner/3.png" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="card">
+                    <div class="card-statistic-4">
+                        <div class="align-items-center justify-content-between">
+                            <div class="row ">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
+                                    <div class="card-content">
+                                        <h5 class="font-15">SMS Package</h5>
+                                        <h2 class="mb-3 font-18">@Model.SMSPackage</h2>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
+                                    <div class="banner-img">
+                                        <img src="~/Content/admin-theme/assets/img/banner/4.png" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row ">
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="card">
+                    <div class="card-statistic-4">
+                        <div class="align-items-center justify-content-between">
+                            <div class="row ">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
+                                    <div class="card-content">
+                                        <h5 class="font-15">Feedback/Query Pending</h5>
+                                        <h2 class="mb-3 font-18">@Model.FeedBack_QueryPending</h2>
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
+                                    <div class="banner-img">
+                                        <img src="~/Content/admin-theme/assets/img/banner/1.png" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="card">
+                    <div class="card-statistic-4">
+                        <div class="align-items-center justify-content-between">
+                            <div class="row ">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
+                                    <div class="card-content">
+                                        <h5 class="font-15"> Total Client Registration</h5>
+                                        <h2 class="mb-3 font-18">@Model.TotalClientRegistration</h2>
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
+                                    <div class="banner-img">
+                                        <img src="~/Content/admin-theme/assets/img/banner/2.png" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="card">
+                    <div class="card-statistic-4">
+                        <div class="align-items-center justify-content-between">
+                            <div class="row ">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
+                                    <div class="card-content">
+                                        <h5 class="font-15">Total Client For Contsruction</h5>
+                                        <h2 class="mb-3 font-18">@Model.TotalClientForConstruction</h2>
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
+                                    <div class="banner-img">
+                                        <img src="~/Content/admin-theme/assets/img/banner/3.png" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="card">
+                    <div class="card-statistic-4">
+                        <div class="align-items-center justify-content-between">
+                            <div class="row ">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
+                                    <div class="card-content">
+                                        <h5 class="font-15">Total Client For Office</h5>
+                                        <h2 class="mb-3 font-18">@Model.TotalClientForOffice</h2>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
+                                    <div class="banner-img">
+                                        <img src="~/Content/admin-theme/assets/img/banner/4.png" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    }
 </section>
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 
@@ -283,7 +492,7 @@
                             alert("Conversion complete successfully");
                         }
                         else {
-                            
+
                             alert(result.ErrorMessage);
                         }
 
