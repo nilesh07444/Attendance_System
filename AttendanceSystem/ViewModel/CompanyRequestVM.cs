@@ -71,7 +71,7 @@ namespace AttendanceSystem.ViewModel
         public string CompanyState { get; set; }
 
         [Display(Name = "Company District *")]
-        [Required(ErrorMessage = "This field is required")]
+       
         public string CompanyDistrict { get; set; }
 
         [Display(Name = "Company Logo Image")]
@@ -148,7 +148,7 @@ namespace AttendanceSystem.ViewModel
         public string CompanyAdminState { get; set; }
 
         [Display(Name = "District *")]
-        [Required(ErrorMessage = "This field is required")]
+        
         public string CompanyAdminDistrict { get; set; }
 
         [Display(Name = "Aadhar Card No")]

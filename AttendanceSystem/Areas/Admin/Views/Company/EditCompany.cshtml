@@ -127,7 +127,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyDistrict, htmlAttributes: new { @class = "" })
-                                        @Html.TextBoxFor(model => model.CompanyDistrict, new { @type = "text", @class = "form-control", @placeholder = "Enter District" })
+                                        @Html.TextBoxFor(model => model.CompanyDistrict, new { @type = "text", @class = "form-control required", @placeholder = "Enter District" })
                                         @Html.ValidationMessageFor(model => model.CompanyDistrict, "", new { @class = "error" })
                                     </div>
                                 </div>
@@ -322,7 +322,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyAdminDistrict, htmlAttributes: new { @class = "" })
-                                        @Html.TextBoxFor(model => model.CompanyAdminDistrict, new { @type = "text", @class = "form-control", @placeholder = "Enter District" })
+                                        @Html.TextBoxFor(model => model.CompanyAdminDistrict, new { @type = "text", @class = "form-control required", @placeholder = "Enter District" })
                                         @Html.ValidationMessageFor(model => model.CompanyAdminDistrict, "", new { @class = "error" })
                                     </div>
                                 </div>

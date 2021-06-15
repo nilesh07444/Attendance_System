@@ -63,6 +63,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                          CompanyId = at.CompanyId,
                                                          UserId = at.UserId,
                                                          Name = emp.FirstName + " " + emp.LastName,
+                                                         EmployeeCode = emp.EmployeeCode,
                                                          AttendanceDate = at.AttendanceDate,
                                                          DayType = at.DayType,
                                                          ExtraHours = at.ExtraHours,
@@ -79,6 +80,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 attendanceFilterVM.AttendanceList.ForEach(x =>
                 {
                     x.StatusText = attendanceStatusList.Where(z => z.Value == x.Status.ToString()).Select(c => c.Text).FirstOrDefault();
+                    x.DayTypeText = x.DayType == 1 ? CommonMethod.GetEnumDescription(DayType.FullDay) : CommonMethod.GetEnumDescription(DayType.HalfDay);
                 });
             }
             catch (Exception ex)

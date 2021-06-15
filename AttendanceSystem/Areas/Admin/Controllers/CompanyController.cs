@@ -183,6 +183,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                         CompanyAdminPincode = cp.CompanyAdminPincode,
                                         CompanyAdminCity = cp.CompanyAdminCity,
                                         CompanyAdminState = cp.CompanyAdminState,
+                                        CompanyAdminDistrict = cp.CompanyAdminDistrict,
                                         CompanyAdminProfilePhoto = cp.CompanyAdminProfilePhoto,
                                         CompanyAdminAadharCardNo = cp.CompanyAdminAadharCardNo,
                                         CompanyAdminAadharCardPhoto = cp.CompanyAdminAadharCardPhoto,

@@ -49,6 +49,7 @@ namespace AttendanceSystem.ViewModel
         public decimal NoOfHoursWorked { get; set; }
         public int NoOfUnitWorked { get; set; }
 
+        public string EmployeeCode { get; set; }
     }
 
     public class AttendanceFilterVM

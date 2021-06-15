@@ -26,13 +26,13 @@
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label>Start Month</label>
-                                    @Html.DropDownListFor(model => model.StartMonth, new SelectList(Model.CalenderMonth, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8 required", style = "" })
+                                    @Html.DropDownListFor(model => model.StartMonth, new SelectList(Model.CalenderMonth, "Value", "Text"), "- All -", new { @class = "form-control col-md-8 required", style = "" })
                                 </div>
                             </div>
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label>End Month</label>
-                                    @Html.DropDownListFor(model => model.EndMonth, new SelectList(Model.CalenderMonth, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8 required", style = "" })
+                                    @Html.DropDownListFor(model => model.EndMonth, new SelectList(Model.CalenderMonth, "Value", "Text"), "- All -", new { @class = "form-control col-md-8 required", style = "" })
                                 </div>
                             </div>
                             <div class="col-sm-2">
@@ -44,13 +44,13 @@
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label>Attendance Status</label>
-                                    @Html.DropDownListFor(model => model.AttendanceStatus, new SelectList(lstAttendanceStatus, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8 required", style = "" })
+                                    @Html.DropDownListFor(model => model.AttendanceStatus, new SelectList(lstAttendanceStatus, "Value", "Text"), "- All -", new { @class = "form-control col-md-8 required", style = "" })
                                 </div>
                             </div>
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label>Employee</label>
-                                    @Html.DropDownListFor(model => model.UserId, new SelectList(Model.EmployeeList, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8 required", style = "" })
+                                    @Html.DropDownListFor(model => model.UserId, new SelectList(Model.EmployeeList, "Value", "Text"), "- All -", new { @class = "form-control col-md-8 required", style = "" })
                                 </div>
                             </div>
                             <div class="col-sm-2">
@@ -73,12 +73,10 @@
                                         <td>#</td>
                                         <th>Accept</th>
                                         <th>Employee</th>
+                                        <th>Employee Code</th>
                                         <th>Attendance Date</th>
                                         <th>Day Type</th>
                                         <th>Extra Hours</th>
-                                        <th>Today Work Detail</th>
-                                        <th>Tomorrow Work Detail</th>
-                                        <th>Location From</th>
                                         <th>Status</th>
                                         <th>Accept/Reject</th>
                                     </tr>
@@ -88,33 +86,31 @@
                                     {
                                         foreach (AttendanceVM obj in Model.AttendanceList)
                                         {
-                                            <tr>
-                                                <td>@counter.</td>
-                                                <td>
-                                                    @if (obj.Status == (int)AttendanceStatus.Pending)
-                                                    {
-                                                        <input type="checkbox" class="chkBox" id='@obj.AttendanceId' name="Select">
-                                                    }
-                                                </td>
-                                                <td>@obj.Name</td>
-                                                <td>@obj.AttendanceDate.ToString("dd MMM yyyy")</td>
-                                                <td>@obj.DayType</td>
-                                                <td>@obj.ExtraHours</td>
-                                                <td>@obj.TodayWorkDetail</td>
-                                                <td>@obj.TomorrowWorkDetail</td>
-                                                <td>@obj.LocationFrom</td>
-                                                <td>@obj.StatusText</td>
-                                                <td>
-                                                    @if (obj.Status == (int)AttendanceStatus.Pending)
-                                                    {
-                                                        <a href="/admin/attendance/reject/@obj.AttendanceId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
-                                                    }
-                                                    else
-                                                    {
-                                                        <a href="/admin/attendance/reject/@obj.AttendanceId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
-                                                    }
-                                                </td>
-                                            </tr>
+                                    <tr>
+                                        <td>@counter.</td>
+                                        <td>
+                                            @if (obj.Status == (int)AttendanceStatus.Pending)
+                                            {
+                                                <input type="checkbox" class="chkBox" id='@obj.AttendanceId' name="Select">
+                                            }
+                                        </td>
+                                        <td>@obj.Name</td>
+                                        <td>@obj.EmployeeCode</td>
+                                        <td>@obj.AttendanceDate.ToString("dd MMM yyyy")</td>
+                                        <td>@obj.DayTypeText</td>
+                                        <td>@obj.ExtraHours</td>
+                                        <td>@obj.StatusText</td>
+                                        <td>
+                                            @if (obj.Status == (int)AttendanceStatus.Pending)
+                                            {
+                                                <a href="/admin/attendance/reject/@obj.AttendanceId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
+                                            }
+                                            else
+                                            {
+                                                <a href="/admin/attendance/reject/@obj.AttendanceId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
+                                            }
+                                        </td>
+                                    </tr>
 
                                             counter++;
                                         }
