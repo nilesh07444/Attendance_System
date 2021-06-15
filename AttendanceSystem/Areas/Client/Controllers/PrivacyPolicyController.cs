@@ -20,7 +20,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
             List<tbl_DynamicContent> lstContent = _db.tbl_DynamicContent.Where(x => x.DynamicContentType == (int)DynamicContents.PrivacyPolicy).OrderBy(x => x.SeqNo).ToList();
             ViewData["lstContent"] = lstContent;
 
-            var HeroImageName = _db.tbl_Setting.FirstOrDefault().HeroContactPageImageName;
+            var HeroImageName = _db.tbl_Setting.FirstOrDefault().HeroPrivacyPolicyPageImageName;
             ViewBag.HeroUrl = ErrorMessage.HeroDirectoryPath + HeroImageName;
 
             return View();
