@@ -192,7 +192,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         {
             AttendanceVM attendanceVM = new AttendanceVM();
             try
-            {
+            {                
                 attendanceVM = (from at in _db.tbl_Attendance
                                 join emp in _db.tbl_Employee on at.UserId equals emp.EmployeeId
                                 where !at.IsDeleted
@@ -216,11 +216,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                     InDateTime = at.InDateTime,
                                     OutDateTime = at.OutDateTime,
                                 }).FirstOrDefault();
-
-                attendanceVM.InDateTime = attendanceVM.InDateTime != null ? Convert.ToDateTime(CommonMethod.ConvertFromUTC(attendanceVM.InDateTime)) : attendanceVM.InDateTime;
-                attendanceVM.OutDateTime = attendanceVM.OutDateTime != null ? Convert.ToDateTime(CommonMethod.ConvertFromUTC(attendanceVM.OutDateTime)) : attendanceVM.OutDateTime;
-                attendanceVM.StatusText = CommonMethod.GetEnumDescription((AttendanceStatus)attendanceVM.Status);
-                attendanceVM.DayTypeText = attendanceVM.DayType == 1 ? CommonMethod.GetEnumDescription(DayType.FullDay) : CommonMethod.GetEnumDescription(DayType.HalfDay);
+                 
+                attendanceVM.InDateTime = attendanceVM.InDateTime != null ? CommonMethod.ConvertFromUTCToIndianDateTime(attendanceVM.InDateTime) : attendanceVM.InDateTime;
+                attendanceVM.OutDateTime = attendanceVM.OutDateTime != null ? CommonMethod.ConvertFromUTCToIndianDateTime(Convert.ToDateTime(attendanceVM.OutDateTime)) : attendanceVM.OutDateTime;
+                attendanceVM.StatusText = CommonMethod.GetEnumDescription((AttendanceStatus)attendanceVM.Status);                
+                attendanceVM.DayTypeText = attendanceVM.DayType == 1 ? CommonMethod.GetEnumDescription(DayType.FullDay) : CommonMethod.GetEnumDescription(DayType.HalfDay);                
             }
             catch (Exception ex)
             {
