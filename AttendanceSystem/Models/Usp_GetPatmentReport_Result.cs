@@ -10,14 +10,14 @@
 namespace AttendanceSystem.Models
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class sysdiagram
+    public partial class Usp_GetPatmentReport_Result
     {
-        public string name { get; set; }
-        public int principal_id { get; set; }
-        public int diagram_id { get; set; }
-        public Nullable<int> version { get; set; }
-        public byte[] definition { get; set; }
+        public System.DateTime Date { get; set; }
+        public decimal Opening { get; set; }
+        public decimal Credit { get; set; }
+        public decimal Debit { get; set; }
+        public string Remark { get; set; }
+        public Nullable<decimal> Closing { get; set; }
     }
 }

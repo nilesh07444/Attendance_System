@@ -1,0 +1,73 @@
+﻿@using AttendanceSystem.Helper
+@model HomeSliderVM
+@{
+    ViewBag.Title = "WebsiteContent";
+}
+
+<div class="page-body">
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header" style="background-color: #425C59;">
+                        <h4 style="color: #FFCEA3;">@(Model.HomeSliderId > 0 ? "Edit" : "Add") Home Slider Image</h4>
+                    </div>
+                </div>
+                <div class="card">
+
+                    <div class="card-body">
+                        @using (Html.BeginForm("AddSlider", "HomeImage", FormMethod.Post, new { @id = "HomeImageFormId", @class = "", enctype = "multipart/form-data", role = "form" }))
+                        {
+
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @Html.HiddenFor(model => model.HomeSliderId)
+
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.SliderImageFile, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                @Html.TextBoxFor(model => model.SliderImageFile, new { type = "file", @class = "form-control col-md-8" })
+
+                                <lable class="col-xl-3 col-md-4"></lable>
+                                @Html.ValidationMessageFor(model => model.SliderImageFile, "", new { @class = "text-danger" })
+                                @Html.HiddenFor(model => model.SliderImageName)
+
+                                @if (!string.IsNullOrEmpty(Model.SliderImageName))
+                                {
+                                    <p><a target="_blank" href="@ErrorMessage.HomeSliderDirectoryPath/@Model.SliderImageName">Click here to view image</a></p>
+                                }
+
+                            </div>
+
+                            <div class="form-group row">
+                                @Html.LabelFor(model => model.SliderType, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                @Html.DropDownListFor(model => model.SliderType, new SelectList(Model.SliderTypeList, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8", style = "" })
+                                <lable class="col-xl-3 col-md-4"></lable>
+                                @Html.ValidationMessageFor(model => model.SliderType, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group row">
+                                <lable class="col-xl-3 col-md-4"></lable>
+                                <button type="submit" class="btn btn-success" style="margin-right:10px;" id="btnSubmit">Submit</button>
+                                <button type="button" class="btn btn-danger" id="btnCancel">Cancel</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnCancel').click(function () {
+            window.location.href = "/admin/homeimage/slider";
+        });
+    })
+</script>

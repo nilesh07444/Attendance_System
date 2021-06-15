@@ -29,7 +29,6 @@ namespace AttendanceSystem.Models
     
         public virtual DbSet<mst_AdminRole> mst_AdminRole { get; set; }
         public virtual DbSet<mst_CompanyType> mst_CompanyType { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<tbl_CompanyFollowup> tbl_CompanyFollowup { get; set; }
         public virtual DbSet<tbl_CompanyRenewPayment> tbl_CompanyRenewPayment { get; set; }
         public virtual DbSet<tbl_DynamicContent> tbl_DynamicContent { get; set; }
@@ -64,6 +63,7 @@ namespace AttendanceSystem.Models
         public virtual DbSet<tbl_AdminUser> tbl_AdminUser { get; set; }
         public virtual DbSet<tbl_Company> tbl_Company { get; set; }
         public virtual DbSet<tbl_CompanyRequest> tbl_CompanyRequest { get; set; }
+        public virtual DbSet<tbl_HomeSlider> tbl_HomeSlider { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {
@@ -166,6 +166,27 @@ namespace AttendanceSystem.Models
         public virtual int sp_upgraddiagrams()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_upgraddiagrams");
+        }
+    
+        public virtual ObjectResult<Usp_GetPatmentReport_Result> Usp_GetPatmentReport(Nullable<int> startMonth, Nullable<int> endMonth, Nullable<int> year, Nullable<long> employeeId)
+        {
+            var startMonthParameter = startMonth.HasValue ?
+                new ObjectParameter("StartMonth", startMonth) :
+                new ObjectParameter("StartMonth", typeof(int));
+    
+            var endMonthParameter = endMonth.HasValue ?
+                new ObjectParameter("EndMonth", endMonth) :
+                new ObjectParameter("EndMonth", typeof(int));
+    
+            var yearParameter = year.HasValue ?
+                new ObjectParameter("Year", year) :
+                new ObjectParameter("Year", typeof(int));
+    
+            var employeeIdParameter = employeeId.HasValue ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Usp_GetPatmentReport_Result>("Usp_GetPatmentReport", startMonthParameter, endMonthParameter, yearParameter, employeeIdParameter);
         }
     }
 }

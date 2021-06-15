@@ -269,9 +269,6 @@
     <Compile Include="Models\sp_helpdiagrams_Result.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\sysdiagram.cs">
-      <DependentUpon>AttendanceSystem.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\tbl_AdminUser.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
@@ -329,6 +326,9 @@
     <Compile Include="Models\tbl_HomeImage.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\tbl_HomeSlider.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tbl_Leave.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
@@ -374,6 +374,9 @@
     <Compile Include="Models\tbl_WorkerType.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Usp_GetPatmentReport_Result.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\AdminProfileVM.cs" />
     <Compile Include="ViewModel\AttendanceVM.cs" />
     <Compile Include="ViewModel\CompanyAdminSettingVM.cs" />
@@ -391,6 +394,7 @@
     <Compile Include="ViewModel\GeneralResponseVM.cs" />
     <Compile Include="ViewModel\HolidayVM.cs" />
     <Compile Include="ViewModel\HomeImageVM.cs" />
+    <Compile Include="ViewModel\HomeSliderVM.cs" />
     <Compile Include="ViewModel\LeaveVM.cs" />
     <Compile Include="ViewModel\LoginHistoryVM.cs" />
     <Compile Include="ViewModel\WorkerTypeVM.cs" />
@@ -1558,6 +1562,8 @@
     <Content Include="Areas\Admin\Views\WorkerType\Add.cshtml" />
     <Content Include="Areas\Admin\Views\PaymentGateway\Index.cshtml" />
     <Content Include="Areas\Admin\Views\ContactForm\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\HomeImage\Slider.cshtml" />
+    <Content Include="Areas\Admin\Views\HomeImage\AddSlider.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />

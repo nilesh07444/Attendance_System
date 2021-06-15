@@ -7,7 +7,6 @@
       <Diagram DiagramId="143924d791744324899ea6aecada5bec" Name="Diagram1" ZoomLevel="86">
         <EntityTypeShape EntityType="AttendanceSystemModel.mst_AdminRole" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AttendanceSystemModel.mst_CompanyType" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="AttendanceSystemModel.sysdiagram" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_CompanyFollowup" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_CompanyRenewPayment" Width="1.5" PointX="8.75" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_DynamicContent" Width="1.5" PointX="2.75" PointY="10.75" IsExpanded="true" />
@@ -42,6 +41,7 @@
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_AdminUser" Width="1.5" PointX="5.375" PointY="0.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Company" Width="1.5" PointX="21.375" PointY="3.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_CompanyRequest" Width="1.5" PointX="21.375" PointY="19.75" />
+        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_HomeSlider" Width="1.5" PointX="23.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
