@@ -164,6 +164,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                         CompanyPincode = cp.CompanyPincode,
                                         CompanyCity = cp.CompanyCity,
                                         CompanyState = cp.CompanyState,
+                                        CompanyDistrict = cp.CompanyDistrict,
                                         CompanyLogoImage = cp.CompanyLogoImage,
                                         CompanyRegisterProofImage = cp.CompanyRegisterProofImage,
                                         CompanyDescription = cp.CompanyDescription,
@@ -173,6 +174,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                         CompanyAdminMiddleName = cp.CompanyAdminMiddleName,
                                         CompanyAdminLastName = cp.CompanyAdminLastName,
                                         dtCompanyAdminDOB = cp.CompanyAdminDOB,
+                                        CompanyAdminDateOfMarriageAnniversary = cp.CompanyAdminDateOfMarriageAnniversary.HasValue ? cp.CompanyAdminDateOfMarriageAnniversary.Value : (DateTime?)null,
                                         CompanyAdminEmailId = cp.CompanyAdminEmailId,
                                         CompanyAdminMobileNo = cp.CompanyAdminMobileNo,
                                         CompanyAdminAlternateMobileNo = cp.CompanyAdminAlternateMobileNo,
@@ -246,6 +248,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objcomp.Pincode = objCompanyReq.CompanyPincode;
                         objcomp.City = objCompanyReq.CompanyCity;
                         objcomp.State = objCompanyReq.CompanyState;
+                        objcomp.District = objCompanyReq.CompanyDistrict;
                         objcomp.GSTNo = objCompanyReq.CompanyGSTNo;
                         objcomp.GSTPhoto = objCompanyReq.CompanyGSTPhoto;
                         objcomp.PanNo = objCompanyReq.CompanyPanNo;
@@ -286,6 +289,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objAdminUser.UserName = companyCode;
                         objAdminUser.Password = CommonMethod.Encrypt(defaultPassword, psSult);
                         objAdminUser.DOB = objCompanyReq.CompanyAdminDOB;
+                        objAdminUser.DateOfMarriageAnniversary = objCompanyReq.CompanyAdminDateOfMarriageAnniversary;
                         objAdminUser.EmailId = objCompanyReq.CompanyAdminEmailId;
                         objAdminUser.MobileNo = objCompanyReq.CompanyAdminMobileNo;
                         objAdminUser.AlternateMobileNo = objCompanyReq.CompanyAdminAlternateMobileNo;
@@ -293,6 +297,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objAdminUser.Pincode = objCompanyReq.CompanyAdminPincode;
                         objAdminUser.Designation = string.IsNullOrEmpty(objCompanyReq.CompanyAdminDesignation) ? CommonMethod.GetEnumDescription(AdminRoles.CompanyAdmin) : objCompanyReq.CompanyAdminDesignation;
                         objAdminUser.City = objCompanyReq.CompanyAdminCity;
+                        objAdminUser.District = objCompanyReq.CompanyAdminDistrict;
                         objAdminUser.State = objCompanyReq.CompanyAdminState;
                         objAdminUser.ProfilePhoto = objCompanyReq.CompanyAdminProfilePhoto;
                         objAdminUser.AadharCardNo = objCompanyReq.CompanyAdminAadharCardNo;
@@ -400,6 +405,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                            CompanyPincode = cp.Pincode,
                                            CompanyCity = cp.City,
                                            CompanyState = cp.State,
+                                           CompanyDistrict = cp.District,
                                            CompanyLogoImage = cp.CompanyLogoImage,
                                            CompanyRegisterProofImage = cp.RegisterProofImage,
                                            CompanyDescription = cp.Description,
@@ -410,6 +416,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                            CompanyAdminLastName = emp.LastName,
                                            CompanyAdminEmailId = emp.EmailId,
                                            dtCompanyAdminDOB = emp.DOB,
+                                           CompanyAdminDateOfMarriageAnniversary = emp.DateOfMarriageAnniversary,
                                            CompanyAdminMobileNo = emp.MobileNo,
                                            CompanyAdminAlternateMobileNo = emp.AlternateMobileNo,
                                            CompanyAdminDesignation = emp.Designation,
@@ -417,6 +424,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                            CompanyAdminPincode = emp.Pincode,
                                            CompanyAdminCity = emp.City,
                                            CompanyAdminState = emp.State,
+                                           CompanyAdminDistrict = emp.District,
                                            CompanyAdminProfilePhoto = emp.ProfilePhoto,
                                            CompanyAdminAadharCardNo = emp.AadharCardNo,
                                            CompanyAdminAadharCardPhoto = emp.AadharCardPhoto,
@@ -658,7 +666,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
 
 
-                    #region Create Company Request
+                    #region Edit Company Request
 
                     tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == companyRequestVM.CompanyId).FirstOrDefault();
                     bool isCompanyNameChanged = objCompany.CompanyName != companyRequestVM.CompanyName;
@@ -675,6 +683,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     objCompany.Pincode = companyRequestVM.CompanyPincode;
                     objCompany.City = companyRequestVM.CompanyCity;
                     objCompany.State = companyRequestVM.CompanyState;
+                    objCompany.District = companyRequestVM.CompanyDistrict;
                     objCompany.CompanyLogoImage = !string.IsNullOrEmpty(companyLogoFileName) ? companyLogoFileName : objCompany.CompanyLogoImage;
                     objCompany.RegisterProofImage = !string.IsNullOrEmpty(companyRegisterProofFileName) ? companyRegisterProofFileName : objCompany.RegisterProofImage;
                     objCompany.Description = companyRequestVM.CompanyDescription;
@@ -700,12 +709,14 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     DateTime dob_date = DateTime.ParseExact(companyRequestVM.CompanyAdminDOB, "yyyy-MM-dd", null);
 
                     objUser.DOB = dob_date; // companyRequestVM.CompanyAdminDOB;
+                    objUser.DateOfMarriageAnniversary = companyRequestVM.CompanyAdminDateOfMarriageAnniversary; // companyRequestVM.CompanyAdminDOB;
                     objUser.MobileNo = companyRequestVM.CompanyAdminMobileNo;
                     objUser.AlternateMobileNo = companyRequestVM.CompanyAdminAlternateMobileNo;
                     objUser.Designation = companyRequestVM.CompanyAdminDesignation;
                     objUser.Address = companyRequestVM.CompanyAdminAddress;
                     objUser.Pincode = companyRequestVM.CompanyAdminPincode;
                     objUser.City = companyRequestVM.CompanyAdminCity;
+                    objUser.District = companyRequestVM.CompanyAdminDistrict;
                     objUser.State = companyRequestVM.CompanyAdminState;
                     objUser.ProfilePhoto = !string.IsNullOrEmpty(profileFileName) ? profileFileName : objUser.ProfilePhoto;
                     objUser.AadharCardNo = companyRequestVM.CompanyAdminAadharCardNo;
@@ -822,6 +833,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                         CompanyPincode = cp.Pincode,
                                         CompanyCity = cp.City,
                                         CompanyState = cp.State,
+                                        CompanyDistrict = cp.District,
                                         CompanyLogoImage = cp.CompanyLogoImage,
                                         CompanyRegisterProofImage = cp.RegisterProofImage,
                                         CompanyDescription = cp.Description,
@@ -831,6 +843,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                         CompanyAdminMiddleName = emp.MIddleName,
                                         CompanyAdminLastName = emp.LastName,
                                         dtCompanyAdminDOB = emp.DOB,
+                                        CompanyAdminDateOfMarriageAnniversary = emp.DateOfMarriageAnniversary,
                                         CompanyAdminEmailId = emp.EmailId,
                                         CompanyAdminMobileNo = emp.MobileNo,
                                         CompanyAdminAlternateMobileNo = emp.AlternateMobileNo,
@@ -838,6 +851,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                         CompanyAdminAddress = emp.Address,
                                         CompanyAdminPincode = emp.Pincode,
                                         CompanyAdminCity = emp.City,
+                                        CompanyAdminDistrict = emp.District,
                                         CompanyAdminState = emp.State,
                                         CompanyAdminProfilePhoto = emp.ProfilePhoto,
                                         CompanyAdminAadharCardNo = emp.AadharCardNo,

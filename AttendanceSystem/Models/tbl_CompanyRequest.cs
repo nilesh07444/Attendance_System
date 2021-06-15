@@ -28,6 +28,7 @@ namespace AttendanceSystem.Models
         public string CompanyPincode { get; set; }
         public string CompanyCity { get; set; }
         public string CompanyState { get; set; }
+        public string CompanyDistrict { get; set; }
         public string CompanyLogoImage { get; set; }
         public string CompanyRegisterProofImage { get; set; }
         public string CompanyDescription { get; set; }
@@ -37,6 +38,7 @@ namespace AttendanceSystem.Models
         public string CompanyAdminMiddleName { get; set; }
         public string CompanyAdminLastName { get; set; }
         public System.DateTime CompanyAdminDOB { get; set; }
+        public Nullable<System.DateTime> CompanyAdminDateOfMarriageAnniversary { get; set; }
         public string CompanyAdminEmailId { get; set; }
         public string CompanyAdminMobileNo { get; set; }
         public string CompanyAdminAlternateMobileNo { get; set; }
@@ -45,6 +47,7 @@ namespace AttendanceSystem.Models
         public string CompanyAdminPincode { get; set; }
         public string CompanyAdminCity { get; set; }
         public string CompanyAdminState { get; set; }
+        public string CompanyAdminDistrict { get; set; }
         public string CompanyAdminProfilePhoto { get; set; }
         public string CompanyAdminAadharCardNo { get; set; }
         public string CompanyAdminAadharCardPhoto { get; set; }

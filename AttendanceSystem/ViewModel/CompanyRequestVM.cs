@@ -70,6 +70,10 @@ namespace AttendanceSystem.ViewModel
         [Required(ErrorMessage = "This field is required")]
         public string CompanyState { get; set; }
 
+        [Display(Name = "Company District *")]
+        [Required(ErrorMessage = "This field is required")]
+        public string CompanyDistrict { get; set; }
+
         [Display(Name = "Company Logo Image")]
         public HttpPostedFileBase CompanyLogoImageFile { get; set; }
         public string CompanyLogoImage { get; set; }
@@ -106,6 +110,10 @@ namespace AttendanceSystem.ViewModel
         [Required(ErrorMessage = "This field is required")]
         public string CompanyAdminDOB { get; set; }
 
+        [Display(Name = "Company Admin Date Of Marriage Anniversary *")]
+        [Required(ErrorMessage = "This field is required")]
+        public DateTime? CompanyAdminDateOfMarriageAnniversary { get; set; }
+
         [Display(Name = "Email Id")]
         public string CompanyAdminEmailId { get; set; }
 
@@ -138,6 +146,10 @@ namespace AttendanceSystem.ViewModel
         [Display(Name = "State")]
         [Required(ErrorMessage = "This field is required")]
         public string CompanyAdminState { get; set; }
+
+        [Display(Name = "District *")]
+        [Required(ErrorMessage = "This field is required")]
+        public string CompanyAdminDistrict { get; set; }
 
         [Display(Name = "Aadhar Card No")]
         [Required(ErrorMessage = "This field is required")]

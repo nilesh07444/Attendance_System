@@ -293,8 +293,9 @@ namespace AttendanceSystem.Areas.Client.Controllers
 
                     #region Create Company Request
 
-                    //DateTime dob_date = DateTime.ParseExact(companyRequestVM.dtCompanyAdminDOB.ToString(), "dd/MM/yyyy", null);
-                    DateTime dob_date = DateTime.Now;
+
+                    //DateTime dob_date = DateTime.Now;
+                    DateTime dob_date =Convert.ToDateTime(companyRequestVM.CompanyAdminDOB.ToString());
 
                     tbl_CompanyRequest objCompany = new tbl_CompanyRequest();
                     objCompany.CompanyTypeId = Convert.ToInt64(companyRequestVM.CompanyTypeId);
@@ -310,6 +311,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
                     objCompany.CompanyPincode = companyRequestVM.CompanyPincode;
                     objCompany.CompanyCity = companyRequestVM.CompanyCity;
                     objCompany.CompanyState = companyRequestVM.CompanyState;
+                    objCompany.CompanyDistrict = companyRequestVM.CompanyDistrict;
                     objCompany.CompanyLogoImage = companyLogoFileName;
                     objCompany.CompanyRegisterProofImage = companyRegisterProofFileName;
                     objCompany.CompanyDescription = companyRequestVM.CompanyDescription;
@@ -321,14 +323,14 @@ namespace AttendanceSystem.Areas.Client.Controllers
                     objCompany.CompanyAdminEmailId = companyRequestVM.CompanyAdminEmailId;
                     objCompany.CompanyAdminMobileNo = companyRequestVM.CompanyAdminMobileNo;
                     objCompany.CompanyAdminDOB = dob_date;
+                    objCompany.CompanyAdminDateOfMarriageAnniversary = companyRequestVM.CompanyAdminDateOfMarriageAnniversary;
                     objCompany.CompanyAdminAlternateMobileNo = companyRequestVM.CompanyAdminAlternateMobileNo;
                     objCompany.CompanyAdminDesignation = companyRequestVM.CompanyAdminDesignation;
-                    objCompany.CompanyAdminDOB = DateTime.Now;
-                    objCompany.CompanyAdminDOB = Convert.ToDateTime(companyRequestVM.CompanyAdminDOB);
                     objCompany.CompanyAdminAddress = companyRequestVM.CompanyAdminAddress;
                     objCompany.CompanyAdminPincode = companyRequestVM.CompanyAdminPincode;
                     objCompany.CompanyAdminCity = companyRequestVM.CompanyAdminCity;
                     objCompany.CompanyAdminState = companyRequestVM.CompanyAdminState;
+                    objCompany.CompanyAdminDistrict = companyRequestVM.CompanyAdminDistrict;
                     objCompany.CompanyAdminProfilePhoto = profileFileName;
                     objCompany.CompanyAdminAadharCardNo = companyRequestVM.CompanyAdminAadharCardNo;
                     objCompany.CompanyAdminAadharCardPhoto = companyAdminAdharCardFileName;

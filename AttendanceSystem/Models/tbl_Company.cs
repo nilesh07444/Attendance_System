@@ -25,6 +25,7 @@ namespace AttendanceSystem.Models
         public string Pincode { get; set; }
         public string City { get; set; }
         public string State { get; set; }
+        public string District { get; set; }
         public string GSTNo { get; set; }
         public string GSTPhoto { get; set; }
         public string PanNo { get; set; }

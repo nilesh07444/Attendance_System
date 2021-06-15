@@ -77,12 +77,14 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.CompanyDescription, htmlAttributes: new { @class = "" })
-                                @Model.CompanyDescription
-                                @Html.HiddenFor(model => model.CompanyDescription)
-                            </div>
                             <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.CompanyDescription, htmlAttributes: new { @class = "" })
+                                        @Model.CompanyDescription
+                                        @Html.HiddenFor(model => model.CompanyDescription)
+                                    </div>
+                                </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyAddress, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
@@ -90,6 +92,8 @@
                                         @Html.HiddenFor(model => model.CompanyAddress)
                                     </div>
                                 </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyCity, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
@@ -97,14 +101,20 @@
                                         @Html.HiddenFor(model => model.CompanyCity)
                                     </div>
                                 </div>
-                                
-                            </div>
-                            <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyPincode, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
                                         @Model.CompanyPincode
                                         @Html.HiddenFor(model => model.CompanyPincode)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.CompanyDistrict, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                        @Model.CompanyDistrict
+                                        @Html.HiddenFor(model => model.CompanyDistrict)
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
@@ -237,11 +247,24 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
+                                        @Html.LabelFor(model => model.CompanyAdminDateOfMarriageAnniversary, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                        @if (Model.CompanyAdminDateOfMarriageAnniversary.HasValue)
+                                        {
+                                            @Model.CompanyAdminDateOfMarriageAnniversary.Value.ToString("dd MMM yyyy")
+                                        }
+                                        @Html.HiddenFor(model => model.CompanyAdminDateOfMarriageAnniversary)
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyAdminMobileNo, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
                                         @Model.CompanyAdminMobileNo
                                         @Html.HiddenFor(model => model.CompanyAdminMobileNo)
                                     </div>
                                 </div>
+
+                            </div>
+                            <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyAdminAlternateMobileNo, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
@@ -249,9 +272,6 @@
                                         @Html.HiddenFor(model => model.CompanyAdminAlternateMobileNo)
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyAdminDesignation, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
@@ -259,6 +279,9 @@
                                         @Html.HiddenFor(model => model.CompanyAdminDesignation)
                                     </div>
                                 </div>
+
+                            </div>
+                            <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyAdminAddress, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
@@ -266,8 +289,6 @@
                                         @Html.HiddenFor(model => model.CompanyAdminAddress)
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyAdminCity, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
@@ -275,6 +296,10 @@
                                         @Html.HiddenFor(model => model.CompanyAdminCity)
                                     </div>
                                 </div>
+
+
+                            </div>
+                            <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyAdminPincode, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
@@ -282,7 +307,13 @@
                                         @Html.HiddenFor(model => model.CompanyAdminPincode)
                                     </div>
                                 </div>
-
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.CompanyAdminDistrict, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                        @Model.CompanyAdminDistrict
+                                        @Html.HiddenFor(model => model.CompanyAdminDistrict)
+                                    </div>
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-6">
@@ -344,7 +375,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="form-group row">
                                 @Html.LabelFor(model => model.RequestStatus, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
                                 @Html.DropDownListFor(model => model.RequestStatus, new SelectList(lstCompanyStatus, "Value", "Text"), "- Select -", new { @class = "form-control required", @style = "width:20%" })

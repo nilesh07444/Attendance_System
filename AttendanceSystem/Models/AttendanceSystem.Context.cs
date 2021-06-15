@@ -53,9 +53,6 @@ namespace AttendanceSystem.Models
         public virtual DbSet<tbl_Employee> tbl_Employee { get; set; }
         public virtual DbSet<tbl_CompanySMSPackRenew> tbl_CompanySMSPackRenew { get; set; }
         public virtual DbSet<tbl_SMSLog> tbl_SMSLog { get; set; }
-        public virtual DbSet<tbl_AdminUser> tbl_AdminUser { get; set; }
-        public virtual DbSet<tbl_Company> tbl_Company { get; set; }
-        public virtual DbSet<tbl_CompanyRequest> tbl_CompanyRequest { get; set; }
         public virtual DbSet<tbl_SMSContent> tbl_SMSContent { get; set; }
         public virtual DbSet<tbl_WorkerType> tbl_WorkerType { get; set; }
         public virtual DbSet<tbl_Conversion> tbl_Conversion { get; set; }
@@ -64,6 +61,9 @@ namespace AttendanceSystem.Models
         public virtual DbSet<tbl_HomeImage> tbl_HomeImage { get; set; }
         public virtual DbSet<tbl_WorkerAttendance> tbl_WorkerAttendance { get; set; }
         public virtual DbSet<tbl_Setting> tbl_Setting { get; set; }
+        public virtual DbSet<tbl_AdminUser> tbl_AdminUser { get; set; }
+        public virtual DbSet<tbl_Company> tbl_Company { get; set; }
+        public virtual DbSet<tbl_CompanyRequest> tbl_CompanyRequest { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

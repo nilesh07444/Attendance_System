@@ -25,7 +25,7 @@
                 </div>
 
                 <div class="card">
-                    <div class="card-header" style="display:block;"> 
+                    <div class="card-header" style="display:block;">
                         <div class="pull-left">
                             <h5>Company Information</h5>
                         </div>
@@ -42,10 +42,10 @@
                             @Html.HiddenFor(model => model.CompanyTypeId)
                             @Html.HiddenFor(model => model.CompanyTypeText)
                             @*<div class="row">
-                <div class="col-12">
-                    <h5>Company Information</h5>
-                </div>
-            </div>*@
+                                    <div class="col-12">
+                                        <h5>Company Information</h5>
+                                    </div>
+                                </div>*@
                             <div class="row">
 
                                 <div class="form-group col-6">
@@ -91,15 +91,13 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-12">
+                                <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyDescription, htmlAttributes: new { @class = "" })
                                         @Html.TextAreaFor(model => model.CompanyDescription, 10, 5, new { @class = "form-control", @placeholder = "Enter Company Description", maxlength = "250" })
                                         @Html.ValidationMessageFor(model => model.CompanyDescription, "", new { @class = "error" })
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyAddress, htmlAttributes: new { @class = "" })
@@ -107,6 +105,9 @@
                                         @Html.ValidationMessageFor(model => model.CompanyAddress, "", new { @class = "error" })
                                     </div>
                                 </div>
+                            </div>
+                            <div class="row">
+
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyCity, htmlAttributes: new { @class = "" })
@@ -114,13 +115,20 @@
                                         @Html.ValidationMessageFor(model => model.CompanyCity, "", new { @class = "error" })
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyPincode, htmlAttributes: new { @class = "" })
                                         @Html.TextBoxFor(model => model.CompanyPincode, new { @type = "Text", @class = "form-control", @placeholder = "Enter Pincode", @maxlength = "6" })
                                         @Html.ValidationMessageFor(model => model.CompanyPincode, "", new { @class = "error" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.CompanyDistrict, htmlAttributes: new { @class = "" })
+                                        @Html.TextBoxFor(model => model.CompanyDistrict, new { @type = "text", @class = "form-control", @placeholder = "Enter District" })
+                                        @Html.ValidationMessageFor(model => model.CompanyDistrict, "", new { @class = "error" })
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
@@ -254,11 +262,21 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
+                                        @Html.LabelFor(model => model.CompanyAdminDateOfMarriageAnniversary, htmlAttributes: new { @class = "" })
+                                        @Html.TextBoxFor(model => model.CompanyAdminDateOfMarriageAnniversary, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Enter Date of Marriage Anniversary" })
+                                        @Html.ValidationMessageFor(model => model.CompanyAdminDateOfMarriageAnniversary, "", new { @class = "error" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyAdminMobileNo, htmlAttributes: new { @class = "" })
                                         @Html.TextBoxFor(model => model.CompanyAdminMobileNo, new { @type = "text", @class = "form-control", @placeholder = "Enter Mobile No", @maxlength = "10" })
                                         @Html.ValidationMessageFor(model => model.CompanyAdminMobileNo, "", new { @class = "error" })
                                     </div>
                                 </div>
+
+                            </div>
+                            <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyAdminAlternateMobileNo, htmlAttributes: new { @class = "" })
@@ -267,8 +285,6 @@
                                     </div>
                                 </div>
 
-                            </div>
-                            <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyAdminDesignation, htmlAttributes: new { @class = "" })
@@ -276,6 +292,9 @@
                                         @Html.ValidationMessageFor(model => model.CompanyAdminDesignation, "", new { @class = "error" })
                                     </div>
                                 </div>
+
+                            </div>
+                            <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyAdminAddress, htmlAttributes: new { @class = "" })
@@ -284,8 +303,6 @@
                                     </div>
                                 </div>
 
-                            </div>
-                            <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyAdminCity, htmlAttributes: new { @class = "" })
@@ -293,6 +310,8 @@
                                         @Html.ValidationMessageFor(model => model.CompanyAdminCity, "", new { @class = "error" })
                                     </div>
                                 </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyAdminPincode, htmlAttributes: new { @class = "" })
@@ -300,8 +319,13 @@
                                         @Html.ValidationMessageFor(model => model.CompanyAdminPincode, "", new { @class = "error" })
                                     </div>
                                 </div>
-
-
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.CompanyAdminDistrict, htmlAttributes: new { @class = "" })
+                                        @Html.TextBoxFor(model => model.CompanyAdminDistrict, new { @type = "text", @class = "form-control", @placeholder = "Enter District" })
+                                        @Html.ValidationMessageFor(model => model.CompanyAdminDistrict, "", new { @class = "error" })
+                                    </div>
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-6">

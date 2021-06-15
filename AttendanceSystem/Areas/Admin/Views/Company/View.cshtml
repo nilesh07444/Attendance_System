@@ -33,51 +33,51 @@
                     <div class="card-body">
 
                         @*<div class="row">
-            <div class="form-group col-4" style=" background-color: #425C59; border-radius: 10px;">
-                <label style=" color: #FFCEA3; margin-top: 8px; font-size: 17px;">Compnay Name</label>
-            </div>
+                                <div class="form-group col-4" style=" background-color: #425C59; border-radius: 10px;">
+                                    <label style=" color: #FFCEA3; margin-top: 8px; font-size: 17px;">Compnay Name</label>
+                                </div>
 
-            <div class="form-group col-8">
-                <input type="text" class="form-control" style=" border-radius: 10px;" />
-            </div>
+                                <div class="form-group col-8">
+                                    <input type="text" class="form-control" style=" border-radius: 10px;" />
+                                </div>
 
-        </div>
+                            </div>
 
-        <div class="row">
-            <div class="form-group col-4" style=" background-color: #425C59; border-radius: 10px;">
-                <label style=" color: #FFCEA3; margin-top: 8px; font-size: 17px;">Compnay Type</label>
-            </div>
+                            <div class="row">
+                                <div class="form-group col-4" style=" background-color: #425C59; border-radius: 10px;">
+                                    <label style=" color: #FFCEA3; margin-top: 8px; font-size: 17px;">Compnay Type</label>
+                                </div>
 
-            <div class="form-group col-8">
-                <input type="text" class="form-control" style=" border-radius: 10px;" />
-            </div>
+                                <div class="form-group col-8">
+                                    <input type="text" class="form-control" style=" border-radius: 10px;" />
+                                </div>
 
-        </div>
+                            </div>
 
-        <div class="row">
+                            <div class="row">
 
-            <div class="form-group col-4" style=" background-color: #425C59; border-radius: 10px;">
-                <label style=" color: #FFCEA3; margin-top: 8px; font-size: 17px;">Company Email Id</label>
-            </div>
+                                <div class="form-group col-4" style=" background-color: #425C59; border-radius: 10px;">
+                                    <label style=" color: #FFCEA3; margin-top: 8px; font-size: 17px;">Company Email Id</label>
+                                </div>
 
 
-            <div class="form-group col-8">
-                <input type="text" class="form-control" style=" border-radius: 10px;" />
-            </div>
+                                <div class="form-group col-8">
+                                    <input type="text" class="form-control" style=" border-radius: 10px;" />
+                                </div>
 
-        </div>
+                            </div>
 
-        <div class="row">
+                            <div class="row">
 
-            <div class="form-group col-4" style=" background-color: #425C59; border-radius: 10px;">
-                <label style=" color: #FFCEA3; margin-top: 8px; font-size: 17px;">Company Contact No</label>
-            </div>
+                                <div class="form-group col-4" style=" background-color: #425C59; border-radius: 10px;">
+                                    <label style=" color: #FFCEA3; margin-top: 8px; font-size: 17px;">Company Contact No</label>
+                                </div>
 
-            <div class="form-group col-8">
-                <input type="text" class="form-control" style=" border-radius: 10px;" />
-            </div>
+                                <div class="form-group col-8">
+                                    <input type="text" class="form-control" style=" border-radius: 10px;" />
+                                </div>
 
-        </div>*@
+                            </div>*@
 
                         <div class="row">
                             <div class="form-group col-6">
@@ -116,28 +116,32 @@
                         </div>
 
                         <div class="row">
-                            <div class="form-group col-12">
+                            <div class="form-group col-6">
                                 @Html.LabelFor(model => model.CompanyDescription) :
                                 <p>@Model.CompanyDescription</p>
                             </div>
-                        </div>
-
-                        <div class="row">
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.CompanyAddress) :
                                 <p>@Model.CompanyAddress</p>
                             </div>
+                        </div>
+
+                        <div class="row">
+
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.CompanyCity) :
                                 <p>@Model.CompanyCity</p>
                             </div>
-
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.CompanyPincode) :
+                                <p>@Model.CompanyPincode</p>
+                            </div>
                         </div>
 
                         <div class="row">
                             <div class="form-group col-6">
-                                @Html.LabelFor(model => model.CompanyPincode) :
-                                <p>@Model.CompanyPincode</p>
+                                @Html.LabelFor(model => model.CompanyDistrict) :
+                                <p>@Model.CompanyDistrict</p>
                             </div>
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.CompanyState) :
@@ -236,39 +240,52 @@
 
                         <div class="row">
                             <div class="form-group col-6">
+                                @Html.LabelFor(model => model.CompanyAdminDateOfMarriageAnniversary) :
+                                @if (Model.CompanyAdminDateOfMarriageAnniversary.HasValue)
+                                {<p> @Model.CompanyAdminDateOfMarriageAnniversary.Value.ToString("dd MMM yyyy")</p>}
+                            </div>
+                            <div class="form-group col-6">
                                 @Html.LabelFor(model => model.CompanyAdminMobileNo) :
                                 <p>@Model.CompanyAdminMobileNo</p>
                             </div>
 
+
+                        </div>
+
+                        <div class="row">
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.CompanyAdminAlternateMobileNo) :
                                 <p>@Model.CompanyAdminAlternateMobileNo</p>
                             </div>
-                        </div>
-
-                        <div class="row">
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.CompanyAdminDesignation) :
                                 <p>@Model.CompanyAdminDesignation</p>
                             </div>
 
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.CompanyAdminAddress) :
-                                <p>@Model.CompanyAdminAddress</p>
-                            </div>
+
                         </div>
 
                         <div class="row">
                             <div class="form-group col-6">
+                                @Html.LabelFor(model => model.CompanyAdminAddress) :
+                                <p>@Model.CompanyAdminAddress</p>
+                            </div>
+                            <div class="form-group col-6">
                                 @Html.LabelFor(model => model.CompanyAdminCity) :
                                 <p>@Model.CompanyAdminCity</p>
                             </div>
+                          
+                        </div>
+                        <div class="row">
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.CompanyAdminPincode) :
                                 <p>@Model.CompanyAdminPincode</p>
                             </div>
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.CompanyAdminDistrict) :
+                                <p>@Model.CompanyAdminDistrict</p>
+                            </div>
                         </div>
-
                         <div class="row">
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.CompanyAdminState) :
@@ -313,8 +330,8 @@
                         </div>
 
                         @*<div class="card-footer text-center">
-            <button type="button" class="btn btn-danger" id="btnCancel">Cancel</button>
-        </div>*@
+                                <button type="button" class="btn btn-danger" id="btnCancel">Cancel</button>
+                            </div>*@
 
                     </div>
 
