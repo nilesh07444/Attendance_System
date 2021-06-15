@@ -20,30 +20,18 @@ namespace AttendanceSystem.Areas.Client.Controllers
 
         public ActionResult Index()
         {
-            List<OurClientVM> lstOurClients = new List<OurClientVM>();
+
             try
             {
                 tbl_Setting objGensetting = _db.tbl_Setting.FirstOrDefault();
 
                 if (objGensetting != null)
-                {                    
+                {
                     if (!string.IsNullOrEmpty(objGensetting.ServiceImage))
                     {
                         ViewBag.ServiceImage = ServiceDirectoryPath + objGensetting.ServiceImage;
                     }
                 }
-
-                lstOurClients = (from s in _db.tbl_Sponsor
-                                 where !s.IsDeleted && s.IsActive
-                                 select new OurClientVM
-                                 {
-                                     SponsorId = s.SponsorId,
-                                     SponsorName = s.SponsorName,
-                                     SponsorImage = s.SponsorImage,
-                                     SponsorLink = s.SponsorLink
-                                 }).OrderByDescending(x => x.SponsorId).ToList();
-
-                ViewData["lstOurClients"] = lstOurClients;
 
                 var HeroImageName = _db.tbl_Setting.FirstOrDefault().HeroServicePageImageName;
                 ViewBag.HeroUrl = ErrorMessage.HeroDirectoryPath + HeroImageName;
