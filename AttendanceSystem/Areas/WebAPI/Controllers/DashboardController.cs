@@ -2,7 +2,6 @@
 using AttendanceSystem.Models;
 using AttendanceSystem.ViewModel.WebAPI;
 using System;
-using System.Data.Entity.SqlServer;
 using System.Linq;
 using System.Web.Http;
 
@@ -53,7 +52,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 int LastMonth = DateTime.Now.Month == 1 ? 12 : DateTime.Now.Month - 1;
                 int year = DateTime.Now.Month == 1 ? DateTime.Now.Year - 1 : DateTime.Now.Year;
                 tbl_EmployeeRating employeeRatingObject = _db.tbl_EmployeeRating.Where(x => x.EmployeeId == employeeId && x.RateMonth == LastMonth && x.RateYear == year).FirstOrDefault();
-                dashboardCountVM.LastMonthRating = (employeeRatingObject != null ? SqlFunctions.StringConvert((new decimal[] { employeeRatingObject.BehaviourRate, employeeRatingObject.RegularityRate, employeeRatingObject.WorkRate }).Average(), 4, 2) : "0") + "/10";
+                dashboardCountVM.LastMonthRating = (employeeRatingObject != null ? (new decimal[] { employeeRatingObject.BehaviourRate, employeeRatingObject.RegularityRate, employeeRatingObject.WorkRate }).Average().ToString("#.##") : "0") + "/10";
 
                 tbl_Employee emp = _db.tbl_Employee.Where(x => x.EmployeeId == employeeId).FirstOrDefault();
 
@@ -67,10 +66,10 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                    && ep.PaymentDate <= monthEndDate
                                    select new
                                    {
-                                       Amount = ep.CreditAmount - ep.DebitAmount
+                                       Amount = (ep.CreditAmount.HasValue ? ep.CreditAmount.Value : 0) - (ep.DebitAmount.HasValue ? ep.DebitAmount.Value : 0)
                                    }).ToList();
 
-                dashboardCountVM.PendingSalary = transaction.Sum(x => x.Amount.Value);
+                dashboardCountVM.PendingSalary = transaction.Sum(x => x.Amount);
 
                 response.IsError = false;
                 dashboardCountVM.AttendancePendingForApprove = _db.tbl_Attendance.Where(x => x.Status == (int)AttendanceStatus.Pending && x.UserId == employeeId && !x.IsDeleted).Count();

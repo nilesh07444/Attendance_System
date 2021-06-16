@@ -381,8 +381,6 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             response.Data = false;
             try
             {
-
-
                 #region Validation
                 if (id == 0)
                 {
@@ -402,7 +400,6 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     }
 
                     if (isValidAttendance)
-
                     {
                         tbl_Attendance attendanceObject = _db.tbl_Attendance.Where(x => x.AttendanceId == id && x.UserId == employeeId).FirstOrDefault();
 
