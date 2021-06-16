@@ -47,13 +47,17 @@
                                                     {
                                                         <span>FAQ</span>
                                                     }
+                                                    else if (obj.DynamicContentType == (int)DynamicContents.TermsCondition)
+                                                    {
+                                                        <span>Terms & Condition</span>
+                                                    }
                                                     else if (obj.DynamicContentType == (int)DynamicContents.PrivacyPolicy)
                                                     {
                                                         <span>Privacy Policy</span>
                                                     }
-                                                    else if (obj.DynamicContentType == (int)DynamicContents.TermsCondition)
+                                                    else if (obj.DynamicContentType == (int)DynamicContents.HowToUse)
                                                     {
-                                                        <span>Terms & Condition</span>
+                                                        <span>How To Use</span>
                                                     }
                                                 </td>
                                                 <td>@obj.ContentTitle</td>

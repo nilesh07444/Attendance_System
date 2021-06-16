@@ -1,0 +1,37 @@
+﻿@using AttendanceSystem.Models
+@{
+    ViewBag.Title = "Terms & Condition";
+
+    List<tbl_DynamicContent> lstContent = ViewData["lstContent"] as List<tbl_DynamicContent>;
+}
+
+<div class="slider-area2" style="background-image: url(@ViewBag.HeroUrl)">
+    <div class="slider-height2 d-flex align-items-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="hero-cap hero-cap2 text-center">
+                        @*<h2>How To Use</h2>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mb-2" style="margin-top:40px;">
+
+    @if (lstContent != null && lstContent.Count > 0)
+    {
+        foreach (tbl_DynamicContent obj in lstContent)
+        {
+            <h5>@obj.ContentTitle</h5>
+            <h6 style="text-align: justify;">@Html.Raw(obj.ContentDescription)</h6><br />
+        }
+    }
+    else
+    {
+        <p style="text-align:center;">No any How To Use detail added yet !!!</p>
+    }
+
+</div>

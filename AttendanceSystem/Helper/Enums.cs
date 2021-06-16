@@ -62,7 +62,8 @@ namespace AttendanceSystem.Helper
     {
         FAQ = 1,
         PrivacyPolicy = 2,
-        TermsCondition = 3
+        TermsCondition = 3,
+        HowToUse = 4
     }
 
     public enum EmploymentCategory

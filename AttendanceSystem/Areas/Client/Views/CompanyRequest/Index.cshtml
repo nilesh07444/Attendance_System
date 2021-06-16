@@ -48,7 +48,7 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label>Company Name*</label>
-                                @Html.TextBoxFor(model => model.CompanyName, new { @type = "text", @class = "form-control", @placeholder = "Enter Company Name" })
+                                @Html.TextBoxFor(model => model.CompanyName, new { @type = "text", @class = "form-control customuppercase", @placeholder = "Enter Company Name" })
                                 @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "error" })
                             </div>
                         </div>
@@ -103,7 +103,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Address*</label>
-                                @Html.TextBoxFor(model => model.CompanyAddress, new { @type = "text", @class = "form-control", @placeholder = "Enter Address" })
+                                @Html.TextBoxFor(model => model.CompanyAddress, new { @type = "text", @class = "form-control customuppercase", @placeholder = "Enter Address" })
                                 @Html.ValidationMessageFor(model => model.CompanyAddress, "", new { @class = "error" })
                             </div>
                         </div>
@@ -112,7 +112,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>City*</label>
-                                @Html.TextBoxFor(model => model.CompanyCity, new { @type = "Text", @class = "form-control", @placeholder = "Enter City", @maxlength = "20" })
+                                @Html.TextBoxFor(model => model.CompanyCity, new { @type = "Text", @class = "form-control customuppercase", @placeholder = "Enter City", @maxlength = "20" })
                                 @Html.ValidationMessageFor(model => model.CompanyCity, "", new { @class = "error" })
                             </div>
                         </div>
@@ -129,14 +129,14 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>District*</label>
-                                @Html.TextBoxFor(model => model.CompanyDistrict, new { @type = "text", @class = "form-control required", @placeholder = "Enter District" })
+                                @Html.TextBoxFor(model => model.CompanyDistrict, new { @type = "text", @class = "form-control customuppercase required", @placeholder = "Enter District" })
                                 @Html.ValidationMessageFor(model => model.CompanyDistrict, "", new { @class = "error" })
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>State*</label>
-                                @Html.TextBoxFor(model => model.CompanyState, new { @type = "text", @class = "form-control", @placeholder = "Enter State" })
+                                @Html.TextBoxFor(model => model.CompanyState, new { @type = "text", @class = "form-control customuppercase", @placeholder = "Enter State" })
                                 @Html.ValidationMessageFor(model => model.CompanyState, "", new { @class = "error" })
                             </div>
                         </div>
@@ -145,7 +145,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>GST No</label>
-                                @Html.TextBoxFor(model => model.CompanyGSTNo, new { @type = "text", @class = "form-control", @placeholder = "Enter Company GST No", @maxlength = "15" })
+                                @Html.TextBoxFor(model => model.CompanyGSTNo, new { @type = "text", @class = "form-control customuppercase", @placeholder = "Enter Company GST No", @maxlength = "15" })
                                 @Html.ValidationMessageFor(model => model.CompanyGSTNo, "", new { @class = "error" })
                             </div>
                         </div>
@@ -161,7 +161,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Pan Card No*</label>
-                                @Html.TextBoxFor(model => model.CompanyPanNo, new { @type = "text", @class = "form-control", @placeholder = "Enter Pan Card No", @maxlength = "10" })
+                                @Html.TextBoxFor(model => model.CompanyPanNo, new { @type = "text", @class = "form-control customuppercase", @placeholder = "Enter Pan Card No", @maxlength = "10" })
                                 @Html.ValidationMessageFor(model => model.CompanyPanNo, "", new { @class = "error" })
                             </div>
                         </div>
@@ -207,7 +207,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>First Name*</label>
-                                @Html.TextBoxFor(model => model.CompanyAdminFirstName, new { @type = "text", @class = "form-control required", @placeholder = "Enter First Name" })
+                                @Html.TextBoxFor(model => model.CompanyAdminFirstName, new { @type = "text", @class = "form-control required customuppercase", @placeholder = "Enter First Name" })
                                 @Html.ValidationMessageFor(model => model.CompanyAdminFirstName, "", new { @class = "error" })
                             </div>
                         </div>
@@ -216,14 +216,14 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Middle Name*</label>
-                                @Html.TextBoxFor(model => model.CompanyAdminMiddleName, new { @type = "text", @class = "form-control required", @placeholder = "Enter Middle Name" })
+                                @Html.TextBoxFor(model => model.CompanyAdminMiddleName, new { @type = "text", @class = "form-control required customuppercase", @placeholder = "Enter Middle Name" })
                                 @Html.ValidationMessageFor(model => model.CompanyAdminMiddleName, "", new { @class = "error" })
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Last Name*</label>
-                                @Html.TextBoxFor(model => model.CompanyAdminLastName, new { @type = "text", @class = "form-control required", @placeholder = "Enter Last Name" })
+                                @Html.TextBoxFor(model => model.CompanyAdminLastName, new { @type = "text", @class = "form-control required customuppercase", @placeholder = "Enter Last Name" })
                                 @Html.ValidationMessageFor(model => model.CompanyAdminLastName, "", new { @class = "error" })
                             </div>
                         </div>
@@ -271,7 +271,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Designation*</label>
-                                @Html.TextBoxFor(model => model.CompanyAdminDesignation, new { @type = "text", @class = "form-control", @placeholder = "Designation" })
+                                @Html.TextBoxFor(model => model.CompanyAdminDesignation, new { @type = "text", @class = "form-control customuppercase", @placeholder = "Designation" })
                                 @Html.ValidationMessageFor(model => model.CompanyAdminDesignation, "", new { @class = "error" })
                             </div>
                         </div>
@@ -280,14 +280,14 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Address*</label>
-                                @Html.TextBoxFor(model => model.CompanyAdminAddress, new { @type = "text", @class = "form-control", @placeholder = "Enter Address" })
+                                @Html.TextBoxFor(model => model.CompanyAdminAddress, new { @type = "text", @class = "form-control customuppercase", @placeholder = "Enter Address" })
                                 @Html.ValidationMessageFor(model => model.CompanyAdminAddress, "", new { @class = "error" })
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>City*</label>
-                                @Html.TextBoxFor(model => model.CompanyAdminCity, new { @type = "text", @class = "form-control", @placeholder = "Enter City" })
+                                @Html.TextBoxFor(model => model.CompanyAdminCity, new { @type = "text", @class = "form-control customuppercase", @placeholder = "Enter City" })
                                 @Html.ValidationMessageFor(model => model.CompanyAdminCity, "", new { @class = "error" })
                             </div>
                         </div>
@@ -303,7 +303,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>District*</label>
-                                @Html.TextBoxFor(model => model.CompanyAdminDistrict, new { @type = "text", @class = "form-control required", @placeholder = "Enter District" })
+                                @Html.TextBoxFor(model => model.CompanyAdminDistrict, new { @type = "text", @class = "form-control required customuppercase", @placeholder = "Enter District" })
                                 @Html.ValidationMessageFor(model => model.CompanyAdminDistrict, "", new { @class = "error" })
                             </div>
                         </div>
@@ -312,7 +312,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>State*</label>
-                                @Html.TextBoxFor(model => model.CompanyAdminState, new { @type = "text", @class = "form-control", @placeholder = "Enter State" })
+                                @Html.TextBoxFor(model => model.CompanyAdminState, new { @type = "text", @class = "form-control customuppercase", @placeholder = "Enter State" })
                                 @Html.ValidationMessageFor(model => model.CompanyAdminState, "", new { @class = "error" })
                             </div>
                         </div>
@@ -328,7 +328,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Pan Card No</label>
-                                @Html.TextBoxFor(model => model.CompanyAdminPanCardNo, new { @type = "text", @class = "form-control", @placeholder = "Enter Pan Card No", @maxlength = "10" })
+                                @Html.TextBoxFor(model => model.CompanyAdminPanCardNo, new { @type = "text", @class = "form-control customuppercase", @placeholder = "Enter Pan Card No", @maxlength = "10" })
                                 @Html.ValidationMessageFor(model => model.CompanyAdminPanCardNo, "", new { @class = "error" })
                             </div>
                         </div>
@@ -344,7 +344,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Aadhar card  No*</label>
-                                @Html.TextBoxFor(model => model.CompanyAdminAadharCardNo, new { @type = "text", @class = "form-control", @placeholder = "Enter Aadhar card No", @maxlength = "12" })
+                                @Html.TextBoxFor(model => model.CompanyAdminAadharCardNo, new { @type = "text", @class = "form-control customuppercase", @placeholder = "Enter Aadhar card No", @maxlength = "12" })
                                 @Html.ValidationMessageFor(model => model.CompanyAdminAadharCardNo, "", new { @class = "error" })
                             </div>
                         </div>
@@ -411,6 +411,11 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+
+        $(".customuppercase").keyup(function () {
+            this.value = this.value.toLocaleUpperCase();
+        });
+
         $('#btnSubmit').click(function () {
 
             if ($("#CompanyRequestFormId").valid()) {

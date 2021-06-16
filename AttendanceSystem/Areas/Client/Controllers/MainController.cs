@@ -15,12 +15,14 @@ namespace AttendanceSystem.Areas.Client.Controllers
         private readonly AttendanceSystemEntities _db;
         public string HomeDirectoryPath = "";
         public string ServiceDirectoryPath = "";
+
         public MainController()
         {
             _db = new AttendanceSystemEntities();
             HomeDirectoryPath = ErrorMessage.HomeDirectoryPath;
             ServiceDirectoryPath = ErrorMessage.ServiceDirectoryPath;
         }
+
         public ActionResult Index()
         {
             List<HomeImageVM> lstHomeImages = new List<HomeImageVM>();
@@ -28,10 +30,12 @@ namespace AttendanceSystem.Areas.Client.Controllers
             List<SMSPackageVM> lstSMSPackages = new List<SMSPackageVM>();
             List<OurClientVM> lstOurClients = new List<OurClientVM>();
             List<TestimonialVM> lstTestimonials = new List<TestimonialVM>();
+            List<HomeSliderVM> lstHomeSlider1 = new List<HomeSliderVM>();
+            List<HomeSliderVM> lstHomeSlider2 = new List<HomeSliderVM>();
 
             try
             {
-                
+
                 tbl_Setting objGensetting = _db.tbl_Setting.FirstOrDefault();
 
                 //
@@ -51,7 +55,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
                                  where hi.IsActive
                                  select new HomeImageVM
                                  {
-                                     HomeImageId = hi.HomeImageId, 
+                                     HomeImageId = hi.HomeImageId,
                                      HeadingText1 = hi.HeadingText1,
                                      HeadingText2 = hi.HeadingText2,
                                      IsActive = hi.IsActive,
@@ -109,6 +113,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
                                        IsActive = t.IsActive,
                                    }).OrderByDescending(x => x.TestimonialId).ToList();
 
+
                 if (objGensetting != null)
                 {
                     if (!string.IsNullOrEmpty(objGensetting.HomeImage))
@@ -125,11 +130,31 @@ namespace AttendanceSystem.Areas.Client.Controllers
                     }
                 }
 
+                var lstSliderImages = (from s in _db.tbl_HomeSlider
+                                       where s.IsActive
+                                       select new HomeSliderVM
+                                       {
+                                           HomeSliderId = s.HomeSliderId,
+                                           SliderImageName = s.SliderImageName,
+                                           SliderType = s.SliderType,
+                                           IsActive = s.IsActive,
+                                       }).OrderByDescending(x => x.HomeSliderId).ToList();
+
+                if (lstSliderImages != null && lstSliderImages.Count > 0)
+                {
+                    lstHomeSlider1 = lstSliderImages.Where(x => x.SliderType == 1).ToList();
+                    lstHomeSlider2 = lstSliderImages.Where(x => x.SliderType == 2).ToList();
+                }
+
                 ViewData["lstHomeImages"] = lstHomeImages;
                 ViewData["lstAccountPackages"] = lstAccountPackages;
                 ViewData["lstSMSPackages"] = lstSMSPackages;
                 ViewData["lstOurClients"] = lstOurClients;
                 ViewData["lstTestimonials"] = lstTestimonials;
+
+                ViewData["lstHomeSlider1"] = lstHomeSlider1;
+                ViewData["lstHomeSlider2"] = lstHomeSlider2;
+
             }
             catch (Exception ex)
             {
@@ -138,5 +163,6 @@ namespace AttendanceSystem.Areas.Client.Controllers
 
             return View();
         }
+
     }
 }

@@ -145,7 +145,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
             lst.Add(new SelectListItem { Value = "1", Text = "FAQ" });
             lst.Add(new SelectListItem { Value = "2", Text = "Privacy Policy" });
-            lst.Add(new SelectListItem { Value = "3", Text = "Terms & Condition" }); 
+            lst.Add(new SelectListItem { Value = "3", Text = "Terms & Condition" });
+            lst.Add(new SelectListItem { Value = "4", Text = "How To Use" });
 
             return lst;
         }

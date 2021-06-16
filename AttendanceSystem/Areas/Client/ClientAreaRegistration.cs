@@ -89,6 +89,13 @@ namespace AttendanceSystem.Areas.Client
                 new { controller = "WebView", action = "PrivacyPolicy", id = UrlParameter.Optional }
             );
 
+            // How To Use Page
+            context.MapRoute(
+                "Client_HowToUse",
+                "howtouse",
+                new { controller = "HowToUse", action = "Index", id = UrlParameter.Optional }
+            );
+
         }
     }
 }

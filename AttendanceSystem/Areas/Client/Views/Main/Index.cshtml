@@ -8,6 +8,10 @@
     List<SMSPackageVM> lstSMSPackages = ViewData["lstSMSPackages"] as List<SMSPackageVM>;
     List<OurClientVM> lstOurClients = ViewData["lstOurClients"] as List<OurClientVM>;
     List<TestimonialVM> lstTestimonials = ViewData["lstTestimonials"] as List<TestimonialVM>;
+
+    List<HomeSliderVM> lstHomeSlider1 = ViewData["lstHomeSlider1"] as List<HomeSliderVM>;
+    List<HomeSliderVM> lstHomeSlider2 = ViewData["lstHomeSlider2"] as List<HomeSliderVM>;
+
 }
 
 <!-- Home Image Slider - Start-->
@@ -42,16 +46,21 @@
 }
 <!-- Home Image Slider - End -->
 
-<div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
-    <div class="carousel-inner">
-        <div class="carousel-item active">
-            <img class="d-block w-100" src="~/Content/client-theme/assets/img/contrabook/demoimage.png" alt="First slide">
-        </div>
-        <div class="carousel-item">
-            <img class="d-block w-100" src="~/Content/client-theme/assets/img/contrabook/demoimage2.png" alt="Second slide">
+@if (lstHomeSlider1 != null && lstHomeSlider1.Count > 0)
+{
+    <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+            @{ int slider1Counter = 1; }
+            @foreach (HomeSliderVM obj in lstHomeSlider1)
+            {
+                <div class="carousel-item @(slider1Counter == 1 ? "active" : "")">
+                    <img class="d-block w-100" src="@ErrorMessage.HomeSliderDirectoryPath/@obj.SliderImageName" alt="First slide">
+                </div>
+                slider1Counter++;
+            }
         </div>
     </div>
-</div>
+}
 
 <!-- Package Area Start -->
 @if (lstAccountPackages != null && lstAccountPackages.Count > 0)
@@ -93,6 +102,9 @@
                             <div class="pricingTable-signup">
                                 <a target="_blank" href="/admin/login" style="background: @obj.PackageColorCode">Buy</a>
                             </div>
+                            <div class="mt-2 ml-2 mr-2" style="color: @obj.PackageColorCode">
+                                @obj.PackageDescription
+                            </div>
                         </div>
                     </div>
                     { accountPackageCounter++; }
@@ -102,16 +114,21 @@
     </div>
 }
 
-<div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
-    <div class="carousel-inner">
-        <div class="carousel-item active">
-            <img class="d-block w-100" src="~/Content/client-theme/assets/img/contrabook/demoimage.png" alt="First slide">
-        </div>
-        <div class="carousel-item">
-            <img class="d-block w-100" src="~/Content/client-theme/assets/img/contrabook/demoimage2.png" alt="Second slide">
+@if (lstHomeSlider2 != null && lstHomeSlider2.Count > 0)
+{
+    <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+            @{ int slider2Counter = 1; }
+            @foreach (HomeSliderVM obj in lstHomeSlider2)
+            {
+                <div class="carousel-item @(slider2Counter == 1 ? "active" : "")">
+                    <img class="d-block w-100" src="@ErrorMessage.HomeSliderDirectoryPath/@obj.SliderImageName" alt="First slide">
+                </div>
+                slider2Counter++;
+            }
         </div>
     </div>
-</div>
+}
 
 <!-- SMS Package Area Start -->
 @if (lstSMSPackages != null && lstSMSPackages.Count > 0)
@@ -152,6 +169,9 @@
                             <div class="pricingTable-signup">
                                 <a target="_blank" href="/admin/login" style="background: @obj.PackageColorCode">Buy</a>
                             </div>
+                            <div class="mt-2 ml-2 mr-2" style="color: @obj.PackageColorCode">
+                                @obj.Description
+                            </div>
                         </div>
                     </div>
                     { smsPackageCounter++; }
@@ -178,16 +198,16 @@
                                         <svg xmlns="http://www.w3.org/2000/svg"
                                              xmlns:xlink="http://www.w3.org/1999/xlink"
                                              width="67px" height="49px">
-                                            <path fill-rule="evenodd" fill="rgb(240, 78, 60)"
+                                            <path style="fill: #EFB938;" fill-rule="evenodd" fill="rgb(240, 78, 60)"
                                                   d="M57.053,48.209 L42.790,48.209 L52.299,29.242 L38.036,29.242 L38.036,0.790 L66.562,0.790 L66.562,29.242 L57.053,48.209 ZM4.755,48.209 L14.263,29.242 L0.000,29.242 L0.000,0.790 L28.527,0.790 L28.527,29.242 L19.018,48.209 L4.755,48.209 Z" />
                                         </svg>
-                                        <p>@obj.FeedbackText</p>
+                                        <p style="color: #FFFFFF;font-family: Font Arial Bold;">@obj.FeedbackText</p>
                                     </div>
                                     <!-- founder -->
                                     <div class="testimonial-founder d-flex align-items-center justify-content-center">
                                         <div class="founder-text">
-                                            <span>@obj.CompanyPersonName</span>
-                                            <p>@obj.CompanyName</p>
+                                            <span style="color: #EFB938;">@obj.CompanyPersonName</span>
+                                            <p style="color: #FFFFFF; font-family: Font Arial Bold;">@obj.CompanyName</p>
                                         </div>
                                     </div>
                                 </div>
