@@ -188,11 +188,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return ReturnMessage;
         }
 
-        public ActionResult Reject(long id)
+        public ActionResult Detail(long id)
         {
             AttendanceVM attendanceVM = new AttendanceVM();
             try
-            {                
+            {
                 attendanceVM = (from at in _db.tbl_Attendance
                                 join emp in _db.tbl_Employee on at.UserId equals emp.EmployeeId
                                 where !at.IsDeleted
@@ -211,16 +211,19 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                     TomorrowWorkDetail = at.TomorrowWorkDetail,
                                     Remarks = at.Remarks,
                                     LocationFrom = at.LocationFrom,
+                                    OutLocationFrom = at.OutLocationFrom,
                                     Status = at.Status,
                                     RejectReason = at.RejectReason,
                                     InDateTime = at.InDateTime,
                                     OutDateTime = at.OutDateTime,
+                                    NoOfHoursWorked = at.NoOfHoursWorked.HasValue ? at.NoOfHoursWorked.Value : 0,
+                                    NoOfUnitWorked = at.NoOfUnitWorked.HasValue ? at.NoOfUnitWorked.Value : 0,
                                 }).FirstOrDefault();
-                 
+
                 attendanceVM.InDateTime = attendanceVM.InDateTime != null ? CommonMethod.ConvertFromUTCToIndianDateTime(attendanceVM.InDateTime) : attendanceVM.InDateTime;
                 attendanceVM.OutDateTime = attendanceVM.OutDateTime != null ? CommonMethod.ConvertFromUTCToIndianDateTime(Convert.ToDateTime(attendanceVM.OutDateTime)) : attendanceVM.OutDateTime;
-                attendanceVM.StatusText = CommonMethod.GetEnumDescription((AttendanceStatus)attendanceVM.Status);                
-                attendanceVM.DayTypeText = attendanceVM.DayType == 1 ? CommonMethod.GetEnumDescription(DayType.FullDay) : CommonMethod.GetEnumDescription(DayType.HalfDay);                
+                attendanceVM.StatusText = CommonMethod.GetEnumDescription((AttendanceStatus)attendanceVM.Status);
+                attendanceVM.DayTypeText = attendanceVM.DayType == 1 ? CommonMethod.GetEnumDescription(DayType.FullDay) : CommonMethod.GetEnumDescription(DayType.HalfDay);
             }
             catch (Exception ex)
             {
@@ -231,7 +234,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public ActionResult Reject(AttendanceVM attendanceVM)
+        public ActionResult Detail(AttendanceVM attendanceVM)
         {
             try
             {

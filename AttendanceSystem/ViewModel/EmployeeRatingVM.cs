@@ -14,6 +14,7 @@ namespace AttendanceSystem.ViewModel
         public string EmployeeCode { get; set; }
         [Required, Display(Name = "Rate Month")]
         public int RateMonth { get; set; }
+        public string RateMonthText { get; set; }
         [Required, Display(Name = "Rate Year")]
         public int RateYear { get; set; }
         [Required, Display(Name = "Behaviour Rate")]
@@ -22,11 +23,13 @@ namespace AttendanceSystem.ViewModel
         public decimal RegularityRate { get; set; }
         [Required, Display(Name = "Work Rate")]
         public decimal WorkRate { get; set; }
-        [Required, Display(Name = "Remarks")]
+        [Display(Name = "Remarks")]
         public string Remarks { get; set; }
 
         public string AvgRate { get; set; }
         public List<SelectListItem> EmployeeList { get; set; }
+
+        public DateTime CreatedDate { get; set; }
     }
 
     public class EmployeeRatingFilterVM

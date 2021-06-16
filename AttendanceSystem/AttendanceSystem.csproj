@@ -1543,7 +1543,7 @@
       <DependentUpon>AttendanceSystem.edmx</DependentUpon>
     </Content>
     <Content Include="Areas\Admin\Views\Leave\Reject.cshtml" />
-    <Content Include="Areas\Admin\Views\Attendance\Reject.cshtml" />
+    <Content Include="Areas\Admin\Views\Attendance\Detail.cshtml" />
     <Content Include="Areas\Admin\Views\SMSRenew\Buy.cshtml" />
     <Content Include="Areas\Admin\Views\Material\DeletedMaterial.cshtml" />
     <Content Include="Areas\Admin\Views\Payment\DeletedPayment.cshtml" />
@@ -1564,6 +1564,7 @@
     <Content Include="Areas\Admin\Views\ContactForm\Index.cshtml" />
     <Content Include="Areas\Admin\Views\HomeImage\Slider.cshtml" />
     <Content Include="Areas\Admin\Views\HomeImage\AddSlider.cshtml" />
+    <Content Include="Areas\Admin\Views\EmployeeRating\View.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />

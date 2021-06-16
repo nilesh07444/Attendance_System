@@ -27,19 +27,19 @@
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label>Employee Role</label>
-                                    @Html.DropDownListFor(model => model.UserRole, new SelectList(Model.UserRoleList, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8 required", style = "" })
+                                    @Html.DropDownListFor(model => model.UserRole, new SelectList(Model.UserRoleList, "Value", "Text"), "- All -", new { @class = "form-control col-md-8 required", style = "" })
                                 </div>
                             </div>
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label>Start Month</label>
-                                    @Html.DropDownListFor(model => model.StartMonth, new SelectList(Model.CalenderMonth, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8 required", style = "" })
+                                    @Html.DropDownListFor(model => model.StartMonth, new SelectList(Model.CalenderMonth, "Value", "Text"), "- All -", new { @class = "form-control col-md-8 required", style = "" })
                                 </div>
                             </div>
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label>End Month</label>
-                                    @Html.DropDownListFor(model => model.EndMonth, new SelectList(Model.CalenderMonth, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8 required", style = "" })
+                                    @Html.DropDownListFor(model => model.EndMonth, new SelectList(Model.CalenderMonth, "Value", "Text"), "- All -", new { @class = "form-control col-md-8 required", style = "" })
                                 </div>
                             </div>
                             <div class="col-sm-2">
@@ -79,7 +79,7 @@
                                         <th>Behaviour</th>
                                         <th>Ragularity</th>
                                         <th>Work</th>
-                                        <th>Remark</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -90,18 +90,26 @@
                                             <tr>
                                                 <td>@counter.</td>
                                                 <td>@obj.EmployeeName</td>
-                                                <td>@obj.RateMonth</td>
+                                                <td>@obj.RateMonthText</td>
                                                 <td>@obj.RateYear</td>
                                                 <td>@obj.BehaviourRate</td>
                                                 <td>@obj.RegularityRate</td>
                                                 <td>@obj.WorkRate</td>
-                                                <td>@obj.Remarks</td>
+                                                <td>
+                                                    @if ((DateTime.Now - obj.CreatedDate).TotalDays <= 7)
+                                                    {
+                                                        <a href="/admin/employeerating/add/@obj.EmployeeRatingId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
+                                                        <a href="javascript:void(0);" title="Delete" class="btn btn-icon btn-danger" onclick="fnDeleteEmployeeRating('@obj.EmployeeRatingId')"><i class="fas fa-trash-alt"></i></a>
+                                                    }
+                                                    <a href="/admin/employeerating/view/@obj.EmployeeRatingId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
+
+                                                </td>
                                             </tr>
 
                                             counter++;
                                         }
                                     }
-                                    ou 
+                                    ou
                                 </tbody>
                             </table>
                         </div>
@@ -111,6 +119,24 @@
         </div>
     </div>
 </section>
+<div class="modal fade open" id="deleteEmployeeRatingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Delete Confirm</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete ?
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" id="hdnDeleteEmployeeRating" />
+                <button data-dismiss="modal" class="btn btn-primary" type="button">Close</button>
+                <button id="btnDeleteEmployeeRating" class="btn btn-danger" type="button">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
@@ -128,7 +154,47 @@
             }
             var employeeCode = $("#EmployeeCode").val();
             StartLoading();
-            window.location.href = "/admin/EmployeeRating/Index?startMonth=" + startMonth + "&endMonth=" + endMonth + "&year=" + year + "&userRole=" + userRole + "&employeeCode=" + employeeCode;
+            window.location.href = "/admin/employeeRating/index?startMonth=" + startMonth + "&endMonth=" + endMonth + "&year=" + year + "&userRole=" + userRole + "&employeeCode=" + employeeCode;
+        });
+
+
+        
+        $('#btnDeleteEmployeeRating').click(function () {
+            var EmployeeRating_Id = $("#hdnDeleteEmployeeRating").val();
+            if (EmployeeRating_Id != "" && EmployeeRating_Id != null) {
+                $('#deleteEmployeeRatingModal').modal('hide');
+
+                StartLoading();
+
+                var URL = '@Url.Action("DeleteEmployeeRating", "EmployeeRating")';
+                $.ajax({
+                    type: 'POST',
+                    async: true,
+                    url: URL + "?employeeRatingId=" + EmployeeRating_Id ,
+                    success: function (result) {
+                        if (result == "success") {
+                            alert("Employee rating deleted successfully");
+                            window.location.reload();
+                        }
+                        else if (result == "notfound") {
+                            alert("Employee Not Found");
+                        }
+                        else {
+                            alert("Something went wrong. Please try again");
+                        }
+
+                       StopLoading();
+                    },
+                    error: function (resultData) {
+                       StopLoading();
+                    }
+                });
+            }
         });
     })
+
+    function fnDeleteEmployeeRating(EmployeeRating_Id) {
+        $("#hdnDeleteEmployeeRating").val(EmployeeRating_Id);
+        $('#deleteEmployeeRatingModal').modal('show');
+    }
 </script> 

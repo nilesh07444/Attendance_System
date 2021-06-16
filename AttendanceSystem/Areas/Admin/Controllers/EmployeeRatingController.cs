@@ -64,7 +64,13 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                                  RegularityRate = er.RegularityRate,
                                                                  WorkRate = er.WorkRate,
                                                                  Remarks = er.Remarks,
+                                                                 CreatedDate = er.CreatedDate
                                                              }).OrderByDescending(x => x.EmployeeRatingId).ToList();
+
+                EmployeeRatingFilterVM.EmployeeRatingList.ForEach(x =>
+                {
+                    x.RateMonthText = CommonMethod.GetEnumDescription((CalenderMonths)x.RateMonth);
+                });
             }
             catch (Exception ex)
             {
@@ -74,11 +80,29 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return View(EmployeeRatingFilterVM);
         }
 
-        public ActionResult Add()
+        public ActionResult Add(long id)
         {
-            EmployeeRatingVM EmployeeRatingVM = new EmployeeRatingVM();
-            EmployeeRatingVM.EmployeeList = GetEmployeeList();
-            return View(EmployeeRatingVM);
+            EmployeeRatingVM employeeRatingVM = new EmployeeRatingVM();
+
+            if (id > 0)
+            {
+                employeeRatingVM = (from er in _db.tbl_EmployeeRating
+                                    where er.EmployeeRatingId == id
+                                    select new EmployeeRatingVM
+                                    {
+                                        EmployeeRatingId = er.EmployeeRatingId,
+                                        EmployeeId = er.EmployeeId,
+                                        RateMonth = er.RateMonth,
+                                        RateYear = er.RateYear,
+                                        BehaviourRate = er.BehaviourRate,
+                                        RegularityRate = er.RegularityRate,
+                                        WorkRate = er.WorkRate,
+                                        Remarks = er.Remarks,
+                                        CreatedDate = er.CreatedDate
+                                    }).FirstOrDefault();
+            }
+            employeeRatingVM.EmployeeList = GetEmployeeList();
+            return View(employeeRatingVM);
         }
 
         [HttpPost]
@@ -90,7 +114,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
 
-                    bool isExist = _db.tbl_EmployeeRating.Any(x => x.EmployeeId == employeeRatingVM.EmployeeId && x.RateYear == employeeRatingVM.RateYear && x.RateMonth == employeeRatingVM.RateMonth);
+                    bool isExist = _db.tbl_EmployeeRating.Any(x => x.EmployeeId == employeeRatingVM.EmployeeId
+                    && x.RateYear == employeeRatingVM.RateYear
+                    && x.RateMonth == employeeRatingVM.RateMonth
+                    && (employeeRatingVM.EmployeeRatingId > 0 ? x.EmployeeRatingId != employeeRatingVM.EmployeeRatingId : true)
+                    );
                     if (isExist)
                     {
                         ModelState.AddModelError(" ", ErrorMessage.EmployeeRatingAlreadyExist);
@@ -102,20 +130,34 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
                         long companyId = Int64.Parse(clsAdminSession.CompanyId.ToString());
 
-                        tbl_EmployeeRating objEmployeeRating = new tbl_EmployeeRating();
-                        objEmployeeRating.EmployeeId = employeeRatingVM.EmployeeId;
-                        objEmployeeRating.RateMonth = employeeRatingVM.RateMonth;
-                        objEmployeeRating.RateYear = employeeRatingVM.RateYear;
-                        objEmployeeRating.BehaviourRate = employeeRatingVM.BehaviourRate;
-                        objEmployeeRating.RegularityRate = employeeRatingVM.RegularityRate;
-                        objEmployeeRating.WorkRate = employeeRatingVM.WorkRate;
-                        objEmployeeRating.Remarks = employeeRatingVM.Remarks;
-                        objEmployeeRating.CreatedBy = LoggedInUserId;
-                        objEmployeeRating.CreatedDate = DateTime.UtcNow;
-                        objEmployeeRating.ModifiedBy = LoggedInUserId;
-                        objEmployeeRating.ModifiedDate = DateTime.UtcNow;
-                        _db.tbl_EmployeeRating.Add(objEmployeeRating);
-
+                        if (employeeRatingVM.EmployeeRatingId > 0)
+                        {
+                            tbl_EmployeeRating objEmployeeRating = _db.tbl_EmployeeRating.Where(x => x.EmployeeRatingId == employeeRatingVM.EmployeeRatingId).FirstOrDefault();
+                            objEmployeeRating.RateMonth = employeeRatingVM.RateMonth;
+                            objEmployeeRating.RateYear = employeeRatingVM.RateYear;
+                            objEmployeeRating.BehaviourRate = employeeRatingVM.BehaviourRate;
+                            objEmployeeRating.RegularityRate = employeeRatingVM.RegularityRate;
+                            objEmployeeRating.WorkRate = employeeRatingVM.WorkRate;
+                            objEmployeeRating.Remarks = employeeRatingVM.Remarks;
+                            objEmployeeRating.ModifiedBy = LoggedInUserId;
+                            objEmployeeRating.ModifiedDate = DateTime.UtcNow;
+                        }
+                        else
+                        {
+                            tbl_EmployeeRating objEmployeeRating = new tbl_EmployeeRating();
+                            objEmployeeRating.EmployeeId = employeeRatingVM.EmployeeId;
+                            objEmployeeRating.RateMonth = employeeRatingVM.RateMonth;
+                            objEmployeeRating.RateYear = employeeRatingVM.RateYear;
+                            objEmployeeRating.BehaviourRate = employeeRatingVM.BehaviourRate;
+                            objEmployeeRating.RegularityRate = employeeRatingVM.RegularityRate;
+                            objEmployeeRating.WorkRate = employeeRatingVM.WorkRate;
+                            objEmployeeRating.Remarks = employeeRatingVM.Remarks;
+                            objEmployeeRating.CreatedBy = LoggedInUserId;
+                            objEmployeeRating.CreatedDate = DateTime.UtcNow;
+                            objEmployeeRating.ModifiedBy = LoggedInUserId;
+                            objEmployeeRating.ModifiedDate = DateTime.UtcNow;
+                            _db.tbl_EmployeeRating.Add(objEmployeeRating);
+                        }
                         _db.SaveChanges();
                     }
                 }
@@ -157,11 +199,65 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                         where !emp.IsDeleted && emp.CompanyId == companyId
                                         select new SelectListItem
                                         {
-                                            Text = emp.FirstName + " " + emp.LastName,
+                                            Text = emp.FirstName + " " + emp.LastName + "(" + emp.EmployeeCode + ")",
                                             Value = emp.EmployeeId.ToString()
                                         }).ToList();
             return lst;
         }
 
+        public ActionResult View(long id)
+        {
+            EmployeeRatingVM employeeRatingVM = new EmployeeRatingVM();
+
+            employeeRatingVM = (from er in _db.tbl_EmployeeRating
+                                join emp in _db.tbl_Employee on er.EmployeeId equals emp.EmployeeId
+                                where er.EmployeeRatingId == id
+                                select new EmployeeRatingVM
+                                {
+                                    EmployeeRatingId = er.EmployeeRatingId,
+                                    EmployeeId = er.EmployeeId,
+                                    EmployeeName = emp.FirstName + " " + emp.LastName,
+                                    RateMonth = er.RateMonth,
+                                    RateYear = er.RateYear,
+                                    BehaviourRate = er.BehaviourRate,
+                                    RegularityRate = er.RegularityRate,
+                                    WorkRate = er.WorkRate,
+                                    Remarks = er.Remarks,
+                                    CreatedDate = er.CreatedDate,
+                                }).FirstOrDefault();
+
+            employeeRatingVM.RateMonthText = CommonMethod.GetEnumDescription((CalenderMonths)employeeRatingVM.RateMonth);
+            return View(employeeRatingVM);
+        }
+
+        [HttpPost]
+        public string DeleteEmployeeRating(int employeeRatingId)
+        {
+            string ReturnMessage = "";
+
+            try
+            {
+                tbl_EmployeeRating objEmployeeRating = _db.tbl_EmployeeRating.Where(x => x.EmployeeRatingId == employeeRatingId).FirstOrDefault();
+
+                if (objEmployeeRating == null)
+                {
+                    ReturnMessage = "notfound";
+                }
+                else
+                {
+                    _db.tbl_EmployeeRating.Remove(objEmployeeRating);
+                    _db.SaveChanges();
+
+                    ReturnMessage = "success";
+                }
+            }
+            catch (Exception ex)
+            {
+                string msg = ex.Message.ToString();
+                ReturnMessage = "exception";
+            }
+
+            return ReturnMessage;
+        }
     }
 }

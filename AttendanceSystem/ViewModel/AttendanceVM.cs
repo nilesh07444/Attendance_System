@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace AttendanceSystem.ViewModel
@@ -27,7 +25,9 @@ namespace AttendanceSystem.ViewModel
         public string TomorrowWorkDetail { get; set; }
         [Display(Name = "Remarks")]
         public string Remarks { get; set; }
+        [Display(Name = "In Location")]
         public string LocationFrom { get; set; }
+        [Display(Name = "Out Location")]
         public string OutLocationFrom { get; set; }
         [Display(Name = "Status")]
         public int Status { get; set; }
@@ -46,7 +46,9 @@ namespace AttendanceSystem.ViewModel
         public decimal? InLongitude { get; set; }
         public decimal? OutLatitude { get; set; }
         public decimal? OutLongitude { get; set; }
+        [Display(Name = "No Of Hours Worked")]
         public decimal NoOfHoursWorked { get; set; }
+        [Display(Name = "No Of Unit Worked")]
         public int NoOfUnitWorked { get; set; }
 
         public string EmployeeCode { get; set; }
@@ -56,9 +58,10 @@ namespace AttendanceSystem.ViewModel
     {
         public AttendanceFilterVM()
         {
-            StartMonth = DateTime.Now.Month;
-            EndMonth = DateTime.Now.Month;
+            //StartMonth = DateTime.Now.Month;
+            //EndMonth = DateTime.Now.Month;
             Year = DateTime.Now.Year;
+            AttendanceStatus = (int)Helper.AttendanceStatus.Pending;
         }
         public int StartMonth { get; set; }
         public int EndMonth { get; set; }
@@ -93,7 +96,7 @@ namespace AttendanceSystem.ViewModel
 
     public class WorkerAttendanceRequestVM
     {
-        public int AttendanceType{ get; set; }
+        public int AttendanceType { get; set; }
         public long EmployeeId { get; set; }
         public decimal ExtraHours { get; set; }
         public decimal NoOfHoursWorked { get; set; }
