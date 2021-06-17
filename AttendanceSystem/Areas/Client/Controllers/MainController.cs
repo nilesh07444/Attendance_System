@@ -76,7 +76,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
                                           NoOfEmployee = pck.NoOfEmployee,
                                           PackageColorCode = pck.PackageColorCode,
                                           PackageFontIcon = pck.PackageFontIcon
-                                      }).OrderByDescending(x => x.PackageId).ToList();
+                                      }).OrderBy(x => x.PackageId).ToList();
 
                 lstSMSPackages = (from pck in _db.tbl_SMSPackage
                                   where !pck.IsDeleted && pck.IsActive
@@ -90,7 +90,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
                                       NoOfSMS = pck.NoOfSMS,
                                       PackageColorCode = pck.PackageColorCode,
                                       PackageFontIcon = pck.PackageFontIcon
-                                  }).OrderByDescending(x => x.SMSPackageId).ToList();
+                                  }).OrderBy(x => x.SMSPackageId).ToList();
 
                 lstOurClients = (from s in _db.tbl_Sponsor
                                  where !s.IsDeleted && s.IsActive
