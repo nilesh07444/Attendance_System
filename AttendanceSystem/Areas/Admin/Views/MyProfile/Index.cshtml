@@ -19,46 +19,63 @@
                 <div class="card">
 
                     <div class="card-body">
-
                         <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.EmployeeCode, htmlAttributes: new { @class = "" }) :
+                                    @Model.EmployeeCode
+                                </div>
+                            </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     @Html.LabelFor(model => model.CompanyAdminPrefix, htmlAttributes: new { @class = "" }) :
                                     @Model.CompanyAdminPrefix
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
+
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     @Html.LabelFor(model => model.CompanyAdminFirstName, htmlAttributes: new { @class = "" }) :
                                     @Model.CompanyAdminFirstName
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     @Html.LabelFor(model => model.CompanyAdminMiddleName, htmlAttributes: new { @class = "" }) :
                                     @Model.CompanyAdminMiddleName
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
+
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     @Html.LabelFor(model => model.CompanyAdminLastName, htmlAttributes: new { @class = "" }) :
                                     @Model.CompanyAdminLastName
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     @Html.LabelFor(model => model.CompanyAdminEmailId, htmlAttributes: new { @class = "" }) :
                                     @Model.CompanyAdminEmailId
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
+
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     @Html.LabelFor(model => model.CompanyAdminDOB, htmlAttributes: new { @class = "" }) :
                                     @Model.dtCompanyAdminDOB.ToString("dd MMM yyyy")
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CompanyAdminDateOfMarriageAnniversary, htmlAttributes: new { @class = "" }) :
+                                    @if (Model.CompanyAdminDateOfMarriageAnniversary.HasValue)
+                                    {@Model.CompanyAdminDateOfMarriageAnniversary.Value.ToString("dd MMM yyyy")}
                                 </div>
                             </div>
                         </div>
@@ -93,27 +110,37 @@
 
                         </div>
                         <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.CompanyAdminPincode, htmlAttributes: new { @class = "" }) :
-                                    @Model.CompanyAdminPincode
-                                </div>
-                            </div>
+
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     @Html.LabelFor(model => model.CompanyAdminCity, htmlAttributes: new { @class = "" }) :
                                     @Model.CompanyAdminCity
                                 </div>
                             </div>
-
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CompanyAdminPincode, htmlAttributes: new { @class = "" }) :
+                                    @Model.CompanyAdminPincode
+                                </div>
+                            </div>
                         </div>
                         <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CompanyAdminDistrict, htmlAttributes: new { @class = "" }) :
+                                    @Model.CompanyAdminDistrict
+                                </div>
+                            </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     @Html.LabelFor(model => model.CompanyAdminState, htmlAttributes: new { @class = "" }) :
                                     @Model.CompanyAdminState
                                 </div>
                             </div>
+
+                        </div>
+                        <div class="row">
+                            >
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     @Html.LabelFor(model => model.CompanyAdminProfilePhotoFile, htmlAttributes: new { @class = "" }) :
@@ -184,42 +211,54 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        @Html.LabelFor(model => model.CompanyTypeId, htmlAttributes: new { @class = "" }) :
-                                        @Model.CompanyTypeText
+                                        @Html.LabelFor(model => model.CompanyCode, htmlAttributes: new { @class = "" }) :
+                                        @Model.CompanyCode
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.CompanyTypeId, htmlAttributes: new { @class = "" }) :
+                                        @Model.CompanyTypeText
+                                    </div>
+                                </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyEmailId, htmlAttributes: new { @class = "" }) :
                                         @Model.CompanyEmailId
                                     </div>
                                 </div>
+
+                            </div>
+                            <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyContactNo, htmlAttributes: new { @class = "" }) :
                                         @Model.CompanyContactNo
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyAlternateContactNo, htmlAttributes: new { @class = "" }) :
                                         @Model.CompanyAlternateContactNo
                                     </div>
                                 </div>
+
+                            </div>
+                            <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyWebisteUrl, htmlAttributes: new { @class = "" }) :
                                         @Model.CompanyWebisteUrl
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.CompanyDescription, htmlAttributes: new { @class = "" }) :
-                                @Model.CompanyDescription
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.CompanyDescription, htmlAttributes: new { @class = "" }) :
+                                        @Model.CompanyDescription
+                                    </div>
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-6">
@@ -230,10 +269,25 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
+                                        @Html.LabelFor(model => model.CompanyCity, htmlAttributes: new { @class = "" }) :
+                                        @Model.CompanyCity
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
                                         @Html.LabelFor(model => model.CompanyPincode, htmlAttributes: new { @class = "" }) :
                                         @Model.CompanyPincode
                                     </div>
                                 </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.CompanyDistrict, htmlAttributes: new { @class = "" }) :
+                                        @Model.CompanyDistrict
+                                    </div>
+                                </div>
+
                             </div>
                             <div class="row">
                                 <div class="col-sm-6">
@@ -242,12 +296,7 @@
                                         @Model.CompanyState
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.CompanyCity, htmlAttributes: new { @class = "" }) :
-                                        @Model.CompanyCity
-                                    </div>
-                                </div>
+
                             </div>
                             <div class="row">
                                 <div class="col-sm-6">

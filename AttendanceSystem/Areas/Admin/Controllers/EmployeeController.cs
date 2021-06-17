@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
@@ -527,7 +526,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return Json(new { Status = status, Otp = otp, ErrorMessage = errorMessage, SetOtp = clsAdminSession.SetOtp }, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult LoginHistory(int? employeeId = null)
+        public ActionResult LoginHistory(int? employeeId = null, DateTime? startDate = null, DateTime? endDate = null)
         {
             LoginHistoryFilterVM loginHistoryFilterVM = new LoginHistoryFilterVM();
 
@@ -538,15 +537,25 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     loginHistoryFilterVM.EmployeeId = employeeId.Value;
                 }
 
+
+                if (startDate.HasValue && endDate.HasValue)
+                {
+                    loginHistoryFilterVM.StartDate = startDate.Value;
+                    loginHistoryFilterVM.EndDate = endDate.Value;
+                }
+
                 long companyId = clsAdminSession.CompanyId;
                 loginHistoryFilterVM.LoginHistoryList = (from lh in _db.tbl_LoginHistory
                                                          join emp in _db.tbl_Employee on lh.EmployeeId equals emp.EmployeeId
                                                          where !emp.IsDeleted && emp.CompanyId == companyId
+                                                         && (loginHistoryFilterVM.StartDate.HasValue && loginHistoryFilterVM.EndDate.HasValue ?
+                                                         lh.LoginDate >= loginHistoryFilterVM.StartDate.Value && lh.LoginDate <= loginHistoryFilterVM.EndDate : true)
                                                          && (loginHistoryFilterVM.EmployeeId.HasValue ? lh.EmployeeId == loginHistoryFilterVM.EmployeeId.Value : true)
                                                          select new LoginHistoryVM
                                                          {
                                                              LoginHistoryId = lh.LoginHistoryId,
                                                              EmployeeId = lh.EmployeeId,
+                                                             EmployeeCode = emp.EmployeeCode,
                                                              FirstName = emp.FirstName,
                                                              LastName = emp.LastName,
                                                              LoginDate = lh.LoginDate,
@@ -569,7 +578,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                         where !emp.IsDeleted && emp.CompanyId == companyId
                                         select new SelectListItem
                                         {
-                                            Text = emp.FirstName + " " + emp.LastName,
+                                            Text = emp.FirstName + " " + emp.LastName + " (" + emp.EmployeeCode + ")",
                                             Value = emp.EmployeeId.ToString()
                                         }).ToList();
             return lst;

@@ -47,8 +47,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 EmployeeRatingFilterVM.EmployeeRatingList = (from er in _db.tbl_EmployeeRating
                                                              join emp in _db.tbl_Employee on er.EmployeeId equals emp.EmployeeId
                                                              where !emp.IsDeleted && emp.CompanyId == companyId
-                                                             && er.RateMonth >= EmployeeRatingFilterVM.StartMonth
-                                                             && er.RateMonth <= EmployeeRatingFilterVM.EndMonth
+                                                             && (EmployeeRatingFilterVM.StartMonth > 0 && EmployeeRatingFilterVM.EndMonth > 0 ? (er.RateMonth >= EmployeeRatingFilterVM.StartMonth
+                                                             && er.RateMonth <= EmployeeRatingFilterVM.EndMonth) : true)
                                                              && er.RateYear == EmployeeRatingFilterVM.Year
                                                              && (EmployeeRatingFilterVM.UserRole.HasValue ? emp.AdminRoleId == EmployeeRatingFilterVM.UserRole.Value : true)
                                                              && (!string.IsNullOrEmpty(EmployeeRatingFilterVM.EmployeeCode) ? emp.EmployeeCode == EmployeeRatingFilterVM.EmployeeCode : true)
@@ -57,6 +57,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                                                                  EmployeeRatingId = er.EmployeeRatingId,
                                                                  EmployeeId = er.EmployeeId,
+                                                                 EmployeeCode = emp.EmployeeCode,
                                                                  EmployeeName = emp.FirstName + " " + emp.LastName,
                                                                  RateMonth = er.RateMonth,
                                                                  RateYear = er.RateYear,
@@ -199,7 +200,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                         where !emp.IsDeleted && emp.CompanyId == companyId
                                         select new SelectListItem
                                         {
-                                            Text = emp.FirstName + " " + emp.LastName + "(" + emp.EmployeeCode + ")",
+                                            Text = emp.FirstName + " " + emp.LastName + " (" + emp.EmployeeCode + ")",
                                             Value = emp.EmployeeId.ToString()
                                         }).ToList();
             return lst;

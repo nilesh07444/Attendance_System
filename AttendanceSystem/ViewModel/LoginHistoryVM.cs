@@ -11,6 +11,7 @@ namespace AttendanceSystem.ViewModel
 
         public long LoginHistoryId { get; set; }
         public long EmployeeId { get; set; }
+        public string EmployeeCode { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime LoginDate { get; set; }
@@ -20,6 +21,8 @@ namespace AttendanceSystem.ViewModel
 
     public class LoginHistoryFilterVM
     {
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
         public int? EmployeeId { get; set; }
         public List<SelectListItem> EmployeeList { get; set; }
         public List<LoginHistoryVM> LoginHistoryList { get; set; }

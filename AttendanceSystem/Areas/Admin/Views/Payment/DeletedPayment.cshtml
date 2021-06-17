@@ -54,9 +54,11 @@
                                 <thead>
                                     <tr>
                                         <td>#</td>
+                                        <th>Employee Code</th>
                                         <th>Employee</th>
                                         <th>Date</th>
-                                        <th>Amount</th>
+                                        <th>Credit Amount</th>
+                                        <th>Debit Amount</th>
                                         <th>Payment Type</th>
                                     </tr>
                                 </thead>
@@ -65,13 +67,15 @@
                                     {
                                         foreach (PaymentVM obj in Model.PaymentList)
                                         {
-                                            <tr>
-                                                <td>@counter.</td>
-                                                <td>@obj.UserName</td>
-                                                <td>@obj.PaymentDate.ToString("dd MMM yyyy")</td>
-                                                <td>@obj.Amount</td>
-                                                <td>@obj.PaymentTypeText</td>
-                                            </tr>
+                                    <tr>
+                                        <td>@counter.</td>
+                                        <td>@obj.EmployeeCode</td>
+                                        <td>@obj.UserName</td>
+                                        <td>@obj.PaymentDate.ToString("dd MMM yyyy")</td>
+                                        <td>@obj.CreditAmount</td>
+                                        <td>@obj.DebitAmount</td>
+                                        <td>@obj.PaymentTypeText</td>
+                                    </tr>
 
                                             counter++;
                                         }

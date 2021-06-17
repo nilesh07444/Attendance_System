@@ -29,6 +29,7 @@ namespace AttendanceSystem.ViewModel
         [Required, Display(Name = "Remarks")]
         public string Remarks { get; set; }
         public string OTP { get; set; }
+        public string EmployeeCode { get; set; }
     }
 
     public class PaymentFilterVM

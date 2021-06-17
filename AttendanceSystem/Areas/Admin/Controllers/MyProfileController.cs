@@ -63,6 +63,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                   {
                                       CompanyId = cp.CompanyId,
                                       CompanyTypeId = cp.CompanyTypeId,
+                                      CompanyCode = cp.CompanyCode,
                                       CompanyName = cp.CompanyName,
                                       CompanyEmailId = cp.EmailId,
                                       CompanyContactNo = cp.ContactNo,
@@ -75,6 +76,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                       CompanyPincode = cp.Pincode,
                                       CompanyCity = cp.City,
                                       CompanyState = cp.State,
+                                      CompanyDistrict = cp.District,
                                       CompanyLogoImage = cp.CompanyLogoImage,
                                       CompanyRegisterProofImage = cp.RegisterProofImage,
                                       CompanyDescription = cp.Description,
@@ -85,6 +87,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                       CompanyAdminLastName = emp.LastName,
                                       CompanyAdminEmailId = emp.EmailId,
                                       dtCompanyAdminDOB = emp.DOB,
+                                      CompanyAdminDateOfMarriageAnniversary = emp.DateOfMarriageAnniversary,
                                       CompanyAdminMobileNo = emp.MobileNo,
                                       CompanyAdminAlternateMobileNo = emp.AlternateMobileNo,
                                       CompanyAdminDesignation = emp.Designation,
@@ -92,13 +95,15 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                       CompanyAdminPincode = emp.Pincode,
                                       CompanyAdminCity = emp.City,
                                       CompanyAdminState = emp.State,
+                                      CompanyAdminDistrict = emp.District,
                                       CompanyAdminProfilePhoto = emp.ProfilePhoto,
                                       CompanyAdminAadharCardNo = emp.AadharCardNo,
                                       CompanyAdminAadharCardPhoto = emp.AadharCardPhoto,
                                       CompanyAdminPanCardPhoto = emp.PanCardPhoto,
                                       CompanyAdminPanCardNo = emp.PanCardNo,
                                       FreeAccessDays = cp.FreeAccessDays,
-                                      CompanyTypeText = ct.CompanyTypeName
+                                      CompanyTypeText = ct.CompanyTypeName,
+                                      EmployeeCode = emp.UserName
                                   }).FirstOrDefault();
 
                 }

@@ -143,7 +143,7 @@ namespace AttendanceSystem.ViewModel
         }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public int SiteId { get; set; }
+        public int? SiteId { get; set; }
         public long? EmployeeId { get; set; }
     }
 

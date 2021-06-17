@@ -24,7 +24,7 @@
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label>End Date</label>
-                                    @Html.TextBoxFor(model => model.EndDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Start Date" })
+                                    @Html.TextBoxFor(model => model.EndDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "End Date" })
                                 </div>
                             </div>
 
@@ -52,6 +52,7 @@
                                 <thead>
                                     <tr>
                                         <td>#</td>
+                                        <th>Employee Code</th>
                                         <th>Employee</th>
                                         <th>Date</th>
                                         <th>Amount</th>
@@ -66,6 +67,7 @@
                                         {
                                             <tr>
                                                 <td>@counter.</td>
+                                                <td>@obj.EmployeeCode</td>
                                                 <td>@obj.UserName</td>
                                                 <td>@obj.PaymentDate.ToString("dd MMM yyyy")</td>
                                                 <td>@obj.DebitAmount</td>
@@ -147,7 +149,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
 
-        
+
         $('#btnDeletePayment').click(function () {
              var employeePayment_Id = $("#hdnDeleteEmployeePaymentId").val();
              var employee_Id = $("#hdnDeleteEmployeeId").val();
@@ -206,6 +208,10 @@
                         }
                         else if (result == "notfound") {
                             alert("Payment Not Found");
+                        }
+                        else if (result =="convertioncomplete")
+                        {
+                            alert("Monthly convesrion completed you can not add or modify payment details");
                         }
                         else {
                             alert("Something went wrong. Please try again");

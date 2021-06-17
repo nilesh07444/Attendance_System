@@ -5,9 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using System.Net;
 using System.Text.RegularExpressions;
-using System.Web;
 using System.Web.Mvc;
 
 namespace AttendanceSystem.Areas.Admin.Controllers
@@ -53,6 +51,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                    EmployeePaymentId = empp.EmployeePaymentId,
                                                    UserId = empp.UserId,
                                                    PaymentDate = empp.PaymentDate,
+                                                   EmployeeCode = emp.EmployeeCode,
                                                    UserName = emp.FirstName + " " + emp.LastName,
                                                    DebitAmount = empp.DebitAmount,
                                                    CreditAmount = empp.CreditAmount,
@@ -85,7 +84,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                  EmployeePaymentId = empp.EmployeePaymentId,
                                  UserId = empp.UserId,
                                  PaymentDate = empp.PaymentDate,
-                                 UserName = emp.FirstName + " " + emp.LastName, 
+                                 EmployeeCode = emp.EmployeeCode,
+                                 UserName = emp.FirstName + " " + emp.LastName,
                                  DebitAmount = empp.DebitAmount,
                                  PaymentType = empp.PaymentType,
                                  Remarks = empp.Remarks
@@ -107,6 +107,17 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 {
                     long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
                     long companyId = Int64.Parse(clsAdminSession.CompanyId.ToString());
+
+                    #region validation
+                    if (_db.tbl_Conversion.Any(x => x.CompanyId == companyId && x.Month == paymentVM.PaymentDate.Month && (x.IsEmployeeDone || x.IsWorkerDone)))
+                    {
+                        ModelState.AddModelError("", ErrorMessage.MonthlyConvesrionCompletedYouCanNotAddOrModifyPaymentDetails);
+                        paymentVM.EmployeeList = GetEmployeeList();
+                        paymentVM.EmployeePaymentTypeList = GetEmployeePaymentTypeList();
+                        return View(paymentVM);
+                    }
+                    #endregion
+
 
                     if (paymentVM.EmployeePaymentId > 0)
                     {
@@ -172,7 +183,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                         where !emp.IsDeleted && emp.CompanyId == companyId
                                         select new SelectListItem
                                         {
-                                            Text = emp.FirstName + " " + emp.LastName + " (" + emp.EmployeeCode + " )",
+                                            Text = emp.FirstName + " " + emp.LastName + " (" + emp.EmployeeCode + ")",
                                             Value = emp.EmployeeId.ToString()
                                         }).ToList();
             return lst;
@@ -195,10 +206,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         [HttpPost]
         public string DeletePayment(int employeePaymentId)
         {
-            string ReturnMessage = "";
+            string ReturnMessage = string.Empty;
 
             try
             {
+                long companyId = clsAdminSession.CompanyId;
                 tbl_EmployeePayment objEmployeePayment = _db.tbl_EmployeePayment.Where(x => x.EmployeePaymentId == employeePaymentId).FirstOrDefault();
 
                 if (objEmployeePayment == null)
@@ -207,13 +219,22 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 }
                 else
                 {
-                    long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
-                    objEmployeePayment.IsDeleted = true;
-                    objEmployeePayment.ModifiedBy = LoggedInUserId;
-                    objEmployeePayment.ModifiedDate = DateTime.UtcNow;
-                    _db.SaveChanges();
+                    #region validation
+                    if (_db.tbl_Conversion.Any(x => x.CompanyId == companyId && x.Month == objEmployeePayment.PaymentDate.Month && (x.IsEmployeeDone || x.IsWorkerDone)))
+                    {
+                        ReturnMessage = "convertioncomplete";
+                    }
+                    #endregion
+                    if (string.IsNullOrEmpty(ReturnMessage))
+                    {
+                        long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
+                        objEmployeePayment.IsDeleted = true;
+                        objEmployeePayment.ModifiedBy = LoggedInUserId;
+                        objEmployeePayment.ModifiedDate = DateTime.UtcNow;
+                        _db.SaveChanges();
 
-                    ReturnMessage = "success";
+                        ReturnMessage = "success";
+                    }
                 }
             }
             catch (Exception ex)
@@ -265,7 +286,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     }
 
                     #endregion
-                     
+
                 }
                 else
                 {
@@ -312,6 +333,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                    EmployeePaymentId = empp.EmployeePaymentId,
                                                    UserId = empp.UserId,
                                                    PaymentDate = empp.PaymentDate,
+                                                   EmployeeCode = emp.EmployeeCode,
                                                    UserName = emp.FirstName + " " + emp.LastName,
                                                    CreditAmount = empp.CreditAmount,
                                                    DebitAmount = empp.DebitAmount,

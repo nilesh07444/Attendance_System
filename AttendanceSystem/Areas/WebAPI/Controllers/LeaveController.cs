@@ -25,6 +25,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             ResponseDataModel<bool> response = new ResponseDataModel<bool>();
             response.IsError = false;
             response.Data = false;
+            long companyId = base.UTI.CompanyId;
+
             try
             {
                 #region Validation
@@ -50,6 +52,18 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 {
                     response.IsError = true;
                     response.AddError(ErrorMessage.LeaveStartAndEndDateshouldBeForSameMonth);
+                }
+
+                if (leaveVM.StartDate.Year != leaveVM.EndDate.Year)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.LeaveStartAndEndDateshouldBeForSameMonth);
+                }
+
+                if (_db.tbl_Conversion.Any(x => x.CompanyId == companyId && x.Month == leaveVM.StartDate.Month && (x.IsEmployeeDone || x.IsWorkerDone)))
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.MonthlyConvesrionCompletedYouCanNotAddOrModifyLeaveDetails);
                 }
 
                 long employeeId = base.UTI.EmployeeId;
@@ -175,6 +189,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             response.Data = false;
             try
             {
+                long companyId = base.UTI.CompanyId;
                 #region Validation
                 if (leaveVM.LeaveId == null || leaveVM.LeaveId == 0)
                 {
@@ -204,6 +219,24 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 {
                     response.IsError = true;
                     response.AddError(ErrorMessage.LeaveReasonRequired);
+                }
+
+                if (leaveVM.StartDate.Month != leaveVM.EndDate.Month)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.LeaveStartAndEndDateshouldBeForSameMonth);
+                }
+
+                if (leaveVM.StartDate.Year != leaveVM.EndDate.Year)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.LeaveStartAndEndDateshouldBeForSameMonth);
+                }
+
+                if (_db.tbl_Conversion.Any(x => x.CompanyId == companyId && x.Month == leaveVM.StartDate.Month && (x.IsEmployeeDone || x.IsWorkerDone)))
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.MonthlyConvesrionCompletedYouCanNotAddOrModifyLeaveDetails);
                 }
 
                 if (leaveVM.LeaveId > 0)
@@ -262,6 +295,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     response.AddError(ErrorMessage.LeaveIdIsNotValid);
                 }
 
+                long companyId = base.UTI.CompanyId;
                 long employeeId = base.UTI.EmployeeId;
                 tbl_Leave leaveObject = _db.tbl_Leave.Where(x => x.LeaveId == id && x.UserId == employeeId).FirstOrDefault();
 
@@ -277,6 +311,13 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         response.IsError = true;
                         response.AddError(ErrorMessage.PendingLeaveCanBeDeleteOnly);
                     }
+
+                    if (_db.tbl_Conversion.Any(x => x.CompanyId == companyId && x.Month == leaveObject.StartDate.Month && (x.IsEmployeeDone || x.IsWorkerDone)))
+                    {
+                        response.IsError = true;
+                        response.AddError(ErrorMessage.MonthlyConvesrionCompletedYouCanNotAddOrModifyLeaveDetails);
+                    }
+
                     #endregion Validation
 
                     if (!response.IsError)

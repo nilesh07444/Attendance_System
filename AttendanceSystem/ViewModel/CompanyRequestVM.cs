@@ -106,11 +106,11 @@ namespace AttendanceSystem.ViewModel
         [Required(ErrorMessage = "This field is required")]
         public string CompanyAdminLastName { get; set; }
 
-        [Display(Name = "Company Admin Date Of Birth *")]
+        [Display(Name = "Date Of Birth *")]
         [Required(ErrorMessage = "This field is required")]
         public string CompanyAdminDOB { get; set; }
 
-        [Display(Name = "Company Admin Date Of Marriage Anniversary *")]
+        [Display(Name = "Date Of Marriage Anniversary *")]
         [Required(ErrorMessage = "This field is required")]
         public DateTime? CompanyAdminDateOfMarriageAnniversary { get; set; }
 
@@ -190,6 +190,8 @@ namespace AttendanceSystem.ViewModel
         //
         public DateTime dtCompanyAdminDOB { get; set; }
         public string RequestStatusText { get; set; }
+        [Display(Name = "Employee Code *")]
+        public string EmployeeCode { get; set; }
     }
 
     public class CompanyRequestFilterVM

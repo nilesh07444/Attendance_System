@@ -50,7 +50,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                            join cm in _db.tbl_Company on ur.CompanyId equals cm.CompanyId
                                            where !lv.IsDeleted
                                            && cm.CompanyId == companyId
-                                           && lv.StartDate.Month >= leaveFIlterVM.StartMonth && lv.StartDate.Month <= leaveFIlterVM.EndMonth
+                                           && (leaveFIlterVM.StartMonth > 0 && leaveFIlterVM.EndMonth > 0 ? lv.StartDate.Month >= leaveFIlterVM.StartMonth && lv.StartDate.Month <= leaveFIlterVM.EndMonth : true)
                                            && lv.StartDate.Year == leaveFIlterVM.Year
                                            && (leaveFIlterVM.LeaveStatus.HasValue ? lv.LeaveStatus == leaveFIlterVM.LeaveStatus.Value : true)
                                            && (leaveFIlterVM.UserRole.HasValue ? ur.AdminRoleId == leaveFIlterVM.UserRole.Value : true)
@@ -60,16 +60,19 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                LeaveId = lv.LeaveId,
                                                UserId = lv.UserId,
                                                UserName = ur.FirstName,
+                                               EmployeeCode=ur.EmployeeCode,
                                                StartDate = lv.StartDate,
                                                EndDate = lv.EndDate,
                                                NoOfDays = lv.NoOfDays,
                                                LeaveStatus = lv.LeaveStatus,
                                                RejectReason = lv.RejectReason,
+                                               CreatedDate = lv.CreatedDate,
                                            }).OrderByDescending(x => x.StartDate).ToList();
 
                 leaveFIlterVM.LeaveList.ForEach(x =>
                 {
                     x.LeaveStatusText = CommonMethod.GetEnumDescription((LeaveStatus)x.LeaveStatus);
+                    x.CreatedDate = CommonMethod.ConvertFromUTCToIndianDateTime(x.CreatedDate);
                 });
                 leaveFIlterVM.UserRoleList = GetUserRoleList();
                 leaveFIlterVM.CalenderMonth = CommonMethod.GetCalenderMonthList();

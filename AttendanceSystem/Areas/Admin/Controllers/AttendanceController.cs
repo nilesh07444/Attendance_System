@@ -97,7 +97,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                         where !emp.IsDeleted && emp.CompanyId == companyId
                                         select new SelectListItem
                                         {
-                                            Text = emp.FirstName + " " + emp.LastName,
+                                            Text = emp.FirstName + " " + emp.LastName + " (" + emp.EmployeeCode + ")",
                                             Value = emp.EmployeeId.ToString()
                                         }).ToList();
             return lst;

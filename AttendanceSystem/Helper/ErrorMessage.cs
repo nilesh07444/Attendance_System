@@ -162,5 +162,8 @@
         public static string PerUnit = "Per Unit";
         public static string PerHour = "Per Hour";
 
+        public static string MonthlyConvesrionCompletedYouCanNotAddOrModifyPaymentDetails = "Monthly convesrion completed you can not add or modify payment details";
+        public static string MonthlyConvesrionCompletedYouCanNotAddOrModifyLeaveDetails = "Monthly convesrion completed you can not add or modify leave details";
+        public static string MonthlyConvesrionCompletedYouCanNotAddOrModifyAttendance = "Monthly convesrion completed you can not add or modify attendance";
     }
 }

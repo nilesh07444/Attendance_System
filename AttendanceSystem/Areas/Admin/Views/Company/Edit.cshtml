@@ -375,22 +375,31 @@
                                     </div>
                                 </div>
                             </div>
+                            if (Model.RequestStatus != (int)CompanyRequestStatus.Accept)
+                            {
+                                <div class="form-group row">
+                                    @Html.LabelFor(model => model.RequestStatus, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                    @Html.DropDownListFor(model => model.RequestStatus, new SelectList(lstCompanyStatus, "Value", "Text"), "- Select -", new { @class = "form-control required", @style = "width:20%" })
 
-                            <div class="form-group row">
-                                @Html.LabelFor(model => model.RequestStatus, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                @Html.DropDownListFor(model => model.RequestStatus, new SelectList(lstCompanyStatus, "Value", "Text"), "- Select -", new { @class = "form-control required", @style = "width:20%" })
-
-                                @Html.ValidationMessageFor(model => model.RequestStatus, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="form-group row" id="dvRejectReason">
-                                @Html.LabelFor(model => model.RejectReason, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                @Html.TextBoxFor(model => model.RejectReason, new { @type = "text", @class = "form-control", @placeholder = "Enter Reject Reason", @style = "width:50%" })
-                            </div>
-                            <div class="form-group row">
-                                <lable class="col-xl-3 col-md-4"></lable>
-                                <button type="submit" class="btn btn-success" style="margin-right:10px;" id="btnSubmit">Submit</button>
-                                <button type="button" class="btn btn-danger" id="btnCancel">Cancel</button>
-                            </div>
+                                    @Html.ValidationMessageFor(model => model.RequestStatus, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group row" id="dvRejectReason">
+                                    @Html.LabelFor(model => model.RejectReason, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                    @Html.TextBoxFor(model => model.RejectReason, new { @type = "text", @class = "form-control", @placeholder = "Enter Reject Reason", @style = "width:50%" })
+                                </div>
+                                <div class="form-group row">
+                                    <lable class="col-xl-3 col-md-4"></lable>
+                                    <button type="submit" class="btn btn-success" style="margin-right:10px;" id="btnSubmit">Submit</button>
+                                    <button type="button" class="btn btn-danger" id="btnCancel">Cancel</button>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="form-group row">
+                                    <lable class="col-xl-3 col-md-4"></lable>
+                                    <button type="button" class="btn btn-danger" id="btnCancel">Cancel</button>
+                                </div>
+                            }
                         }
                     </div>
                 </div>

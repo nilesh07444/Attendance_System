@@ -84,6 +84,12 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     response.AddError(ErrorMessage.AttendanceOnSameDateAlreadyExist);
                 }
 
+                if (_db.tbl_Conversion.Any(x => x.CompanyId == companyId && x.Month == attendanceVM.AttendanceDate.Month && (x.IsEmployeeDone || x.IsWorkerDone)))
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.MonthlyConvesrionCompletedYouCanNotAddOrModifyAttendance);
+                }
+
                 #endregion Validation
                 if (!response.IsError)
                 {
@@ -307,6 +313,13 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         response.IsError = true;
                         response.AddError(ErrorMessage.PendingAttendanceCanBeEditOnly);
                     }
+
+                    if (_db.tbl_Conversion.Any(x => x.CompanyId == companyId && x.Month == attendanceVM.AttendanceDate.Month && (x.IsEmployeeDone || x.IsWorkerDone)))
+                    {
+                        response.IsError = true;
+                        response.AddError(ErrorMessage.MonthlyConvesrionCompletedYouCanNotAddOrModifyAttendance);
+                    }
+
                     #endregion Validation
                     if (!response.IsError)
                     {
@@ -408,6 +421,13 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                             response.IsError = true;
                             response.AddError(ErrorMessage.AttendanceIsAcceptedCanNotDelete);
                         }
+
+                        if (_db.tbl_Conversion.Any(x => x.CompanyId == companyId && x.Month == attendanceObject.AttendanceDate.Month && (x.IsEmployeeDone || x.IsWorkerDone)))
+                        {
+                            response.IsError = true;
+                            response.AddError(ErrorMessage.MonthlyConvesrionCompletedYouCanNotAddOrModifyAttendance);
+                        }
+
                         #endregion Validation
                         if (!response.IsError)
                         {

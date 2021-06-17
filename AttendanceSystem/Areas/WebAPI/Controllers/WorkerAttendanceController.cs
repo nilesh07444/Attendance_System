@@ -346,9 +346,9 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                            join emp in _db.tbl_Employee on at.EmployeeId equals emp.EmployeeId
                                                            where emp.CompanyId == companyId
                                                            && at.AttendanceDate >= workerAttendanceReportFilterVM.StartDate && at.AttendanceDate <= workerAttendanceReportFilterVM.EndDate
-                                                           && (at.MorningSiteId == workerAttendanceReportFilterVM.SiteId
+                                                           && (workerAttendanceReportFilterVM.SiteId.HasValue ? (at.MorningSiteId == workerAttendanceReportFilterVM.SiteId
                                                            || at.AfternoonSiteId == workerAttendanceReportFilterVM.SiteId
-                                                           || at.EveningSiteId == workerAttendanceReportFilterVM.SiteId)
+                                                           || at.EveningSiteId == workerAttendanceReportFilterVM.SiteId) : true)
                                                            && (workerAttendanceReportFilterVM.EmployeeId.HasValue ? at.EmployeeId == workerAttendanceReportFilterVM.EmployeeId.Value : true)
                                                            select new WorkerAttendanceVM
                                                            {

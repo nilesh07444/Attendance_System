@@ -4,7 +4,6 @@ using AttendanceSystem.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace AttendanceSystem.Areas.Admin.Controllers
@@ -87,7 +86,13 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         return View(HolidayVM);
                     }
 
-                    if (HolidayVM.StartDate.Month!= HolidayVM.EndDate.Month)
+                    if (HolidayVM.StartDate.Month != HolidayVM.EndDate.Month)
+                    {
+                        ModelState.AddModelError("", ErrorMessage.HolidayStartAndEndDateShouldBeforSameMonth);
+                        return View(HolidayVM);
+                    }
+
+                    if (HolidayVM.StartDate.Year != HolidayVM.EndDate.Year)
                     {
                         ModelState.AddModelError("", ErrorMessage.HolidayStartAndEndDateShouldBeforSameMonth);
                         return View(HolidayVM);
@@ -241,9 +246,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             long companyId = clsAdminSession.CompanyId;
             List<HolidayVM> holidayList = (from hd in _db.tbl_Holiday
                                            where !hd.IsDeleted && hd.CompanyId == companyId.ToString()
-                                           && hd.StartDate.Month >= holidayFilterVM.StartMonth
-                                           && hd.StartDate.Month <= holidayFilterVM.EndMonth
-                                           && hd.StartDate.Year== holidayFilterVM.Year
+                                           && (holidayFilterVM.StartMonth > 0 && holidayFilterVM.EndMonth > 0 ? (
+                                           hd.StartDate.Month >= holidayFilterVM.StartMonth
+                                           && hd.StartDate.Month <= holidayFilterVM.EndMonth) : true)
+                                           && hd.StartDate.Year == holidayFilterVM.Year
                                            select new HolidayVM
                                            {
                                                HolidayId = hd.HolidayId,

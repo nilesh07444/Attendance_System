@@ -36,5 +36,29 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             }
             return View(contactFormVM);
         }
+
+        public ActionResult View(long id)
+        {
+            ContactFormVM contactFormVM = new ContactFormVM();
+            try
+            {
+                contactFormVM = (from cn in _db.tbl_ContactForm
+                                 where cn.ContactFormId == id
+                                 select new ContactFormVM
+                                 {
+                                     Firstname = cn.FirstName,
+                                     Lastname = cn.LastName,
+                                     MobileNo = cn.MobileNo,
+                                     EmailId = cn.EmailId,
+                                     Message = cn.Message,
+                                     CreatedDate = cn.CreatedDate,
+                                     ContactFormId = cn.ContactFormId
+                                 }).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+            }
+            return View(contactFormVM);
+        }
     }
 }

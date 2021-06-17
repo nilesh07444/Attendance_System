@@ -30,7 +30,7 @@
                                         <th>Last Name</th>
                                         <th>Mobile No</th>
                                         <th>EmailId</th>
-                                        <th>Message</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -45,7 +45,7 @@
                                                 <td>@obj.Lastname</td>
                                                 <td>@obj.MobileNo</td>
                                                 <td>@obj.EmailId</td>
-                                                <td>@obj.Message</td>
+                                                <td><a href="/admin/contactform/view/@obj.ContactFormId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a></td>
 
                                             </tr>
                                             counter++;
@@ -61,4 +61,3 @@
         </div>
     </div>
 </section>
- 

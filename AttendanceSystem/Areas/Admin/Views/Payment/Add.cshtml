@@ -17,6 +17,7 @@
 
                 @using (Html.BeginForm("Add", "Payment", FormMethod.Post, new { @id = "EmployeePaymentFormId", @class = "", enctype = "multipart/form-data", role = "form" }))
                 {
+                    @Html.ValidationSummary()
                     <div class="card-body">
                         <div class="row">
                             <div class="form-group col-6">

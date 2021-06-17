@@ -25,6 +25,8 @@ namespace AttendanceSystem.ViewModel
         [Display(Name = "Reject Reason")]
         public string RejectReason { get; set; }
         public bool IsDeleted { get; set; }
+        public string EmployeeCode { get; set; }
+        public DateTime CreatedDate { get; set; }
 
     }
     public class LeaveFilterVM

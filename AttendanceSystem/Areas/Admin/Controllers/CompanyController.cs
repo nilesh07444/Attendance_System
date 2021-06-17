@@ -914,7 +914,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             {
                 string companyNameWithoutSpeChar = Regex.Replace(companyName, @"[^0-9a-zA-Z]+", "");
                 string first2CharOfCompanyName = companyNameWithoutSpeChar.ToUpper().Substring(0, 2);
-                companyCode = first2CharOfCompanyName + "/" + DateTime.Now.ToString("ddMMyyyy") + "/" + companyId;
+                companyCode = first2CharOfCompanyName + "/" + CommonMethod.ConvertFromUTCToIndianDateTime(DateTime.UtcNow).ToString("ddMMyyyy") + "/" + companyId;
             }
             catch (Exception ex)
             {

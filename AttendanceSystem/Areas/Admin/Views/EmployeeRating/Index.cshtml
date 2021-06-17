@@ -73,6 +73,7 @@
                                 <thead>
                                     <tr>
                                         <td>#</td>
+                                        <th>Employee Code</th>
                                         <th>Employee Name</th>
                                         <th>Month</th>
                                         <th>Year</th>
@@ -89,6 +90,7 @@
                                         {
                                             <tr>
                                                 <td>@counter.</td>
+                                                <td>@obj.EmployeeCode</td>
                                                 <td>@obj.EmployeeName</td>
                                                 <td>@obj.RateMonthText</td>
                                                 <td>@obj.RateYear</td>
@@ -109,7 +111,7 @@
                                             counter++;
                                         }
                                     }
-                                    
+
                                 </tbody>
                             </table>
                         </div>
@@ -158,7 +160,7 @@
         });
 
 
-        
+
         $('#btnDeleteEmployeeRating').click(function () {
             var EmployeeRating_Id = $("#hdnDeleteEmployeeRating").val();
             if (EmployeeRating_Id != "" && EmployeeRating_Id != null) {
