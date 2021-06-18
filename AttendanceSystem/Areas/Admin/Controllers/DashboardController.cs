@@ -23,12 +23,15 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             {
                 long companyId = clsAdminSession.CompanyId;
                 int roleId = clsAdminSession.RoleID;
-
+                DateTime today = DateTime.UtcNow.Date;
                 if (roleId == (int)AdminRoles.CompanyAdmin)
                 {
-                    dashboardVM.SMSLeft = _db.tbl_CompanySMSPackRenew.Where(x => x.CompanyId == companyId
-                     && x.RenewDate <= DateTime.Now
-                     && x.PackageExpiryDate > DateTime.Now).Select(x => x.RemainingSMS).FirstOrDefault();
+                    tbl_CompanySMSPackRenew objCompanySMSPackRenew = _db.tbl_CompanySMSPackRenew.Where(x => x.CompanyId == companyId
+                       && x.RenewDate <= DateTime.UtcNow
+                       && x.PackageExpiryDate >= today).FirstOrDefault();
+
+                    dashboardVM.SMSLeft = objCompanySMSPackRenew != null ? objCompanySMSPackRenew.RemainingSMS : 0;
+                    dashboardVM.CurrentSMSPackageId = objCompanySMSPackRenew != null ? objCompanySMSPackRenew.CompanySMSPackRenewId : 0;
 
                     dashboardVM.PendingLeaves = (from lv in _db.tbl_Leave
                                                  join ur in _db.tbl_Employee on lv.UserId equals ur.EmployeeId
@@ -46,7 +49,16 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                      select at.AttendanceId
                                                ).Count();
 
-                    dashboardVM.AccountExpiryDate = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == companyId).Select(z => z.EndDate).FirstOrDefault();
+                    if (clsAdminSession.IsTrialMode)
+                    {
+                        dashboardVM.AccountExpiryDate = _db.tbl_Company.Where(x => x.CompanyId == companyId).Select(z => z.TrialExpiryDate.Value).FirstOrDefault();
+                    }
+                    else
+                    {
+                        tbl_CompanyRenewPayment objCompanyRenewPayment = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == companyId && x.StartDate <= today && x.EndDate >= today).FirstOrDefault();
+                        dashboardVM.AccountExpiryDate = objCompanyRenewPayment.EndDate;
+                        dashboardVM.CurrentPackageId = objCompanyRenewPayment.CompanyRegistrationPaymentId;
+                    }
 
                     var startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
                     var endDate = startDate.AddMonths(1).AddDays(-1);

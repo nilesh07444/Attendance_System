@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace AttendanceSystem.Areas.Admin.Controllers
@@ -172,6 +171,43 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             }
 
             return Json(new { IsSuccess = isSuccess, Message = message }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult View(long id)
+        {
+            CompanyRenewPaymentVM companyRenewPaymentVM = new CompanyRenewPaymentVM();
+            try
+            {
+                long companyId = clsAdminSession.CompanyId;
+                companyRenewPaymentVM = (from cp in _db.tbl_CompanyRenewPayment
+                                         join cm in _db.tbl_Company on cp.CompanyId equals cm.CompanyId
+                                         where cp.CompanyId == companyId
+                                         && cp.CompanyRegistrationPaymentId == id
+                                         select new CompanyRenewPaymentVM
+                                         {
+                                             CompanyRegistrationPaymentId = cp.CompanyRegistrationPaymentId,
+                                             CompanyId = cp.CompanyId,
+                                             CompanyName = cm.CompanyName,
+                                             Amount = cp.Amount,
+                                             PaymentFor = cp.PaymentFor,
+                                             PaymentGatewayResponseId = cp.PaymentGatewayResponseId,
+                                             StartDate = cp.StartDate,
+                                             EndDate = cp.EndDate,
+                                             AccessDays = cp.AccessDays,
+                                             PackageId = cp.PackageId,
+                                             PackageName = cp.PackageName,
+                                             NoOfEmployee = cp.NoOfEmployee,
+                                             NoOfSMS = cp.NoOfSMS,
+                                             CreatedDate = cp.CreatedDate,
+                                             BuyNoOfEmployee = cp.BuyNoOfEmployee
+                                         }).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                string ErrorMessage = ex.Message.ToString();
+                throw ex;
+            }
+            return View(companyRenewPaymentVM);
         }
     }
 }

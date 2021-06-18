@@ -1,0 +1,74 @@
+﻿@using AttendanceSystem.Helper;
+@model AttendanceSystem.ViewModel.CompanyRenewPaymentVM
+@{
+    ViewBag.Title = "Account Renew";
+}
+
+<section class="section">
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h4>Account Package</h4>
+                </div>
+
+                <div class="card-body">
+                    <div class="row">
+                        <div class="form-group col-6">
+                            @Html.LabelFor(model => model.PackageName, htmlAttributes: new { @class = "" })
+                            @Model.PackageName
+                        </div>
+                        <div class="form-group col-6">
+                            @Html.LabelFor(model => model.CreatedDate, htmlAttributes: new { @class = "" })
+                            @Model.CreatedDate
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-6">
+                            @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "" })
+                            @Model.StartDate.ToString("dd MMM yyyy")
+                        </div>
+                        <div class="form-group col-6">
+                            @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "" })
+                            @Model.EndDate.ToString("dd MMM yyyy")
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-6">
+                            @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "" })
+                            @Model.Amount
+                        </div>
+                        <div class="form-group col-6">
+                            @Html.LabelFor(model => model.AccessDays, htmlAttributes: new { @class = "" })
+                            @Model.AccessDays
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-6">
+                            @Html.LabelFor(model => model.NoOfEmployee, htmlAttributes: new { @class = "" })
+                            @Model.NoOfEmployee
+                        </div>
+                        <div class="form-group col-6">
+                            @Html.LabelFor(model => model.NoOfSMS, htmlAttributes: new { @class = "" })
+                            @Model.NoOfSMS
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-12">
+                            @Html.LabelFor(model => model.BuyNoOfEmployee, htmlAttributes: new { @class = "" })
+                            @Model.BuyNoOfEmployee
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="card-footer text-center">
+                    <a href="/admin/accountrenew" class="btn btn-secondary">Cancel</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</section>
