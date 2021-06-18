@@ -4,6 +4,7 @@ using AttendanceSystem.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -544,12 +545,14 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     loginHistoryFilterVM.EndDate = endDate.Value;
                 }
 
+               
                 long companyId = clsAdminSession.CompanyId;
                 loginHistoryFilterVM.LoginHistoryList = (from lh in _db.tbl_LoginHistory
                                                          join emp in _db.tbl_Employee on lh.EmployeeId equals emp.EmployeeId
                                                          where !emp.IsDeleted && emp.CompanyId == companyId
-                                                         && (loginHistoryFilterVM.StartDate.HasValue && loginHistoryFilterVM.EndDate.HasValue ?
-                                                         lh.LoginDate >= loginHistoryFilterVM.StartDate.Value && lh.LoginDate <= loginHistoryFilterVM.EndDate : true)
+                                                         //&& lh.LoginDate >= utcStartDate && lh.LoginDate <= utcEndDate
+                                                         && DbFunctions.TruncateTime(lh.LoginDate) >= DbFunctions.TruncateTime(loginHistoryFilterVM.StartDate)
+                                                         && DbFunctions.TruncateTime(lh.LoginDate) <= DbFunctions.TruncateTime(loginHistoryFilterVM.EndDate)
                                                          && (loginHistoryFilterVM.EmployeeId.HasValue ? lh.EmployeeId == loginHistoryFilterVM.EmployeeId.Value : true)
                                                          select new LoginHistoryVM
                                                          {

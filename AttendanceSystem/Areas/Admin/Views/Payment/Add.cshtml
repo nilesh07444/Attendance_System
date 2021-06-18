@@ -12,7 +12,7 @@
         <div class="col-12">
             <div class="card card-primary">
                 <div class="card-header">
-                    <h4>@(Model.EmployeePaymentId == 0 ? "Add" : "Edit") Employee Payment</h4>
+                    <h4>@(Model.EmployeePaymentId == 0 ? "Give" : "Edit") Employee Payment</h4>
                 </div>
 
                 @using (Html.BeginForm("Add", "Payment", FormMethod.Post, new { @id = "EmployeePaymentFormId", @class = "", enctype = "multipart/form-data", role = "form" }))

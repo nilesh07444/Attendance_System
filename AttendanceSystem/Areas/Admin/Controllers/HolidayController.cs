@@ -216,7 +216,12 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             try
             {
                 long companyId = clsAdminSession.CompanyId;
-                isExist = _db.tbl_Holiday.Any(x => x.CompanyId == companyId.ToString() && !x.IsDeleted && x.StartDate >= startDate && x.EndDate <= startDate);
+                isExist = _db.tbl_Holiday.Any(x => x.CompanyId == companyId.ToString() && !x.IsDeleted &&
+                (
+                (startDate >= x.StartDate && endDate <= x.EndDate) ||
+                (startDate >= x.StartDate && startDate <= x.EndDate) ||
+                (endDate >= x.StartDate && endDate <= x.EndDate)
+                ));
             }
             catch (Exception ex)
             {

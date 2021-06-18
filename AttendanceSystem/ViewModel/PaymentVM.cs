@@ -27,7 +27,7 @@ namespace AttendanceSystem.ViewModel
         public string PaymentTypeText { get; set; }
         public List<SelectListItem> EmployeeList { get; set; }
         public List<SelectListItem> EmployeePaymentTypeList { get; set; }
-        [Required, Display(Name = "Remarks")]
+        [ Display(Name = "Remarks")]
         public string Remarks { get; set; }
         public string OTP { get; set; }
         public string EmployeeCode { get; set; }

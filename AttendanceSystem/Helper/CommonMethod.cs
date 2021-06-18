@@ -59,7 +59,19 @@ namespace AttendanceSystem
             DateTime dateTimeAsTimeZone = TimeZoneInfo.ConvertTimeFromUtc(utcDateTime, indTimeZone); 
             return dateTimeAsTimeZone;
         }
-
+        public static DateTime CurrentIndianDateTime()
+        {
+            DateTime DT = DateTime.UtcNow;
+            TimeZoneInfo indTimeZone = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
+            DateTime dateTimeAsTimeZone = TimeZoneInfo.ConvertTimeFromUtc(DT, indTimeZone);
+            return dateTimeAsTimeZone;
+        }
+        public static DateTime ConvertFromIndianTimeZoneToUTC(DateTime dateTime)
+        {
+            TimeZoneInfo indTimeZone = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
+            DateTime utcDateTime = TimeZoneInfo.ConvertTimeToUtc(dateTime, indTimeZone);
+            return utcDateTime;
+        }
         public static DateTime ConvertToUTC(DateTime dateTime, string timeZone)
         {
             TimeZoneInfo nzTimeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZone);

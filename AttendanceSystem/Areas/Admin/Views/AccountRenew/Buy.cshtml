@@ -134,10 +134,10 @@
                                 </ul>
                             </div>
                             <div class="pricingTable-signup">
-                                @*<a target="_blank" href="/admin/login" style="background: @obj.PackageColorCode" onclick="fnBuyNowPackage('@obj.PackageId', '@obj.PackageName')">
-                                    Buy Now <i class="fas fa-arrow-right"></i>*@
+                                <a target="_blank" href="/admin/login" style="background: @obj.PackageColorCode" onclick="fnBuyNowPackage('@obj.PackageId', '@obj.PackageName')">
+                                    Buy Now <i class="fas fa-arrow-right"></i>
 
-                                    <form action="/Premium/Charge" method="POST">
+                                    @*<form action="/Premium/Charge" method="POST">
                                         <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
                                                 data-key="@ViewBag.StripePublishKey"
                                                 data-amount=@obj.Amount
@@ -148,8 +148,8 @@
                                                 data-zip-code="true"
                                                 data-currency="inr">
                                         </script>
-                                    </form>
-                                @*</a>*@
+                                    </form>*@
+                                </a>
                             </div>
                         </div>
                     </div>

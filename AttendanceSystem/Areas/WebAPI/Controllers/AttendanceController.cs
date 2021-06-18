@@ -89,6 +89,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     response.IsError = true;
                     response.AddError(ErrorMessage.MonthlyConvesrionCompletedYouCanNotAddOrModifyAttendance);
                 }
+                tbl_Employee objEmployee = _db.tbl_Employee.Where(x => x.EmployeeId == employeeId).FirstOrDefault();
 
                 #endregion Validation
                 if (!response.IsError)
@@ -97,7 +98,10 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     attendanceObject.CompanyId = companyId;
                     attendanceObject.UserId = employeeId;
                     attendanceObject.AttendanceDate = attendanceVM.AttendanceDate;
-                    attendanceObject.DayType = attendanceVM.DayType;
+                    if (objEmployee.EmploymentCategory == (int)EmploymentCategory.MonthlyBased || objEmployee.EmploymentCategory == (int)EmploymentCategory.DailyBased)
+                    {
+                        attendanceObject.DayType = attendanceVM.DayType;
+                    }
                     attendanceObject.ExtraHours = attendanceVM.ExtraHours;
                     attendanceObject.TodayWorkDetail = attendanceVM.TodayWorkDetail;
                     attendanceObject.TomorrowWorkDetail = attendanceVM.TomorrowWorkDetail;
@@ -484,12 +488,12 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 #endregion Validation
                 if (!response.IsError)
                 {
-                    tbl_Employee employee = _db.tbl_Employee.FirstOrDefault(x => x.EmployeeId == employeeId);
+                    tbl_Employee employee = _db.tbl_Employee.Where(x => x.EmployeeId == employeeId).FirstOrDefault();
                     tbl_Attendance attendanceObject = new tbl_Attendance();
                     attendanceObject.CompanyId = companyId;
                     attendanceObject.UserId = employeeId;
                     attendanceObject.AttendanceDate = DateTime.UtcNow.Date;
-                    attendanceObject.DayType = 1;
+                   
                     attendanceObject.LocationFrom = inTimeRequestVM.InLocationFrom;
                     attendanceObject.Status = (int)AttendanceStatus.Login;
                     attendanceObject.IsActive = true;

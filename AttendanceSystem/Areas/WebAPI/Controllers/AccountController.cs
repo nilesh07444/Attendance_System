@@ -239,15 +239,15 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                     tbl_LoginHistory objLoginHistory = new tbl_LoginHistory();
                     objLoginHistory.EmployeeId = data.EmployeeId;
-                    objLoginHistory.LoginDate = DateTime.UtcNow;
+                    objLoginHistory.LoginDate = CommonMethod.CurrentIndianDateTime();
                     objLoginHistory.LocationFrom = authenticateRequestVM.LocationFrom;
                     objLoginHistory.SiteId = data.CompanyId;
                     objLoginHistory.Latitude = authenticateRequestVM.Latitude;
                     objLoginHistory.Longitude = authenticateRequestVM.Longitude;
                     objLoginHistory.CreatedBy = data.EmployeeId;
-                    objLoginHistory.CreatedDate = DateTime.UtcNow;
+                    objLoginHistory.CreatedDate = CommonMethod.CurrentIndianDateTime();
                     objLoginHistory.ModifiedBy = data.EmployeeId;
-                    objLoginHistory.ModifiedDate = DateTime.UtcNow;
+                    objLoginHistory.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     _db.tbl_LoginHistory.Add(objLoginHistory);
                     _db.SaveChanges();
                 }
