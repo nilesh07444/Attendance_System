@@ -24,7 +24,8 @@
                                         <th>SMS Package Name </th>
                                         <th>Renew Date</th>
                                         <th>Access Days</th>
-                                        <th>Package Expiry Date</th> 
+                                        <th>Package Expiry Date</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -33,13 +34,16 @@
                                     {
                                         foreach (CompanySMSPackRenewVM obj in Model)
                                         {
-                                            <tr class="gradeX">
-                                                <td>@counter.</td>
-                                                <td>@obj.SMSPackageName</td>
-                                                <td>@obj.RenewDate.ToString("dd MMM yyyy")</td>
-                                                <td>@obj.AccessDays</td>
-                                                <td>@obj.PackageExpiryDate.ToString("dd MMM yyyy")</td>
-                                            </tr>
+                                    <tr class="gradeX">
+                                        <td>@counter.</td>
+                                        <td>@obj.SMSPackageName</td>
+                                        <td>@obj.RenewDate.ToString("dd MMM yyyy")</td>
+                                        <td>@obj.AccessDays</td>
+                                        <td>@obj.PackageExpiryDate.ToString("dd MMM yyyy")</td>
+                                        <td>
+                                            <a href="/admin/smsrenew/view/@obj.CompanySMSPackRenewId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
+                                        </td>
+                                    </tr>
                                             counter++;
                                         }
                                     }

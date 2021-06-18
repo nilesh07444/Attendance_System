@@ -93,16 +93,16 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objCompanySMSPackRenew.CompanyId = clsAdminSession.CompanyId;
                         objCompanySMSPackRenew.SMSPackageId = objPackage.SMSPackageId;
                         objCompanySMSPackRenew.SMSPackageName = objPackage.PackageName;
-                        objCompanySMSPackRenew.RenewDate = DateTime.Now;
+                        objCompanySMSPackRenew.RenewDate = DateTime.UtcNow;
                         objCompanySMSPackRenew.PackageAmount = objPackage.PackageAmount;
                         objCompanySMSPackRenew.AccessDays = objPackage.AccessDays;
-                        objCompanySMSPackRenew.PackageExpiryDate = DateTime.Now.AddDays(objPackage.AccessDays);
+                        objCompanySMSPackRenew.PackageExpiryDate = DateTime.UtcNow.AddDays(objPackage.AccessDays);
                         objCompanySMSPackRenew.NoOfSMS = objPackage.NoOfSMS;
                         objCompanySMSPackRenew.RemainingSMS = objPackage.NoOfSMS;
                         objCompanySMSPackRenew.CreatedBy = clsAdminSession.UserID;
-                        objCompanySMSPackRenew.CreatedDate = DateTime.Now;
+                        objCompanySMSPackRenew.CreatedDate = DateTime.UtcNow;
                         objCompanySMSPackRenew.ModifiedBy = clsAdminSession.UserID;
-                        objCompanySMSPackRenew.ModifiedDate = DateTime.Now;
+                        objCompanySMSPackRenew.ModifiedDate = DateTime.UtcNow;
                         _db.tbl_CompanySMSPackRenew.Add(objCompanySMSPackRenew);
                         _db.SaveChanges();
 
@@ -123,6 +123,36 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             }
 
             return Json(new { IsSuccess = isSuccess, Message = message }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult View(long id)
+        {
+            CompanySMSPackRenewVM companySMSPackRenewVM = new CompanySMSPackRenewVM();
+            try
+            {
+                long companyId = clsAdminSession.CompanyId;
+                companySMSPackRenewVM = (from cp in _db.tbl_CompanySMSPackRenew
+                                         where cp.CompanyId == companyId
+                                         select new CompanySMSPackRenewVM
+                                         {
+                                             CompanySMSPackRenewId = cp.CompanySMSPackRenewId,
+                                             CompanyId = cp.CompanyId,
+                                             SMSPackageId = cp.SMSPackageId,
+                                             SMSPackageName = cp.SMSPackageName,
+                                             RenewDate = cp.RenewDate,
+                                             AccessDays = cp.AccessDays,
+                                             PackageExpiryDate = cp.PackageExpiryDate,
+                                             PackageAmount = cp.PackageAmount,
+                                             NoOfSMS = cp.NoOfSMS,
+                                             RemainingSMS = cp.RemainingSMS
+                                         }).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                string ErrorMessage = ex.Message.ToString();
+                throw ex;
+            }
+            return View(companySMSPackRenewVM);
         }
     }
 }

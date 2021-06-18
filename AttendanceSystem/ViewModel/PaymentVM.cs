@@ -10,6 +10,7 @@ namespace AttendanceSystem.ViewModel
         public PaymentVM()
         {
             PaymentDate = DateTime.Now;
+            PendingSalary = 0;
         }
         public long EmployeePaymentId { get; set; }
         [Required, Display(Name = "Payment Date")]
@@ -30,6 +31,8 @@ namespace AttendanceSystem.ViewModel
         public string Remarks { get; set; }
         public string OTP { get; set; }
         public string EmployeeCode { get; set; }
+        [Display(Name = "Pending Salary")]
+        public decimal PendingSalary { get; set; }
     }
 
     public class PaymentFilterVM

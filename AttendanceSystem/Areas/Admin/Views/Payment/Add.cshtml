@@ -36,6 +36,16 @@
                         </div>
                         <div class="row">
                             <div class="form-group col-6">
+                                @Html.LabelFor(model => model.PendingSalary, htmlAttributes: new { @class = "" }) :
+                                @Html.Label(Model.PendingSalary.ToString(), new { @id = "lblPendingSalary" })
+                                @Html.HiddenFor(model => model.PendingSalary)
+                            </div>
+                            <div class="form-group col-6">
+                                <a id="MoreDetail" class="btn btn-secondary">Click here for more detail</a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-6">
                                 @Html.LabelFor(model => model.PaymentDate, htmlAttributes: new { @class = "" })
                                 @Html.TextBoxFor(model => model.PaymentDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Enter Payment Date" })
                                 @Html.ValidationMessageFor(model => model.PaymentDate, "", new { @class = "text-danger" })
@@ -99,6 +109,16 @@
 <script type="text/javascript">
     $(document).ready(function () {
 
+        $('#MoreDetail').click(function () {
+            var employeeId = $("#UserId").val();
+            if (employeeId == "") {
+                alert("Please select employee");
+                return false;
+            }
+
+            window.location.href = "/admin/payment";
+        });
+
         $('#btnCancel').click(function () {
             window.location.href = "/admin/payment";
         });
@@ -142,7 +162,7 @@
             else {
                 return false;
             }
-            
+
         });
 
         $('#BtnOtpSubmit').click(function () {
@@ -155,6 +175,41 @@
                 alert("Wrong OTP you have entered.")
                 return false;
             }
+        });
+
+        $('#UserId').change(function () {
+            if (parseFloat($("#UserId").val()) > 0) {
+
+                var employeeId = $("#UserId").val();
+
+                var StrURL = '/admin/Payment/GetEmployeePendingSalary?employeeId=' + employeeId;
+                $.ajax({
+                    url: StrURL,
+                    cache: false,
+                    data: {},
+                    type: 'POST',
+                    success: function (data) {
+                        $.unblockUI();
+                        if (data.Status == 1) {
+                            $("#lblPendingSalary").html(data.PendingSalary);
+                            $("#PendingSalary").val(data.PendingSalary);
+                        }
+                        else {
+                            alert(data.ErrorMessage);
+                        }
+
+                    },
+                    error: function (req, status, error) {
+                        $.unblockUI();
+                        alert(error);
+                    }
+                });
+
+                return false;
+            }
+            $.blockUI({ message: '<h4> Please Wait...</h4>' });
+
+
         });
     })
 </script>

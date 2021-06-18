@@ -34,6 +34,8 @@ namespace AttendanceSystem.ViewModel
         public long TotalClientRegistration { get; set; }
         public long TotalClientForConstruction { get; set; }
         public long TotalClientForOffice { get; set; }
+        public long CurrentPackageId { get; set; }
+        public long CurrentSMSPackageId { get; set; }
 
     }
 }

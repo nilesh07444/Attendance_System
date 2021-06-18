@@ -52,6 +52,7 @@ namespace AttendanceSystem.ViewModel
         public int NoOfUnitWorked { get; set; }
 
         public string EmployeeCode { get; set; }
+        public decimal PerCategoryPrice { get; set; }
     }
 
     public class AttendanceFilterVM

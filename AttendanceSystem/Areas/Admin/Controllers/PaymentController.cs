@@ -352,5 +352,33 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             paymentFilterVM.UserRoleList = GetUserRoleList();
             return View(paymentFilterVM);
         }
+
+        public JsonResult GetEmployeePendingSalary(long employeeId)
+        {
+            int status = 0;
+            string errorMessage = string.Empty;
+            decimal? pendingSalary = 0;
+            try
+            {
+                tbl_Employee objEmployee = _db.tbl_Employee.Where(x => x.EmployeeId == employeeId).FirstOrDefault();
+
+                if (objEmployee.AdminRoleId == (int)AdminRoles.Worker)
+                {
+                    pendingSalary = _db.tbl_WorkerPayment.Any(x => x.UserId == employeeId) ? _db.tbl_WorkerPayment.Where(x => x.UserId == employeeId).Select(x => x.CreditAmount - x.DebitAmount).Sum() : 0;
+                }
+                else
+                {
+                    pendingSalary = _db.tbl_EmployeePayment.Any(x => x.UserId == employeeId) ? _db.tbl_EmployeePayment.Where(x => x.UserId == employeeId).Select(x => x.CreditAmount - x.DebitAmount).Sum() : 0;
+                }
+                status = 1;
+            }
+            catch (Exception ex)
+            {
+                status = 0;
+                errorMessage = ex.Message.ToString();
+            }
+
+            return Json(new { Status = status, PendingSalary = pendingSalary, ErrorMessage = errorMessage}, JsonRequestBehavior.AllowGet);
+        }
     }
 }

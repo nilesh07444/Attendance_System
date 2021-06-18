@@ -231,7 +231,9 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                  OutLatitude = at.OutLatitude,
                                                  OutLongitude = at.OutLongitude,
                                                  NoOfHoursWorked = at.NoOfHoursWorked.HasValue ? at.NoOfHoursWorked.Value : 0,
-                                                 NoOfUnitWorked = at.NoOfUnitWorked.HasValue ? at.NoOfUnitWorked.Value : 0
+                                                 NoOfUnitWorked = at.NoOfUnitWorked.HasValue ? at.NoOfUnitWorked.Value : 0,
+                                                 PerCategoryPrice = emp.PerCategoryPrice,
+                                                 EmployeeCode = emp.EmployeeCode
                                              }).FirstOrDefault();
                 leaveDetails.StatusText = CommonMethod.GetEnumDescription((AttendanceStatus)leaveDetails.Status);
                 leaveDetails.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)leaveDetails.EmploymentCategory);
