@@ -44,17 +44,17 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     response.AddError(ErrorMessage.AttendanceDayTypeNotValid);
                 }
 
-                if (string.IsNullOrEmpty(attendanceVM.TodayWorkDetail))
-                {
-                    response.IsError = true;
-                    response.AddError(ErrorMessage.TodayWorkDetailRequired);
-                }
+                //if (string.IsNullOrEmpty(attendanceVM.TodayWorkDetail))
+                //{
+                //    response.IsError = true;
+                //    response.AddError(ErrorMessage.TodayWorkDetailRequired);
+                //}
 
-                if (string.IsNullOrEmpty(attendanceVM.TomorrowWorkDetail))
-                {
-                    response.IsError = true;
-                    response.AddError(ErrorMessage.TomorrowWorkDetailRequired);
-                }
+                //if (string.IsNullOrEmpty(attendanceVM.TomorrowWorkDetail))
+                //{
+                //    response.IsError = true;
+                //    response.AddError(ErrorMessage.TomorrowWorkDetailRequired);
+                //}
 
                 DateTime date;
                 bool isValidTIme = DateTime.TryParse(attendanceVM.InDateTime.ToString(), out date);
@@ -274,17 +274,17 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     response.AddError(ErrorMessage.AttendanceIdIsNotValid);
                 }
 
-                if (string.IsNullOrEmpty(attendanceVM.TodayWorkDetail))
-                {
-                    response.IsError = true;
-                    response.AddError(ErrorMessage.TodayWorkDetailRequired);
-                }
+                //if (string.IsNullOrEmpty(attendanceVM.TodayWorkDetail))
+                //{
+                //    response.IsError = true;
+                //    response.AddError(ErrorMessage.TodayWorkDetailRequired);
+                //}
 
-                if (string.IsNullOrEmpty(attendanceVM.TomorrowWorkDetail))
-                {
-                    response.IsError = true;
-                    response.AddError(ErrorMessage.TomorrowWorkDetailRequired);
-                }
+                //if (string.IsNullOrEmpty(attendanceVM.TomorrowWorkDetail))
+                //{
+                //    response.IsError = true;
+                //    response.AddError(ErrorMessage.TomorrowWorkDetailRequired);
+                //}
 
                 tbl_Employee employeeObj = _db.tbl_Employee.FirstOrDefault(x => x.EmployeeId == employeeId);
                 if (employeeObj.EmploymentCategory == (int)EmploymentCategory.MonthlyBased || employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased)

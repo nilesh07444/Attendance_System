@@ -128,6 +128,11 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                             }
                             response.Data = loginResponseVM;
                         }
+                        else
+                        {
+                            response.IsError = true;
+                            response.AddError(ErrorMessage.CompanyDoesNotExist);
+                        }
 
                     }
                     else

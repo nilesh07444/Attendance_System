@@ -4,7 +4,6 @@ using System;
 using System.Configuration;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Web;
 using System.Web.Mvc;
 using static AttendanceSystem.ViewModel.AccountModels;
 
@@ -42,38 +41,64 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 string encryptedPassword = CommonMethod.Encrypt(password, psSult);
                 var data = _db.tbl_AdminUser.Where(x => x.UserName == userName && x.Password == encryptedPassword).FirstOrDefault();
 
-                if (data != null)
+                if (data.AdminUserRoleId != (int)AdminRoles.SuperAdmin && data.CompanyId > 0)
                 {
-                    if (data.AdminUserRoleId == (int)AdminRoles.SuperAdmin || data.AdminUserRoleId == (int)AdminRoles.CompanyAdmin)
+                    tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == data.CompanyId).FirstOrDefault();
+                    if (objCompany != null)
                     {
-                        Random random = new Random();
-                        int num = random.Next(555555, 999999);
-                        if (enviornment != "Development")
+                        if (!objCompany.IsActive)
                         {
-                            string msg = string.Empty;
+                            status = 0;
+                            errorMessage = ErrorMessage.CompanyIsNotActive;
+                        }
+                    }
+                    else
+                    {
+                        status = 0;
+                        errorMessage = ErrorMessage.CompanyDoesNotExist;
+                    }
+                }
 
-                            if (data.AdminUserRoleId == (int)AdminRoles.SuperAdmin)
+                if (string.IsNullOrEmpty(errorMessage))
+                {
+                    if (data != null)
+                    {
+                        if (data.AdminUserRoleId == (int)AdminRoles.SuperAdmin || data.AdminUserRoleId == (int)AdminRoles.CompanyAdmin)
+                        {
+                            Random random = new Random();
+                            int num = random.Next(555555, 999999);
+                            if (enviornment != "Development")
                             {
-                                int SmsId = (int)SMSType.SuperAdminLoginOTP;
-                                msg = CommonMethod.GetSmsContent(SmsId);
+                                string msg = string.Empty;
 
-                                Regex regReplace = new Regex("{#var#}");
-                                msg = regReplace.Replace(msg, data.FirstName + " " + data.LastName, 1);
-                                msg = regReplace.Replace(msg, num.ToString(), 1);
-                            }
-                            else
-                            {
-                                int SmsId = (int)SMSType.CompanyAdminLoginOTP;
-                                msg = CommonMethod.GetSmsContent(SmsId);
+                                if (data.AdminUserRoleId == (int)AdminRoles.SuperAdmin)
+                                {
+                                    int SmsId = (int)SMSType.SuperAdminLoginOTP;
+                                    msg = CommonMethod.GetSmsContent(SmsId);
 
-                                msg = msg.Replace("{#var#}", num.ToString());
-                            }
-                            msg = msg.Replace("\r\n", "\n");
-                            var json = CommonMethod.SendSMSWithoutLog(msg, data.MobileNo);
-                            if (json.Contains("invalidnumber"))
-                            {
-                                status = 0;
-                                errorMessage = ErrorMessage.InvalidMobileNo;
+                                    Regex regReplace = new Regex("{#var#}");
+                                    msg = regReplace.Replace(msg, data.FirstName + " " + data.LastName, 1);
+                                    msg = regReplace.Replace(msg, num.ToString(), 1);
+                                }
+                                else
+                                {
+                                    int SmsId = (int)SMSType.CompanyAdminLoginOTP;
+                                    msg = CommonMethod.GetSmsContent(SmsId);
+
+                                    msg = msg.Replace("{#var#}", num.ToString());
+                                }
+                                msg = msg.Replace("\r\n", "\n");
+                                var json = CommonMethod.SendSMSWithoutLog(msg, data.MobileNo);
+                                if (json.Contains("invalidnumber"))
+                                {
+                                    status = 0;
+                                    errorMessage = ErrorMessage.InvalidMobileNo;
+                                }
+                                else
+                                {
+                                    status = 1;
+                                    otp = num.ToString();
+                                }
                             }
                             else
                             {
@@ -83,20 +108,15 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         }
                         else
                         {
-                            status = 1;
-                            otp = num.ToString();
+                            status = 0;
+                            errorMessage = ErrorMessage.UserNameOrPasswordInvalid;
                         }
                     }
                     else
                     {
                         status = 0;
-                        errorMessage = ErrorMessage.UserNameOrPasswordInvalid;
+                        errorMessage = ErrorMessage.InvalidCredentials;
                     }
-                }
-                else
-                {
-                    status = 0;
-                    errorMessage = ErrorMessage.InvalidCredentials;
                 }
             }
             catch (Exception ex)

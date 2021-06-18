@@ -365,11 +365,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                 if (objEmployee.AdminRoleId == (int)AdminRoles.Worker)
                 {
-                    pendingSalary = _db.tbl_WorkerPayment.Any(x => x.UserId == employeeId) ? _db.tbl_WorkerPayment.Where(x => x.UserId == employeeId).Select(x => (x.CreditAmount.HasValue ? x.CreditAmount.Value : 0) - (x.DebitAmount.HasValue ? x.DebitAmount.Value : 0)).Sum() : 0;
+                    pendingSalary = _db.tbl_WorkerPayment.Any(x => x.UserId == employeeId && x.PaymentType == (int)EmployeePaymentType.Salary) ? _db.tbl_WorkerPayment.Where(x => x.UserId == employeeId).Select(x => (x.CreditAmount.HasValue ? x.CreditAmount.Value : 0) - (x.DebitAmount.HasValue ? x.DebitAmount.Value : 0)).Sum() : 0;
                 }
                 else
                 {
-                    pendingSalary = _db.tbl_EmployeePayment.Any(x => x.UserId == employeeId) ? _db.tbl_EmployeePayment.Where(x => x.UserId == employeeId).Select(x => (x.CreditAmount.HasValue ? x.CreditAmount.Value : 0) - (x.DebitAmount.HasValue ? x.DebitAmount.Value : 0)).Sum() : 0;
+                    pendingSalary = _db.tbl_EmployeePayment.Any(x => x.UserId == employeeId && x.PaymentType == (int)EmployeePaymentType.Salary) ? _db.tbl_EmployeePayment.Where(x => x.UserId == employeeId).Select(x => (x.CreditAmount.HasValue ? x.CreditAmount.Value : 0) - (x.DebitAmount.HasValue ? x.DebitAmount.Value : 0)).Sum() : 0;
                 }
                 status = 1;
             }
