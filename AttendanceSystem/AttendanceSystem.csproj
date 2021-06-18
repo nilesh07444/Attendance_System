@@ -182,6 +182,7 @@
     <Compile Include="Areas\Admin\Controllers\ContactFormController.cs" />
     <Compile Include="Areas\Admin\Controllers\EmployeeBuyTransactionController.cs" />
     <Compile Include="Areas\Admin\Controllers\PaymentGatewayController.cs" />
+    <Compile Include="Areas\Admin\Controllers\WorkerAttendanceController.cs" />
     <Compile Include="Areas\Admin\Controllers\WorkerTypeController.cs" />
     <Compile Include="Areas\Admin\Controllers\SMSContentController.cs" />
     <Compile Include="Areas\Admin\Controllers\WorkerController.cs" />
@@ -1568,6 +1569,7 @@
     <Content Include="Areas\Admin\Views\ContactForm\View.cshtml" />
     <Content Include="Areas\Admin\Views\AccountRenew\View.cshtml" />
     <Content Include="Areas\Admin\Views\SMSRenew\View.cshtml" />
+    <Content Include="Areas\Admin\Views\WorkerAttendance\Index.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />

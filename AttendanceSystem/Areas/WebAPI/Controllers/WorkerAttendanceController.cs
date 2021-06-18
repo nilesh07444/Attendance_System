@@ -307,6 +307,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                                AttendanceId = at.WorkerAttendanceId,
                                                                CompanyId = emp.CompanyId,
                                                                EmployeeId = emp.EmployeeId,
+                                                               EmployeeCode = emp.EmployeeCode,
                                                                Name = emp.FirstName + " " + emp.LastName,
                                                                AttendanceDate = at.AttendanceDate,
                                                                EmploymentCategory = emp.EmploymentCategory,

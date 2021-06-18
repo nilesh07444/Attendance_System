@@ -138,6 +138,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployeePayment.PaymentDate = paymentVM.PaymentDate;
                         objEmployeePayment.CreditOrDebitText = "Debit";
                         objEmployeePayment.DebitAmount = paymentVM.DebitAmount;
+                        objEmployeePayment.CreditAmount = 0;
                         objEmployeePayment.PaymentType = paymentVM.PaymentType;
                         objEmployeePayment.Remarks = paymentVM.Remarks;
                         objEmployeePayment.CreatedBy = LoggedInUserId;
@@ -364,11 +365,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                 if (objEmployee.AdminRoleId == (int)AdminRoles.Worker)
                 {
-                    pendingSalary = _db.tbl_WorkerPayment.Any(x => x.UserId == employeeId) ? _db.tbl_WorkerPayment.Where(x => x.UserId == employeeId).Select(x => x.CreditAmount - x.DebitAmount).Sum() : 0;
+                    pendingSalary = _db.tbl_WorkerPayment.Any(x => x.UserId == employeeId) ? _db.tbl_WorkerPayment.Where(x => x.UserId == employeeId).Select(x => (x.CreditAmount.HasValue ? x.CreditAmount.Value : 0) - (x.DebitAmount.HasValue ? x.DebitAmount.Value : 0)).Sum() : 0;
                 }
                 else
                 {
-                    pendingSalary = _db.tbl_EmployeePayment.Any(x => x.UserId == employeeId) ? _db.tbl_EmployeePayment.Where(x => x.UserId == employeeId).Select(x => x.CreditAmount - x.DebitAmount).Sum() : 0;
+                    pendingSalary = _db.tbl_EmployeePayment.Any(x => x.UserId == employeeId) ? _db.tbl_EmployeePayment.Where(x => x.UserId == employeeId).Select(x => (x.CreditAmount.HasValue ? x.CreditAmount.Value : 0) - (x.DebitAmount.HasValue ? x.DebitAmount.Value : 0)).Sum() : 0;
                 }
                 status = 1;
             }
@@ -378,7 +379,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 errorMessage = ex.Message.ToString();
             }
 
-            return Json(new { Status = status, PendingSalary = pendingSalary, ErrorMessage = errorMessage}, JsonRequestBehavior.AllowGet);
+            return Json(new { Status = status, PendingSalary = pendingSalary, ErrorMessage = errorMessage }, JsonRequestBehavior.AllowGet);
         }
     }
 }

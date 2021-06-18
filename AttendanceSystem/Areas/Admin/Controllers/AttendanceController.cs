@@ -56,7 +56,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                                                      && ((attendanceFilterVM.StartMonth > 0 && attendanceFilterVM.EndMonth > 0) ? (at.AttendanceDate.Month >= attendanceFilterVM.StartMonth && at.AttendanceDate.Month <= attendanceFilterVM.EndMonth) : true)
                                                      && at.AttendanceDate.Year == attendanceFilterVM.Year
-                                                     && (attendanceFilterVM.AttendanceStatus.HasValue ? at.Status == attendanceFilterVM.AttendanceStatus.Value : true)
+                                                     && (attendanceFilterVM.AttendanceStatus.HasValue && attendanceFilterVM.AttendanceStatus.Value > 0 ? at.Status == attendanceFilterVM.AttendanceStatus.Value : true)
                                                      && (attendanceFilterVM.UserId.HasValue ? emp.EmployeeId == attendanceFilterVM.UserId.Value : true)
                                                      select new AttendanceVM
                                                      {

@@ -149,7 +149,7 @@
                                     <li><a class="nav-link" href="/admin/smscontent">SMS Content</a></li>
                                 </ul>
                             </li>
-                              
+
                             <li class="dropdown @(ViewBag.Title == "Feedback" ? "active" : "")">
                                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="file-minus"></i><span>Feedback</span></a>
                                 <ul class="dropdown-menu">
@@ -237,6 +237,14 @@
                             </li>
                             if (clsAdminSession.CompanyTypeId == (int)CompanyType.ConstructionCompany)
                             {
+                                <li class="dropdown @(ViewBag.Title == "WorkerAttendance" ? "active" : "")">
+                                    <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="command"></i><span>Worker Attendance</span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="nav-link" href="/admin/workerattendance/add/0">Add Attendance</a></li>
+                                        <li><a class="nav-link" href="/admin/workerattendance">Attendance List</a></li>
+                                    </ul>
+                                </li>
+
                                 <li class="dropdown @(ViewBag.Title == "Site" ? "active" : "")">
                                     <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="clock"></i><span>Site</span></a>
                                     <ul class="dropdown-menu">
@@ -297,7 +305,7 @@
                                     <li><a class="nav-link" href="/admin/employeebuytransaction">Buy Employee List</a></li>
                                 </ul>
                             </li>
-                             
+
                             <li class="dropdown @(ViewBag.Title == "Feedback" ? "active" : "")">
                                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="file-minus"></i><span>Feedback</span></a>
                                 <ul class="dropdown-menu">
@@ -368,7 +376,7 @@
         function StopLoading() {
             $.unblockUI();
         }
-         
+
     </script>
 
 </body>

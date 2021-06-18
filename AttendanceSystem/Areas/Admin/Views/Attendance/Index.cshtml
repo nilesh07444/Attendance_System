@@ -9,6 +9,7 @@
     lstAttendanceStatus.Add(new SelectListItem { Value = "1", Text = "Pending" });
     lstAttendanceStatus.Add(new SelectListItem { Value = "2", Text = "Accept" });
     lstAttendanceStatus.Add(new SelectListItem { Value = "3", Text = "Reject" });
+    lstAttendanceStatus.Add(new SelectListItem { Value = "4", Text = "Login" });
 
 }
 
@@ -179,6 +180,9 @@
             var attendanceStatus = $("#AttendanceStatus").val();
             var userId = $("#UserId").val();
             StartLoading();
+            if (attendanceStatus == "") {
+                attendanceStatus = "0";
+            }
             window.location.href = "/admin/attendance/Index?userId=" + userId + "&attendanceStatus=" + attendanceStatus + "&startMonth=" + startMonth + "&endMonth=" + endMonth + "&year=" + year;
         });
 

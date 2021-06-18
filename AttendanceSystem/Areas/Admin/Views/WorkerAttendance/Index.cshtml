@@ -1,0 +1,119 @@
+﻿@using AttendanceSystem.Helper
+@using AttendanceSystem.ViewModel;
+@model AttendanceSystem.ViewModel.WorkerAttendanceFilterVM
+@{
+    ViewBag.Title = "WorkerAttendance";
+    int counter = 1;
+
+}
+
+
+<section class="section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Attendance List</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label>Attendance Date</label>
+                                    @Html.TextBoxFor(model => model.AttendanceDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control", @placeholder = "Attendance Date" })
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label>Site</label>
+                                    @Html.DropDownListFor(model => model.SiteId, new SelectList(Model.SiteList, "Value", "Text"), "- All -", new { @class = "form-control col-md-8", style = "" })
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label>Worker</label>
+                                    @Html.DropDownListFor(model => model.EmployeeId, new SelectList(Model.EmployeeList, "Value", "Text"), "- All -", new { @class = "form-control col-md-8", style = "" })
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label style="padding-top:45px"></label>
+                                    <button class="btn btn-primary mr-1" id="btnSearch" type="button">Search</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover" id="tableExport1" style="width:100%;">
+                                <thead>
+                                    <tr>
+                                        <td>#</td>
+                                        <th>Worker Name</th>
+                                        <th>Worker Code</th>
+                                        <th>Attendance Date</th>
+                                        <th>Morning</th>
+                                        <th>Afternoon</th>
+                                        <th>Evening</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null && Model.AttendanceList.Count > 0)
+                                    {
+                                        foreach (WorkerAttendanceVM obj in Model.AttendanceList)
+                                        {
+                                            <tr>
+                                                <td>@counter.</td>
+                                                <td>@obj.Name</td>
+                                                <td>@obj.EmployeeCode</td>
+                                                <td>@obj.AttendanceDate.ToString("dd MMM yyyy")</td>
+                                                <td>@obj.IsMorning</td>
+                                                <td>@obj.IsAfternoon</td>
+                                                <td>@obj.IsEvening</td>
+                                            </tr>
+
+                                            counter++;
+                                        }
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#tableExport1').DataTable({
+            dom: 'Bfrtip',
+            "columnDefs": [
+                { "sortable": false, "targets": [0, 1] }
+            ],
+            buttons: [
+                'excel' //'copy', 'csv', , 'pdf', 'print'
+            ]
+        });
+
+        $('#btnSearch').click(function () {
+            if ($("#AttendanceDate").val() == "") {
+                alert("Please fill Attendance Date");
+                return false;
+            }
+
+            var attendanceDate = $("#AttendanceDate").val();
+            var siteId = $("#SiteId").val();
+            var employeeId = $("#EmployeeId").val();
+
+            StartLoading();
+            window.location.href = "/admin/workerattendance/Index?attendanceDate=" + attendanceDate + "&siteId=" + siteId + "&employeeId=" + employeeId;
+        });
+    });
+
+</script> 

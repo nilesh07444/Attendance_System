@@ -50,7 +50,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     response.AddError(ErrorMessage.EmploymentCategoryRequired);
                 }
 
-                if (employeeVM.WorkerTypeId == 0)
+                if (!employeeVM.WorkerTypeId.HasValue || employeeVM.WorkerTypeId == 0)
                 {
                     response.IsError = true;
                     response.AddError(ErrorMessage.WorketTypeRequired);

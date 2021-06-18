@@ -118,6 +118,10 @@ namespace AttendanceSystem.ViewModel
         public DateTime AttendanceDate { get; set; }
         public int SiteId { get; set; }
         public long? EmployeeId { get; set; }
+
+        public List<WorkerAttendanceVM> AttendanceList { get; set; }
+        public List<SelectListItem> SiteList { get; set; }
+        public List<SelectListItem> EmployeeList { get; set; }
     }
 
     public class WorkerAttendanceVM
@@ -125,6 +129,7 @@ namespace AttendanceSystem.ViewModel
         public long AttendanceId { get; set; }
         public long CompanyId { get; set; }
         public long EmployeeId { get; set; }
+        public string EmployeeCode { get; set; }
         public string Name { get; set; }
         public DateTime AttendanceDate { get; set; }
         public string ProfilePicture { get; set; }

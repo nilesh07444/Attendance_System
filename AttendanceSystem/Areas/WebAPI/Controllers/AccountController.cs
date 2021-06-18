@@ -47,7 +47,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 {
                     string encryptPassword = CommonMethod.Encrypt(loginRequestVM.PassWord, psSult);
 
-                    var data = _db.tbl_Employee.Where(x => x.EmployeeCode == loginRequestVM.UserName && x.Password == encryptPassword && x.IsActive && !x.IsDeleted).FirstOrDefault();
+                    var data = _db.tbl_Employee.Where(x => x.AdminRoleId != (int)AdminRoles.Worker && x.EmployeeCode == loginRequestVM.UserName && x.Password == encryptPassword && x.IsActive && !x.IsDeleted).FirstOrDefault();
 
                     if (data != null)
                     {
@@ -490,7 +490,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             return response;
         }
 
-       
+
 
     }
 }
