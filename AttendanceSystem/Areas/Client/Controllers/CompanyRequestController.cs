@@ -7,6 +7,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -354,6 +355,8 @@ namespace AttendanceSystem.Areas.Client.Controllers
 
                     int SmsId = (int)SMSType.CompanyRequest;
                     string msg = CommonMethod.GetSmsContent(SmsId);
+                    Regex regReplace = new Regex("{#var#}");
+                    msg = regReplace.Replace(msg, companyRequestVM.CompanyAdminFirstName + " " + companyRequestVM.CompanyAdminLastName, 1); 
                     msg = msg.Replace("\r\n", "\n");
 
                     var json = CommonMethod.SendSMSWithoutLog(msg, companyRequestVM.CompanyAdminMobileNo);
