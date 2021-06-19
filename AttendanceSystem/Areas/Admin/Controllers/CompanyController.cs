@@ -359,6 +359,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             {
                 companyRenewFilterVM.CompanyRenewList = (from cp in _db.tbl_CompanyRenewPayment
                                                          join cm in _db.tbl_Company on cp.CompanyId equals cm.CompanyId
+                                                         join ct in _db.mst_CompanyType on cp.CompanyId equals ct.CompanyTypeId
                                                          where companyRenewFilterVM.StartDate.HasValue && companyRenewFilterVM.EndDate.HasValue ?
                                                          cp.StartDate >= companyRenewFilterVM.StartDate.Value && cp.EndDate <= companyRenewFilterVM.EndDate.Value : true
                                                          select new CompanyRenewPaymentVM
@@ -373,7 +374,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                              EndDate = cp.EndDate,
                                                              AccessDays = cp.AccessDays,
                                                              PackageId = cp.PackageId,
-                                                             PackageName = cp.PackageName
+                                                             PackageName = cp.PackageName,
+                                                             CompanyTypeText = ct.CompanyTypeName
                                                          }).OrderByDescending(x => x.CompanyRegistrationPaymentId).ToList();
             }
             catch (Exception ex)

@@ -33,6 +33,11 @@ namespace AttendanceSystem.ViewModel
         public int BuyNoOfEmployee { get; set; }
         [Display(Name = "Renew Date")]
         public DateTime CreatedDate { get; set; }
+
+        // Additional
+        public string CompanyTypeText { get; set; }
+
+
     }
 
     public class PackageBuyVM
