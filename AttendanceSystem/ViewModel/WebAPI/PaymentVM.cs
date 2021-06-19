@@ -19,7 +19,7 @@ namespace AttendanceSystem.ViewModel.WebAPI
     {
         public PaymentFilterVM()
         {
-            StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            StartDate = new DateTime(CommonMethod.CurrentIndianDateTime().Year, CommonMethod.CurrentIndianDateTime().Month, 1);
             EndDate = StartDate.AddMonths(1).AddDays(-1);
         }
         public DateTime StartDate { get; set; }
@@ -31,7 +31,7 @@ namespace AttendanceSystem.ViewModel.WebAPI
     {
         public WorkerPaymentFilterVM()
         {
-            StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            StartDate = new DateTime(CommonMethod.CurrentIndianDateTime().Year, CommonMethod.CurrentIndianDateTime().Month, 1);
             EndDate = StartDate.AddMonths(1).AddDays(-1);
         }
         public DateTime StartDate { get; set; }

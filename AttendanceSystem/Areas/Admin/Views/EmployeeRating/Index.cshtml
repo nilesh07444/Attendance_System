@@ -6,11 +6,11 @@
     int counter = 1;
 
     List<SelectListItem> lstRateYear = new List<SelectListItem>();
-    lstRateYear.Add(new SelectListItem { Value = DateTime.Now.Year.ToString(), Text = DateTime.Now.Year.ToString() });
-    lstRateYear.Add(new SelectListItem { Value = (DateTime.Now.Year - 1).ToString(), Text = (DateTime.Now.Year - 1).ToString() });
-    lstRateYear.Add(new SelectListItem { Value = (DateTime.Now.Year - 2).ToString(), Text = (DateTime.Now.Year - 2).ToString() });
-    lstRateYear.Add(new SelectListItem { Value = (DateTime.Now.Year - 3).ToString(), Text = (DateTime.Now.Year - 3).ToString() });
-    lstRateYear.Add(new SelectListItem { Value = (DateTime.Now.Year - 4).ToString(), Text = (DateTime.Now.Year - 4).ToString() });
+    lstRateYear.Add(new SelectListItem { Value = CommonMethod.CurrentIndianDateTime().Year.ToString(), Text = CommonMethod.CurrentIndianDateTime().Year.ToString() });
+    lstRateYear.Add(new SelectListItem { Value = (CommonMethod.CurrentIndianDateTime().Year - 1).ToString(), Text = (CommonMethod.CurrentIndianDateTime().Year - 1).ToString() });
+    lstRateYear.Add(new SelectListItem { Value = (CommonMethod.CurrentIndianDateTime().Year - 2).ToString(), Text = (CommonMethod.CurrentIndianDateTime().Year - 2).ToString() });
+    lstRateYear.Add(new SelectListItem { Value = (CommonMethod.CurrentIndianDateTime().Year - 3).ToString(), Text = (CommonMethod.CurrentIndianDateTime().Year - 3).ToString() });
+    lstRateYear.Add(new SelectListItem { Value = (CommonMethod.CurrentIndianDateTime().Year - 4).ToString(), Text = (CommonMethod.CurrentIndianDateTime().Year - 4).ToString() });
 }
 
 
@@ -98,7 +98,7 @@
                                                 <td>@obj.RegularityRate</td>
                                                 <td>@obj.WorkRate</td>
                                                 <td>
-                                                    @if ((DateTime.Now - obj.CreatedDate).TotalDays <= 7)
+                                                    @if ((CommonMethod.CurrentIndianDateTime() - obj.CreatedDate).TotalDays <= 7)
                                                     {
                                                         <a href="/admin/employeerating/add/@obj.EmployeeRatingId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
                                                         <a href="javascript:void(0);" title="Delete" class="btn btn-icon btn-danger" onclick="fnDeleteEmployeeRating('@obj.EmployeeRatingId')"><i class="fas fa-trash-alt"></i></a>

@@ -128,9 +128,9 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     objMaterial.Remarks = materialVM.Remarks;
                     objMaterial.IsActive = true;
                     objMaterial.CreatedBy = employeeId;
-                    objMaterial.CreatedDate = DateTime.UtcNow;
+                    objMaterial.CreatedDate = CommonMethod.CurrentIndianDateTime();
                     objMaterial.ModifiedBy = employeeId;
-                    objMaterial.ModifiedDate = DateTime.UtcNow;
+                    objMaterial.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     _db.tbl_Material.Add(objMaterial);
                     _db.SaveChanges();
                     response.Data = true;

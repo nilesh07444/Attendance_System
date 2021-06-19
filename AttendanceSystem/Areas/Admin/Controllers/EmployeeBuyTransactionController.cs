@@ -85,9 +85,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     employeeBuyTransaction.AmountPerEmp = employeeBuyTransactionVM.AmountPerEmp;
                     employeeBuyTransaction.TotalPaidAmount = employeeBuyTransactionVM.TotalPaidAmount;
                     employeeBuyTransaction.ExpiryDate = companyPackage.EndDate;
-                    employeeBuyTransaction.CreatedDate = DateTime.UtcNow;
+                    employeeBuyTransaction.CreatedDate = CommonMethod.CurrentIndianDateTime();
                     employeeBuyTransaction.CreatedBy = loggedInUserId;
-                    employeeBuyTransaction.ModifiedDate = DateTime.UtcNow;
+                    employeeBuyTransaction.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     employeeBuyTransaction.ModifiedBy = loggedInUserId;
                     _db.tbl_EmployeeBuyTransaction.Add(employeeBuyTransaction);
                     _db.SaveChanges();

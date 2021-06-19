@@ -295,7 +295,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
                     #region Create Company Request
 
 
-                    //DateTime dob_date = DateTime.Now;
+                    //DateTime dob_date = CommonMethod.CurrentIndianDateTime();
                     DateTime dob_date =Convert.ToDateTime(companyRequestVM.CompanyAdminDOB.ToString());
 
                     tbl_CompanyRequest objCompany = new tbl_CompanyRequest();
@@ -341,9 +341,9 @@ namespace AttendanceSystem.Areas.Client.Controllers
                     objCompany.FreeAccessDays = freeAccessDays;
                     objCompany.IsDeleted = false;
                     objCompany.CreatedBy = -1; 
-                    objCompany.CreatedDate = DateTime.UtcNow;
+                    objCompany.CreatedDate = CommonMethod.CurrentIndianDateTime();
                     objCompany.ModifiedBy = -1; 
-                    objCompany.ModifiedDate = DateTime.UtcNow;
+                    objCompany.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     _db.tbl_CompanyRequest.Add(objCompany);
 
                     _db.SaveChanges();

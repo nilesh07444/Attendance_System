@@ -141,7 +141,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                             objEmployeeRating.WorkRate = employeeRatingVM.WorkRate;
                             objEmployeeRating.Remarks = employeeRatingVM.Remarks;
                             objEmployeeRating.ModifiedBy = LoggedInUserId;
-                            objEmployeeRating.ModifiedDate = DateTime.UtcNow;
+                            objEmployeeRating.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         }
                         else
                         {
@@ -154,9 +154,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                             objEmployeeRating.WorkRate = employeeRatingVM.WorkRate;
                             objEmployeeRating.Remarks = employeeRatingVM.Remarks;
                             objEmployeeRating.CreatedBy = LoggedInUserId;
-                            objEmployeeRating.CreatedDate = DateTime.UtcNow;
+                            objEmployeeRating.CreatedDate = CommonMethod.CurrentIndianDateTime();
                             objEmployeeRating.ModifiedBy = LoggedInUserId;
-                            objEmployeeRating.ModifiedDate = DateTime.UtcNow;
+                            objEmployeeRating.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                             _db.tbl_EmployeeRating.Add(objEmployeeRating);
                         }
                         _db.SaveChanges();

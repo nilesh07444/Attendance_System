@@ -46,7 +46,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
                 objContact.MobileNo = contactDataVM.MobileNo;
                 objContact.EmailId = contactDataVM.EmailId;
                 objContact.Message = contactDataVM.Message;
-                objContact.CreatedDate = DateTime.UtcNow;
+                objContact.CreatedDate = CommonMethod.CurrentIndianDateTime();
                 _db.tbl_ContactForm.Add(objContact);
                 _db.SaveChanges();
                 response.IsError = false;  

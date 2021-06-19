@@ -214,6 +214,7 @@
     <Compile Include="Areas\Client\Controllers\CompanyRequestController.cs" />
     <Compile Include="Areas\Client\Controllers\ContactController.cs" />
     <Compile Include="Areas\Client\Controllers\FAQController.cs" />
+    <Compile Include="Areas\Client\Controllers\HowToUseController.cs" />
     <Compile Include="Areas\Client\Controllers\MainController.cs" />
     <Compile Include="Areas\Client\Controllers\PrivacyPolicyController.cs" />
     <Compile Include="Areas\Client\Controllers\ServiceController.cs" />

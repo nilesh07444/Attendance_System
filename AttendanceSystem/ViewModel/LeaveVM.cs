@@ -33,9 +33,9 @@ namespace AttendanceSystem.ViewModel
     {
         public LeaveFilterVM()
         {
-            StartMonth = DateTime.Now.Month;
-            EndMonth = DateTime.Now.Month;
-            Year = DateTime.Now.Year;
+            StartMonth = CommonMethod.CurrentIndianDateTime().Month;
+            EndMonth = CommonMethod.CurrentIndianDateTime().Month;
+            Year = CommonMethod.CurrentIndianDateTime().Year;
         }
         public int? UserRole { get; set; }
         public int StartMonth { get; set; }

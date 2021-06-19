@@ -128,7 +128,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployeePayment.PaymentType = paymentVM.PaymentType;
                         objEmployeePayment.Remarks = paymentVM.Remarks;
                         objEmployeePayment.ModifiedBy = LoggedInUserId;
-                        objEmployeePayment.ModifiedDate = DateTime.UtcNow;
+                        objEmployeePayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     }
                     else
                     {
@@ -142,9 +142,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployeePayment.PaymentType = paymentVM.PaymentType;
                         objEmployeePayment.Remarks = paymentVM.Remarks;
                         objEmployeePayment.CreatedBy = LoggedInUserId;
-                        objEmployeePayment.CreatedDate = DateTime.UtcNow;
+                        objEmployeePayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
                         objEmployeePayment.ModifiedBy = LoggedInUserId;
-                        objEmployeePayment.ModifiedDate = DateTime.UtcNow;
+                        objEmployeePayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         _db.tbl_EmployeePayment.Add(objEmployeePayment);
                     }
                     _db.SaveChanges();
@@ -231,7 +231,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
                         objEmployeePayment.IsDeleted = true;
                         objEmployeePayment.ModifiedBy = LoggedInUserId;
-                        objEmployeePayment.ModifiedDate = DateTime.UtcNow;
+                        objEmployeePayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         _db.SaveChanges();
 
                         ReturnMessage = "success";

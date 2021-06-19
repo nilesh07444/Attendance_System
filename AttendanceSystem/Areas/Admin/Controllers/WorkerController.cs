@@ -24,7 +24,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         long loggedInUserId;
         bool isTrailMode;
         string defaultPassword;
-        // GET: Admin/Employee
+     
         public WorkerController()
         {
             _db = new AttendanceSystemEntities();
@@ -219,7 +219,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployee.IsLeaveForward = employeeVM.IsLeaveForward;
                         objEmployee.NoOfFreeLeavePerMonth = employeeVM.NoOfFreeLeavePerMonth;
                         objEmployee.UpdatedBy = loggedInUserId;
-                        objEmployee.UpdatedDate = DateTime.UtcNow;
+                        objEmployee.UpdatedDate = CommonMethod.CurrentIndianDateTime();
                     }
                     else
                     {
@@ -262,9 +262,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployee.NoOfFreeLeavePerMonth = employeeVM.NoOfFreeLeavePerMonth;
                         objEmployee.IsActive = isTrailMode ? true : (activeEmployee >= noOfEmployee ? false : true);
                         objEmployee.CreatedBy = loggedInUserId;
-                        objEmployee.CreatedDate = DateTime.UtcNow;
+                        objEmployee.CreatedDate = CommonMethod.CurrentIndianDateTime();
                         objEmployee.UpdatedBy = loggedInUserId;
-                        objEmployee.UpdatedDate = DateTime.UtcNow;
+                        objEmployee.UpdatedDate = CommonMethod.CurrentIndianDateTime();
                         _db.tbl_Employee.Add(objEmployee);
                     }
                     _db.SaveChanges();
@@ -340,7 +340,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             string ReturnMessage = "";
             try
             {
-                DateTime today = DateTime.UtcNow.Date;
+                DateTime today = CommonMethod.CurrentIndianDateTime().Date;
                 tbl_Employee objEmployee = _db.tbl_Employee.Where(x => x.EmployeeId == Id).FirstOrDefault();
                 bool isAssigned = _db.tbl_AssignWorker.Any(x => x.EmployeeId == Id && x.Date == today);
 
@@ -360,7 +360,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     }
 
                     objEmployee.UpdatedBy = loggedInUserId;
-                    objEmployee.UpdatedDate = DateTime.UtcNow;
+                    objEmployee.UpdatedDate = CommonMethod.CurrentIndianDateTime();
 
                     _db.SaveChanges();
                     ReturnMessage = "success";
@@ -379,7 +379,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         public string DeleteEmployee(int EmployeeId)
         {
             string ReturnMessage = "";
-            DateTime today = DateTime.UtcNow.Date;
+            DateTime today = CommonMethod.CurrentIndianDateTime().Date;
             try
             {
                 tbl_Employee objEmployee = _db.tbl_Employee.Where(x => x.EmployeeId == EmployeeId).FirstOrDefault();
@@ -398,7 +398,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                     objEmployee.IsDeleted = true;
                     objEmployee.UpdatedBy = loggedInUserId;
-                    objEmployee.UpdatedDate = DateTime.UtcNow;
+                    objEmployee.UpdatedDate = CommonMethod.CurrentIndianDateTime();
                     _db.SaveChanges();
 
                     ReturnMessage = "success";

@@ -11,7 +11,7 @@ namespace AttendanceSystem.ViewModel
     {
         public MaterialVM()
         {
-            MaterialDate = DateTime.Now.Date;
+            MaterialDate = CommonMethod.CurrentIndianDateTime().Date;
         }
         public long MaterialId { get; set; }
         public long CompanyId { get; set; }

@@ -76,7 +76,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objTestimonial.FeedbackText = testimonialVM.FeedbackText;
 
                         objTestimonial.ModifiedBy = LoggedInUserId;
-                        objTestimonial.ModifiedDate = DateTime.UtcNow;
+                        objTestimonial.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     }
                     else
                     {
@@ -86,9 +86,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objTestimonial.FeedbackText = testimonialVM.FeedbackText;
                         objTestimonial.IsActive = true;
                         objTestimonial.CreatedBy = LoggedInUserId;
-                        objTestimonial.CreatedDate = DateTime.UtcNow;
+                        objTestimonial.CreatedDate = CommonMethod.CurrentIndianDateTime();
                         objTestimonial.ModifiedBy = LoggedInUserId;
-                        objTestimonial.ModifiedDate = DateTime.UtcNow;
+                        objTestimonial.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         _db.tbl_Testimonial.Add(objTestimonial);
                     }
                     _db.SaveChanges();
@@ -157,7 +157,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     }
 
                     objTestimonial.ModifiedBy = LoggedInUserId;
-                    objTestimonial.ModifiedDate = DateTime.UtcNow;
+                    objTestimonial.ModifiedDate = CommonMethod.CurrentIndianDateTime();
 
                     _db.SaveChanges();
                     ReturnMessage = "success";

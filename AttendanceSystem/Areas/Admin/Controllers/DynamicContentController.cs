@@ -64,8 +64,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     objContent.ContentDescription = contentVM.ContentDescription;
                     objContent.SeqNo = contentVM.SeqNo != null ? Convert.ToInt32(contentVM.SeqNo) : 0;
                     objContent.DynamicContentType = contentVM.DynamicContentType;
-                    objContent.CreatedDate = DateTime.UtcNow;
-                    objContent.ModifiedDate = DateTime.UtcNow;
+                    objContent.CreatedDate = CommonMethod.CurrentIndianDateTime();
+                    objContent.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     _db.tbl_DynamicContent.Add(objContent);
                     _db.SaveChanges();
 
@@ -124,7 +124,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     objContent.ContentDescription = contentVM.ContentDescription;
                     objContent.SeqNo = contentVM.SeqNo != null ? Convert.ToInt32(contentVM.SeqNo) : 0;
                     objContent.DynamicContentType = contentVM.DynamicContentType;
-                    objContent.ModifiedDate = DateTime.UtcNow;
+                    objContent.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     _db.SaveChanges();
 
                     return RedirectToAction("Index");

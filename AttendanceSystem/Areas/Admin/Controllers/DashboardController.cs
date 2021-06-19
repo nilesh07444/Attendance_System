@@ -23,11 +23,12 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             {
                 long companyId = clsAdminSession.CompanyId;
                 int roleId = clsAdminSession.RoleID;
-                DateTime today = DateTime.UtcNow.Date;
+                DateTime today = CommonMethod.CurrentIndianDateTime().Date;
+                DateTime currentDateTime = CommonMethod.CurrentIndianDateTime();
                 if (roleId == (int)AdminRoles.CompanyAdmin)
                 {
                     tbl_CompanySMSPackRenew objCompanySMSPackRenew = _db.tbl_CompanySMSPackRenew.Where(x => x.CompanyId == companyId
-                       && x.RenewDate <= DateTime.UtcNow
+                       && x.RenewDate <= currentDateTime
                        && x.PackageExpiryDate >= today).FirstOrDefault();
 
                     dashboardVM.SMSLeft = objCompanySMSPackRenew != null ? objCompanySMSPackRenew.RemainingSMS : 0;
@@ -60,7 +61,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         dashboardVM.CurrentPackageId = objCompanyRenewPayment.CompanyRegistrationPaymentId;
                     }
 
-                    var startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                    var startDate = new DateTime(CommonMethod.CurrentIndianDateTime().Year, CommonMethod.CurrentIndianDateTime().Month, 1);
                     var endDate = startDate.AddMonths(1).AddDays(-1);
                     dashboardVM.ThisMonthHoliday = _db.tbl_Holiday.Where(x => x.CompanyId == companyId.ToString() && x.IsActive && !x.IsDeleted && x.StartDate >= startDate && x.StartDate <= endDate).Count();
 
@@ -83,11 +84,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     }
 
 
-                    int currentMonth = DateTime.Now.Month;
-                    int currentYear = DateTime.Now.Year;
+                    int currentMonth = CommonMethod.CurrentIndianDateTime().Month;
+                    int currentYear = CommonMethod.CurrentIndianDateTime().Year;
                     int applyYear = currentMonth == 1 ? currentYear - 1 : currentYear;
                     int applyMonth = currentMonth - 1;
-                    List<long> workerIds = new List<long>(); //_db.tbl_Employee.Where(x => x.CompanyId == companyId && x.AdminRoleId == (int)AdminRoles.Worker).Select(x => x.EmployeeId).ToList();
+                    List<long> workerIds = new List<long>();
 
                     if (clsAdminSession.CompanyTypeId == (int)CompanyType.ConstructionCompany)
                     {
@@ -185,7 +186,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             DateTime openDate = new DateTime(dateYear, nextMonth, 1);
             try
             {
-                if (month == DateTime.Now.Month && year == DateTime.Now.Year)
+                if (month == CommonMethod.CurrentIndianDateTime().Month && year == CommonMethod.CurrentIndianDateTime().Year)
                 {
                     status = 0;
                     errorMessage = ErrorMessage.CanNotStartCurrentMonthConversion;
@@ -267,9 +268,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployeePayment.Year = year;
                         objEmployeePayment.Status = ErrorMessage.Open;
                         objEmployeePayment.ProcessStatusText = ErrorMessage.InProgress;
-                        objEmployeePayment.CreatedDate = DateTime.UtcNow;
+                        objEmployeePayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
                         objEmployeePayment.CreatedBy = loggedinUser;
-                        objEmployeePayment.ModifiedDate = DateTime.UtcNow;
+                        objEmployeePayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         objEmployeePayment.ModifiedBy = loggedinUser;
 
                         _db.tbl_EmployeePayment.Add(objEmployeePayment);
@@ -312,9 +313,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployeePayment.Year = year;
                         objEmployeePayment.Status = ErrorMessage.Open;
                         objEmployeePayment.ProcessStatusText = ErrorMessage.InProgress;
-                        objEmployeePayment.CreatedDate = DateTime.UtcNow;
+                        objEmployeePayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
                         objEmployeePayment.CreatedBy = loggedinUser;
-                        objEmployeePayment.ModifiedDate = DateTime.UtcNow;
+                        objEmployeePayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         objEmployeePayment.ModifiedBy = loggedinUser;
 
                         _db.tbl_EmployeePayment.Add(objEmployeePayment);
@@ -343,7 +344,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     else
                     {
                         convertion = new tbl_Conversion();
-                        convertion.DateOfConversion = DateTime.UtcNow;
+                        convertion.DateOfConversion = CommonMethod.CurrentIndianDateTime();
                         convertion.Month = month;
                         convertion.Year = year;
                         convertion.CompanyId = companyId;
@@ -376,9 +377,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             int nextMonth = month == 12 ? 1 : month + 1;
             int dateyear = month == 12 ? year + 1 : year;
             DateTime openDate = new DateTime(dateyear, nextMonth, 1);
+
             try
             {
-                if (month == DateTime.Now.Month && year == DateTime.Now.Year)
+                if (month == CommonMethod.CurrentIndianDateTime().Month && year == CommonMethod.CurrentIndianDateTime().Year)
                 {
                     status = 0;
                     errorMessage = ErrorMessage.CanNotStartCurrentMonthConversion;
@@ -463,9 +465,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objWorkerPayment.Year = year;
                         objWorkerPayment.Status = ErrorMessage.Open;
                         objWorkerPayment.ProcessStatusText = ErrorMessage.InProgress;
-                        objWorkerPayment.CreatedDate = DateTime.UtcNow;
+                        objWorkerPayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
                         objWorkerPayment.CreatedBy = loggedinUser;
-                        objWorkerPayment.ModifiedDate = DateTime.UtcNow;
+                        objWorkerPayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         objWorkerPayment.ModifiedBy = loggedinUser;
 
                         _db.tbl_WorkerPayment.Add(objWorkerPayment);
@@ -517,9 +519,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objWorkerPayment.Year = year;
                         objWorkerPayment.Status = ErrorMessage.Open;
                         objWorkerPayment.ProcessStatusText = ErrorMessage.InProgress;
-                        objWorkerPayment.CreatedDate = DateTime.UtcNow;
+                        objWorkerPayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
                         objWorkerPayment.CreatedBy = loggedinUser;
-                        objWorkerPayment.ModifiedDate = DateTime.UtcNow;
+                        objWorkerPayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         objWorkerPayment.ModifiedBy = loggedinUser;
 
                         _db.tbl_WorkerPayment.Add(objWorkerPayment);
@@ -549,7 +551,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     else
                     {
                         convertion = new tbl_Conversion();
-                        convertion.DateOfConversion = DateTime.UtcNow;
+                        convertion.DateOfConversion = CommonMethod.CurrentIndianDateTime();
                         convertion.Month = month;
                         convertion.Year = year;
                         convertion.CompanyId = companyId;

@@ -125,7 +125,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     {
                         data.Password = encryptedPwd;
                         data.UpdatedBy = employeeId;
-                        data.UpdatedDate = DateTime.UtcNow;
+                        data.UpdatedDate = CommonMethod.CurrentIndianDateTime();
                         response.IsError = false;
                         response.Data = true;
                         _db.SaveChanges();

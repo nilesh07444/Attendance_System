@@ -35,7 +35,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 roleId = base.UTI.RoleId;
                 employeeId = base.UTI.EmployeeId;
                 companyId = base.UTI.CompanyId;
-                DateTime today = DateTime.UtcNow.Date;
+                DateTime today = CommonMethod.CurrentIndianDateTime().Date;
+
                 #region Validation
                 if (workerAttendanceRequestVM.SiteId == 0)
                 {
@@ -137,7 +138,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         {
                             attendanceObject.IsEvening = true;
                             attendanceObject.EveningAttendanceBy = employeeId;
-                            attendanceObject.EveningAttendanceDate = DateTime.UtcNow;
+                            attendanceObject.EveningAttendanceDate = CommonMethod.CurrentIndianDateTime();
                             attendanceObject.EveningSiteId = workerAttendanceRequestVM.SiteId;
                             attendanceObject.EveningLatitude = workerAttendanceRequestVM.Latitude;
                             attendanceObject.EveningLongitude = workerAttendanceRequestVM.Longitude;
@@ -163,7 +164,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         {
                             attendanceObject.IsAfternoon = true;
                             attendanceObject.AfternoonAttendanceBy = employeeId;
-                            attendanceObject.AfternoonAttendanceDate = DateTime.UtcNow;
+                            attendanceObject.AfternoonAttendanceDate = CommonMethod.CurrentIndianDateTime();
                             attendanceObject.AfternoonSiteId = workerAttendanceRequestVM.SiteId;
                             attendanceObject.AfternoonLatitude = workerAttendanceRequestVM.Latitude;
                             attendanceObject.AfternoonLongitude = workerAttendanceRequestVM.Longitude;
@@ -173,7 +174,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         {
                             attendanceObject.IsMorning = true;
                             attendanceObject.MorningAttendanceBy = employeeId;
-                            attendanceObject.MorningAttendanceDate = DateTime.UtcNow;
+                            attendanceObject.MorningAttendanceDate = CommonMethod.CurrentIndianDateTime();
                             attendanceObject.MorningSiteId = workerAttendanceRequestVM.SiteId;
                             attendanceObject.MorningLatitude = workerAttendanceRequestVM.Latitude;
                             attendanceObject.MorningLongitude = workerAttendanceRequestVM.Longitude;
@@ -192,7 +193,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         {
                             attendanceObject.IsAfternoon = true;
                             attendanceObject.AfternoonAttendanceBy = employeeId;
-                            attendanceObject.AfternoonAttendanceDate = DateTime.UtcNow;
+                            attendanceObject.AfternoonAttendanceDate = CommonMethod.CurrentIndianDateTime();
                             attendanceObject.AfternoonSiteId = workerAttendanceRequestVM.SiteId;
                             attendanceObject.AfternoonLatitude = workerAttendanceRequestVM.Latitude;
                             attendanceObject.AfternoonLongitude = workerAttendanceRequestVM.Longitude;
@@ -202,7 +203,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         {
                             attendanceObject.IsMorning = true;
                             attendanceObject.MorningAttendanceBy = employeeId;
-                            attendanceObject.MorningAttendanceDate = DateTime.UtcNow;
+                            attendanceObject.MorningAttendanceDate = CommonMethod.CurrentIndianDateTime();
                             attendanceObject.MorningSiteId = workerAttendanceRequestVM.SiteId;
                             attendanceObject.MorningLatitude = workerAttendanceRequestVM.Latitude;
                             attendanceObject.MorningLongitude = workerAttendanceRequestVM.Longitude;
@@ -227,9 +228,9 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                             objWorkerPayment.Remarks = ErrorMessage.AutoCreditOnEveningAttendance;
                             objWorkerPayment.Month = attendanceObject.AttendanceDate.Month;
                             objWorkerPayment.Year = attendanceObject.AttendanceDate.Year;
-                            objWorkerPayment.CreatedDate = DateTime.UtcNow;
+                            objWorkerPayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
                             objWorkerPayment.CreatedBy = employeeId;
-                            objWorkerPayment.ModifiedDate = DateTime.UtcNow;
+                            objWorkerPayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                             objWorkerPayment.ModifiedBy = employeeId;
 
                             if (employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased)
@@ -261,9 +262,9 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         //    objWorkerPaymentDebit.Remarks = ErrorMessage.AutoCreditOnEveningAttendance;
                         //    objWorkerPaymentDebit.Month = attendanceObject.AttendanceDate.Month;
                         //    objWorkerPaymentDebit.Year = attendanceObject.AttendanceDate.Year;
-                        //    objWorkerPaymentDebit.CreatedDate = DateTime.UtcNow;
+                        //    objWorkerPaymentDebit.CreatedDate = CommonMethod.CurrentIndianDateTime();
                         //    objWorkerPaymentDebit.CreatedBy = employeeId;
-                        //    objWorkerPaymentDebit.ModifiedDate = DateTime.UtcNow;
+                        //    objWorkerPaymentDebit.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         //    objWorkerPaymentDebit.ModifiedBy = employeeId;
                         //    objWorkerPaymentDebit.CreditAmount = 0;
 

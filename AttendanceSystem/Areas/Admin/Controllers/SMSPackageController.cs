@@ -125,7 +125,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objSMSPackage.PackageFontIcon = SMSPackageVM.PackageFontIcon;
                         objSMSPackage.Description = SMSPackageVM.Description;
                         objSMSPackage.ModifiedBy = LoggedInUserId;
-                        objSMSPackage.ModifiedDate = DateTime.UtcNow;
+                        objSMSPackage.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     }
                     else
                     {
@@ -140,9 +140,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objSMSPackage.Description = SMSPackageVM.Description;
                         objSMSPackage.IsActive = true;
                         objSMSPackage.CreatedBy = LoggedInUserId;
-                        objSMSPackage.CreatedDate = DateTime.UtcNow;
+                        objSMSPackage.CreatedDate = CommonMethod.CurrentIndianDateTime();
                         objSMSPackage.ModifiedBy = LoggedInUserId;
-                        objSMSPackage.ModifiedDate = DateTime.UtcNow;
+                        objSMSPackage.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         _db.tbl_SMSPackage.Add(objSMSPackage);
                     }
                     _db.SaveChanges();
@@ -204,7 +204,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     }
 
                     objSMSPackage.ModifiedBy = LoggedInUserId;
-                    objSMSPackage.ModifiedDate = DateTime.UtcNow;
+                    objSMSPackage.ModifiedDate = CommonMethod.CurrentIndianDateTime();
 
                     _db.SaveChanges();
                     ReturnMessage = ErrorMessage.Success;
@@ -237,7 +237,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
                     objSMSPackage.IsDeleted = true;
                     objSMSPackage.ModifiedBy = LoggedInUserId;
-                    objSMSPackage.ModifiedDate = DateTime.UtcNow;
+                    objSMSPackage.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     _db.SaveChanges();
 
                     ReturnMessage = ErrorMessage.Success;

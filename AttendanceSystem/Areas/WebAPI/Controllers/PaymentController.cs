@@ -165,14 +165,14 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         tbl_EmployeePayment objEmployeePayment = new tbl_EmployeePayment();
                         objEmployeePayment.CompanyId = companyId;
                         objEmployeePayment.UserId = paymentVM.UserId;
-                        objEmployeePayment.PaymentDate = DateTime.UtcNow; //paymentVM.PaymentDate;
+                        objEmployeePayment.PaymentDate = CommonMethod.CurrentIndianDateTime(); //paymentVM.PaymentDate;
                         objEmployeePayment.CreditOrDebitText = "Debit";
                         objEmployeePayment.DebitAmount = paymentVM.DebitAmount;
                         objEmployeePayment.PaymentType = paymentVM.PaymentType;
                         objEmployeePayment.CreatedBy = employeeId;
-                        objEmployeePayment.CreatedDate = DateTime.UtcNow;
+                        objEmployeePayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
                         objEmployeePayment.ModifiedBy = employeeId;
-                        objEmployeePayment.ModifiedDate = DateTime.UtcNow;
+                        objEmployeePayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         _db.tbl_EmployeePayment.Add(objEmployeePayment);
                         _db.SaveChanges();
                         response.Data = true;

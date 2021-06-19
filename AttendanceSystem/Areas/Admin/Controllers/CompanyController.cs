@@ -215,7 +215,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     objCompanyReq.RequestStatus = companyRequestVM.RequestStatus;
                     objCompanyReq.RejectReason = companyRequestVM.RejectReason;
                     objCompanyReq.ModifiedBy = loggedInUserId;
-                    objCompanyReq.ModifiedDate = DateTime.UtcNow;
+                    objCompanyReq.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     _db.SaveChanges();
 
                     #region Send Reject SMS
@@ -260,12 +260,12 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objcomp.WebisteUrl = objCompanyReq.CompanyWebisteUrl;
                         objcomp.FreeAccessDays = objCompanyReq.FreeAccessDays;
                         objcomp.IsTrialMode = true;
-                        objcomp.TrialExpiryDate = DateTime.Now.AddDays(objCompanyReq.FreeAccessDays);
+                        objcomp.TrialExpiryDate = CommonMethod.CurrentIndianDateTime().AddDays(objCompanyReq.FreeAccessDays);
                         objcomp.IsActive = true;
                         objcomp.CreatedBy = loggedInUserId;
-                        objcomp.CreatedDate = DateTime.UtcNow;
+                        objcomp.CreatedDate = CommonMethod.CurrentIndianDateTime();
                         objcomp.ModifiedBy = loggedInUserId;
-                        objcomp.ModifiedDate = DateTime.UtcNow;
+                        objcomp.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         _db.tbl_Company.Add(objcomp);
                         _db.SaveChanges();
 
@@ -307,9 +307,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objAdminUser.PanCardPhoto = objCompanyReq.CompanyAdminPanCardPhoto;
                         objAdminUser.IsActive = true;
                         objAdminUser.CreatedBy = loggedInUserId;
-                        objAdminUser.CreatedDate = DateTime.UtcNow;
+                        objAdminUser.CreatedDate = CommonMethod.CurrentIndianDateTime();
                         objAdminUser.ModifiedBy = loggedInUserId;
-                        objAdminUser.ModifiedDate = DateTime.UtcNow;
+                        objAdminUser.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         _db.tbl_AdminUser.Add(objAdminUser);
                         _db.SaveChanges();
 
@@ -690,7 +690,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     objCompany.Description = companyRequestVM.CompanyDescription;
                     objCompany.WebisteUrl = companyRequestVM.CompanyWebisteUrl;
                     objCompany.ModifiedBy = loggedInUserId;
-                    objCompany.ModifiedDate = DateTime.UtcNow;
+                    objCompany.ModifiedDate = CommonMethod.CurrentIndianDateTime();
 
                     string companyCode = string.Empty;
                     if (isCompanyNameChanged)
@@ -725,7 +725,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     objUser.PanCardPhoto = !string.IsNullOrEmpty(companyAdminPancardFileName) ? companyAdminPancardFileName : objUser.PanCardPhoto;
                     objUser.PanCardNo = companyRequestVM.CompanyAdminPanCardNo;
                     objUser.ModifiedBy = loggedInUserId;
-                    objUser.ModifiedDate = DateTime.UtcNow;
+                    objUser.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     if (isCompanyNameChanged)
                     {
                         objUser.UserName = companyCode;
@@ -892,7 +892,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     }
 
                     objCompany.ModifiedBy = LoggedInUserId;
-                    objCompany.ModifiedDate = DateTime.UtcNow;
+                    objCompany.ModifiedDate = CommonMethod.CurrentIndianDateTime();
 
                     _db.SaveChanges();
                     ReturnMessage = ErrorMessage.Success;
@@ -914,7 +914,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             {
                 string companyNameWithoutSpeChar = Regex.Replace(companyName, @"[^0-9a-zA-Z]+", "");
                 string first2CharOfCompanyName = companyNameWithoutSpeChar.ToUpper().Substring(0, 2);
-                companyCode = first2CharOfCompanyName + "/" + CommonMethod.ConvertFromUTCToIndianDateTime(DateTime.UtcNow).ToString("ddMMyyyy") + "/" + companyId;
+                companyCode = first2CharOfCompanyName + "/" + CommonMethod.CurrentIndianDateTime().ToString("ddMMyyyy") + "/" + companyId;
             }
             catch (Exception ex)
             {

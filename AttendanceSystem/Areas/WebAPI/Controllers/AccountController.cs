@@ -90,7 +90,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                     {
                                         emp.IsActive = false;
                                         emp.UpdatedBy = -1;
-                                        emp.UpdatedDate = DateTime.UtcNow;
+                                        emp.UpdatedDate = CommonMethod.CurrentIndianDateTime();
                                         _db.SaveChanges();
                                     });
                                 }
@@ -392,7 +392,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     {
                         data.Password = encryptedPwd;
                         data.UpdatedBy = changePasswordVM.EmployeeId;
-                        data.UpdatedDate = DateTime.UtcNow;
+                        data.UpdatedDate = CommonMethod.CurrentIndianDateTime();
                         response.IsError = false;
                         response.Data = true;
                         _db.SaveChanges();

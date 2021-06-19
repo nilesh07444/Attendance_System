@@ -93,16 +93,16 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objCompanySMSPackRenew.CompanyId = clsAdminSession.CompanyId;
                         objCompanySMSPackRenew.SMSPackageId = objPackage.SMSPackageId;
                         objCompanySMSPackRenew.SMSPackageName = objPackage.PackageName;
-                        objCompanySMSPackRenew.RenewDate = DateTime.UtcNow;
+                        objCompanySMSPackRenew.RenewDate = CommonMethod.CurrentIndianDateTime();
                         objCompanySMSPackRenew.PackageAmount = objPackage.PackageAmount;
                         objCompanySMSPackRenew.AccessDays = objPackage.AccessDays;
-                        objCompanySMSPackRenew.PackageExpiryDate = DateTime.UtcNow.AddDays(objPackage.AccessDays);
+                        objCompanySMSPackRenew.PackageExpiryDate = CommonMethod.CurrentIndianDateTime().AddDays(objPackage.AccessDays);
                         objCompanySMSPackRenew.NoOfSMS = objPackage.NoOfSMS;
                         objCompanySMSPackRenew.RemainingSMS = objPackage.NoOfSMS;
                         objCompanySMSPackRenew.CreatedBy = clsAdminSession.UserID;
-                        objCompanySMSPackRenew.CreatedDate = DateTime.UtcNow;
+                        objCompanySMSPackRenew.CreatedDate = CommonMethod.CurrentIndianDateTime();
                         objCompanySMSPackRenew.ModifiedBy = clsAdminSession.UserID;
-                        objCompanySMSPackRenew.ModifiedDate = DateTime.UtcNow;
+                        objCompanySMSPackRenew.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         _db.tbl_CompanySMSPackRenew.Add(objCompanySMSPackRenew);
                         _db.SaveChanges();
 

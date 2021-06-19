@@ -78,7 +78,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objWorkerType.WorkerTypeName = workerTypeVM.WorkerTypeName;
                         objWorkerType.Description = workerTypeVM.Description;
                         objWorkerType.ModifiedBy = LoggedInUserId;
-                        objWorkerType.ModifiedDate = DateTime.UtcNow;
+                        objWorkerType.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     }
                     else
                     {
@@ -88,9 +88,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objWorkerType.Description = workerTypeVM.Description;
                         objWorkerType.IsActive = true;
                         objWorkerType.CreatedBy = LoggedInUserId;
-                        objWorkerType.CreatedDate = DateTime.UtcNow;
+                        objWorkerType.CreatedDate = CommonMethod.CurrentIndianDateTime();
                         objWorkerType.ModifiedBy = LoggedInUserId;
-                        objWorkerType.ModifiedDate = DateTime.UtcNow;
+                        objWorkerType.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         _db.tbl_WorkerType.Add(objWorkerType);
                     }
                     _db.SaveChanges();
@@ -129,7 +129,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     }
 
                     objWorkerType.ModifiedBy = LoggedInUserId;
-                    objWorkerType.ModifiedDate = DateTime.UtcNow;
+                    objWorkerType.ModifiedDate = CommonMethod.CurrentIndianDateTime();
 
                     _db.SaveChanges();
                     ReturnMessage = "success";

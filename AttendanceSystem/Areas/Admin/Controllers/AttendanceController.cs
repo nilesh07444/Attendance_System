@@ -133,7 +133,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     {
                         attendance.Status = (int)LeaveStatus.Accept;
                         attendance.ModifiedBy = loggedinUser;
-                        attendance.ModifiedDate = DateTime.UtcNow;
+                        attendance.ModifiedDate = CommonMethod.CurrentIndianDateTime();
 
                         tbl_Employee employeeObj = _db.tbl_Employee.Where(x => x.EmployeeId == attendance.UserId).FirstOrDefault();
 
@@ -152,9 +152,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                             objEmployeePayment.Year = attendance.AttendanceDate.Year;
                             //objEmployeePayment.Status=
                             //objEmployeePayment.ProcessStatusText
-                            objEmployeePayment.CreatedDate = DateTime.UtcNow;
+                            objEmployeePayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
                             objEmployeePayment.CreatedBy = loggedinUser;
-                            objEmployeePayment.ModifiedDate = DateTime.UtcNow;
+                            objEmployeePayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                             objEmployeePayment.ModifiedBy = loggedinUser;
 
                             if (employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased)
@@ -248,7 +248,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objAttendance.Status = attendanceVM.Status;
                         objAttendance.RejectReason = attendanceVM.RejectReason;
                         objAttendance.ModifiedBy = LoggedInUserId;
-                        objAttendance.ModifiedDate = DateTime.UtcNow;
+                        objAttendance.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         _db.SaveChanges();
 
                         if (attendanceVM.Status == (int)AttendanceStatus.Reject)

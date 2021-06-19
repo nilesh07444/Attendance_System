@@ -54,9 +54,9 @@ namespace AttendanceSystem
         }
 
         public static DateTime ConvertFromUTCToIndianDateTime(DateTime utcDateTime)
-        {            
+        {
             TimeZoneInfo indTimeZone = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
-            DateTime dateTimeAsTimeZone = TimeZoneInfo.ConvertTimeFromUtc(utcDateTime, indTimeZone); 
+            DateTime dateTimeAsTimeZone = TimeZoneInfo.ConvertTimeFromUtc(utcDateTime, indTimeZone);
             return dateTimeAsTimeZone;
         }
         public static DateTime CurrentIndianDateTime()
@@ -428,14 +428,14 @@ namespace AttendanceSystem
                     Directory.CreateDirectory(filepath);
 
                 }
-                filepath = filepath + "\\" + DateTime.Today.ToString("dd-MM-yy") + ".txt";   //Text File Name
+                filepath = filepath + "\\" + CommonMethod.CurrentIndianDateTime().ToString("dd-MM-yy") + ".txt";   //Text File Name
                 if (!File.Exists(filepath))
                 {
                     File.Create(filepath).Dispose();
                 }
                 using (StreamWriter sw = File.AppendText(filepath))
                 {
-                    sw.WriteLine("-----------Exception Details on " + " " + DateTime.Now.ToString() + "-----------------");
+                    sw.WriteLine("-----------Exception Details on " + " " + CommonMethod.CurrentIndianDateTime().ToString() + "-----------------");
                     sw.WriteLine(TextMessage);
                     sw.WriteLine("--------------------------------*End*------------------------------------------");
                     sw.WriteLine(line);
@@ -523,7 +523,7 @@ namespace AttendanceSystem
                 smsLog.Message = msg;
                 smsLog.MobileNo = mobileNo;
                 smsLog.CreatedBy = employeeId;
-                smsLog.CreatedDate = DateTime.UtcNow;
+                smsLog.CreatedDate = CommonMethod.CurrentIndianDateTime();
                 _db.tbl_SMSLog.Add(smsLog);
                 _db.SaveChanges();
                 */
@@ -539,11 +539,13 @@ namespace AttendanceSystem
             {
                 if (!isTrialMode)
                 {
+                    DateTime currentDateTime = CommonMethod.CurrentIndianDateTime();
+
                     AttendanceSystemEntities _db = new AttendanceSystemEntities();
                     tbl_CompanySMSPackRenew activeSMSPackage = null;
                     tbl_CompanySMSPackRenew currentSMSPackage = _db.tbl_CompanySMSPackRenew.Where(x => x.CompanyId == companyId
-                    && x.RenewDate <= DateTime.Now
-                    && x.PackageExpiryDate > DateTime.Now).FirstOrDefault();
+                    && x.RenewDate <= currentDateTime
+                    && x.PackageExpiryDate > currentDateTime).FirstOrDefault();
 
                     //could not found any active package 
                     if (currentSMSPackage == null)
@@ -554,7 +556,7 @@ namespace AttendanceSystem
                     else
                     {
                         //current package expired or sms get over
-                        if (currentSMSPackage.RemainingSMS == 0 || currentSMSPackage.PackageExpiryDate < DateTime.Now)
+                        if (currentSMSPackage.RemainingSMS == 0 || currentSMSPackage.PackageExpiryDate < CommonMethod.CurrentIndianDateTime())
                         {
                             tbl_CompanySMSPackRenew nextSMSPackage = _db.tbl_CompanySMSPackRenew.Where(x => x.CompanyId == companyId
                                                                     && x.RemainingSMS > 0).OrderBy(z => z.SMSPackageId).Take(1).FirstOrDefault();
@@ -565,10 +567,11 @@ namespace AttendanceSystem
                             }
                             else
                             {
-                                currentSMSPackage.PackageExpiryDate = DateTime.Now.AddMinutes(-1);
-                                nextSMSPackage.RenewDate = DateTime.Now;
-                                nextSMSPackage.PackageExpiryDate = DateTime.Now.AddDays(nextSMSPackage.AccessDays);
+                                currentSMSPackage.PackageExpiryDate = CommonMethod.CurrentIndianDateTime().AddMinutes(-1);
+                                nextSMSPackage.RenewDate = CommonMethod.CurrentIndianDateTime();
+                                nextSMSPackage.PackageExpiryDate = CommonMethod.CurrentIndianDateTime().AddDays(nextSMSPackage.AccessDays);
                                 _db.SaveChanges();
+
                                 activeSMSPackage = nextSMSPackage;
                             }
                         }
@@ -595,7 +598,7 @@ namespace AttendanceSystem
                             smsLog.Message = msg;
                             smsLog.MobileNo = mobileNo;
                             smsLog.CreatedBy = employeeId;
-                            smsLog.CreatedDate = DateTime.UtcNow;
+                            smsLog.CreatedDate = CommonMethod.CurrentIndianDateTime();
                             _db.tbl_SMSLog.Add(smsLog);
                             _db.SaveChanges();
                         }

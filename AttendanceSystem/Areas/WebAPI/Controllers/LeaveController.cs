@@ -85,9 +85,9 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     leaveObject.LeaveStatus = (int)LeaveStatus.Pending;
                     leaveObject.LeaveReason = leaveVM.LeaveReason;
                     leaveObject.CreatedBy = base.UTI.EmployeeId;
-                    leaveObject.CreatedDate = DateTime.UtcNow;
+                    leaveObject.CreatedDate = CommonMethod.CurrentIndianDateTime();
                     leaveObject.ModifiedBy = base.UTI.EmployeeId;
-                    leaveObject.ModifiedDate = DateTime.UtcNow;
+                    leaveObject.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     _db.tbl_Leave.Add(leaveObject);
                     _db.SaveChanges();
                     response.Data = true;
@@ -203,7 +203,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     response.AddError(ErrorMessage.LeaveDateRequired);
                 }
 
-                if (leaveVM.StartDate < DateTime.Now.Date || leaveVM.EndDate < DateTime.Now.Date)
+                if (leaveVM.StartDate < CommonMethod.CurrentIndianDateTime().Date || leaveVM.EndDate < CommonMethod.CurrentIndianDateTime().Date)
                 {
                     response.IsError = true;
                     response.AddError(ErrorMessage.LeaveDateCanBeFutureDateOnly);
@@ -264,7 +264,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         leaveObject.NoOfDays = Convert.ToDecimal((leaveVM.EndDate - leaveVM.StartDate).TotalDays + 1);
                         leaveObject.LeaveReason = leaveVM.LeaveReason;
                         leaveObject.ModifiedBy = base.UTI.EmployeeId;
-                        leaveObject.ModifiedDate = DateTime.UtcNow;
+                        leaveObject.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         _db.SaveChanges();
                         response.Data = true;
                     }

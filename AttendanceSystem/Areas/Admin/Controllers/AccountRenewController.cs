@@ -140,8 +140,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objCompanyRenewPayment.CompanyId = clsAdminSession.CompanyId;
                         objCompanyRenewPayment.PackageId = objPackage.PackageId;
                         objCompanyRenewPayment.PackageName = objPackage.PackageName;
-                        objCompanyRenewPayment.StartDate = DateTime.Now;
-                        objCompanyRenewPayment.EndDate = DateTime.Now.AddDays(objPackage.AccessDays);
+                        objCompanyRenewPayment.StartDate = CommonMethod.CurrentIndianDateTime();
+                        objCompanyRenewPayment.EndDate = CommonMethod.CurrentIndianDateTime().AddDays(objPackage.AccessDays);
                         objCompanyRenewPayment.Amount = objPackage.Amount;
                         objCompanyRenewPayment.GSTPer = objSetting.AccountPackageBuyGSTPer.Value;
                         objCompanyRenewPayment.AccessDays = objPackage.AccessDays;
@@ -150,7 +150,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objCompanyRenewPayment.PaymentFor = "Account Renew";
                         objCompanyRenewPayment.PaymentGatewayResponseId = "";
                         objCompanyRenewPayment.CreatedBy = clsAdminSession.UserID;
-                        objCompanyRenewPayment.CreatedDate = DateTime.Now;
+                        objCompanyRenewPayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
                         _db.tbl_CompanyRenewPayment.Add(objCompanyRenewPayment);
                         _db.SaveChanges();
 

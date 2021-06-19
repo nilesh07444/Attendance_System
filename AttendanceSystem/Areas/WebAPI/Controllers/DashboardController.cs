@@ -26,7 +26,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 long employeeId = base.UTI.EmployeeId;
                 long companyId = base.UTI.CompanyId;
 
-                DateTime startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                DateTime startDate = new DateTime(CommonMethod.CurrentIndianDateTime().Year, CommonMethod.CurrentIndianDateTime().Month, 1);
                 DateTime endDate = startDate.AddMonths(1).AddDays(-1);
 
                 dashboardCountVM.TotalAttendance = _db.tbl_Attendance.Where(x => x.UserId == employeeId
@@ -44,19 +44,19 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                 }).ToList();
                 dashboardCountVM.thisMonthHoliday = listDays.Select(x => (x.EndDate - x.StartDate).TotalDays).Sum();
 
-                int currentMonthWorkingDays = CommonMethod.WeekDaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
+                int currentMonthWorkingDays = CommonMethod.WeekDaysInMonth(CommonMethod.CurrentIndianDateTime().Year, CommonMethod.CurrentIndianDateTime().Month);
                 dashboardCountVM.TotalAbsent = currentMonthWorkingDays - dashboardCountVM.TotalAttendance - (int.Parse(dashboardCountVM.thisMonthHoliday.ToString()));
 
                 dashboardCountVM.LeavePendingForApprove = _db.tbl_Leave.Where(x => x.UserId == employeeId && !x.IsDeleted && x.LeaveStatus == (int)LeaveStatus.Pending).Count();
 
-                int LastMonth = DateTime.Now.Month == 1 ? 12 : DateTime.Now.Month - 1;
-                int year = DateTime.Now.Month == 1 ? DateTime.Now.Year - 1 : DateTime.Now.Year;
+                int LastMonth = CommonMethod.CurrentIndianDateTime().Month == 1 ? 12 : CommonMethod.CurrentIndianDateTime().Month - 1;
+                int year = CommonMethod.CurrentIndianDateTime().Month == 1 ? CommonMethod.CurrentIndianDateTime().Year - 1 : CommonMethod.CurrentIndianDateTime().Year;
                 tbl_EmployeeRating employeeRatingObject = _db.tbl_EmployeeRating.Where(x => x.EmployeeId == employeeId && x.RateMonth == LastMonth && x.RateYear == year).FirstOrDefault();
                 dashboardCountVM.LastMonthRating = (employeeRatingObject != null ? (new decimal[] { employeeRatingObject.BehaviourRate, employeeRatingObject.RegularityRate, employeeRatingObject.WorkRate }).Average().ToString("#.##") : "0") + "/10";
 
                 tbl_Employee emp = _db.tbl_Employee.Where(x => x.EmployeeId == employeeId).FirstOrDefault();
 
-                DateTime now = DateTime.Now;
+                DateTime now = CommonMethod.CurrentIndianDateTime();
                 var monthStartDate = new DateTime(now.Year, now.Month, 1);
                 var monthEndDate = startDate.AddMonths(1).AddDays(-1);
 

@@ -76,7 +76,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objSite.SiteName = SiteVM.SiteName;
                         objSite.SiteDescription = SiteVM.SiteDescription;
                         objSite.ModifiedBy = LoggedInUserId;
-                        objSite.ModifiedDate = DateTime.UtcNow;
+                        objSite.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     }
                     else
                     {
@@ -86,9 +86,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objSite.SiteDescription = SiteVM.SiteDescription;
                         objSite.IsActive = true;
                         objSite.CreatedBy = LoggedInUserId;
-                        objSite.CreatedDate = DateTime.UtcNow;
+                        objSite.CreatedDate = CommonMethod.CurrentIndianDateTime();
                         objSite.ModifiedBy = LoggedInUserId;
-                        objSite.ModifiedDate = DateTime.UtcNow;
+                        objSite.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         _db.tbl_Site.Add(objSite);
                     }
                     _db.SaveChanges();
@@ -127,7 +127,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     }
 
                     objSite.ModifiedBy = LoggedInUserId;
-                    objSite.ModifiedDate = DateTime.UtcNow;
+                    objSite.ModifiedDate = CommonMethod.CurrentIndianDateTime();
 
                     _db.SaveChanges();
                     ReturnMessage = "success";
@@ -160,7 +160,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
                     objSite.IsDeleted = true;
                     objSite.ModifiedBy = LoggedInUserId;
-                    objSite.ModifiedDate = DateTime.UtcNow;
+                    objSite.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     _db.SaveChanges();
 
                     ReturnMessage = "success";

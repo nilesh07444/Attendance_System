@@ -58,10 +58,8 @@ namespace AttendanceSystem.ViewModel
     public class AttendanceFilterVM
     {
         public AttendanceFilterVM()
-        {
-            //StartMonth = DateTime.Now.Month;
-            //EndMonth = DateTime.Now.Month;
-            Year = DateTime.Now.Year;
+        {            
+            Year = CommonMethod.CurrentIndianDateTime().Year;
             AttendanceStatus = (int)Helper.AttendanceStatus.Pending;
         }
         public int StartMonth { get; set; }
@@ -113,7 +111,7 @@ namespace AttendanceSystem.ViewModel
     {
         public WorkerAttendanceFilterVM()
         {
-            AttendanceDate = DateTime.UtcNow.Date;
+            AttendanceDate = CommonMethod.CurrentIndianDateTime().Date;
         }
         public DateTime AttendanceDate { get; set; }
         public int SiteId { get; set; }
@@ -144,8 +142,8 @@ namespace AttendanceSystem.ViewModel
     {
         public WorkerAttendanceReportFilterVM()
         {
-            StartDate = DateTime.UtcNow.Date;
-            EndDate = DateTime.UtcNow.Date;
+            StartDate = CommonMethod.CurrentIndianDateTime(); 
+            EndDate = CommonMethod.CurrentIndianDateTime();
         }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }

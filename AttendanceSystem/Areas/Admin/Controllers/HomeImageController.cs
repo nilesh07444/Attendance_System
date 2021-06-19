@@ -78,7 +78,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objHome.HeadingText2 = homeImageVM.HeadingText2;
 
                         objHome.ModifiedBy = LoggedInUserId;
-                        objHome.ModifiedDate = DateTime.UtcNow;
+                        objHome.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     }
                     else
                     {
@@ -87,9 +87,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objHome.HeadingText2 = homeImageVM.HeadingText2;
                         objHome.IsActive = true;
                         objHome.CreatedBy = LoggedInUserId;
-                        objHome.CreatedDate = DateTime.UtcNow;
+                        objHome.CreatedDate = CommonMethod.CurrentIndianDateTime();
                         objHome.ModifiedBy = LoggedInUserId;
-                        objHome.ModifiedDate = DateTime.UtcNow;
+                        objHome.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         _db.tbl_HomeImage.Add(objHome);
                     }
                     _db.SaveChanges();
@@ -163,7 +163,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     }
 
                     objHome.ModifiedBy = LoggedInUserId;
-                    objHome.ModifiedDate = DateTime.UtcNow;
+                    objHome.ModifiedDate = CommonMethod.CurrentIndianDateTime();
 
                     _db.SaveChanges();
                     ReturnMessage = "success";
@@ -276,7 +276,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objHomeSlider.SliderType = homeSliderVM.SliderType;
 
                         objHomeSlider.ModifiedBy = LoggedInUserId;
-                        objHomeSlider.ModifiedDate = DateTime.UtcNow;
+                        objHomeSlider.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     }
                     else
                     {
@@ -285,9 +285,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objHomeSlider.SliderType = homeSliderVM.SliderType;
                         objHomeSlider.IsActive = true;
                         objHomeSlider.CreatedBy = LoggedInUserId;
-                        objHomeSlider.CreatedDate = DateTime.UtcNow;
+                        objHomeSlider.CreatedDate = CommonMethod.CurrentIndianDateTime();
                         objHomeSlider.ModifiedBy = LoggedInUserId;
-                        objHomeSlider.ModifiedDate = DateTime.UtcNow;
+                        objHomeSlider.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         _db.tbl_HomeSlider.Add(objHomeSlider);
                     }
                     _db.SaveChanges();
@@ -356,7 +356,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     }
 
                     objHome.ModifiedBy = LoggedInUserId;
-                    objHome.ModifiedDate = DateTime.UtcNow;
+                    objHome.ModifiedDate = CommonMethod.CurrentIndianDateTime();
 
                     _db.SaveChanges();
                     ReturnMessage = "success";

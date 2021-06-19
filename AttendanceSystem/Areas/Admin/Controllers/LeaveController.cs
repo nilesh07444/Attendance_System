@@ -111,7 +111,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     {
                         leave.LeaveStatus = (int)LeaveStatus.Accept;
                         leave.ModifiedBy = loggedinUser;
-                        leave.ModifiedDate = DateTime.UtcNow;
+                        leave.ModifiedDate = CommonMethod.CurrentIndianDateTime();
 
                         #region Send SMS
 
@@ -191,7 +191,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objleave.LeaveStatus = leaveVM.LeaveStatus;
                         objleave.RejectReason = leaveVM.RejectReason;
                         objleave.ModifiedBy = LoggedInUserId;
-                        objleave.ModifiedDate = DateTime.UtcNow;
+                        objleave.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         _db.SaveChanges();
 
                         #region Send SMS of Accept/Reject

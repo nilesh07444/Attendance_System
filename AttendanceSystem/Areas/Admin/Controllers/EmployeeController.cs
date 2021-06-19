@@ -234,7 +234,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployee.IsFingerprintEnabled = employeeVM.IsFingerprintEnabled;
                         objEmployee.NoOfFreeLeavePerMonth = employeeVM.NoOfFreeLeavePerMonth;
                         objEmployee.UpdatedBy = loggedInUserId;
-                        objEmployee.UpdatedDate = DateTime.UtcNow;
+                        objEmployee.UpdatedDate = CommonMethod.CurrentIndianDateTime();
                         _db.SaveChanges();
                     }
                     else
@@ -286,9 +286,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployee.IsActive = isTrailMode ? true : (activeEmployee >= noOfEmployee ? false : true);
                         objEmployee.IsFingerprintEnabled = employeeVM.IsFingerprintEnabled;
                         objEmployee.CreatedBy = loggedInUserId;
-                        objEmployee.CreatedDate = DateTime.UtcNow;
+                        objEmployee.CreatedDate = CommonMethod.CurrentIndianDateTime();
                         objEmployee.UpdatedBy = loggedInUserId;
-                        objEmployee.UpdatedDate = DateTime.UtcNow;
+                        objEmployee.UpdatedDate = CommonMethod.CurrentIndianDateTime();
                         _db.tbl_Employee.Add(objEmployee);
                         _db.SaveChanges();
 
@@ -415,7 +415,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     }
 
                     objEmployee.UpdatedBy = loggedInUserId;
-                    objEmployee.UpdatedDate = DateTime.UtcNow;
+                    objEmployee.UpdatedDate = CommonMethod.CurrentIndianDateTime();
 
                     _db.SaveChanges();
                     ReturnMessage = "success";
@@ -445,10 +445,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 }
                 else
                 {
-
                     objEmployee.IsDeleted = true;
                     objEmployee.UpdatedBy = loggedInUserId;
-                    objEmployee.UpdatedDate = DateTime.UtcNow;
+                    objEmployee.UpdatedDate = CommonMethod.CurrentIndianDateTime();
                     _db.SaveChanges();
 
                     ReturnMessage = "success";

@@ -108,7 +108,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objOurClient.SponsorLink = ourclientVM.SponsorLink;
 
                         objOurClient.ModifiedBy = LoggedInUserId;
-                        objOurClient.ModifiedDate = DateTime.UtcNow;
+                        objOurClient.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     }
                     else
                     {
@@ -118,9 +118,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objOurClient.SponsorLink = ourclientVM.SponsorLink;
                         objOurClient.IsActive = true;
                         objOurClient.CreatedBy = LoggedInUserId;
-                        objOurClient.CreatedDate = DateTime.UtcNow;
+                        objOurClient.CreatedDate = CommonMethod.CurrentIndianDateTime();
                         objOurClient.ModifiedBy = LoggedInUserId;
-                        objOurClient.ModifiedDate = DateTime.UtcNow;
+                        objOurClient.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         _db.tbl_Sponsor.Add(objOurClient);
                     }
                     _db.SaveChanges();
@@ -189,7 +189,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     }
 
                     objOurClient.ModifiedBy = LoggedInUserId;
-                    objOurClient.ModifiedDate = DateTime.UtcNow;
+                    objOurClient.ModifiedDate = CommonMethod.CurrentIndianDateTime();
 
                     _db.SaveChanges();
                     ReturnMessage = "success";

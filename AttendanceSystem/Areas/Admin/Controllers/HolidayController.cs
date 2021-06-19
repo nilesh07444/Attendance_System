@@ -108,7 +108,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objHoliday.Remark = HolidayVM.Remark;
                         objHoliday.HolidayReason = HolidayVM.HolidayReason;
                         objHoliday.ModifiedBy = LoggedInUserId;
-                        objHoliday.ModifiedDate = DateTime.UtcNow;
+                        objHoliday.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     }
                     else
                     {
@@ -120,9 +120,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objHoliday.IsActive = true;
                         objHoliday.CompanyId = companyId.ToString();
                         objHoliday.CreatedBy = LoggedInUserId;
-                        objHoliday.CreatedDate = DateTime.UtcNow;
+                        objHoliday.CreatedDate = CommonMethod.CurrentIndianDateTime();
                         objHoliday.ModifiedBy = LoggedInUserId;
-                        objHoliday.ModifiedDate = DateTime.UtcNow;
+                        objHoliday.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         _db.tbl_Holiday.Add(objHoliday);
                     }
                     _db.SaveChanges();
@@ -162,7 +162,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     }
 
                     objHoliday.ModifiedBy = LoggedInUserId;
-                    objHoliday.ModifiedDate = DateTime.UtcNow;
+                    objHoliday.ModifiedDate = CommonMethod.CurrentIndianDateTime();
 
                     _db.SaveChanges();
                     ReturnMessage = "success";
@@ -195,7 +195,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
                     objHoliday.IsDeleted = true;
                     objHoliday.ModifiedBy = LoggedInUserId;
-                    objHoliday.ModifiedDate = DateTime.UtcNow;
+                    objHoliday.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     _db.SaveChanges();
 
                     ReturnMessage = "success";

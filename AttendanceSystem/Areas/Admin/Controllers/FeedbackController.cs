@@ -103,9 +103,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     objfeedback.Remarks = feedbackVM.Remarks;
                     objfeedback.IsActive = true;
                     objfeedback.CreatedBy = LoggedInUserId;
-                    objfeedback.CreatedDate = DateTime.UtcNow;
+                    objfeedback.CreatedDate = CommonMethod.CurrentIndianDateTime();
                     objfeedback.ModifiedBy = LoggedInUserId;
-                    objfeedback.ModifiedDate = DateTime.UtcNow;
+                    objfeedback.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     _db.tbl_Feedback.Add(objfeedback);
 
                     _db.SaveChanges();
@@ -182,7 +182,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objfeedback.FeedbackStatus = feedbackVM.FeedbackStatus;
                         objfeedback.SuperAdminFeedbackText = feedbackVM.SuperAdminFeedbackText;
                         objfeedback.ModifiedBy = loggedInUserId;
-                        objfeedback.ModifiedDate = DateTime.UtcNow;
+                        objfeedback.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         _db.SaveChanges();
                     }
                     return RedirectToAction("Index");

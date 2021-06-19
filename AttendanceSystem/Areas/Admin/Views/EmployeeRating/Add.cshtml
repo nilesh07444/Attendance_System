@@ -18,11 +18,11 @@
     lstRateMonth.Add(new SelectListItem { Value = "12", Text = "December" });
 
     List<SelectListItem> lstRateYear = new List<SelectListItem>();
-    lstRateYear.Add(new SelectListItem { Value = DateTime.Now.Year.ToString(), Text = DateTime.Now.Year.ToString() });
-    lstRateYear.Add(new SelectListItem { Value = (DateTime.Now.Year - 1).ToString(), Text = (DateTime.Now.Year - 1).ToString() });
-    lstRateYear.Add(new SelectListItem { Value = (DateTime.Now.Year - 2).ToString(), Text = (DateTime.Now.Year - 2).ToString() });
-    lstRateYear.Add(new SelectListItem { Value = (DateTime.Now.Year - 3).ToString(), Text = (DateTime.Now.Year - 3).ToString() });
-    lstRateYear.Add(new SelectListItem { Value = (DateTime.Now.Year - 4).ToString(), Text = (DateTime.Now.Year - 4).ToString() });
+    lstRateYear.Add(new SelectListItem { Value = CommonMethod.CurrentIndianDateTime().Year.ToString(), Text = CommonMethod.CurrentIndianDateTime().Year.ToString() });
+    lstRateYear.Add(new SelectListItem { Value = (CommonMethod.CurrentIndianDateTime().Year - 1).ToString(), Text = (CommonMethod.CurrentIndianDateTime().Year - 1).ToString() });
+    lstRateYear.Add(new SelectListItem { Value = (CommonMethod.CurrentIndianDateTime().Year - 2).ToString(), Text = (CommonMethod.CurrentIndianDateTime().Year - 2).ToString() });
+    lstRateYear.Add(new SelectListItem { Value = (CommonMethod.CurrentIndianDateTime().Year - 3).ToString(), Text = (CommonMethod.CurrentIndianDateTime().Year - 3).ToString() });
+    lstRateYear.Add(new SelectListItem { Value = (CommonMethod.CurrentIndianDateTime().Year - 4).ToString(), Text = (CommonMethod.CurrentIndianDateTime().Year - 4).ToString() });
 }
 
 <section class="section">

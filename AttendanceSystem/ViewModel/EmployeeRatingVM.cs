@@ -36,9 +36,9 @@ namespace AttendanceSystem.ViewModel
     {
         public EmployeeRatingFilterVM()
         {
-            StartMonth = DateTime.Now.Month;
-            EndMonth = DateTime.Now.Month;
-            Year = DateTime.Now.Year;
+            StartMonth = CommonMethod.CurrentIndianDateTime().Month;
+            EndMonth = CommonMethod.CurrentIndianDateTime().Month;
+            Year = CommonMethod.CurrentIndianDateTime().Year;
         }
         public int StartMonth { get; set; }
         public int EndMonth { get; set; }
@@ -54,9 +54,9 @@ namespace AttendanceSystem.ViewModel
     {
         public CommonEmployeeRatingFilterVM()
         {
-            StartMonth = DateTime.Now.Month;
-            EndMonth = DateTime.Now.Month;
-            Year = DateTime.Now.Year;
+            StartMonth = CommonMethod.CurrentIndianDateTime().Month;
+            EndMonth = CommonMethod.CurrentIndianDateTime().Month;
+            Year = CommonMethod.CurrentIndianDateTime().Year;
         }
         public int StartMonth { get; set; }
         public int EndMonth { get; set; }

@@ -112,9 +112,9 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     attendanceObject.InDateTime = attendanceVM.InDateTime;
                     attendanceObject.OutDateTime = attendanceVM.OutDateTime;
                     attendanceObject.CreatedBy = employeeId;
-                    attendanceObject.CreatedDate = DateTime.UtcNow;
+                    attendanceObject.CreatedDate = CommonMethod.CurrentIndianDateTime();
                     attendanceObject.ModifiedBy = employeeId;
-                    attendanceObject.ModifiedDate = DateTime.UtcNow;
+                    attendanceObject.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     _db.tbl_Attendance.Add(attendanceObject);
                     _db.SaveChanges();
                     response.Data = true;
@@ -335,7 +335,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         attendanceObject.TomorrowWorkDetail = attendanceVM.TomorrowWorkDetail;
                         attendanceObject.Remarks = attendanceVM.Remarks;
                         attendanceObject.ModifiedBy = base.UTI.EmployeeId;
-                        attendanceObject.ModifiedDate = DateTime.UtcNow;
+                        attendanceObject.ModifiedDate = CommonMethod.CurrentIndianDateTime();
 
                         if (employeeObj.EmploymentCategory == (int)EmploymentCategory.MonthlyBased || employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased)
                         {
@@ -470,7 +470,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             response.Data = false;
             try
             {
-                DateTime today = DateTime.UtcNow.Date;
+                DateTime today = CommonMethod.CurrentIndianDateTime().Date;
 
                 #region Validation
 
@@ -492,18 +492,18 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     tbl_Attendance attendanceObject = new tbl_Attendance();
                     attendanceObject.CompanyId = companyId;
                     attendanceObject.UserId = employeeId;
-                    attendanceObject.AttendanceDate = DateTime.UtcNow.Date;
+                    attendanceObject.AttendanceDate = CommonMethod.CurrentIndianDateTime().Date;
                    
                     attendanceObject.LocationFrom = inTimeRequestVM.InLocationFrom;
                     attendanceObject.Status = (int)AttendanceStatus.Login;
                     attendanceObject.IsActive = true;
-                    attendanceObject.InDateTime = DateTime.UtcNow;
+                    attendanceObject.InDateTime = CommonMethod.CurrentIndianDateTime();
                     attendanceObject.InLatitude = inTimeRequestVM.InLatitude;
                     attendanceObject.InLongitude = inTimeRequestVM.InLongitude;
                     attendanceObject.CreatedBy = employeeId;
-                    attendanceObject.CreatedDate = DateTime.UtcNow;
+                    attendanceObject.CreatedDate = CommonMethod.CurrentIndianDateTime();
                     attendanceObject.ModifiedBy = employeeId;
-                    attendanceObject.ModifiedDate = DateTime.UtcNow;
+                    attendanceObject.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     _db.tbl_Attendance.Add(attendanceObject);
                     _db.SaveChanges();
                     response.Data = true;
@@ -527,7 +527,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             response.Data = false;
             try
             {
-                DateTime today = DateTime.UtcNow.Date;
+                DateTime today = CommonMethod.CurrentIndianDateTime().Date;
                 tbl_Employee employeeObj = _db.tbl_Employee.FirstOrDefault(x => x.EmployeeId == employeeId);
 
                 #region Validation
@@ -563,7 +563,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     tbl_Attendance attendanceObject = _db.tbl_Attendance.FirstOrDefault(x => x.UserId == employeeId && x.AttendanceDate == today && x.InDateTime != null && x.OutDateTime == null);
                     attendanceObject.OutLocationFrom = outTimeRequestVM.OutLocationFrom;
                     attendanceObject.Status = (int)AttendanceStatus.Pending;
-                    attendanceObject.OutDateTime = DateTime.UtcNow;
+                    attendanceObject.OutDateTime = CommonMethod.CurrentIndianDateTime();
                     attendanceObject.OutLatitude = outTimeRequestVM.OutLatitude;
                     attendanceObject.OutLongitude = outTimeRequestVM.OutLongitude;
 
@@ -587,7 +587,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     attendanceObject.TomorrowWorkDetail = outTimeRequestVM.TomorrowWorkDetail;
                     attendanceObject.Remarks = outTimeRequestVM.Remarks;
                     attendanceObject.ModifiedBy = employeeId;
-                    attendanceObject.ModifiedDate = DateTime.UtcNow;
+                    attendanceObject.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     _db.SaveChanges();
 
                     response.Data = true;
@@ -610,7 +610,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             response.IsError = false;
             try
             {
-                DateTime today = DateTime.UtcNow.Date;
+                DateTime today = CommonMethod.CurrentIndianDateTime().Date;
                 bool isPresent = _db.tbl_Attendance.Any(x => x.AttendanceDate == today && x.InDateTime != null && x.OutDateTime == null && x.UserId == employeeId);
                 response.Data = isPresent;
             }

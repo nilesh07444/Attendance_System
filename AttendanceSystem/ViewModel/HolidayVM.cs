@@ -31,9 +31,9 @@ namespace AttendanceSystem.ViewModel
     {
         public HolidayFilterVM()
         {
-            StartMonth = DateTime.Now.Month;
-            EndMonth = DateTime.Now.Month;
-            Year = DateTime.Now.Year;
+            StartMonth = CommonMethod.CurrentIndianDateTime().Month;
+            EndMonth = CommonMethod.CurrentIndianDateTime().Month;
+            Year = CommonMethod.CurrentIndianDateTime().Year;
         }
         public int StartMonth { get; set; }
         public int EndMonth { get; set; }

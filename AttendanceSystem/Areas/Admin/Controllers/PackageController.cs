@@ -127,7 +127,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objPackage.PackageColorCode = packageVM.PackageColorCode;
                         objPackage.PackageFontIcon = packageVM.PackageFontIcon;
                         objPackage.ModifiedBy = LoggedInUserId;
-                        objPackage.ModifiedDate = DateTime.UtcNow;
+                        objPackage.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     }
                     else
                     {
@@ -143,9 +143,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objPackage.PackageColorCode = packageVM.PackageColorCode;
                         objPackage.PackageFontIcon = packageVM.PackageFontIcon;
                         objPackage.CreatedBy = LoggedInUserId;
-                        objPackage.CreatedDate = DateTime.UtcNow;
+                        objPackage.CreatedDate = CommonMethod.CurrentIndianDateTime();
                         objPackage.ModifiedBy = LoggedInUserId;
-                        objPackage.ModifiedDate = DateTime.UtcNow;
+                        objPackage.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         _db.tbl_Package.Add(objPackage);
                     }
                     _db.SaveChanges();
@@ -208,7 +208,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     }
 
                     objPackage.ModifiedBy = LoggedInUserId;
-                    objPackage.ModifiedDate = DateTime.UtcNow;
+                    objPackage.ModifiedDate = CommonMethod.CurrentIndianDateTime();
 
                     _db.SaveChanges();
                     ReturnMessage = ErrorMessage.Success;

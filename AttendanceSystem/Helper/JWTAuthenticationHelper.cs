@@ -17,7 +17,7 @@ namespace AttendanceSystem.Helper
 			byte[] symmetricKeyBytes = Convert.FromBase64String(symmetricKey);
 			JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
 			
-			DateTime tokenGeneratedOnUTC = DateTime.UtcNow;
+			DateTime tokenGeneratedOnUTC = CommonMethod.CurrentIndianDateTime();
 			int tokenValidityInMins =Convert.ToInt32(ConfigurationManager.AppSettings["JWT_Validity_Mins"]);
 			DateTime tokenExpiresOnUTC = tokenGeneratedOnUTC.AddMinutes(tokenValidityInMins);
 			var tokenDescriptor = new SecurityTokenDescriptor
@@ -105,7 +105,7 @@ namespace AttendanceSystem.Helper
 
 		static bool LifetimeValidator(DateTime? notBefore, DateTime? expires, SecurityToken securityToken, TokenValidationParameters validationParameters)
 		{
-			return (expires != null && DateTime.UtcNow < expires);
+			return (expires != null && CommonMethod.CurrentIndianDateTime() < expires);
 		}
 	}
 }

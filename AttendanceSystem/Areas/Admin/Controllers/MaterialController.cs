@@ -104,7 +104,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objMaterial.InOut = materialVM.InOut;
                         objMaterial.Remarks = materialVM.Remarks;
                         objMaterial.ModifiedBy = LoggedInUserId;
-                        objMaterial.ModifiedDate = DateTime.UtcNow;
+                        objMaterial.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     }
                     else
                     {
@@ -118,9 +118,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objMaterial.Remarks = materialVM.Remarks;
                         objMaterial.IsActive = true;
                         objMaterial.CreatedBy = LoggedInUserId;
-                        objMaterial.CreatedDate = DateTime.UtcNow;
+                        objMaterial.CreatedDate = CommonMethod.CurrentIndianDateTime();
                         objMaterial.ModifiedBy = LoggedInUserId;
-                        objMaterial.ModifiedDate = DateTime.UtcNow;
+                        objMaterial.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         _db.tbl_Material.Add(objMaterial);
                     }
                     _db.SaveChanges();
@@ -162,7 +162,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     }
 
                     objMaterial.ModifiedBy = loggedInUserId;
-                    objMaterial.ModifiedDate = DateTime.UtcNow;
+                    objMaterial.ModifiedDate = CommonMethod.CurrentIndianDateTime();
 
                     _db.SaveChanges();
                     ReturnMessage = ErrorMessage.Success;
@@ -194,7 +194,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 {
                     objMaterial.IsDeleted = true;
                     objMaterial.ModifiedBy = loggedInUserId;
-                    objMaterial.ModifiedDate = DateTime.UtcNow;
+                    objMaterial.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     _db.SaveChanges();
 
                     ReturnMessage = ErrorMessage.Success;

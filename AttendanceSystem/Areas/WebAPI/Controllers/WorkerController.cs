@@ -157,7 +157,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             ResponseDataModel<List<EmployeeFirgerprintVM>> response = new ResponseDataModel<List<EmployeeFirgerprintVM>>();
             try
             {
-                DateTime today = DateTime.UtcNow.Date;
+                DateTime today = CommonMethod.CurrentIndianDateTime().Date;
                 companyId = base.UTI.CompanyId;
                 List<EmployeeFirgerprintVM> lstEmployeeFingerPrints = (from f in _db.tbl_EmployeeFingerprint
                                                                        join e in _db.tbl_Employee on f.EmployeeId equals e.EmployeeId
@@ -189,7 +189,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             ResponseDataModel<EmployeePendingSalaryVM> response = new ResponseDataModel<EmployeePendingSalaryVM>();
             try
             {
-                DateTime today = DateTime.UtcNow.Date;
+                DateTime today = CommonMethod.CurrentIndianDateTime().Date;
                 companyId = base.UTI.CompanyId;
 
 

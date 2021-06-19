@@ -76,7 +76,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objMaterialCategory.MaterialCategoryName = MaterialCategoryVM.MaterialCategoryName;
                         objMaterialCategory.Description = MaterialCategoryVM.Description;
                         objMaterialCategory.ModifiedBy = LoggedInUserId;
-                        objMaterialCategory.ModifiedDate = DateTime.UtcNow;
+                        objMaterialCategory.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     }
                     else
                     {
@@ -86,9 +86,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objMaterialCategory.Description = MaterialCategoryVM.Description;
                         objMaterialCategory.IsActive = true;
                         objMaterialCategory.CreatedBy = LoggedInUserId;
-                        objMaterialCategory.CreatedDate = DateTime.UtcNow;
+                        objMaterialCategory.CreatedDate = CommonMethod.CurrentIndianDateTime();
                         objMaterialCategory.ModifiedBy = LoggedInUserId;
-                        objMaterialCategory.ModifiedDate = DateTime.UtcNow;
+                        objMaterialCategory.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         _db.tbl_MaterialCategory.Add(objMaterialCategory);
                     }
                     _db.SaveChanges();
@@ -127,7 +127,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     }
 
                     objMaterialCategory.ModifiedBy = LoggedInUserId;
-                    objMaterialCategory.ModifiedDate = DateTime.UtcNow;
+                    objMaterialCategory.ModifiedDate = CommonMethod.CurrentIndianDateTime();
 
                     _db.SaveChanges();
                     ReturnMessage = "success";

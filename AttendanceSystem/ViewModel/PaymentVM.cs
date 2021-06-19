@@ -9,7 +9,7 @@ namespace AttendanceSystem.ViewModel
     {
         public PaymentVM()
         {
-            PaymentDate = DateTime.Now;
+            PaymentDate = CommonMethod.CurrentIndianDateTime();
             PendingSalary = 0;
         }
         public long EmployeePaymentId { get; set; }
@@ -39,7 +39,7 @@ namespace AttendanceSystem.ViewModel
     {
         public PaymentFilterVM()
         {
-            StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            StartDate = new DateTime(CommonMethod.CurrentIndianDateTime().Year, CommonMethod.CurrentIndianDateTime().Month, 1);
             EndDate = StartDate.AddMonths(1).AddDays(-1);
         }
         public DateTime StartDate { get; set; }

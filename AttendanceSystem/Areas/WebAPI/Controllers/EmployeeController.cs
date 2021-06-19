@@ -127,9 +127,9 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     objEmployee.IsActive = isTrailMode ? true : (activeEmployee >= noOfEmployee ? false : true);
                     objEmployee.WorkerTypeId = employeeVM.WorkerTypeId;
                     objEmployee.CreatedBy = employeeId;
-                    objEmployee.CreatedDate = DateTime.UtcNow;
+                    objEmployee.CreatedDate = CommonMethod.CurrentIndianDateTime();
                     objEmployee.UpdatedBy = employeeId;
-                    objEmployee.UpdatedDate = DateTime.UtcNow;
+                    objEmployee.UpdatedDate = CommonMethod.CurrentIndianDateTime();
                     _db.tbl_Employee.Add(objEmployee);
                     _db.SaveChanges();
                     response.Data = objEmployee.EmployeeId;
@@ -333,7 +333,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         employeeObject.Pincode = employeeVM.Pincode;
                         employeeObject.State = employeeVM.State;
                         employeeObject.UpdatedBy = employeeId;
-                        employeeObject.UpdatedDate = DateTime.UtcNow;
+                        employeeObject.UpdatedDate = CommonMethod.CurrentIndianDateTime();
                         _db.SaveChanges();
                         response.Data = true;
                     }
@@ -520,7 +520,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 companyId = base.UTI.CompanyId;
 
                 #region Validation
-                DateTime indianCurrentDateTime = CommonMethod.ConvertFromUTCToIndianDateTime(DateTime.UtcNow);
+                DateTime indianCurrentDateTime = CommonMethod.CurrentIndianDateTime();
 
                 if (requestVM.Date.Date != indianCurrentDateTime.Date)
                 {
@@ -558,9 +558,9 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         assignedWorker.EmployeeId = x;
                         assignedWorker.IsClosed = false;
                         assignedWorker.CreatedBy = employeeId;
-                        assignedWorker.CreatedDate = DateTime.UtcNow;
+                        assignedWorker.CreatedDate = CommonMethod.CurrentIndianDateTime();
                         assignedWorker.ModifiedBy = employeeId;
-                        assignedWorker.ModifiedDate = DateTime.UtcNow;
+                        assignedWorker.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         listAssignedWorker.Add(assignedWorker);
 
                     });
@@ -650,9 +650,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     {
                         assignedWorker.IsClosed = true;
                         assignedWorker.ModifiedBy = employeeId;
-                        assignedWorker.ModifiedDate = DateTime.UtcNow;
-
-
+                        assignedWorker.ModifiedDate = CommonMethod.CurrentIndianDateTime();
+                         
                         //tbl_WorkerAttendance workerAttendance = _db.tbl_WorkerAttendance.Where(x => x.AttendanceDate == requestVM.Date && x.EmployeeId == requestVM.EmployeeId && !x.IsEvening).FirstOrDefault();
                         if (attendanceObject != null && employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased)
                         {
@@ -667,9 +666,9 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                             objWorkerPayment.Remarks = ErrorMessage.AutoCreditOnEveningAttendance;
                             objWorkerPayment.Month = attendanceObject.AttendanceDate.Month;
                             objWorkerPayment.Year = attendanceObject.AttendanceDate.Year;
-                            objWorkerPayment.CreatedDate = DateTime.UtcNow;
+                            objWorkerPayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
                             objWorkerPayment.CreatedBy = employeeId;
-                            objWorkerPayment.ModifiedDate = DateTime.UtcNow;
+                            objWorkerPayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                             objWorkerPayment.ModifiedBy = employeeId;
                             objWorkerPayment.CreditAmount = (attendanceObject.IsMorning && attendanceObject.IsAfternoon && attendanceObject.IsEvening ? (employeeObj.PerCategoryPrice) : (employeeObj.PerCategoryPrice / 2));
                             _db.tbl_WorkerPayment.Add(objWorkerPayment);
@@ -797,7 +796,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     {
                         objEmployee.ProfilePicture = profileImageFile != null ? fileName : objEmployee.ProfilePicture;
                         objEmployee.UpdatedBy = employeeId;
-                        objEmployee.UpdatedDate = DateTime.UtcNow;
+                        objEmployee.UpdatedDate = CommonMethod.CurrentIndianDateTime();
                         _db.SaveChanges();
                     }
                 }
