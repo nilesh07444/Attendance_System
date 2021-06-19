@@ -1,7 +1,7 @@
-﻿using System;
+﻿using AttendanceSystem.Helper;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
@@ -10,84 +10,131 @@ namespace AttendanceSystem.ViewModel
     public class EmployeeVM
     {
         public long EmployeeId { get; set; }
+
         public long CompanyId { get; set; }
-        [Required, Display(Name = "Employee Role")]
+
+        [Display(Name = "Employee Role *")]
+        [Required(ErrorMessage = ErrorMessage.ThisFieldRequired)]
         public int AdminRoleId { get; set; }
-        public string AdminRoleText { get; set; }
-        [Display(Name = "Prefix")]
+
+        [Display(Name = "Prefix *")]
+        [Required(ErrorMessage = ErrorMessage.ThisFieldRequired)]
         public string Prefix { get; set; }
-        [Required, Display(Name = "First Name")]
+
+        [Display(Name = "First Name *")]
+        [Required(ErrorMessage = ErrorMessage.ThisFieldRequired)]
         public string FirstName { get; set; }
-        [Required, Display(Name = "Last Name")]
+
+        [Display(Name = "Last Name *")]
+        [Required(ErrorMessage = ErrorMessage.ThisFieldRequired)]
         public string LastName { get; set; }
+        
         [Display(Name = "Email")]
         public string Email { get; set; }
+        
         public string EmployeeCode { get; set; }
+        
         public string Password { get; set; }
-        [Required, Display(Name = "Mobile No")]
+        
+        [Display(Name = "Mobile No *")]
+        [Required(ErrorMessage = ErrorMessage.ThisFieldRequired)]
         [RegularExpression(@"^([0-9]{10})$", ErrorMessage = "Invalid Mobile Number.")]
         public string MobileNo { get; set; }
+        
         [Display(Name = "Alternate Mobile no")]
         [RegularExpression(@"^([0-9]{10})$", ErrorMessage = "Invalid Alternate Mobile Number.")]
         public string AlternateMobile { get; set; }
-        [Display(Name = "Address")]
+
+        [Display(Name = "Address *")]
+        [Required(ErrorMessage = ErrorMessage.ThisFieldRequired)]
         public string Address { get; set; }
-        [Display(Name = "City")]
+
+        [Display(Name = "City *")]
+        [Required(ErrorMessage = ErrorMessage.ThisFieldRequired)]
         public string City { get; set; }
-        [Required, Display(Name = "Pincode")]
+
+        [Display(Name = "Pincode *")]
+        [Required(ErrorMessage = ErrorMessage.ThisFieldRequired)]
         [RegularExpression(@"^([0-9]{6})$", ErrorMessage = "Invalid Pincode.")]
         public string Pincode { get; set; }
-        [Display(Name = "State")]
+
+        [Display(Name = "State *")]
+        [Required(ErrorMessage = ErrorMessage.ThisFieldRequired)]
         public string State { get; set; }
+        
         [Display(Name = "Designation")]
         public string Designation { get; set; }
-        [Required, Display(Name = "Date of Birth")]
+        
+        [Display(Name = "Date of Birth *")]
+        [Required(ErrorMessage = ErrorMessage.ThisFieldRequired)]
         public DateTime? Dob { get; set; }
-        [Required, Display(Name = "Date of Join")]
+        
+        [Display(Name = "Date of Join *")]
+        [Required(ErrorMessage = ErrorMessage.ThisFieldRequired)]
         public DateTime? DateOfJoin { get; set; }
+        
         [Display(Name = "Blood Group")]
         public string BloodGroup { get; set; }
+        
         [Display(Name = "Working TIme")]
         public string WorkingTime { get; set; }
-        [Required, Display(Name = "Aadhar card No")]
+
+        [Display(Name = "Aadhar Card No *")]
+        [Required(ErrorMessage = ErrorMessage.ThisFieldRequired)]
         [RegularExpression(@"^([0-9]{12})$", ErrorMessage = "Invalid Adhar Card Number.")]
         public string AdharCardNo { get; set; }
+
         [Display(Name = "Date of Id card Expiry")]
         public DateTime? DateOfIdCardExpiry { get; set; }
+
         [Display(Name = "Remark")]
         public string Remarks { get; set; }
+
         [Display(Name = "Profile Picture")]
         public string ProfilePicture { get; set; }
-        [Required, Display(Name = "Employment Category")]
-        public int EmploymentCategory { get; set; }
-        [Required, Display(Name = "Per Category Price")]
-        public decimal PerCategoryPrice { get; set; }
-        [Display(Name = "Monthly Salary")]
-        public decimal? MonthlySalaryPrice { get; set; }
-        [Display(Name = "Extra Per Hour Price")]
-        public decimal? ExtraPerHourPrice { get; set; }
-        [Display(Name = "Is Leave Forward")]
-        public bool IsLeaveForward { get; set; }
-        public bool IsActive { get; set; }
-        public bool IsDeleted { get; set; }
-        [Display(Name = "Finger Print Enabled")]
-        public bool IsFingerprintEnabled { get; set; }
-        [Display(Name = "Profile Image")]
-        public HttpPostedFileBase ProfileImageFile { get; set; }
-        public List<SelectListItem> UserRoleList { get; set; }
-        public string OTP { get; set; }
 
-        [Display(Name = "Free Leave Per Month")]
+        [Display(Name = "Employment Category *")]
+        [Required(ErrorMessage = ErrorMessage.ThisFieldRequired)]
+        public int EmploymentCategory { get; set; }
+
+        [Display(Name = "Per Category Price *")]
+        [Required(ErrorMessage = ErrorMessage.ThisFieldRequired)]
+        public decimal PerCategoryPrice { get; set; }
+
+        [Display(Name = "Monthly Salary *")]
+        public decimal? MonthlySalaryPrice { get; set; }
+
+        [Display(Name = "Extra Per Hour Price *")]
+        public decimal? ExtraPerHourPrice { get; set; }
+
+        [Display(Name = "Is Leave Forward *")]
+        public bool IsLeaveForward { get; set; } = false;
+
+        [Display(Name = "Finger Print Enabled * ")]
+        public bool IsFingerprintEnabled { get; set; } = false;
+
+        [Display(Name = "Profile Image *")]
+        public HttpPostedFileBase ProfileImageFile { get; set; }
+
+        [Display(Name = "Free Leave Per Month *")]
+        //[MaxLength(10)]
         public decimal NoOfFreeLeavePerMonth { get; set; }
 
-        public string EmploymentCategoryText { get; set; }
-        [Display(Name = "Worker Type")]
+        [Display(Name = "Worker Type *")]
         public long? WorkerTypeId { get; set; }
+        
+        public bool IsActive { get; set; }
+        public bool IsDeleted { get; set; }
+
+        // Additional 
+        public string AdminRoleText { get; set; }
+        public bool IsFingerprintLimitExceed { get; set; }
+        public List<SelectListItem> UserRoleList { get; set; }
+        public string OTP { get; set; }
         public string WorkerTypeText { get; set; }
         public List<SelectListItem> WorkerTypeList { get; set; }
+        public string EmploymentCategoryText { get; set; }
 
-        //
-        public bool IsFingerprintLimitExceed { get; set; }
     }
 
     public class EmployeeFilterVM

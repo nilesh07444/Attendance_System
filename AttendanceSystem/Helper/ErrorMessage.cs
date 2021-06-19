@@ -1,7 +1,10 @@
 ﻿namespace AttendanceSystem.Helper
 {
+    
     public static class ErrorMessage
     {
+        public const string ThisFieldRequired = "This field is required";
+
         // Admin Portal Messages
         public static string GstNumberExists = "GST Number is already exist";
         public static string UserNameOrPasswordInvalid = "Username Or Password Invalid.";

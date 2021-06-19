@@ -50,7 +50,7 @@
                             </div>
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.Prefix, htmlAttributes: new { @class = "" })
-                                @Html.DropDownListFor(model => model.Prefix, new SelectList(lstPrefix, "Value", "Text"), "- Select -", new { @class = "form-control required", style = "width: 100%" })
+                                @Html.DropDownListFor(model => model.Prefix, new SelectList(lstPrefix, "Value", "Text"), "- Select -", new { @class = "form-control", style = "width: 100%" })
                                 @Html.ValidationMessageFor(model => model.Prefix, "", new { @class = "text-danger" })
                                 @Html.HiddenFor(model => model.AdminRoleId)
                                 @Html.HiddenFor(model => model.EmployeeId)
@@ -60,12 +60,12 @@
 
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.FirstName, new { @type = "text", @class = "form-control required", @placeholder = "Enter First Name" })
+                                @Html.TextBoxFor(model => model.FirstName, new { @type = "text", @class = "form-control", @placeholder = "Enter First Name" })
                                 @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
                             </div>
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.LastName, new { @type = "text", @class = "form-control required", @placeholder = "Enter Last Name" })
+                                @Html.TextBoxFor(model => model.LastName, new { @type = "text", @class = "form-control", @placeholder = "Enter Last Name" })
                                 @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -73,12 +73,12 @@
 
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.MobileNo, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.MobileNo, new { @type = "text", @class = "form-control required", @placeholder = "Enter Mobile no", @maxlength = "10" })
+                                @Html.TextBoxFor(model => model.MobileNo, new { @type = "text", @class = "form-control", @placeholder = "Enter Mobile no", @maxlength = "10" })
                                 @Html.ValidationMessageFor(model => model.MobileNo, "", new { @class = "text-danger" })
                             </div>
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "" })
-                                @Html.TextAreaFor(model => model.Address, new { @type = "text", @class = "form-control required", @placeholder = "Enter Address", @maxlength = "250" })
+                                @Html.TextAreaFor(model => model.Address, new { @type = "text", @class = "form-control", @placeholder = "Enter Address", @maxlength = "250" })
                                 @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -86,12 +86,12 @@
 
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.City, new { @type = "text", @class = "form-control required", @placeholder = "Enter City" })
+                                @Html.TextBoxFor(model => model.City, new { @type = "text", @class = "form-control", @placeholder = "Enter City" })
                                 @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
                             </div>
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.Pincode, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.Pincode, new { @type = "text", @class = "form-control required", @placeholder = "Enter Pincode", @maxlength = "6" })
+                                @Html.TextBoxFor(model => model.Pincode, new { @type = "text", @class = "form-control", @placeholder = "Enter Pincode", @maxlength = "6" })
                                 @Html.ValidationMessageFor(model => model.Pincode, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -99,12 +99,12 @@
 
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.State, new { @type = "text", @class = "form-control required", @placeholder = "Enter State" })
+                                @Html.TextBoxFor(model => model.State, new { @type = "text", @class = "form-control", @placeholder = "Enter State" })
                                 @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
                             </div>
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.Dob, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.Dob, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Enter Date of Birth" })
+                                @Html.TextBoxFor(model => model.Dob, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control", @placeholder = "Enter Date of Birth" })
                                 @Html.ValidationMessageFor(model => model.Dob, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -112,7 +112,7 @@
 
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.DateOfJoin, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.DateOfJoin, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Enter Date of Joining" })
+                                @Html.TextBoxFor(model => model.DateOfJoin, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control", @placeholder = "Enter Date of Joining" })
                                 @Html.ValidationMessageFor(model => model.DateOfJoin, "", new { @class = "text-danger" })
                             </div>
                             <div class="form-group col-6">
@@ -130,7 +130,7 @@
                             </div>
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.EmploymentCategory, htmlAttributes: new { @class = "" })
-                                @Html.DropDownListFor(model => model.EmploymentCategory, new SelectList(lstEmploymentCategory, "Value", "Text"), "- Select -", new { @class = "form-control required" })
+                                @Html.DropDownListFor(model => model.EmploymentCategory, new SelectList(lstEmploymentCategory, "Value", "Text"), "- Select -", new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.EmploymentCategory, "", new { @class = "text-danger" })
                                 @Html.HiddenFor(model => model.EmploymentCategory)
                             </div>
@@ -223,7 +223,6 @@
 </div>
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 
-
 <script type="text/javascript">
     $(document).ready(function () {
 
@@ -231,8 +230,7 @@
         var employeeId = $("#EmployeeId").val();
 
         if (employeeId > 0) {
-            $("#EmploymentCategory").attr("disabled", true);
-
+            $("#EmploymentCategory").attr("disabled", true); 
         } else {
             $("#ProfileImageFile").addClass("required");
             $("#dvMonthlySal").hide();
@@ -245,9 +243,7 @@
         $('#btnCancel').click(function () {
             window.location.href = "/admin/worker";
         });
-
-        
-
+         
         $('#EmploymentCategory').change(function () {
             fnShowHideBasedOnEmploymentCategory();
         });
@@ -265,10 +261,15 @@
                     alert("Please valid date of birth.");
                     return false;
                 }
+
+                var firstname = $("#FirstName").val();
+                var lastname = $("#LastName").val();
+                var fullname = firstname + " " + lastname;
+
                 var mobileNo = $("#MobileNo").val();
                 $.blockUI({ message: '<h4> Please Wait...</h4>' });
 
-                var StrURL = '/admin/worker/VerifyMobileNo?mobileNo=' + mobileNo;
+                var StrURL = '/admin/worker/VerifyMobileNo?mobileNo=' + mobileNo + "&fullname=" + fullname;
                 $.ajax({
                     url: StrURL,
                     cache: false,
@@ -299,6 +300,7 @@
             }
             return false;
         });
+
         $('#BtnOtpSubmit').click(function () {
             var OTP = $("#OTP").val();
             var TextOTP = $("#TextOTP").val();
@@ -349,13 +351,15 @@
         }
 
         if (EmploymentCategory == "1") {
-            $(".clsPerCategoryPrice").html("Per Day Price.")
+            $(".clsPerCategoryPrice").html("Per Day Price *")
         }
         else if (EmploymentCategory == "2") {
-            $(".clsPerCategoryPrice").html("Per Hour Price.")
+            $(".clsPerCategoryPrice").html("Per Hour Price *")
         }
         else if (EmploymentCategory == "4") {
-            $(".clsPerCategoryPrice").html("Per Unit Price.")
+            $(".clsPerCategoryPrice").html("Per Unit Price *")
         }
+
     }
+
 </script>

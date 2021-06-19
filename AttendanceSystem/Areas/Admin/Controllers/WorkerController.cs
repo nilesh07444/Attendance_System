@@ -23,8 +23,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         long companyId;
         long loggedInUserId;
         bool isTrailMode;
-        string defaultPassword;
-     
+        
         public WorkerController()
         {
             _db = new AttendanceSystemEntities();
@@ -34,7 +33,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             companyId = clsAdminSession.CompanyId;
             loggedInUserId = clsAdminSession.UserID;
             isTrailMode = clsAdminSession.IsTrialMode;
-            defaultPassword = ConfigurationManager.AppSettings["DefaultPassword"].ToString();
         }
         public ActionResult Index(int? userStatus = null)
         {
@@ -165,6 +163,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
                 if (ModelState.IsValid)
                 {
+                    #region Upload Profile Image
+
                     string fileName = string.Empty;
                     string path = Server.MapPath(employeeDirectoryPath);
 
@@ -194,6 +194,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                             return View(employeeVM);
                         }
                     }
+
+                    #endregion
 
                     if (employeeVM.EmployeeId > 0)
                     {
@@ -234,12 +236,14 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                         int activeEmployee = empCount.Where(x => x.isActive).Count();
 
+                        string randomPassword = CommonMethod.GetRandomPassword(8);
+
                         tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == companyId).FirstOrDefault();
                         tbl_Employee objEmployee = new tbl_Employee();
                         objEmployee.ProfilePicture = fileName;
                         objEmployee.CompanyId = companyId;
                         objEmployee.AdminRoleId = (int)AdminRoles.Worker;
-                        objEmployee.Password = CommonMethod.Encrypt(defaultPassword, psSult); ;
+                        objEmployee.Password = CommonMethod.Encrypt(randomPassword, psSult);
                         objEmployee.Prefix = employeeVM.Prefix;
                         objEmployee.FirstName = employeeVM.FirstName;
                         objEmployee.LastName = employeeVM.LastName;
@@ -413,7 +417,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return ReturnMessage;
         }
 
-        public JsonResult VerifyMobileNo(string mobileNo)
+        public JsonResult VerifyMobileNo(string mobileNo, string fullname)
         {
             int status = 0;
             string errorMessage = string.Empty;
@@ -429,7 +433,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 string msg = CommonMethod.GetSmsContent(SmsId);
 
                 Regex regReplace = new Regex("{#var#}");
-                msg = regReplace.Replace(msg, "Dear", 1);
+                msg = regReplace.Replace(msg, fullname, 1);
                 msg = regReplace.Replace(msg, num.ToString(), 1);
 
                 msg = msg.Replace("\r\n", "\n");

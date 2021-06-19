@@ -17,7 +17,6 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
         private readonly AttendanceSystemEntities _db;
         string psSult;
         long employeeId;
-        string defaultPassword;
         long companyId;
         string domainUrl = string.Empty;
         bool isTrailMode;
@@ -25,7 +24,6 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
         {
             _db = new AttendanceSystemEntities();
             psSult = ConfigurationManager.AppSettings["PasswordSult"].ToString();
-            defaultPassword = ConfigurationManager.AppSettings["DefaultPassword"].ToString();
             domainUrl = ConfigurationManager.AppSettings["DomainUrl"].ToString();
         }
 
@@ -101,11 +99,13 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                     int activeEmployee = empCount.Where(x => x.isActive).Count();
 
+                    string randomPassword = CommonMethod.GetRandomPassword(8);
+
                     tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == companyId).FirstOrDefault();
                     tbl_Employee objEmployee = new tbl_Employee();
                     objEmployee.ProfilePicture = employeeVM.ProfilePicture;
                     objEmployee.CompanyId = companyId;
-                    objEmployee.Password = CommonMethod.Encrypt(defaultPassword, psSult); ;
+                    objEmployee.Password = CommonMethod.Encrypt(randomPassword, psSult);
                     objEmployee.AdminRoleId = (int)AdminRoles.Worker;
                     objEmployee.Prefix = employeeVM.Prefix;
                     objEmployee.FirstName = employeeVM.FirstName;

@@ -23,8 +23,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         long companyId;
         long loggedInUserId;
         bool isTrailMode;
-        string defaultPassword;
-        // GET: Admin/Employee
+        
         public EmployeeController()
         {
             _db = new AttendanceSystemEntities();
@@ -34,7 +33,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             companyId = clsAdminSession.CompanyId;
             loggedInUserId = clsAdminSession.UserID;
             isTrailMode = clsAdminSession.IsTrialMode;
-            defaultPassword = ConfigurationManager.AppSettings["DefaultPassword"].ToString();
         }
         public ActionResult Index(int? userRole = null, int? userStatus = null)
         {
@@ -250,13 +248,13 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                         int activeEmployee = empCount.Where(x => x.isActive).Count();
 
-                        string password = defaultPassword;
+                        string randomPassword = CommonMethod.GetRandomPassword(8);
 
                         tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == companyId).FirstOrDefault();
                         tbl_Employee objEmployee = new tbl_Employee();
                         objEmployee.ProfilePicture = fileName;
                         objEmployee.CompanyId = companyId;
-                        objEmployee.Password = CommonMethod.Encrypt(password, psSult);
+                        objEmployee.Password = CommonMethod.Encrypt(randomPassword, psSult);
                         objEmployee.AdminRoleId = employeeVM.AdminRoleId;
                         objEmployee.Prefix = employeeVM.Prefix;
                         objEmployee.FirstName = employeeVM.FirstName;
@@ -322,7 +320,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         msg = regReplace.Replace(msg, objEmployee.FirstName + " " + objEmployee.LastName, 1);
                         msg = regReplace.Replace(msg, objCompany.CompanyName, 1);
                         msg = regReplace.Replace(msg, objEmployee.EmployeeCode, 1);
-                        msg = regReplace.Replace(msg, password, 1);
+                        msg = regReplace.Replace(msg, randomPassword, 1);
                         msg = regReplace.Replace(msg, salaryText, 1);
                         msg = regReplace.Replace(msg, employmentCategoryText, 1);
                         msg = msg.Replace("\r\n", "\n");
@@ -480,7 +478,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return lst;
         }
 
-        public JsonResult VerifyMobileNo(string mobileNo)
+        public JsonResult VerifyMobileNo(string mobileNo, string fullname)
         {
             int status = 0;
             string errorMessage = string.Empty;
@@ -496,7 +494,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 string msg = CommonMethod.GetSmsContent(SmsId);
 
                 Regex regReplace = new Regex("{#var#}");
-                msg = regReplace.Replace(msg, "Dear", 1);
+                msg = regReplace.Replace(msg, fullname, 1);
                 msg = regReplace.Replace(msg, num.ToString(), 1);
 
                 msg = msg.Replace("\r\n", "\n");
@@ -549,7 +547,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 loginHistoryFilterVM.LoginHistoryList = (from lh in _db.tbl_LoginHistory
                                                          join emp in _db.tbl_Employee on lh.EmployeeId equals emp.EmployeeId
                                                          where !emp.IsDeleted && emp.CompanyId == companyId
-                                                         //&& lh.LoginDate >= utcStartDate && lh.LoginDate <= utcEndDate
                                                          && DbFunctions.TruncateTime(lh.LoginDate) >= DbFunctions.TruncateTime(loginHistoryFilterVM.StartDate)
                                                          && DbFunctions.TruncateTime(lh.LoginDate) <= DbFunctions.TruncateTime(loginHistoryFilterVM.EndDate)
                                                          && (loginHistoryFilterVM.EmployeeId.HasValue ? lh.EmployeeId == loginHistoryFilterVM.EmployeeId.Value : true)

@@ -342,22 +342,13 @@ namespace AttendanceSystem
             return cd;
         }
 
-        //public static string GetRandomReferralCode(int length)
-        //{
-        //    Random random = new Random();
-        //    var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        //    string randomReferralCode = new string(chars.Select(c => chars[random.Next(chars.Length)]).Take(length).ToArray());
-
-        //    krupagallarydbEntities _db = new krupagallarydbEntities();
-        //    bool existCode = _db.tbl_ClientUsers.Where(x => x.OwnReferralCode == randomReferralCode).Any();
-
-        //    if (existCode)
-        //    {
-        //        GetRandomReferralCode(length);
-        //    }
-
-        //    return randomReferralCode;
-        //}
+        public static string GetRandomPassword(int length)
+        {
+            Random random = new Random();
+            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            string randomPassword = new string(chars.Select(c => chars[random.Next(chars.Length)]).Take(length).ToArray());
+            return randomPassword;
+        }
 
         public static string GetSMSUrl()
         {

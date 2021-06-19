@@ -197,7 +197,8 @@
 
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.NoOfFreeLeavePerMonth, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.NoOfFreeLeavePerMonth, new { @type = "text", @class = "form-control required", @placeholder = "Enter Extra Per Hour Price", @min = "0", @max = "30" })
+                                @Html.TextBoxFor(model => model.NoOfFreeLeavePerMonth, new { @type = "text", @class = "form-control required", @placeholder = "Enter Free Leave Per Month" })
+                                @Html.ValidationMessageFor(model => model.NoOfFreeLeavePerMonth, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="row">
@@ -301,7 +302,11 @@
                 var mobileNo = $("#MobileNo").val();
                 $.blockUI({ message: '<h4> Please Wait...</h4>' });
 
-                var StrURL = '/admin/employee/VerifyMobileNo?mobileNo=' + mobileNo;
+                var firstname = $("#FirstName").val();
+                var lastname = $("#LastName").val();
+                var fullname = firstname + " " + lastname;
+
+                var StrURL = '/admin/employee/VerifyMobileNo?mobileNo=' + mobileNo + "&fullname=" + fullname;
                 $.ajax({
                     url: StrURL,
                     cache: false,

@@ -4,6 +4,7 @@ using AttendanceSystem.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -26,7 +27,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         public string CompanyAdminProfileDirectoryPath = "";
         long loggedInUserId;
         string enviornment;
-        string defaultPassword;
+
         public CompanyController()
         {
             _db = new AttendanceSystemEntities();
@@ -40,9 +41,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             CompanyAdminProfileDirectoryPath = ErrorMessage.ProfileDirectoryPath;
             enviornment = ConfigurationManager.AppSettings["Environment"].ToString();
             loggedInUserId = clsAdminSession.UserID;
-            defaultPassword = ConfigurationManager.AppSettings["DefaultPassword"].ToString();
         }
-        // GET: Admin/Company
+
         public ActionResult Registered(long? companyTypeId, DateTime? startDate, DateTime? endDate)
         {
 
@@ -55,11 +55,12 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
             try
             {
+
                 companyRegisteredFilterVM.RegisteredCompanyList = (from cp in _db.tbl_Company
                                                                    join ct in _db.mst_CompanyType on cp.CompanyTypeId equals ct.CompanyTypeId
                                                                    where !cp.IsDeleted
-                                                                   && (companyRegisteredFilterVM.CompanyTypeId.HasValue ? cp.CompanyTypeId == companyRegisteredFilterVM.CompanyTypeId.Value : true)
-                                                                   && ((companyRegisteredFilterVM.StartDate.HasValue && companyRegisteredFilterVM.EndDate.HasValue) ? (cp.CreatedDate >= companyRegisteredFilterVM.StartDate.Value && cp.CreatedDate <= companyRegisteredFilterVM.EndDate.Value) : true)
+                                                                   && (companyRegisteredFilterVM.StartDate.HasValue ? (DbFunctions.TruncateTime(cp.CreatedDate) >= DbFunctions.TruncateTime(companyRegisteredFilterVM.StartDate.Value)) : true)
+                                                                   && (companyRegisteredFilterVM.EndDate.HasValue ? (DbFunctions.TruncateTime(cp.CreatedDate) <= DbFunctions.TruncateTime(companyRegisteredFilterVM.EndDate.Value)) : true)
                                                                    select new RegisteredCompanyVM
                                                                    {
                                                                        CompanyId = cp.CompanyId,
@@ -280,6 +281,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         _db.SaveChanges();
 
 
+                        string randomPassword = CommonMethod.GetRandomPassword(8);
+
                         tbl_AdminUser objAdminUser = new tbl_AdminUser();
                         objAdminUser.AdminUserRoleId = (int)AdminRoles.CompanyAdmin;
                         objAdminUser.CompanyId = objCompanyReq.CompanyId;
@@ -288,7 +291,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objAdminUser.MIddleName = objCompanyReq.CompanyAdminMiddleName;
                         objAdminUser.LastName = objCompanyReq.CompanyAdminLastName;
                         objAdminUser.UserName = companyCode;
-                        objAdminUser.Password = CommonMethod.Encrypt(defaultPassword, psSult);
+                        objAdminUser.Password = CommonMethod.Encrypt(randomPassword, psSult);
                         objAdminUser.DOB = objCompanyReq.CompanyAdminDOB;
                         objAdminUser.DateOfMarriageAnniversary = objCompanyReq.CompanyAdminDateOfMarriageAnniversary;
                         objAdminUser.EmailId = objCompanyReq.CompanyAdminEmailId;
@@ -323,7 +326,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                             Regex regReplace = new Regex("{#var#}");
                             msg = regReplace.Replace(msg, objCompanyReq.CompanyAdminFirstName + " " + objCompanyReq.CompanyAdminLastName, 1);
                             msg = regReplace.Replace(msg, objAdminUser.UserName, 1);
-                            msg = regReplace.Replace(msg, CommonMethod.Decrypt(objAdminUser.Password, psSult), 1);
+                            msg = regReplace.Replace(msg, randomPassword, 1);
 
                             msg = msg.Replace("\r\n", "\n");
 

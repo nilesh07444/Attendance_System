@@ -24,7 +24,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
         public string panCardDirectoryPath = "";
         public string CompanyAdminProfileDirectoryPath = "";
         string enviornment;
-        bool? setOtp ;
+        bool? setOtp;
 
         public CompanyRequestController()
         {
@@ -39,7 +39,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
             enviornment = ConfigurationManager.AppSettings["Environment"].ToString();
             setOtp = Convert.ToBoolean(ConfigurationManager.AppSettings["SetOtp"].ToString());
         }
-         
+
         public ActionResult Index()
         {
             CompanyRequestVM companyRequestVM = new CompanyRequestVM();
@@ -75,7 +75,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
                         return View(companyRequestVM);
                     }
                     #endregion validation
-                     
+
                     string companyGstFileName = string.Empty, companyPanCardFileName = string.Empty, companyLogoFileName = string.Empty, companyRegisterProofFileName = string.Empty,
                         profileFileName = string.Empty, companyAdminAdharCardFileName = string.Empty, companyAdminPancardFileName = string.Empty;
                     bool folderExists = false;
@@ -296,7 +296,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
 
 
                     //DateTime dob_date = CommonMethod.CurrentIndianDateTime();
-                    DateTime dob_date =Convert.ToDateTime(companyRequestVM.CompanyAdminDOB.ToString());
+                    DateTime dob_date = Convert.ToDateTime(companyRequestVM.CompanyAdminDOB.ToString());
 
                     tbl_CompanyRequest objCompany = new tbl_CompanyRequest();
                     objCompany.CompanyTypeId = Convert.ToInt64(companyRequestVM.CompanyTypeId);
@@ -340,9 +340,9 @@ namespace AttendanceSystem.Areas.Client.Controllers
                     objCompany.RequestStatus = (int)CompanyRequestStatus.Pending;
                     objCompany.FreeAccessDays = freeAccessDays;
                     objCompany.IsDeleted = false;
-                    objCompany.CreatedBy = -1; 
+                    objCompany.CreatedBy = -1;
                     objCompany.CreatedDate = CommonMethod.CurrentIndianDateTime();
-                    objCompany.ModifiedBy = -1; 
+                    objCompany.ModifiedBy = -1;
                     objCompany.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     _db.tbl_CompanyRequest.Add(objCompany);
 
@@ -356,7 +356,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
                     int SmsId = (int)SMSType.CompanyRequest;
                     string msg = CommonMethod.GetSmsContent(SmsId);
                     Regex regReplace = new Regex("{#var#}");
-                    msg = regReplace.Replace(msg, companyRequestVM.CompanyAdminFirstName + " " + companyRequestVM.CompanyAdminLastName, 1); 
+                    msg = regReplace.Replace(msg, companyRequestVM.CompanyAdminFirstName + " " + companyRequestVM.CompanyAdminLastName, 1);
                     msg = msg.Replace("\r\n", "\n");
 
                     var json = CommonMethod.SendSMSWithoutLog(msg, companyRequestVM.CompanyAdminMobileNo);
@@ -422,43 +422,41 @@ namespace AttendanceSystem.Areas.Client.Controllers
             return Json(new { Status = isExist }, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult VerifyMobileNo(string mobileNo)
+        public JsonResult VerifyMobileNo(string mobileNo, string fullname)
         {
             int status = 0;
             string errorMessage = string.Empty;
             string otp = string.Empty;
             try
             {
+                #region Send SMS
 
-                using (WebClient webClient = new WebClient())
+                Random random = new Random();
+                int num = random.Next(555555, 999999);
+
+                int SmsId = (int)SMSType.EmployeeProfileEditOTP;
+                string msg = CommonMethod.GetSmsContent(SmsId);
+
+                Regex regReplace = new Regex("{#var#}");
+                msg = regReplace.Replace(msg, fullname, 1);
+                msg = regReplace.Replace(msg, num.ToString(), 1);
+
+                msg = msg.Replace("\r\n", "\n");
+
+                var json = CommonMethod.SendSMSWithoutLog(msg, mobileNo);
+
+                if (json.Contains("invalidnumber"))
                 {
-                    Random random = new Random();
-                    int num = random.Next(555555, 999999);
-                    if (enviornment != "Development")
-                    {
-                        string msg = "Your Otp code for Login is " + num;
-                        msg = HttpUtility.UrlEncode(msg);
-                        string url = CommonMethod.GetSMSUrl().Replace("--MOBILE--", mobileNo).Replace("--MSG--", msg);
-                        var json = webClient.DownloadString(url);
-                        if (json.Contains("invalidnumber"))
-                        {
-                            status = 0;
-                            errorMessage = ErrorMessage.InvalidMobileNo;
-                        }
-                        else
-                        {
-                            status = 1;
-
-                            otp = num.ToString();
-                        }
-                    }
-                    else
-                    {
-                        status = 1;
-                        otp = num.ToString();
-                    }
+                    status = 0;
+                    errorMessage = ErrorMessage.InvalidMobileNo;
+                }
+                else
+                {
+                    status = 1;
+                    otp = num.ToString();
                 }
 
+                #endregion
             }
             catch (Exception ex)
             {

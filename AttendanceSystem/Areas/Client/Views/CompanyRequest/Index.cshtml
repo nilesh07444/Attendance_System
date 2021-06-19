@@ -419,8 +419,13 @@
         $('#btnSubmit').click(function () {
 
             if ($("#CompanyRequestFormId").valid()) {
+
+                var firstname = $("#CompanyAdminFirstName").val();
+                var lastname = $("#CompanyAdminLastName").val();
+                var fullname = firstname + " " + lastname;
+
                 var mobileNo = $("#CompanyAdminMobileNo").val();
-                var StrURL = '/client/companyrequest/VerifyMobileNo?mobileNo=' + mobileNo;
+                var StrURL = '/client/companyrequest/VerifyMobileNo?mobileNo=' + mobileNo + "&fullname=" + fullname;
                 $.ajax({
                     url: StrURL,
                     cache: false,
