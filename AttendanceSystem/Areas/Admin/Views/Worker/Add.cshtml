@@ -151,7 +151,7 @@
                         <div class="row">
                             <div class="form-group col-6" id="dvExtraHours">
                                 @Html.LabelFor(model => model.ExtraPerHourPrice, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.ExtraPerHourPrice, new { @type = "text", @class = "form-control required", @placeholder = "Enter Extra Per Hour Price", @maxlength = "8" })
+                                @Html.TextBoxFor(model => model.ExtraPerHourPrice, new { @type = "text", @class = "form-control required", @placeholder = "Enter Extra Per Hour Price", @maxlength = "8", @min = "0" })
                                 @Html.ValidationMessageFor(model => model.ExtraPerHourPrice, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -325,7 +325,7 @@
             $("#MonthlySalaryPrice").attr("required", true);
             $("#ExtraPerHourPrice").attr("required", true);
             $("#MonthlySalaryPrice").attr("min", 1);
-            $("#ExtraPerHourPrice").attr("min", 1);
+            $("#ExtraPerHourPrice").attr("min", 0);
         }
         else if (EmploymentCategory == "1") {
             $("#dvMonthlySal").hide();
@@ -335,7 +335,7 @@
             $("#MonthlySalaryPrice").removeAttr("required", true);
             $("#ExtraPerHourPrice").attr("required", true);
             $("#MonthlySalaryPrice").removeAttr("min");
-            $("#ExtraPerHourPrice").attr("min", 1);
+            $("#ExtraPerHourPrice").attr("min", 0);
             $("#PerCategoryPrice").attr("min", 1);
         }
         else {

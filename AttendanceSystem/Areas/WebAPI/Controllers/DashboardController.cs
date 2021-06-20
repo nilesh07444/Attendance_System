@@ -33,7 +33,6 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                     && x.Status == (int)AttendanceStatus.Accept && x.IsActive
                                                     && !x.IsDeleted && x.AttendanceDate >= startDate && x.AttendanceDate <= endDate).Count();
 
-
                 var listDays = (from hd in _db.tbl_Holiday
                                 where hd.CompanyId == companyId.ToString()
                                 && hd.IsActive && !hd.IsDeleted

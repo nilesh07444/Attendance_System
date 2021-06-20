@@ -7,8 +7,7 @@
     lstPrefix.Add(new SelectListItem { Value = "Mr", Text = "Mr" });
     lstPrefix.Add(new SelectListItem { Value = "Mrs", Text = "Mrs" });
     lstPrefix.Add(new SelectListItem { Value = "Miss", Text = "Miss" });
-
-
+     
     List<SelectListItem> lstBloodGroup = new List<SelectListItem>();
     lstBloodGroup.Add(new SelectListItem { Value = "(A+)", Text = "(A+)" });
     lstBloodGroup.Add(new SelectListItem { Value = "(A-)", Text = "(A-)" });
@@ -176,7 +175,7 @@
                             </div>
                             <div class="form-group col-6" id="dvExtraHours">
                                 @Html.LabelFor(model => model.ExtraPerHourPrice, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.ExtraPerHourPrice, new { @type = "text", @class = "form-control", @placeholder = "Enter Extra Per Hour Price", @maxlength = "10", @min = "1" })
+                                @Html.TextBoxFor(model => model.ExtraPerHourPrice, new { @type = "text", @class = "form-control", @placeholder = "Enter Extra Per Hour Price", @maxlength = "10", @min = "0" })
                                 @Html.ValidationMessageFor(model => model.ExtraPerHourPrice, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -362,7 +361,7 @@
             $("#MonthlySalaryPrice").attr("required", true);
             $("#ExtraPerHourPrice").attr("required", true);
             $("#MonthlySalaryPrice").attr("min", 1);
-            $("#ExtraPerHourPrice").attr("min", 1);
+            $("#ExtraPerHourPrice").attr("min", 0);
         }
         else if (EmploymentCategory == "1") {
             $("#dvMonthlySal").hide();
@@ -372,7 +371,7 @@
             $("#MonthlySalaryPrice").removeAttr("required", true);
             $("#ExtraPerHourPrice").attr("required", true);
             $("#MonthlySalaryPrice").removeAttr("min");
-            $("#ExtraPerHourPrice").attr("min", 1);
+            $("#ExtraPerHourPrice").attr("min", 0);
             $("#PerCategoryPrice").attr("min", 1);
         }
         else {
@@ -388,13 +387,13 @@
         }
 
         if (EmploymentCategory == "1") {
-            $(".clsPerCategoryPrice").html("Per Day Price.")
+            $(".clsPerCategoryPrice").html("Per Day Price *")
         }
         else if (EmploymentCategory == "2") {
-            $(".clsPerCategoryPrice").html("Per Hour Price.")
+            $(".clsPerCategoryPrice").html("Per Hour Price *")
         }
         else if (EmploymentCategory == "4") {
-            $(".clsPerCategoryPrice").html("Per Unit Price.")
+            $(".clsPerCategoryPrice").html("Per Unit Price *")
         }
     }
 </script>

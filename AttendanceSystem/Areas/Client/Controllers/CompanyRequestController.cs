@@ -293,50 +293,48 @@ namespace AttendanceSystem.Areas.Client.Controllers
                     #endregion
 
                     #region Create Company Request
-
-
-                    //DateTime dob_date = CommonMethod.CurrentIndianDateTime();
+                      
                     DateTime dob_date = Convert.ToDateTime(companyRequestVM.CompanyAdminDOB.ToString());
 
                     tbl_CompanyRequest objCompany = new tbl_CompanyRequest();
                     objCompany.CompanyTypeId = Convert.ToInt64(companyRequestVM.CompanyTypeId);
-                    objCompany.CompanyName = companyRequestVM.CompanyName;
+                    objCompany.CompanyName = companyRequestVM.CompanyName.ToUpper();
                     objCompany.CompanyEmailId = companyRequestVM.CompanyEmailId;
                     objCompany.CompanyContactNo = companyRequestVM.CompanyContactNo;
                     objCompany.CompanyAlternateContactNo = companyRequestVM.CompanyAlternateContactNo;
-                    objCompany.CompanyGSTNo = companyRequestVM.CompanyGSTNo;
+                    objCompany.CompanyGSTNo = companyRequestVM.CompanyGSTNo.ToUpper();
                     objCompany.CompanyGSTPhoto = companyGstFileName;
-                    objCompany.CompanyPanNo = companyRequestVM.CompanyPanNo;
+                    objCompany.CompanyPanNo = companyRequestVM.CompanyPanNo.ToUpper();
                     objCompany.CompanyPanPhoto = companyPanCardFileName;
-                    objCompany.CompanyAddress = companyRequestVM.CompanyAddress;
+                    objCompany.CompanyAddress = companyRequestVM.CompanyAddress.ToUpper();
                     objCompany.CompanyPincode = companyRequestVM.CompanyPincode;
-                    objCompany.CompanyCity = companyRequestVM.CompanyCity;
-                    objCompany.CompanyState = companyRequestVM.CompanyState;
-                    objCompany.CompanyDistrict = companyRequestVM.CompanyDistrict;
+                    objCompany.CompanyCity = companyRequestVM.CompanyCity.ToUpper();
+                    objCompany.CompanyState = companyRequestVM.CompanyState.ToUpper();
+                    objCompany.CompanyDistrict = companyRequestVM.CompanyDistrict.ToUpper();
                     objCompany.CompanyLogoImage = companyLogoFileName;
                     objCompany.CompanyRegisterProofImage = companyRegisterProofFileName;
-                    objCompany.CompanyDescription = companyRequestVM.CompanyDescription;
+                    objCompany.CompanyDescription = companyRequestVM.CompanyDescription.ToUpper();
                     objCompany.CompanyWebisteUrl = companyRequestVM.CompanyWebisteUrl;
-                    objCompany.CompanyAdminPrefix = companyRequestVM.CompanyAdminPrefix;
-                    objCompany.CompanyAdminFirstName = companyRequestVM.CompanyAdminFirstName;
-                    objCompany.CompanyAdminMiddleName = companyRequestVM.CompanyAdminMiddleName;
-                    objCompany.CompanyAdminLastName = companyRequestVM.CompanyAdminLastName;
+                    objCompany.CompanyAdminPrefix = companyRequestVM.CompanyAdminPrefix.ToUpper();
+                    objCompany.CompanyAdminFirstName = companyRequestVM.CompanyAdminFirstName.ToUpper();
+                    objCompany.CompanyAdminMiddleName = companyRequestVM.CompanyAdminMiddleName.ToUpper();
+                    objCompany.CompanyAdminLastName = companyRequestVM.CompanyAdminLastName.ToUpper();
                     objCompany.CompanyAdminEmailId = companyRequestVM.CompanyAdminEmailId;
                     objCompany.CompanyAdminMobileNo = companyRequestVM.CompanyAdminMobileNo;
                     objCompany.CompanyAdminDOB = dob_date;
                     objCompany.CompanyAdminDateOfMarriageAnniversary = companyRequestVM.CompanyAdminDateOfMarriageAnniversary;
                     objCompany.CompanyAdminAlternateMobileNo = companyRequestVM.CompanyAdminAlternateMobileNo;
-                    objCompany.CompanyAdminDesignation = companyRequestVM.CompanyAdminDesignation;
-                    objCompany.CompanyAdminAddress = companyRequestVM.CompanyAdminAddress;
+                    objCompany.CompanyAdminDesignation = companyRequestVM.CompanyAdminDesignation.ToUpper();
+                    objCompany.CompanyAdminAddress = companyRequestVM.CompanyAdminAddress.ToUpper();
                     objCompany.CompanyAdminPincode = companyRequestVM.CompanyAdminPincode;
-                    objCompany.CompanyAdminCity = companyRequestVM.CompanyAdminCity;
-                    objCompany.CompanyAdminState = companyRequestVM.CompanyAdminState;
-                    objCompany.CompanyAdminDistrict = companyRequestVM.CompanyAdminDistrict;
+                    objCompany.CompanyAdminCity = companyRequestVM.CompanyAdminCity.ToUpper();
+                    objCompany.CompanyAdminState = companyRequestVM.CompanyAdminState.ToUpper();
+                    objCompany.CompanyAdminDistrict = companyRequestVM.CompanyAdminDistrict.ToUpper();
                     objCompany.CompanyAdminProfilePhoto = profileFileName;
                     objCompany.CompanyAdminAadharCardNo = companyRequestVM.CompanyAdminAadharCardNo;
                     objCompany.CompanyAdminAadharCardPhoto = companyAdminAdharCardFileName;
                     objCompany.CompanyAdminPanCardPhoto = companyAdminPancardFileName;
-                    objCompany.CompanyAdminPanCardNo = companyRequestVM.CompanyAdminPanCardNo;
+                    objCompany.CompanyAdminPanCardNo = companyRequestVM.CompanyAdminPanCardNo.ToUpper();
                     objCompany.RequestStatus = (int)CompanyRequestStatus.Pending;
                     objCompany.FreeAccessDays = freeAccessDays;
                     objCompany.IsDeleted = false;

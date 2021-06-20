@@ -12,6 +12,13 @@
     lstPrefix.Add(new SelectListItem { Value = "Mrs", Text = "Mrs" });
     lstPrefix.Add(new SelectListItem { Value = "Miss", Text = "Miss" });
 }
+
+<style>
+    #BtnOtpSubmit:hover {
+        background-color: #ff2143 !important;
+    }
+</style>
+
 <!--? Hero Start -->
 <div class="slider-area2">
     <div class="slider-height2 d-flex align-items-center" style="background-image: url(@ViewBag.HeroUrl)">
@@ -400,7 +407,7 @@
                             <input type="text" class="form-control" placeholder="OTP" name="OTP" id="TextOTP">
                         </div>
                     </div>
-                    <button type="button" id="BtnOtpSubmit" class="btn btn-primary m-t-15 waves-effect">Submit</button>
+                    <button type="button" id="BtnOtpSubmit" class="btn btn-primary m-t-15">Submit</button>
                 </form>
             </div>
         </div>
