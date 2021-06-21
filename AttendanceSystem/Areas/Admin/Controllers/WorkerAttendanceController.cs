@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace AttendanceSystem.Areas.Admin.Controllers
 {
+    [PageAccess]
     public class WorkerAttendanceController : Controller
     {
         // GET: Admin/WorkerAttendance

@@ -79,7 +79,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
                 if (ModelState.IsValid)
                 {
-                    bool isHolidayExist = CheckHolidayDate(HolidayVM.StartDate, HolidayVM.EndDate);
+                    bool isHolidayExist = CheckHolidayDate(HolidayVM.StartDate, HolidayVM.EndDate, HolidayVM.HolidayId);
                     if (isHolidayExist)
                     {
                         ModelState.AddModelError("", ErrorMessage.HolidayOnSameDateAlreadyExist);
@@ -210,14 +210,15 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return ReturnMessage;
         }
 
-        private bool CheckHolidayDate(DateTime startDate, DateTime endDate)
+        private bool CheckHolidayDate(DateTime startDate, DateTime endDate, long holidayId)
         {
             bool isExist = false;
             try
             {
                 long companyId = clsAdminSession.CompanyId;
-                isExist = _db.tbl_Holiday.Any(x => x.CompanyId == companyId.ToString() && !x.IsDeleted &&
-                (
+                isExist = _db.tbl_Holiday.Any(x => x.CompanyId == companyId.ToString() && !x.IsDeleted
+                && (holidayId > 0 ? x.HolidayId != holidayId : true)
+                && (
                 (startDate >= x.StartDate && endDate <= x.EndDate) ||
                 (startDate >= x.StartDate && startDate <= x.EndDate) ||
                 (endDate >= x.StartDate && endDate <= x.EndDate)

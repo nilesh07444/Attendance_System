@@ -474,5 +474,24 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                         }).ToList();
             return lst;
         }
+
+
+        [HttpPost]
+        public JsonResult GetWorkerList(string prefix)
+        {
+            var customerList = (from c in _db.tbl_Employee
+                                where c.CompanyId == companyId
+                                && c.IsActive 
+                                && (c.EmployeeCode.ToLower().Contains(prefix.ToLower()) || c.FirstName.ToLower().Contains(prefix.ToLower()) || c.LastName.ToLower().Contains(prefix.ToLower()))
+                                select new
+                                {
+                                    label = c.FirstName + " " + c.LastName + " (" + c.EmployeeCode + ")",
+                                    val = c.EmployeeId
+                                }).ToList();
+
+            return Json(customerList);
+        }
+
+
     }
 }

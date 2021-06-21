@@ -34,6 +34,7 @@
                                 <div class="form-group">
                                     <label>Worker</label>
                                     @Html.DropDownListFor(model => model.EmployeeId, new SelectList(Model.EmployeeList, "Value", "Text"), "- All -", new { @class = "form-control col-md-8", style = "" })
+
                                 </div>
                             </div>
                             <div class="col-sm-3">
@@ -66,9 +67,24 @@
                                                 <td>@obj.Name</td>
                                                 <td>@obj.EmployeeCode</td>
                                                 <td>@obj.AttendanceDate.ToString("dd MMM yyyy")</td>
-                                                <td>@obj.IsMorning</td>
-                                                <td>@obj.IsAfternoon</td>
-                                                <td>@obj.IsEvening</td>
+                                                <td>
+                                                    @if (obj.IsMorning)
+                                                    {
+                                                        Convert.ToString("Yes");
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @if (obj.IsAfternoon)
+                                                    {
+                                                        Convert.ToString("Yes");
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @if (obj.IsEvening)
+                                                    {
+                                                        Convert.ToString("Yes");
+                                                    }
+                                                </td>
                                             </tr>
 
                                             counter++;
@@ -88,6 +104,7 @@
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
 <script type="text/javascript">
     $(document).ready(function () {
 
