@@ -10,16 +10,23 @@
     lstEmployeeStatus.Add(new SelectListItem { Value = "0", Text = "InActive" });
 }
 
-
 <section class="section">
     <div class="section-body">
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-header">
-                        <h4>Worker List</h4>
+                    <div class="card-header" style="background-color: #425C59;">
+                        <h4 style="color: #FFCEA3;">Worker List</h4>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" style="display:block;">
+                        <div class="card-header-action pull-right">
+                            <a href="/admin/worker/add/0" class="btn btn-icon icon-left btn-primary"><i class="fas fa-plus-circle"></i> Add Worker</a>
+                        </div>
                     </div>
                     <div class="card-body">
+                        
                         <div class="row">
                             <div class="col-sm-2">
                                 <div class="form-group">
@@ -35,26 +42,25 @@
                             </div>
 
                         </div>
+                       
                         <div class="row">
-
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>Worker Status</label>
-                                    @Html.DropDownListFor(model => model.UserStatus, new SelectList(lstEmployeeStatus, "Value", "Text"), "- All -", new { @class = "form-control col-md-8 required", style = "" })
+                            <div class="col-sm-12">
+                                <div class="card-header ">
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label>Worker Status</label>
+                                            @Html.DropDownListFor(model => model.UserStatus, new SelectList(lstEmployeeStatus, "Value", "Text"), "- All -", new { @class = "form-control required", style = "" })
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <div class="card-header-action">
+                                            <button class="btn btn-primary mr-1" id="btnSearch" type="button" style="height: calc(2.25rem + 6px);">Search</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label style="padding-top:45px"></label>
-                                    <button class="btn btn-primary mr-1" id="btnSearch" type="button">Search</button>
-                                </div>
-                            </div>
-
                         </div>
 
-                        <div class="pull-right">
-                            <a href="/admin/worker/add/0" class="btn btn-icon icon-left btn-primary"><i class="fas fa-plus-circle"></i> Add Worker</a>
-                        </div>
 
                         <div class="table-responsive">
                             <table class="table table-striped table-hover" id="tableExport" style="width:100%;">
@@ -74,52 +80,52 @@
                                     {
                                         foreach (EmployeeVM obj in Model.EmployeeList)
                                         {
-                                    <tr>
-                                        <td>@counter.</td>
-                                        <td>
-                                            @if (!string.IsNullOrEmpty(obj.ProfilePicture))
-                                            {
-                                                if (File.Exists(Server.MapPath(ErrorMessage.EmployeeDirectoryPath + obj.ProfilePicture)))
+                                            <tr>
+                                                <td>@counter.</td>
+                                                <td>
+                                                    @if (!string.IsNullOrEmpty(obj.ProfilePicture))
+                                                    {
+                                                        if (File.Exists(Server.MapPath(ErrorMessage.EmployeeDirectoryPath + obj.ProfilePicture)))
+                                                        {
+                                                            <img src="@ErrorMessage.EmployeeDirectoryPath/@obj.ProfilePicture" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height:40px;" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <img src="@ErrorMessage.DefaultImagePath" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height: 40px;" />
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="@ErrorMessage.DefaultImagePath" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height: 40px;" />
+                                                    }
+
+                                                </td>
+                                                <td>@obj.EmployeeCode</td>
+                                                <td>@obj.FirstName @obj.LastName</td>
+                                                <td>@obj.MobileNo</td>
+                                                @if (obj.IsActive == true)
                                                 {
-                                                    <img src="@ErrorMessage.EmployeeDirectoryPath/@obj.ProfilePicture" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height:40px;" />
+                                                    <td><span class="badge badge-success" style="cursor:pointer;" title="Click to Inactive" onclick="fnChangeStatus('@obj.EmployeeId','InActive');">Active</span></td>
                                                 }
                                                 else
                                                 {
-                                                    <img src="@ErrorMessage.DefaultImagePath" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height: 40px;" />
+                                                    if (isTrailMode || Model.NoOfEmployee > Model.ActiveEmployee)
+                                                    {
+                                                        <td><span class="badge badge-danger" style="cursor:pointer;" title="Click to Active" onclick="fnChangeStatus('@obj.EmployeeId','Active');">InActive</span></td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td><span class="badge badge-danger" style="cursor:pointer;" title="Active employee exceed">InActive</span></td>
+                                                    }
                                                 }
-                                            }
-                                            else
-                                            {
-                                                <img src="@ErrorMessage.DefaultImagePath" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height: 40px;" />
-                                            }
+                                                <td>
 
-                                        </td>
-                                        <td>@obj.EmployeeCode</td>
-                                        <td>@obj.FirstName @obj.LastName</td>
-                                        <td>@obj.MobileNo</td>
-                                        @if (obj.IsActive == true)
-                                        {
-                                            <td><span class="badge badge-success" style="cursor:pointer;" title="Click to Inactive" onclick="fnChangeStatus('@obj.EmployeeId','InActive');">Active</span></td>
-                                        }
-                                        else
-                                        {
-                                            if (isTrailMode || Model.NoOfEmployee > Model.ActiveEmployee)
-                                            {
-                                                <td><span class="badge badge-danger" style="cursor:pointer;" title="Click to Active" onclick="fnChangeStatus('@obj.EmployeeId','Active');">InActive</span></td>
-                                            }
-                                            else
-                                            {
-                                                <td><span class="badge badge-danger" style="cursor:pointer;" title="Active employee exceed">InActive</span></td>
-                                            }
-                                        }
-                                        <td>
+                                                    <a href="/admin/worker/view/@obj.EmployeeId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
+                                                    <a href="/admin/worker/add/@obj.EmployeeId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
+                                                    <a href="javascript:void(0);" title="Delete" class="btn btn-icon btn-danger" onclick="fnDeleteEmployee('@obj.EmployeeId')"><i class="fas fa-trash-alt"></i></a>
 
-                                            <a href="/admin/worker/view/@obj.EmployeeId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
-                                            <a href="/admin/worker/add/@obj.EmployeeId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
-                                            <a href="javascript:void(0);" title="Delete" class="btn btn-icon btn-danger" onclick="fnDeleteEmployee('@obj.EmployeeId')"><i class="fas fa-trash-alt"></i></a>
-
-                                        </td>
-                                    </tr>
+                                                </td>
+                                            </tr>
 
                                             counter++;
                                         }
