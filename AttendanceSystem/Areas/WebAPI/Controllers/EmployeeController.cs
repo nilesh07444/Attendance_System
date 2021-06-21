@@ -406,17 +406,29 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             {
                 companyId = base.UTI.CompanyId;
 
+                List<tbl_Employee> fingerprintEmployees = (from emp in _db.tbl_Employee
+                                                           join wt in _db.tbl_EmployeeFingerprint on emp.EmployeeId equals wt.EmployeeId  
+                                                           where emp.AdminRoleId == (int)AdminRoles.Worker && emp.CompanyId == companyId
+                                                           select emp).ToList();
 
-                List<long> assignedEmployeeIds = _db.tbl_AssignWorker.Where(x => x.Date == requestVM.Date && !x.IsClosed).Select(x => x.EmployeeId).ToList();
+                fingerprintEmployees = fingerprintEmployees.GroupBy(x => x.EmployeeId).Select(g => g.First()).ToList();
+                List<long> fingerprintEmployeesIds = fingerprintEmployees.Select(x => x.EmployeeId).ToList();
 
+                //List<long> assignedEmployeeIds = _db.tbl_AssignWorker.Where(x => x.Date == requestVM.Date && !x.IsClosed).Select(x => x.EmployeeId).ToList();
+
+                List<long> assignedEmployeeIds = (from emp in _db.tbl_Employee
+                                                           join wt in _db.tbl_AssignWorker on emp.EmployeeId equals wt.EmployeeId  
+                                                           where emp.AdminRoleId == (int)AdminRoles.Worker && emp.CompanyId == companyId
+                                                           && wt.Date == requestVM.Date && !wt.IsClosed
+                                                     select emp.EmployeeId).ToList();
+                 
                 List<EmployeeVM> workerList = (from emp in _db.tbl_Employee
-
                                                join wt in _db.tbl_WorkerType on emp.WorkerTypeId equals wt.WorkerTypeId into wtc
-                                               from w in wtc.DefaultIfEmpty()
-
+                                               from w in wtc.DefaultIfEmpty() 
                                                where !emp.IsDeleted && emp.CompanyId == companyId
                                                && emp.AdminRoleId == (int)AdminRoles.Worker
                                                && !assignedEmployeeIds.Contains(emp.EmployeeId)
+                                               && fingerprintEmployeesIds.Contains(emp.EmployeeId)
                                                select new EmployeeVM
                                                {
                                                    EmployeeId = emp.EmployeeId,
