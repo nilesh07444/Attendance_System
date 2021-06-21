@@ -150,8 +150,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
             return response;
         }
-
-
+         
         [Route("GetMyProfile"), HttpGet]
         public ResponseDataModel<AuthenticateVM> GetMyProfile()
         {
@@ -201,6 +200,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     authenticateVM.MonthlySalaryPrice = data.MonthlySalaryPrice;
                     authenticateVM.ExtraPerHourPrice = data.ExtraPerHourPrice;
                     authenticateVM.NoOfFreeLeavePerMonth = data.NoOfFreeLeavePerMonth;
+                    authenticateVM.PerCategoryPrice = data.PerCategoryPrice;
                     response.Data = authenticateVM;
                 }
                 else

@@ -52,5 +52,6 @@ namespace AttendanceSystem.ViewModel.WebAPI.ViewModel
         public decimal? MonthlySalaryPrice { get; set; }
         public decimal? ExtraPerHourPrice { get; set; }
         public decimal NoOfFreeLeavePerMonth { get; set; }
+        public decimal? PerCategoryPrice { get; set; }
     }
 }
