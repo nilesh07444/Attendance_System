@@ -1,4 +1,5 @@
-﻿using AttendanceSystem.Models;
+﻿using AttendanceSystem.Helper;
+using AttendanceSystem.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Web.Mvc;
 
 namespace AttendanceSystem.Areas.Admin.Controllers
 {
+    [PageAccess]
     public class ContactFormController : Controller
     {
         AttendanceSystemEntities _db;
