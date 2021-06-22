@@ -151,4 +151,37 @@ namespace AttendanceSystem.ViewModel
         public long? EmployeeId { get; set; }
     }
 
+    public class AddWorkerAttendanceVM
+    {
+        public long AttendanceId { get; set; }
+        [Display(Name = "Attendance Date")]
+        public DateTime AttendanceDate { get; set; }
+        public int AttendanceType { get; set; }
+        public long EmployeeId { get; set; }
+        public long EmploymentCategoryId { get; set; }
+        [Display(Name = "Employment Category")]
+        public string EmploymentCategoryText { get; set; }
+        [Display(Name = "Worker Name")]
+        public string EmployeeName { get; set; }
+        [Display(Name = "Worker Code")]
+        public string EmployeeCode { get; set; }
+        [Display(Name = "Extra Hours")]
+        public decimal ExtraHours { get; set; }
+        [Display(Name = "No of Hours WOrked")]
+        public decimal NoOfHoursWorked { get; set; }
+        [Display(Name = "No of Unit WOrked")]
+        public int NoOfUnitWorked { get; set; }
+        public long SiteId { get; set; }
+        [Display(Name = "Site")]
+        public string SiteName { get; set; }
+        public decimal? TodaySalary { get; set; }
+        public string LocationFrom { get; set; }
+        public decimal Latitude { get; set; }
+        public decimal Longitude { get; set; }
+        [Display(Name = "Pending Salary")]
+        public decimal PendingSalary { get; set; }
+        public List<SelectListItem> WorkerAttendanceTypeList { get; set; }
+        public decimal PerCategoryPrice { get; set; }
+        public decimal? ExtraPerHourPrice { get; set; }
+    }
 }

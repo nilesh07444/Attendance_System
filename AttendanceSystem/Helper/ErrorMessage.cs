@@ -113,6 +113,7 @@
         public static string YouAreOnLeaveForTheday = "You are on leave the day.";
         public static string PleaseProvideDayType = "Please provide day type.";
         public static string PleaseProvideNoOfHoursWorked = "Please provide no of hours worked.";
+        public static string PleaseProvideNoOfUnitWorked = "Please provide no of Unit worked.";
 
         public static string PackageAlreadyAssigned = "PackageAlreadyAssigned";
         public static string Success = "success";

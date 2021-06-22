@@ -1,0 +1,164 @@
+﻿@using AttendanceSystem.Helper;
+@model AttendanceSystem.ViewModel.AddWorkerAttendanceVM
+@{
+    /**/
+
+}
+
+<section class="section">
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h4>Add Worker Attendance</h4>
+                </div>
+
+                @using (Html.BeginForm("Add", "WorkerAttendance", FormMethod.Post, new { @id = "WorkerAttendanceFormId", @class = "", enctype = "multipart/form-data", role = "form" }))
+                {
+                    @Html.ValidationSummary()
+                    <div class="card-body">
+                        <div class="row">
+
+                            <div class="form-group col-6">
+                                @Html.HiddenFor(model => model.SiteId)
+                                @Html.LabelFor(model => model.SiteName, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.SiteName, new { @type = "text", @class = "form-control", @placeholder = "Site", @readonly = "true" })
+                                @Html.ValidationMessageFor(model => model.SiteId, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.AttendanceDate, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.AttendanceDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control", @placeholder = "Attendance Date", @readonly = "true" })
+                                @Html.ValidationMessageFor(model => model.AttendanceDate, "", new { @class = "text-danger" })
+                                @Html.HiddenFor(model => model.AttendanceDate)
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                @Html.HiddenFor(model => model.EmployeeId)
+                                @Html.LabelFor(model => model.EmployeeCode, htmlAttributes: new { @class = "" })
+                                @Model.EmployeeCode
+                            </div>
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.EmployeeName, htmlAttributes: new { @class = "" })
+                                @Model.EmployeeName
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.AttendanceType, htmlAttributes: new { @class = "" })
+                                @Html.DropDownListFor(model => model.AttendanceType, new SelectList(Model.WorkerAttendanceTypeList, "Value", "Text"), "- Select -", new { @class = "form-control required" })
+                                @Html.ValidationMessageFor(model => model.AttendanceType, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.EmploymentCategoryText, htmlAttributes: new { @class = "" })
+                                @Model.EmploymentCategoryText
+                                @Html.HiddenFor(model => model.EmploymentCategoryId)
+                                @Html.HiddenFor(model => model.PerCategoryPrice)
+                                @Html.HiddenFor(model => model.ExtraPerHourPrice)
+                            </div>
+                        </div>
+                        <div class="row">
+                            @Html.LabelFor(model => model.PendingSalary, htmlAttributes: new { @class = "" })
+                            @Model.PendingSalary
+                            @Html.HiddenFor(model => model.PendingSalary)
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-6" id="dvExtraHours">
+                                @Html.LabelFor(model => model.ExtraHours, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.ExtraHours, new { @type = "number", @class = "form-control required", @placeholder = "Enter Per Extra Hours", @maxlength = "10", @min = "1" })
+                                @Html.ValidationMessageFor(model => model.ExtraHours, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-6" id="dvTodaySalary">
+                                @Html.LabelFor(model => model.TodaySalary, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.TodaySalary, new { @type = "number", @class = "form-control required", @placeholder = "Enter Today Salary", @maxlength = "10", @min = "1" })
+                                @Html.ValidationMessageFor(model => model.TodaySalary, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-6" id="dvNoOfHoursWorked">
+                                @Html.LabelFor(model => model.NoOfHoursWorked, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.NoOfHoursWorked, new { @type = "number", @class = "form-control required", @placeholder = "Enter No Of Hours Worked", @maxlength = "10", @min = "1" })
+                                @Html.ValidationMessageFor(model => model.NoOfHoursWorked, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-6" id="dvNoOfUnitWorked">
+                                @Html.LabelFor(model => model.NoOfUnitWorked, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.NoOfUnitWorked, new { @type = "number", @class = "form-control required", @placeholder = "Enter No Of Unit Worked", @maxlength = "10", @min = "1" })
+                                @Html.ValidationMessageFor(model => model.NoOfUnitWorked, "", new { @class = "text-danger" })
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="card-footer text-center">
+                        <button class="btn btn-success mr-1" type="submit" id="btnSubmit">Submit</button>
+                        <a href="/admin/holiday" class="btn btn-secondary">Cancel</a>
+                    </div>
+
+                }
+
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#dvNoOfUnitWorked").hide();
+        $("#dvNoOfHoursWorked").hide();
+        $("#dvTodaySalary").hide();
+        $("#dvExtraHours").hide();
+
+        $('#btnCancel').click(function () {
+            window.location.href = "/admin/workerattendance/assignedworkerlist";
+        });
+
+        $('#AttendanceType').change(function () {
+            var attendanceType = $('#AttendanceType').val();
+            if (attendanceType == "3") {
+                var employmentCategory = $('#EmploymentCategoryId').val();
+                if (employmentCategory == "1") {
+                    $("#dvTodaySalary").show();
+                    $("#dvExtraHours").show();
+                    $("#dvNoOfUnitWorked").hide();
+                    $("#dvNoOfHoursWorked").hide();
+                    $("#NoOfHoursWorked").removeAttr("min");
+                    $("#NoOfUnitWorked").removeAttr("min");
+                }
+                else if (employmentCategory == "2") {
+                    $("#dvTodaySalary").hide();
+                    $("#dvExtraHours").hide();
+                    $("#dvNoOfUnitWorked").hide();
+                    $("#dvNoOfHoursWorked").show();
+                    $("#NoOfHoursWorked").attr("min", 1);
+                    $("#NoOfUnitWorked").removeAttr("min");
+                }
+                else if (employmentCategory == "3") {
+                    $("#dvTodaySalary").hide();
+                    $("#dvExtraHours").show();
+                    $("#dvNoOfUnitWorked").hide();
+                    $("#dvNoOfHoursWorked").hide();
+                    $("#NoOfHoursWorked").removeAttr("min");
+                    $("#NoOfUnitWorked").removeAttr("min");
+                }
+                else if (employmentCategory == "4") {
+                    $("#dvTodaySalary").hide();
+                    $("#dvExtraHours").hide();
+                    $("#dvNoOfUnitWorked").show();
+                    $("#dvNoOfHoursWorked").hide();
+                    $("#NoOfUnitWorked").attr("min", 1);
+                    $("#NoOfHoursWorked").removeAttr("min");
+                }
+            } else {
+                $("#dvNoOfUnitWorked").hide();
+                $("#dvNoOfHoursWorked").hide();
+                $("#dvTodaySalary").hide();
+                $("#dvExtraHours").hide();
+            }
+        });
+    })
+</script>

@@ -126,7 +126,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     && employeeObj.EmploymentCategory == (int)EmploymentCategory.UnitBased && workerAttendanceRequestVM.NoOfUnitWorked == 0)
                 {
                     response.IsError = true;
-                    response.AddError(ErrorMessage.PleaseProvideNoOfHoursWorked);
+                    response.AddError(ErrorMessage.PleaseProvideNoOfUnitWorked);
                 }
 
                 #endregion Validation
