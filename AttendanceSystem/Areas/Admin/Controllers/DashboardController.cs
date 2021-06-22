@@ -283,7 +283,22 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         double presentDays = attendanceList.Count > 0 ? attendanceList.Select(z => z.DayType).Sum() : 0;
                         decimal extraHours = attendanceList.Count > 0 ? attendanceList.Select(z => z.ExtraHours).Sum() : 0;
                         double absentDays = totalDaysinMonth - presentDays;
-                        double deductedLeave = absentDays - holidays - (double)x.NoOfFreeLeavePerMonth;
+                        decimal totalFreeLeave = x.NoOfFreeLeavePerMonth + x.CarryForwardLeave;
+                        double deductedLeave = 0;
+                        if (absentDays > (holidays + (double)totalFreeLeave))
+                        {
+                            deductedLeave = absentDays - holidays - (double)totalFreeLeave;
+                        }
+
+                        decimal carryForwardLeave = 0;
+                        if (absentDays < holidays)
+                        {
+                            carryForwardLeave = totalFreeLeave;
+                        }
+                        else if (absentDays < (holidays + (double)totalFreeLeave))
+                        {
+                            carryForwardLeave = totalFreeLeave - (decimal)(absentDays - holidays);
+                        }
                         double monthlySalary = (double)x.MonthlySalaryPrice;
                         List<decimal> debitAmountList = _db.tbl_EmployeePayment.Where(e => e.UserId == x.EmployeeId
                                                 && e.Month == month
@@ -321,6 +336,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         _db.tbl_EmployeePayment.Add(objEmployeePayment);
                         _db.SaveChanges();
 
+                        x.CarryForwardLeave = carryForwardLeave > 0 ? carryForwardLeave : 0;
+
                     });
 
 
@@ -330,6 +347,13 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         x.ProcessStatusText = ErrorMessage.Complete;
                         _db.SaveChanges();
                     });
+
+                    lstEmployees.Where(x => x.EmploymentCategory == (int)EmploymentCategory.MonthlyBased).ToList().ForEach(x =>
+                   {
+                       tbl_Employee empObject = _db.tbl_Employee.Where(z => z.EmployeeId == x.EmployeeId).FirstOrDefault();
+                       empObject.CarryForwardLeave = x.CarryForwardLeave;
+                       _db.SaveChanges();
+                   });
 
                     tbl_Conversion convertion = _db.tbl_Conversion.Where(x => x.CompanyId == companyId && x.Month == month && x.Year == year).FirstOrDefault();
 
@@ -489,7 +513,22 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         double presentDays = dayTypeAttendanceList.Select(z => z.dayType).Sum();
                         decimal extraHours = dayTypeAttendanceList.Count > 0 ? dayTypeAttendanceList.Select(z => z.extraHours).Sum() : 0;
                         double absentDays = totalDaysinMonth - presentDays;
-                        double deductedLeave = absentDays - holidays - (double)x.NoOfFreeLeavePerMonth;
+                        decimal totalFreeLeave = x.NoOfFreeLeavePerMonth + x.CarryForwardLeave;
+                        double deductedLeave = 0;
+                        if (absentDays > (holidays + (double)totalFreeLeave))
+                        {
+                            deductedLeave = absentDays - holidays - (double)totalFreeLeave;
+                        }
+
+                        decimal carryForwardLeave = 0;
+                        if (absentDays < holidays)
+                        {
+                            carryForwardLeave = totalFreeLeave;
+                        }
+                        else if (absentDays < (holidays + (double)totalFreeLeave))
+                        {
+                            carryForwardLeave = totalFreeLeave - (decimal)(absentDays - holidays);
+                        }
                         double monthlySalary = (double)x.MonthlySalaryPrice;
                         double advancePaid = (double)_db.tbl_EmployeePayment.Where(e => e.UserId == x.EmployeeId
                                                 && e.Month == month
@@ -527,6 +566,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         _db.tbl_WorkerPayment.Add(objWorkerPayment);
                         _db.SaveChanges();
 
+                        x.CarryForwardLeave = carryForwardLeave > 0 ? carryForwardLeave : 0;
                     });
 
 
@@ -537,6 +577,12 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         _db.SaveChanges();
                     });
 
+                    lstWorkers.Where(x => x.EmploymentCategory == (int)EmploymentCategory.MonthlyBased).ToList().ForEach(x =>
+                    {
+                        tbl_Employee empObject = _db.tbl_Employee.Where(z => z.EmployeeId == x.EmployeeId).FirstOrDefault();
+                        empObject.CarryForwardLeave = x.CarryForwardLeave;
+                        _db.SaveChanges();
+                    });
 
                     tbl_Conversion convertion = _db.tbl_Conversion.Where(x => x.CompanyId == companyId && x.Month == month && x.Year == year).FirstOrDefault();
 

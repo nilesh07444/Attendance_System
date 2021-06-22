@@ -44,6 +44,8 @@ namespace AttendanceSystem.Models
         public Nullable<decimal> ExtraPerHourPrice { get; set; }
         public bool IsLeaveForward { get; set; }
         public decimal NoOfFreeLeavePerMonth { get; set; }
+        public decimal CarryForwardLeave { get; set; }
+        public Nullable<long> WorkerTypeId { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
         public bool IsFingerprintEnabled { get; set; }
@@ -52,6 +54,5 @@ namespace AttendanceSystem.Models
         public System.DateTime CreatedDate { get; set; }
         public Nullable<long> UpdatedBy { get; set; }
         public Nullable<System.DateTime> UpdatedDate { get; set; }
-        public Nullable<long> WorkerTypeId { get; set; }
     }
 }
