@@ -235,6 +235,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     authenticateVM.EmploymentCategory = data.EmploymentCategory;
                     authenticateVM.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)data.EmploymentCategory);
                     authenticateVM.IsTrialMode = company.IsTrialMode;
+                    authenticateVM.CompanyName = company.CompanyName; 
                     response.Data = authenticateVM;
 
                     tbl_LoginHistory objLoginHistory = new tbl_LoginHistory();
