@@ -20,7 +20,7 @@ namespace AttendanceSystem.ViewModel
     {
         public AssignedWorkerFilterVM()
         {
-            Date = CommonMethod.CurrentIndianDateTime();
+            Date = CommonMethod.CurrentIndianDateTime().Date;
         }
         public int? SiteId { get; set; }
         public DateTime Date { get; set; }

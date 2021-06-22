@@ -170,5 +170,8 @@
         public static string MonthlyConvesrionCompletedYouCanNotAddOrModifyLeaveDetails = "Monthly convesrion completed you can not add or modify leave details";
         public static string MonthlyConvesrionCompletedYouCanNotAddOrModifyAttendance = "Monthly convesrion completed you can not add or modify attendance";
         public static string CompanyDoesNotExist = "Company does not exit.";
+
+        public static string YES = "Yes";
+        public static string NO = "No";
     }
 }

@@ -134,8 +134,11 @@ namespace AttendanceSystem.ViewModel
         public int EmploymentCategory { get; set; }
         public string EmploymentCategoryText { get; set; }
         public bool IsMorning { get; set; }
+        public string IsMorningText { get; set; }
         public bool IsAfternoon { get; set; }
+        public string IsAfternoonText { get; set; }
         public bool IsEvening { get; set; }
+        public string IsEveningText { get; set; }
     }
 
     public class WorkerAttendanceReportFilterVM

@@ -66,6 +66,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 {
                     x.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)x.EmploymentCategory);
                     x.ProfilePicture = (!string.IsNullOrEmpty(x.ProfilePicture) ? CommonMethod.GetCurrentDomain() + ErrorMessage.EmployeeDirectoryPath + x.ProfilePicture : string.Empty);
+                    x.IsMorningText = x.IsMorning ? ErrorMessage.YES : ErrorMessage.NO;
+                    x.IsAfternoonText = x.IsAfternoon ? ErrorMessage.YES : ErrorMessage.NO;
+                    x.IsEveningText = x.IsEvening ? ErrorMessage.YES : ErrorMessage.NO;
                 });
                 workerAttendanceFilterVM.EmployeeList = GetWorkerList();
                 workerAttendanceFilterVM.SiteList = GetSiteList();
