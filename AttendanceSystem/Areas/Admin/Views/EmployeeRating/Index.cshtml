@@ -76,6 +76,7 @@
                                 <thead>
                                     <tr>
                                         <td>#</td>
+                                        <th>Date</th>
                                         <th>Employee Code</th>
                                         <th>Employee Name</th>
                                         <th>Month</th>
@@ -93,6 +94,7 @@
                                         {
                                             <tr>
                                                 <td>@counter.</td>
+                                                <td>@obj.CreatedDate.ToString("dd MMM yyyy")</td>
                                                 <td>@obj.EmployeeCode</td>
                                                 <td>@obj.EmployeeName</td>
                                                 <td>@obj.RateMonthText</td>

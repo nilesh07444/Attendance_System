@@ -67,22 +67,13 @@
                                                 <td>@obj.EmployeeCode</td>
                                                 <td>@obj.AttendanceDate.ToString("dd MMM yyyy")</td>
                                                 <td>
-                                                    @if (obj.IsMorning)
-                                                    {
-                                                        Convert.ToString("Yes");
-                                                    }
+                                                   @obj.IsEveningText
                                                 </td>
                                                 <td>
-                                                    @if (obj.IsAfternoon)
-                                                    {
-                                                        Convert.ToString("Yes");
-                                                    }
+                                                    @obj.IsAfternoonText
                                                 </td>
                                                 <td>
-                                                    @if (obj.IsEvening)
-                                                    {
-                                                        Convert.ToString("Yes");
-                                                    }
+                                                    @obj.IsEveningText
                                                 </td>
                                             </tr>
 
