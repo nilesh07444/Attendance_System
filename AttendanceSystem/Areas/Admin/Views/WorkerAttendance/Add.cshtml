@@ -1,19 +1,25 @@
 ﻿@using AttendanceSystem.Helper;
 @model AttendanceSystem.ViewModel.AddWorkerAttendanceVM
 @{
-    /**/
-
+    
 }
 
 <section class="section">
 
     <div class="row">
         <div class="col-12">
-            <div class="card card-primary">
-                <div class="card-header">
-                    <h4>Add Worker Attendance</h4>
+            <div class="card">
+                <div class="card-header" style="background-color: #425C59; display: block;">
+                    <div class="pull-left">
+                        <h4 style="color: #FFCEA3;">Add Worker Attendance</h4>
+                    </div>
+                    <div class="pull-right">
+                        <a href="/admin/workerattendance" class="btn btn-warning pull-right"><i class="fas fa-backward"></i> Back</a>
+                    </div>
                 </div>
-
+            </div>
+            <div class="card card-primary">
+                 
                 @using (Html.BeginForm("Add", "WorkerAttendance", FormMethod.Post, new { @id = "WorkerAttendanceFormId", @class = "", enctype = "multipart/form-data", role = "form" }))
                 {
                     @Html.ValidationSummary()
@@ -92,7 +98,7 @@
 
                     <div class="card-footer text-center">
                         <button class="btn btn-success mr-1" type="submit" id="btnSubmit">Submit</button>
-                        <a href="/admin/holiday" class="btn btn-secondary">Cancel</a>
+                        <a href="/admin/workerattendance" class="btn btn-secondary">Cancel</a>
                     </div>
 
                 }
@@ -104,8 +110,7 @@
 </section>
 
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
-
-
+ 
 <script type="text/javascript">
     $(document).ready(function () {
         $("#dvNoOfUnitWorked").hide();

@@ -9,10 +9,17 @@
     <div class="row">
         <div class="col-12">
             <div class="card card-primary">
-                <div class="card-header">
-                    <h4>@(Model.HolidayId == 0 ? "Add" : "Edit") Holiday</h4>
+                <div class="card">
+                    <div class="card-header" style="background-color: #425C59; display: block;">
+                        <div class="pull-left">
+                            <h4 style="color: #FFCEA3;">@(Model.HolidayId == 0 ? "Add" : "Edit") Holiday</h4>
+                        </div>
+                        <div class="pull-right">
+                            <a href="/admin/holiday" class="btn btn-warning pull-right"><i class="fas fa-backward"></i> Back</a>
+                        </div>
+                    </div>
                 </div>
-
+                  
                 @using (Html.BeginForm("Add", "Holiday", FormMethod.Post, new { @id = "HolidayFormId", @class = "", enctype = "multipart/form-data", role = "form" }))
                 {
                     @Html.ValidationSummary()

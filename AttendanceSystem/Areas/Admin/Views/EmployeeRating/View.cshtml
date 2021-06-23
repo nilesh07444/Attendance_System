@@ -1,5 +1,4 @@
-﻿@using AttendanceSystem.Helper;
-@model AttendanceSystem.ViewModel.EmployeeRatingVM
+﻿@model AttendanceSystem.ViewModel.EmployeeRatingVM
 @{
     ViewBag.Title = "Employee Rating";
 }
@@ -8,68 +7,58 @@
 
     <div class="row">
         <div class="col-12">
-            <div class="card card-primary">
-                <div class="card-header">
-                    <h4>Employee Rating</h4>
+            <div class="card">
+                <div class="card-header" style="background-color: #425C59; display: block;">
+                    <div class="pull-left">
+                        <h4 style="color: #FFCEA3;">View Employee Rating</h4>
+                    </div>
+                    <div class="pull-right">
+                        <a href="/admin/employeerating" class="btn btn-warning pull-right"><i class="fas fa-backward"></i> Back</a>
+                    </div>
                 </div>
+            </div>
 
+            <div class="card card-primary"> 
                 <div class="card-body">
                     <div class="row">
                         <div class="form-group col-6">
-                            @Html.LabelFor(model => model.EmployeeId, htmlAttributes: new { @class = "" })
-                            @Model.EmployeeName
+                            @Html.LabelFor(model => model.EmployeeId)
+                            <p>@Model.EmployeeName</p>
                         </div>
                         <div class="form-group col-6">
-                            @Html.LabelFor(model => model.RateYear, htmlAttributes: new { @class = "" })
-                            @Model.RateYear
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-6">
-                            @Html.LabelFor(model => model.RateMonth, htmlAttributes: new { @class = "" })
-                            @Model.RateMonthText
-                        </div>
-                        <div class="form-group col-6">
-                            @Html.LabelFor(model => model.BehaviourRate, htmlAttributes: new { @class = "" })
-                            @Model.BehaviourRate
+                            @Html.LabelFor(model => model.RateYear)
+                            <p>@Model.RateYear</p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-6">
-                            @Html.LabelFor(model => model.RegularityRate, htmlAttributes: new { @class = "" })
-                            @Model.RegularityRate
+                            @Html.LabelFor(model => model.RateMonth)
+                            <p>@Model.RateMonthText</p>
                         </div>
                         <div class="form-group col-6">
-                            @Html.LabelFor(model => model.WorkRate, htmlAttributes: new { @class = "" })
-                            @Model.WorkRate
+                            @Html.LabelFor(model => model.BehaviourRate)
+                            <p>@Model.BehaviourRate</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-6">
+                            @Html.LabelFor(model => model.RegularityRate)
+                            <p>@Model.RegularityRate</p>
+                        </div>
+                        <div class="form-group col-6">
+                            @Html.LabelFor(model => model.WorkRate)
+                            <p>@Model.WorkRate</p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-12">
-                            @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "" })
-                            @Model.Remarks
+                            @Html.LabelFor(model => model.Remarks)
+                            <p>@Model.Remarks</p>
                         </div>
-                    </div>
-
-                </div>
-
-                <div class="card-footer text-center">
-                    <a href="/admin/employeerating" class="btn btn-secondary">Cancel</a>
-                </div>
-
+                    </div> 
+                </div> 
             </div>
         </div>
     </div>
 
-</section>
-
-<script src="~/Scripts/jquery-3.4.1.min.js"></script>
-
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#btnCancel').click(function () {
-            window.location.href = "/admin/employeerating";
-        });
-    })
-</script>
+</section> 

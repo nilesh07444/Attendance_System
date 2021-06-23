@@ -1,19 +1,25 @@
-﻿@using AttendanceSystem.Helper;
+﻿ 
 @model AttendanceSystem.ViewModel.MaterialCategoryVM
 @{
-    /**/
-
+     
 }
 
 <section class="section">
 
     <div class="row">
         <div class="col-12">
-            <div class="card card-primary">
-                <div class="card-header">
-                    <h4>@(Model.MaterialCategoryId == 0 ? "Add" : "Edit") Material Category</h4>
+            <div class="card">
+                <div class="card-header" style="background-color: #425C59; display: block;">
+                    <div class="pull-left">
+                        <h4 style="color: #FFCEA3;">@(Model.MaterialCategoryId == 0 ? "Add" : "Edit") Material Category</h4>
+                    </div>
+                    <div class="pull-right">
+                        <a href="/admin/materialcategory" class="btn btn-warning pull-right"><i class="fas fa-backward"></i> Back</a>
+                    </div>
                 </div>
-
+            </div>
+            <div class="card card-primary">
+                 
                 @using (Html.BeginForm("Add", "MaterialCategory", FormMethod.Post, new { @id = "MaterialCategoryFormId", @class = "", enctype = "multipart/form-data", role = "form" }))
                 {
                     <div class="card-body">
@@ -35,7 +41,7 @@
 
                     <div class="card-footer text-center">
                         <button class="btn btn-success mr-1" type="submit">Submit</button>
-                        <a href="/admin/MaterialCategory" class="btn btn-secondary">Cancel</a>
+                        <a href="/admin/materialcategory" class="btn btn-secondary">Cancel</a>
                     </div>
 
                 }

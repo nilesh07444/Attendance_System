@@ -7,8 +7,7 @@
     lstAttendanceStatus.Add(new SelectListItem { Value = "2", Text = "Accept" });
     lstAttendanceStatus.Add(new SelectListItem { Value = "3", Text = "Reject" });
 }
-
-
+ 
 <div class="page-body">
 
     <!-- Container-fluid starts-->
@@ -18,9 +17,12 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="card">
-                    <div class="card-header">
-                        <h5>Attendance Details</h5>
+                    <div class="card-header" style="background-color: #425C59;">
+                        <h4 style="color: #FFCEA3;">View Attendance</h4>
                     </div>
+                </div>
+                <div class="card">
+                    
                     <div class="card-body">
                         @using (Html.BeginForm("Reject", "Attendance", FormMethod.Post, new { @id = "AttendanceForm", @class = "needs-validation", enctype = "multipart/form-data", role = "form" }))
                         {

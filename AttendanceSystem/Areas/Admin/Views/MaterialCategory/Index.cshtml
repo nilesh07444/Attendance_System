@@ -1,29 +1,30 @@
-﻿@using AttendanceSystem.Helper
-@using AttendanceSystem.ViewModel;
+﻿@using AttendanceSystem.ViewModel;
 @model List<AttendanceSystem.ViewModel.MaterialCategoryVM>
 @{
-                /**/
-
-                /**/
-
-                ViewBag.Title = "MaterialCategory";
-                int counter = 1;
+     
+    ViewBag.Title = "MaterialCategory";
+    int counter = 1;
 }
-
-
+ 
 <section class="section">
     <div class="section-body">
         <div class="row">
             <div class="col-12">
+
                 <div class="card">
-                    <div class="card-header">
-                        <h4>Material Category List</h4>
+                    <div class="card-header" style="background-color: #425C59;">
+                        <h4 style="color: #FFCEA3;">Material Category List</h4>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header" style="display: block;">
+                        <div class="card-header-action pull-right">
+                            <a href="/admin/materialcategory/add/0" class="btn btn-icon icon-left btn-primary"><i class="fas fa-plus-circle"></i> Add Material Category</a>
+                        </div>
                     </div>
                     <div class="card-body">
-                        <div class="pull-right">
-                            <a href="/admin/MaterialCategory/add/0" class="btn btn-icon icon-left btn-primary"><i class="fas fa-plus-circle"></i> Add Material Category</a>
-                        </div>
-
+                         
                         <div class="table-responsive">
                             <table class="table table-striped table-hover" id="tableExport" style="width:100%;">
                                 <thead>
@@ -112,8 +113,7 @@
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-
-
+ 
 <script type="text/javascript">
     $(document).ready(function () {
 
@@ -181,8 +181,7 @@
                 });
             }
         });
-
-
+         
     })
 
     function fnDeleteMaterialCategory(MaterialCategory_Id) {

@@ -16,9 +16,17 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="card">
-                    <div class="card-header">
-                        <h5>Leave Details</h5>
+                    <div class="card-header" style="background-color: #425C59; display: block;">
+                        <div class="pull-left">
+                            <h4 style="color: #FFCEA3;">View Leave</h4>
+                        </div>
+                        <div class="pull-right">
+                            <a href="/admin/leave" class="btn btn-warning pull-right"><i class="fas fa-backward"></i> Back</a>
+                        </div>
                     </div>
+                </div>
+                <div class="card">
+                     
                     <div class="card-body">
                         @using (Html.BeginForm("Reject", "Leave", FormMethod.Post, new { @id = "LeaveForm", @class = "needs-validation", enctype = "multipart/form-data", role = "form" }))
                         {
@@ -112,8 +120,7 @@
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-
-
+ 
 <script type="text/javascript">
     $(document).ready(function () {
         if ($("#LeaveStatus").val() == "3") {
