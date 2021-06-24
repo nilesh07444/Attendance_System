@@ -99,7 +99,7 @@
                             </div>
                             <div class="form-group col-6" id="dvTodaySalary">
                                 @Html.LabelFor(model => model.TodaySalary, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.TodaySalary, new { @type = "number", @class = "form-control required", @placeholder = "Enter Today Salary", @maxlength = "10", @min = "1" })
+                                @Html.TextBoxFor(model => model.TodaySalary, new { @type = "number", @class = "form-control required", @placeholder = "Enter Today Salary", @maxlength = "10", @min = "0" })
                                 @Html.ValidationMessageFor(model => model.TodaySalary, "", new { @class = "text-danger" })
                             </div>
                         </div>
