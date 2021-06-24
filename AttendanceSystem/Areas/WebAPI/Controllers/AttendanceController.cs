@@ -241,8 +241,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                              }).FirstOrDefault();
                 leaveDetails.StatusText = CommonMethod.GetEnumDescription((AttendanceStatus)leaveDetails.Status);
                 leaveDetails.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)leaveDetails.EmploymentCategory);
-                leaveDetails.InDateTime = Convert.ToDateTime(CommonMethod.ConvertFromUTCNew(leaveDetails.InDateTime));
-                leaveDetails.OutDateTime = Convert.ToDateTime(CommonMethod.ConvertFromUTCNew(leaveDetails.OutDateTime));
+                 
                 if (leaveDetails.DayType == 1)
                 {
                     leaveDetails.DayTypeText = CommonMethod.GetEnumDescription(DayType.FullDay);

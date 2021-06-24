@@ -71,8 +71,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                 leaveFIlterVM.LeaveList.ForEach(x =>
                 {
-                    x.LeaveStatusText = CommonMethod.GetEnumDescription((LeaveStatus)x.LeaveStatus);
-                    x.CreatedDate = CommonMethod.ConvertFromUTCToIndianDateTime(x.CreatedDate);
+                    x.LeaveStatusText = CommonMethod.GetEnumDescription((LeaveStatus)x.LeaveStatus); 
                 });
                 leaveFIlterVM.UserRoleList = GetUserRoleList();
                 leaveFIlterVM.CalenderMonth = CommonMethod.GetCalenderMonthList();

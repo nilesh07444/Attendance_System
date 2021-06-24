@@ -220,9 +220,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                     NoOfHoursWorked = at.NoOfHoursWorked.HasValue ? at.NoOfHoursWorked.Value : 0,
                                     NoOfUnitWorked = at.NoOfUnitWorked.HasValue ? at.NoOfUnitWorked.Value : 0,
                                 }).FirstOrDefault();
-
-                attendanceVM.InDateTime = attendanceVM.InDateTime != null ? CommonMethod.ConvertFromUTCToIndianDateTime(attendanceVM.InDateTime) : attendanceVM.InDateTime;
-                attendanceVM.OutDateTime = attendanceVM.OutDateTime != null ? CommonMethod.ConvertFromUTCToIndianDateTime(Convert.ToDateTime(attendanceVM.OutDateTime)) : attendanceVM.OutDateTime;
+                 
                 attendanceVM.StatusText = CommonMethod.GetEnumDescription((AttendanceStatus)attendanceVM.Status);
                 attendanceVM.DayTypeText = attendanceVM.DayType == 1 ? CommonMethod.GetEnumDescription(DayType.FullDay) : CommonMethod.GetEnumDescription(DayType.HalfDay);
             }

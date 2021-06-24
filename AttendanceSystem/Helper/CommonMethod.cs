@@ -20,45 +20,45 @@ namespace AttendanceSystem
 {
     public static class CommonMethod
     {
-        public static string ConvertFromUTC(DateTime? utcDateTime)
-        {
-            if (utcDateTime == null)
-                return "";
+        //public static string ConvertFromUTC(DateTime? utcDateTime)
+        //{
+        //    if (utcDateTime == null)
+        //        return "";
 
-            TimeZoneInfo nzTimeZone = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
-            DateTime dateTimeAsTimeZone = TimeZoneInfo.ConvertTimeFromUtc(Convert.ToDateTime(utcDateTime), nzTimeZone);
-            string dt = dateTimeAsTimeZone.ToString("dd/MM/yyyy hh:mm tt");
-            return dt;
-        }
+        //    TimeZoneInfo nzTimeZone = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
+        //    DateTime dateTimeAsTimeZone = TimeZoneInfo.ConvertTimeFromUtc(Convert.ToDateTime(utcDateTime), nzTimeZone);
+        //    string dt = dateTimeAsTimeZone.ToString("dd/MM/yyyy hh:mm tt");
+        //    return dt;
+        //}
 
-        public static string ConvertFromUTCNew(DateTime? utcDateTime)
-        {
-            if (utcDateTime == null)
-                return "";
+        //public static string ConvertFromUTCNew(DateTime? utcDateTime)
+        //{
+        //    if (utcDateTime == null)
+        //        return "";
 
-            TimeZoneInfo nzTimeZone = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
-            DateTime dateTimeAsTimeZone = TimeZoneInfo.ConvertTimeFromUtc(Convert.ToDateTime(utcDateTime), nzTimeZone);
-            string dt = dateTimeAsTimeZone.ToString("dd-MMM-yyyy hh:mm tt");
-            return dt;
-        }
+        //    TimeZoneInfo nzTimeZone = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
+        //    DateTime dateTimeAsTimeZone = TimeZoneInfo.ConvertTimeFromUtc(Convert.ToDateTime(utcDateTime), nzTimeZone);
+        //    string dt = dateTimeAsTimeZone.ToString("dd-MMM-yyyy hh:mm tt");
+        //    return dt;
+        //}
 
-        public static string ConvertFromUTCOnlyDate(DateTime? utcDateTime)
-        {
-            if (utcDateTime == null)
-                return "";
+        //public static string ConvertFromUTCOnlyDate(DateTime? utcDateTime)
+        //{
+        //    if (utcDateTime == null)
+        //        return "";
 
-            TimeZoneInfo nzTimeZone = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
-            DateTime dateTimeAsTimeZone = TimeZoneInfo.ConvertTimeFromUtc(Convert.ToDateTime(utcDateTime), nzTimeZone);
-            string dt = dateTimeAsTimeZone.ToString("dd/MM/yyyy");
-            return dt;
-        }
+        //    TimeZoneInfo nzTimeZone = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
+        //    DateTime dateTimeAsTimeZone = TimeZoneInfo.ConvertTimeFromUtc(Convert.ToDateTime(utcDateTime), nzTimeZone);
+        //    string dt = dateTimeAsTimeZone.ToString("dd/MM/yyyy");
+        //    return dt;
+        //}
 
-        public static DateTime ConvertFromUTCToIndianDateTime(DateTime utcDateTime)
-        {
-            TimeZoneInfo indTimeZone = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
-            DateTime dateTimeAsTimeZone = TimeZoneInfo.ConvertTimeFromUtc(utcDateTime, indTimeZone);
-            return dateTimeAsTimeZone;
-        }
+        //public static DateTime ConvertFromUTCToIndianDateTime(DateTime utcDateTime)
+        //{
+        //    TimeZoneInfo indTimeZone = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
+        //    DateTime dateTimeAsTimeZone = TimeZoneInfo.ConvertTimeFromUtc(utcDateTime, indTimeZone);
+        //    return dateTimeAsTimeZone;
+        //}
         public static DateTime CurrentIndianDateTime()
         {
             DateTime DT = DateTime.UtcNow;

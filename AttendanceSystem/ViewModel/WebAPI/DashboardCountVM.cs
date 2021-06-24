@@ -2,8 +2,7 @@
 {
     public class DashboardCountVM
     {
-        public int TotalAttendance { get; set; }
-        public int TotalAbsent { get; set; }
+        public decimal TotalAttendance { get; set; } 
         public int LeavePendingForApprove { get; set; }
         public decimal PendingSalary { get; set; }
         public double thisMonthHoliday { get; set; }

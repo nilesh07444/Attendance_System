@@ -59,11 +59,11 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     response.IsError = true;
                     response.AddError(ErrorMessage.PerDayPriceRequiredForDailyBasedWorker);
                 }
-                else if (employeeVM.EmploymentCategory == (int)EmploymentCategory.DailyBased && employeeVM.ExtraPerHourPrice == 0)
-                {
-                    response.IsError = true;
-                    response.AddError(ErrorMessage.ExtraPerHourPriceRequired);
-                }
+                //else if (employeeVM.EmploymentCategory == (int)EmploymentCategory.DailyBased && employeeVM.ExtraPerHourPrice == 0)
+                //{
+                //    response.IsError = true;
+                //    response.AddError(ErrorMessage.ExtraPerHourPriceRequired);
+                //}
                 else if (employeeVM.EmploymentCategory == (int)EmploymentCategory.HourlyBased && employeeVM.PerCategoryPrice == 0)
                 {
                     response.IsError = true;
@@ -74,11 +74,11 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     response.IsError = true;
                     response.AddError(ErrorMessage.MonthlySalaryRequiredForMonthlyBasedWorker);
                 }
-                else if (employeeVM.EmploymentCategory == (int)EmploymentCategory.MonthlyBased && employeeVM.ExtraPerHourPrice == 0)
-                {
-                    response.IsError = true;
-                    response.AddError(ErrorMessage.ExtraPerHourPriceRequired);
-                }
+                //else if (employeeVM.EmploymentCategory == (int)EmploymentCategory.MonthlyBased && employeeVM.ExtraPerHourPrice == 0)
+                //{
+                //    response.IsError = true;
+                //    response.AddError(ErrorMessage.ExtraPerHourPriceRequired);
+                //}
                 else if (employeeVM.EmploymentCategory == (int)EmploymentCategory.UnitBased && employeeVM.PerCategoryPrice == 0)
                 {
                     response.IsError = true;
@@ -117,7 +117,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     objEmployee.EmploymentCategory = employeeVM.EmploymentCategory;
                     objEmployee.MonthlySalaryPrice = employeeVM.MonthlySalaryPrice;
                     objEmployee.PerCategoryPrice = employeeVM.PerCategoryPrice;
-                    objEmployee.ExtraPerHourPrice = employeeVM.ExtraPerHourPrice;
+                    objEmployee.ExtraPerHourPrice = employeeVM.ExtraPerHourPrice.HasValue ? employeeVM.ExtraPerHourPrice.Value : 0;
                     objEmployee.AdharCardNo = employeeVM.AdharCardNo;
                     objEmployee.EmployeeCode = CommonMethod.getEmployeeCodeFormat(companyId, objCompany.CompanyName, empCount.Count());
                     objEmployee.Address = employeeVM.Address;
