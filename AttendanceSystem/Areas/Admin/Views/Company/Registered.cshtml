@@ -16,37 +16,44 @@
                     </div>
                 </div>
                 <div class="card">
-
-
+                     
                     <div class="card-body">
+
                         <div class="row">
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label>Start Date</label>
-                                    @Html.TextBoxFor(model => model.StartDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Start Date" })
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label>End Date</label>
-                                    @Html.TextBoxFor(model => model.EndDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Start Date" })
-                                </div>
-                            </div>
+                            <div class="col-sm-12">
+                                <div class="card-header ">
 
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label>Company Type</label>
-                                    @Html.DropDownListFor(model => model.CompanyTypeId, new SelectList(Model.CompanyTypeList, "Value", "Text"), "- All -", new { @class = "form-control col-md-8 required", style = "" })
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label style="padding-top:45px"></label>
-                                    <button class="btn btn-primary mr-1" id="btnSearch" type="button">Search</button>
-                                </div>
-                            </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label for="StartDate" style="font-size: 1rem">Start Date</label>
+                                            @Html.TextBoxFor(model => model.StartDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Start Date", style = "height: calc(2.25rem + 6px)" })
+                                        </div>
+                                    </div>
 
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label for="EndDate" style="font-size: 1rem">End Date</label>
+                                            @Html.TextBoxFor(model => model.EndDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "End Date", style = "height: calc(2.25rem + 6px)" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label for="CompanyType" style="font-size: 1rem">Company Type</label>
+                                            @Html.DropDownListFor(model => model.CompanyTypeId, new SelectList(Model.CompanyTypeList, "Value", "Text"), "- All -", new { @class = "form-control required" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-2">
+                                        <div class="card-header-action">
+                                            <button class="btn btn-primary mr-1" style="font-size: 1rem" id="btnSearch" type="button">Search</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
                         </div>
+
                         <div class="table-responsive">
                             <table class="table table-striped table-hover" id="tableExport" style="width:100%;">
                                 <thead>

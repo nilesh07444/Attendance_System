@@ -7,18 +7,21 @@
 
 
 <section class="section">
-    @if (clsAdminSession.RoleID == (int)AdminRoles.CompanyAdmin)
-    {
 
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header" style="background-color: #425C59;">
-                        <h4 style="color: #FFCEA3;">Dashboard</h4>
-                    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header" style="background-color: #425C59;">
+                    <h4 style="color: #FFCEA3;">Dashboard</h4>
                 </div>
             </div>
         </div>
+    </div>
+
+    @if (clsAdminSession.RoleID == (int)AdminRoles.CompanyAdmin)
+    {
+
+
 
         <div class="row ">
             @if (!clsAdminSession.IsTrialMode)
@@ -408,7 +411,7 @@
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
                                     <div class="banner-img">
                                         @*<img src="~/Content/admin-theme/assets/img/banner/4.png" alt="">*@
-                                        <img src="~/Content/admin-theme/assets/img/contrabook/clipart/superadmin/account-packages.jpg" alt="">
+                                        <img src="~/Content/admin-theme/assets/img/contrabook/clipart/companyadmin/sms-left.jpg" alt="">
                                     </div>
                                 </div>
                             </div>

@@ -1,11 +1,11 @@
-﻿ 
+﻿
 @using AttendanceSystem.ViewModel;
 @model AttendanceSystem.ViewModel.PaymentFilterVM
 @{
     ViewBag.Title = "Deleted Payment";
     int counter = 1;
 }
- 
+
 <section class="section">
     <div class="section-body">
         <div class="row">
@@ -18,37 +18,39 @@
                 </div>
 
                 <div class="card">
-                    
+
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label>Start Date</label>
-                                    @Html.TextBoxFor(model => model.StartDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Start Date" })
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label>End Date</label>
-                                    @Html.TextBoxFor(model => model.EndDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Start Date" })
-                                </div>
-                            </div>
+                            <div class="col-sm-12">
+                                <div class="card-header ">
+                                    <div class="col-sm-2">
+                                        <div class="form-group">
+                                            <label style="font-size: 1rem">Start Date</label>
+                                            @Html.TextBoxFor(model => model.StartDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Start Date", style = "height: calc(2.25rem + 6px)" })
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <div class="form-group">
+                                            <label style="font-size: 1rem">End Date</label>
+                                            @Html.TextBoxFor(model => model.EndDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "End Date", style = "height: calc(2.25rem + 6px)" })
+                                        </div>
+                                    </div>
 
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label>Employee Role</label>
-                                    @Html.DropDownListFor(model => model.UserRole, new SelectList(Model.UserRoleList, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8 required", style = "" })
+                                    <div class="col-sm-2">
+                                        <div class="form-group">
+                                            <label style="font-size: 1rem">Employee Role</label>
+                                            @Html.DropDownListFor(model => model.UserRole, new SelectList(Model.UserRoleList, "Value", "Text"), "- Select -", new { @class = "form-control required", style = "height: calc(2.25rem + 6px)" })
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <div class="card-header-action"> 
+                                            <button class="btn btn-primary mr-1" style="font-size: 1rem" id="btnSearch" type="button">Search</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label style="padding-top:45px"></label>
-                                    <button class="btn btn-primary mr-1" id="btnSearch" type="button">Search</button>
-                                </div>
-                            </div>
-
                         </div>
-                         
+
                         <div class="table-responsive">
                             <table class="table table-striped table-hover" id="tableExport" style="width:100%;">
                                 <thead>
@@ -89,20 +91,20 @@
             </div>
         </div>
     </div>
-</section> 
+</section>
 
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
- 
+
 <script type="text/javascript">
     $(document).ready(function () {
         $('#btnSearch').click(function () {
             var startDate = $("#StartDate").val();
-            var endDate= $("#EndDate").val();
+            var endDate = $("#EndDate").val();
             var userRole = $("#UserRole").val();
             StartLoading();
-            window.location.href = "/admin/payment/deletedpayment?userRole=" + userRole + "&startDate=" + startDate + "&endDate=" + endDate ;
+            window.location.href = "/admin/payment/deletedpayment?userRole=" + userRole + "&startDate=" + startDate + "&endDate=" + endDate;
         });
     })
 </script> 
