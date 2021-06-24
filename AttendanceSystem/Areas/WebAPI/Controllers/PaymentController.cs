@@ -229,7 +229,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         ParameterName = "EmployeeId",
                         Value = paymentReportFilterVM.EmployeeId
                     };
-                    //Get student name of string type
+                  
                     List<PaymentReportVM> paymentReport = _db.Database.SqlQuery<PaymentReportVM>("exec Usp_GetPatmentReport @StartMonth,@EndMonth,@Year,@EmployeeId ", startMonthParam, endMonthParam, yearParam, employeeIdParam).ToList<PaymentReportVM>();
                     response.Data = paymentReport;
 

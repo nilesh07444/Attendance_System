@@ -186,5 +186,14 @@ namespace AttendanceSystem.ViewModel
         public List<SelectListItem> WorkerAttendanceTypeList { get; set; }
         public decimal PerCategoryPrice { get; set; }
         public decimal? ExtraPerHourPrice { get; set; }
+        [Display(Name = "Morning")]
+        public bool IsMorning { get; set; }
+        public string IsMorningText { get; set; }
+        [Display(Name = "Afternoon")]
+        public bool IsAfternoon { get; set; }
+        public string IsAfternoonText { get; set; }
+        [Display(Name = "Evening")]
+        public bool IsEvening { get; set; }
+        public string IsEveningText { get; set; }
     }
 }

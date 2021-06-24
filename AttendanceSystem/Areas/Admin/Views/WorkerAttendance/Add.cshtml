@@ -21,6 +21,7 @@
                         <div class="row">
 
                             <div class="form-group col-6">
+                                @Html.HiddenFor(model => model.AttendanceId)
                                 @Html.HiddenFor(model => model.SiteId)
                                 @Html.LabelFor(model => model.SiteName, htmlAttributes: new { @class = "" })
                                 @Html.TextBoxFor(model => model.SiteName, new { @type = "text", @class = "form-control", @placeholder = "Site", @readonly = "true" })
@@ -46,22 +47,43 @@
                         </div>
                         <div class="row">
                             <div class="form-group col-6">
-                                @Html.LabelFor(model => model.AttendanceType, htmlAttributes: new { @class = "" })
-                                @Html.DropDownListFor(model => model.AttendanceType, new SelectList(Model.WorkerAttendanceTypeList, "Value", "Text"), "- Select -", new { @class = "form-control required" })
-                                @Html.ValidationMessageFor(model => model.AttendanceType, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="form-group col-6">
                                 @Html.LabelFor(model => model.EmploymentCategoryText, htmlAttributes: new { @class = "" })
                                 @Model.EmploymentCategoryText
                                 @Html.HiddenFor(model => model.EmploymentCategoryId)
                                 @Html.HiddenFor(model => model.PerCategoryPrice)
                                 @Html.HiddenFor(model => model.ExtraPerHourPrice)
                             </div>
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.PendingSalary, htmlAttributes: new { @class = "" })
+                                @Model.PendingSalary
+                                @Html.HiddenFor(model => model.PendingSalary)
+                            </div>
                         </div>
                         <div class="row">
-                            @Html.LabelFor(model => model.PendingSalary, htmlAttributes: new { @class = "" })
-                            @Model.PendingSalary
-                            @Html.HiddenFor(model => model.PendingSalary)
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.IsMorning, htmlAttributes: new { @class = "" })
+                                @Html.HiddenFor(model => model.IsMorning)
+                                @Model.IsMorningText
+                            </div>
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.IsAfternoon, htmlAttributes: new { @class = "" })
+                                @Html.HiddenFor(model => model.IsAfternoon)
+                                @Model.IsAfternoonText
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.IsEvening, htmlAttributes: new { @class = "" })
+                                @Html.HiddenFor(model => model.IsEvening)
+                                @Model.IsEveningText
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.AttendanceType, htmlAttributes: new { @class = "" })
+                                @Html.DropDownListFor(model => model.AttendanceType, new SelectList(Model.WorkerAttendanceTypeList, "Value", "Text"), "- Select -", new { @class = "form-control required" })
+                                @Html.ValidationMessageFor(model => model.AttendanceType, "", new { @class = "text-danger" })
+                            </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-6" id="dvExtraHours">
@@ -92,7 +114,7 @@
 
                     <div class="card-footer text-center">
                         <button class="btn btn-success mr-1" type="submit" id="btnSubmit">Submit</button>
-                        <a href="/admin/holiday" class="btn btn-secondary">Cancel</a>
+                        <a href="/admin/workerattendance/assignedworkerlist" class="btn btn-secondary">Cancel</a>
                     </div>
 
                 }

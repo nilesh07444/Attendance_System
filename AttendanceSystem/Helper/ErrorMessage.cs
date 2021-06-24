@@ -173,5 +173,8 @@
 
         public static string YES = "Yes";
         public static string NO = "No";
+
+        public static string HourlyBasedWorkerNotAllowedWithoutTotalHours = "Hourly based worker not allowed without total hours.";
+        public static string UnitBasedWorkerNotAllowedWithoutTotalUnits = "Unit based worker not allowed without total units.";
     }
 }

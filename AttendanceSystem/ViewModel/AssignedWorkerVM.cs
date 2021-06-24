@@ -13,7 +13,15 @@ namespace AttendanceSystem.ViewModel
         public long SiteId { get; set; }
         public string SiteName { get; set; }
         public bool IsClosed { get; set; }
-
+        public bool IsMorning { get; set; }
+        public string IsMorningText { get; set; }
+        public bool IsAfternoon { get; set; }
+        public string IsAfternoonText { get; set; }
+        public bool IsEvening { get; set; }
+        public string IsEveningText { get; set; }
+        public long? WorkerAttendanceId { get; set; }
+        public int EmploymentCategory { get; set; }
+        public string EmploymentCategoryText { get; set; }
     }
 
     public class AssignedWorkerFilterVM
@@ -28,5 +36,7 @@ namespace AttendanceSystem.ViewModel
         public List<AssignedWorkerVM> AssignedWorkerList { get; set; }
         public List<SelectListItem> SiteList { get; set; }
         public List<SelectListItem> EmployeeList { get; set; }
+        public int AttendanceType { get; set; }
+        public List<SelectListItem> AttendanceTypeList { get; set; }
     }
 }

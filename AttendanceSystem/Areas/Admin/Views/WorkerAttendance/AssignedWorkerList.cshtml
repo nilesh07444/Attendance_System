@@ -27,7 +27,7 @@
                             <div class="col-sm-3">
                                 <div class="form-group">
                                     <label>Site</label>
-                                    @Html.DropDownListFor(model => model.SiteId, new SelectList(Model.SiteList, "Value", "Text"), "- All -", new { @class = "form-control col-md-8", style = "" })
+                                    @Html.DropDownListFor(model => model.SiteId, new SelectList(Model.SiteList, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8", style = "" })
                                 </div>
                             </div>
                             <div class="col-sm-3">
@@ -44,15 +44,35 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label>Attendance</label>
+                                    @Html.DropDownListFor(model => model.AttendanceType, new SelectList(Model.AttendanceTypeList, "Value", "Text"), "- All -", new { @class = "form-control col-md-8", style = "" })
+
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label style="padding-top:45px"></label>
+                                    <button class="btn btn-primary mr-1" id="btnAddAttendance" type="button">Add Attendance</button>
+                                </div>
+                            </div>
+                        </div>
                         <div class="table-responsive">
                             <table class="table table-striped table-hover" id="tableExport1" style="width:100%;">
                                 <thead>
                                     <tr>
                                         <td>#</td>
+                                        <td>Select</td>
                                         <th>Date</th>
                                         <th>Site Name</th>
                                         <th>Worker Name</th>
                                         <th>Worker Code</th>
+                                        <th>Category</th>
+                                        <th>Morning</th>
+                                        <th>Afternoon</th>
+                                        <th>Evening</th>
                                         <th>Add Attendance</th>
                                     </tr>
                                 </thead>
@@ -62,15 +82,38 @@
                                         foreach (AssignedWorkerVM obj in Model.AssignedWorkerList)
                                         {
                                             <tr>
-                                                <td>@counter.</td>
+                                                <td>
+                                                    @counter.
+                                                    @Html.HiddenFor(x => obj.EmployeeId, new { id = "EmployeeId_" + counter })
+                                                    @Html.HiddenFor(x => obj.EmploymentCategory, new { id = "EmploymentCategory_" + counter })
+                                                </td>
+                                                <td>
+                                                    @if (obj.Date.Date == today && !obj.IsClosed)
+                                                    {
+                                                        <input type="checkbox" class="chkBox" id='chk_@counter' name="Select">
+                                                    }
+                                                </td>
                                                 <td>@obj.Date.ToString("dd MMM yyyy")</td>
                                                 <td>@obj.SiteName</td>
                                                 <td>@obj.EmployeeName</td>
                                                 <td>@obj.EmployeeCode</td>
+                                                <td>@obj.EmploymentCategoryText</td>
+                                                <td>
+                                                    @obj.IsMorningText
+                                                    @Html.HiddenFor(x => obj.IsMorning, new { id = "IsMorning_" + counter })
+                                                </td>
+                                                <td>
+                                                    @obj.IsAfternoonText
+                                                    @Html.HiddenFor(x => obj.IsAfternoon, new { id = "IsAfternoon_" + counter })
+                                                </td>
+                                                <td>
+                                                    @obj.IsEveningText
+                                                    @Html.HiddenFor(x => obj.IsEvening, new { id = "IsEvening_" + counter })
+                                                </td>
                                                 <td>
                                                     @if (obj.Date.Date == today && !obj.IsClosed)
                                                     {
-                                                        <a href="/admin/workerattendance/add?siteId=@obj.SiteId&employeeId=@obj.EmployeeId&date=@obj.Date" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
+                                                        <a href="/admin/workerattendance/add?siteId=@obj.SiteId&employeeId=@obj.EmployeeId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
                                                     }
                                                 </td>
                                             </tr>
@@ -112,12 +155,102 @@
                 return false;
             }
 
+            if ($("#SiteId").val() == "" || $("#SiteId").val() == "0") {
+                alert("Please select site");
+                return false;
+            }
+
             var date = $("#Date").val();
             var siteId = $("#SiteId").val();
             var employeeId = $("#EmployeeId").val();
 
             StartLoading();
             window.location.href = "/admin/workerattendance/assignedworkerlist?siteId=" + siteId + "&date=" + date + "&employeeId=" + employeeId;
+        });
+
+        $('#btnAddAttendance').click(function () {
+            var employeeIds = [];
+            var count = 0;
+            var attendanceType = $('#AttendanceType').val();
+            var siteId = $('#SiteId').val();
+            if (attendanceType == "" || attendanceType == "0") {
+                alert("Please select valid attendance type.");
+                return false;
+            }
+
+            $(".chkBox").each(function () {
+                if ($(this).prop("checked")) {
+                    var id = $(this).attr("Id");
+                    var employeeid = id.replace("chk", "EmployeeId");
+
+                    employeeIds.push($("#" + employeeid).val());
+                    count = parseFloat(count) + 1;
+                }
+            });
+
+            if (count == 0) {
+                alert("Please select alteast one employee to add attendance");
+                return false;
+            }
+
+            StartLoading();
+
+                var URL = '@Url.Action("AddAttendance", "WorkerAttendance")';
+                $.ajax({
+                    type: 'POST',
+                    async: true,
+                    url: URL + "?siteId=" + siteId + "&attendanceType=" + attendanceType + "&ids=" + employeeIds,
+                    success: function (result) {
+                        if (result == "success") {
+                            alert("Attendance Added Successfully...");
+                            window.location.reload();
+                        }
+                        else {
+                            alert("Something went wrong. Please try again");
+                        }
+
+                       StopLoading();
+                    },
+                    error: function (result) {
+                        StopLoading();
+                    }
+                });
+        });
+
+
+        $('#AttendanceType').change(function () {
+
+            var AttendanceType = $(this).val();
+
+
+            $(".chkBox").each(function () {
+                var id = $(this).attr("Id");
+                var isMorningId = id.replace("chk", "IsMorning");
+                var isAfternoon = id.replace("chk", "IsAfternoon");
+                var isEveningId = id.replace("chk", "IsEvening");
+                var employmentCategoryId = id.replace("chk", "EmploymentCategory");
+
+                var morningVal = $("#" + isMorningId).val()
+                var afternoonVal = $("#" + isAfternoon).val()
+                var eveningIdVal = $("#" + isEveningId).val()
+                var employmentCategoryVal = $("#" + employmentCategoryId).val()
+
+                if (AttendanceType == "1" && morningVal == "True") {
+                    $("#" + id).attr("disabled", true);
+                }
+                else if (AttendanceType == "2" && afternoonVal == "True") {
+                    $("#" + id).attr("disabled", true);
+                }
+                else if (AttendanceType == "3" && eveningIdVal == "True") {
+                    $("#" + id).attr("disabled", true);
+                }
+                else if (AttendanceType == "3" && (employmentCategoryVal == "2" || employmentCategoryVal == "4")) {
+                    $("#" + id).attr("disabled", true);
+                }
+                else {
+                    $("#" + id).removeAttr("disabled");
+                }
+            });
         });
     });
 
