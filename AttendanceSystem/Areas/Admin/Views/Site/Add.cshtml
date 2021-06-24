@@ -1,37 +1,43 @@
-﻿@using AttendanceSystem.Helper;
-@model AttendanceSystem.ViewModel.SiteVM
+﻿@model AttendanceSystem.ViewModel.SiteVM
 @{
-                /**/
-
+    ViewBag.Title = "Site";
 }
 
 <section class="section">
 
     <div class="row">
         <div class="col-12">
-            <div class="card card-primary">
-                <div class="card-header">
-                    <h4>@(Model.SiteId == 0 ? "Add" : "Edit") Site</h4>
+            <div class="card">
+                <div class="card-header" style="background-color: #425C59; display: block;">
+                    <div class="pull-left">
+                        <h4 style="color: #FFCEA3;">@(Model.SiteId == 0 ? "Add" : "Edit") Site</h4>
+                    </div>
+                    <div class="pull-right">
+                        <a href="/admin/site" class="btn btn-warning pull-right"><i class="fas fa-backward"></i> Back</a>
+                    </div>
                 </div>
+            </div>
+
+            <div class="card card-primary">
 
                 @using (Html.BeginForm("Add", "Site", FormMethod.Post, new { @id = "SiteFormId", @class = "", enctype = "multipart/form-data", role = "form" }))
                 {
-                <div class="card-body">
-                    <div class="row">
-                        <div class="form-group col-6">
-                            @Html.LabelFor(model => model.SiteName, htmlAttributes: new { @class = "" })
-                            @Html.EditorFor(model => model.SiteName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Site Name ", maxlength = "200", @autofocus = "autofocus" } })
-                            @Html.ValidationMessageFor(model => model.SiteName, "", new { @class = "text-danger" })
-                            @Html.HiddenFor(model => model.SiteId)
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.SiteName, htmlAttributes: new { @class = "" })
+                                @Html.EditorFor(model => model.SiteName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Site Name ", maxlength = "200", @autofocus = "autofocus" } })
+                                @Html.ValidationMessageFor(model => model.SiteName, "", new { @class = "text-danger" })
+                                @Html.HiddenFor(model => model.SiteId)
+                            </div>
+
                         </div>
-                        
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SiteDescription, htmlAttributes: new { @class = "" })
+                            @Html.TextAreaFor(model => model.SiteDescription, 10, 5, new { @class = "form-control", @placeholder = "Enter Package Description", maxlength = "250" })
+                            @Html.ValidationMessageFor(model => model.SiteDescription, "", new { @class = "text-danger" })
+                        </div>
                     </div>
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.SiteDescription, htmlAttributes: new { @class = "" })
-                        @Html.TextAreaFor(model => model.SiteDescription, 10, 5, new { @class = "form-control", @placeholder = "Enter Package Description", maxlength = "250" })
-                        @Html.ValidationMessageFor(model => model.SiteDescription, "", new { @class = "text-danger" })
-                    </div>
-                </div>
 
                     <div class="card-footer text-center">
                         <button class="btn btn-success mr-1" type="submit">Submit</button>
@@ -57,7 +63,7 @@
 
         $('#btnSubmit').click(function () {
             if ($("#SiteFormId").valid()) {
-                 
+
             }
             else {
                 return false;

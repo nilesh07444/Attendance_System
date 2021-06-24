@@ -2,19 +2,25 @@
 @model AttendanceSystem.ViewModel.PaymentVM
 @{
     ViewBag.Title = "Employee";
-    List<SelectListItem> lstPaymentType = new List<SelectListItem>();
-
+    List<SelectListItem> lstPaymentType = new List<SelectListItem>(); 
 }
 
 <section class="section">
 
     <div class="row">
         <div class="col-12">
-            <div class="card card-primary">
-                <div class="card-header">
-                    <h4>@(Model.EmployeePaymentId == 0 ? "Give" : "Edit") Employee Payment</h4>
+            <div class="card">
+                <div class="card-header" style="background-color: #425C59; display: block;">
+                    <div class="pull-left">
+                        <h4 style="color: #FFCEA3;">@(Model.EmployeePaymentId == 0 ? "Give" : "Edit") Employee Payment</h4>
+                    </div>
+                    <div class="pull-right">
+                        <a href="/admin/payment" class="btn btn-warning pull-right"><i class="fas fa-backward"></i> Back</a>
+                    </div>
                 </div>
-
+            </div>
+            <div class="card card-primary">
+                 
                 @using (Html.BeginForm("Add", "Payment", FormMethod.Post, new { @id = "EmployeePaymentFormId", @class = "", enctype = "multipart/form-data", role = "form" }))
                 {
                     @Html.ValidationSummary()
@@ -40,9 +46,9 @@
                                 @Html.Label(Model.PendingSalary.ToString(), new { @id = "lblPendingSalary" })
                                 @Html.HiddenFor(model => model.PendingSalary)
                             </div>
-                            <div class="form-group col-6">
+                            @*<div class="form-group col-6">
                                 <a id="MoreDetail" class="btn btn-secondary">Click here for more detail</a>
-                            </div>
+                            </div>*@
                         </div>
                         <div class="row">
                             <div class="form-group col-6">

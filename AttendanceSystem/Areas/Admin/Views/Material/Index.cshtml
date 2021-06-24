@@ -1,29 +1,29 @@
-﻿@using AttendanceSystem.Helper
-@using AttendanceSystem.ViewModel;
+﻿@using AttendanceSystem.ViewModel;
 @model List<AttendanceSystem.ViewModel.MaterialVM>
 @{
-    /**/
-
-    /**/
-
     ViewBag.Title = "Material";
     int counter = 1;
 }
-
 
 <section class="section">
     <div class="section-body">
         <div class="row">
             <div class="col-12">
+
                 <div class="card">
-                    <div class="card-header">
-                        <h4>Material List</h4>
+                    <div class="card-header" style="background-color: #425C59;">
+                        <h4 style="color: #FFCEA3;">Material List</h4>
                     </div>
-                    <div class="card-body">
-                        <div class="pull-right">
+                </div>
+
+                <div class="card">
+                    <div class="card-header" style="display: block;">
+                        <div class="card-header-action pull-right">
                             <a href="/admin/material/add/0" class="btn btn-icon icon-left btn-primary"><i class="fas fa-plus-circle"></i> Add Material</a>
                         </div>
-
+                    </div>
+                    <div class="card-body">
+                         
                         <div class="table-responsive">
                             <table class="table table-striped table-hover" id="tableExport" style="width:100%;">
                                 <thead>
@@ -43,26 +43,26 @@
                                     {
                                         foreach (MaterialVM obj in Model)
                                         {
-                                    <tr>
-                                        <td>@counter.</td>
-                                        <td>@obj.MaterialCategoryText</td>
-                                        <td>@obj.SiteName</td>
-                                        <td>@obj.MaterialDate</td>
-                                        <td>@obj.Qty</td>
-                                        <td>@obj.InOutText</td>
-                                        @if (obj.IsActive == true)
-                                        {
-                                            <td><span class="badge badge-success" style="cursor:pointer;" title="Click to Inactive" onclick="fnChangeStatus('@obj.MaterialId','InActive');">Active</span></td>
-                                        }
-                                        else
-                                        {
-                                            <td><span class="badge badge-danger" style="cursor:pointer;" title="Click to Active" onclick="fnChangeStatus('@obj.MaterialId','Active');">InActive</span></td>
-                                        }
-                                        <td>
-                                            <a href="/admin/material/add/@obj.MaterialId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
-                                            <a href="javascript:void(0);" title="Delete" class="btn btn-icon btn-danger" onclick="fnDeleteMaterial('@obj.MaterialId')"><i class="fas fa-trash-alt"></i></a>
-                                        </td>
-                                    </tr>
+                                            <tr>
+                                                <td>@counter.</td>
+                                                <td>@obj.MaterialCategoryText</td>
+                                                <td>@obj.SiteName</td>
+                                                <td>@obj.MaterialDate</td>
+                                                <td>@obj.Qty</td>
+                                                <td>@obj.InOutText</td>
+                                                @if (obj.IsActive == true)
+                                                {
+                                                    <td><span class="badge badge-success" style="cursor:pointer;" title="Click to Inactive" onclick="fnChangeStatus('@obj.MaterialId','InActive');">Active</span></td>
+                                                }
+                                                else
+                                                {
+                                                    <td><span class="badge badge-danger" style="cursor:pointer;" title="Click to Active" onclick="fnChangeStatus('@obj.MaterialId','Active');">InActive</span></td>
+                                                }
+                                                <td>
+                                                    <a href="/admin/material/add/@obj.MaterialId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
+                                                    <a href="javascript:void(0);" title="Delete" class="btn btn-icon btn-danger" onclick="fnDeleteMaterial('@obj.MaterialId')"><i class="fas fa-trash-alt"></i></a>
+                                                </td>
+                                            </tr>
 
                                             counter++;
                                         }
