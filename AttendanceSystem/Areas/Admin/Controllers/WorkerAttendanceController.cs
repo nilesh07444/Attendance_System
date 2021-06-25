@@ -270,22 +270,22 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 addWorkerAttendanceVM.IsEveningText = addWorkerAttendanceVM.IsEvening ? ErrorMessage.YES : ErrorMessage.NO;
 
 
-                addWorkerAttendanceVM.WorkerAttendanceTypeList = GetAttendanceTypeList();
+                addWorkerAttendanceVM.WorkerAttendanceTypeList = GetAttendanceTypeListFromAttendanceFilled(addWorkerAttendanceVM.IsMorning, addWorkerAttendanceVM.IsAfternoon, addWorkerAttendanceVM.IsEvening);
 
-                if (addWorkerAttendanceVM.IsMorning)
-                {
-                    addWorkerAttendanceVM.WorkerAttendanceTypeList.Remove(addWorkerAttendanceVM.WorkerAttendanceTypeList.First(item => item.Value.Equals(WorkerAttendanceType.Morning.GetHashCode().ToString())));
-                }
+                //if (addWorkerAttendanceVM.IsMorning)
+                //{
+                //    addWorkerAttendanceVM.WorkerAttendanceTypeList.Remove(addWorkerAttendanceVM.WorkerAttendanceTypeList.First(item => item.Value.Equals(WorkerAttendanceType.Morning.GetHashCode().ToString())));
+                //}
 
-                if (addWorkerAttendanceVM.IsAfternoon)
-                {
-                    addWorkerAttendanceVM.WorkerAttendanceTypeList.Remove(addWorkerAttendanceVM.WorkerAttendanceTypeList.First(item => item.Value.Equals(WorkerAttendanceType.Afternoon.GetHashCode().ToString())));
-                }
+                //if (addWorkerAttendanceVM.IsAfternoon)
+                //{
+                //    addWorkerAttendanceVM.WorkerAttendanceTypeList.Remove(addWorkerAttendanceVM.WorkerAttendanceTypeList.First(item => item.Value.Equals(WorkerAttendanceType.Afternoon.GetHashCode().ToString())));
+                //}
 
-                if (addWorkerAttendanceVM.IsEvening)
-                {
-                    addWorkerAttendanceVM.WorkerAttendanceTypeList.Remove(addWorkerAttendanceVM.WorkerAttendanceTypeList.First(item => item.Value.Equals(WorkerAttendanceType.Evening.GetHashCode().ToString())));
-                }
+                //if (addWorkerAttendanceVM.IsEvening)
+                //{
+                //    addWorkerAttendanceVM.WorkerAttendanceTypeList.Remove(addWorkerAttendanceVM.WorkerAttendanceTypeList.First(item => item.Value.Equals(WorkerAttendanceType.Evening.GetHashCode().ToString())));
+                //}
             }
             catch (Exception ex)
             {
@@ -308,6 +308,41 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return lst;
         }
 
+        private List<SelectListItem> GetAttendanceTypeListFromAttendanceFilled(bool isMorning, bool isAfternoon, bool isEvening)
+        {
+            string[] workerAttendanceTypeArr = Enum.GetNames(typeof(WorkerAttendanceType));
+            var listWorkerAttendanceType = workerAttendanceTypeArr.Select((value, key) => new { value, key }).ToDictionary(x => x.key + 1, x => x.value);
+
+            List<SelectListItem> lst = (from pt in listWorkerAttendanceType
+                                        select new SelectListItem
+                                        {
+                                            Text = pt.Value,
+                                            Value = pt.Key.ToString()
+                                        }).ToList();
+
+
+            if (!isMorning && !isAfternoon)
+            {
+                lst.Remove(lst.First(item => item.Value.Equals(WorkerAttendanceType.Evening.GetHashCode().ToString())));
+            }
+            else if (isMorning && !isAfternoon)
+            {
+                lst.Remove(lst.First(item => item.Value.Equals(WorkerAttendanceType.Morning.GetHashCode().ToString())));
+                lst.Remove(lst.First(item => item.Value.Equals(WorkerAttendanceType.Evening.GetHashCode().ToString())));
+            }
+            else if (!isMorning && isAfternoon)
+            {
+                lst.Remove(lst.First(item => item.Value.Equals(WorkerAttendanceType.Morning.GetHashCode().ToString())));
+                lst.Remove(lst.First(item => item.Value.Equals(WorkerAttendanceType.Afternoon.GetHashCode().ToString())));
+            }
+            else if (isMorning && isAfternoon)
+            {
+                lst.Remove(lst.First(item => item.Value.Equals(WorkerAttendanceType.Morning.GetHashCode().ToString())));
+                lst.Remove(lst.First(item => item.Value.Equals(WorkerAttendanceType.Afternoon.GetHashCode().ToString())));
+            }
+
+            return lst;
+        }
 
         [HttpPost]
         public ActionResult Add(AddWorkerAttendanceVM addWorkerAttendanceVM)
@@ -316,6 +351,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             try
             {
                 long employeeId = clsAdminSession.UserID;
+                tbl_WorkerAttendance attendanceObject = _db.tbl_WorkerAttendance.Where(x => x.WorkerAttendanceId == addWorkerAttendanceVM.AttendanceId && x.EmployeeId == addWorkerAttendanceVM.EmployeeId && x.AttendanceDate == today && !x.IsClosed).FirstOrDefault();
+
                 if (ModelState.IsValid)
                 {
                     #region Validation
@@ -336,7 +373,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         ModelState.AddModelError("", ErrorMessage.InValidWorkerAttendanceType);
                     }
 
-                    tbl_WorkerAttendance attendanceObject = _db.tbl_WorkerAttendance.Where(x => x.WorkerAttendanceId == addWorkerAttendanceVM.AttendanceId && x.EmployeeId == addWorkerAttendanceVM.EmployeeId && x.AttendanceDate == today && !x.IsClosed).FirstOrDefault();
+                    
                     if (attendanceObject == null && addWorkerAttendanceVM.AttendanceType == (int)WorkerAttendanceType.Evening)
                     {
                         ModelState.AddModelError("", ErrorMessage.CanNotTakeEveningAttendanceWorkerNotPresentOnMorningOrAfterNoon);
@@ -346,6 +383,12 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     {
                         ModelState.AddModelError("", ErrorMessage.CanNotTakeMorningAttendanceAfterAfterNoonAttendance);
                     }
+
+                    if (attendanceObject != null && !attendanceObject.IsMorning && attendanceObject.IsAfternoon && addWorkerAttendanceVM.AttendanceType == (int)WorkerAttendanceType.Morning)
+                    {
+                        ModelState.AddModelError("", ErrorMessage.CanNotTakeMorningAttendanceAfterAfterNoonAttendance);
+                    }
+
 
                     if (addWorkerAttendanceVM.AttendanceType == (int)WorkerAttendanceType.Morning
                         && attendanceObject != null && attendanceObject.IsMorning)
@@ -508,27 +551,27 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     }
                     else
                     {
-                        addWorkerAttendanceVM.WorkerAttendanceTypeList = GetAttendanceTypeList();
-                        if (addWorkerAttendanceVM.IsMorning)
-                        {
-                            addWorkerAttendanceVM.WorkerAttendanceTypeList.Remove(addWorkerAttendanceVM.WorkerAttendanceTypeList.First(item => item.Value.Equals(WorkerAttendanceType.Morning.GetHashCode().ToString())));
-                        }
+                        addWorkerAttendanceVM.WorkerAttendanceTypeList = GetAttendanceTypeListFromAttendanceFilled(attendanceObject.IsMorning, attendanceObject.IsAfternoon, attendanceObject.IsEvening);
+                        //if (addWorkerAttendanceVM.IsMorning)
+                        //{
+                        //    addWorkerAttendanceVM.WorkerAttendanceTypeList.Remove(addWorkerAttendanceVM.WorkerAttendanceTypeList.First(item => item.Value.Equals(WorkerAttendanceType.Morning.GetHashCode().ToString())));
+                        //}
 
-                        if (addWorkerAttendanceVM.IsAfternoon)
-                        {
-                            addWorkerAttendanceVM.WorkerAttendanceTypeList.Remove(addWorkerAttendanceVM.WorkerAttendanceTypeList.First(item => item.Value.Equals(WorkerAttendanceType.Afternoon.GetHashCode().ToString())));
-                        }
+                        //if (addWorkerAttendanceVM.IsAfternoon)
+                        //{
+                        //    addWorkerAttendanceVM.WorkerAttendanceTypeList.Remove(addWorkerAttendanceVM.WorkerAttendanceTypeList.First(item => item.Value.Equals(WorkerAttendanceType.Afternoon.GetHashCode().ToString())));
+                        //}
 
-                        if (addWorkerAttendanceVM.IsEvening)
-                        {
-                            addWorkerAttendanceVM.WorkerAttendanceTypeList.Remove(addWorkerAttendanceVM.WorkerAttendanceTypeList.First(item => item.Value.Equals(WorkerAttendanceType.Evening.GetHashCode().ToString())));
-                        }
+                        //if (addWorkerAttendanceVM.IsEvening)
+                        //{
+                        //    addWorkerAttendanceVM.WorkerAttendanceTypeList.Remove(addWorkerAttendanceVM.WorkerAttendanceTypeList.First(item => item.Value.Equals(WorkerAttendanceType.Evening.GetHashCode().ToString())));
+                        //}
                         return View(addWorkerAttendanceVM);
                     }
                 }
                 else
                 {
-                    addWorkerAttendanceVM.WorkerAttendanceTypeList = GetAttendanceTypeList();
+                    addWorkerAttendanceVM.WorkerAttendanceTypeList = GetAttendanceTypeListFromAttendanceFilled(attendanceObject.IsMorning, attendanceObject.IsAfternoon, attendanceObject.IsEvening);
                     if (addWorkerAttendanceVM.IsMorning)
                     {
                         addWorkerAttendanceVM.WorkerAttendanceTypeList.Remove(addWorkerAttendanceVM.WorkerAttendanceTypeList.First(item => item.Value.Equals(WorkerAttendanceType.Morning.GetHashCode().ToString())));

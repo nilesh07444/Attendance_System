@@ -1,7 +1,7 @@
 ﻿@using AttendanceSystem.Helper;
 @model AttendanceSystem.ViewModel.AddWorkerAttendanceVM
 @{
-    
+
 }
 
 <section class="section">
@@ -19,7 +19,7 @@
                 </div>
             </div>
             <div class="card card-primary">
-                 
+
                 @using (Html.BeginForm("Add", "WorkerAttendance", FormMethod.Post, new { @id = "WorkerAttendanceFormId", @class = "", enctype = "multipart/form-data", role = "form" }))
                 {
                     @Html.ValidationSummary()
@@ -29,15 +29,22 @@
                             <div class="form-group col-6">
                                 @Html.HiddenFor(model => model.AttendanceId)
                                 @Html.HiddenFor(model => model.SiteId)
+
+                                @Html.HiddenFor(model => model.ExtraPerHourPrice)
+                                @Html.HiddenFor(model => model.EmploymentCategoryId)
+                                @Html.HiddenFor(model => model.AttendanceDate)
+                                @Html.HiddenFor(model => model.IsMorning)
+                                @Html.HiddenFor(model => model.IsAfternoon)
+                                @Html.HiddenFor(model => model.IsEvening)
+
+                                @Html.HiddenFor(model => model.PerCategoryPrice)
                                 @Html.LabelFor(model => model.SiteName, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.SiteName, new { @type = "text", @class = "form-control", @placeholder = "Site", @readonly = "true" })
-                                @Html.ValidationMessageFor(model => model.SiteId, "", new { @class = "text-danger" })
+                                @Model.SiteName
                             </div>
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.AttendanceDate, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.AttendanceDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control", @placeholder = "Attendance Date", @readonly = "true" })
-                                @Html.ValidationMessageFor(model => model.AttendanceDate, "", new { @class = "text-danger" })
-                                @Html.HiddenFor(model => model.AttendanceDate)
+                                @Model.AttendanceDate.ToString("dd MMM yyyy")
+
                             </div>
                         </div>
                         <div class="row">
@@ -55,9 +62,34 @@
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.EmploymentCategoryText, htmlAttributes: new { @class = "" })
                                 @Model.EmploymentCategoryText
-                                @Html.HiddenFor(model => model.EmploymentCategoryId)
-                                @Html.HiddenFor(model => model.PerCategoryPrice)
-                                @Html.HiddenFor(model => model.ExtraPerHourPrice)
+
+                            </div>
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.PerCategoryPrice, htmlAttributes: new { @class = "clsPerCategoryPrice" })
+                                @Model.PerCategoryPrice
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-6" id="dvExtraPerHourPrice">
+                                @Html.LabelFor(model => model.ExtraPerHourPrice, htmlAttributes: new { @class = "" })
+                                @Model.ExtraPerHourPrice
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.IsMorning, htmlAttributes: new { @class = "" })
+                                @Model.IsMorningText
+                            </div>
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.IsAfternoon, htmlAttributes: new { @class = "" })
+                                @Model.IsAfternoonText
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.IsEvening, htmlAttributes: new { @class = "" })
+                                @Model.IsEveningText
                             </div>
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.PendingSalary, htmlAttributes: new { @class = "" })
@@ -67,54 +99,52 @@
                         </div>
                         <div class="row">
                             <div class="form-group col-6">
-                                @Html.LabelFor(model => model.IsMorning, htmlAttributes: new { @class = "" })
-                                @Html.HiddenFor(model => model.IsMorning)
-                                @Model.IsMorningText
-                            </div>
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.IsAfternoon, htmlAttributes: new { @class = "" })
-                                @Html.HiddenFor(model => model.IsAfternoon)
-                                @Model.IsAfternoonText
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.IsEvening, htmlAttributes: new { @class = "" })
-                                @Html.HiddenFor(model => model.IsEvening)
-                                @Model.IsEveningText
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-6">
                                 @Html.LabelFor(model => model.AttendanceType, htmlAttributes: new { @class = "" })
                                 @Html.DropDownListFor(model => model.AttendanceType, new SelectList(Model.WorkerAttendanceTypeList, "Value", "Text"), "- Select -", new { @class = "form-control required" })
                                 @Html.ValidationMessageFor(model => model.AttendanceType, "", new { @class = "text-danger" })
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="form-group col-6" id="dvExtraHours">
+                        <div class="row" id="dvExtraHours">
+                            <div class="form-group col-6">
                                 @Html.LabelFor(model => model.ExtraHours, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.ExtraHours, new { @type = "number", @class = "form-control required", @placeholder = "Enter Per Extra Hours", @maxlength = "10", @min = "1" })
+                                @Html.TextBoxFor(model => model.ExtraHours, new { @type = "number", @class = "form-control ", @placeholder = "Enter Extra Hours", @maxlength = "10", @min = "0" })
                                 @Html.ValidationMessageFor(model => model.ExtraHours, "", new { @class = "text-danger" })
                             </div>
-                            <div class="form-group col-6" id="dvTodaySalary">
-                                @Html.LabelFor(model => model.TodaySalary, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.TodaySalary, new { @type = "number", @class = "form-control required", @placeholder = "Enter Today Salary", @maxlength = "10", @min = "0" })
-                                @Html.ValidationMessageFor(model => model.TodaySalary, "", new { @class = "text-danger" })
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.ExtraHoursAmount, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.ExtraHoursAmount, new { @type = "number", @class = "form-control", @readonly = true, @placeholder = "Total Extra Amount", @maxlength = "10", @min = "0" })
+                                @Html.HiddenFor(model => model.ExtraHoursAmount)
                             </div>
                         </div>
                         <div class="row">
-                            <div class="form-group col-6" id="dvNoOfHoursWorked">
+                            <div class="form-group col-6" id="dvTodaySalary">
+                                @Html.LabelFor(model => model.TodaySalary, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.TodaySalary, new { @type = "number", @class = "form-control ", @readonly = true, @placeholder = "Today Salary", @maxlength = "10", @min = "0" })
+                                @Html.HiddenFor(model => model.TodaySalary)
+                            </div>
+                        </div>
+                        <div class="row" id="dvNoOfHoursWorked">
+                            <div class="form-group col-6">
                                 @Html.LabelFor(model => model.NoOfHoursWorked, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.NoOfHoursWorked, new { @type = "number", @class = "form-control required", @placeholder = "Enter No Of Hours Worked", @maxlength = "10", @min = "1" })
+                                @Html.TextBoxFor(model => model.NoOfHoursWorked, new { @type = "number", @class = "form-control ", @placeholder = "Enter No Of Hours Worked", @maxlength = "10", @min = "1" })
                                 @Html.ValidationMessageFor(model => model.NoOfHoursWorked, "", new { @class = "text-danger" })
                             </div>
-                            <div class="form-group col-6" id="dvNoOfUnitWorked">
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.NoOfHoursWorkedAmount, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.NoOfHoursWorkedAmount, new { @type = "number", @class = "form-control", @readonly = true, @placeholder = "Total Amount", @maxlength = "10", @min = "0" })
+                            </div>
+                        </div>
+                        <div class="row" id="dvNoOfUnitWorked">
+
+                            <div class="form-group col-6">
                                 @Html.LabelFor(model => model.NoOfUnitWorked, htmlAttributes: new { @class = "" })
                                 @Html.TextBoxFor(model => model.NoOfUnitWorked, new { @type = "number", @class = "form-control required", @placeholder = "Enter No Of Unit Worked", @maxlength = "10", @min = "1" })
                                 @Html.ValidationMessageFor(model => model.NoOfUnitWorked, "", new { @class = "text-danger" })
                             </div>
-
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.NoOfUnitWorkedAmount, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.NoOfUnitWorkedAmount, new { @type = "number", @class = "form-control", @readonly = true, @placeholder = "Total Amount", @maxlength = "10", @min = "0" })
+                            </div>
                         </div>
                     </div>
 
@@ -132,13 +162,31 @@
 </section>
 
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
- 
+
 <script type="text/javascript">
     $(document).ready(function () {
         $("#dvNoOfUnitWorked").hide();
         $("#dvNoOfHoursWorked").hide();
         $("#dvTodaySalary").hide();
         $("#dvExtraHours").hide();
+
+        var EmploymentCategory = $("#EmploymentCategoryId").val();
+        if (EmploymentCategory == "1") {
+            $("#dvExtraPerHourPrice").show();
+            $(".clsPerCategoryPrice").html("Per Day Price")
+        }
+        else if (EmploymentCategory == "2") {
+            $("#dvExtraPerHourPrice").hide();
+            $(".clsPerCategoryPrice").html("Per Hour Price")
+        }
+        else if (EmploymentCategory == "3") {
+            $("#dvExtraPerHourPrice").show();
+            $(".clsPerCategoryPrice").html("Per Month Price")
+        }
+        else if (EmploymentCategory == "4") {
+            $("#dvExtraPerHourPrice").hide();
+            $(".clsPerCategoryPrice").html("Per Unit Price")
+        }
 
         $('#btnCancel').click(function () {
             window.location.href = "/admin/workerattendance/assignedworkerlist";
@@ -155,6 +203,7 @@
                     $("#dvNoOfHoursWorked").hide();
                     $("#NoOfHoursWorked").removeAttr("min");
                     $("#NoOfUnitWorked").removeAttr("min");
+                    calulateTodaySalaryForDaily();
                 }
                 else if (employmentCategory == "2") {
                     $("#dvTodaySalary").hide();
@@ -187,5 +236,40 @@
                 $("#dvExtraHours").hide();
             }
         });
+
+        $('#ExtraHours').change(function () {
+            var extraHours = $('#ExtraHours').val();
+            var extraPerHourPrice = $("#ExtraPerHourPrice").val();
+            var totalExtraAmount = parseFloat(extraHours) * parseFloat(extraPerHourPrice);
+            $("#ExtraHoursAmount").val(totalExtraAmount.toFixed(2));
+            calulateTodaySalaryForDaily();
+        });
+
+        $('#NoOfHoursWorked').change(function () {
+            var noOfHoursWorked = $('#NoOfHoursWorked').val();
+            var perCategoryPrice = $("#PerCategoryPrice").val();
+            var noOfHoursWorkedAmount = parseFloat(noOfHoursWorked) * parseFloat(perCategoryPrice);
+            $("#NoOfHoursWorkedAmount").val(noOfHoursWorkedAmount.toFixed(2));
+        });
+
+        $('#NoOfUnitWorked').change(function () {
+            var noOfUnitWorked = $('#NoOfUnitWorked').val();
+            var perCategoryPrice = $("#PerCategoryPrice").val();
+            var noOfUnitWorkedAmount = parseFloat(noOfUnitWorked) * parseFloat(perCategoryPrice);
+            $("#NoOfUnitWorkedAmount").val(noOfUnitWorkedAmount.toFixed(2));
+        });
     })
+
+    function calulateTodaySalaryForDaily() {
+        var extraHoursAmount = $("#ExtraHoursAmount").val();
+        var perCategoryPrice = $("#PerCategoryPrice").val();
+        var isMorning = $("#IsMorning").val();
+        var isAfternoon = $("#IsAfternoon").val();
+
+        if (isMorning == "False" && isAfternoon == "True") {
+            perCategoryPrice = parseFloat(perCategoryPrice) / 2;
+        }
+        var todaySalary = parseFloat(perCategoryPrice) + parseFloat(extraHoursAmount);
+        $("#TodaySalary").val(todaySalary.toFixed(2));
+    }
 </script>

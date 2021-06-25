@@ -49,7 +49,7 @@
                             <div class="col-sm-3">
                                 <div class="form-group">
                                     <label>Attendance</label>
-                                    @Html.DropDownListFor(model => model.AttendanceType, new SelectList(Model.AttendanceTypeList, "Value", "Text"), "- All -", new { @class = "form-control col-md-8", style = "" })
+                                    @Html.DropDownListFor(model => model.AttendanceType, new SelectList(Model.AttendanceTypeList, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8", style = "" })
 
                                 </div>
                             </div>
@@ -65,7 +65,7 @@
                                 <thead>
                                     <tr>
                                         <td>#</td>
-                                        <td>Select</td>
+                                        <td>Select <br /><input type="checkbox" class="chkBox" id='chkAll' name="Select"></td>
                                         <th>Date</th>
                                         <th>Site Name</th>
                                         <th>Worker Name</th>
@@ -223,7 +223,6 @@
 
             var AttendanceType = $(this).val();
 
-
             $(".chkBox").each(function () {
                 var id = $(this).attr("Id");
                 var isMorningId = id.replace("chk", "IsMorning");
@@ -238,21 +237,53 @@
 
                 if (AttendanceType == "1" && morningVal == "True") {
                     $("#" + id).attr("disabled", true);
+                    $("#" + id).prop("checked", false);
+                }
+                else if (AttendanceType == "1" && morningVal == "False" && afternoonVal == "True") {
+                    $("#" + id).attr("disabled", true);
+                    $("#" + id).prop("checked", false);
                 }
                 else if (AttendanceType == "2" && afternoonVal == "True") {
                     $("#" + id).attr("disabled", true);
+                    $("#" + id).prop("checked", false);
                 }
                 else if (AttendanceType == "3" && eveningIdVal == "True") {
                     $("#" + id).attr("disabled", true);
+                    $("#" + id).prop("checked", false);
+                }
+                else if (AttendanceType == "3" && morningVal == "False" && afternoonVal == "False") {
+                    $("#" + id).attr("disabled", true);
+                    $("#" + id).prop("checked", false);
+                }
+                else if (AttendanceType == "3" && morningVal == "True" && afternoonVal == "False") {
+                    $("#" + id).attr("disabled", true);
+                    $("#" + id).prop("checked", false);
                 }
                 else if (AttendanceType == "3" && (employmentCategoryVal == "2" || employmentCategoryVal == "4")) {
                     $("#" + id).attr("disabled", true);
+                    $("#" + id).prop("checked", false);
                 }
                 else {
                     $("#" + id).removeAttr("disabled");
                 }
             });
         });
+
+        $('#chkAll').click(function () {
+            var checked = $(this).prop("checked");
+            $(".chkBox").each(function () {
+                if (!$(this).hasAttr("disabled")) {
+                    $(this).prop("checked", checked);
+                }
+
+            });
+        });
+
+        $.fn.hasAttr = function (name) {
+            return this.attr(name) !== undefined;
+        };
+
     });
+
 
 </script> 

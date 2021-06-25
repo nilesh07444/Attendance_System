@@ -170,10 +170,16 @@ namespace AttendanceSystem.ViewModel
         public string EmployeeCode { get; set; }
         [Display(Name = "Extra Hours")]
         public decimal ExtraHours { get; set; }
-        [Display(Name = "No of Hours WOrked")]
+        [Display(Name = "Extra Hours Amount")]
+        public decimal ExtraHoursAmount { get; set; }
+        [Display(Name = "No of Hours Worked")]
         public decimal NoOfHoursWorked { get; set; }
-        [Display(Name = "No of Unit WOrked")]
+        [Display(Name = "No of Hours Worked Amount")]
+        public decimal NoOfHoursWorkedAmount { get; set; }
+        [Display(Name = "No of Unit Worked")]
         public int NoOfUnitWorked { get; set; }
+        [Display(Name = "No of Unit Worked Amount")]
+        public int NoOfUnitWorkedAmount { get; set; }
         public long SiteId { get; set; }
         [Display(Name = "Site")]
         public string SiteName { get; set; }
