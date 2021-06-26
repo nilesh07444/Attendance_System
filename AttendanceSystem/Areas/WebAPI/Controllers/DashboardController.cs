@@ -76,7 +76,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 var monthEndDate = startDate.AddMonths(1).AddDays(-1);
 
                 var transaction = (from ep in _db.tbl_EmployeePayment
-                                   where ep.UserId == employeeId
+                                   where ep.UserId == employeeId && !ep.IsDeleted
                                    && ep.PaymentDate >= monthStartDate
                                    && ep.PaymentDate <= monthEndDate
                                    select new

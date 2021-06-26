@@ -241,7 +241,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                              }).FirstOrDefault();
                 leaveDetails.StatusText = CommonMethod.GetEnumDescription((AttendanceStatus)leaveDetails.Status);
                 leaveDetails.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)leaveDetails.EmploymentCategory);
-                 
+
                 if (leaveDetails.DayType == 1)
                 {
                     leaveDetails.DayTypeText = CommonMethod.GetEnumDescription(DayType.FullDay);
@@ -356,7 +356,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                         if (employeeObj.EmploymentCategory != (int)EmploymentCategory.MonthlyBased)
                         {
-                            tbl_EmployeePayment objEmployeePayment = _db.tbl_EmployeePayment.Where(x => x.AttendanceId == attendanceObject.AttendanceId).FirstOrDefault();
+                            tbl_EmployeePayment objEmployeePayment = _db.tbl_EmployeePayment.Where(x => !x.IsDeleted && x.AttendanceId == attendanceObject.AttendanceId && x.PaymentType != (int)EmployeePaymentType.Extra).FirstOrDefault();
                             if (objEmployeePayment != null)
                             {
                                 if (employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased)
@@ -492,7 +492,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     attendanceObject.CompanyId = companyId;
                     attendanceObject.UserId = employeeId;
                     attendanceObject.AttendanceDate = CommonMethod.CurrentIndianDateTime().Date;
-                   
+
                     attendanceObject.LocationFrom = inTimeRequestVM.InLocationFrom;
                     attendanceObject.Status = (int)AttendanceStatus.Login;
                     attendanceObject.IsActive = true;

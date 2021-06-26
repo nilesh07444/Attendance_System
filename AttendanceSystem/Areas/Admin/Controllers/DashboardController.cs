@@ -94,6 +94,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     {
                         workerIds = _db.tbl_Employee.Where(x => x.CompanyId == companyId && x.AdminRoleId == (int)AdminRoles.Worker).Select(x => x.EmployeeId).ToList();
                     }
+                    else
+                    {
+                        dashboardVM.AllowForWorker = false;
+                    }
 
                     List<SelectListItem> lstCalenderMonths = GetCalenderMonthList();
                     tbl_Conversion lastConversion = _db.tbl_Conversion.Where(x => x.CompanyId == companyId).OrderByDescending(x => x.Year).ThenByDescending(x => x.Month).FirstOrDefault();
@@ -102,11 +106,13 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         dashboardVM.Month = Convert.ToInt16(applyMonth);
                         dashboardVM.MonthName = CommonMethod.GetEnumDescription((CalenderMonths)applyMonth);
                         dashboardVM.Year = applyYear;
+                        dashboardVM.AllowForEmployee = true;
+                        dashboardVM.AllowForWorker = clsAdminSession.CompanyTypeId == (int)CompanyType.ConstructionCompany ? true : false;
                     }
                     else
                     {
                         bool isLastConvertionPending = false;
-                        if (!lastConversion.IsEmployeeDone && _db.tbl_Attendance.Any(x => x.CompanyId == companyId && x.AttendanceDate.Month == lastConversion.Month && x.AttendanceDate.Year == lastConversion.Year))
+                        if (!lastConversion.IsEmployeeDone)
                         {
                             isLastConvertionPending = true;
                             applyMonth = lastConversion.Month;
@@ -118,19 +124,16 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                             dashboardVM.AllowForEmployee = true;
                         }
 
-                        if (!lastConversion.IsWorkerDone)
+                        if (!lastConversion.IsWorkerDone && workerIds.Count > 0)
                         {
-                            dashboardVM.AllowForWorker = workerIds.Count > 0 ? _db.tbl_WorkerAttendance.Any(x => workerIds.Contains(x.EmployeeId) && x.AttendanceDate.Month == lastConversion.Month && x.AttendanceDate.Year == lastConversion.Year) : false;
-                            if (dashboardVM.AllowForWorker)
-                            {
-                                isLastConvertionPending = true;
-                                applyMonth = lastConversion.Month;
-                                applyYear = lastConversion.Year;
+                            isLastConvertionPending = true;
+                            applyMonth = lastConversion.Month;
+                            applyYear = lastConversion.Year;
+                            dashboardVM.Month = applyMonth;
+                            dashboardVM.MonthName = CommonMethod.GetEnumDescription((CalenderMonths)dashboardVM.Month);
+                            dashboardVM.Year = applyYear;
+                            dashboardVM.AllowForWorker = true;
 
-                                dashboardVM.Month = applyMonth;
-                                dashboardVM.MonthName = CommonMethod.GetEnumDescription((CalenderMonths)dashboardVM.Month);
-                                dashboardVM.Year = applyYear;
-                            }
                         }
 
                         if (!isLastConvertionPending)
@@ -144,8 +147,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         }
                     }
 
-                    dashboardVM.AllowForEmployee = _db.tbl_Attendance.Any(x => x.CompanyId == companyId && x.AttendanceDate.Month == applyMonth && x.AttendanceDate.Year == applyYear);
-                    dashboardVM.AllowForWorker = workerIds.Count > 0 ? _db.tbl_WorkerAttendance.Any(x => workerIds.Contains(x.EmployeeId) && x.AttendanceDate.Month == applyMonth && x.AttendanceDate.Year == applyYear) : false;
+                    //dashboardVM.AllowForEmployee = _db.tbl_Attendance.Any(x => x.CompanyId == companyId && x.AttendanceDate.Month == applyMonth && x.AttendanceDate.Year == applyYear);
+                    //dashboardVM.AllowForWorker = workerIds.Count > 0 ? _db.tbl_WorkerAttendance.Any(x => workerIds.Contains(x.EmployeeId) && x.AttendanceDate.Month == applyMonth && x.AttendanceDate.Year == applyYear) : false;
 
                 }
 
@@ -208,7 +211,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 if (status == 1)
                 {
                     // tbl_Conversion, tbl_EmployeePayment
-                    List<tbl_EmployeePayment> inProcessEmployeePaymentList = _db.tbl_EmployeePayment.Where(x => x.CompanyId == companyId && x.ProcessStatusText == ErrorMessage.InProgress && x.Month == nextMonth && x.Year == dateYear).ToList();
+                    List<tbl_EmployeePayment> inProcessEmployeePaymentList = _db.tbl_EmployeePayment.Where(x => !x.IsDeleted && x.CompanyId == companyId && x.ProcessStatusText == ErrorMessage.InProgress && x.Month == nextMonth && x.Year == dateYear).ToList();
                     inProcessEmployeePaymentList.ForEach(x =>
                     {
                         _db.tbl_EmployeePayment.Remove(x);
@@ -300,7 +303,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                             carryForwardLeave = totalFreeLeave - (decimal)(absentDays - holidays);
                         }
                         double monthlySalary = (double)x.MonthlySalaryPrice;
-                        List<decimal> debitAmountList = _db.tbl_EmployeePayment.Where(e => e.UserId == x.EmployeeId
+                        List<decimal> debitAmountList = _db.tbl_EmployeePayment.Where(e => e.UserId == x.EmployeeId && !x.IsDeleted
                                                 && e.Month == month
                                                 && e.Year == year
                                                 && e.DebitAmount > 0).Select(e => e.DebitAmount.HasValue ? e.DebitAmount.Value : 0).ToList();
@@ -341,7 +344,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     });
 
 
-                    List<tbl_EmployeePayment> employeePaymentList = _db.tbl_EmployeePayment.Where(x => x.ProcessStatusText == ErrorMessage.InProgress && x.Month == nextMonth && x.Year == dateYear).ToList();
+                    List<tbl_EmployeePayment> employeePaymentList = _db.tbl_EmployeePayment.Where(x => !x.IsDeleted && x.ProcessStatusText == ErrorMessage.InProgress && x.Month == nextMonth && x.Year == dateYear).ToList();
                     employeePaymentList.ForEach(x =>
                     {
                         x.ProcessStatusText = ErrorMessage.Complete;
@@ -427,7 +430,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                 if (status == 1)
                 {
-                    List<tbl_WorkerPayment> inProcessWorkerPaymentList = _db.tbl_WorkerPayment.Where(x => x.CompanyId == companyId && x.ProcessStatusText == ErrorMessage.InProgress && x.Month == nextMonth && x.Year == dateyear).ToList();
+                    List<tbl_WorkerPayment> inProcessWorkerPaymentList = _db.tbl_WorkerPayment.Where(x => !x.IsDeleted && x.CompanyId == companyId && x.ProcessStatusText == ErrorMessage.InProgress && x.Month == nextMonth && x.Year == dateyear).ToList();
                     inProcessWorkerPaymentList.ForEach(x =>
                     {
                         _db.tbl_WorkerPayment.Remove(x);
@@ -530,7 +533,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                             carryForwardLeave = totalFreeLeave - (decimal)(absentDays - holidays);
                         }
                         double monthlySalary = (double)x.MonthlySalaryPrice;
-                        double advancePaid = (double)_db.tbl_EmployeePayment.Where(e => e.UserId == x.EmployeeId
+                        double advancePaid = (double)_db.tbl_EmployeePayment.Where(e => e.UserId == x.EmployeeId && !x.IsDeleted
                                                 && e.Month == month
                                                 && e.Year == year
                                                 && e.DebitAmount > 0).Select(e => e.DebitAmount).Sum();
@@ -570,7 +573,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     });
 
 
-                    List<tbl_WorkerPayment> workerPaymentList = _db.tbl_WorkerPayment.Where(x => x.ProcessStatusText == ErrorMessage.InProgress && x.Month == nextMonth && x.Year == dateyear).ToList();
+                    List<tbl_WorkerPayment> workerPaymentList = _db.tbl_WorkerPayment.Where(x => !x.IsDeleted && x.ProcessStatusText == ErrorMessage.InProgress && x.Month == nextMonth && x.Year == dateyear).ToList();
                     workerPaymentList.ForEach(x =>
                     {
                         x.ProcessStatusText = ErrorMessage.Complete;

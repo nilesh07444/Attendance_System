@@ -215,7 +215,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                     if (employeeObj.EmploymentCategory != (int)EmploymentCategory.MonthlyBased && workerAttendanceRequestVM.AttendanceType == (int)WorkerAttendanceType.Evening)
                     {
-                        if (!_db.tbl_WorkerPayment.Any(x => x.UserId == attendanceObject.EmployeeId && x.AttendanceId == attendanceObject.WorkerAttendanceId))
+                        if (!_db.tbl_WorkerPayment.Any(x => x.UserId == attendanceObject.EmployeeId && !x.IsDeleted && x.AttendanceId == attendanceObject.WorkerAttendanceId))
                         {
                             tbl_WorkerPayment objWorkerPayment = new tbl_WorkerPayment();
                             objWorkerPayment.CompanyId = companyId;

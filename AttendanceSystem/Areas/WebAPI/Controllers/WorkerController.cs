@@ -204,7 +204,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                            }).FirstOrDefault();
 
                 employeeDetails.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)employeeDetails.EmploymentCategory);
-                employeeDetails.PendingSalary = _db.tbl_WorkerPayment.Any(x => x.UserId == id) ? _db.tbl_WorkerPayment.Where(x => x.UserId == id).Select(x => x.CreditAmount - x.DebitAmount).Sum() : 0;
+                employeeDetails.PendingSalary = _db.tbl_WorkerPayment.Any(x => x.UserId == id && !x.IsDeleted) ? _db.tbl_WorkerPayment.Where(x => x.UserId == id && !x.IsDeleted).Select(x => x.CreditAmount - x.DebitAmount).Sum() : 0;
                 response.Data = employeeDetails;
             }
             catch (Exception ex)

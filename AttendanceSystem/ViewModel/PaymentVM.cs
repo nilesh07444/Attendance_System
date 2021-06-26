@@ -15,7 +15,7 @@ namespace AttendanceSystem.ViewModel
         public long EmployeePaymentId { get; set; }
         [Required, Display(Name = "Payment Date")]
         public DateTime PaymentDate { get; set; }
-        [Required, Display(Name = "Employee")]
+        [Required, Display(Name = "Select Employee")]
         public long UserId { get; set; }
         public string UserName { get; set; }
         [Display(Name = "Credit Amount")]

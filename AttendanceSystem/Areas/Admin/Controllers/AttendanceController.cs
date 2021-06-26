@@ -73,7 +73,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                          Remarks = at.Remarks,
                                                          LocationFrom = at.LocationFrom,
                                                          Status = at.Status,
-                                                         RejectReason = at.RejectReason
+                                                         RejectReason = at.RejectReason,
+                                                         EmploymentCategory = emp.EmploymentCategory
                                                      }).OrderByDescending(x => x.AttendanceDate).ToList();
 
                 attendanceFilterVM.EmployeeList = GetEmployeeList();
@@ -81,7 +82,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 attendanceFilterVM.AttendanceList.ForEach(x =>
                 {
                     x.StatusText = attendanceStatusList.Where(z => z.Value == x.Status.ToString()).Select(c => c.Text).FirstOrDefault();
-                    x.DayTypeText = x.DayType == 1 ? CommonMethod.GetEnumDescription(DayType.FullDay) : CommonMethod.GetEnumDescription(DayType.HalfDay);
+                    x.DayTypeText = (x.EmploymentCategory == (int)EmploymentCategory.MonthlyBased || x.EmploymentCategory == (int)EmploymentCategory.MonthlyBased) ? (x.DayType == 1 ? CommonMethod.GetEnumDescription(DayType.FullDay) : CommonMethod.GetEnumDescription(DayType.HalfDay)) : string.Empty;
                 });
             }
             catch (Exception ex)
@@ -219,10 +220,14 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                     OutDateTime = at.OutDateTime,
                                     NoOfHoursWorked = at.NoOfHoursWorked.HasValue ? at.NoOfHoursWorked.Value : 0,
                                     NoOfUnitWorked = at.NoOfUnitWorked.HasValue ? at.NoOfUnitWorked.Value : 0,
+                                    PerCategoryPrice = emp.PerCategoryPrice,
+                                    EmploymentCategory = emp.EmploymentCategory
                                 }).FirstOrDefault();
-                 
+
                 attendanceVM.StatusText = CommonMethod.GetEnumDescription((AttendanceStatus)attendanceVM.Status);
                 attendanceVM.DayTypeText = attendanceVM.DayType == 1 ? CommonMethod.GetEnumDescription(DayType.FullDay) : CommonMethod.GetEnumDescription(DayType.HalfDay);
+                attendanceVM.WorkedHoursAmount = attendanceVM.NoOfHoursWorked * attendanceVM.PerCategoryPrice;
+                attendanceVM.WorkedUnitAmount = attendanceVM.NoOfUnitWorked * attendanceVM.PerCategoryPrice;
             }
             catch (Exception ex)
             {

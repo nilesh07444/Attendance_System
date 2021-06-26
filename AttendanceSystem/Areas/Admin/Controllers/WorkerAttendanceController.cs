@@ -44,9 +44,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                            join emp in _db.tbl_Employee on at.EmployeeId equals emp.EmployeeId
                                                            where emp.CompanyId == companyId
                                                            && at.AttendanceDate == workerAttendanceFilterVM.AttendanceDate
-                                                           && (at.MorningSiteId == workerAttendanceFilterVM.SiteId
+                                                           && (workerAttendanceFilterVM.SiteId > 0 ? (at.MorningSiteId == workerAttendanceFilterVM.SiteId
                                                            || at.AfternoonSiteId == workerAttendanceFilterVM.SiteId
-                                                           || at.EveningSiteId == workerAttendanceFilterVM.SiteId)
+                                                           || at.EveningSiteId == workerAttendanceFilterVM.SiteId) : true)
                                                            && (workerAttendanceFilterVM.EmployeeId.HasValue ? at.EmployeeId == workerAttendanceFilterVM.EmployeeId.Value : true)
                                                            select new WorkerAttendanceVM
                                                            {
@@ -57,9 +57,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                                Name = emp.FirstName + " " + emp.LastName,
                                                                AttendanceDate = at.AttendanceDate,
                                                                EmploymentCategory = emp.EmploymentCategory,
-                                                               IsMorning = (at.IsMorning && at.MorningSiteId == workerAttendanceFilterVM.SiteId ? true : false),
-                                                               IsAfternoon = (at.IsAfternoon && at.AfternoonSiteId == workerAttendanceFilterVM.SiteId ? true : false),
-                                                               IsEvening = (at.IsEvening && at.EveningSiteId == workerAttendanceFilterVM.SiteId ? true : false),
+                                                               IsMorning = (workerAttendanceFilterVM.SiteId == 0 && at.IsMorning ? true : (at.IsMorning && at.MorningSiteId == workerAttendanceFilterVM.SiteId ? true : false)),
+                                                               IsAfternoon = (workerAttendanceFilterVM.SiteId == 0 && at.IsAfternoon ? true : (at.IsAfternoon && at.AfternoonSiteId == workerAttendanceFilterVM.SiteId ? true : false)),
+                                                               IsEvening = (workerAttendanceFilterVM.SiteId == 0 && at.IsEvening ? true : (at.IsEvening && at.EveningSiteId == workerAttendanceFilterVM.SiteId ? true : false)),
                                                                ProfilePicture = emp.ProfilePicture
                                                            }).OrderByDescending(x => x.AttendanceDate).ToList();
 
@@ -263,7 +263,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 addWorkerAttendanceVM.SiteName = _db.tbl_Site.Where(x => x.SiteId == siteId).Select(x => x.SiteName).FirstOrDefault();
 
                 addWorkerAttendanceVM.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)addWorkerAttendanceVM.EmploymentCategoryId);
-                addWorkerAttendanceVM.PendingSalary = _db.tbl_WorkerPayment.Any(x => x.UserId == employeeId && x.PaymentType == (int)EmployeePaymentType.Salary) ? _db.tbl_WorkerPayment.Where(x => x.UserId == employeeId).Select(x => (x.CreditAmount.HasValue ? x.CreditAmount.Value : 0) - (x.DebitAmount.HasValue ? x.DebitAmount.Value : 0)).Sum() : 0;
+                addWorkerAttendanceVM.PendingSalary = _db.tbl_WorkerPayment.Any(x => x.UserId == employeeId && x.PaymentType == (int)EmployeePaymentType.Salary) ? _db.tbl_WorkerPayment.Where(x => x.UserId == employeeId && !x.IsDeleted).Select(x => (x.CreditAmount.HasValue ? x.CreditAmount.Value : 0) - (x.DebitAmount.HasValue ? x.DebitAmount.Value : 0)).Sum() : 0;
 
                 addWorkerAttendanceVM.IsMorningText = addWorkerAttendanceVM.IsMorning ? ErrorMessage.YES : ErrorMessage.NO;
                 addWorkerAttendanceVM.IsAfternoonText = addWorkerAttendanceVM.IsAfternoon ? ErrorMessage.YES : ErrorMessage.NO;
@@ -373,7 +373,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         ModelState.AddModelError("", ErrorMessage.InValidWorkerAttendanceType);
                     }
 
-                    
+
                     if (attendanceObject == null && addWorkerAttendanceVM.AttendanceType == (int)WorkerAttendanceType.Evening)
                     {
                         ModelState.AddModelError("", ErrorMessage.CanNotTakeEveningAttendanceWorkerNotPresentOnMorningOrAfterNoon);
@@ -511,7 +511,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                         if (addWorkerAttendanceVM.EmploymentCategoryId != (int)EmploymentCategory.MonthlyBased && addWorkerAttendanceVM.AttendanceType == (int)WorkerAttendanceType.Evening)
                         {
-                            if (!_db.tbl_WorkerPayment.Any(x => x.UserId == attendanceObject.EmployeeId && x.AttendanceId == attendanceObject.WorkerAttendanceId))
+                            if (!_db.tbl_WorkerPayment.Any(x => x.UserId == attendanceObject.EmployeeId && !x.IsDeleted && x.AttendanceId == attendanceObject.WorkerAttendanceId))
                             {
                                 tbl_WorkerPayment objWorkerPayment = new tbl_WorkerPayment();
                                 objWorkerPayment.CompanyId = companyId;
@@ -750,7 +750,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                             if (emp.EmploymentCategory != (int)EmploymentCategory.MonthlyBased && attendanceType == (int)WorkerAttendanceType.Evening)
                             {
-                                if (!_db.tbl_WorkerPayment.Any(x => x.UserId == attendanceObject.EmployeeId && x.AttendanceId == attendanceObject.WorkerAttendanceId))
+                                if (!_db.tbl_WorkerPayment.Any(x => x.UserId == attendanceObject.EmployeeId && !x.IsDeleted && x.AttendanceId == attendanceObject.WorkerAttendanceId))
                                 {
                                     tbl_WorkerPayment objWorkerPayment = new tbl_WorkerPayment();
                                     objWorkerPayment.CompanyId = companyId;

@@ -107,11 +107,19 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 {
                     long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
                     long companyId = Int64.Parse(clsAdminSession.CompanyId.ToString());
-
+                    DateTime today = CommonMethod.CurrentIndianDateTime().Date;
                     #region validation
                     if (_db.tbl_Conversion.Any(x => x.CompanyId == companyId && x.Month == paymentVM.PaymentDate.Month && (x.IsEmployeeDone || x.IsWorkerDone)))
                     {
                         ModelState.AddModelError("", ErrorMessage.MonthlyConvesrionCompletedYouCanNotAddOrModifyPaymentDetails);
+                        paymentVM.EmployeeList = GetEmployeeList();
+                        paymentVM.EmployeePaymentTypeList = GetEmployeePaymentTypeList();
+                        return View(paymentVM);
+                    }
+
+                    if (paymentVM.PaymentDate < today)
+                    {
+                        ModelState.AddModelError("", ErrorMessage.PaymentNotAllowedForBackDate);
                         paymentVM.EmployeeList = GetEmployeeList();
                         paymentVM.EmployeePaymentTypeList = GetEmployeePaymentTypeList();
                         return View(paymentVM);
@@ -121,7 +129,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                     if (paymentVM.EmployeePaymentId > 0)
                     {
-                        tbl_EmployeePayment objEmployeePayment = _db.tbl_EmployeePayment.Where(x => x.EmployeePaymentId == paymentVM.EmployeePaymentId).FirstOrDefault();
+                        tbl_EmployeePayment objEmployeePayment = _db.tbl_EmployeePayment.Where(x => x.EmployeePaymentId == paymentVM.EmployeePaymentId && !x.IsDeleted).FirstOrDefault();
 
                         objEmployeePayment.PaymentDate = paymentVM.PaymentDate;
                         objEmployeePayment.DebitAmount = paymentVM.DebitAmount;
@@ -186,7 +194,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                         {
                                             Text = emp.FirstName + " " + emp.LastName + " (" + emp.EmployeeCode + ")",
                                             Value = emp.EmployeeId.ToString()
-                                        }).ToList();
+                                        }).OrderBy(x => x.Text).ToList();
             return lst;
         }
 
@@ -212,7 +220,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             try
             {
                 long companyId = clsAdminSession.CompanyId;
-                tbl_EmployeePayment objEmployeePayment = _db.tbl_EmployeePayment.Where(x => x.EmployeePaymentId == employeePaymentId).FirstOrDefault();
+                tbl_EmployeePayment objEmployeePayment = _db.tbl_EmployeePayment.Where(x => x.EmployeePaymentId == employeePaymentId && !x.IsDeleted).FirstOrDefault();
 
                 if (objEmployeePayment == null)
                 {
@@ -365,11 +373,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                 if (objEmployee.AdminRoleId == (int)AdminRoles.Worker)
                 {
-                    pendingSalary = _db.tbl_WorkerPayment.Any(x => x.UserId == employeeId && x.PaymentType == (int)EmployeePaymentType.Salary) ? _db.tbl_WorkerPayment.Where(x => x.UserId == employeeId).Select(x => (x.CreditAmount.HasValue ? x.CreditAmount.Value : 0) - (x.DebitAmount.HasValue ? x.DebitAmount.Value : 0)).Sum() : 0;
+                    pendingSalary = _db.tbl_WorkerPayment.Any(x => x.UserId == employeeId && !x.IsDeleted && x.PaymentType == (int)EmployeePaymentType.Salary) ? _db.tbl_WorkerPayment.Where(x => x.UserId == employeeId && !x.IsDeleted).Select(x => (x.CreditAmount.HasValue ? x.CreditAmount.Value : 0) - (x.DebitAmount.HasValue ? x.DebitAmount.Value : 0)).Sum() : 0;
                 }
                 else
                 {
-                    pendingSalary = _db.tbl_EmployeePayment.Any(x => x.UserId == employeeId && x.PaymentType == (int)EmployeePaymentType.Salary) ? _db.tbl_EmployeePayment.Where(x => x.UserId == employeeId).Select(x => (x.CreditAmount.HasValue ? x.CreditAmount.Value : 0) - (x.DebitAmount.HasValue ? x.DebitAmount.Value : 0)).Sum() : 0;
+                    pendingSalary = _db.tbl_EmployeePayment.Any(x => x.UserId == employeeId && !x.IsDeleted && x.PaymentType == (int)EmployeePaymentType.Salary) ? _db.tbl_EmployeePayment.Where(x => x.UserId == employeeId && !x.IsDeleted).Select(x => (x.CreditAmount.HasValue ? x.CreditAmount.Value : 0) - (x.DebitAmount.HasValue ? x.DebitAmount.Value : 0)).Sum() : 0;
                 }
                 status = 1;
             }

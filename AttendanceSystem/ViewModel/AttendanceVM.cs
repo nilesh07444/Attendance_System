@@ -48,8 +48,12 @@ namespace AttendanceSystem.ViewModel
         public decimal? OutLongitude { get; set; }
         [Display(Name = "No Of Hours Worked")]
         public decimal NoOfHoursWorked { get; set; }
+        [Display(Name = "Worked Hours Amount")]
+        public decimal WorkedHoursAmount { get; set; }
         [Display(Name = "No Of Unit Worked")]
         public int NoOfUnitWorked { get; set; }
+        [Display(Name = "Worked Unit Amount")]
+        public decimal WorkedUnitAmount { get; set; }
 
         public string EmployeeCode { get; set; }
         public decimal PerCategoryPrice { get; set; }
