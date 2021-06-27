@@ -106,8 +106,8 @@ namespace AttendanceSystem.Helper
 
     public enum MaterialStatus
     {
-        In = 1,
-        Out = 2
+        Inward = 1,
+        Outward = 2
     }
 
     public enum Months

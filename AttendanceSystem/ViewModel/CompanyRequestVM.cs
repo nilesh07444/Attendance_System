@@ -87,7 +87,7 @@ namespace AttendanceSystem.ViewModel
         public string CompanyDescription { get; set; }
 
         [Display(Name = "Company website Url")]
-        [Url]
+        //[Url]
         public string CompanyWebisteUrl { get; set; }
 
         [Display(Name = "Prefix *")]

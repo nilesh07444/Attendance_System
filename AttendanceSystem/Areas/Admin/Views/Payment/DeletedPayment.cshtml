@@ -1,8 +1,9 @@
 ﻿
 @using AttendanceSystem.ViewModel;
+@using AttendanceSystem.Helper;
 @model AttendanceSystem.ViewModel.PaymentFilterVM
 @{
-    ViewBag.Title = "Deleted Payment";
+    ViewBag.Title = "Payment";
     int counter = 1;
 }
 
@@ -43,7 +44,7 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-2">
-                                        <div class="card-header-action"> 
+                                        <div class="card-header-action">
                                             <button class="btn btn-primary mr-1" style="font-size: 1rem" id="btnSearch" type="button">Search</button>
                                         </div>
                                     </div>
@@ -56,9 +57,9 @@
                                 <thead>
                                     <tr>
                                         <td>#</td>
+                                        <th>Payment Date</th>
                                         <th>Employee Code</th>
                                         <th>Employee</th>
-                                        <th>Date</th>
                                         <th>Credit Amount</th>
                                         <th>Debit Amount</th>
                                         <th>Payment Type</th>
@@ -71,9 +72,9 @@
                                         {
                                             <tr>
                                                 <td>@counter.</td>
+                                                <td>@obj.PaymentDate.ToString("dd MMM yyyy hh:mm tt")</td>
                                                 <td>@obj.EmployeeCode</td>
                                                 <td>@obj.UserName</td>
-                                                <td>@obj.PaymentDate.ToString("dd MMM yyyy")</td>
                                                 <td>@obj.CreditAmount</td>
                                                 <td>@obj.DebitAmount</td>
                                                 <td>@obj.PaymentTypeText</td>
@@ -85,6 +86,21 @@
 
                                 </tbody>
                             </table>
+
+                            @if (Model.PaymentList != null && Model.PaymentList.Count > 0)
+                            {
+                                <p>
+                                    @{
+                                        decimal? totalSalaryAmount = Model.PaymentList.Where(x => x.PaymentType == (int)EmployeePaymentType.Salary).Sum(x => x.DebitAmount);
+                                        decimal? totalExtraAmount = Model.PaymentList.Where(x => x.PaymentType == (int)EmployeePaymentType.Extra).Sum(x => x.DebitAmount);
+                                        decimal? totalAmount = totalSalaryAmount + totalExtraAmount;
+                                    }
+                                    <b>Total Salary Amount &nbsp;: @totalSalaryAmount</b><br />
+                                    <b>Total Extra Amount &nbsp;&nbsp;&nbsp;: @totalExtraAmount</b><br />
+                                    <b>Total Amount &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : @totalAmount</b>
+                                </p>
+                            }
+
                         </div>
                     </div>
                 </div>

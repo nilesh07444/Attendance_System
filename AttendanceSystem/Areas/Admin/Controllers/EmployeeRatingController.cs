@@ -3,6 +3,7 @@ using AttendanceSystem.Models;
 using AttendanceSystem.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.SqlServer;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -12,11 +13,12 @@ namespace AttendanceSystem.Areas.Admin.Controllers
     public class EmployeeRatingController : Controller
     {
         AttendanceSystemEntities _db;
-        // GET: Admin/EmployeeRating
+         
         public EmployeeRatingController()
         {
             _db = new AttendanceSystemEntities();
         }
+
         public ActionResult Index(int? startMonth = null, int? endMonth = null, int? year = null, int? userRole = null, string employeeCode = null)
         {
             EmployeeRatingFilterVM EmployeeRatingFilterVM = new EmployeeRatingFilterVM();
@@ -65,7 +67,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                                  RegularityRate = er.RegularityRate,
                                                                  WorkRate = er.WorkRate,
                                                                  Remarks = er.Remarks,
-                                                                 CreatedDate = er.CreatedDate
+                                                                 CreatedDate = er.CreatedDate,
+                                                                 AvgRate = SqlFunctions.StringConvert((new decimal[] { er.BehaviourRate, er.RegularityRate, er.WorkRate }).Average(), 4, 2)
                                                              }).OrderByDescending(x => x.EmployeeRatingId).ToList();
 
                 EmployeeRatingFilterVM.EmployeeRatingList.ForEach(x =>

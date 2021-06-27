@@ -25,10 +25,10 @@ namespace AttendanceSystem.ViewModel
         public string SiteName { get; set; }
         [Required, Display(Name = "Qty")]
         public decimal Qty { get; set; }
-        [Required, Display(Name = "In/Out")]
+        [Required, Display(Name = "Material Type")]
         public int InOut { get; set; }
         public string InOutText { get; set; }
-        [Required, Display(Name = "Remark")]
+        [Display(Name = "Remark")]
         public string Remarks { get; set; }
         public bool IsActive { get; set; }
 

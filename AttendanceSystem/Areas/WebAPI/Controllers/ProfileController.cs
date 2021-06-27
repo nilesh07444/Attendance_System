@@ -195,8 +195,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     authenticateVM.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)data.EmploymentCategory);
                     authenticateVM.IsFingerprintEnabled = data.IsFingerprintEnabled;
                     authenticateVM.IsLeaveForward = data.IsLeaveForward;
-                    authenticateVM.State = string.Empty;
-                    authenticateVM.Pincode = string.Empty;
+                    authenticateVM.State = data.State;
+                    authenticateVM.Pincode = data.Pincode;
                     authenticateVM.MonthlySalaryPrice = data.MonthlySalaryPrice;
                     authenticateVM.ExtraPerHourPrice = data.ExtraPerHourPrice;
                     authenticateVM.NoOfFreeLeavePerMonth = data.NoOfFreeLeavePerMonth;

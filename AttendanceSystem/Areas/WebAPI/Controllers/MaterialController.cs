@@ -281,8 +281,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 List<SelectListItem> materialInOutStatusList = GetMaterialStatusList();
                 materialList.ForEach(x =>
                 {
-                    x.InWard = x.InOut == (int)MaterialStatus.In ? x.Qty : 0;
-                    x.OutWard = x.InOut == (int)MaterialStatus.Out ? x.Qty : 0;
+                    x.InWard = x.InOut == (int)MaterialStatus.Inward ? x.Qty : 0;
+                    x.OutWard = x.InOut == (int)MaterialStatus.Outward ? x.Qty : 0;
                 });
 
                 response.Data = materialList;
@@ -390,7 +390,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                         workSheet.Cells[row1 + 2, 3].Style.Font.Bold = false;
                         workSheet.Cells[row1 + 2, 3].Style.Font.Size = 12;
-                        workSheet.Cells[row1 + 2, 3].Value = material.InOut == (int)MaterialStatus.In ? material.Qty : 0;
+                        workSheet.Cells[row1 + 2, 3].Value = material.InOut == (int)MaterialStatus.Inward ? material.Qty : 0;
                         workSheet.Cells[row1 + 2, 3].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                         workSheet.Cells[row1 + 2, 3].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                         workSheet.Cells[row1 + 2, 3].Style.Border.Top.Style = ExcelBorderStyle.Thin;
@@ -399,12 +399,10 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         workSheet.Cells[row1 + 2, 3].Style.Border.Right.Style = ExcelBorderStyle.Thin;
                         workSheet.Cells[row1 + 2, 3].Style.WrapText = true;
                         workSheet.Cells[row1 + 2, 3].AutoFitColumns(30, 70);
-
-
-
+                         
                         workSheet.Cells[row1 + 2, 4].Style.Font.Bold = false;
                         workSheet.Cells[row1 + 2, 4].Style.Font.Size = 12;
-                        workSheet.Cells[row1 + 2, 4].Value = material.InOut == (int)MaterialStatus.Out ? material.Qty : 0;
+                        workSheet.Cells[row1 + 2, 4].Value = material.InOut == (int)MaterialStatus.Outward ? material.Qty : 0;
                         workSheet.Cells[row1 + 2, 4].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                         workSheet.Cells[row1 + 2, 4].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                         workSheet.Cells[row1 + 2, 4].Style.Border.Top.Style = ExcelBorderStyle.Thin;

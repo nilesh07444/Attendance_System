@@ -1,8 +1,21 @@
 ﻿@using AttendanceSystem.ViewModel;
+@using AttendanceSystem.Helper;
 @model List<AttendanceSystem.ViewModel.MaterialVM>
 @{
     ViewBag.Title = "Material";
     int counter = 1;
+
+    decimal totalInwardQty = 0;
+    decimal totalOutwardQty = 0;
+    decimal totalRemainingQty = 0;
+
+    if (Model != null && Model.Count > 0)
+    {
+        totalInwardQty = Model.Where(x => x.InOut == (int)MaterialStatus.Inward).Sum(x => x.Qty);
+        totalOutwardQty = Model.Where(x => x.InOut == (int)MaterialStatus.Outward).Sum(x => x.Qty);
+        totalRemainingQty = totalInwardQty - totalOutwardQty;
+    }
+
 }
 
 <section class="section">
@@ -17,13 +30,13 @@
                 </div>
 
                 <div class="card">
-                    <div class="card-header" style="display: block;">
+                    <div class="card-header" style="display: block;"> 
                         <div class="card-header-action pull-right">
                             <a href="/admin/material/add/0" class="btn btn-icon icon-left btn-primary"><i class="fas fa-plus-circle"></i> Add Material</a>
                         </div>
                     </div>
                     <div class="card-body">
-                         
+
                         <div class="table-responsive">
                             <table class="table table-striped table-hover" id="tableExport" style="width:100%;">
                                 <thead>
@@ -32,9 +45,9 @@
                                         <th>Material Category Name</th>
                                         <th>Site Name</th>
                                         <th>Material Date</th>
-                                        <th>Qty</th>
-                                        <th>In/Out</th>
-                                        <th>Active</th>
+                                        <th>Inward</th>
+                                        <th>Outward</th>
+                                        @*<th>Active</th>*@
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -47,19 +60,19 @@
                                                 <td>@counter.</td>
                                                 <td>@obj.MaterialCategoryText</td>
                                                 <td>@obj.SiteName</td>
-                                                <td>@obj.MaterialDate</td>
-                                                <td>@obj.Qty</td>
-                                                <td>@obj.InOutText</td>
-                                                @if (obj.IsActive == true)
-                                                {
-                                                    <td><span class="badge badge-success" style="cursor:pointer;" title="Click to Inactive" onclick="fnChangeStatus('@obj.MaterialId','InActive');">Active</span></td>
-                                                }
-                                                else
-                                                {
-                                                    <td><span class="badge badge-danger" style="cursor:pointer;" title="Click to Active" onclick="fnChangeStatus('@obj.MaterialId','Active');">InActive</span></td>
-                                                }
+                                                <td>@obj.MaterialDate.ToString("dd MMM yyyy")</td>
+                                                <td>@(obj.InOut == (int)MaterialStatus.Inward ? obj.Qty.ToString() : "")</td>
+                                                <td>@(obj.InOut == (int)MaterialStatus.Outward ? obj.Qty.ToString() : "")</td>
+                                                @*@if (obj.IsActive == true)
+                                                    {
+                                                        <td><span class="badge badge-success" style="cursor:pointer;" title="Click to Inactive" onclick="fnChangeStatus('@obj.MaterialId','InActive');">Active</span></td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td><span class="badge badge-danger" style="cursor:pointer;" title="Click to Active" onclick="fnChangeStatus('@obj.MaterialId','Active');">InActive</span></td>
+                                                    }*@
                                                 <td>
-                                                    <a href="/admin/material/add/@obj.MaterialId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
+                                                    @*<a href="/admin/material/add/@obj.MaterialId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>*@
                                                     <a href="javascript:void(0);" title="Delete" class="btn btn-icon btn-danger" onclick="fnDeleteMaterial('@obj.MaterialId')"><i class="fas fa-trash-alt"></i></a>
                                                 </td>
                                             </tr>
@@ -69,7 +82,15 @@
                                     }
 
                                 </tbody>
+
                             </table>
+
+                            <p>
+                                <b>Total Inward Qty &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp; @totalInwardQty</b><br />
+                                <b>Total Outward Qty &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp; @totalOutwardQty</b><br />
+                                <b>Total Remaining Qty &nbsp; :&nbsp;&nbsp; @totalRemainingQty</b>
+                            </p>
+
                         </div>
                     </div>
                 </div>

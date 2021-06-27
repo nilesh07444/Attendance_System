@@ -70,7 +70,7 @@
                             </div>
 
                         </div>
-                         
+
                         <div class="table-responsive">
                             <table class="table table-striped table-hover" id="tableExport" style="width:100%;">
                                 <thead>
@@ -84,6 +84,7 @@
                                         <th>Behaviour</th>
                                         <th>Ragularity</th>
                                         <th>Work</th>
+                                        <th>Avg. Rate</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -102,6 +103,7 @@
                                                 <td>@obj.BehaviourRate</td>
                                                 <td>@obj.RegularityRate</td>
                                                 <td>@obj.WorkRate</td>
+                                                <td>@obj.AvgRate</td>
                                                 <td>
                                                     @if ((CommonMethod.CurrentIndianDateTime() - obj.CreatedDate).TotalDays <= 7)
                                                     {
