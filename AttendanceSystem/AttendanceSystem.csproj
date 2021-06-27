@@ -1573,6 +1573,10 @@
     <Content Include="Areas\Admin\Views\WorkerAttendance\Index.cshtml" />
     <Content Include="Areas\Admin\Views\WorkerAttendance\AssignedWorkerList.cshtml" />
     <Content Include="Areas\Admin\Views\WorkerAttendance\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\Payment\EmployeePaymentSummury.cshtml" />
+    <Content Include="Areas\Admin\Views\Payment\WorkerPaymentSummury.cshtml" />
+    <Content Include="Areas\Admin\Views\Payment\WorkerPaymentReport.cshtml" />
+    <Content Include="Areas\Admin\Views\Payment\EmployeePaymentReport.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />

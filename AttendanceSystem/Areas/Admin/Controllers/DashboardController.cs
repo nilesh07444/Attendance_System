@@ -63,8 +63,18 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                     var startDate = new DateTime(CommonMethod.CurrentIndianDateTime().Year, CommonMethod.CurrentIndianDateTime().Month, 1);
                     var endDate = startDate.AddMonths(1).AddDays(-1);
-                    dashboardVM.ThisMonthHoliday = _db.tbl_Holiday.Where(x => x.CompanyId == companyId.ToString() && x.IsActive && !x.IsDeleted && x.StartDate >= startDate && x.StartDate <= endDate).Count();
 
+                    var holidayList = (from hl in _db.tbl_Holiday
+                                       where hl.CompanyId == companyId.ToString()
+                                       && hl.IsActive && !hl.IsDeleted && hl.StartDate >= startDate && hl.StartDate <= endDate
+                                       select new
+                                       {
+                                           EndDate = hl.EndDate,
+                                           StartDate = hl.StartDate
+                                       }).ToList();
+
+                    
+                    dashboardVM.ThisMonthHoliday = Convert.ToInt64(holidayList.Select(x => (x.EndDate - x.StartDate).TotalDays + 1).Sum());
                     tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == companyId).FirstOrDefault();
                     if (objCompany != null)
                     {
@@ -211,7 +221,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 if (status == 1)
                 {
                     // tbl_Conversion, tbl_EmployeePayment
-                    List<tbl_EmployeePayment> inProcessEmployeePaymentList = _db.tbl_EmployeePayment.Where(x => !x.IsDeleted && x.CompanyId == companyId && x.ProcessStatusText == ErrorMessage.InProgress && x.Month == nextMonth && x.Year == dateYear).ToList();
+                    List<tbl_EmployeePayment> inProcessEmployeePaymentList = _db.tbl_EmployeePayment.Where(x => !x.IsDeleted && x.CompanyId == companyId && x.ProcessStatusText == ErrorMessage.InProgress
+                    && x.Month == nextMonth && x.Year == dateYear && x.PaymentType != (int)EmployeePaymentType.Extra).ToList();
                     inProcessEmployeePaymentList.ForEach(x =>
                     {
                         _db.tbl_EmployeePayment.Remove(x);
@@ -239,6 +250,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                                        where
                                        employeeIdsExceptMonthly.Contains(emp.EmployeeId)
+                                       && (jointData != null ? jointRecord.PaymentType != (int)EmployeePaymentType.Extra : true)
                                        select new
                                        {
                                            EmployeeId = emp.EmployeeId,
@@ -306,7 +318,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         List<decimal> debitAmountList = _db.tbl_EmployeePayment.Where(e => e.UserId == x.EmployeeId && !x.IsDeleted
                                                 && e.Month == month
                                                 && e.Year == year
-                                                && e.DebitAmount > 0).Select(e => e.DebitAmount.HasValue ? e.DebitAmount.Value : 0).ToList();
+                                                && e.DebitAmount > 0 && e.PaymentType != (int)EmployeePaymentType.Extra).Select(e => e.DebitAmount.HasValue ? e.DebitAmount.Value : 0).ToList();
                         double advancePaid = Convert.ToDouble(debitAmountList.Count > 0 ? debitAmountList.Sum() : 0);
                         double extraHourSalary = Convert.ToDouble(extraHours * x.ExtraPerHourPrice);
 
@@ -344,7 +356,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     });
 
 
-                    List<tbl_EmployeePayment> employeePaymentList = _db.tbl_EmployeePayment.Where(x => !x.IsDeleted && x.ProcessStatusText == ErrorMessage.InProgress && x.Month == nextMonth && x.Year == dateYear).ToList();
+                    List<tbl_EmployeePayment> employeePaymentList = _db.tbl_EmployeePayment.Where(x => !x.IsDeleted && x.ProcessStatusText == ErrorMessage.InProgress && x.Month == nextMonth && x.Year == dateYear && x.PaymentType != (int)EmployeePaymentType.Extra).ToList();
                     employeePaymentList.ForEach(x =>
                     {
                         x.ProcessStatusText = ErrorMessage.Complete;
@@ -430,7 +442,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                 if (status == 1)
                 {
-                    List<tbl_WorkerPayment> inProcessWorkerPaymentList = _db.tbl_WorkerPayment.Where(x => !x.IsDeleted && x.CompanyId == companyId && x.ProcessStatusText == ErrorMessage.InProgress && x.Month == nextMonth && x.Year == dateyear).ToList();
+                    List<tbl_WorkerPayment> inProcessWorkerPaymentList = _db.tbl_WorkerPayment.Where(x => !x.IsDeleted && x.CompanyId == companyId && x.ProcessStatusText == ErrorMessage.InProgress
+                    && x.Month == nextMonth && x.Year == dateyear && x.PaymentType != (int)EmployeePaymentType.Extra).ToList();
                     inProcessWorkerPaymentList.ForEach(x =>
                     {
                         _db.tbl_WorkerPayment.Remove(x);
@@ -454,7 +467,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                     List<long> employeeIdsExceptMonthly = lstWorkers.Where(x => x.EmploymentCategory != (int)EmploymentCategory.MonthlyBased).Select(x => x.EmployeeId).ToList();
                     var paymentList = (from emp in lstWorkers
-                                       join epp in _db.tbl_EmployeePayment on
+                                       join epp in _db.tbl_WorkerPayment on
                                        new { Id = emp.EmployeeId, month = month, year = year }
                                        equals new { Id = epp.UserId, month = epp.Month, year = epp.Year }
                                        into jointData
@@ -462,6 +475,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                                        where
                                        employeeIdsExceptMonthly.Contains(emp.EmployeeId)
+                                        && (jointData != null ? jointRecord.PaymentType != (int)EmployeePaymentType.Extra : true)
                                        select new
                                        {
                                            EmployeeId = emp.EmployeeId,
@@ -533,10 +547,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                             carryForwardLeave = totalFreeLeave - (decimal)(absentDays - holidays);
                         }
                         double monthlySalary = (double)x.MonthlySalaryPrice;
-                        double advancePaid = (double)_db.tbl_EmployeePayment.Where(e => e.UserId == x.EmployeeId && !x.IsDeleted
+                        double advancePaid = (double)_db.tbl_WorkerPayment.Where(e => e.UserId == x.EmployeeId && !x.IsDeleted
                                                 && e.Month == month
                                                 && e.Year == year
-                                                && e.DebitAmount > 0).Select(e => e.DebitAmount).Sum();
+                                                && e.DebitAmount > 0 && e.PaymentType != (int)EmployeePaymentType.Extra).Select(e => e.DebitAmount).Sum();
 
                         double extraHourSalary = Convert.ToDouble(extraHours * x.ExtraPerHourPrice);
 
@@ -573,7 +587,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     });
 
 
-                    List<tbl_WorkerPayment> workerPaymentList = _db.tbl_WorkerPayment.Where(x => !x.IsDeleted && x.ProcessStatusText == ErrorMessage.InProgress && x.Month == nextMonth && x.Year == dateyear).ToList();
+                    List<tbl_WorkerPayment> workerPaymentList = _db.tbl_WorkerPayment.Where(x => !x.IsDeleted && x.ProcessStatusText == ErrorMessage.InProgress && x.Month == nextMonth && x.Year == dateyear
+                    && x.PaymentType != (int)EmployeePaymentType.Extra).ToList();
                     workerPaymentList.ForEach(x =>
                     {
                         x.ProcessStatusText = ErrorMessage.Complete;

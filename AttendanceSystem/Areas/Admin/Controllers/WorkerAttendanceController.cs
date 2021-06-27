@@ -263,7 +263,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 addWorkerAttendanceVM.SiteName = _db.tbl_Site.Where(x => x.SiteId == siteId).Select(x => x.SiteName).FirstOrDefault();
 
                 addWorkerAttendanceVM.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)addWorkerAttendanceVM.EmploymentCategoryId);
-                addWorkerAttendanceVM.PendingSalary = _db.tbl_WorkerPayment.Any(x => x.UserId == employeeId && x.PaymentType == (int)EmployeePaymentType.Salary) ? _db.tbl_WorkerPayment.Where(x => x.UserId == employeeId && !x.IsDeleted).Select(x => (x.CreditAmount.HasValue ? x.CreditAmount.Value : 0) - (x.DebitAmount.HasValue ? x.DebitAmount.Value : 0)).Sum() : 0;
+                addWorkerAttendanceVM.PendingSalary = _db.tbl_WorkerPayment.Any(x => x.UserId == employeeId && x.PaymentType != (int)EmployeePaymentType.Extra) ? _db.tbl_WorkerPayment.Where(x => x.UserId == employeeId && !x.IsDeleted && x.PaymentType != (int)EmployeePaymentType.Extra).Select(x => (x.CreditAmount.HasValue ? x.CreditAmount.Value : 0) - (x.DebitAmount.HasValue ? x.DebitAmount.Value : 0)).Sum() : 0;
 
                 addWorkerAttendanceVM.IsMorningText = addWorkerAttendanceVM.IsMorning ? ErrorMessage.YES : ErrorMessage.NO;
                 addWorkerAttendanceVM.IsAfternoonText = addWorkerAttendanceVM.IsAfternoon ? ErrorMessage.YES : ErrorMessage.NO;
@@ -511,7 +511,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                         if (addWorkerAttendanceVM.EmploymentCategoryId != (int)EmploymentCategory.MonthlyBased && addWorkerAttendanceVM.AttendanceType == (int)WorkerAttendanceType.Evening)
                         {
-                            if (!_db.tbl_WorkerPayment.Any(x => x.UserId == attendanceObject.EmployeeId && !x.IsDeleted && x.AttendanceId == attendanceObject.WorkerAttendanceId))
+                            if (!_db.tbl_WorkerPayment.Any(x => x.UserId == attendanceObject.EmployeeId && !x.IsDeleted && x.AttendanceId == attendanceObject.WorkerAttendanceId && x.PaymentType != (int)EmployeePaymentType.Extra))
                             {
                                 tbl_WorkerPayment objWorkerPayment = new tbl_WorkerPayment();
                                 objWorkerPayment.CompanyId = companyId;
@@ -750,7 +750,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                             if (emp.EmploymentCategory != (int)EmploymentCategory.MonthlyBased && attendanceType == (int)WorkerAttendanceType.Evening)
                             {
-                                if (!_db.tbl_WorkerPayment.Any(x => x.UserId == attendanceObject.EmployeeId && !x.IsDeleted && x.AttendanceId == attendanceObject.WorkerAttendanceId))
+                                if (!_db.tbl_WorkerPayment.Any(x => x.UserId == attendanceObject.EmployeeId && !x.IsDeleted && x.AttendanceId == attendanceObject.WorkerAttendanceId && x.PaymentType != (int)EmployeePaymentType.Extra))
                                 {
                                     tbl_WorkerPayment objWorkerPayment = new tbl_WorkerPayment();
                                     objWorkerPayment.CompanyId = companyId;

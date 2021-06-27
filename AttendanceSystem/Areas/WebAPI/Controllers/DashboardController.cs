@@ -55,12 +55,13 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 var listDays = (from hd in _db.tbl_Holiday
                                 where hd.CompanyId == companyId.ToString()
                                 && hd.IsActive && !hd.IsDeleted
+                                 && hd.StartDate >= startDate && hd.StartDate <= endDate
                                 select new
                                 {
                                     StartDate = hd.StartDate,
                                     EndDate = hd.EndDate
                                 }).ToList();
-                dashboardCountVM.thisMonthHoliday = listDays.Select(x => (x.EndDate - x.StartDate).TotalDays).Sum();
+                dashboardCountVM.thisMonthHoliday = listDays.Select(x => (x.EndDate - x.StartDate).TotalDays + 1).Sum();
 
                 dashboardCountVM.LeavePendingForApprove = _db.tbl_Leave.Where(x => x.UserId == employeeId && !x.IsDeleted && x.LeaveStatus == (int)LeaveStatus.Pending).Count();
 
@@ -79,6 +80,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                    where ep.UserId == employeeId && !ep.IsDeleted
                                    && ep.PaymentDate >= monthStartDate
                                    && ep.PaymentDate <= monthEndDate
+                                   && ep.PaymentType != (int)EmployeePaymentType.Extra
                                    select new
                                    {
                                        Amount = (ep.CreditAmount.HasValue ? ep.CreditAmount.Value : 0) - (ep.DebitAmount.HasValue ? ep.DebitAmount.Value : 0)

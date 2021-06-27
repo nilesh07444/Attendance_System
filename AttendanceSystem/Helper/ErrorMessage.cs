@@ -64,6 +64,7 @@
         public static string PendingLeaveCanBeEditOnly = "Only pending leave can be edit.";
         public static string PendingLeaveCanBeDeleteOnly = "Only pending leave can be Delete.";
         public static string LeaveNotFound = "Leave not found.";
+        public static string CanNotAddLeaveOnHoliday = "Can not add leave on holiday.";
 
         public static string MaterialCategoryIsNotValid = "Material category is not valid.";
         public static string SiteIsNotValid = "Site is not valid.";
@@ -177,6 +178,7 @@
         public static string HourlyBasedWorkerNotAllowedWithoutTotalHours = "Hourly based worker not allowed without total hours.";
         public static string UnitBasedWorkerNotAllowedWithoutTotalUnits = "Unit based worker not allowed without total units.";
         public static string PaymentNotAllowedForBackDate = "Payment not allowed for back date.";
+        public static string PaymentAmountShouldbeGreaterThanZero = "Payment amount should be greater than 0.";
 
     }
 }

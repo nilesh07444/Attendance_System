@@ -76,6 +76,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         {
             try
             {
+                long companyId = clsAdminSession.CompanyId;
                 IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
                 if (ModelState.IsValid)
                 {
@@ -99,7 +100,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     }
 
                     long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
-                    long companyId = clsAdminSession.CompanyId;
+
                     if (HolidayVM.HolidayId > 0)
                     {
                         tbl_Holiday objHoliday = _db.tbl_Holiday.Where(x => x.HolidayId == HolidayVM.HolidayId).FirstOrDefault();
@@ -125,6 +126,17 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objHoliday.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         _db.tbl_Holiday.Add(objHoliday);
                     }
+
+                    List<tbl_Leave> leaveList = (from lv in _db.tbl_Leave
+                                                 join emp in _db.tbl_Employee on lv.UserId equals emp.EmployeeId
+                                                 where emp.CompanyId == companyId
+                                                 && lv.StartDate >= HolidayVM.StartDate && lv.StartDate <= HolidayVM.EndDate
+                                                 select lv).ToList();
+
+                    leaveList.ForEach(x => {
+                        _db.tbl_Leave.Remove(x);
+                    });
+
                     _db.SaveChanges();
                 }
                 else

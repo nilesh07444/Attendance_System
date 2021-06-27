@@ -74,6 +74,12 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     response.AddError(ErrorMessage.LeaveOnSameDateAlreadyExist);
                 }
 
+                if (_db.tbl_Holiday.Any(x => x.CompanyId == companyId.ToString() && !x.IsDeleted && x.StartDate <= leaveVM.StartDate && x.EndDate >= leaveVM.StartDate))
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.CanNotAddLeaveOnHoliday);
+                }
+
                 #endregion Validation
                 if (!response.IsError)
                 {
