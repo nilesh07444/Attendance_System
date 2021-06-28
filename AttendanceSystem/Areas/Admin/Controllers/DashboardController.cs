@@ -73,7 +73,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                            StartDate = hl.StartDate
                                        }).ToList();
 
-                    
+
                     dashboardVM.ThisMonthHoliday = Convert.ToInt64(holidayList.Select(x => (x.EndDate - x.StartDate).TotalDays + 1).Sum());
                     tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == companyId).FirstOrDefault();
                     if (objCompany != null)
@@ -250,15 +250,16 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                                        where
                                        employeeIdsExceptMonthly.Contains(emp.EmployeeId)
-                                       && (jointData != null ? jointRecord.PaymentType != (int)EmployeePaymentType.Extra : true)
+                                       // && (jointData != null ? jointRecord.PaymentType != (int)EmployeePaymentType.Extra : true)
                                        select new
                                        {
                                            EmployeeId = emp.EmployeeId,
                                            DebitAmount = jointRecord != null && jointRecord.DebitAmount != null ? jointRecord.DebitAmount : 0,
-                                           CreditAmount = jointRecord != null && jointRecord.CreditAmount != null ? jointRecord.CreditAmount : 0
+                                           CreditAmount = jointRecord != null && jointRecord.CreditAmount != null ? jointRecord.CreditAmount : 0,
+                                           PaymentType = jointRecord != null && jointRecord.PaymentType != null ? jointRecord.PaymentType : 0
                                        }).ToList();
 
-                    var paymentGroup = paymentList.GroupBy(l => l.EmployeeId)
+                    var paymentGroup = paymentList.Where(x => x.PaymentType != (int)EmployeePaymentType.Extra).GroupBy(l => l.EmployeeId)
                         .Select(cl => new
                         {
                             EmployeeId = cl.First().EmployeeId,
@@ -475,15 +476,16 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                                        where
                                        employeeIdsExceptMonthly.Contains(emp.EmployeeId)
-                                        && (jointData != null ? jointRecord.PaymentType != (int)EmployeePaymentType.Extra : true)
+                                       //&& (jointData != null ? jointRecord.PaymentType != (int)EmployeePaymentType.Extra : true)
                                        select new
                                        {
                                            EmployeeId = emp.EmployeeId,
                                            DebitAmount = jointRecord != null && jointRecord.DebitAmount != null ? jointRecord.DebitAmount : 0,
-                                           CreditAmount = jointRecord != null && jointRecord.CreditAmount != null ? jointRecord.CreditAmount : 0
+                                           CreditAmount = jointRecord != null && jointRecord.CreditAmount != null ? jointRecord.CreditAmount : 0,
+                                           PaymentType = jointRecord != null && jointRecord.PaymentType != null ? jointRecord.PaymentType : 0
                                        }).ToList();
 
-                    var paymentGroup = paymentList.GroupBy(l => l.EmployeeId)
+                    var paymentGroup = paymentList.Where(x => x.PaymentType != (int)EmployeePaymentType.Extra).GroupBy(l => l.EmployeeId)
                         .Select(cl => new
                         {
                             EmployeeId = cl.First().EmployeeId,
