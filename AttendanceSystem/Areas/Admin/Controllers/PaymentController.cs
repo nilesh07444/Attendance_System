@@ -134,6 +134,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                         objEmployeePayment.PaymentDate = paymentVM.PaymentDate;
                         objEmployeePayment.DebitAmount = paymentVM.DebitAmount;
+                        objEmployeePayment.Month = paymentVM.PaymentDate.Month;
+                        objEmployeePayment.Year = paymentVM.PaymentDate.Year;
                         objEmployeePayment.PaymentType = paymentVM.PaymentType;
                         objEmployeePayment.Remarks = paymentVM.Remarks;
                         objEmployeePayment.ModifiedBy = LoggedInUserId;
@@ -157,6 +159,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployeePayment.DebitAmount = paymentVM.DebitAmount;
                         objEmployeePayment.CreditAmount = 0;
                         objEmployeePayment.PaymentType = paymentVM.PaymentType;
+                        objEmployeePayment.Month = paymentVM.PaymentDate.Month;
+                        objEmployeePayment.Year = paymentVM.PaymentDate.Year;
                         objEmployeePayment.Remarks = paymentVM.Remarks;
                         objEmployeePayment.CreatedBy = LoggedInUserId;
                         objEmployeePayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
