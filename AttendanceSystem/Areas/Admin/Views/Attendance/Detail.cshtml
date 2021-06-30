@@ -24,7 +24,7 @@
                 <div class="card">
 
                     <div class="card-body">
-                        @using (Html.BeginForm("Reject", "Attendance", FormMethod.Post, new { @id = "AttendanceForm", @class = "needs-validation", enctype = "multipart/form-data", role = "form" }))
+                        @using (Html.BeginForm("Detail", "Attendance", FormMethod.Post, new { @id = "AttendanceForm", @class = "needs-validation", enctype = "multipart/form-data", role = "form" }))
                         {
                             @Html.HiddenFor(model => model.AttendanceId)
 

@@ -223,9 +223,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     status = 0;
                     errorMessage = !string.IsNullOrEmpty(errorMessage) ? errorMessage + ", " + ErrorMessage.LeavePendingForAcceptCanNotCompleteConversion : ErrorMessage.LeavePendingForAcceptCanNotCompleteConversion;
                 }
-                 
+
                 if (status == 1)
-                {                    
+                {
                     List<tbl_EmployeePayment> inProcessEmployeePaymentList = (from p in _db.tbl_EmployeePayment
                                                                               where !p.IsDeleted && p.CompanyId == companyId
                                                                               && p.ProcessStatusText == ErrorMessage.InProgress
@@ -250,7 +250,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     double totalDaysinMonth = DateTime.DaysInMonth(year, month);
 
                     var currentMonthHolidays = _db.tbl_Holiday.Where(x => x.CompanyId == companyId.ToString() && x.StartDate >= firstDayOfMonth && x.EndDate <= lastDayOfMonth).ToList();
-                    double holidays = currentMonthHolidays.Select(x => (x.EndDate - x.StartDate).TotalDays).Sum();
+                    double holidays = currentMonthHolidays.Select(x => (x.EndDate - x.StartDate).TotalDays + 1).Sum();
                     // For Only Employees
 
                     // Get All Employees
@@ -338,13 +338,13 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         double advancePaid = Convert.ToDouble(debitAmountList.Count > 0 ? debitAmountList.Sum() : 0);
                         double extraHourSalary = Convert.ToDouble(extraHours * x.ExtraPerHourPrice);
 
-                        monthlySalary = monthlySalary + extraHourSalary - advancePaid;
                         if (deductedLeave > 0)
                         {
                             double perDaySalary = monthlySalary / totalDaysinMonth;
                             double deductedSalary = deductedLeave * perDaySalary;
                             monthlySalary = (monthlySalary - deductedSalary);
                         }
+                        monthlySalary = monthlySalary + extraHourSalary - advancePaid;
 
                         tbl_EmployeePayment objEmployeePayment = new tbl_EmployeePayment();
                         objEmployeePayment.CompanyId = companyId;
@@ -481,8 +481,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     double totalDaysinMonth = DateTime.DaysInMonth(year, month);
 
 
-                    List<double> currentMonthHolidays = _db.tbl_Holiday.Where(x => x.CompanyId == companyId.ToString() && x.StartDate >= firstDayOfMonth && x.EndDate <= lastDayOfMonth).Select(x => (x.EndDate - x.StartDate).TotalDays).ToList();
-                    double holidays = currentMonthHolidays.Sum();
+                    var currentMonthHolidays = _db.tbl_Holiday.Where(x => x.CompanyId == companyId.ToString() && x.StartDate >= firstDayOfMonth && x.EndDate <= lastDayOfMonth).ToList();
+                    double holidays = currentMonthHolidays.Select(x => (x.EndDate - x.StartDate).TotalDays + 1).Sum();
                     // For Only Employees
 
                     // Get All Employees
@@ -578,7 +578,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                         double extraHourSalary = Convert.ToDouble(extraHours * x.ExtraPerHourPrice);
 
-                        monthlySalary = monthlySalary + extraHourSalary - advancePaid;
+                       
                         if (deductedLeave > 0)
                         {
                             double perDaySalary = monthlySalary / totalDaysinMonth;
@@ -586,6 +586,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                             monthlySalary = (monthlySalary - deductedSalary);
                         }
 
+                        monthlySalary = monthlySalary + extraHourSalary - advancePaid;
                         tbl_WorkerPayment objWorkerPayment = new tbl_WorkerPayment();
                         objWorkerPayment.CompanyId = companyId;
                         objWorkerPayment.UserId = x.EmployeeId;

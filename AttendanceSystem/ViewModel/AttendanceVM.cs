@@ -163,6 +163,7 @@ namespace AttendanceSystem.ViewModel
         public long AttendanceId { get; set; }
         [Display(Name = "Attendance Date")]
         public DateTime AttendanceDate { get; set; }
+        [Display(Name = "Attendance Type")]
         public int AttendanceType { get; set; }
         public long EmployeeId { get; set; }
         public long EmploymentCategoryId { get; set; }
@@ -187,6 +188,7 @@ namespace AttendanceSystem.ViewModel
         public long SiteId { get; set; }
         [Display(Name = "Site")]
         public string SiteName { get; set; }
+        [Display(Name = "Today Salary")]
         public decimal? TodaySalary { get; set; }
         public string LocationFrom { get; set; }
         public decimal Latitude { get; set; }
@@ -195,6 +197,7 @@ namespace AttendanceSystem.ViewModel
         public decimal PendingSalary { get; set; }
         public List<SelectListItem> WorkerAttendanceTypeList { get; set; }
         public decimal PerCategoryPrice { get; set; }
+        [Display(Name = "Extra Per Hour Price")]
         public decimal? ExtraPerHourPrice { get; set; }
         [Display(Name = "Morning")]
         public bool IsMorning { get; set; }
