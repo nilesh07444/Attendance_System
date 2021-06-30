@@ -223,22 +223,26 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     status = 0;
                     errorMessage = !string.IsNullOrEmpty(errorMessage) ? errorMessage + ", " + ErrorMessage.LeavePendingForAcceptCanNotCompleteConversion : ErrorMessage.LeavePendingForAcceptCanNotCompleteConversion;
                 }
-
+                 
                 if (status == 1)
-                {
-                    List<tbl_EmployeePayment> inProcessEmployeePaymentList = (from ep in _db.tbl_EmployeePayment
-                                                                              where !ep.IsDeleted
-                                                                              && ep.CompanyId == companyId
-                                                                              && ep.ProcessStatusText == ErrorMessage.InProgress
-                                                                              && ep.Month == month && ep.Year == dateYear
-                                                                              select ep
-                                                                             ).ToList();
+                {                    
+                    List<tbl_EmployeePayment> inProcessEmployeePaymentList = (from p in _db.tbl_EmployeePayment
+                                                                              where !p.IsDeleted && p.CompanyId == companyId
+                                                                              && p.ProcessStatusText == ErrorMessage.InProgress
+                                                                              && p.Month == month
+                                                                              && p.Year == dateYear
+                                                                              && p.PaymentType != (int)EmployeePaymentType.Extra
+                                                                              select p
+                        ).ToList();
 
-                    inProcessEmployeePaymentList.ForEach(x =>
+                    if (inProcessEmployeePaymentList != null && inProcessEmployeePaymentList.Count > 0)
                     {
-                        _db.tbl_EmployeePayment.Remove(x);
-                        _db.SaveChanges();
-                    });
+                        inProcessEmployeePaymentList.ForEach(x =>
+                        {
+                            _db.tbl_EmployeePayment.Remove(x);
+                            _db.SaveChanges();
+                        });
+                    }
 
                     long loggedinUser = clsAdminSession.UserID;
                     DateTime firstDayOfMonth = new DateTime(year, month, 1);
@@ -462,6 +466,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 {
                     List<tbl_WorkerPayment> inProcessWorkerPaymentList = _db.tbl_WorkerPayment.Where(x => !x.IsDeleted && x.CompanyId == companyId && x.ProcessStatusText == ErrorMessage.InProgress
                     && x.Month == month && x.Year == dateyear && x.PaymentType != (int)EmployeePaymentType.Extra).ToList();
+
                     inProcessWorkerPaymentList.ForEach(x =>
                     {
                         _db.tbl_WorkerPayment.Remove(x);
