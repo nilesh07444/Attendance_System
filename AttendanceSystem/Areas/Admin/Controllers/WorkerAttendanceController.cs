@@ -213,7 +213,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return View(assignedWorkerFilterVM);
         }
 
-        public ActionResult Add(int siteId, long employeeId)
+        public ActionResult Add(int siteId, long employeeId, long? workerAttendanceId)
         {
             DateTime date = CommonMethod.CurrentIndianDateTime().Date;
             AddWorkerAttendanceVM addWorkerAttendanceVM = null;
@@ -221,10 +221,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             {
                 addWorkerAttendanceVM = (from at in _db.tbl_WorkerAttendance
                                          join emp in _db.tbl_Employee on at.EmployeeId equals emp.EmployeeId
-                                         where at.AttendanceDate == date
-                                         && at.EmployeeId == employeeId
+                                         where at.EmployeeId == employeeId
                                          && !at.IsClosed
                                          && (at.MorningSiteId == siteId || at.AfternoonSiteId == siteId || at.EveningSiteId == siteId)
+                                         && (workerAttendanceId.HasValue && workerAttendanceId.Value > 0 ? at.WorkerAttendanceId == workerAttendanceId.Value : at.AttendanceDate == date)
                                          select new AddWorkerAttendanceVM
                                          {
                                              AttendanceId = at.WorkerAttendanceId,
@@ -271,21 +271,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
 
                 addWorkerAttendanceVM.WorkerAttendanceTypeList = GetAttendanceTypeListFromAttendanceFilled(addWorkerAttendanceVM.IsMorning, addWorkerAttendanceVM.IsAfternoon, addWorkerAttendanceVM.IsEvening);
-
-                //if (addWorkerAttendanceVM.IsMorning)
-                //{
-                //    addWorkerAttendanceVM.WorkerAttendanceTypeList.Remove(addWorkerAttendanceVM.WorkerAttendanceTypeList.First(item => item.Value.Equals(WorkerAttendanceType.Morning.GetHashCode().ToString())));
-                //}
-
-                //if (addWorkerAttendanceVM.IsAfternoon)
-                //{
-                //    addWorkerAttendanceVM.WorkerAttendanceTypeList.Remove(addWorkerAttendanceVM.WorkerAttendanceTypeList.First(item => item.Value.Equals(WorkerAttendanceType.Afternoon.GetHashCode().ToString())));
-                //}
-
-                //if (addWorkerAttendanceVM.IsEvening)
-                //{
-                //    addWorkerAttendanceVM.WorkerAttendanceTypeList.Remove(addWorkerAttendanceVM.WorkerAttendanceTypeList.First(item => item.Value.Equals(WorkerAttendanceType.Evening.GetHashCode().ToString())));
-                //}
             }
             catch (Exception ex)
             {
@@ -351,7 +336,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             try
             {
                 long employeeId = clsAdminSession.UserID;
-                tbl_WorkerAttendance attendanceObject = _db.tbl_WorkerAttendance.Where(x => x.WorkerAttendanceId == addWorkerAttendanceVM.AttendanceId && x.EmployeeId == addWorkerAttendanceVM.EmployeeId && x.AttendanceDate == today && !x.IsClosed).FirstOrDefault();
+                tbl_WorkerAttendance attendanceObject = _db.tbl_WorkerAttendance.Where(x => x.WorkerAttendanceId == addWorkerAttendanceVM.AttendanceId && x.EmployeeId == addWorkerAttendanceVM.EmployeeId && x.AttendanceDate == addWorkerAttendanceVM.AttendanceDate && !x.IsClosed).FirstOrDefault();
 
                 if (ModelState.IsValid)
                 {
@@ -360,7 +345,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     {
                         ModelState.AddModelError("", ErrorMessage.SiteRequired);
                     }
-                    if (!_db.tbl_AssignWorker.Any(x => x.EmployeeId == addWorkerAttendanceVM.EmployeeId && x.SiteId == addWorkerAttendanceVM.SiteId && x.Date == today && !x.IsClosed))
+                    if (!_db.tbl_AssignWorker.Any(x => x.EmployeeId == addWorkerAttendanceVM.EmployeeId && x.SiteId == addWorkerAttendanceVM.SiteId && x.Date == addWorkerAttendanceVM.AttendanceDate && !x.IsClosed))
                     {
                         ModelState.AddModelError("", ErrorMessage.WorketNotAssignedToday);
                     }
@@ -449,7 +434,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                 if (addWorkerAttendanceVM.EmploymentCategoryId == (int)EmploymentCategory.UnitBased)
                                     attendanceObject.NoOfHoursWorked = addWorkerAttendanceVM.NoOfUnitWorked;
 
-                                tbl_AssignWorker assignedWorker = _db.tbl_AssignWorker.Where(x => x.SiteId == addWorkerAttendanceVM.SiteId && x.Date == today && x.EmployeeId == addWorkerAttendanceVM.EmployeeId && !x.IsClosed).FirstOrDefault();
+                                tbl_AssignWorker assignedWorker = _db.tbl_AssignWorker.Where(x => x.SiteId == addWorkerAttendanceVM.SiteId && x.Date == addWorkerAttendanceVM.AttendanceDate && x.EmployeeId == addWorkerAttendanceVM.EmployeeId && !x.IsClosed).FirstOrDefault();
                                 if (assignedWorker != null)
                                 {
                                     assignedWorker.IsClosed = true;
@@ -484,7 +469,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         {
                             attendanceObject = new tbl_WorkerAttendance();
                             attendanceObject.EmployeeId = addWorkerAttendanceVM.EmployeeId;
-                            attendanceObject.AttendanceDate = today;
+                            attendanceObject.AttendanceDate = addWorkerAttendanceVM.AttendanceDate;
                             if (addWorkerAttendanceVM.AttendanceType == (int)WorkerAttendanceType.Afternoon)
                             {
                                 attendanceObject.IsAfternoon = true;
@@ -552,20 +537,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     else
                     {
                         addWorkerAttendanceVM.WorkerAttendanceTypeList = GetAttendanceTypeListFromAttendanceFilled(attendanceObject.IsMorning, attendanceObject.IsAfternoon, attendanceObject.IsEvening);
-                        //if (addWorkerAttendanceVM.IsMorning)
-                        //{
-                        //    addWorkerAttendanceVM.WorkerAttendanceTypeList.Remove(addWorkerAttendanceVM.WorkerAttendanceTypeList.First(item => item.Value.Equals(WorkerAttendanceType.Morning.GetHashCode().ToString())));
-                        //}
-
-                        //if (addWorkerAttendanceVM.IsAfternoon)
-                        //{
-                        //    addWorkerAttendanceVM.WorkerAttendanceTypeList.Remove(addWorkerAttendanceVM.WorkerAttendanceTypeList.First(item => item.Value.Equals(WorkerAttendanceType.Afternoon.GetHashCode().ToString())));
-                        //}
-
-                        //if (addWorkerAttendanceVM.IsEvening)
-                        //{
-                        //    addWorkerAttendanceVM.WorkerAttendanceTypeList.Remove(addWorkerAttendanceVM.WorkerAttendanceTypeList.First(item => item.Value.Equals(WorkerAttendanceType.Evening.GetHashCode().ToString())));
-                        //}
                         return View(addWorkerAttendanceVM);
                     }
                 }

@@ -33,6 +33,7 @@ namespace AttendanceSystem.ViewModel
         public string EmployeeCode { get; set; }
         [Display(Name = "Pending Salary")]
         public decimal PendingSalary { get; set; }
+        public int AdminRoleId { get; set; }
     }
 
     public class PaymentFilterVM

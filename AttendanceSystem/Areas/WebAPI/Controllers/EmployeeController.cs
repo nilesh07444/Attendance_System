@@ -4,6 +4,7 @@ using AttendanceSystem.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -407,7 +408,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 companyId = base.UTI.CompanyId;
 
                 List<tbl_Employee> fingerprintEmployees = (from emp in _db.tbl_Employee
-                                                           join wt in _db.tbl_EmployeeFingerprint on emp.EmployeeId equals wt.EmployeeId  
+                                                           join wt in _db.tbl_EmployeeFingerprint on emp.EmployeeId equals wt.EmployeeId
                                                            where emp.AdminRoleId == (int)AdminRoles.Worker && emp.CompanyId == companyId
                                                            select emp).ToList();
 
@@ -417,14 +418,14 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 //List<long> assignedEmployeeIds = _db.tbl_AssignWorker.Where(x => x.Date == requestVM.Date && !x.IsClosed).Select(x => x.EmployeeId).ToList();
 
                 List<long> assignedEmployeeIds = (from emp in _db.tbl_Employee
-                                                           join wt in _db.tbl_AssignWorker on emp.EmployeeId equals wt.EmployeeId  
-                                                           where emp.AdminRoleId == (int)AdminRoles.Worker && emp.CompanyId == companyId
-                                                           && wt.Date == requestVM.Date && !wt.IsClosed
-                                                     select emp.EmployeeId).ToList();
-                 
+                                                  join wt in _db.tbl_AssignWorker on emp.EmployeeId equals wt.EmployeeId
+                                                  where emp.AdminRoleId == (int)AdminRoles.Worker && emp.CompanyId == companyId
+                                                  && wt.Date == requestVM.Date && !wt.IsClosed
+                                                  select emp.EmployeeId).ToList();
+
                 List<EmployeeVM> workerList = (from emp in _db.tbl_Employee
                                                join wt in _db.tbl_WorkerType on emp.WorkerTypeId equals wt.WorkerTypeId into wtc
-                                               from w in wtc.DefaultIfEmpty() 
+                                               from w in wtc.DefaultIfEmpty()
                                                where !emp.IsDeleted && emp.CompanyId == companyId
                                                && emp.AdminRoleId == (int)AdminRoles.Worker
                                                && !assignedEmployeeIds.Contains(emp.EmployeeId)
@@ -472,43 +473,73 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
         [HttpPost]
         [Route("AssignedWorkerList")]
-        public ResponseDataModel<List<EmployeeVM>> AssignedWorkerList(ViewModel.WebAPI.WorkerListRequestVM requestVM)
+        public ResponseDataModel<List<SiteAssignedWorkerVM>> AssignedWorkerList(ViewModel.WebAPI.WorkerListRequestVM requestVM)
         {
-            ResponseDataModel<List<EmployeeVM>> response = new ResponseDataModel<List<EmployeeVM>>();
+            ResponseDataModel<List<SiteAssignedWorkerVM>> response = new ResponseDataModel<List<SiteAssignedWorkerVM>>();
             response.IsError = false;
             try
             {
                 companyId = base.UTI.CompanyId;
 
-                List<EmployeeVM> workerList = (from emp in _db.tbl_Employee
-                                               join wk in _db.tbl_AssignWorker
-                                               on emp.EmployeeId equals wk.EmployeeId
-                                               where !emp.IsDeleted && emp.CompanyId == companyId
-                                               && emp.AdminRoleId == (int)AdminRoles.Worker
-                                               && wk.SiteId == requestVM.SiteId
-                                               && wk.Date == requestVM.Date
-                                               select new EmployeeVM
-                                               {
-                                                   EmployeeId = emp.EmployeeId,
-                                                   CompanyId = emp.CompanyId,
-                                                   Prefix = emp.Prefix,
-                                                   FirstName = emp.FirstName,
-                                                   LastName = emp.LastName,
-                                                   MobileNo = emp.MobileNo,
-                                                   Dob = emp.Dob,
-                                                   DateOfJoin = emp.DateOfJoin,
-                                                   BloodGroup = emp.BloodGroup,
-                                                   EmploymentCategory = emp.EmploymentCategory,
-                                                   MonthlySalaryPrice = emp.MonthlySalaryPrice,
-                                                   AdharCardNo = emp.AdharCardNo,
-                                                   EmployeeCode = emp.EmployeeCode,
-                                                   Address = emp.Address,
-                                                   City = emp.City,
-                                                   Pincode = emp.Pincode,
-                                                   State = emp.State,
-                                                   IsActive = emp.IsActive,
-                                                   ProfilePicture = !string.IsNullOrEmpty(emp.ProfilePicture) ? domainUrl + ErrorMessage.EmployeeDirectoryPath + emp.ProfilePicture : string.Empty
-                                               }).ToList();
+                //List<EmployeeVM> workerList = (from emp in _db.tbl_Employee
+                //                               join wk in _db.tbl_AssignWorker
+                //                               on emp.EmployeeId equals wk.EmployeeId
+                //                               where !emp.IsDeleted && emp.CompanyId == companyId
+                //                               && emp.AdminRoleId == (int)AdminRoles.Worker
+                //                               && wk.SiteId == requestVM.SiteId
+                //                               && wk.Date == requestVM.Date
+                //                               select new EmployeeVM
+                //                               {
+                //                                   EmployeeId = emp.EmployeeId,
+                //                                   CompanyId = emp.CompanyId,
+                //                                   Prefix = emp.Prefix,
+                //                                   FirstName = emp.FirstName,
+                //                                   LastName = emp.LastName,
+                //                                   MobileNo = emp.MobileNo,
+                //                                   Dob = emp.Dob,
+                //                                   DateOfJoin = emp.DateOfJoin,
+                //                                   BloodGroup = emp.BloodGroup,
+                //                                   EmploymentCategory = emp.EmploymentCategory,
+                //                                   MonthlySalaryPrice = emp.MonthlySalaryPrice,
+                //                                   AdharCardNo = emp.AdharCardNo,
+                //                                   EmployeeCode = emp.EmployeeCode,
+                //                                   Address = emp.Address,
+                //                                   City = emp.City,
+                //                                   Pincode = emp.Pincode,
+                //                                   State = emp.State,
+                //                                   IsActive = emp.IsActive,
+                //                                   ProfilePicture = !string.IsNullOrEmpty(emp.ProfilePicture) ? domainUrl + ErrorMessage.EmployeeDirectoryPath + emp.ProfilePicture : string.Empty
+                //                               }).ToList();
+
+                var companyParam = new SqlParameter
+                {
+                    ParameterName = "CompanyId",
+                    Value = companyId
+                };
+
+                var siteParam = new SqlParameter
+                {
+                    ParameterName = "RoleId",
+                    Value = (int)AdminRoles.Worker
+                };
+
+                var roleParam = new SqlParameter
+                {
+                    ParameterName = "SiteId",
+                    Value = requestVM.SiteId
+                };
+
+                var dateParam = new SqlParameter
+                {
+                    ParameterName = "Date",
+                    Value = requestVM.Date
+                };
+                //Get student name of string type
+                List<SiteAssignedWorkerVM> workerList = _db.Database.SqlQuery<SiteAssignedWorkerVM>("exec Usp_GetSiteAssignedWorkerList @CompanyId,@RoleId,@SiteId,@Date ", companyParam, siteParam, roleParam, dateParam).ToList<SiteAssignedWorkerVM>();
+
+                workerList.ForEach(x => {
+                    x.ProfilePicture = !string.IsNullOrEmpty(x.ProfilePicture) ? domainUrl + ErrorMessage.EmployeeDirectoryPath + x.ProfilePicture : string.Empty;
+                });
                 response.Data = workerList;
             }
             catch (Exception ex)
@@ -663,7 +694,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         assignedWorker.IsClosed = true;
                         assignedWorker.ModifiedBy = employeeId;
                         assignedWorker.ModifiedDate = CommonMethod.CurrentIndianDateTime();
-                         
+
                         //tbl_WorkerAttendance workerAttendance = _db.tbl_WorkerAttendance.Where(x => x.AttendanceDate == requestVM.Date && x.EmployeeId == requestVM.EmployeeId && !x.IsEvening).FirstOrDefault();
                         if (attendanceObject != null && employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased)
                         {

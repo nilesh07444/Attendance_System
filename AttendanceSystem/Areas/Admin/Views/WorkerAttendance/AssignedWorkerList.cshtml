@@ -87,6 +87,7 @@
                                                     @counter.
                                                     @Html.HiddenFor(x => obj.EmployeeId, new { id = "EmployeeId_" + counter })
                                                     @Html.HiddenFor(x => obj.EmploymentCategory, new { id = "EmploymentCategory_" + counter })
+                                                    @Html.HiddenFor(x => obj.WorkerAttendanceId, new { id = "WorkerAttendanceId_" + counter })
                                                 </td>
                                                 <td>
                                                     @if (obj.Date.Date == today && !obj.IsClosed)
@@ -112,9 +113,9 @@
                                                     @Html.HiddenFor(x => obj.IsEvening, new { id = "IsEvening_" + counter })
                                                 </td>
                                                 <td>
-                                                    @if (obj.Date.Date == today && !obj.IsClosed)
+                                                    @if (!obj.IsClosed)
                                                     {
-                                                        <a href="/admin/workerattendance/add?siteId=@obj.SiteId&employeeId=@obj.EmployeeId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
+                                                        <a href="/admin/workerattendance/add?siteId=@obj.SiteId&employeeId=@obj.EmployeeId&workerAttendanceId=@obj.WorkerAttendanceId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
                                                     }
                                                 </td>
                                             </tr>
