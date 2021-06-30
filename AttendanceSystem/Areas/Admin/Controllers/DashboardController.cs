@@ -249,7 +249,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     DateTime lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
                     double totalDaysinMonth = DateTime.DaysInMonth(year, month);
 
-                    var currentMonthHolidays = _db.tbl_Holiday.Where(x => x.CompanyId == companyId.ToString() && x.StartDate >= firstDayOfMonth && x.EndDate <= lastDayOfMonth).ToList();
+                    var currentMonthHolidays = _db.tbl_Holiday.Where(x => !x.IsDeleted && x.CompanyId == companyId.ToString() && x.StartDate >= firstDayOfMonth && x.EndDate <= lastDayOfMonth).ToList();
                     double holidays = currentMonthHolidays.Select(x => (x.EndDate - x.StartDate).TotalDays + 1).Sum();
                     // For Only Employees
 
@@ -318,7 +318,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         double deductedLeave = 0;
                         if (absentDays > (holidays + (double)totalFreeLeave))
                         {
-                            deductedLeave = absentDays - holidays - (double)totalFreeLeave;
+                            deductedLeave = absentDays - (holidays + (double)totalFreeLeave);
                         }
 
                         decimal carryForwardLeave = 0;
@@ -481,7 +481,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     double totalDaysinMonth = DateTime.DaysInMonth(year, month);
 
 
-                    var currentMonthHolidays = _db.tbl_Holiday.Where(x => x.CompanyId == companyId.ToString() && x.StartDate >= firstDayOfMonth && x.EndDate <= lastDayOfMonth).ToList();
+                    var currentMonthHolidays = _db.tbl_Holiday.Where(x => !x.IsDeleted && x.CompanyId == companyId.ToString() && x.StartDate >= firstDayOfMonth && x.EndDate <= lastDayOfMonth).ToList();
                     double holidays = currentMonthHolidays.Select(x => (x.EndDate - x.StartDate).TotalDays + 1).Sum();
                     // For Only Employees
 
@@ -558,7 +558,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         double deductedLeave = 0;
                         if (absentDays > (holidays + (double)totalFreeLeave))
                         {
-                            deductedLeave = absentDays - holidays - (double)totalFreeLeave;
+                            deductedLeave = absentDays - (holidays + (double)totalFreeLeave);
                         }
 
                         decimal carryForwardLeave = 0;
@@ -571,14 +571,20 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                             carryForwardLeave = totalFreeLeave - (decimal)(absentDays - holidays);
                         }
                         double monthlySalary = (double)x.MonthlySalaryPrice;
-                        double advancePaid = (double)_db.tbl_WorkerPayment.Where(e => e.UserId == x.EmployeeId && !x.IsDeleted
-                                                && e.Month == month
-                                                && e.Year == year
-                                                && e.DebitAmount > 0 && e.PaymentType != (int)EmployeePaymentType.Extra).Select(e => e.DebitAmount).Sum();
+                        //double advancePaid = (double)_db.tbl_WorkerPayment.Where(e => e.UserId == x.EmployeeId && !x.IsDeleted
+                        //                        && e.Month == month
+                        //                        && e.Year == year
+                        //                        && e.DebitAmount > 0 && e.PaymentType != (int)EmployeePaymentType.Extra).Select(e => e.DebitAmount).Sum();
+
+                        List<decimal> debitAmountList = _db.tbl_WorkerPayment.Where(e => e.UserId == x.EmployeeId && !x.IsDeleted
+                                               && e.Month == month
+                                               && e.Year == year
+                                               && e.DebitAmount > 0 && e.PaymentType != (int)EmployeePaymentType.Extra).Select(e => e.DebitAmount.HasValue ? e.DebitAmount.Value : 0).ToList();
+                        double advancePaid = Convert.ToDouble(debitAmountList.Count > 0 ? debitAmountList.Sum() : 0);
 
                         double extraHourSalary = Convert.ToDouble(extraHours * x.ExtraPerHourPrice);
 
-                       
+
                         if (deductedLeave > 0)
                         {
                             double perDaySalary = monthlySalary / totalDaysinMonth;
@@ -587,6 +593,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         }
 
                         monthlySalary = monthlySalary + extraHourSalary - advancePaid;
+
                         tbl_WorkerPayment objWorkerPayment = new tbl_WorkerPayment();
                         objWorkerPayment.CompanyId = companyId;
                         objWorkerPayment.UserId = x.EmployeeId;
