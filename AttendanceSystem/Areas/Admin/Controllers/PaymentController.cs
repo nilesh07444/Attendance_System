@@ -57,12 +57,39 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                    DebitAmount = empp.DebitAmount,
                                                    CreditAmount = empp.CreditAmount,
                                                    PaymentType = empp.PaymentType,
+                                                   AdminRoleId = emp.AdminRoleId
                                                }).OrderByDescending(x => x.EmployeePaymentId).ToList();
 
                 paymentFilterVM.PaymentList.ForEach(x =>
                 {
                     x.PaymentTypeText = employeePaymentTypeList.Where(z => z.Value == x.PaymentType.ToString()).Select(c => c.Text).FirstOrDefault();
                 });
+
+                var workerPaymentList = (from empp in _db.tbl_WorkerPayment
+                                         join emp in _db.tbl_Employee on empp.UserId equals emp.EmployeeId
+                                         where !emp.IsDeleted && emp.CompanyId == companyId && !empp.IsDeleted && empp.CreditOrDebitText.ToLower() == "debit"
+                                         && empp.PaymentDate >= paymentFilterVM.StartDate && empp.PaymentDate <= paymentFilterVM.EndDate
+                                         && (paymentFilterVM.UserRole.HasValue ? emp.AdminRoleId == paymentFilterVM.UserRole.Value : true)
+                                         select new PaymentVM
+                                         {
+
+                                             EmployeePaymentId = empp.WorkerPaymentId,
+                                             UserId = empp.UserId,
+                                             PaymentDate = empp.PaymentDate,
+                                             EmployeeCode = emp.EmployeeCode,
+                                             UserName = emp.FirstName + " " + emp.LastName,
+                                             DebitAmount = empp.DebitAmount,
+                                             CreditAmount = empp.CreditAmount,
+                                             PaymentType = empp.PaymentType,
+                                             AdminRoleId = emp.AdminRoleId
+                                         }).OrderByDescending(x => x.EmployeePaymentId).ToList();
+
+                workerPaymentList.ForEach(x =>
+                {
+                    x.PaymentTypeText = employeePaymentTypeList.Where(z => z.Value == x.PaymentType.ToString()).Select(c => c.Text).FirstOrDefault();
+                });
+
+                paymentFilterVM.PaymentList = paymentFilterVM.PaymentList.Union(workerPaymentList).OrderByDescending(x => x.EmployeePaymentId).ToList();
             }
             catch (Exception ex)
             {
@@ -72,25 +99,45 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return View(paymentFilterVM);
         }
 
-        public ActionResult Add(long id)
+        public ActionResult Add(long id, int? adminRoleId)
         {
             PaymentVM paymentVM = new PaymentVM();
-            if (id > 0)
+            if (id > 0 && adminRoleId.HasValue && adminRoleId.Value > 0)
             {
-                paymentVM = (from empp in _db.tbl_EmployeePayment
-                             join emp in _db.tbl_Employee on empp.UserId equals emp.EmployeeId
-                             where !empp.IsDeleted && empp.EmployeePaymentId == id
-                             select new PaymentVM
-                             {
-                                 EmployeePaymentId = empp.EmployeePaymentId,
-                                 UserId = empp.UserId,
-                                 PaymentDate = empp.PaymentDate,
-                                 EmployeeCode = emp.EmployeeCode,
-                                 UserName = emp.FirstName + " " + emp.LastName,
-                                 DebitAmount = empp.DebitAmount,
-                                 PaymentType = empp.PaymentType,
-                                 Remarks = empp.Remarks
-                             }).FirstOrDefault();
+                if (adminRoleId.Value == (int)AdminRoles.Worker)
+                {
+                    paymentVM = (from empp in _db.tbl_WorkerPayment
+                                 join emp in _db.tbl_Employee on empp.UserId equals emp.EmployeeId
+                                 where !empp.IsDeleted && empp.WorkerPaymentId == id
+                                 select new PaymentVM
+                                 {
+                                     EmployeePaymentId = empp.WorkerPaymentId,
+                                     UserId = empp.UserId,
+                                     PaymentDate = empp.PaymentDate,
+                                     EmployeeCode = emp.EmployeeCode,
+                                     UserName = emp.FirstName + " " + emp.LastName,
+                                     DebitAmount = empp.DebitAmount,
+                                     PaymentType = empp.PaymentType,
+                                     Remarks = empp.Remarks
+                                 }).FirstOrDefault();
+                }
+                else
+                {
+                    paymentVM = (from empp in _db.tbl_EmployeePayment
+                                 join emp in _db.tbl_Employee on empp.UserId equals emp.EmployeeId
+                                 where !empp.IsDeleted && empp.EmployeePaymentId == id
+                                 select new PaymentVM
+                                 {
+                                     EmployeePaymentId = empp.EmployeePaymentId,
+                                     UserId = empp.UserId,
+                                     PaymentDate = empp.PaymentDate,
+                                     EmployeeCode = emp.EmployeeCode,
+                                     UserName = emp.FirstName + " " + emp.LastName,
+                                     DebitAmount = empp.DebitAmount,
+                                     PaymentType = empp.PaymentType,
+                                     Remarks = empp.Remarks
+                                 }).FirstOrDefault();
+                }
             }
 
             paymentVM.EmployeeList = GetEmployeeList();
@@ -127,19 +174,37 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     }
                     #endregion
 
+                    tbl_Employee objEmployee = _db.tbl_Employee.Where(x => x.EmployeeId == paymentVM.UserId).FirstOrDefault();
 
                     if (paymentVM.EmployeePaymentId > 0)
                     {
-                        tbl_EmployeePayment objEmployeePayment = _db.tbl_EmployeePayment.Where(x => x.EmployeePaymentId == paymentVM.EmployeePaymentId && !x.IsDeleted).FirstOrDefault();
 
-                        objEmployeePayment.PaymentDate = paymentVM.PaymentDate;
-                        objEmployeePayment.DebitAmount = paymentVM.DebitAmount;
-                        objEmployeePayment.Month = paymentVM.PaymentDate.Month;
-                        objEmployeePayment.Year = paymentVM.PaymentDate.Year;
-                        objEmployeePayment.PaymentType = paymentVM.PaymentType;
-                        objEmployeePayment.Remarks = paymentVM.Remarks;
-                        objEmployeePayment.ModifiedBy = LoggedInUserId;
-                        objEmployeePayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
+                        if (objEmployee.AdminRoleId == (int)AdminRoles.Worker)
+                        {
+                            tbl_WorkerPayment objWorkerPayment = _db.tbl_WorkerPayment.Where(x => x.WorkerPaymentId == paymentVM.EmployeePaymentId && !x.IsDeleted).FirstOrDefault();
+
+                            objWorkerPayment.PaymentDate = paymentVM.PaymentDate;
+                            objWorkerPayment.DebitAmount = paymentVM.DebitAmount;
+                            objWorkerPayment.Month = paymentVM.PaymentDate.Month;
+                            objWorkerPayment.Year = paymentVM.PaymentDate.Year;
+                            objWorkerPayment.PaymentType = paymentVM.PaymentType;
+                            objWorkerPayment.Remarks = paymentVM.Remarks;
+                            objWorkerPayment.ModifiedBy = LoggedInUserId;
+                            objWorkerPayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
+                        }
+                        else
+                        {
+                            tbl_EmployeePayment objEmployeePayment = _db.tbl_EmployeePayment.Where(x => x.EmployeePaymentId == paymentVM.EmployeePaymentId && !x.IsDeleted).FirstOrDefault();
+
+                            objEmployeePayment.PaymentDate = paymentVM.PaymentDate;
+                            objEmployeePayment.DebitAmount = paymentVM.DebitAmount;
+                            objEmployeePayment.Month = paymentVM.PaymentDate.Month;
+                            objEmployeePayment.Year = paymentVM.PaymentDate.Year;
+                            objEmployeePayment.PaymentType = paymentVM.PaymentType;
+                            objEmployeePayment.Remarks = paymentVM.Remarks;
+                            objEmployeePayment.ModifiedBy = LoggedInUserId;
+                            objEmployeePayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
+                        }
                     }
                     else
                     {
@@ -151,22 +216,44 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                             return View(paymentVM);
                         }
 
-                        tbl_EmployeePayment objEmployeePayment = new tbl_EmployeePayment();
-                        objEmployeePayment.CompanyId = companyId;
-                        objEmployeePayment.UserId = paymentVM.UserId;
-                        objEmployeePayment.PaymentDate = paymentVM.PaymentDate;
-                        objEmployeePayment.CreditOrDebitText = "Debit";
-                        objEmployeePayment.DebitAmount = paymentVM.DebitAmount;
-                        objEmployeePayment.CreditAmount = 0;
-                        objEmployeePayment.PaymentType = paymentVM.PaymentType;
-                        objEmployeePayment.Month = paymentVM.PaymentDate.Month;
-                        objEmployeePayment.Year = paymentVM.PaymentDate.Year;
-                        objEmployeePayment.Remarks = paymentVM.Remarks;
-                        objEmployeePayment.CreatedBy = LoggedInUserId;
-                        objEmployeePayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
-                        objEmployeePayment.ModifiedBy = LoggedInUserId;
-                        objEmployeePayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
-                        _db.tbl_EmployeePayment.Add(objEmployeePayment);
+                        if (objEmployee.AdminRoleId == (int)AdminRoles.Worker)
+                        {
+                            tbl_WorkerPayment objWorkerPayment = new tbl_WorkerPayment();
+                            objWorkerPayment.CompanyId = companyId;
+                            objWorkerPayment.UserId = paymentVM.UserId;
+                            objWorkerPayment.PaymentDate = paymentVM.PaymentDate;
+                            objWorkerPayment.CreditOrDebitText = "Debit";
+                            objWorkerPayment.DebitAmount = paymentVM.DebitAmount;
+                            objWorkerPayment.CreditAmount = 0;
+                            objWorkerPayment.PaymentType = paymentVM.PaymentType;
+                            objWorkerPayment.Month = paymentVM.PaymentDate.Month;
+                            objWorkerPayment.Year = paymentVM.PaymentDate.Year;
+                            objWorkerPayment.Remarks = paymentVM.Remarks;
+                            objWorkerPayment.CreatedBy = LoggedInUserId;
+                            objWorkerPayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
+                            objWorkerPayment.ModifiedBy = LoggedInUserId;
+                            objWorkerPayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
+                            _db.tbl_WorkerPayment.Add(objWorkerPayment);
+                        }
+                        else
+                        {
+                            tbl_EmployeePayment objEmployeePayment = new tbl_EmployeePayment();
+                            objEmployeePayment.CompanyId = companyId;
+                            objEmployeePayment.UserId = paymentVM.UserId;
+                            objEmployeePayment.PaymentDate = paymentVM.PaymentDate;
+                            objEmployeePayment.CreditOrDebitText = "Debit";
+                            objEmployeePayment.DebitAmount = paymentVM.DebitAmount;
+                            objEmployeePayment.CreditAmount = 0;
+                            objEmployeePayment.PaymentType = paymentVM.PaymentType;
+                            objEmployeePayment.Month = paymentVM.PaymentDate.Month;
+                            objEmployeePayment.Year = paymentVM.PaymentDate.Year;
+                            objEmployeePayment.Remarks = paymentVM.Remarks;
+                            objEmployeePayment.CreatedBy = LoggedInUserId;
+                            objEmployeePayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
+                            objEmployeePayment.ModifiedBy = LoggedInUserId;
+                            objEmployeePayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
+                            _db.tbl_EmployeePayment.Add(objEmployeePayment);
+                        }
                     }
                     _db.SaveChanges();
                 }
@@ -620,7 +707,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 Value = paymentReportFilterVM.EndDate
             };
 
-            paymentReportFilterVM.PaymentReportList = _db.Database.SqlQuery<EmployeePaymentReportVM>("exec Usp_GetDateWiseEmployeePatmentReport @StartDate,@EndDate,@EmployeeId", startDateParam, endDateParam, employeeIdParam).ToList<EmployeePaymentReportVM>();
+            paymentReportFilterVM.PaymentReportList = _db.Database.SqlQuery<EmployeePaymentReportVM>("exec Usp_GetDateWiseEmployeePaymentReport @StartDate,@EndDate,@EmployeeId", startDateParam, endDateParam, employeeIdParam).ToList<EmployeePaymentReportVM>();
 
             paymentReportFilterVM.EmployeeList = GetWorkerList();
             return View(paymentReportFilterVM);
@@ -668,7 +755,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 Value = paymentReportFilterVM.EndDate
             };
 
-            paymentReportFilterVM.PaymentReportList = _db.Database.SqlQuery<EmployeePaymentReportVM>("exec Usp_GetDateWiseEmployeePatmentReport @StartDate,@EndDate,@EmployeeId", startDateParam, endDateParam, employeeIdParam).ToList<EmployeePaymentReportVM>();
+            paymentReportFilterVM.PaymentReportList = _db.Database.SqlQuery<EmployeePaymentReportVM>("exec Usp_GetDateWiseEmployeePaymentReport @StartDate,@EndDate,@EmployeeId", startDateParam, endDateParam, employeeIdParam).ToList<EmployeePaymentReportVM>();
 
             paymentReportFilterVM.EmployeeList = GetOnlyEmployeeList();
             return View(paymentReportFilterVM);

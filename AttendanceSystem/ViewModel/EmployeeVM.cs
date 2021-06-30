@@ -134,7 +134,6 @@ namespace AttendanceSystem.ViewModel
         public string WorkerTypeText { get; set; }
         public List<SelectListItem> WorkerTypeList { get; set; }
         public string EmploymentCategoryText { get; set; }
-
     }
 
     public class EmployeeFilterVM
@@ -155,5 +154,31 @@ namespace AttendanceSystem.ViewModel
         public decimal PerCategoryPrice { get; set; }
         public decimal? ExtraPerHourPrice { get; set; }
         public decimal? PendingSalary { get; set; }
+    }
+
+    public class SiteAssignedWorkerVM
+    {
+        public long EmployeeId { get; set; }
+        public long CompanyId { get; set; }
+        public int AdminRoleId { get; set; }
+        public string Prefix { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string MobileNo { get; set; }
+        public DateTime? Dob { get; set; }
+        public DateTime? DateOfJoin { get; set; }
+        public string BloodGroup { get; set; }
+        public int EmploymentCategory { get; set; }
+        public decimal? MonthlySalaryPrice { get; set; }
+        public string AdharCardNo { get; set; }
+        public string EmployeeCode { get; set; }
+        public string Address { get; set; }
+        public string City { get; set; }
+        public string Pincode { get; set; }
+        public string State { get; set; }
+        public bool IsActive { get; set; }
+        public string ProfilePicture { get; set; }
+        public bool IsClosed { get; set; }
+        public long? AttendanceId { get; set; }
     }
 }

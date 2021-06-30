@@ -82,7 +82,7 @@
                                                 <td>@obj.PaymentTypeText</td>
                                                 <td>
 
-                                                    <a href="/admin/payment/add/@obj.EmployeePaymentId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
+                                                    <a href="/admin/payment/add?id=@obj.EmployeePaymentId&adminRoleId=@obj.AdminRoleId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
                                                     <a href="javascript:void(0);" title="Delete" class="btn btn-icon btn-danger" onclick="fnDeleteEmployee('@obj.EmployeePaymentId','@obj.UserId')"><i class="fas fa-trash-alt"></i></a>
 
                                                 </td>

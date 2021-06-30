@@ -230,7 +230,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         Value = paymentReportFilterVM.EmployeeId
                     };
                   
-                    List<PaymentReportVM> paymentReport = _db.Database.SqlQuery<PaymentReportVM>("exec Usp_GetPatmentReport @StartMonth,@EndMonth,@Year,@EmployeeId ", startMonthParam, endMonthParam, yearParam, employeeIdParam).ToList<PaymentReportVM>();
+                    List<PaymentReportVM> paymentReport = _db.Database.SqlQuery<PaymentReportVM>("exec Usp_GetPaymentReport @StartMonth,@EndMonth,@Year,@EmployeeId ", startMonthParam, endMonthParam, yearParam, employeeIdParam).ToList<PaymentReportVM>();
                     response.Data = paymentReport;
 
                 }
@@ -280,7 +280,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     Value = paymentReportFilterVM.EmployeeId
                 };
                 //Get student name of string type
-                List<PaymentReportVM> paymentReport = _db.Database.SqlQuery<PaymentReportVM>("exec Usp_GetPatmentReport @StartMonth,@EndMonth,@Year,@EmployeeId ", startMonthParam, endMonthParam, yearParam, employeeIdParam).ToList<PaymentReportVM>();
+                List<PaymentReportVM> paymentReport = _db.Database.SqlQuery<PaymentReportVM>("exec Usp_GetPaymentReport @StartMonth,@EndMonth,@Year,@EmployeeId ", startMonthParam, endMonthParam, yearParam, employeeIdParam).ToList<PaymentReportVM>();
 
                 string employeeName = _db.tbl_Employee.Where(x => x.EmployeeId == paymentReportFilterVM.EmployeeId).Select(x => x.FirstName + "_" + x.LastName).FirstOrDefault();
 
@@ -460,7 +460,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     Value = employeeId
                 };
                 //Get student name of string type
-                List<PaymentReportVM> paymentReport = _db.Database.SqlQuery<PaymentReportVM>("exec Usp_GetPatmentReport @StartMonth,@EndMonth,@Year,@EmployeeId ", startMonthParam, endMonthParam, yearParam, employeeIdParam).ToList<PaymentReportVM>();
+                List<PaymentReportVM> paymentReport = _db.Database.SqlQuery<PaymentReportVM>("exec Usp_GetPaymentReport @StartMonth,@EndMonth,@Year,@EmployeeId ", startMonthParam, endMonthParam, yearParam, employeeIdParam).ToList<PaymentReportVM>();
                 response.Data = paymentReport;
 
             }
@@ -509,7 +509,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     Value = employeeId
                 };
                 //Get student name of string type
-                List<PaymentReportVM> paymentReport = _db.Database.SqlQuery<PaymentReportVM>("exec Usp_GetPatmentReport @StartMonth,@EndMonth,@Year,@EmployeeId ", startMonthParam, endMonthParam, yearParam, employeeIdParam).ToList<PaymentReportVM>();
+                List<PaymentReportVM> paymentReport = _db.Database.SqlQuery<PaymentReportVM>("exec Usp_GetPaymentReport @StartMonth,@EndMonth,@Year,@EmployeeId ", startMonthParam, endMonthParam, yearParam, employeeIdParam).ToList<PaymentReportVM>();
 
                 
 

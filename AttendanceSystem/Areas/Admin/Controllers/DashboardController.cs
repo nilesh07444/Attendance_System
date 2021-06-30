@@ -192,7 +192,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         {
             int status = 1;
             string errorMessage = string.Empty;
-            int companyId = (int)clsAdminSession.CompanyId;
+            long companyId = clsAdminSession.CompanyId;
             int nextMonth = month == 12 ? 1 : month + 1;
             int dateYear = month == 12 ? year + 1 : year;
             int employeeId = (int)clsAdminSession.UserID;
@@ -204,10 +204,16 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     status = 0;
                     errorMessage = ErrorMessage.CanNotStartCurrentMonthConversion;
                 }
-                if (_db.tbl_Attendance.Any(x => x.CompanyId == companyId && x.AttendanceDate.Month == nextMonth && x.AttendanceDate.Year == dateYear && x.Status == (int)AttendanceStatus.Pending))
+                if (_db.tbl_Attendance.Any(x => x.CompanyId == companyId && x.AttendanceDate.Month == month && x.AttendanceDate.Year == dateYear && x.Status == (int)AttendanceStatus.Pending))
                 {
                     status = 0;
                     errorMessage = ErrorMessage.AttendancePendingForAcceptCanNotCompleteConversion;
+                }
+
+                if (_db.tbl_Attendance.Any(x => x.CompanyId == companyId && x.AttendanceDate.Month == month && x.AttendanceDate.Year == dateYear && x.InDateTime != null && x.OutDateTime == null))
+                {
+                    status = 0;
+                    errorMessage = ErrorMessage.OutAttendancePendingCanNotCompleteConversion;
                 }
 
                 List<long> employeeIds = _db.tbl_Employee.Where(x => x.CompanyId == companyId && x.AdminRoleId != (int)AdminRoles.Worker).Select(x => x.EmployeeId).ToList();
@@ -220,9 +226,14 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                 if (status == 1)
                 {
-                    // tbl_Conversion, tbl_EmployeePayment
-                    List<tbl_EmployeePayment> inProcessEmployeePaymentList = _db.tbl_EmployeePayment.Where(x => !x.IsDeleted && x.CompanyId == companyId && x.ProcessStatusText == ErrorMessage.InProgress
-                    && x.Month == nextMonth && x.Year == dateYear && x.PaymentType != (int)EmployeePaymentType.Extra).ToList();
+                    List<tbl_EmployeePayment> inProcessEmployeePaymentList = (from ep in _db.tbl_EmployeePayment
+                                                                              where !ep.IsDeleted
+                                                                              && ep.CompanyId == companyId
+                                                                              && ep.ProcessStatusText == ErrorMessage.InProgress
+                                                                              && ep.Month == month && ep.Year == dateYear
+                                                                              select ep
+                                                                             ).ToList();
+
                     inProcessEmployeePaymentList.ForEach(x =>
                     {
                         _db.tbl_EmployeePayment.Remove(x);
@@ -352,8 +363,14 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         _db.tbl_EmployeePayment.Add(objEmployeePayment);
                         _db.SaveChanges();
 
-                        x.CarryForwardLeave = carryForwardLeave > 0 ? carryForwardLeave : 0;
-
+                        if (nextMonth == (int)CalenderMonths.January)
+                        {
+                            x.CarryForwardLeave = 0;
+                        }
+                        else
+                        {
+                            x.CarryForwardLeave = carryForwardLeave > 0 ? carryForwardLeave : 0;
+                        }
                     });
 
 
@@ -435,7 +452,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     errorMessage = ErrorMessage.LeavePendingForAcceptCanNotCompleteConversion;
                 }
 
-                if (_db.tbl_WorkerAttendance.Any(x => workerIds.Contains(x.EmployeeId) && x.AttendanceDate.Month == nextMonth && x.AttendanceDate.Year == dateyear && !x.IsClosed))
+                if (_db.tbl_WorkerAttendance.Any(x => workerIds.Contains(x.EmployeeId) && x.AttendanceDate.Month == month && x.AttendanceDate.Year == dateyear && !x.IsClosed))
                 {
                     status = 0;
                     errorMessage = ErrorMessage.WorkerAttendanceAreNotClosedCanNotCompleteConversion;
@@ -444,7 +461,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 if (status == 1)
                 {
                     List<tbl_WorkerPayment> inProcessWorkerPaymentList = _db.tbl_WorkerPayment.Where(x => !x.IsDeleted && x.CompanyId == companyId && x.ProcessStatusText == ErrorMessage.InProgress
-                    && x.Month == nextMonth && x.Year == dateyear && x.PaymentType != (int)EmployeePaymentType.Extra).ToList();
+                    && x.Month == month && x.Year == dateyear && x.PaymentType != (int)EmployeePaymentType.Extra).ToList();
                     inProcessWorkerPaymentList.ForEach(x =>
                     {
                         _db.tbl_WorkerPayment.Remove(x);
@@ -585,7 +602,14 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         _db.tbl_WorkerPayment.Add(objWorkerPayment);
                         _db.SaveChanges();
 
-                        x.CarryForwardLeave = carryForwardLeave > 0 ? carryForwardLeave : 0;
+                        if (nextMonth == (int)CalenderMonths.January)
+                        {
+                            x.CarryForwardLeave = 0;
+                        }
+                        else
+                        {
+                            x.CarryForwardLeave = carryForwardLeave > 0 ? carryForwardLeave : 0;
+                        }
                     });
 
 
