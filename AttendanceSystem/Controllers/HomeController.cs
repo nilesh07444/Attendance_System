@@ -26,5 +26,6 @@ namespace AttendanceSystem.Controllers
 
             return View();
         }
+
     }
 }
