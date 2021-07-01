@@ -67,13 +67,18 @@ namespace AttendanceSystem.Areas.Client.Controllers
                 IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
                 if (ModelState.IsValid)
                 {
+                    var HeroImageName = _db.tbl_Setting.FirstOrDefault().HeroCompanyRequestPageImageName;
+                    ViewBag.HeroUrl = ErrorMessage.HeroDirectoryPath + HeroImageName;
+
                     #region validation
+
                     if (companyRequestVM.CompanyName.Replace(" ", string.Empty).Length < 2)
                     {
                         ModelState.AddModelError("CompanyName", ErrorMessage.CompanyNameMinimum2CharacterRequired);
                         companyRequestVM.CompanyTypeList = GetCompanyType();
                         return View(companyRequestVM);
                     }
+
                     #endregion validation
 
                     string companyGstFileName = string.Empty, companyPanCardFileName = string.Empty, companyLogoFileName = string.Empty, companyRegisterProofFileName = string.Empty,

@@ -14,15 +14,23 @@
 }
 
 <style>
-    #BtnOtpSubmit:hover {
-        background-color: #ff2143 !important;
-    }
-
+      
     .form-control {
         border-color: #425C59 !important;
         border-width: 1.6px !important;
         border-radius: .25rem !important;
     }
+
+    .btnSubmit {
+        color: #FFCEA3;
+        background: #425C59;
+        border: 1px solid #425C59;
+        padding: 10px;
+        width: 100px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
 </style>
 
 <!--? Hero Start -->
@@ -405,15 +413,15 @@
                     <div class="form-group">
                         <label>OTP</label>
                         <div class="input-group">
-                            <div class="input-group-prepend">
+                            @*<div class="input-group-prepend">
                                 <div class="input-group-text">
                                     <i class="fas fa-envelope"></i>
                                 </div>
-                            </div>
-                            <input type="text" class="form-control" placeholder="OTP" name="OTP" id="TextOTP">
+                            </div>*@
+                            <input type="text" class="form-control" placeholder="Enter OTP" name="OTP" id="TextOTP">
                         </div>
                     </div>
-                    <button type="button" id="BtnOtpSubmit" class="btn btn-primary m-t-15">Submit</button>
+                    <button type="button" id="BtnOtpSubmit" class="btnSubmit">Submit</button>
                 </form>
             </div>
         </div>

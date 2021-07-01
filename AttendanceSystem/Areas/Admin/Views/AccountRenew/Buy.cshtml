@@ -84,16 +84,16 @@
                     color: #425C59;
                 }
 
-                .pricingTable .pricingTable-signup a {
-                    display: inline-block;
-                    font-size: 15px;
-                    color: #fff;
-                    padding: 10px 35px;
-                    border-radius: 20px;
-                    background: #ffa442;
-                    text-transform: uppercase;
-                    transition: all .3s ease 0s
-                }
+        .pricingTable .pricingTable-signup a {
+            display: inline-block;
+            font-size: 15px;
+            color: #fff;
+            padding: 10px 35px;
+            border-radius: 20px;
+            background: #ffa442;
+            text-transform: uppercase;
+            transition: all .3s ease 0s
+        }
 
             .pricingTable .pricingTable-signup a:hover {
                 box-shadow: 0 0 10px #ffa442
@@ -102,62 +102,70 @@
 
 <section class="section">
 
-    <div class="card-header" style="margin-bottom:20px;">
-        <h4>Buy New Account Package</h4>
+
+    <div class="card">
+        <div class="card-header" style="background-color: #425C59;">
+            <h4 style="color: #FFCEA3;">Buy New Account Package</h4>
+        </div>
     </div>
 
     <div class="section-body">
+        <div class="col-sm-12">
+            <div class="row">
 
-        <div class="row">
-
-            @if (lstAccountPackages != null && lstAccountPackages.Count > 0)
-            {
-                int accountPackageCounter = 1;
-                foreach (PackageVM obj in lstAccountPackages)
+                @if (lstAccountPackages != null && lstAccountPackages.Count > 0)
                 {
-                    <div class="col-md-3 col-sm-6">
-                        <div class="pricingTable">
-                            <div id="pricingTableHeader_@accountPackageCounter" class="pricingTable-header" onmouseover="mouseover('@accountPackageCounter', '@obj.PackageColorCode')" onmouseout="mouseout('@accountPackageCounter', '@obj.PackageColorCode')">
-                                <i class="@obj.PackageFontIcon"></i>
-                                <div class="price-value" id="heading_@accountPackageCounter" style="color: @obj.PackageColorCode">
-                                    @obj.Amount
-                                    @*<span class="month" id="per_@accountPackageCounter">per month</span>*@
-                                    <i class="month fas fa-rupee-sign"></i>
+                    int accountPackageCounter = 1;
+                    foreach (PackageVM obj in lstAccountPackages)
+                    {
+                        <div class="col-md-3 col-sm-6">
+                            <div class="pricingTable">
+                                <div id="pricingTableHeader_@accountPackageCounter" class="pricingTable-header" onmouseover="mouseover('@accountPackageCounter', '@obj.PackageColorCode')" onmouseout="mouseout('@accountPackageCounter', '@obj.PackageColorCode')">
+                                    <i class="@obj.PackageFontIcon"></i>
+                                    <div class="price-value" id="heading_@accountPackageCounter" style="color: @obj.PackageColorCode">
+                                        @obj.Amount
+                                        @*<span class="month" id="per_@accountPackageCounter">per month</span>*@
+                                        <i class="month fas fa-rupee-sign"></i>
+                                    </div>
+                                </div>
+                                <h3 class="heading" style="margin-top: 10px; color: @obj.PackageColorCode">@obj.PackageName</h3>
+                                <div class="pricing-content">
+                                    <ul>
+                                        <li><b>@obj.AccessDays</b> Access Days</li>
+                                        <li><b>@obj.NoOfEmployee</b> No Of Employee</li>
+                                        <li><b>@obj.NoOfSMS</b> No Of SMS</li>
+                                    </ul>
+                                </div>
+                                <div class="pricingTable-signup">
+                                    <a target="_blank" href="/admin/login" style="background: @obj.PackageColorCode" onclick="fnBuyNowPackage('@obj.PackageId', '@obj.PackageName')">
+                                        Buy Now <i class="fas fa-arrow-right"></i>
+
+                                        @*<form action="/Premium/Charge" method="POST">
+                                                <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                                                        data-key="@ViewBag.StripePublishKey"
+                                                        data-amount=@obj.Amount
+                                                        data-name=@obj.PackageName
+                                                        data-description=@obj.PackageFontIcon
+                                                        data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                                                        data-locale="auto"
+                                                        data-zip-code="true"
+                                                        data-currency="inr">
+                                                </script>
+                                            </form>*@
+                                    </a>
+                                </div>
+
+                                <div class="mt-2 ml-2 mr-2" style="color: @obj.PackageColorCode">
+                                    @obj.PackageDescription
                                 </div>
                             </div>
-                            <h3 class="heading" style="margin-top: 10px; color: @obj.PackageColorCode">@obj.PackageName</h3>
-                            <div class="pricing-content">
-                                <ul>
-                                    <li><b>@obj.AccessDays</b> Access Days</li>
-                                    <li><b>@obj.NoOfEmployee</b> No Of Employee</li>
-                                    <li><b>@obj.NoOfSMS</b> No Of SMS</li>
-                                </ul>
-                            </div>
-                            <div class="pricingTable-signup">
-                                <a target="_blank" href="/admin/login" style="background: @obj.PackageColorCode" onclick="fnBuyNowPackage('@obj.PackageId', '@obj.PackageName')">
-                                    Buy Now <i class="fas fa-arrow-right"></i>
-
-                                    @*<form action="/Premium/Charge" method="POST">
-                                        <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                                                data-key="@ViewBag.StripePublishKey"
-                                                data-amount=@obj.Amount
-                                                data-name=@obj.PackageName
-                                                data-description=@obj.PackageFontIcon
-                                                data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
-                                                data-locale="auto"
-                                                data-zip-code="true"
-                                                data-currency="inr">
-                                        </script>
-                                    </form>*@
-                                </a>
-                            </div>
                         </div>
-                    </div>
-                    { accountPackageCounter++; }
+                        { accountPackageCounter++; }
 
+                    }
                 }
-            }
 
+            </div>
         </div>
     </div>
 </section>

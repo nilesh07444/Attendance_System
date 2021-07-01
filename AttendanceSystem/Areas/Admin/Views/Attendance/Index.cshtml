@@ -12,7 +12,7 @@
     lstAttendanceStatus.Add(new SelectListItem { Value = "4", Text = "Login" });
 
 }
- 
+
 <section class="section">
     <div class="section-body">
         <div class="row">
@@ -23,48 +23,52 @@
                     </div>
                 </div>
                 <div class="card">
-                     
+
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label>Start Month</label>
-                                    @Html.DropDownListFor(model => model.StartMonth, new SelectList(Model.CalenderMonth, "Value", "Text"), "- All -", new { @class = "form-control col-md-8 required", style = "" })
+                            <div class="card-header ">
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label>Start Month</label>
+                                        @Html.DropDownListFor(model => model.StartMonth, new SelectList(Model.CalenderMonth, "Value", "Text"), "- All -", new { @class = "form-control required", style = "" })
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label>End Month</label>
-                                    @Html.DropDownListFor(model => model.EndMonth, new SelectList(Model.CalenderMonth, "Value", "Text"), "- All -", new { @class = "form-control col-md-8 required", style = "" })
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label>End Month</label>
+                                        @Html.DropDownListFor(model => model.EndMonth, new SelectList(Model.CalenderMonth, "Value", "Text"), "- All -", new { @class = "form-control required", style = "" })
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label>Year</label>
-                                    @Html.TextBoxFor(model => model.Year, new { @type = "number", @class = "form-control required", @placeholder = "Year", @max = "9999", @maxLength = 4 })
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label>Year</label>
+                                        @Html.TextBoxFor(model => model.Year, new { @type = "number", @class = "form-control required", @placeholder = "Year", @max = "9999", @maxLength = 4, @style = "height: calc(2.25rem + 6px)" })
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label>Attendance Status</label>
-                                    @Html.DropDownListFor(model => model.AttendanceStatus, new SelectList(lstAttendanceStatus, "Value", "Text"), "- All -", new { @class = "form-control col-md-8 required", style = "" })
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label>Attendance Status</label>
+                                        @Html.DropDownListFor(model => model.AttendanceStatus, new SelectList(lstAttendanceStatus, "Value", "Text"), "- All -", new { @class = "form-control required", style = "" })
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label>Employee</label>
-                                    @Html.DropDownListFor(model => model.UserId, new SelectList(Model.EmployeeList, "Value", "Text"), "- All -", new { @class = "form-control col-md-8 required", style = "" })
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Employee</label>
+                                        @Html.DropDownListFor(model => model.UserId, new SelectList(Model.EmployeeList, "Value", "Text"), "- All -", new { @class = "form-control required", style = "" })
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label style="padding-top:45px"></label>
-                                    <button class="btn btn-primary mr-1" id="btnSearch" type="button">Search</button>
+                                <div class="col-sm-2">
+                                    <div class="card-header-action">
+                                        <button class="btn btn-primary mr-1" style="font-size: 1rem" id="btnSearch" type="button">Search</button>
+                                    </div>
                                 </div>
+
                             </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label style="padding-top:45px"></label>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 ">
+                                <div class="form-group float-left">
                                     <button class="btn btn-primary mr-1" id="btnAccept" type="button">Approve</button>
                                 </div>
                             </div>

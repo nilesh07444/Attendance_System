@@ -56,6 +56,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                       PackageName = sms.PackageName,
                                       PackageImage = sms.PackageImage,
                                       PackageAmount = sms.PackageAmount,
+                                      Description = sms.Description,
                                       AccessDays = sms.AccessDays,
                                       NoOfSMS = sms.NoOfSMS,
                                       PackageColorCode = sms.PackageColorCode,

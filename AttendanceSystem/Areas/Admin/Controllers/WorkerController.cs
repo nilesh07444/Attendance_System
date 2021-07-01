@@ -90,10 +90,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                      IsFingerprintEnabled = emp.IsFingerprintEnabled,
                                                      NoOfFreeLeavePerMonth = emp.NoOfFreeLeavePerMonth,
                                                      WorkerTypeId = emp.WorkerTypeId,
-                                                     WorkerTypeText = w.WorkerTypeName
-
+                                                     WorkerTypeText = w.WorkerTypeName 
                                                  }).OrderByDescending(x => x.EmployeeId).ToList();
-                employeeFilterVM.NoOfEmployee = _db.tbl_Employee.Where(x => x.CompanyId == companyId && x.IsActive).Count();
+                employeeFilterVM.NoOfEmployee = _db.tbl_Employee.Where(x => x.CompanyId == companyId && x.IsActive && !x.IsDeleted).Count();
                 employeeFilterVM.ActiveEmployee = employeeFilterVM.EmployeeList.Where(x => x.IsActive).Count();
             }
             catch (Exception ex)

@@ -132,9 +132,9 @@
         public static string PleaseSelectValidMonth = "Please select valid month";
         public static string SiteRequired = "Please select site";
 
-        public static string PleaseBuyAccountPackage = "Please buy account package.";
+        public static string PleaseBuyAccountPackage = "Please buy account package first.";
         public static string WorkerExistForThisWorkerType = "Worker exist for this worker type.";
-        public static string PerDayPriceRequiredForDailyBasedWorker = "Per day price required for daily based worker.";
+        public static string PerDayPriceRequiredForDailyBasedWorker = "Per Day Salary required for daily based worker.";
         public static string PerhourPriceRequiredForHourlyBasedWorker = "Per hour price required for hourly based worker.";
         public static string MonthlySalaryRequiredForMonthlyBasedWorker = "Monthly salary required for monthly based worker.";
         public static string ExtraPerHourPriceRequired = "Extra per hour price required.";

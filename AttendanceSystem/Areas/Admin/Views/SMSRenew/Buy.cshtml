@@ -107,41 +107,45 @@
     </div>
     
     <div class="section-body">
+        <div class="col-sm-12">
+            <div class="row">
 
-        <div class="row">
-
-            @if (lstSMSPackages != null && lstSMSPackages.Count > 0)
-            {
-                int smsPackageCounter = 1;
-                foreach (SMSPackageVM obj in lstSMSPackages)
+                @if (lstSMSPackages != null && lstSMSPackages.Count > 0)
                 {
+                    int smsPackageCounter = 1;
+                    foreach (SMSPackageVM obj in lstSMSPackages)
+                    {
 
-                    <div class="col-md-3 col-sm-6">
-                        <div class="pricingTable" style="color: @obj.PackageColorCode">
-                            <div id="smspricingTableHeader_@smsPackageCounter" class="pricingTable-header" onmouseover="mouseoverSMS('@smsPackageCounter', '@obj.PackageColorCode')" onmouseout="mouseoutSMS('@smsPackageCounter', '@obj.PackageColorCode')">
-                                <i class="@obj.PackageFontIcon"></i>
-                                <div class="price-value" id="smsheading_@smsPackageCounter" style="color: @obj.PackageColorCode">
-                                    @obj.PackageAmount
-                                    @*<span class="month">per month</span>*@
-                                    <i class="month fas fa-rupee-sign"></i>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="pricingTable" style="color: @obj.PackageColorCode">
+                                <div id="smspricingTableHeader_@smsPackageCounter" class="pricingTable-header" onmouseover="mouseoverSMS('@smsPackageCounter', '@obj.PackageColorCode')" onmouseout="mouseoutSMS('@smsPackageCounter', '@obj.PackageColorCode')">
+                                    <i class="@obj.PackageFontIcon"></i>
+                                    <div class="price-value" id="smsheading_@smsPackageCounter" style="color: @obj.PackageColorCode">
+                                        @obj.PackageAmount
+                                        @*<span class="month">per month</span>*@
+                                        <i class="month fas fa-rupee-sign"></i>
+                                    </div>
+                                </div>
+                                <h3 class="heading" style="margin-top: 10px; color: @obj.PackageColorCode">@obj.PackageName</h3>
+                                <div class="pricing-content">
+                                    <ul>
+                                        <li><b>@obj.AccessDays</b> Access Days</li>
+                                        <li><b>@obj.NoOfSMS</b> No Of SMS</li>
+                                    </ul>
+                                </div>
+                                <div class="pricingTable-signup">
+                                    <a href="javascript:void(0);" onclick="fnBuyNowPackage('@obj.SMSPackageId', '@obj.PackageName')" style="background: @obj.PackageColorCode">Buy Now <i class="fas fa-arrow-right"></i></a>
+                                </div>
+                                <div class="mt-2 ml-2 mr-2" style="color: @obj.PackageColorCode">
+                                    @obj.Description
                                 </div>
                             </div>
-                            <h3 class="heading" style="margin-top: 10px; color: @obj.PackageColorCode">@obj.PackageName</h3>
-                            <div class="pricing-content">
-                                <ul>
-                                    <li><b>@obj.AccessDays</b> Access Days</li>
-                                    <li><b>@obj.NoOfSMS</b> No Of SMS</li>
-                                </ul>
-                            </div>
-                            <div class="pricingTable-signup">
-                                <a href="javascript:void(0);" onclick="fnBuyNowPackage('@obj.SMSPackageId', '@obj.PackageName')" style="background: @obj.PackageColorCode">Buy Now <i class="fas fa-arrow-right"></i></a>
-                            </div>
                         </div>
-                    </div>
-                    { smsPackageCounter++; }
+                        { smsPackageCounter++; }
+                    }
                 }
-            }
 
+            </div>
         </div>
     </div>
 </section>

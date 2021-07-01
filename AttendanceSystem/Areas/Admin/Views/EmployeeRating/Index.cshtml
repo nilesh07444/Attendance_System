@@ -31,44 +31,44 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label>Employee Role</label>
-                                    @Html.DropDownListFor(model => model.UserRole, new SelectList(Model.UserRoleList, "Value", "Text"), "- All -", new { @class = "form-control col-md-8 required", style = "" })
+                            <div class="card-header ">
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label>Employee Role</label>
+                                        @Html.DropDownListFor(model => model.UserRole, new SelectList(Model.UserRoleList, "Value", "Text"), "- All -", new { @class = "form-control required", style = "" })
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label>Start Month</label>
-                                    @Html.DropDownListFor(model => model.StartMonth, new SelectList(Model.CalenderMonth, "Value", "Text"), "- All -", new { @class = "form-control col-md-8 required", style = "" })
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label>Start Month</label>
+                                        @Html.DropDownListFor(model => model.StartMonth, new SelectList(Model.CalenderMonth, "Value", "Text"), "- All -", new { @class = "form-control required", style = "" })
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label>End Month</label>
-                                    @Html.DropDownListFor(model => model.EndMonth, new SelectList(Model.CalenderMonth, "Value", "Text"), "- All -", new { @class = "form-control col-md-8 required", style = "" })
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label>End Month</label>
+                                        @Html.DropDownListFor(model => model.EndMonth, new SelectList(Model.CalenderMonth, "Value", "Text"), "- All -", new { @class = "form-control required", style = "" })
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label>Year</label>
-                                    @Html.TextBoxFor(model => model.Year, new { @type = "number", @class = "form-control required", @placeholder = "Year", @max = "9999", @maxLength = 4 })
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label>Year</label>
+                                        @Html.TextBoxFor(model => model.Year, new { @type = "number", @class = "form-control required", @placeholder = "Year", @max = "9999", @maxLength = 4, @style= "height: calc(2.25rem + 6px)" })
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label>Employee Code</label>
-                                    @Html.TextBoxFor(model => model.EmployeeCode, new { @type = "text", @class = "form-control", @placeholder = "Enter Employee Code" })
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label>Employee Code</label>
+                                        @Html.TextBoxFor(model => model.EmployeeCode, new { @type = "text", @class = "form-control", @placeholder = "Enter Employee Code", @style = "height: calc(2.25rem + 6px)" })
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label style="padding-top:45px"></label>
-                                    <button class="btn btn-primary mr-1" id="btnSearch" type="button">Search</button>
+                                <div class="col-sm-2">
+                                    <div class="card-header-action">
+                                        <button class="btn btn-primary mr-1" style="font-size: 1rem" id="btnSearch" type="button">Search</button>
+                                    </div>
                                 </div>
                             </div>
-
                         </div>
 
                         <div class="table-responsive">

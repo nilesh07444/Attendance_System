@@ -49,14 +49,14 @@
                             </div>
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.RateYear, htmlAttributes: new { @class = "" })
-                                @Html.DropDownListFor(model => model.RateYear, new SelectList(lstRateYear, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8 required", style = "" })
+                                @Html.DropDownListFor(model => model.RateYear, new SelectList(lstRateYear, "Value", "Text"), "- Select -", new { @class = "form-control required", style = "" })
                                 @Html.ValidationMessageFor(model => model.RateYear, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.RateMonth, htmlAttributes: new { @class = "" })
-                                @Html.DropDownListFor(model => model.RateMonth, new SelectList(lstRateMonth, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8 required", style = "" })
+                                @Html.DropDownListFor(model => model.RateMonth, new SelectList(lstRateMonth, "Value", "Text"), "- Select -", new { @class = "form-control required", style = "" })
                                 @Html.ValidationMessageFor(model => model.RateMonth, "", new { @class = "text-danger" })
                             </div>
                             <div class="form-group col-6">

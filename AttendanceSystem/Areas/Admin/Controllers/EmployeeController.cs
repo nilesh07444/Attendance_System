@@ -95,7 +95,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                      NoOfFreeLeavePerMonth = emp.NoOfFreeLeavePerMonth
 
                                                  }).OrderByDescending(x => x.EmployeeId).ToList();
-                employeeFilterVM.NoOfEmployee = _db.tbl_Employee.Where(x => x.CompanyId == companyId && x.IsActive).Count();
+                employeeFilterVM.NoOfEmployee = _db.tbl_Employee.Where(x => x.CompanyId == companyId && x.IsActive && !x.IsDeleted).Count();
 
                 employeeFilterVM.EmployeeList.ForEach(x =>
                 {
