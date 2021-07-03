@@ -8,7 +8,6 @@
     lstPrefix.Add(new SelectListItem { Value = "Mrs", Text = "Mrs" });
     lstPrefix.Add(new SelectListItem { Value = "Miss", Text = "Miss" });
 
-
     List<SelectListItem> lstBloodGroup = new List<SelectListItem>();
     lstBloodGroup.Add(new SelectListItem { Value = "(A+)", Text = "(A+)" });
     lstBloodGroup.Add(new SelectListItem { Value = "(A-)", Text = "(A-)" });
@@ -238,6 +237,12 @@
 
         if (employeeId > 0) {
             $("#EmploymentCategory").attr("disabled", true); 
+
+            var employeeCategory = '@Model.EmploymentCategory';
+            if (employeeCategory == 3) {
+                $("#dvMonthlySal").show();
+            }
+
         } else {
             $("#ProfileImageFile").addClass("required");
             $("#dvMonthlySal").hide();
@@ -245,7 +250,6 @@
             $("#dvPerCatPrice").hide();
             $("#dvFreeLeave").hide();
         }
-        $("#dvMonthlySal").hide();
 
         $('#btnCancel').click(function () {
             window.location.href = "/admin/worker";

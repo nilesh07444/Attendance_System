@@ -388,7 +388,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                               IsActive = emp.IsActive,
                               IsDeleted = emp.IsDeleted,
                               IsFingerprintEnabled = emp.IsFingerprintEnabled,
-                              NoOfFreeLeavePerMonth = employeeVM.NoOfFreeLeavePerMonth
+                              NoOfFreeLeavePerMonth = emp.NoOfFreeLeavePerMonth
                           }).FirstOrDefault();
             employeeVM.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)employeeVM.EmploymentCategory);
             return View(employeeVM);

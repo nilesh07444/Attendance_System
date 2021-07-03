@@ -275,6 +275,12 @@
         if (employeeId > 0) {
             $("#AdminRoleId").attr("disabled", true);
             $("#EmploymentCategory").attr("disabled", true);
+
+            var employeeCategory = '@Model.EmploymentCategory';
+            if (employeeCategory == 3) {
+                $("#dvMonthlySal").show();
+            }
+
         } else {
             $("#ProfileImageFile").addClass("required");
             $("#dvMonthlySal").hide();

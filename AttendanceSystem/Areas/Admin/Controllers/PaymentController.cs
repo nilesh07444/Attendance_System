@@ -13,14 +13,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 {
     [PageAccess]
     public class PaymentController : Controller
-    {
-        // GET: Admin/Payment
-        AttendanceSystemEntities _db;
-        string enviornment;
+    {        
+        AttendanceSystemEntities _db;        
         public PaymentController()
         {
-            _db = new AttendanceSystemEntities();
-            enviornment = ConfigurationManager.AppSettings["Environment"].ToString();
+            _db = new AttendanceSystemEntities(); 
         }
         public ActionResult Index(int? userRole = null, DateTime? startDate = null, DateTime? endDate = null)
         {

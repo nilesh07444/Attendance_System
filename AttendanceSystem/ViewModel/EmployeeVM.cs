@@ -31,7 +31,8 @@ namespace AttendanceSystem.ViewModel
         
         [Display(Name = "Email")]
         public string Email { get; set; }
-        
+
+        [Display(Name = "Employee Code *")]
         public string EmployeeCode { get; set; }
         
         public string Password { get; set; }
