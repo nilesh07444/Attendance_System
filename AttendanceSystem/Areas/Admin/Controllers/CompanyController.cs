@@ -26,7 +26,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         public string panCardDirectoryPath = "";
         public string CompanyAdminProfileDirectoryPath = "";
         long loggedInUserId;
-        string enviornment;
 
         public CompanyController()
         {
@@ -39,7 +38,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             aadharCardDirectoryPath = ErrorMessage.AdharcardDirectoryPath;
             panCardDirectoryPath = ErrorMessage.PancardDirectoryPath;
             CompanyAdminProfileDirectoryPath = ErrorMessage.ProfileDirectoryPath;
-            enviornment = ConfigurationManager.AppSettings["Environment"].ToString();
             loggedInUserId = clsAdminSession.UserID;
         }
 
@@ -140,15 +138,15 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             }
             return View(companyRequestFilterVM);
         }
-
-        public ActionResult Edit(long id)
+         
+        public ActionResult ViewRequest(long Id)
         {
             CompanyRequestVM companyRequestVM = new CompanyRequestVM();
             try
             {
                 companyRequestVM = (from cp in _db.tbl_CompanyRequest
                                     join ct in _db.mst_CompanyType on cp.CompanyTypeId equals ct.CompanyTypeId
-                                    where cp.CompanyRequestId == id
+                                    where cp.CompanyRequestId == Id
                                     select new CompanyRequestVM
                                     {
                                         CompanyRequestId = cp.CompanyRequestId,
@@ -205,8 +203,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             }
             return View(companyRequestVM);
         }
+          
         [HttpPost]
-        public ActionResult Edit(CompanyRequestVM companyRequestVM)
+        public ActionResult EditRequest(CompanyRequestVM companyRequestVM)
         {
             try
             {
@@ -347,6 +346,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             }
             return RedirectToAction("Requests");
         }
+
         public ActionResult Renew(DateTime? startDate, DateTime? endDate)
         {
             CompanyRenewFilterVM companyRenewFilterVM = new CompanyRenewFilterVM()
@@ -449,6 +449,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             }
             return View(registeredCompanyVM);
         }
+        
         [HttpPost]
         public ActionResult EditCompany(CompanyRequestVM companyRequestVM,
             HttpPostedFileBase CompanyGSTPhotoFile,
@@ -754,7 +755,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
         }
 
-        public JsonResult VerifyCopmany(int companyId)
+        public JsonResult VerifyCompany(int companyId)
         {
             int status = 0;
             string errorMessage = string.Empty;

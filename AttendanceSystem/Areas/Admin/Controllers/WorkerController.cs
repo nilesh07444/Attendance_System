@@ -92,7 +92,13 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                      WorkerTypeId = emp.WorkerTypeId,
                                                      WorkerTypeText = w.WorkerTypeName 
                                                  }).OrderByDescending(x => x.EmployeeId).ToList();
-                employeeFilterVM.NoOfEmployee = _db.tbl_Employee.Where(x => x.CompanyId == companyId && x.IsActive && !x.IsDeleted).Count();
+
+                employeeFilterVM.EmployeeList.ForEach(x =>
+                {
+                    x.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)x.EmploymentCategory);
+                });
+
+                employeeFilterVM.NoOfEmployee = _db.tbl_Employee.Where(x => x.CompanyId == companyId && x.IsActive && !x.IsDeleted && x.AdminRoleId == (int)AdminRoles.Worker).Count();
                 employeeFilterVM.ActiveEmployee = employeeFilterVM.EmployeeList.Where(x => x.IsActive).Count();
             }
             catch (Exception ex)

@@ -454,7 +454,7 @@
                 var companyId = $("#CompanyId").val();
                 StartLoading();
 
-                var StrURL = '/admin/company/VerifyCopmany?companyId=' + companyId;
+                var StrURL = '/admin/company/VerifyCompany?companyId=' + companyId;
                 $.ajax({
                     url: StrURL,
                     cache: false,
@@ -465,15 +465,14 @@
                         if (data.Status == 1) {
                             $('#OtpModal').modal('show');
                             $("#OTP").val(data.Otp);
-                            if (data.SetOtp) {
-                                $("#TextOTP").val(data.Otp);
-                            }
+                            //if (data.SetOtp) {
+                            //    $("#TextOTP").val(data.Otp);
+                            //}
                         }
                         else {
                             StopLoading();
                             alert(data.ErrorMessage);
-                        }
-
+                        } 
                     },
                     error: function (req, status, error) {
                         StopLoading();

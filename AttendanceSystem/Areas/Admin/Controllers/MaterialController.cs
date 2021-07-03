@@ -11,16 +11,18 @@ namespace AttendanceSystem.Areas.Admin.Controllers
     [PageAccess]
     public class MaterialController : Controller
     {
-        // GET: Admin/Material
+
         AttendanceSystemEntities _db;
         public string MaterialDirectoryPath = "";
         long loggedInUserId;
+
         public MaterialController()
         {
             _db = new AttendanceSystemEntities();
             loggedInUserId = clsAdminSession.UserID;
         }
-        public ActionResult Index()
+
+        public ActionResult Index(long? SiteId, long? MaterialCategoryId, int? Status, DateTime? StartDate, DateTime? EndDate)
         {
             List<MaterialVM> material = new List<MaterialVM>();
             try
@@ -51,9 +53,21 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 {
                     x.InOutText = materialStatusList.Where(z => z.Value == x.InOut.ToString()).Select(c => c.Text).FirstOrDefault();
                 });
+
+                ViewData["SiteList"] = GetSiteList();
+                ViewData["MaterialCategoryList"] = GetMaterialCategoryList();
+                ViewData["MaterialStatusList"] = GetMaterialStatusList();
+
+                ViewBag.filterSiteId = SiteId;
+                ViewBag.filterMaterialCategoryId = MaterialCategoryId;
+                ViewBag.filterStatus = Status;
+                ViewBag.filterStartDate = StartDate;
+                ViewBag.filterEndDate = EndDate;
+
             }
             catch (Exception ex)
             {
+                throw ex;
             }
             return View(material);
         }

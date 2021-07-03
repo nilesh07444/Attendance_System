@@ -438,7 +438,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                && (paymentFilterVM.UserRole.HasValue ? emp.AdminRoleId == paymentFilterVM.UserRole.Value : true)
                                                select new PaymentVM
                                                {
-
                                                    EmployeePaymentId = empp.EmployeePaymentId,
                                                    UserId = empp.UserId,
                                                    PaymentDate = empp.PaymentDate,

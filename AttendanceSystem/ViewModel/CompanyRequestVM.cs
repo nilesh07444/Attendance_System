@@ -8,10 +8,8 @@ namespace AttendanceSystem.ViewModel
 {
     public class CompanyRequestVM
     {
-
         public long CompanyRequestId { get; set; }
-
-
+         
         [Display(Name = "Company Type *")]
         [Required(ErrorMessage = "This field is required")]
         public long? CompanyTypeId { get; set; }
@@ -38,8 +36,7 @@ namespace AttendanceSystem.ViewModel
 
         [Display(Name = "Company GST No")]
         public string CompanyGSTNo { get; set; }
-
-
+         
         [Display(Name = "Company GST Photo")]
         public HttpPostedFileBase CompanyGSTPhotoFile { get; set; }
         public string CompanyGSTPhoto { get; set; }
@@ -70,8 +67,7 @@ namespace AttendanceSystem.ViewModel
         [Required(ErrorMessage = "This field is required")]
         public string CompanyState { get; set; }
 
-        [Display(Name = "Company District *")]
-       
+        [Display(Name = "Company District *")] 
         public string CompanyDistrict { get; set; }
 
         [Display(Name = "Company Logo Image")]
@@ -126,32 +122,31 @@ namespace AttendanceSystem.ViewModel
         [RegularExpression(@"^([0-9]{10})$", ErrorMessage = "Invalid Alternate Mobile Number.")]
         public string CompanyAdminAlternateMobileNo { get; set; }
 
-        [Display(Name = "Designation")]
+        [Display(Name = "Designation *")]
         [Required(ErrorMessage = "This field is required")]
         public string CompanyAdminDesignation { get; set; }
 
-        [Display(Name = "Address")]
+        [Display(Name = "Address *")]
         [Required(ErrorMessage = "This field is required")]
         public string CompanyAdminAddress { get; set; }
 
-        [Display(Name = "Pincode")]
+        [Display(Name = "Pincode *")]
         [Required(ErrorMessage = "This field is required")]
         [RegularExpression(@"^([0-9]{6})$", ErrorMessage = "Invalid Pincode.")]
         public string CompanyAdminPincode { get; set; }
 
-        [Display(Name = "City")]
+        [Display(Name = "City *")]
         [Required(ErrorMessage = "This field is required")]
         public string CompanyAdminCity { get; set; }
 
-        [Display(Name = "State")]
+        [Display(Name = "State *")]
         [Required(ErrorMessage = "This field is required")]
         public string CompanyAdminState { get; set; }
 
-        [Display(Name = "District *")]
-        
+        [Display(Name = "District *")] 
         public string CompanyAdminDistrict { get; set; }
 
-        [Display(Name = "Aadhar Card No")]
+        [Display(Name = "Aadhar Card No *")]
         [Required(ErrorMessage = "This field is required")]
         [RegularExpression(@"^([0-9]{12})$", ErrorMessage = "Invalid Adhar Card No.")]
         public string CompanyAdminAadharCardNo { get; set; }
@@ -203,24 +198,22 @@ namespace AttendanceSystem.ViewModel
     public class RegisteredCompanyVM
     {
 
-        [Display(Name = "Company Type")]
-        [Required(ErrorMessage = "Company Type is required")]
+        [Display(Name = "Company Type *")]
+        [Required(ErrorMessage = "This field is required")]
         public long? CompanyTypeId { get; set; }
-
-
-        [Required(ErrorMessage = "Company Name is required")]
-        [Display(Name = "Company Name")]
+        
+        [Display(Name = "Company Name *")]
+        [Required(ErrorMessage = "This field is required")]
         public string CompanyName { get; set; }
 
-        [Display(Name = "City")]
-        [Required(ErrorMessage = "City is required")]
+        [Display(Name = "City *")]
+        [Required(ErrorMessage = "This field is required")]
         public string City { get; set; }
 
-        [Display(Name = "State")]
-        [Required(ErrorMessage = "State is required")]
+        [Display(Name = "State *")]
+        [Required(ErrorMessage = "This field is required")]
         public string State { get; set; }
-
-
+         
         [Display(Name = "GST No")]
         public string GSTNo { get; set; }
 

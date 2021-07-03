@@ -32,9 +32,9 @@
                         <div class="col-sm-12">
                             <div class="card-header ">
 
-                                <div class="col-sm-5">
+                                <div class="col-sm-2">
                                     <div class="form-group">
-                                        <label for="exampleInputName2" style="font-size: 1rem">Request Status</label>
+                                        <label for="exampleInputName2">Request Status</label>
                                         @Html.DropDownListFor(model => model.RequestStatus, new SelectList(lstCompanyStatus, "Value", "Text"), "- All -", new { @class = "form-control required", style = "" })
                                     </div>
                                 </div>
@@ -67,6 +67,20 @@
                                     {
                                         foreach (CompanyRequestVM obj in Model.companyRequest)
                                         {
+                                            string statusClassName = "";
+                                            if (obj.RequestStatus == (int)CompanyRequestStatus.Pending)
+                                            {
+                                                statusClassName = "badge-primary";
+                                            }
+                                            else if (obj.RequestStatus == (int)CompanyRequestStatus.Accept)
+                                            {
+                                                statusClassName = "badge-success";
+                                            }
+                                            else if (obj.RequestStatus == (int)CompanyRequestStatus.Reject)
+                                            {
+                                                statusClassName = "badge-danger";
+                                            }
+
                                             <tr class="gradeX">
                                                 <td>@counter.</td>
                                                 <td>
@@ -78,10 +92,10 @@
                                                 <td>@obj.CompanyAdminMobileNo</td>
                                                 <td>@obj.CompanyAdminCity</td>
                                                 <td>@obj.CompanyAdminState</td>
-                                                <td>@obj.RequestStatusText</td>
+                                                <td><span class="badge @statusClassName">@obj.RequestStatusText</span></td>
 
                                                 <td>
-                                                    <a href="/admin/company/edit/@obj.CompanyRequestId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
+                                                    <a href="/admin/company/viewrequest/@obj.CompanyRequestId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
                                                 </td>
                                             </tr>
                                             counter++;
