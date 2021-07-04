@@ -151,6 +151,12 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     response.AddError(ErrorMessage.EmployeeIdIsNotValid);
                 }
 
+                if (paymentVM.PaymentType != (int)EmployeePaymentType.Salary && paymentVM.PaymentType != (int)EmployeePaymentType.Extra)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.PaymentTypeWrong);
+                }
+
                 if (paymentVM.UserId > 0)
                 {
                     bool isWorkerExist = _db.tbl_Employee.Any(x => x.EmployeeId == paymentVM.UserId && !x.IsDeleted && x.AdminRoleId == (int)AdminRoles.Worker && x.CompanyId == companyId);
@@ -229,7 +235,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         ParameterName = "EmployeeId",
                         Value = paymentReportFilterVM.EmployeeId
                     };
-                  
+
                     List<PaymentReportVM> paymentReport = _db.Database.SqlQuery<PaymentReportVM>("exec Usp_GetPaymentReport @StartMonth,@EndMonth,@Year,@EmployeeId ", startMonthParam, endMonthParam, yearParam, employeeIdParam).ToList<PaymentReportVM>();
                     response.Data = paymentReport;
 
@@ -511,7 +517,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 //Get student name of string type
                 List<PaymentReportVM> paymentReport = _db.Database.SqlQuery<PaymentReportVM>("exec Usp_GetPaymentReport @StartMonth,@EndMonth,@Year,@EmployeeId ", startMonthParam, endMonthParam, yearParam, employeeIdParam).ToList<PaymentReportVM>();
 
-                
+
 
                 string StartMonthName = CommonMethod.GetEnumDescription((CalenderMonths)paymentReportFilterVM.StartMonth);
                 string EndMonthName = CommonMethod.GetEnumDescription((CalenderMonths)paymentReportFilterVM.EndMonth);

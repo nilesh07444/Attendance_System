@@ -13,11 +13,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 {
     [PageAccess]
     public class PaymentController : Controller
-    {        
-        AttendanceSystemEntities _db;        
+    {
+        AttendanceSystemEntities _db;
         public PaymentController()
         {
-            _db = new AttendanceSystemEntities(); 
+            _db = new AttendanceSystemEntities();
         }
         public ActionResult Index(int? userRole = null, DateTime? startDate = null, DateTime? endDate = null)
         {
@@ -40,12 +40,16 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 long companyId = clsAdminSession.CompanyId;
                 paymentFilterVM.PaymentList = (from empp in _db.tbl_EmployeePayment
                                                join emp in _db.tbl_Employee on empp.UserId equals emp.EmployeeId
+                                               join rl in _db.mst_AdminRole on emp.AdminRoleId equals rl.AdminRoleId
+
+                                               join paidBy in _db.tbl_Employee on empp.CreatedBy equals paidBy.EmployeeId into outerPaidBy
+                                               from paidBy in outerPaidBy.DefaultIfEmpty()
+
                                                where !emp.IsDeleted && emp.CompanyId == companyId && !empp.IsDeleted && empp.CreditOrDebitText.ToLower() == "debit"
                                                && empp.PaymentDate >= paymentFilterVM.StartDate && empp.PaymentDate <= paymentFilterVM.EndDate
                                                && (paymentFilterVM.UserRole.HasValue ? emp.AdminRoleId == paymentFilterVM.UserRole.Value : true)
                                                select new PaymentVM
                                                {
-
                                                    EmployeePaymentId = empp.EmployeePaymentId,
                                                    UserId = empp.UserId,
                                                    PaymentDate = empp.PaymentDate,
@@ -54,7 +58,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                    DebitAmount = empp.DebitAmount,
                                                    CreditAmount = empp.CreditAmount,
                                                    PaymentType = empp.PaymentType,
-                                                   AdminRoleId = emp.AdminRoleId
+                                                   AdminRoleId = emp.AdminRoleId,
+
+                                                   AdminRoleText = rl.AdminRoleName,
+                                                   AmountGivenBy = (paidBy != null ? emp.FirstName + " " + emp.LastName : (empp.CreatedBy == (int)PaymentGivenBy.CompanyAdmin ? "Company Admin" : "")),
+
                                                }).OrderByDescending(x => x.EmployeePaymentId).ToList();
 
                 paymentFilterVM.PaymentList.ForEach(x =>
@@ -64,6 +72,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                 var workerPaymentList = (from empp in _db.tbl_WorkerPayment
                                          join emp in _db.tbl_Employee on empp.UserId equals emp.EmployeeId
+                                         join rl in _db.mst_AdminRole on emp.AdminRoleId equals rl.AdminRoleId
+
+                                         join paidBy in _db.tbl_Employee on empp.CreatedBy equals paidBy.EmployeeId into outerPaidBy
+                                         from paidBy in outerPaidBy.DefaultIfEmpty()
+
                                          where !emp.IsDeleted && emp.CompanyId == companyId && !empp.IsDeleted && empp.CreditOrDebitText.ToLower() == "debit"
                                          && empp.PaymentDate >= paymentFilterVM.StartDate && empp.PaymentDate <= paymentFilterVM.EndDate
                                          && (paymentFilterVM.UserRole.HasValue ? emp.AdminRoleId == paymentFilterVM.UserRole.Value : true)
@@ -78,7 +91,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                              DebitAmount = empp.DebitAmount,
                                              CreditAmount = empp.CreditAmount,
                                              PaymentType = empp.PaymentType,
-                                             AdminRoleId = emp.AdminRoleId
+                                             AdminRoleId = emp.AdminRoleId,
+
+                                             AdminRoleText = rl.AdminRoleName,
+                                             AmountGivenBy = (paidBy != null ? emp.FirstName + " " + emp.LastName : (emp.CreatedBy == (int)PaymentGivenBy.CompanyAdmin ? "Company Admin" : "")),
+
                                          }).OrderByDescending(x => x.EmployeePaymentId).ToList();
 
                 workerPaymentList.ForEach(x =>
@@ -186,7 +203,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                             objWorkerPayment.Year = paymentVM.PaymentDate.Year;
                             objWorkerPayment.PaymentType = paymentVM.PaymentType;
                             objWorkerPayment.Remarks = paymentVM.Remarks;
-                            objWorkerPayment.ModifiedBy = LoggedInUserId;
+                            objWorkerPayment.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
                             objWorkerPayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         }
                         else
@@ -199,7 +216,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                             objEmployeePayment.Year = paymentVM.PaymentDate.Year;
                             objEmployeePayment.PaymentType = paymentVM.PaymentType;
                             objEmployeePayment.Remarks = paymentVM.Remarks;
-                            objEmployeePayment.ModifiedBy = LoggedInUserId;
+                            objEmployeePayment.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
                             objEmployeePayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         }
                     }
@@ -226,9 +243,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                             objWorkerPayment.Month = paymentVM.PaymentDate.Month;
                             objWorkerPayment.Year = paymentVM.PaymentDate.Year;
                             objWorkerPayment.Remarks = paymentVM.Remarks;
-                            objWorkerPayment.CreatedBy = LoggedInUserId;
+                            objWorkerPayment.CreatedBy = (int)PaymentGivenBy.CompanyAdmin;
                             objWorkerPayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
-                            objWorkerPayment.ModifiedBy = LoggedInUserId;
+                            objWorkerPayment.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
                             objWorkerPayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                             _db.tbl_WorkerPayment.Add(objWorkerPayment);
                         }
@@ -245,9 +262,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                             objEmployeePayment.Month = paymentVM.PaymentDate.Month;
                             objEmployeePayment.Year = paymentVM.PaymentDate.Year;
                             objEmployeePayment.Remarks = paymentVM.Remarks;
-                            objEmployeePayment.CreatedBy = LoggedInUserId;
+                            objEmployeePayment.CreatedBy = (int)PaymentGivenBy.CompanyAdmin;
                             objEmployeePayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
-                            objEmployeePayment.ModifiedBy = LoggedInUserId;
+                            objEmployeePayment.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
                             objEmployeePayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                             _db.tbl_EmployeePayment.Add(objEmployeePayment);
                         }
@@ -287,11 +304,12 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             long companyId = clsAdminSession.CompanyId;
             List<SelectListItem> lst = (from emp in _db.tbl_Employee
                                         where !emp.IsDeleted && emp.CompanyId == companyId
+                                        orderby emp.EmployeeId
                                         select new SelectListItem
                                         {
                                             Text = emp.FirstName + " " + emp.LastName + " (" + emp.EmployeeCode + ")",
                                             Value = emp.EmployeeId.ToString()
-                                        }).OrderBy(x => x.Text).ToList();
+                                        }).ToList();
             return lst;
         }
 

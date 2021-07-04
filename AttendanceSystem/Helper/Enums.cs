@@ -166,4 +166,9 @@ namespace AttendanceSystem.Helper
         [Description("Half Day")]
         HalfDay = 2
     }
+    public enum PaymentGivenBy
+    {
+        CompanyAdmin = 0,
+        SuperAdmin = -1
+    }
 }

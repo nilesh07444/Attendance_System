@@ -47,7 +47,9 @@
         public static string AuthorizationTokenMissing = "Authorization token missing";
         public static string InternalServerError = "Internal server error";
         public static string SelectOnlyImage = "Select only image file.";
+        public static string SelectOnlyImageOrPDF = "Select only image or pdf file.";
         public static string ImageRequired = "Please select image file.";
+        public static string ImageOrPdfRequired = "Please select image or pdf file.";
         public static string RunningStatusApprove = "Approve";
         public static string RunningStatusReject = "Reject";
         public static string RunningStatusPending = "Pending";
@@ -180,6 +182,6 @@
         public static string UnitBasedWorkerNotAllowedWithoutTotalUnits = "Unit based worker not allowed without total units.";
         public static string PaymentNotAllowedForBackDate = "Payment not allowed for back date.";
         public static string PaymentAmountShouldbeGreaterThanZero = "Payment amount should be greater than 0.";
-
+        public static string PaymentTypeWrong = "Payment Type is wrong, It should be Salary or Extra.";
     }
 }

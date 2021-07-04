@@ -167,7 +167,7 @@
                         <div class="row">
                             <div class="form-group col-4">
                                 <label>@Html.LabelFor(model => model.IsLeaveForward)</label>
-                                <p>@Model.IsLeaveForward</p>
+                                <p>@(Model.IsLeaveForward ? "Yes" : "No")</p>
                             </div>
                             @if (Model.EmploymentCategory == (int)EmploymentCategory.MonthlyBased)
                             {
@@ -178,7 +178,7 @@
                             }
                             <div class="form-group col-4">
                                 <label>@Html.LabelFor(model => model.IsFingerprintEnabled)</label>
-                                <p>@Model.IsFingerprintEnabled</p>
+                                <p>@(Model.IsFingerprintEnabled ? "Yes" : "No")</p>
                             </div>
                         </div>
 

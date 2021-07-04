@@ -95,9 +95,9 @@ namespace AttendanceSystem.Areas.Client.Controllers
 
                         // Image file validation
                         string ext = Path.GetExtension(CompanyGSTPhotoFile.FileName);
-                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
+                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP" && ext.ToUpper() != ".PDF")
                         {
-                            ModelState.AddModelError("CompanyGSTPhotoFile", ErrorMessage.SelectOnlyImage);
+                            ModelState.AddModelError("CompanyGSTPhotoFile", ErrorMessage.SelectOnlyImageOrPDF);
                             companyRequestVM.CompanyTypeList = GetCompanyType();
                             return View(companyRequestVM);
                         }
@@ -118,9 +118,9 @@ namespace AttendanceSystem.Areas.Client.Controllers
 
                         // Image file validation
                         string ext = Path.GetExtension(CompanyPanPhotoFile.FileName);
-                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
+                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP" && ext.ToUpper() != ".PDF")
                         {
-                            ModelState.AddModelError("CompanyPanPhotoFile", ErrorMessage.SelectOnlyImage);
+                            ModelState.AddModelError("CompanyPanPhotoFile", ErrorMessage.SelectOnlyImageOrPDF);
                             companyRequestVM.CompanyTypeList = GetCompanyType();
                             return View(companyRequestVM);
                         }
@@ -142,9 +142,9 @@ namespace AttendanceSystem.Areas.Client.Controllers
 
                         // Image file validation
                         string ext = Path.GetExtension(CompanyLogoImageFile.FileName);
-                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
+                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP" && ext.ToUpper() != ".PDF")
                         {
-                            ModelState.AddModelError("CompanyPhotoFile", ErrorMessage.SelectOnlyImage);
+                            ModelState.AddModelError("CompanyPhotoFile", ErrorMessage.SelectOnlyImageOrPDF);
                             companyRequestVM.CompanyTypeList = GetCompanyType();
                             return View(companyRequestVM);
                         }
@@ -155,7 +155,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
                     }
                     else
                     {
-                        ModelState.AddModelError("CompanyLogoImageFile", ErrorMessage.ImageRequired);
+                        ModelState.AddModelError("CompanyLogoImageFile", ErrorMessage.ImageOrPdfRequired);
                         companyRequestVM.CompanyTypeList = GetCompanyType();
                         return View(companyRequestVM);
                     }
@@ -172,9 +172,9 @@ namespace AttendanceSystem.Areas.Client.Controllers
 
                         // Image file validation
                         string ext = Path.GetExtension(CompanyRegisterProofImageFile.FileName);
-                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
+                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP" && ext.ToUpper() != ".PDF")
                         {
-                            ModelState.AddModelError("CompanyRegisterProofImageFile", ErrorMessage.SelectOnlyImage);
+                            ModelState.AddModelError("CompanyRegisterProofImageFile", ErrorMessage.SelectOnlyImageOrPDF);
                             companyRequestVM.CompanyTypeList = GetCompanyType();
                             return View(companyRequestVM);
                         }
@@ -185,7 +185,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
                     }
                     else
                     {
-                        ModelState.AddModelError("CompanyRegisterProofImageFile", ErrorMessage.ImageRequired);
+                        ModelState.AddModelError("CompanyRegisterProofImageFile", ErrorMessage.ImageOrPdfRequired);
                         companyRequestVM.CompanyTypeList = GetCompanyType();
                         return View(companyRequestVM);
                     }
@@ -203,9 +203,9 @@ namespace AttendanceSystem.Areas.Client.Controllers
 
                         // Image file validation
                         string ext = Path.GetExtension(CompanyAdminProfilePhotoFile.FileName);
-                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
+                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP" && ext.ToUpper() != ".PDF")
                         {
-                            ModelState.AddModelError("CompanyAdminProfilePhotoFile", ErrorMessage.SelectOnlyImage);
+                            ModelState.AddModelError("CompanyAdminProfilePhotoFile", ErrorMessage.SelectOnlyImageOrPDF);
                             companyRequestVM.CompanyTypeList = GetCompanyType();
                             return View(companyRequestVM);
                         }
@@ -216,7 +216,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
                     }
                     else
                     {
-                        ModelState.AddModelError("CompanyCancellationChequePhotoFile", ErrorMessage.ImageRequired);
+                        ModelState.AddModelError("CompanyCancellationChequePhotoFile", ErrorMessage.ImageOrPdfRequired);
                         companyRequestVM.CompanyTypeList = GetCompanyType();
                         return View(companyRequestVM);
                     }
@@ -234,9 +234,9 @@ namespace AttendanceSystem.Areas.Client.Controllers
 
                         // Image file validation
                         string ext = Path.GetExtension(CompanyAdminAadharCardPhotoFile.FileName);
-                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
+                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP" && ext.ToUpper() != ".PDF")
                         {
-                            ModelState.AddModelError("CompanyAdminAadharCardPhotoFile", ErrorMessage.SelectOnlyImage);
+                            ModelState.AddModelError("CompanyAdminAadharCardPhotoFile", ErrorMessage.SelectOnlyImageOrPDF);
                             companyRequestVM.CompanyTypeList = GetCompanyType();
                             return View(companyRequestVM);
                         }
@@ -247,7 +247,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
                     }
                     else
                     {
-                        ModelState.AddModelError("CompanyAdminAadharCardPhotoFile", ErrorMessage.ImageRequired);
+                        ModelState.AddModelError("CompanyAdminAadharCardPhotoFile", ErrorMessage.ImageOrPdfRequired);
                         companyRequestVM.CompanyTypeList = GetCompanyType();
                         return View(companyRequestVM);
                     }
@@ -263,9 +263,9 @@ namespace AttendanceSystem.Areas.Client.Controllers
 
                         // Image file validation
                         string ext = Path.GetExtension(CompanyAdminPanCardPhotoFile.FileName);
-                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP")
+                        if (ext.ToUpper().Trim() != ".JPG" && ext.ToUpper() != ".PNG" && ext.ToUpper() != ".GIF" && ext.ToUpper() != ".JPEG" && ext.ToUpper() != ".BMP" && ext.ToUpper() != ".PDF")
                         {
-                            ModelState.AddModelError("CompanyAdminPanCardPhotoFile", ErrorMessage.SelectOnlyImage);
+                            ModelState.AddModelError("CompanyAdminPanCardPhotoFile", ErrorMessage.SelectOnlyImageOrPDF);
                             companyRequestVM.CompanyTypeList = GetCompanyType();
                             return View(companyRequestVM);
                         }
@@ -276,7 +276,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
                     }
                     else
                     {
-                        ModelState.AddModelError("CompanyAdminPanCardPhotoFile", ErrorMessage.ImageRequired);
+                        ModelState.AddModelError("CompanyAdminPanCardPhotoFile", ErrorMessage.ImageOrPdfRequired);
                         companyRequestVM.CompanyTypeList = GetCompanyType();
                         return View(companyRequestVM);
                     }

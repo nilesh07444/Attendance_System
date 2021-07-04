@@ -70,7 +70,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                                        CompanyLogoImage = cp.CompanyLogoImage,
                                                                        CompanyCode = cp.CompanyCode,
                                                                        IsActive = cp.IsActive
-                                                                   }).ToList();
+                                                                   }).OrderByDescending(x=>x.CompanyId).ToList();
             }
             catch (Exception ex)
             {
@@ -108,7 +108,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                              CompanyAdminCity = cp.CompanyAdminCity,
                                                              CompanyAdminState = cp.CompanyAdminState,
                                                              RequestStatus = cp.RequestStatus
-                                                         }).ToList();
+                                                         }).OrderByDescending(x=>x.CompanyRequestId).ToList();
 
                 if (companyRequestFilterVM.companyRequest != null && companyRequestFilterVM.companyRequest.Count > 0)
                 {

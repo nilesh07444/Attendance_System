@@ -63,8 +63,10 @@
                                         <th>Payment Date</th>
                                         <th>Employee Code</th>
                                         <th>Employee</th>
+                                        <th>Role</th>
                                         <th>Amount</th>
                                         <th>Payment Type</th>
+                                        <th>Amount Given By</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -78,8 +80,10 @@
                                                 <td>@obj.PaymentDate.ToString("dd MMM yyyy")</td>
                                                 <td>@obj.EmployeeCode</td>
                                                 <td>@obj.UserName</td>
+                                                <td>@obj.AdminRoleText</td>
                                                 <td>@obj.DebitAmount</td>
                                                 <td>@obj.PaymentTypeText</td>
+                                                <td>@obj.AmountGivenBy</td>
                                                 <td>
 
                                                     <a href="/admin/payment/add?id=@obj.EmployeePaymentId&adminRoleId=@obj.AdminRoleId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
@@ -105,7 +109,7 @@
                                     }
                                     <b>Total Salary Amount &nbsp;: @totalSalaryAmount</b><br />
                                     <b>Total Extra Amount &nbsp;&nbsp;&nbsp;: @totalExtraAmount</b><br />
-                                                                                                   <b>Total Amount &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : @totalAmount</b>
+                                    <b>Total Amount &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : @totalAmount</b>
                                 </p>
                             }
 
