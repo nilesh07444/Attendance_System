@@ -22,6 +22,7 @@ namespace AttendanceSystem.ViewModel
         public long? WorkerAttendanceId { get; set; }
         public int EmploymentCategory { get; set; }
         public string EmploymentCategoryText { get; set; }
+        public string WorkerTypeName { get; set; } 
     }
 
     public class AssignedWorkerFilterVM

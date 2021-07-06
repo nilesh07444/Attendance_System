@@ -79,9 +79,10 @@
                                     <tr>
                                         <td>#</td>
                                         <th>Approve <br /><input type="checkbox" class="chkBox" id='chkAll' name="Select"></th>
+                                        <th>Attendance Date</th>
                                         <th>Employee</th>
                                         <th>Employee Code</th>
-                                        <th>Attendance Date</th>
+                                        <th>Designation</th>
                                         <th>Day Type</th>
                                         <th>Extra Hours</th>
                                         <th>Status</th>
@@ -93,31 +94,32 @@
                                     {
                                         foreach (AttendanceVM obj in Model.AttendanceList)
                                         {
-                                            <tr>
-                                                <td>@counter.</td>
-                                                <td>
-                                                    @if (obj.Status == (int)AttendanceStatus.Pending)
-                                                    {
-                                                        <input type="checkbox" class="chkBox" id='@obj.AttendanceId' name="Select">
-                                                    }
-                                                </td>
-                                                <td>@obj.Name</td>
-                                                <td>@obj.EmployeeCode</td>
-                                                <td>@obj.AttendanceDate.ToString("dd MMM yyyy")</td>
-                                                <td>@obj.DayTypeText</td>
-                                                <td>@obj.ExtraHours</td>
-                                                <td>@obj.StatusText</td>
-                                                <td>
-                                                    @if (obj.Status == (int)AttendanceStatus.Pending)
-                                                    {
-                                                        <a href="/admin/attendance/detail/@obj.AttendanceId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
-                                                    }
-                                                    else
-                                                    {
-                                                        <a href="/admin/attendance/detail/@obj.AttendanceId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
-                                                    }
-                                                </td>
-                                            </tr>
+                                    <tr>
+                                        <td>@counter.</td>
+                                        <td>
+                                            @if (obj.Status == (int)AttendanceStatus.Pending)
+                                            {
+                                                <input type="checkbox" class="chkBox" id='@obj.AttendanceId' name="Select">
+                                            }
+                                        </td>
+                                        <td>@obj.AttendanceDate.ToString("dd MMM yyyy")</td>
+                                        <td>@obj.Name</td>
+                                        <td>@obj.EmployeeCode</td>
+                                        <td>@obj.EmployeeDesignation</td>
+                                        <td>@obj.DayTypeText</td>
+                                        <td>@obj.ExtraHours</td>
+                                        <td>@obj.StatusText</td>
+                                        <td>
+                                            @if (obj.Status == (int)AttendanceStatus.Pending)
+                                            {
+                                                <a href="/admin/attendance/detail/@obj.AttendanceId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
+                                            }
+                                            else
+                                            {
+                                                <a href="/admin/attendance/detail/@obj.AttendanceId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
+                                            }
+                                        </td>
+                                    </tr>
 
                                             counter++;
                                         }

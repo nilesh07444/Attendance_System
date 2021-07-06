@@ -10,7 +10,7 @@
             <div class="card">
                 <div class="card-header" style="background-color: #425C59; display: block;">
                     <div class="pull-left">
-                        <h4 style="color: #FFCEA3;">@(Model.SiteId == 0 ? "Add" : "Edit") Site</h4>
+                        <h4 style="color: #FFCEA3;">@(Model.SiteId == 0 ? "Add" : "Edit") Site Location</h4>
                     </div>
                     <div class="pull-right">
                         <a href="/admin/site" class="btn btn-warning pull-right"><i class="fas fa-backward"></i> Back</a>
@@ -24,19 +24,19 @@
                 {
                     <div class="card-body">
                         <div class="row">
-                            <div class="form-group col-6">
+                            <div class="form-group col-12">
                                 @Html.LabelFor(model => model.SiteName, htmlAttributes: new { @class = "" })
                                 @Html.EditorFor(model => model.SiteName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Site Name ", maxlength = "200", @autofocus = "autofocus" } })
                                 @Html.ValidationMessageFor(model => model.SiteName, "", new { @class = "text-danger" })
                                 @Html.HiddenFor(model => model.SiteId)
                             </div>
-
+                            <div class="form-group col-12">
+                                @Html.LabelFor(model => model.SiteDescription, htmlAttributes: new { @class = "" })
+                                @Html.TextAreaFor(model => model.SiteDescription, 10, 5, new { @class = "form-control", @placeholder = "Enter Site Description", maxlength = "250" })
+                                @Html.ValidationMessageFor(model => model.SiteDescription, "", new { @class = "text-danger" })
+                            </div>
                         </div>
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.SiteDescription, htmlAttributes: new { @class = "" })
-                            @Html.TextAreaFor(model => model.SiteDescription, 10, 5, new { @class = "form-control", @placeholder = "Enter Package Description", maxlength = "250" })
-                            @Html.ValidationMessageFor(model => model.SiteDescription, "", new { @class = "text-danger" })
-                        </div>
+                         
                     </div>
 
                     <div class="card-footer text-center">
@@ -82,7 +82,7 @@
                 type: 'POST',
                 success: function (data) {
                     if (data.Status == true) {
-                        alert("Site with same name already exist, Please use another name.")
+                        alert("Site with same location already exist, Please use another location.")
                         $("#SiteName").val("");
                     }
 

@@ -11,7 +11,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header" style="background-color: #425C59;">
-                        <h4 style="color: #FFCEA3;">Attendance List</h4>
+                        <h4 style="color: #FFCEA3;">Worker Attendance List</h4>
                     </div>
                 </div>
                 <div class="card">
@@ -48,9 +48,10 @@
                                 <thead>
                                     <tr>
                                         <td>#</td>
+                                        <th>Attendance Date</th>
                                         <th>Worker Name</th>
                                         <th>Worker Code</th>
-                                        <th>Attendance Date</th>
+                                        <th>Worker Type</th>
                                         <th>Morning</th>
                                         <th>Afternoon</th>
                                         <th>Evening</th>
@@ -63,11 +64,12 @@
                                         {
                                             <tr>
                                                 <td>@counter.</td>
+                                                <td>@obj.AttendanceDate.ToString("dd MMM yyyy")</td>
                                                 <td>@obj.Name</td>
                                                 <td>@obj.EmployeeCode</td>
-                                                <td>@obj.AttendanceDate.ToString("dd MMM yyyy")</td>
+                                                <td>@obj.WorkerTypeName</td>
                                                 <td>
-                                                   @obj.IsMorningText
+                                                    @obj.IsMorningText
                                                 </td>
                                                 <td>
                                                     @obj.IsAfternoonText
@@ -101,7 +103,7 @@
         $('#tableExport1').DataTable({
             dom: 'Bfrtip',
             "columnDefs": [
-                { "sortable": false, "targets": [0, 1] }
+                { "sortable": false, "targets": [0] }
             ],
             buttons: [
                 'excel' //'copy', 'csv', , 'pdf', 'print'

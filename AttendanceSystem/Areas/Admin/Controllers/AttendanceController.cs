@@ -65,6 +65,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                          UserId = at.UserId,
                                                          Name = emp.FirstName + " " + emp.LastName,
                                                          EmployeeCode = emp.EmployeeCode,
+                                                         EmployeeDesignation = emp.Designation,
                                                          AttendanceDate = at.AttendanceDate,
                                                          DayType = at.DayType,
                                                          ExtraHours = at.ExtraHours,

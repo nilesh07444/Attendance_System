@@ -9,10 +9,12 @@ namespace AttendanceSystem.ViewModel
     public class SiteVM
     {
         public long SiteId { get; set; }
-        [Required, Display(Name = "Site Name")]
+        [Display(Name = "Site Location *")]
+        [Required(ErrorMessage = "This field is required")]
         public string SiteName { get; set; }
 
-        [Required, Display(Name = "Site Description")]
+        [Display(Name = "Site Description *")]
+        [Required(ErrorMessage = "This field is required")]
         public string SiteDescription { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }

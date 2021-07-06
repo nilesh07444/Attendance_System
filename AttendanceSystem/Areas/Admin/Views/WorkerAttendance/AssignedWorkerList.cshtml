@@ -70,6 +70,7 @@
                                         <th>Site Name</th>
                                         <th>Worker Name</th>
                                         <th>Worker Code</th>
+                                        <th>Worker Type</th>
                                         <th>Category</th>
                                         <th>Morning</th>
                                         <th>Afternoon</th>
@@ -99,6 +100,7 @@
                                                 <td>@obj.SiteName</td>
                                                 <td>@obj.EmployeeName</td>
                                                 <td>@obj.EmployeeCode</td>
+                                                <td>@obj.WorkerTypeName</td>
                                                 <td>@obj.EmploymentCategoryText</td>
                                                 <td>
                                                     @obj.IsMorningText
@@ -144,7 +146,7 @@
         $('#tableExport1').DataTable({
             dom: 'Bfrtip',
             "columnDefs": [
-                { "sortable": false, "targets": [0, 1] }
+                { "sortable": false, "targets": [0] }
             ],
             buttons: [
                 'excel' //'copy', 'csv', , 'pdf', 'print'

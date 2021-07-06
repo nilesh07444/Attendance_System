@@ -57,6 +57,10 @@ namespace AttendanceSystem.ViewModel
 
         public string EmployeeCode { get; set; }
         public decimal PerCategoryPrice { get; set; }
+
+        // Additional fields
+        public string EmployeeDesignation { get; set; }
+         
     }
 
     public class AttendanceFilterVM
@@ -132,6 +136,7 @@ namespace AttendanceSystem.ViewModel
         public long CompanyId { get; set; }
         public long EmployeeId { get; set; }
         public string EmployeeCode { get; set; }
+        public string WorkerTypeName { get; set; }
         public string Name { get; set; }
         public DateTime AttendanceDate { get; set; }
         public string ProfilePicture { get; set; }

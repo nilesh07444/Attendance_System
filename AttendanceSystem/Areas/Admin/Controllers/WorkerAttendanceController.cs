@@ -12,7 +12,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
     [PageAccess]
     public class WorkerAttendanceController : Controller
     {
-        // GET: Admin/WorkerAttendance
+
         long companyId;
         AttendanceSystemEntities _db;
         public WorkerAttendanceController()
@@ -42,6 +42,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                 workerAttendanceFilterVM.AttendanceList = (from at in _db.tbl_WorkerAttendance
                                                            join emp in _db.tbl_Employee on at.EmployeeId equals emp.EmployeeId
+
+                                                           join workerTypeInfo in _db.tbl_WorkerType on emp.WorkerTypeId equals workerTypeInfo.WorkerTypeId into outerworkerTypeInfo
+                                                           from workerTypeInfo in outerworkerTypeInfo.DefaultIfEmpty()
+
                                                            where emp.CompanyId == companyId
                                                            && at.AttendanceDate == workerAttendanceFilterVM.AttendanceDate
                                                            && (workerAttendanceFilterVM.SiteId > 0 ? (at.MorningSiteId == workerAttendanceFilterVM.SiteId
@@ -55,6 +59,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                                EmployeeId = emp.EmployeeId,
                                                                EmployeeCode = emp.EmployeeCode,
                                                                Name = emp.FirstName + " " + emp.LastName,
+                                                               WorkerTypeName = (workerTypeInfo != null ? workerTypeInfo.WorkerTypeName : ""),
                                                                AttendanceDate = at.AttendanceDate,
                                                                EmploymentCategory = emp.EmploymentCategory,
                                                                IsMorning = (workerAttendanceFilterVM.SiteId == 0 && at.IsMorning ? true : (at.IsMorning && at.MorningSiteId == workerAttendanceFilterVM.SiteId ? true : false)),
