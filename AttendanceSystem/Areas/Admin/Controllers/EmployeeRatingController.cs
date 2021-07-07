@@ -60,7 +60,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                                  EmployeeRatingId = er.EmployeeRatingId,
                                                                  EmployeeId = er.EmployeeId,
                                                                  EmployeeCode = emp.EmployeeCode,
-                                                                 EmployeeName = emp.FirstName + " " + emp.LastName,
+                                                                 EmployeeName = emp.Prefix + " " + emp.FirstName + " " + emp.LastName,
                                                                  RateMonth = er.RateMonth,
                                                                  RateYear = er.RateYear,
                                                                  BehaviourRate = er.BehaviourRate,

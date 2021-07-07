@@ -46,9 +46,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 long companyId = clsAdminSession.CompanyId;
 
                 List<SelectListItem> attendanceStatusList = GetAttendanceStatusList();
-
-
-
+                 
                 attendanceFilterVM.AttendanceList = (from at in _db.tbl_Attendance
                                                      join emp in _db.tbl_Employee on at.UserId equals emp.EmployeeId
                                                      where !at.IsDeleted
@@ -63,7 +61,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                          AttendanceId = at.AttendanceId,
                                                          CompanyId = at.CompanyId,
                                                          UserId = at.UserId,
-                                                         Name = emp.FirstName + " " + emp.LastName,
+                                                         Name = emp.Prefix + " " + emp.FirstName + " " + emp.LastName,
                                                          EmployeeCode = emp.EmployeeCode,
                                                          EmployeeDesignation = emp.Designation,
                                                          AttendanceDate = at.AttendanceDate,

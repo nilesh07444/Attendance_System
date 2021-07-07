@@ -59,7 +59,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                            {
                                                LeaveId = lv.LeaveId,
                                                UserId = lv.UserId,
-                                               UserName = ur.FirstName + " " + ur.LastName,
+                                               UserName = ur.Prefix + " " + ur.FirstName + " " + ur.LastName,
                                                EmployeeCode=ur.EmployeeCode,
                                                StartDate = lv.StartDate,
                                                EndDate = lv.EndDate,

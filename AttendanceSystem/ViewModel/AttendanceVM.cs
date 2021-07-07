@@ -148,6 +148,8 @@ namespace AttendanceSystem.ViewModel
         public string IsAfternoonText { get; set; }
         public bool IsEvening { get; set; }
         public string IsEveningText { get; set; }
+
+        public string SiteName { get; set; }
     }
 
     public class WorkerAttendanceReportFilterVM

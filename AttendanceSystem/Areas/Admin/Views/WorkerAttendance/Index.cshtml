@@ -25,7 +25,7 @@
                             </div>
                             <div class="col-sm-3">
                                 <div class="form-group">
-                                    <label>Site</label>
+                                    <label>Site Location</label>
                                     @Html.DropDownListFor(model => model.SiteId, new SelectList(Model.SiteList, "Value", "Text"), "- All -", new { @class = "form-control col-md-8", style = "" })
                                 </div>
                             </div>
@@ -52,6 +52,7 @@
                                         <th>Worker Name</th>
                                         <th>Worker Code</th>
                                         <th>Worker Type</th>
+                                        <th>Site Location</th>
                                         <th>Morning</th>
                                         <th>Afternoon</th>
                                         <th>Evening</th>
@@ -68,6 +69,7 @@
                                                 <td>@obj.Name</td>
                                                 <td>@obj.EmployeeCode</td>
                                                 <td>@obj.WorkerTypeName</td>
+                                                <td>@obj.SiteName</td>
                                                 <td>
                                                     @obj.IsMorningText
                                                 </td>

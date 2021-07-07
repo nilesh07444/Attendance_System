@@ -129,6 +129,11 @@
         $("#dv_otp").hide();
         $("#btn_OtpSubmit").attr("disabled", true)
 
+        $(document).on("keypress", "#Password", function (e) {
+            if (e.which == 13) {
+                $('#btn_login').trigger("click");
+            }
+        });
 
         $('#btn_login').click(function (e) {
             if ($("#submit_form").valid()) {

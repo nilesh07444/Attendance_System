@@ -27,7 +27,7 @@
                             </div>
                             <div class="col-sm-3">
                                 <div class="form-group">
-                                    <label>Site</label>
+                                    <label>Site Location</label>
                                     @Html.DropDownListFor(model => model.SiteId, new SelectList(Model.SiteList, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8", style = "" })
                                 </div>
                             </div>
@@ -67,7 +67,7 @@
                                         <td>#</td>
                                         <td>Select <br /><input type="checkbox" class="chkBox" id='chkAll' name="Select"></td>
                                         <th>Date</th>
-                                        <th>Site Name</th>
+                                        <th>Site Location</th>
                                         <th>Worker Name</th>
                                         <th>Worker Code</th>
                                         <th>Worker Type</th>

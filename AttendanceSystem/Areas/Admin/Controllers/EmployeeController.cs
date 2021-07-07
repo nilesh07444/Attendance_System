@@ -556,6 +556,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                              LoginHistoryId = lh.LoginHistoryId,
                                                              EmployeeId = lh.EmployeeId,
                                                              EmployeeCode = emp.EmployeeCode,
+                                                             Prefix = emp.Prefix,
                                                              FirstName = emp.FirstName,
                                                              LastName = emp.LastName,
                                                              LoginDate = lh.LoginDate,

@@ -54,7 +54,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                    UserId = empp.UserId,
                                                    PaymentDate = empp.PaymentDate,
                                                    EmployeeCode = emp.EmployeeCode,
-                                                   UserName = emp.FirstName + " " + emp.LastName,
+                                                   UserName = emp.Prefix + " " + emp.FirstName + " " + emp.LastName,
                                                    DebitAmount = empp.DebitAmount,
                                                    CreditAmount = empp.CreditAmount,
                                                    PaymentType = empp.PaymentType,
@@ -87,7 +87,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                              UserId = empp.UserId,
                                              PaymentDate = empp.PaymentDate,
                                              EmployeeCode = emp.EmployeeCode,
-                                             UserName = emp.FirstName + " " + emp.LastName,
+                                             UserName = emp.Prefix + " " + emp.FirstName + " " + emp.LastName,
                                              DebitAmount = empp.DebitAmount,
                                              CreditAmount = empp.CreditAmount,
                                              PaymentType = empp.PaymentType,
@@ -457,7 +457,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                    UserId = empp.UserId,
                                                    PaymentDate = empp.PaymentDate,
                                                    EmployeeCode = emp.EmployeeCode,
-                                                   UserName = emp.FirstName + " " + emp.LastName,
+                                                   UserName = emp.Prefix + " " + emp.FirstName + " " + emp.LastName,
                                                    CreditAmount = empp.CreditAmount,
                                                    DebitAmount = empp.DebitAmount,
                                                    PaymentType = empp.PaymentType,
@@ -585,7 +585,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                         && emp.AdminRoleId != (int)AdminRoles.Worker
                                         select new SelectListItem
                                         {
-                                            Text = emp.FirstName + " " + emp.LastName + " (" + emp.EmployeeCode + ")",
+                                            Text = emp.Prefix + " " + emp.FirstName + " " + emp.LastName + " (" + emp.EmployeeCode + ")",
                                             Value = emp.EmployeeId.ToString()
                                         }).OrderBy(x => x.Text).ToList();
             return lst;
@@ -599,7 +599,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                         && emp.AdminRoleId == (int)AdminRoles.Worker
                                         select new SelectListItem
                                         {
-                                            Text = emp.FirstName + " " + emp.LastName + " (" + emp.EmployeeCode + ")",
+                                            Text = emp.Prefix + " " + emp.FirstName + " " + emp.LastName + " (" + emp.EmployeeCode + ")",
                                             Value = emp.EmployeeId.ToString()
                                         }).OrderBy(x => x.Text).ToList();
             return lst;

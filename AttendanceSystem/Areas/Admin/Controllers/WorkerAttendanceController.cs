@@ -43,6 +43,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 workerAttendanceFilterVM.AttendanceList = (from at in _db.tbl_WorkerAttendance
                                                            join emp in _db.tbl_Employee on at.EmployeeId equals emp.EmployeeId
 
+                                                           join siteInfo in _db.tbl_Site on at.MorningSiteId equals siteInfo.SiteId into outerSiteInfo
+                                                           from siteInfo in outerSiteInfo.DefaultIfEmpty()
+
                                                            join workerTypeInfo in _db.tbl_WorkerType on emp.WorkerTypeId equals workerTypeInfo.WorkerTypeId into outerworkerTypeInfo
                                                            from workerTypeInfo in outerworkerTypeInfo.DefaultIfEmpty()
 
@@ -58,14 +61,15 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                                CompanyId = emp.CompanyId,
                                                                EmployeeId = emp.EmployeeId,
                                                                EmployeeCode = emp.EmployeeCode,
-                                                               Name = emp.FirstName + " " + emp.LastName,
+                                                               Name = emp.Prefix + " " + emp.FirstName + " " + emp.LastName,
                                                                WorkerTypeName = (workerTypeInfo != null ? workerTypeInfo.WorkerTypeName : ""),
                                                                AttendanceDate = at.AttendanceDate,
                                                                EmploymentCategory = emp.EmploymentCategory,
                                                                IsMorning = (workerAttendanceFilterVM.SiteId == 0 && at.IsMorning ? true : (at.IsMorning && at.MorningSiteId == workerAttendanceFilterVM.SiteId ? true : false)),
                                                                IsAfternoon = (workerAttendanceFilterVM.SiteId == 0 && at.IsAfternoon ? true : (at.IsAfternoon && at.AfternoonSiteId == workerAttendanceFilterVM.SiteId ? true : false)),
                                                                IsEvening = (workerAttendanceFilterVM.SiteId == 0 && at.IsEvening ? true : (at.IsEvening && at.EveningSiteId == workerAttendanceFilterVM.SiteId ? true : false)),
-                                                               ProfilePicture = emp.ProfilePicture
+                                                               ProfilePicture = emp.ProfilePicture,
+                                                               SiteName = (siteInfo != null ? siteInfo.SiteName : ""),
                                                            }).OrderByDescending(x => x.AttendanceDate).ToList();
 
                 workerAttendanceFilterVM.AttendanceList.ForEach(x =>
