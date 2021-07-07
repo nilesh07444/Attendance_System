@@ -91,7 +91,7 @@
                                                     @Html.HiddenFor(x => obj.WorkerAttendanceId, new { id = "WorkerAttendanceId_" + counter })
                                                 </td>
                                                 <td>
-                                                    @if (obj.Date.Date == today && !obj.IsClosed)
+                                                    @if (!obj.IsClosed)
                                                     {
                                                         <input type="checkbox" class="chkBox" id='chk_@counter' name="Select">
                                                     }
@@ -176,6 +176,7 @@
             var employeeIds = [];
             var count = 0;
             var attendanceType = $('#AttendanceType').val();
+            var date = $("#Date").val();
             var siteId = $('#SiteId').val();
             if (attendanceType == "" || attendanceType == "0") {
                 alert("Please select valid attendance type.");
@@ -203,7 +204,7 @@
                 $.ajax({
                     type: 'POST',
                     async: true,
-                    url: URL + "?siteId=" + siteId + "&attendanceType=" + attendanceType + "&ids=" + employeeIds,
+                    url: URL + "?siteId=" + siteId + "&attendanceType=" + attendanceType + "&ids=" + employeeIds + "&date=" + date ,
                     success: function (result) {
                         if (result == "success") {
                             alert("Attendance Added Successfully...");

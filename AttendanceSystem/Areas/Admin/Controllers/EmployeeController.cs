@@ -23,7 +23,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         long companyId;
         long loggedInUserId;
         bool isTrailMode;
-        
+
         public EmployeeController()
         {
             _db = new AttendanceSystemEntities();
@@ -154,7 +154,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                   IsActive = emp.IsActive,
                                   IsDeleted = emp.IsDeleted,
                                   IsFingerprintEnabled = emp.IsFingerprintEnabled,
-                                  NoOfFreeLeavePerMonth = emp.NoOfFreeLeavePerMonth
+                                  NoOfFreeLeavePerMonth = emp.NoOfFreeLeavePerMonth,
+                                  CarryForwardLeave = emp.CarryForwardLeave
 
                               }).FirstOrDefault();
                 employeeVM.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)employeeVM.EmploymentCategory);
@@ -388,7 +389,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                               IsActive = emp.IsActive,
                               IsDeleted = emp.IsDeleted,
                               IsFingerprintEnabled = emp.IsFingerprintEnabled,
-                              NoOfFreeLeavePerMonth = emp.NoOfFreeLeavePerMonth
+                              NoOfFreeLeavePerMonth = emp.NoOfFreeLeavePerMonth,
+                              CarryForwardLeave = emp.CarryForwardLeave
                           }).FirstOrDefault();
             employeeVM.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)employeeVM.EmploymentCategory);
             return View(employeeVM);
@@ -543,7 +545,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     loginHistoryFilterVM.EndDate = endDate.Value;
                 }
 
-               
+
                 long companyId = clsAdminSession.CompanyId;
                 loginHistoryFilterVM.LoginHistoryList = (from lh in _db.tbl_LoginHistory
                                                          join emp in _db.tbl_Employee on lh.EmployeeId equals emp.EmployeeId

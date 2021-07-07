@@ -68,13 +68,11 @@ namespace AttendanceSystem.ViewModel
     {
         public PaymentSummuryReportFilterVM()
         {
-            StartMonth = CommonMethod.CurrentIndianDateTime().Month;
-            EndMonth = CommonMethod.CurrentIndianDateTime().Month;
+            Month = CommonMethod.CurrentIndianDateTime().Month;
             Year = CommonMethod.CurrentIndianDateTime().Year;
         }
         public List<PaymentSummuryReportVM> PaymentSummuryReportList { get; set; }
-        public int StartMonth { get; set; }
-        public int EndMonth { get; set; }
+        public int Month { get; set; }
         public int Year { get; set; }
         public List<SelectListItem> EmployeeList { get; set; }
         public long? EmployeeId { get; set; }

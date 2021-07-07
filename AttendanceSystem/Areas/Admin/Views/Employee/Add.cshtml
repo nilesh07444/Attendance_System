@@ -7,7 +7,7 @@
     lstPrefix.Add(new SelectListItem { Value = "Mr", Text = "Mr" });
     lstPrefix.Add(new SelectListItem { Value = "Mrs", Text = "Mrs" });
     lstPrefix.Add(new SelectListItem { Value = "Miss", Text = "Miss" });
-     
+
     List<SelectListItem> lstBloodGroup = new List<SelectListItem>();
     lstBloodGroup.Add(new SelectListItem { Value = "(A+)", Text = "(A+)" });
     lstBloodGroup.Add(new SelectListItem { Value = "(A-)", Text = "(A-)" });
@@ -42,7 +42,7 @@
                 </div>
             </div>
             <div class="card card-primary">
-                  
+
                 @using (Html.BeginForm("Add", "Employee", FormMethod.Post, new { @id = "EmployeeFormId", @class = "", enctype = "multipart/form-data", role = "form" }))
                 {
                     <div class="card-body">
@@ -206,6 +206,11 @@
                             </div>
                         </div>
                         <div class="row">
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.CarryForwardLeave, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.CarryForwardLeave, new { @type = "text", @class = "form-control", @readonly = "true", @placeholder = "Enter Free Leave Per Month" })
+                                @Html.ValidationMessageFor(model => model.CarryForwardLeave, "", new { @class = "text-danger" })
+                            </div>
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.IsFingerprintEnabled, htmlAttributes: new { @class = "" })
                                 @Html.CheckBoxFor(model => model.IsFingerprintEnabled)

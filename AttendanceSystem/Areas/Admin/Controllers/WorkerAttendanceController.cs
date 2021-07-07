@@ -350,6 +350,12 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
                     #region Validation
+
+                    if (_db.tbl_Conversion.Any(x => x.CompanyId == companyId && x.Month == addWorkerAttendanceVM.AttendanceDate.Month && (x.IsEmployeeDone || x.IsWorkerDone)))
+                    {
+                        ModelState.AddModelError("", ErrorMessage.MonthlyConvesrionCompletedYouCanNotAddOrModifyAttendance);
+                    }
+
                     if (addWorkerAttendanceVM.SiteId == 0)
                     {
                         ModelState.AddModelError("", ErrorMessage.SiteRequired);
@@ -514,7 +520,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                 objWorkerPayment.PaymentDate = attendanceObject.AttendanceDate;
                                 objWorkerPayment.PaymentType = (int)EmployeePaymentType.Salary;
                                 objWorkerPayment.CreditOrDebitText = ErrorMessage.Credit;
-                                objWorkerPayment.DebitAmount = addWorkerAttendanceVM.TodaySalary.HasValue && addWorkerAttendanceVM.EmploymentCategoryId == (int)EmploymentCategory.DailyBased ? addWorkerAttendanceVM.TodaySalary.Value : 0;
+                                objWorkerPayment.DebitAmount = addWorkerAttendanceVM.SalaryGiven.HasValue && addWorkerAttendanceVM.EmploymentCategoryId == (int)EmploymentCategory.DailyBased ? addWorkerAttendanceVM.SalaryGiven.Value : 0;
                                 objWorkerPayment.Remarks = ErrorMessage.AutoCreditOnEveningAttendance;
                                 objWorkerPayment.Month = attendanceObject.AttendanceDate.Month;
                                 objWorkerPayment.Year = attendanceObject.AttendanceDate.Year;
@@ -579,194 +585,203 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public string AddAttendance(int siteId, int attendanceType, string ids)
+        public string AddAttendance(int siteId, int attendanceType, string ids, DateTime date)
         {
             string ReturnMessage = "";
             try
             {
                 long loggedinUser = clsAdminSession.UserID;
-                DateTime today = CommonMethod.CurrentIndianDateTime().Date;
+                // DateTime today = CommonMethod.CurrentIndianDateTime().Date;
                 string[] ids_array = ids.Split(',');
                 List<tbl_Employee> employeeList = _db.tbl_Employee.Where(x => ids_array.Contains(x.EmployeeId.ToString())).ToList();
                 bool isValid = true;
-                if (employeeList != null)
+
+                if (_db.tbl_Conversion.Any(x => x.CompanyId == companyId && x.Month == date.Month && (x.IsEmployeeDone || x.IsWorkerDone)))
                 {
-                    employeeList.ForEach(emp =>
+                    ReturnMessage = ErrorMessage.MonthlyConvesrionCompletedYouCanNotAddOrModifyAttendance;
+                    isValid = false;
+                }
+                else
+                {
+                    if (employeeList != null)
                     {
+                        employeeList.ForEach(emp =>
+                        {
 
-                        #region Validation
-                        if (siteId == 0)
-                        {
-                            isValid = false;
-                        }
-
-                        if (!_db.tbl_AssignWorker.Any(x => x.EmployeeId == emp.EmployeeId && x.SiteId == siteId && x.Date == today && !x.IsClosed))
-                        {
-                            isValid = false;
-                        }
-
-
-                        if (attendanceType != (int)WorkerAttendanceType.Morning
-                            && attendanceType != (int)WorkerAttendanceType.Afternoon
-                            && attendanceType != (int)WorkerAttendanceType.Evening)
-                        {
-                            isValid = false;
-                        }
-
-                        tbl_WorkerAttendance attendanceObject = _db.tbl_WorkerAttendance.Where(x => x.EmployeeId == emp.EmployeeId && x.AttendanceDate == today && !x.IsClosed).FirstOrDefault();
-                        if (attendanceObject == null && attendanceType == (int)WorkerAttendanceType.Evening)
-                        {
-                            isValid = false;
-                        }
-
-                        if (attendanceObject != null && !attendanceObject.IsMorning && attendanceObject.IsAfternoon && attendanceType == (int)WorkerAttendanceType.Morning)
-                        {
-                            isValid = false;
-                        }
-
-                        if (attendanceType == (int)WorkerAttendanceType.Morning && attendanceObject != null && attendanceObject.IsMorning)
-                        {
-                            isValid = false;
-                        }
-                        else if (attendanceType == (int)WorkerAttendanceType.Afternoon && attendanceObject != null && attendanceObject.IsAfternoon)
-                        {
-                            isValid = false;
-                        }
-                        else if (attendanceType == (int)WorkerAttendanceType.Evening && attendanceObject != null && attendanceObject.IsEvening)
-                        {
-                            isValid = false;
-                        }
-
-                        if (attendanceType == (int)WorkerAttendanceType.Evening && attendanceObject != null && !attendanceObject.IsAfternoon)
-                        {
-                            isValid = false;
-                        }
-
-                        if (attendanceType == (int)WorkerAttendanceType.Evening && emp.EmploymentCategory == (int)EmploymentCategory.HourlyBased)
-                        {
-                            isValid = false;
-                            ReturnMessage = ErrorMessage.HourlyBasedWorkerNotAllowedWithoutTotalHours;
-                        }
-
-                        if (attendanceType == (int)WorkerAttendanceType.Evening && emp.EmploymentCategory == (int)EmploymentCategory.UnitBased)
-                        {
-                            isValid = false;
-                            ReturnMessage = ErrorMessage.UnitBasedWorkerNotAllowedWithoutTotalUnits;
-                        }
-
-                        if (isValid)
-                        {
-                            if (attendanceObject != null)
+                            #region Validation
+                            if (siteId == 0)
                             {
-                                if (attendanceType == (int)WorkerAttendanceType.Evening)
-                                {
-                                    attendanceObject.IsEvening = true;
-                                    attendanceObject.EveningAttendanceBy = loggedinUser;
-                                    attendanceObject.EveningAttendanceDate = CommonMethod.CurrentIndianDateTime();
-                                    attendanceObject.EveningSiteId = siteId;
-                                    attendanceObject.IsClosed = true;
-                                    if (emp.EmploymentCategory == (int)EmploymentCategory.DailyBased || emp.EmploymentCategory == (int)EmploymentCategory.MonthlyBased)
-                                        attendanceObject.ExtraHours = 0;
-
-                                    tbl_AssignWorker assignedWorker = _db.tbl_AssignWorker.Where(x => x.SiteId == siteId && x.Date == today && x.EmployeeId == emp.EmployeeId && !x.IsClosed).FirstOrDefault();
-                                    if (assignedWorker != null)
-                                    {
-                                        assignedWorker.IsClosed = true;
-                                    }
-
-                                }
-                                else if (attendanceType == (int)WorkerAttendanceType.Afternoon)
-                                {
-                                    attendanceObject.IsAfternoon = true;
-                                    attendanceObject.AfternoonAttendanceBy = loggedinUser;
-                                    attendanceObject.AfternoonAttendanceDate = CommonMethod.CurrentIndianDateTime();
-                                    attendanceObject.AfternoonSiteId = siteId;
-                                    //attendanceObject.AfternoonLatitude = addWorkerAttendanceVM.Latitude;
-                                    //attendanceObject.AfternoonLongitude = addWorkerAttendanceVM.Longitude;
-                                    //attendanceObject.AfternoonLocationFrom = addWorkerAttendanceVM.LocationFrom;
-                                }
-                                else if (attendanceType == (int)WorkerAttendanceType.Morning)
-                                {
-                                    attendanceObject.IsMorning = true;
-                                    attendanceObject.MorningAttendanceBy = loggedinUser;
-                                    attendanceObject.MorningAttendanceDate = CommonMethod.CurrentIndianDateTime();
-                                    attendanceObject.MorningSiteId = siteId;
-                                    //attendanceObject.MorningLatitude = addWorkerAttendanceVM.Latitude;
-                                    //attendanceObject.MorningLongitude = addWorkerAttendanceVM.Longitude;
-                                    //attendanceObject.MorningLocationFrom = addWorkerAttendanceVM.LocationFrom;
-                                }
-
-
-                                _db.SaveChanges();
-                            }
-                            else
-                            {
-                                attendanceObject = new tbl_WorkerAttendance();
-                                attendanceObject.EmployeeId = emp.EmployeeId;
-                                attendanceObject.AttendanceDate = today;
-                                if (attendanceType == (int)WorkerAttendanceType.Afternoon)
-                                {
-                                    attendanceObject.IsAfternoon = true;
-                                    attendanceObject.AfternoonAttendanceBy = loggedinUser;
-                                    attendanceObject.AfternoonAttendanceDate = CommonMethod.CurrentIndianDateTime();
-                                    attendanceObject.AfternoonSiteId = siteId;
-                                    //attendanceObject.AfternoonLatitude = addWorkerAttendanceVM.Latitude;
-                                    //attendanceObject.AfternoonLongitude = addWorkerAttendanceVM.Longitude;
-                                    //attendanceObject.AfternoonLocationFrom = addWorkerAttendanceVM.LocationFrom;
-                                }
-                                else if (attendanceType == (int)WorkerAttendanceType.Morning)
-                                {
-                                    attendanceObject.IsMorning = true;
-                                    attendanceObject.MorningAttendanceBy = loggedinUser;
-                                    attendanceObject.MorningAttendanceDate = CommonMethod.CurrentIndianDateTime();
-                                    attendanceObject.MorningSiteId = siteId;
-                                    //attendanceObject.MorningLatitude = addWorkerAttendanceVM.Latitude;
-                                    //attendanceObject.MorningLongitude = addWorkerAttendanceVM.Longitude;
-                                    //attendanceObject.MorningLocationFrom = addWorkerAttendanceVM.LocationFrom;
-                                }
-                                _db.tbl_WorkerAttendance.Add(attendanceObject);
-                                _db.SaveChanges();
+                                isValid = false;
                             }
 
-                            if (emp.EmploymentCategory != (int)EmploymentCategory.MonthlyBased && attendanceType == (int)WorkerAttendanceType.Evening)
+                            if (!_db.tbl_AssignWorker.Any(x => x.EmployeeId == emp.EmployeeId && x.SiteId == siteId && x.Date == date && !x.IsClosed))
                             {
-                                if (!_db.tbl_WorkerPayment.Any(x => x.UserId == attendanceObject.EmployeeId && !x.IsDeleted && x.AttendanceId == attendanceObject.WorkerAttendanceId && x.PaymentType != (int)EmployeePaymentType.Extra))
-                                {
-                                    tbl_WorkerPayment objWorkerPayment = new tbl_WorkerPayment();
-                                    objWorkerPayment.CompanyId = companyId;
-                                    objWorkerPayment.UserId = attendanceObject.EmployeeId;
-                                    objWorkerPayment.AttendanceId = attendanceObject.WorkerAttendanceId;
-                                    objWorkerPayment.PaymentDate = attendanceObject.AttendanceDate;
-                                    objWorkerPayment.PaymentType = (int)EmployeePaymentType.Salary;
-                                    objWorkerPayment.CreditOrDebitText = ErrorMessage.Credit;
-                                    objWorkerPayment.DebitAmount = 0;
-                                    objWorkerPayment.Remarks = ErrorMessage.AutoCreditOnEveningAttendance;
-                                    objWorkerPayment.Month = attendanceObject.AttendanceDate.Month;
-                                    objWorkerPayment.Year = attendanceObject.AttendanceDate.Year;
-                                    objWorkerPayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
-                                    objWorkerPayment.CreatedBy = loggedinUser;
-                                    objWorkerPayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
-                                    objWorkerPayment.ModifiedBy = loggedinUser;
+                                isValid = false;
+                            }
 
-                                    if (emp.EmploymentCategory == (int)EmploymentCategory.DailyBased)
+
+                            if (attendanceType != (int)WorkerAttendanceType.Morning
+                                && attendanceType != (int)WorkerAttendanceType.Afternoon
+                                && attendanceType != (int)WorkerAttendanceType.Evening)
+                            {
+                                isValid = false;
+                            }
+
+                            tbl_WorkerAttendance attendanceObject = _db.tbl_WorkerAttendance.Where(x => x.EmployeeId == emp.EmployeeId && x.AttendanceDate == date && !x.IsClosed).FirstOrDefault();
+                            if (attendanceObject == null && attendanceType == (int)WorkerAttendanceType.Evening)
+                            {
+                                isValid = false;
+                            }
+
+                            if (attendanceObject != null && !attendanceObject.IsMorning && attendanceObject.IsAfternoon && attendanceType == (int)WorkerAttendanceType.Morning)
+                            {
+                                isValid = false;
+                            }
+
+                            if (attendanceType == (int)WorkerAttendanceType.Morning && attendanceObject != null && attendanceObject.IsMorning)
+                            {
+                                isValid = false;
+                            }
+                            else if (attendanceType == (int)WorkerAttendanceType.Afternoon && attendanceObject != null && attendanceObject.IsAfternoon)
+                            {
+                                isValid = false;
+                            }
+                            else if (attendanceType == (int)WorkerAttendanceType.Evening && attendanceObject != null && attendanceObject.IsEvening)
+                            {
+                                isValid = false;
+                            }
+
+                            if (attendanceType == (int)WorkerAttendanceType.Evening && attendanceObject != null && !attendanceObject.IsAfternoon)
+                            {
+                                isValid = false;
+                            }
+
+                            if (attendanceType == (int)WorkerAttendanceType.Evening && emp.EmploymentCategory == (int)EmploymentCategory.HourlyBased)
+                            {
+                                isValid = false;
+                                ReturnMessage = ErrorMessage.HourlyBasedWorkerNotAllowedWithoutTotalHours;
+                            }
+
+                            if (attendanceType == (int)WorkerAttendanceType.Evening && emp.EmploymentCategory == (int)EmploymentCategory.UnitBased)
+                            {
+                                isValid = false;
+                                ReturnMessage = ErrorMessage.UnitBasedWorkerNotAllowedWithoutTotalUnits;
+                            }
+
+                            if (isValid)
+                            {
+                                if (attendanceObject != null)
+                                {
+                                    if (attendanceType == (int)WorkerAttendanceType.Evening)
                                     {
-                                        objWorkerPayment.CreditAmount = (attendanceObject.IsMorning && attendanceObject.IsAfternoon && attendanceObject.IsEvening ? (emp.PerCategoryPrice) : (emp.PerCategoryPrice / 2));
+                                        attendanceObject.IsEvening = true;
+                                        attendanceObject.EveningAttendanceBy = loggedinUser;
+                                        attendanceObject.EveningAttendanceDate = CommonMethod.CurrentIndianDateTime();
+                                        attendanceObject.EveningSiteId = siteId;
+                                        attendanceObject.IsClosed = true;
+                                        if (emp.EmploymentCategory == (int)EmploymentCategory.DailyBased || emp.EmploymentCategory == (int)EmploymentCategory.MonthlyBased)
+                                            attendanceObject.ExtraHours = 0;
+
+                                        tbl_AssignWorker assignedWorker = _db.tbl_AssignWorker.Where(x => x.SiteId == siteId && x.Date == date && x.EmployeeId == emp.EmployeeId && !x.IsClosed).FirstOrDefault();
+                                        if (assignedWorker != null)
+                                        {
+                                            assignedWorker.IsClosed = true;
+                                        }
+
+                                    }
+                                    else if (attendanceType == (int)WorkerAttendanceType.Afternoon)
+                                    {
+                                        attendanceObject.IsAfternoon = true;
+                                        attendanceObject.AfternoonAttendanceBy = loggedinUser;
+                                        attendanceObject.AfternoonAttendanceDate = CommonMethod.CurrentIndianDateTime();
+                                        attendanceObject.AfternoonSiteId = siteId;
+                                        //attendanceObject.AfternoonLatitude = addWorkerAttendanceVM.Latitude;
+                                        //attendanceObject.AfternoonLongitude = addWorkerAttendanceVM.Longitude;
+                                        //attendanceObject.AfternoonLocationFrom = addWorkerAttendanceVM.LocationFrom;
+                                    }
+                                    else if (attendanceType == (int)WorkerAttendanceType.Morning)
+                                    {
+                                        attendanceObject.IsMorning = true;
+                                        attendanceObject.MorningAttendanceBy = loggedinUser;
+                                        attendanceObject.MorningAttendanceDate = CommonMethod.CurrentIndianDateTime();
+                                        attendanceObject.MorningSiteId = siteId;
+                                        //attendanceObject.MorningLatitude = addWorkerAttendanceVM.Latitude;
+                                        //attendanceObject.MorningLongitude = addWorkerAttendanceVM.Longitude;
+                                        //attendanceObject.MorningLocationFrom = addWorkerAttendanceVM.LocationFrom;
                                     }
 
-                                    _db.tbl_WorkerPayment.Add(objWorkerPayment);
+
+                                    _db.SaveChanges();
+                                }
+                                else
+                                {
+                                    attendanceObject = new tbl_WorkerAttendance();
+                                    attendanceObject.EmployeeId = emp.EmployeeId;
+                                    attendanceObject.AttendanceDate = date;
+                                    if (attendanceType == (int)WorkerAttendanceType.Afternoon)
+                                    {
+                                        attendanceObject.IsAfternoon = true;
+                                        attendanceObject.AfternoonAttendanceBy = loggedinUser;
+                                        attendanceObject.AfternoonAttendanceDate = CommonMethod.CurrentIndianDateTime();
+                                        attendanceObject.AfternoonSiteId = siteId;
+                                        //attendanceObject.AfternoonLatitude = addWorkerAttendanceVM.Latitude;
+                                        //attendanceObject.AfternoonLongitude = addWorkerAttendanceVM.Longitude;
+                                        //attendanceObject.AfternoonLocationFrom = addWorkerAttendanceVM.LocationFrom;
+                                    }
+                                    else if (attendanceType == (int)WorkerAttendanceType.Morning)
+                                    {
+                                        attendanceObject.IsMorning = true;
+                                        attendanceObject.MorningAttendanceBy = loggedinUser;
+                                        attendanceObject.MorningAttendanceDate = CommonMethod.CurrentIndianDateTime();
+                                        attendanceObject.MorningSiteId = siteId;
+                                        //attendanceObject.MorningLatitude = addWorkerAttendanceVM.Latitude;
+                                        //attendanceObject.MorningLongitude = addWorkerAttendanceVM.Longitude;
+                                        //attendanceObject.MorningLocationFrom = addWorkerAttendanceVM.LocationFrom;
+                                    }
+                                    _db.tbl_WorkerAttendance.Add(attendanceObject);
                                     _db.SaveChanges();
                                 }
 
+                                if (emp.EmploymentCategory != (int)EmploymentCategory.MonthlyBased && attendanceType == (int)WorkerAttendanceType.Evening)
+                                {
+                                    if (!_db.tbl_WorkerPayment.Any(x => x.UserId == attendanceObject.EmployeeId && !x.IsDeleted && x.AttendanceId == attendanceObject.WorkerAttendanceId && x.PaymentType != (int)EmployeePaymentType.Extra))
+                                    {
+                                        tbl_WorkerPayment objWorkerPayment = new tbl_WorkerPayment();
+                                        objWorkerPayment.CompanyId = companyId;
+                                        objWorkerPayment.UserId = attendanceObject.EmployeeId;
+                                        objWorkerPayment.AttendanceId = attendanceObject.WorkerAttendanceId;
+                                        objWorkerPayment.PaymentDate = attendanceObject.AttendanceDate;
+                                        objWorkerPayment.PaymentType = (int)EmployeePaymentType.Salary;
+                                        objWorkerPayment.CreditOrDebitText = ErrorMessage.Credit;
+                                        objWorkerPayment.DebitAmount = 0;
+                                        objWorkerPayment.Remarks = ErrorMessage.AutoCreditOnEveningAttendance;
+                                        objWorkerPayment.Month = attendanceObject.AttendanceDate.Month;
+                                        objWorkerPayment.Year = attendanceObject.AttendanceDate.Year;
+                                        objWorkerPayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
+                                        objWorkerPayment.CreatedBy = loggedinUser;
+                                        objWorkerPayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
+                                        objWorkerPayment.ModifiedBy = loggedinUser;
+
+                                        if (emp.EmploymentCategory == (int)EmploymentCategory.DailyBased)
+                                        {
+                                            objWorkerPayment.CreditAmount = (attendanceObject.IsMorning && attendanceObject.IsAfternoon && attendanceObject.IsEvening ? (emp.PerCategoryPrice) : (emp.PerCategoryPrice / 2));
+                                        }
+
+                                        _db.tbl_WorkerPayment.Add(objWorkerPayment);
+                                        _db.SaveChanges();
+                                    }
+
+
+                                }
 
                             }
+                            #endregion Validation
 
-                        }
-                        #endregion Validation
+                        });
 
-                    });
-
-                    _db.SaveChanges();
-                    ReturnMessage = "success";
+                        _db.SaveChanges();
+                        ReturnMessage = "success";
+                    }
                 }
             }
             catch (Exception ex)
@@ -776,6 +791,75 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             }
 
             return ReturnMessage;
+        }
+
+        public ActionResult View(long id)
+        {
+            WorkerAttendanceViewVM workerAttendanceViewVM = new WorkerAttendanceViewVM();
+            try
+            {
+                companyId = clsAdminSession.CompanyId;
+                workerAttendanceViewVM = (from at in _db.tbl_WorkerAttendance
+                                          join emp in _db.tbl_Employee on at.EmployeeId equals emp.EmployeeId
+
+                                          join mSiteInfo in _db.tbl_Site on at.MorningSiteId equals mSiteInfo.SiteId into outerMSiteInfo
+                                          from mSiteInfo in outerMSiteInfo.DefaultIfEmpty()
+                                          join aSiteInfo in _db.tbl_Site on at.AfternoonSiteId equals aSiteInfo.SiteId into outerASiteInfo
+                                          from aSiteInfo in outerASiteInfo.DefaultIfEmpty()
+                                          join eSiteInfo in _db.tbl_Site on at.EveningSiteId equals eSiteInfo.SiteId into outerESiteInfo
+                                          from eSiteInfo in outerESiteInfo.DefaultIfEmpty()
+
+                                          where emp.CompanyId == companyId
+                                          && at.WorkerAttendanceId == id
+                                          select new WorkerAttendanceViewVM
+                                          {
+                                              AttendanceId = at.WorkerAttendanceId,
+                                              EmployeeId = emp.EmployeeId,
+                                              EmployeeCode = emp.EmployeeCode,
+                                              EmployeeName = emp.Prefix + " " + emp.FirstName + " " + emp.LastName,
+                                              AttendanceDate = at.AttendanceDate,
+                                              EmploymentCategory = emp.EmploymentCategory,
+                                              IsMorning = at.IsMorning,
+                                              IsAfternoon = at.IsAfternoon,
+                                              IsEvening = at.IsEvening,
+                                              MorningSite = (mSiteInfo != null ? mSiteInfo.SiteName : ""),
+                                              MorningAttendanceBy = at.MorningAttendanceBy,
+                                              MorningAttendanceDate = at.MorningAttendanceDate,
+                                              MorningLatitude = at.MorningLatitude,
+                                              MorningLongitude = at.MorningLongitude,
+                                              MorningLocationFrom = at.MorningLocationFrom,
+                                              AfternoonSite = (aSiteInfo != null ? aSiteInfo.SiteName : ""),
+                                              AfternoonAttendanceBy = at.AfternoonAttendanceBy,
+                                              AfternoonAttendanceDate = at.AfternoonAttendanceDate,
+                                              AfternoonLatitude = at.AfternoonLatitude,
+                                              AfternoonLongitude = at.AfternoonLongitude,
+                                              AfternoonLocationFrom = at.AfternoonLocationFrom,
+                                              EveningSite = (eSiteInfo != null ? eSiteInfo.SiteName : ""),
+                                              EveningAttendanceBy = at.EveningAttendanceBy,
+                                              EveningAttendanceDate = at.EveningAttendanceDate,
+                                              EveningLatitude = at.EveningLatitude,
+                                              EveningLongitude = at.EveningLongitude,
+                                              EveningLocationFrom = at.EveningLocationFrom,
+                                              ExtraHours = at.ExtraHours,
+                                              NoOfHoursWorked = at.NoOfHoursWorked,
+                                              NoOfUnitWorked = at.NoOfUnitWorked,
+                                          }).OrderByDescending(x => x.AttendanceDate).FirstOrDefault();
+
+
+
+                workerAttendanceViewVM.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)workerAttendanceViewVM.EmploymentCategory);
+                workerAttendanceViewVM.IsMorningText = workerAttendanceViewVM.IsMorning ? ErrorMessage.YES : ErrorMessage.NO;
+                workerAttendanceViewVM.MorningAttendanceByName = workerAttendanceViewVM.MorningAttendanceBy != null ? _db.tbl_Employee.Where(x => x.EmployeeId == workerAttendanceViewVM.MorningAttendanceBy).Select(z => z.FirstName + " " + z.LastName).FirstOrDefault() : string.Empty;
+                workerAttendanceViewVM.IsAfternoonText = workerAttendanceViewVM.IsAfternoon ? ErrorMessage.YES : ErrorMessage.NO;
+                workerAttendanceViewVM.AfternoonAttendanceByName = workerAttendanceViewVM.AfternoonAttendanceBy != null ? _db.tbl_Employee.Where(x => x.EmployeeId == workerAttendanceViewVM.AfternoonAttendanceBy).Select(z => z.FirstName + " " + z.LastName).FirstOrDefault() : string.Empty;
+                workerAttendanceViewVM.IsEveningText = workerAttendanceViewVM.IsEvening ? ErrorMessage.YES : ErrorMessage.NO;
+                workerAttendanceViewVM.EveningAttendanceByName = workerAttendanceViewVM.EveningAttendanceBy != null ? _db.tbl_Employee.Where(x => x.EmployeeId == workerAttendanceViewVM.EveningAttendanceBy).Select(z => z.FirstName + " " + z.LastName).FirstOrDefault() : string.Empty;
+
+            }
+            catch (Exception ex)
+            {
+            }
+            return View(workerAttendanceViewVM);
         }
     }
 }

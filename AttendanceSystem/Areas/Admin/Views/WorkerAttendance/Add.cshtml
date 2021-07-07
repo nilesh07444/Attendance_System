@@ -123,6 +123,11 @@
                                 @Html.TextBoxFor(model => model.TodaySalary, new { @type = "number", @class = "form-control ", @readonly = true, @placeholder = "Today Salary", @maxlength = "10", @min = "0" })
                                 @Html.HiddenFor(model => model.TodaySalary)
                             </div>
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.SalaryGiven, htmlAttributes: new { @class = "" })
+                                @Html.TextBoxFor(model => model.SalaryGiven, new { @type = "number", @class = "form-control", @placeholder = "Salary Given", @maxlength = "10", @min = "0" })
+                                @Html.HiddenFor(model => model.SalaryGiven)
+                            </div>
                         </div>
                         <div class="row" id="dvNoOfHoursWorked">
                             <div class="form-group col-6">

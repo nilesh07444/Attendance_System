@@ -169,7 +169,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 {
                     long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
                     long companyId = Int64.Parse(clsAdminSession.CompanyId.ToString());
-                    DateTime today = CommonMethod.CurrentIndianDateTime().Date;
                     #region validation
                     if (_db.tbl_Conversion.Any(x => x.CompanyId == companyId && x.Month == paymentVM.PaymentDate.Month && (x.IsEmployeeDone || x.IsWorkerDone)))
                     {
@@ -222,14 +221,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     }
                     else
                     {
-                        if (paymentVM.PaymentDate < today)
-                        {
-                            ModelState.AddModelError("", ErrorMessage.PaymentNotAllowedForBackDate);
-                            paymentVM.EmployeeList = GetEmployeeList();
-                            paymentVM.EmployeePaymentTypeList = GetEmployeePaymentTypeList();
-                            return View(paymentVM);
-                        }
-
                         if (objEmployee.AdminRoleId == (int)AdminRoles.Worker)
                         {
                             tbl_WorkerPayment objWorkerPayment = new tbl_WorkerPayment();
@@ -504,7 +495,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return Json(new { Status = status, PendingSalary = pendingSalary, ErrorMessage = errorMessage }, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult EmployeePaymentSummury(int? startMonth = null, int? endMonth = null, int? year = null, long? employeeId = null)
+        public ActionResult EmployeePaymentSummury(int? month = null, int? year = null, long? employeeId = null)
         {
             PaymentSummuryReportFilterVM paymentSummuryReportFilterVM = new PaymentSummuryReportFilterVM();
             long companyId = clsAdminSession.CompanyId;
@@ -513,10 +504,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             {
                 paymentSummuryReportFilterVM.EmployeeId = employeeId.Value;
             }
-            if (startMonth.HasValue && endMonth.HasValue)
+            if (month.HasValue)
             {
-                paymentSummuryReportFilterVM.StartMonth = startMonth.Value;
-                paymentSummuryReportFilterVM.EndMonth = endMonth.Value;
+                paymentSummuryReportFilterVM.Month = month.Value;
             }
 
             if (year.HasValue)
@@ -545,19 +535,13 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             }
 
 
-            var startMonthParam = new SqlParameter()
+            var monthParam = new SqlParameter()
             {
-                ParameterName = "StartMonth",
-                Value = paymentSummuryReportFilterVM.StartMonth
+                ParameterName = "Month",
+                Value = paymentSummuryReportFilterVM.Month
             };
 
-
-            var endMonthParam = new SqlParameter()
-            {
-                ParameterName = "EndMonth",
-                Value = paymentSummuryReportFilterVM.EndMonth
-            };
-
+             
             var yearParam = new SqlParameter()
             {
                 ParameterName = "Year",
@@ -565,7 +549,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             };
 
 
-            paymentSummuryReportFilterVM.PaymentSummuryReportList = _db.Database.SqlQuery<PaymentSummuryReportVM>("exec Usp_EMployeePaymentSummuryReport @CompanyId,@StartMonth,@EndMonth,@Year,@EmployeeId", companyIdParam, startMonthParam, endMonthParam, yearParam, employeeIdParam).ToList<PaymentSummuryReportVM>();
+            paymentSummuryReportFilterVM.PaymentSummuryReportList = _db.Database.SqlQuery<PaymentSummuryReportVM>("exec Usp_EMployeePaymentSummuryReport @CompanyId,@Month,@Year,@EmployeeId", companyIdParam, monthParam, yearParam, employeeIdParam).ToList<PaymentSummuryReportVM>();
 
             paymentSummuryReportFilterVM.PaymentSummuryReportList.ForEach(x =>
             {
@@ -605,7 +589,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return lst;
         }
 
-        public ActionResult WorkerPaymentSummury(int? startMonth = null, int? endMonth = null, int? year = null, long? employeeId = null)
+        public ActionResult WorkerPaymentSummury(int? month = null, int? year = null, long? employeeId = null)
         {
             PaymentSummuryReportFilterVM paymentSummuryReportFilterVM = new PaymentSummuryReportFilterVM();
             long companyId = clsAdminSession.CompanyId;
@@ -614,10 +598,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             {
                 paymentSummuryReportFilterVM.EmployeeId = employeeId.Value;
             }
-            if (startMonth.HasValue && endMonth.HasValue)
+            if (month.HasValue)
             {
-                paymentSummuryReportFilterVM.StartMonth = startMonth.Value;
-                paymentSummuryReportFilterVM.EndMonth = endMonth.Value;
+                paymentSummuryReportFilterVM.Month = month.Value;
             }
 
             if (year.HasValue)
@@ -647,18 +630,12 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             }
 
 
-            var startMonthParam = new SqlParameter()
+            var monthParam = new SqlParameter()
             {
-                ParameterName = "StartMonth",
-                Value = paymentSummuryReportFilterVM.StartMonth
+                ParameterName = "Month",
+                Value = paymentSummuryReportFilterVM.Month
             };
 
-
-            var endMonthParam = new SqlParameter()
-            {
-                ParameterName = "EndMonth",
-                Value = paymentSummuryReportFilterVM.EndMonth
-            };
 
             var yearParam = new SqlParameter()
             {
@@ -667,7 +644,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             };
 
 
-            paymentSummuryReportFilterVM.PaymentSummuryReportList = _db.Database.SqlQuery<PaymentSummuryReportVM>("exec Usp_WorkerPaymentSummuryReport @CompanyId,@StartMonth,@EndMonth,@Year,@EmployeeId", companyIdParam, startMonthParam, endMonthParam, yearParam, employeeIdParam).ToList<PaymentSummuryReportVM>();
+            paymentSummuryReportFilterVM.PaymentSummuryReportList = _db.Database.SqlQuery<PaymentSummuryReportVM>("exec Usp_WorkerPaymentSummuryReport @CompanyId,@Month,@Year,@EmployeeId", companyIdParam, monthParam, yearParam, employeeIdParam).ToList<PaymentSummuryReportVM>();
 
             paymentSummuryReportFilterVM.PaymentSummuryReportList.ForEach(x =>
             {

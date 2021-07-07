@@ -456,11 +456,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     errorMessage = ErrorMessage.LeavePendingForAcceptCanNotCompleteConversion;
                 }
 
-                if (_db.tbl_WorkerAttendance.Any(x => workerIds.Contains(x.EmployeeId) && x.AttendanceDate.Month == month && x.AttendanceDate.Year == dateyear && !x.IsClosed))
-                {
-                    status = 0;
-                    errorMessage = ErrorMessage.WorkerAttendanceAreNotClosedCanNotCompleteConversion;
-                }
+                //if (_db.tbl_WorkerAttendance.Any(x => workerIds.Contains(x.EmployeeId) && x.AttendanceDate.Month == month && x.AttendanceDate.Year == dateyear && !x.IsClosed))
+                //{
+                //    status = 0;
+                //    errorMessage = ErrorMessage.WorkerAttendanceAreNotClosedCanNotCompleteConversion;
+                //}
 
                 if (status == 1)
                 {

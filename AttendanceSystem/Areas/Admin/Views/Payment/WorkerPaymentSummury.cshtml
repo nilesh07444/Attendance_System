@@ -24,13 +24,7 @@
                                     <div class="col-sm-2">
                                         <div class="form-group">
                                             <label>Start Month</label>
-                                            @Html.DropDownListFor(model => model.StartMonth, new SelectList(Model.CalenderMonth, "Value", "Text"), new { @class = "form-control required", style = "" })
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <div class="form-group">
-                                            <label>End Month</label>
-                                            @Html.DropDownListFor(model => model.EndMonth, new SelectList(Model.CalenderMonth, "Value", "Text"), new { @class = "form-control required", style = "" })
+                                            @Html.DropDownListFor(model => model.Month, new SelectList(Model.CalenderMonth, "Value", "Text"), new { @class = "form-control required", style = "" })
                                         </div>
                                     </div>
                                     <div class="col-sm-2">
@@ -108,18 +102,12 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('#btnSearch').click(function () {
-            var startMonth = $("#StartMonth").val();
-            var endMonth = $("#EndMonth").val();
+            var month = $("#Month").val();
             var year = $("#Year").val();
             var employeeId = $("#EmployeeId").val();
 
-            if (startMonth == "" || startMonth == 0) {
-                alert("Please select valid start month");
-                return false;
-            }
-
-            if (endMonth == "" || endMonth == 0) {
-                alert("Please select valid end month");
+            if (month == "" || month == 0) {
+                alert("Please select valid month");
                 return false;
             }
 
@@ -129,7 +117,7 @@
             }
 
             StartLoading();
-            window.location.href = "/admin/payment/workerpaymentsummury?startMonth=" + startMonth + "&endMonth=" + endMonth + "&year=" + year + "&employeeId=" + employeeId;
+            window.location.href = "/admin/payment/workerpaymentsummury?month=" + month + "&year=" + year + "&employeeId=" + employeeId;
         });
     })
 

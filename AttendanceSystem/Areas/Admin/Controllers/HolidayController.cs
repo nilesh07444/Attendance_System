@@ -80,6 +80,12 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
                 if (ModelState.IsValid)
                 {
+                    if (_db.tbl_Conversion.Any(x => x.CompanyId == companyId && x.Month == HolidayVM.StartDate.Month && (x.IsEmployeeDone || x.IsWorkerDone)))
+                    {
+                        ModelState.AddModelError("", ErrorMessage.MonthlyConvesrionCompletedYouCanNotAddOrModifyHoliday);
+                        return View(HolidayVM);
+                    }
+
                     bool isHolidayExist = CheckHolidayDate(HolidayVM.StartDate, HolidayVM.EndDate, HolidayVM.HolidayId);
                     if (isHolidayExist)
                     {

@@ -1578,6 +1578,7 @@
     <Content Include="Areas\Admin\Views\Payment\WorkerPaymentReport.cshtml" />
     <Content Include="Areas\Admin\Views\Payment\EmployeePaymentReport.cshtml" />
     <Content Include="Areas\Admin\Views\Company\ViewRequest.cshtml" />
+    <Content Include="Areas\Admin\Views\WorkerAttendance\View.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />

@@ -42,12 +42,12 @@
 
                         <div class="form-group">
                             @Html.LabelFor(model => model.HolidayReason, htmlAttributes: new { @class = "" })
-                            @Html.TextAreaFor(model => model.HolidayReason, 10, 5, new { @class = "form-control", @placeholder = "Enter Package Description", maxlength = "250" })
+                            @Html.TextAreaFor(model => model.HolidayReason, 10, 5, new { @class = "form-control", @placeholder = "Enter Holiday Reason", maxlength = "250" })
                             @Html.ValidationMessageFor(model => model.HolidayReason, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group">
                             @Html.LabelFor(model => model.Remark, htmlAttributes: new { @class = "" })
-                            @Html.TextAreaFor(model => model.Remark, 10, 5, new { @class = "form-control", @placeholder = "Enter Package Description", maxlength = "250" })
+                            @Html.TextAreaFor(model => model.Remark, 10, 5, new { @class = "form-control", @placeholder = "Enter Remark", maxlength = "250" })
                         </div>
                     </div>
 

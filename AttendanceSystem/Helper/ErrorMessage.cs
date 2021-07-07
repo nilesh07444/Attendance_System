@@ -173,6 +173,7 @@
         public static string MonthlyConvesrionCompletedYouCanNotAddOrModifyPaymentDetails = "Monthly convesrion completed you can not add or modify payment details";
         public static string MonthlyConvesrionCompletedYouCanNotAddOrModifyLeaveDetails = "Monthly convesrion completed you can not add or modify leave details";
         public static string MonthlyConvesrionCompletedYouCanNotAddOrModifyAttendance = "Monthly convesrion completed you can not add or modify attendance";
+        public static string MonthlyConvesrionCompletedYouCanNotAddOrModifyHoliday = "Monthly convesrion completed you can not add or modify holiday";
         public static string CompanyDoesNotExist = "Company does not exit.";
 
         public static string YES = "Yes";

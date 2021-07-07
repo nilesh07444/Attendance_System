@@ -197,6 +197,8 @@ namespace AttendanceSystem.ViewModel
         public string SiteName { get; set; }
         [Display(Name = "Today Salary")]
         public decimal? TodaySalary { get; set; }
+        [Display(Name = "Salary Given")]
+        public decimal? SalaryGiven { get; set; }
         public string LocationFrom { get; set; }
         public decimal Latitude { get; set; }
         public decimal Longitude { get; set; }
@@ -215,5 +217,73 @@ namespace AttendanceSystem.ViewModel
         [Display(Name = "Evening")]
         public bool IsEvening { get; set; }
         public string IsEveningText { get; set; }
+    }
+
+    public class WorkerAttendanceViewVM
+    {
+        public long AttendanceId { get; set; }
+        [Display(Name = "Date")]
+        public DateTime AttendanceDate { get; set; }
+        public string EmployeeCode { get; set; }
+        public long EmployeeId { get; set; }
+        [Display(Name = "Worker Name")]
+        public string EmployeeName { get; set; }
+        public long EmploymentCategory { get; set; }
+        [Display(Name = "Employment Category")]
+        public string EmploymentCategoryText { get; set; }
+        public bool IsMorning { get; set; }
+        [Display(Name = "Morning")]
+        public string IsMorningText { get; set; }
+        public bool IsAfternoon { get; set; }
+        [Display(Name = "Afternoon")]
+        public string IsAfternoonText { get; set; }
+        public bool IsEvening { get; set; }
+        [Display(Name = "Evening")]
+        public string IsEveningText { get; set; }
+        [Display(Name = "Morning Site")]
+        public string MorningSite { get; set; }
+        public long? MorningAttendanceBy { get; set; }
+        [Display(Name = "Morning Attendance By")]
+        public string MorningAttendanceByName { get; set; }
+        [Display(Name = "Morning Attendance Date")]
+        public DateTime? MorningAttendanceDate { get; set; }
+        [Display(Name = "Morning Latitude")]
+        public decimal? MorningLatitude { get; set; }
+        [Display(Name = "Morning Longitude")]
+        public decimal? MorningLongitude { get; set; }
+        [Display(Name = "Morning Location")]
+        public string MorningLocationFrom { get; set; }
+        [Display(Name = "Afternoon Site")]
+        public string AfternoonSite { get; set; }
+        public long? AfternoonAttendanceBy { get; set; }
+        [Display(Name = "Afternoon Attendance By")]
+        public string AfternoonAttendanceByName { get; set; }
+        [Display(Name = "Afternoon Attendance Date")]
+        public DateTime? AfternoonAttendanceDate { get; set; }
+        [Display(Name = "Afternoon Latitude")]
+        public decimal? AfternoonLatitude { get; set; }
+        [Display(Name = "Afternoon longitude")]
+        public decimal? AfternoonLongitude { get; set; }
+        [Display(Name = "Afternoon Location From")]
+        public string AfternoonLocationFrom { get; set; }
+        [Display(Name = "Evening Site")]
+        public string EveningSite { get; set; }
+        public long? EveningAttendanceBy { get; set; }
+        [Display(Name = "Evening Attendance By")]
+        public string EveningAttendanceByName { get; set; }
+        [Display(Name = "Evening Attendance Date")]
+        public DateTime? EveningAttendanceDate { get; set; }
+        [Display(Name = "Evening Latitude")]
+        public decimal? EveningLatitude { get; set; }
+        [Display(Name = "Evening Longitude")]
+        public decimal? EveningLongitude { get; set; }
+        [Display(Name = "Evening location From")]
+        public string EveningLocationFrom { get; set; }
+        [Display(Name = "Extra Hours")]
+        public decimal? ExtraHours { get; set; }
+        [Display(Name = "No Of Hours Worked")]
+        public decimal? NoOfHoursWorked { get; set; }
+        [Display(Name = "No Of Unit Worked")]
+        public int? NoOfUnitWorked { get; set; }
     }
 }

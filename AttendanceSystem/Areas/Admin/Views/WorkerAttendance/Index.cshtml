@@ -56,6 +56,7 @@
                                         <th>Morning</th>
                                         <th>Afternoon</th>
                                         <th>Evening</th>
+                                        <th>View</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -78,6 +79,9 @@
                                                 </td>
                                                 <td>
                                                     @obj.IsEveningText
+                                                </td>
+                                                <td>
+                                                    <a href="/admin/workerattendance/view/@obj.AttendanceId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
                                                 </td>
                                             </tr>
 

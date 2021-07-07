@@ -120,6 +120,8 @@ namespace AttendanceSystem.ViewModel
         [Display(Name = "Free Leave Per Month *")]
         //[MaxLength(10)]
         public decimal NoOfFreeLeavePerMonth { get; set; }
+        [Display(Name = "Carry Forward Leave")]
+        public decimal CarryForwardLeave { get; set; }
 
         [Display(Name = "Worker Type *")]
         public long? WorkerTypeId { get; set; }
