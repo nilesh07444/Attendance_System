@@ -262,6 +262,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         {
             clsAdminSession.SessionID = "";
             clsAdminSession.UserID = 0;
+            Session.Clear();
+            Session.RemoveAll();
+            Session.Abandon();
+
             return RedirectToAction("Index");
         }
 

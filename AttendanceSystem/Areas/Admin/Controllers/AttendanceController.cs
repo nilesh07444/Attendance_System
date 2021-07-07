@@ -82,6 +82,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 {
                     x.StatusText = attendanceStatusList.Where(z => z.Value == x.Status.ToString()).Select(c => c.Text).FirstOrDefault();
                     x.DayTypeText = (x.EmploymentCategory == (int)EmploymentCategory.MonthlyBased || x.EmploymentCategory == (int)EmploymentCategory.MonthlyBased) ? (x.DayType == 1 ? CommonMethod.GetEnumDescription(DayType.FullDay) : CommonMethod.GetEnumDescription(DayType.HalfDay)) : string.Empty;
+                    x.BgColor = attendanceFilterVM.AttendanceList.Any(z => z.UserId == x.UserId && z.AttendanceDate == x.AttendanceDate && z.AttendanceId != x.AttendanceId) ? ErrorMessage.Red : string.Empty;
                 });
             }
             catch (Exception ex)

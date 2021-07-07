@@ -117,6 +117,7 @@
         public static string PleaseProvideDayType = "Please provide day type.";
         public static string PleaseProvideNoOfHoursWorked = "Please provide no of hours worked.";
         public static string PleaseProvideNoOfUnitWorked = "Please provide no of Unit worked.";
+        public static string YourAttendanceNotTakenYetYouCanNotAssignWorker = "Your attendance not taken yet you can not assign worker.";
 
         public static string PackageAlreadyAssigned = "PackageAlreadyAssigned";
         public static string Success = "success";
@@ -184,5 +185,7 @@
         public static string PaymentNotAllowedForBackDate = "Payment not allowed for back date.";
         public static string PaymentAmountShouldbeGreaterThanZero = "Payment amount should be greater than 0.";
         public static string PaymentTypeWrong = "Payment Type is wrong, It should be Salary or Extra.";
+        public static string Red = "red";
+
     }
 }

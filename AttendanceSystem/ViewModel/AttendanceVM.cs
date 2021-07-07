@@ -57,10 +57,10 @@ namespace AttendanceSystem.ViewModel
 
         public string EmployeeCode { get; set; }
         public decimal PerCategoryPrice { get; set; }
-
         // Additional fields
         public string EmployeeDesignation { get; set; }
-         
+        public string BgColor { get; set; }
+
     }
 
     public class AttendanceFilterVM
@@ -148,8 +148,9 @@ namespace AttendanceSystem.ViewModel
         public string IsAfternoonText { get; set; }
         public bool IsEvening { get; set; }
         public string IsEveningText { get; set; }
-
         public string SiteName { get; set; }
+        public string BgColor { get; set; }
+
     }
 
     public class WorkerAttendanceReportFilterVM

@@ -64,7 +64,7 @@
                                     {
                                         foreach (WorkerAttendanceVM obj in Model.AttendanceList)
                                         {
-                                            <tr>
+                                            <tr style="background-color:@obj.BgColor;">
                                                 <td>@counter.</td>
                                                 <td>@obj.AttendanceDate.ToString("dd MMM yyyy")</td>
                                                 <td>@obj.Name</td>

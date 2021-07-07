@@ -537,7 +537,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 //Get student name of string type
                 List<SiteAssignedWorkerVM> workerList = _db.Database.SqlQuery<SiteAssignedWorkerVM>("exec Usp_GetSiteAssignedWorkerList @CompanyId,@RoleId,@SiteId,@Date ", companyParam, siteParam, roleParam, dateParam).ToList<SiteAssignedWorkerVM>();
 
-                workerList.ForEach(x => {
+                workerList.ForEach(x =>
+                {
                     x.ProfilePicture = !string.IsNullOrEmpty(x.ProfilePicture) ? domainUrl + ErrorMessage.EmployeeDirectoryPath + x.ProfilePicture : string.Empty;
                 });
                 response.Data = workerList;
@@ -563,9 +564,15 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 companyId = base.UTI.CompanyId;
 
                 #region Validation
-                DateTime indianCurrentDateTime = CommonMethod.CurrentIndianDateTime();
+                DateTime today = CommonMethod.CurrentIndianDateTime().Date;
 
-                if (requestVM.Date.Date != indianCurrentDateTime.Date)
+                if (!_db.tbl_Attendance.Any(x => x.UserId == employeeId && x.AttendanceDate == today && x.InDateTime != null && x.OutDateTime == null))
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.YourAttendanceNotTakenYetYouCanNotAssignWorker);
+                }
+
+                if (requestVM.Date.Date != today)
                 {
                     response.IsError = true;
                     response.AddError(ErrorMessage.WorkerCanAssignForTodayOnly);

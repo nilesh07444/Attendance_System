@@ -79,6 +79,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     x.IsMorningText = x.IsMorning ? ErrorMessage.YES : ErrorMessage.NO;
                     x.IsAfternoonText = x.IsAfternoon ? ErrorMessage.YES : ErrorMessage.NO;
                     x.IsEveningText = x.IsEvening ? ErrorMessage.YES : ErrorMessage.NO;
+                    x.BgColor = workerAttendanceFilterVM.AttendanceList.Any(z => z.EmployeeId == x.EmployeeId && z.AttendanceDate == x.AttendanceDate && z.AttendanceId != x.AttendanceId) ? ErrorMessage.Red : string.Empty;
                 });
                 workerAttendanceFilterVM.EmployeeList = GetWorkerList();
                 workerAttendanceFilterVM.SiteList = GetSiteList();
@@ -208,6 +209,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     x.IsAfternoonText = x.IsAfternoon ? ErrorMessage.YES : ErrorMessage.NO;
                     x.IsEveningText = x.IsEvening ? ErrorMessage.YES : ErrorMessage.NO;
                     x.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)x.EmploymentCategory);
+                    
                 });
                 assignedWorkerFilterVM.EmployeeList = GetWorkerList();
                 assignedWorkerFilterVM.SiteList = GetSiteList();

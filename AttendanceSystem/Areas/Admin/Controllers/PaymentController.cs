@@ -185,6 +185,15 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         paymentVM.EmployeePaymentTypeList = GetEmployeePaymentTypeList();
                         return View(paymentVM);
                     }
+
+
+                    if (paymentVM.PaymentType != (int)EmployeePaymentType.Salary && paymentVM.PaymentType != (int)EmployeePaymentType.Extra)
+                    {
+                        ModelState.AddModelError("", ErrorMessage.PaymentTypeWrong);
+                        paymentVM.EmployeeList = GetEmployeeList();
+                        paymentVM.EmployeePaymentTypeList = GetEmployeePaymentTypeList();
+                        return View(paymentVM);
+                    }
                     #endregion
 
                     tbl_Employee objEmployee = _db.tbl_Employee.Where(x => x.EmployeeId == paymentVM.UserId).FirstOrDefault();
@@ -340,6 +349,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         ReturnMessage = "convertioncomplete";
                     }
                     #endregion
+
                     if (string.IsNullOrEmpty(ReturnMessage))
                     {
                         long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
