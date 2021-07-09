@@ -205,6 +205,17 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         }
                     }
 
+                    if (employeeVM.EmploymentCategory == (int)EmploymentCategory.MonthlyBased)
+                    {
+                        int MaximumFreeLeavePerMonth = Convert.ToInt32(ConfigurationManager.AppSettings["MaximumFreeLeavePerMonth"]);
+                        if (employeeVM.NoOfFreeLeavePerMonth > MaximumFreeLeavePerMonth)
+                        {
+                            employeeVM.UserRoleList = GetUserRoleList();
+                            ModelState.AddModelError("NoOfFreeLeavePerMonth", ErrorMessage.Maximum10FreeLeavePerMonthAllowed);
+                            return View(employeeVM);
+                        }
+                    }
+
                     if (employeeVM.EmployeeId > 0)
                     {
                         tbl_Employee objEmployee = _db.tbl_Employee.Where(x => x.EmployeeId == employeeVM.EmployeeId).FirstOrDefault();

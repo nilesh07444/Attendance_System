@@ -232,7 +232,6 @@
 <script type="text/javascript">
     $(document).ready(function () {
 
-        fnShowHideBasedOnEmploymentCategory();
         var employeeId = $("#EmployeeId").val();
 
         if (employeeId > 0) {
@@ -250,6 +249,8 @@
             $("#dvPerCatPrice").hide();
             $("#dvFreeLeave").hide();
         }
+
+        fnShowHideBasedOnEmploymentCategory();
 
         $('#btnCancel').click(function () {
             window.location.href = "/admin/worker";

@@ -64,6 +64,7 @@
                                         <th>Employee Code</th>
                                         <th>Employee</th>
                                         <th>Role</th>
+                                        <th>Category</th>
                                         <th>Amount</th>
                                         <th>Payment Type</th>
                                         <th>Amount Given By</th>
@@ -75,22 +76,23 @@
                                     {
                                         foreach (PaymentVM obj in Model.PaymentList)
                                         {
-                                            <tr>
-                                                <td>@counter.</td>
-                                                <td>@obj.PaymentDate.ToString("dd MMM yyyy")</td>
-                                                <td>@obj.EmployeeCode</td>
-                                                <td>@obj.UserName</td>
-                                                <td>@obj.AdminRoleText</td>
-                                                <td>@obj.DebitAmount</td>
-                                                <td>@obj.PaymentTypeText</td>
-                                                <td>@obj.AmountGivenBy</td>
-                                                <td>
+                                    <tr>
+                                        <td>@counter.</td>
+                                        <td>@obj.PaymentDate.ToString("dd MMM yyyy")</td>
+                                        <td>@obj.EmployeeCode</td>
+                                        <td>@obj.UserName</td>
+                                        <td>@obj.AdminRoleText</td>
+                                        <td>@obj.EmploymentCategoryText</td>
+                                        <td>@obj.DebitAmount</td>
+                                        <td>@obj.PaymentTypeText</td>
+                                        <td>@obj.AmountGivenBy</td>
+                                        <td>
 
-                                                    <a href="/admin/payment/add?id=@obj.EmployeePaymentId&adminRoleId=@obj.AdminRoleId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
-                                                    <a href="javascript:void(0);" title="Delete" class="btn btn-icon btn-danger" onclick="fnDeleteEmployee('@obj.EmployeePaymentId','@obj.UserId')"><i class="fas fa-trash-alt"></i></a>
+                                            <a href="/admin/payment/add?id=@obj.EmployeePaymentId&adminRoleId=@obj.AdminRoleId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
+                                            <a href="javascript:void(0);" title="Delete" class="btn btn-icon btn-danger" onclick="fnDeleteEmployee('@obj.EmployeePaymentId','@obj.UserId')"><i class="fas fa-trash-alt"></i></a>
 
-                                                </td>
-                                            </tr>
+                                        </td>
+                                    </tr>
 
                                             counter++;
                                         }

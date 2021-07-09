@@ -97,6 +97,7 @@
         public static string EmployeeIdIsNotValid = "Employee id is not valid.";
         public static string EmployeeDoesNotExist = "Employee does not exist.";
         public static string CompanyNameMinimum2CharacterRequired = "Company name minimum 2 character required.";
+        public static string Maximum10FreeLeavePerMonthAllowed = "Maximum 10 Free Leave Per Month Allowed.";
 
         public static string CompanyIsNotActive = "Company is not active.";
         public static string CompanyAccountIsExpired = "Company account is expired.";

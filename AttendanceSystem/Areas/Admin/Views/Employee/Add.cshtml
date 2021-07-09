@@ -24,7 +24,6 @@
     lstEmploymentCategory.Add(new SelectListItem { Value = "3", Text = "Monthly Based" });
     lstEmploymentCategory.Add(new SelectListItem { Value = "4", Text = "Unit Based" });
 
-
 }
 
 <section class="section">
@@ -34,7 +33,7 @@
             <div class="card">
                 <div class="card-header" style="background-color: #425C59; display: block;">
                     <div class="pull-left">
-                        <h4 style="color: #FFCEA3;">@(Model.EmployeeId == 0 ? "Add" : "Edit") Employee</h4>
+                        <h4 style="color: #FFCEA3;">@(Model.EmployeeId == 0 ? "Add" : "Edit") Employee @IsAddMode</h4>
                     </div>
                     <div class="pull-right">
                         <a href="/admin/employee" class="btn btn-warning pull-right"><i class="fas fa-backward"></i> Back</a>
@@ -292,7 +291,10 @@
             $("#dvExtraHours").hide();
             $("#dvPerCatPrice").hide();
             $("#dvFreeLeave").hide();
+
+            fnShowHideBasedOnEmploymentCategory();
         }
+
         $('#btnCancel').click(function () {
             window.location.href = "/admin/employee";
         });
@@ -365,8 +367,7 @@
         });
 
     })
-
-
+     
     function fnShowHideBasedOnEmploymentCategory() {
         var EmploymentCategory = $('#EmploymentCategory').val();
         if (EmploymentCategory == "3") {

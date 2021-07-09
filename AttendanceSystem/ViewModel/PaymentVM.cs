@@ -47,6 +47,9 @@ namespace AttendanceSystem.ViewModel
         public List<SelectListItem> EmployeePaymentTypeList { get; set; }
         public string AdminRoleText { get; set; }
         public string AmountGivenBy { get; set; }
+        public int EmploymentCategory { get; set; }
+        public string EmploymentCategoryText { get; set; }
+        
     }
 
     public class PaymentFilterVM

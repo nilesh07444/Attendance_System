@@ -19,7 +19,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         AttendanceSystemEntities _db;
         public string employeeDirectoryPath = "";
         string psSult;
-        string enviornment;
         long companyId;
         long loggedInUserId;
         bool isTrailMode;
@@ -29,7 +28,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             _db = new AttendanceSystemEntities();
             employeeDirectoryPath = ErrorMessage.EmployeeDirectoryPath;
             psSult = ConfigurationManager.AppSettings["PasswordSult"].ToString();
-            enviornment = ConfigurationManager.AppSettings["Environment"].ToString();
             companyId = clsAdminSession.CompanyId;
             loggedInUserId = clsAdminSession.UserID;
             isTrailMode = clsAdminSession.IsTrialMode;
@@ -196,6 +194,20 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         if (employeeVM.EmployeeId == 0)
                         {
                             ModelState.AddModelError("ProfileImageFile", ErrorMessage.ImageRequired);
+                            return View(employeeVM);
+                        }
+                    }
+
+                    #endregion
+
+                    #region Validation
+
+                    if (employeeVM.EmploymentCategory == (int)EmploymentCategory.MonthlyBased)
+                    {
+                        int MaximumFreeLeavePerMonth = Convert.ToInt32(ConfigurationManager.AppSettings["MaximumFreeLeavePerMonth"]);
+                        if (employeeVM.NoOfFreeLeavePerMonth > MaximumFreeLeavePerMonth)
+                        {                            
+                            ModelState.AddModelError("NoOfFreeLeavePerMonth", ErrorMessage.Maximum10FreeLeavePerMonthAllowed);
                             return View(employeeVM);
                         }
                     }

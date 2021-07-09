@@ -59,7 +59,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                    CreditAmount = empp.CreditAmount,
                                                    PaymentType = empp.PaymentType,
                                                    AdminRoleId = emp.AdminRoleId,
-
+                                                   EmploymentCategory = emp.EmploymentCategory,
                                                    AdminRoleText = rl.AdminRoleName,
                                                    AmountGivenBy = (paidBy != null ? emp.FirstName + " " + emp.LastName : (empp.CreatedBy == (int)PaymentGivenBy.CompanyAdmin ? "Company Admin" : "")),
 
@@ -68,6 +68,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 paymentFilterVM.PaymentList.ForEach(x =>
                 {
                     x.PaymentTypeText = employeePaymentTypeList.Where(z => z.Value == x.PaymentType.ToString()).Select(c => c.Text).FirstOrDefault();
+                    x.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)x.EmploymentCategory);
                 });
 
                 var workerPaymentList = (from empp in _db.tbl_WorkerPayment
@@ -92,7 +93,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                              CreditAmount = empp.CreditAmount,
                                              PaymentType = empp.PaymentType,
                                              AdminRoleId = emp.AdminRoleId,
-
+                                             EmploymentCategory = emp.EmploymentCategory,
                                              AdminRoleText = rl.AdminRoleName,
                                              AmountGivenBy = (paidBy != null ? emp.FirstName + " " + emp.LastName : (emp.CreatedBy == (int)PaymentGivenBy.CompanyAdmin ? "Company Admin" : "")),
 
@@ -101,6 +102,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 workerPaymentList.ForEach(x =>
                 {
                     x.PaymentTypeText = employeePaymentTypeList.Where(z => z.Value == x.PaymentType.ToString()).Select(c => c.Text).FirstOrDefault();
+                    x.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)x.EmploymentCategory);
                 });
 
                 paymentFilterVM.PaymentList = paymentFilterVM.PaymentList.Union(workerPaymentList).OrderByDescending(x => x.EmployeePaymentId).ToList();
