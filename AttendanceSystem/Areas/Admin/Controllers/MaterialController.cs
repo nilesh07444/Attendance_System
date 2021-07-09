@@ -3,6 +3,7 @@ using AttendanceSystem.Models;
 using AttendanceSystem.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -24,52 +25,78 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
         public ActionResult Index(long? SiteId, long? MaterialCategoryId, int? Status, DateTime? StartDate, DateTime? EndDate)
         {
-            List<MaterialVM> material = new List<MaterialVM>();
+
+            MaterialFilterVM materialFilterVM = new MaterialFilterVM();
+
             try
             {
+
+                if (SiteId.HasValue)
+                {
+                    materialFilterVM.SiteId = SiteId.Value;
+                }
+
+                if (MaterialCategoryId.HasValue)
+                {
+                    materialFilterVM.MaterialCategoryId = MaterialCategoryId.Value;
+                }
+
+                if (Status.HasValue)
+                {
+                    materialFilterVM.Status = Status.Value;
+                }
+
+                if (StartDate.HasValue && EndDate.HasValue)
+                {
+                    materialFilterVM.StartDate = StartDate.Value;
+                    materialFilterVM.EndDate = EndDate.Value;
+                }
+
                 long companyId = clsAdminSession.CompanyId;
 
                 List<SelectListItem> materialStatusList = GetMaterialStatusList();
 
-                material = (from mt in _db.tbl_Material
-                            join mc in _db.tbl_MaterialCategory on mt.MaterialCategoryId equals mc.MaterialCategoryId
-                            join st in _db.tbl_Site on mt.SiteId equals st.SiteId
-                            where !mt.IsDeleted && mt.CompanyId == companyId
-                            select new MaterialVM
-                            {
-                                MaterialId = mt.MaterialId,
-                                MaterialCategoryId = mt.MaterialCategoryId.Value,
-                                MaterialCategoryText = mc.MaterialCategoryName,
-                                MaterialDate = mt.MaterialDate,
-                                SiteId = mt.SiteId,
-                                SiteName = st.SiteName,
-                                Qty = mt.Qty,
-                                InOut = mt.InOut,
-                                Remarks = mt.Remarks,
-                                IsActive = mt.IsActive,
-                            }).OrderByDescending(x => x.MaterialId).ToList();
+                materialFilterVM.MaterialList = (from mt in _db.tbl_Material
+                                                 join mc in _db.tbl_MaterialCategory on mt.MaterialCategoryId equals mc.MaterialCategoryId
+                                                 join st in _db.tbl_Site on mt.SiteId equals st.SiteId
+                                                 where !mt.IsDeleted && mt.CompanyId == companyId
 
-                material.ForEach(x =>
+                                                 && (materialFilterVM.StartDate.HasValue ? (DbFunctions.TruncateTime(mt.MaterialDate) >= DbFunctions.TruncateTime(materialFilterVM.StartDate)) : true)
+                                                 && (materialFilterVM.EndDate.HasValue ? (DbFunctions.TruncateTime(mt.MaterialDate) <= DbFunctions.TruncateTime(materialFilterVM.EndDate)) : true)
+
+                                                 && (materialFilterVM.SiteId.HasValue ? mt.SiteId == materialFilterVM.SiteId.Value : true)
+                                                 && (materialFilterVM.MaterialCategoryId.HasValue ? mt.MaterialCategoryId == materialFilterVM.MaterialCategoryId.Value : true)
+                                                 && (materialFilterVM.Status.HasValue ? mt.InOut == materialFilterVM.Status.Value : true)
+
+                                                 select new MaterialVM
+                                                 {
+                                                     MaterialId = mt.MaterialId,
+                                                     MaterialCategoryId = mt.MaterialCategoryId.Value,
+                                                     MaterialCategoryText = mc.MaterialCategoryName,
+                                                     MaterialDate = mt.MaterialDate,
+                                                     SiteId = mt.SiteId,
+                                                     SiteName = st.SiteName,
+                                                     Qty = mt.Qty,
+                                                     InOut = mt.InOut,
+                                                     Remarks = mt.Remarks,
+                                                     IsActive = mt.IsActive,
+                                                 }).OrderByDescending(x => x.MaterialId).ToList();
+
+                materialFilterVM.MaterialList.ForEach(x =>
                 {
                     x.InOutText = materialStatusList.Where(z => z.Value == x.InOut.ToString()).Select(c => c.Text).FirstOrDefault();
                 });
 
-                ViewData["SiteList"] = GetSiteList();
-                ViewData["MaterialCategoryList"] = GetMaterialCategoryList();
-                ViewData["MaterialStatusList"] = GetMaterialStatusList();
-
-                ViewBag.filterSiteId = SiteId;
-                ViewBag.filterMaterialCategoryId = MaterialCategoryId;
-                ViewBag.filterStatus = Status;
-                ViewBag.filterStartDate = StartDate;
-                ViewBag.filterEndDate = EndDate;
-
+                materialFilterVM.MaterialCategoryList = GetMaterialCategoryList();
+                materialFilterVM.MaterialStatusList = GetMaterialStatusList();
+                materialFilterVM.SiteList = GetSiteList();
+                 
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-            return View(material);
+            return View(materialFilterVM);
         }
 
         public ActionResult Add(long id)

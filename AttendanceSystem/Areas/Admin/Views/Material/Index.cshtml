@@ -1,23 +1,19 @@
 ﻿@using AttendanceSystem.ViewModel;
 @using AttendanceSystem.Helper;
-@model List<AttendanceSystem.ViewModel.MaterialVM>
+@model AttendanceSystem.ViewModel.MaterialFilterVM
 @{
     ViewBag.Title = "Material";
-
-    List<SelectListItem> lstSites = ViewData["SiteList"] as List<SelectListItem>;
-    List<SelectListItem> lstMaterialCategory = ViewData["MaterialCategoryList"] as List<SelectListItem>;
-    List<SelectListItem> lstMaterialStatus = ViewData["MaterialStatusList"] as List<SelectListItem>;
-
+     
     int counter = 1;
 
     decimal totalInwardQty = 0;
     decimal totalOutwardQty = 0;
     decimal totalRemainingQty = 0;
 
-    if (Model != null && Model.Count > 0)
+    if (Model != null && Model.MaterialList != null && Model.MaterialList.Count > 0)
     {
-        totalInwardQty = Model.Where(x => x.InOut == (int)MaterialStatus.Inward).Sum(x => x.Qty);
-        totalOutwardQty = Model.Where(x => x.InOut == (int)MaterialStatus.Outward).Sum(x => x.Qty);
+        totalInwardQty = Model.MaterialList.Where(x => x.InOut == (int)MaterialStatus.Inward).Sum(x => x.Qty);
+        totalOutwardQty = Model.MaterialList.Where(x => x.InOut == (int)MaterialStatus.Outward).Sum(x => x.Qty);
         totalRemainingQty = totalInwardQty - totalOutwardQty;
     }
 
@@ -48,58 +44,31 @@
                                     <div class="col-sm-2">
                                         <div class="form-group">
                                             <label>Start Date</label>
-                                            <input id="StartDate" type="date" class="form-control" placeholder="Start Date" style="height:calc(2.25rem + 6px);" value="@ViewBag.filterStartDate" />
+                                            @Html.TextBoxFor(model => model.StartDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control", @placeholder = "Start Date", @style = "height:calc(2.25rem + 6px);" })
                                         </div>
                                     </div>
                                     <div class="col-sm-2">
                                         <div class="form-group">
                                             <label>End Date</label>
-                                            <input id="EndDate" type="date" class="form-control" placeholder="End Date" style="height:calc(2.25rem + 6px);" value="@ViewBag.filterEndDate" />
+                                            @Html.TextBoxFor(model => model.EndDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control", @placeholder = "End Date", @style = "height:calc(2.25rem + 6px);" })
                                         </div>
                                     </div>
                                     <div class="col-sm-2">
                                         <div class="form-group">
                                             <label>Site Location</label>
-                                            <select id="SiteId" class="form-control required">
-                                                <option>-All-</option>
-                                                @if (lstSites != null && lstSites.Count > 0)
-                                                {
-                                                    foreach (SelectListItem site in lstSites)
-                                                    {
-                                                        <option value="@site.Value">@site.Text</option>
-                                                    }
-                                                }
-                                            </select>
+                                            @Html.DropDownListFor(model => model.SiteId, new SelectList(Model.SiteList, "Value", "Text"), "- All -", new { @class = "form-control required", style = "" })
                                         </div>
                                     </div>
                                     <div class="col-sm-2">
                                         <div class="form-group">
                                             <label>Material Category</label>
-                                            <select id="MaterialCategoryId" class="form-control required">
-                                                <option>-All-</option>
-                                                @if (lstMaterialCategory != null && lstMaterialCategory.Count > 0)
-                                                {
-                                                    foreach (SelectListItem cat in lstMaterialCategory)
-                                                    {
-                                                        <option value="@cat.Value">@cat.Text</option>
-                                                    }
-                                                }
-                                            </select>
+                                            @Html.DropDownListFor(model => model.MaterialCategoryId, new SelectList(Model.MaterialCategoryList, "Value", "Text"), "- All -", new { @class = "form-control required", style = "" })
                                         </div>
                                     </div>
                                     <div class="col-sm-2">
                                         <div class="form-group">
                                             <label>Material Type</label>
-                                            <select id="Status" class="form-control required">
-                                                <option>-All-</option>
-                                                @if (lstMaterialStatus != null && lstMaterialStatus.Count > 0)
-                                                {
-                                                    foreach (SelectListItem type in lstMaterialStatus)
-                                                    {
-                                                        <option value="@type.Value">@type.Text</option>
-                                                    }
-                                                }
-                                            </select>
+                                            @Html.DropDownListFor(model => model.Status, new SelectList(Model.MaterialStatusList, "Value", "Text"), "- All -", new { @class = "form-control required", style = "" })
                                         </div>
                                     </div>
                                     <div class="col-sm-1">
@@ -126,9 +95,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if (Model != null && Model.Count > 0)
+                                    @if (Model != null && Model.MaterialList != null && Model.MaterialList.Count > 0)
                                     {
-                                        foreach (MaterialVM obj in Model)
+                                        foreach (MaterialVM obj in Model.MaterialList)
                                         {
                                             <tr>
                                                 <td>@counter.</td>
