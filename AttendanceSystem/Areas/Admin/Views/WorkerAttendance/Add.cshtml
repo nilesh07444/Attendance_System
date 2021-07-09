@@ -109,7 +109,7 @@
                             <div class="row">
                                 <div class="form-group col-6">
                                     @Html.LabelFor(model => model.PendingSalary, htmlAttributes: new { @class = "" })
-                                    @Html.TextBoxFor(model => model.PendingSalary, new { @type = "number", @class = "form-control ", @readonly = true, @placeholder = "Pending Salary", @maxlength = "10", @min = "0" })
+                                    @Html.TextBoxFor(model => model.PendingSalary, new { @type = "number", @class = "form-control ", @readonly = true, @placeholder = "Pending Salary" })
                                     @Html.HiddenFor(model => model.PendingSalary)
                                 </div>
                             </div>
@@ -160,7 +160,7 @@
                             <div class="row">
                                 <div class="form-group col-6">
                                     @Html.LabelFor(model => model.TotalPendingSalary, htmlAttributes: new { @class = "" })
-                                    @Html.TextBoxFor(model => model.TotalPendingSalary, new { @type = "number", @class = "form-control", @readonly = true, @placeholder = "Total Extra Amount", @maxlength = "10", @min = "0" })
+                                    @Html.TextBoxFor(model => model.TotalPendingSalary, new { @type = "number", @class = "form-control", @readonly = true, @placeholder = "Total Pending Salary" })
                                     @Html.HiddenFor(model => model.TotalPendingSalary)
                                 </div>
                             </div>
@@ -174,7 +174,7 @@
                             <div class="row">
                                 <div class="form-group col-6">
                                     @Html.LabelFor(model => model.RemainingBalance, htmlAttributes: new { @class = "" })
-                                    @Html.TextBoxFor(model => model.RemainingBalance, new { @type = "number", @class = "form-control", @readonly = true, @placeholder = "Total Extra Amount", @maxlength = "10", @min = "0" })
+                                    @Html.TextBoxFor(model => model.RemainingBalance, new { @type = "number", @class = "form-control", @readonly = true, @placeholder = "Remaining Balance" })
                                     @Html.HiddenFor(model => model.RemainingBalance)
                                 </div>
                             </div>
