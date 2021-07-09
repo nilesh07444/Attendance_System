@@ -11,6 +11,7 @@ using System.Web.Mvc;
 namespace AttendanceSystem.Areas.Admin.Controllers
 {
     [PageAccess]
+    [NoDirectAccess]
     public class SMSPackageController : Controller
     {
         // GET: Admin/SMSPackage

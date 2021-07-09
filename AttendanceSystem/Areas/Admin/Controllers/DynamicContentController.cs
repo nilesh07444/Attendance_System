@@ -9,6 +9,7 @@ using AttendanceSystem.Models;
 namespace AttendanceSystem.Areas.Admin.Controllers
 {
     [PageAccess]
+    [NoDirectAccess]
     public class DynamicContentController : Controller
     {
         private readonly AttendanceSystemEntities _db;

@@ -9,6 +9,7 @@ using System.Web.Mvc;
 namespace AttendanceSystem.Areas.Admin.Controllers
 {
     [PageAccess]
+    [NoDirectAccess]
     public class WorkerTypeController : Controller
     {
         // GET: Admin/WorkerType

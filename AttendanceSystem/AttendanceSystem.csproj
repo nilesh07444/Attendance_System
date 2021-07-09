@@ -243,6 +243,7 @@
     <Compile Include="Filters\JWT\HttpAuthenticationChallengeContextExtensions.cs" />
     <Compile Include="Filters\JWT\JwtAuthenticationAttribute.cs" />
     <Compile Include="Helper\JWTAuthenticationHelper.cs" />
+    <Compile Include="Helper\NoDirectAccess.cs" />
     <Compile Include="Helper\PageAccess.cs" />
     <Compile Include="Models\AttendanceSystem.Context.cs">
       <AutoGen>True</AutoGen>
@@ -1144,6 +1145,7 @@
     <Content Include="Content\admin-theme\assets\img\spinner-white.svg" />
     <Content Include="Content\admin-theme\assets\img\spinner.svg" />
     <Content Include="Content\admin-theme\assets\img\typing.svg" />
+    <Content Include="Content\admin-theme\assets\img\Unauthorized.jpg" />
     <Content Include="Content\admin-theme\assets\img\user.png" />
     <Content Include="Content\admin-theme\assets\img\users\user-1.png" />
     <Content Include="Content\admin-theme\assets\img\users\user-10.png" />
@@ -1579,6 +1581,7 @@
     <Content Include="Areas\Admin\Views\Payment\EmployeePaymentReport.cshtml" />
     <Content Include="Areas\Admin\Views\Company\ViewRequest.cshtml" />
     <Content Include="Areas\Admin\Views\WorkerAttendance\View.cshtml" />
+    <Content Include="Areas\Admin\Views\Dashboard\URLRedirect.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />

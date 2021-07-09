@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Net;
-using System.Web;
+﻿using System.Net;
 using System.Web.Mvc;
 using System.Web.Routing;
 
@@ -11,7 +9,7 @@ namespace AttendanceSystem.Helper
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
 
-            if (filterContext.HttpContext.Session["UserID"] == null)
+           if (filterContext.HttpContext.Session["UserID"] == null)
             {
                 if (filterContext.HttpContext.Request.IsAjaxRequest())
                 {

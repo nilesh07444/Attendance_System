@@ -12,6 +12,7 @@ using static AttendanceSystem.ViewModel.AccountModels;
 namespace AttendanceSystem.Areas.Admin.Controllers
 {
     [PageAccess]
+    [NoDirectAccess]
     public class SettingController : Controller
     {
         private readonly AttendanceSystemEntities _db;

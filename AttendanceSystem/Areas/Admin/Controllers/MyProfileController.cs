@@ -10,6 +10,7 @@ using System.Web.Mvc;
 namespace AttendanceSystem.Areas.Admin.Controllers
 {
     [PageAccess]
+    [NoDirectAccess]
     public class MyProfileController : Controller
     {
         private readonly AttendanceSystemEntities _db;

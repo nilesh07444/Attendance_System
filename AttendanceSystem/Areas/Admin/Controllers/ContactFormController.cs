@@ -8,6 +8,7 @@ using System.Web.Mvc;
 namespace AttendanceSystem.Areas.Admin.Controllers
 {
     [PageAccess]
+    [NoDirectAccess]
     public class ContactFormController : Controller
     {
         AttendanceSystemEntities _db;

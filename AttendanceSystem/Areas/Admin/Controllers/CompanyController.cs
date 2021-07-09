@@ -14,6 +14,7 @@ using System.Web.Mvc;
 namespace AttendanceSystem.Areas.Admin.Controllers
 {
     [PageAccess]
+    [NoDirectAccess]
     public class CompanyController : Controller
     {
         AttendanceSystemEntities _db;

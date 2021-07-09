@@ -9,6 +9,7 @@ using System.Web.Mvc;
 namespace AttendanceSystem.Areas.Admin.Controllers
 {
     [PageAccess]
+    [NoDirectAccess]
     public class DashboardController : Controller
     {
         AttendanceSystemEntities _db;
@@ -688,5 +689,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return lst;
         }
 
+        public ActionResult URLRedirect()
+        {
+            return View();
+        }
     }
 }
