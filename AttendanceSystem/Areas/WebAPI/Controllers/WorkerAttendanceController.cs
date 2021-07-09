@@ -38,7 +38,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 DateTime today = CommonMethod.CurrentIndianDateTime().Date;
 
                 #region Validation
-                if (!_db.tbl_Attendance.Any(x => x.UserId == employeeId && x.AttendanceDate == today && x.InDateTime != null && x.OutDateTime == null))
+                if (!_db.tbl_Attendance.Any(x => x.UserId == employeeId && x.InDateTime != null && x.OutDateTime == null))
                 {
                     response.IsError = true;
                     response.AddError(ErrorMessage.YourAttendanceNotTakenYetYouCanNotAssignWorker);
@@ -136,6 +136,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 }
 
                 #endregion Validation
+
                 if (!response.IsError)
                 {
                     if (attendanceObject != null)

@@ -170,7 +170,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
                     long companyId = Int64.Parse(clsAdminSession.CompanyId.ToString());
                     #region validation
-                    if (_db.tbl_Conversion.Any(x => x.CompanyId == companyId && x.Month == paymentVM.PaymentDate.Month && (x.IsEmployeeDone || x.IsWorkerDone)))
+                    if (_db.tbl_Conversion.Any(x => x.CompanyId == companyId && x.Month == paymentVM.PaymentDate.Month && x.Year == paymentVM.PaymentDate.Year && (x.IsEmployeeDone || x.IsWorkerDone)))
                     {
                         ModelState.AddModelError("", ErrorMessage.MonthlyConvesrionCompletedYouCanNotAddOrModifyPaymentDetails);
                         paymentVM.EmployeeList = GetEmployeeList();
@@ -205,6 +205,15 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         {
                             tbl_WorkerPayment objWorkerPayment = _db.tbl_WorkerPayment.Where(x => x.WorkerPaymentId == paymentVM.EmployeePaymentId && !x.IsDeleted).FirstOrDefault();
 
+                            if (_db.tbl_Conversion.Any(x => x.CompanyId == companyId && x.Month == objWorkerPayment.PaymentDate.Month && x.Year == objWorkerPayment.PaymentDate.Year && (x.IsEmployeeDone || x.IsWorkerDone)))
+                            {
+                                ModelState.AddModelError("", ErrorMessage.MonthlyConvesrionCompletedYouCanNotAddOrModifyPaymentDetails);
+                                paymentVM.EmployeeList = GetEmployeeList();
+                                paymentVM.EmployeePaymentTypeList = GetEmployeePaymentTypeList();
+                                return View(paymentVM);
+                            }
+
+
                             objWorkerPayment.PaymentDate = paymentVM.PaymentDate;
                             objWorkerPayment.DebitAmount = paymentVM.DebitAmount;
                             objWorkerPayment.Month = paymentVM.PaymentDate.Month;
@@ -217,6 +226,13 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         else
                         {
                             tbl_EmployeePayment objEmployeePayment = _db.tbl_EmployeePayment.Where(x => x.EmployeePaymentId == paymentVM.EmployeePaymentId && !x.IsDeleted).FirstOrDefault();
+                            if (_db.tbl_Conversion.Any(x => x.CompanyId == companyId && x.Month == objEmployeePayment.PaymentDate.Month && x.Year == objEmployeePayment.PaymentDate.Year && (x.IsEmployeeDone || x.IsWorkerDone)))
+                            {
+                                ModelState.AddModelError("", ErrorMessage.MonthlyConvesrionCompletedYouCanNotAddOrModifyPaymentDetails);
+                                paymentVM.EmployeeList = GetEmployeeList();
+                                paymentVM.EmployeePaymentTypeList = GetEmployeePaymentTypeList();
+                                return View(paymentVM);
+                            }
 
                             objEmployeePayment.PaymentDate = paymentVM.PaymentDate;
                             objEmployeePayment.DebitAmount = paymentVM.DebitAmount;
@@ -344,7 +360,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 else
                 {
                     #region validation
-                    if (_db.tbl_Conversion.Any(x => x.CompanyId == companyId && x.Month == objEmployeePayment.PaymentDate.Month && (x.IsEmployeeDone || x.IsWorkerDone)))
+                    if (_db.tbl_Conversion.Any(x => x.CompanyId == companyId && x.Month == objEmployeePayment.PaymentDate.Month && x.Year == objEmployeePayment.PaymentDate.Year && (x.IsEmployeeDone || x.IsWorkerDone)))
                     {
                         ReturnMessage = "convertioncomplete";
                     }

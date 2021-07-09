@@ -236,13 +236,16 @@
                         }
                         else if (result == "notfound") {
                             alert("Payment Not Found");
+                            $('#OtpModal').modal('hide');
                         }
                         else if (result =="convertioncomplete")
                         {
                             alert("Monthly convesrion completed you can not add or modify payment details");
+                            $('#OtpModal').modal('hide');
                         }
                         else {
                             alert("Something went wrong. Please try again");
+                            $('#OtpModal').modal('hide');
                         }
 
                        StopLoading();
