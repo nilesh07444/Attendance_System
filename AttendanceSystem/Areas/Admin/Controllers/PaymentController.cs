@@ -3,9 +3,11 @@ using AttendanceSystem.Models;
 using AttendanceSystem.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 
@@ -19,14 +21,20 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         {
             _db = new AttendanceSystemEntities();
         }
-        public ActionResult Index(int? userRole = null, DateTime? startDate = null, DateTime? endDate = null)
+        public ActionResult Index(int? userRole = null, DateTime? startDate = null, DateTime? endDate = null, int? employmentCategory = null)
         {
             PaymentFilterVM paymentFilterVM = new PaymentFilterVM();
+            
             if (userRole.HasValue)
             {
                 paymentFilterVM.UserRole = userRole.Value;
             }
 
+            if (employmentCategory.HasValue)
+            {
+                paymentFilterVM.EmploymentCategory = employmentCategory.Value;
+            }
+             
             if (startDate.HasValue && endDate.HasValue)
             {
                 paymentFilterVM.StartDate = startDate.Value;
@@ -48,6 +56,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                where !emp.IsDeleted && emp.CompanyId == companyId && !empp.IsDeleted && empp.CreditOrDebitText.ToLower() == "debit"
                                                && empp.PaymentDate >= paymentFilterVM.StartDate && empp.PaymentDate <= paymentFilterVM.EndDate
                                                && (paymentFilterVM.UserRole.HasValue ? emp.AdminRoleId == paymentFilterVM.UserRole.Value : true)
+                                               && (paymentFilterVM.EmploymentCategory.HasValue ? emp.EmploymentCategory == paymentFilterVM.EmploymentCategory.Value : true)
                                                select new PaymentVM
                                                {
                                                    EmployeePaymentId = empp.EmployeePaymentId,
@@ -79,11 +88,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                          from paidBy in outerPaidBy.DefaultIfEmpty()
 
                                          where !emp.IsDeleted && emp.CompanyId == companyId && !empp.IsDeleted && empp.CreditOrDebitText.ToLower() == "debit"
+                                         && (paymentFilterVM.EmploymentCategory.HasValue ? emp.EmploymentCategory == paymentFilterVM.EmploymentCategory.Value : true)
                                          && empp.PaymentDate >= paymentFilterVM.StartDate && empp.PaymentDate <= paymentFilterVM.EndDate
                                          && (paymentFilterVM.UserRole.HasValue ? emp.AdminRoleId == paymentFilterVM.UserRole.Value : true)
                                          select new PaymentVM
                                          {
-
                                              EmployeePaymentId = empp.WorkerPaymentId,
                                              UserId = empp.UserId,
                                              PaymentDate = empp.PaymentDate,
@@ -112,6 +121,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             }
 
             paymentFilterVM.UserRoleList = GetUserRoleList();
+            paymentFilterVM.EmploymentCategoryList = GetEmploymentCategoryList();
+
             return View(paymentFilterVM);
         }
 
@@ -778,6 +789,32 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
             paymentReportFilterVM.EmployeeList = GetOnlyEmployeeList();
             return View(paymentReportFilterVM);
+        }
+
+        private List<SelectListItem> GetEmploymentCategoryList()
+        {
+            string[] employmentCategoryArr = Enum.GetNames(typeof(EmploymentCategory));
+            var listEmploymentCategory = employmentCategoryArr.Select((value, key) => new { value, key }).ToDictionary(x => x.key + 1, x => x.value);
+
+            List<SelectListItem> lst = (from pt in listEmploymentCategory
+                                        select new SelectListItem
+                                        {
+                                            Text = GetEnumDescription((EmploymentCategory)pt.Key),
+                                            Value = pt.Key.ToString()
+                                        }).ToList();
+            return lst;
+
+        }
+
+        // NOTE: returns Descriptor if there is no Description
+        private static string GetEnumDescription(Enum value)
+        {
+            FieldInfo fi = value.GetType().GetField(value.ToString());
+            DescriptionAttribute[] attributes = (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
+            if (attributes != null && attributes.Length > 0)
+                return attributes[0].Description;
+            else
+                return value.ToString();
         }
     }
 }

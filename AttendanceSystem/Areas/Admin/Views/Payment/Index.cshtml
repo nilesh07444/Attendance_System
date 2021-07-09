@@ -46,6 +46,14 @@
                                             @Html.DropDownListFor(model => model.UserRole, new SelectList(Model.UserRoleList, "Value", "Text"), "- All -", new { @class = "form-control required", style = "height: calc(2.25rem + 6px)" })
                                         </div>
                                     </div>
+
+                                    <div class="col-sm-2">
+                                        <div class="form-group">
+                                            <label>Employment Category</label>
+                                            @Html.DropDownListFor(model => model.EmploymentCategory, new SelectList(Model.EmploymentCategoryList, "Value", "Text"), "- All -", new { @class = "form-control required", style = "height: calc(2.25rem + 6px)" })
+                                        </div>
+                                    </div>
+
                                     <div class="col-sm-2">
                                         <div class="card-header-action">
                                             <button class="btn btn-primary mr-1" style="font-size: 1rem" id="btnSearch" type="button">Search</button>
@@ -267,8 +275,9 @@
             var startDate = $("#StartDate").val();
             var endDate= $("#EndDate").val();
             var userRole = $("#UserRole").val();
+            var employmentCategory = $("#EmploymentCategory").val();
             StartLoading();
-            window.location.href = "/admin/payment/Index?userRole=" + userRole + "&startDate=" + startDate + "&endDate=" + endDate ;
+            window.location.href = "/admin/payment/Index?userRole=" + userRole + "&startDate=" + startDate + "&endDate=" + endDate + "&employmentCategory=" + employmentCategory;
         });
     })
 

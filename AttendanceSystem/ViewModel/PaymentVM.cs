@@ -62,8 +62,10 @@ namespace AttendanceSystem.ViewModel
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public int? UserRole { get; set; }
+        public int? EmploymentCategory { get; set; }        
         public List<PaymentVM> PaymentList { get; set; }
         public List<SelectListItem> UserRoleList { get; set; }
+        public List<SelectListItem> EmploymentCategoryList { get; set; }
     }
 
     public class PaymentSummuryReportVM
