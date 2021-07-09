@@ -209,7 +209,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     x.IsAfternoonText = x.IsAfternoon ? ErrorMessage.YES : ErrorMessage.NO;
                     x.IsEveningText = x.IsEvening ? ErrorMessage.YES : ErrorMessage.NO;
                     x.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)x.EmploymentCategory);
-                    
+
                 });
                 assignedWorkerFilterVM.EmployeeList = GetWorkerList();
                 assignedWorkerFilterVM.SiteList = GetSiteList();
@@ -224,9 +224,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return View(assignedWorkerFilterVM);
         }
 
-        public ActionResult Add(int siteId, long employeeId, long? workerAttendanceId)
+        public ActionResult Add(int siteId, long employeeId, string dateStr, long? workerAttendanceId)
         {
-            DateTime date = CommonMethod.CurrentIndianDateTime().Date;
+            DateTime date = Convert.ToDateTime(dateStr);// CommonMethod.CurrentIndianDateTime().Date;
             AddWorkerAttendanceVM addWorkerAttendanceVM = null;
             try
             {
@@ -245,6 +245,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                              EmployeeName = emp.FirstName + " " + emp.LastName,
                                              EmployeeCode = emp.EmployeeCode,
                                              EmploymentCategoryId = emp.EmploymentCategory,
+                                             MonthlySalary = emp.MonthlySalaryPrice,
                                              PerCategoryPrice = emp.PerCategoryPrice,
                                              ExtraPerHourPrice = emp.ExtraPerHourPrice,
                                              IsMorning = at.IsMorning,
@@ -267,10 +268,16 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     addWorkerAttendanceVM.EmployeeCode = objEmloyee.EmployeeCode;
                     addWorkerAttendanceVM.EmployeeName = objEmloyee.FirstName + " " + objEmloyee.LastName;
                     addWorkerAttendanceVM.EmploymentCategoryId = objEmloyee.EmploymentCategory;
+                    addWorkerAttendanceVM.MonthlySalary = objEmloyee.MonthlySalaryPrice;
                     addWorkerAttendanceVM.PerCategoryPrice = objEmloyee.PerCategoryPrice;
                     addWorkerAttendanceVM.ExtraPerHourPrice = objEmloyee.ExtraPerHourPrice;
                 }
-
+                if (addWorkerAttendanceVM.EmploymentCategoryId == (int)EmploymentCategory.MonthlyBased)
+                {
+                    decimal totalDaysinMonth = DateTime.DaysInMonth(addWorkerAttendanceVM.AttendanceDate.Year, addWorkerAttendanceVM.AttendanceDate.Month);
+                    decimal perDaySalary = addWorkerAttendanceVM.MonthlySalary.Value / totalDaysinMonth;
+                    addWorkerAttendanceVM.PerCategoryPrice = perDaySalary;
+                }
                 addWorkerAttendanceVM.SiteName = _db.tbl_Site.Where(x => x.SiteId == siteId).Select(x => x.SiteName).FirstOrDefault();
 
                 addWorkerAttendanceVM.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)addWorkerAttendanceVM.EmploymentCategoryId);
@@ -511,40 +518,47 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                             _db.SaveChanges();
                         }
 
-                        if (addWorkerAttendanceVM.EmploymentCategoryId != (int)EmploymentCategory.MonthlyBased && addWorkerAttendanceVM.AttendanceType == (int)WorkerAttendanceType.Evening)
+                        if (addWorkerAttendanceVM.AttendanceType == (int)WorkerAttendanceType.Evening)
                         {
                             if (!_db.tbl_WorkerPayment.Any(x => x.UserId == attendanceObject.EmployeeId && !x.IsDeleted && x.AttendanceId == attendanceObject.WorkerAttendanceId && x.PaymentType != (int)EmployeePaymentType.Extra))
                             {
-                                tbl_WorkerPayment objWorkerPayment = new tbl_WorkerPayment();
-                                objWorkerPayment.CompanyId = companyId;
-                                objWorkerPayment.UserId = attendanceObject.EmployeeId;
-                                objWorkerPayment.AttendanceId = attendanceObject.WorkerAttendanceId;
-                                objWorkerPayment.PaymentDate = attendanceObject.AttendanceDate;
-                                objWorkerPayment.PaymentType = (int)EmployeePaymentType.Salary;
-                                objWorkerPayment.CreditOrDebitText = ErrorMessage.Credit;
-                                objWorkerPayment.DebitAmount = addWorkerAttendanceVM.SalaryGiven.HasValue && addWorkerAttendanceVM.EmploymentCategoryId == (int)EmploymentCategory.DailyBased ? addWorkerAttendanceVM.SalaryGiven.Value : 0;
-                                objWorkerPayment.Remarks = ErrorMessage.AutoCreditOnEveningAttendance;
-                                objWorkerPayment.Month = attendanceObject.AttendanceDate.Month;
-                                objWorkerPayment.Year = attendanceObject.AttendanceDate.Year;
-                                objWorkerPayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
-                                objWorkerPayment.CreatedBy = employeeId;
-                                objWorkerPayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
-                                objWorkerPayment.ModifiedBy = employeeId;
+                                if (addWorkerAttendanceVM.EmploymentCategoryId != (int)EmploymentCategory.MonthlyBased || addWorkerAttendanceVM.SalaryGiven > 0)
+                                {
+                                    tbl_WorkerPayment objWorkerPayment = new tbl_WorkerPayment();
+                                    objWorkerPayment.CompanyId = companyId;
+                                    objWorkerPayment.UserId = attendanceObject.EmployeeId;
+                                    objWorkerPayment.AttendanceId = attendanceObject.WorkerAttendanceId;
+                                    objWorkerPayment.PaymentDate = attendanceObject.AttendanceDate;
+                                    objWorkerPayment.PaymentType = (int)EmployeePaymentType.Salary;
+                                    objWorkerPayment.CreditOrDebitText = addWorkerAttendanceVM.EmploymentCategoryId == (int)EmploymentCategory.MonthlyBased ? ErrorMessage.Debit : ErrorMessage.Credit;
+                                    objWorkerPayment.DebitAmount = addWorkerAttendanceVM.SalaryGiven > 0 ? addWorkerAttendanceVM.SalaryGiven : 0;
+                                    objWorkerPayment.Remarks = addWorkerAttendanceVM.EmploymentCategoryId == (int)EmploymentCategory.MonthlyBased ? ErrorMessage.SalaryGivenOnEveningAttendance : ErrorMessage.AutoCreditOnEveningAttendance;
+                                    objWorkerPayment.Month = attendanceObject.AttendanceDate.Month;
+                                    objWorkerPayment.Year = attendanceObject.AttendanceDate.Year;
+                                    objWorkerPayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
+                                    objWorkerPayment.CreatedBy = employeeId;
+                                    objWorkerPayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
+                                    objWorkerPayment.ModifiedBy = employeeId;
 
-                                if (addWorkerAttendanceVM.EmploymentCategoryId == (int)EmploymentCategory.DailyBased)
-                                {
-                                    objWorkerPayment.CreditAmount = (attendanceObject.IsMorning && attendanceObject.IsAfternoon && attendanceObject.IsEvening ? (addWorkerAttendanceVM.PerCategoryPrice) : (addWorkerAttendanceVM.PerCategoryPrice / 2)) + (addWorkerAttendanceVM.ExtraPerHourPrice * addWorkerAttendanceVM.ExtraHours);
+                                    if (addWorkerAttendanceVM.EmploymentCategoryId == (int)EmploymentCategory.DailyBased)
+                                    {
+                                        objWorkerPayment.CreditAmount = (attendanceObject.IsMorning && attendanceObject.IsAfternoon && attendanceObject.IsEvening ? (addWorkerAttendanceVM.PerCategoryPrice) : (addWorkerAttendanceVM.PerCategoryPrice / 2)) + (addWorkerAttendanceVM.ExtraPerHourPrice * addWorkerAttendanceVM.ExtraHours);
+                                    }
+                                    else if (addWorkerAttendanceVM.EmploymentCategoryId == (int)EmploymentCategory.HourlyBased)
+                                    {
+                                        objWorkerPayment.CreditAmount = addWorkerAttendanceVM.PerCategoryPrice * addWorkerAttendanceVM.NoOfHoursWorked;
+                                    }
+                                    else if (addWorkerAttendanceVM.EmploymentCategoryId == (int)EmploymentCategory.UnitBased)
+                                    {
+                                        objWorkerPayment.CreditAmount = addWorkerAttendanceVM.PerCategoryPrice * addWorkerAttendanceVM.NoOfUnitWorked;
+                                    }
+                                    else
+                                    {
+                                        objWorkerPayment.CreditAmount = 0;
+                                    }
+                                    _db.tbl_WorkerPayment.Add(objWorkerPayment);
+                                    _db.SaveChanges();
                                 }
-                                else if (addWorkerAttendanceVM.EmploymentCategoryId == (int)EmploymentCategory.HourlyBased)
-                                {
-                                    objWorkerPayment.CreditAmount = addWorkerAttendanceVM.PerCategoryPrice * addWorkerAttendanceVM.NoOfHoursWorked;
-                                }
-                                else if (addWorkerAttendanceVM.EmploymentCategoryId == (int)EmploymentCategory.UnitBased)
-                                {
-                                    objWorkerPayment.CreditAmount = addWorkerAttendanceVM.PerCategoryPrice * addWorkerAttendanceVM.NoOfUnitWorked;
-                                }
-                                _db.tbl_WorkerPayment.Add(objWorkerPayment);
-                                _db.SaveChanges();
                             }
 
 

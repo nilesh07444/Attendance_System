@@ -89,6 +89,7 @@
         public static double HalfDay = 0.5;
         public static string DefaultTime = "00:00:00";
 
+        public static string EmployeeRatingCanNotModifyAfter7Days= "Employee rating can not modify after 7 days.";
         public static string EmployeeRatingAlreadyExist = "Employee rating already exist.";
         public static string MonthShouldBeFrom1To12 = "Month should be from 1 to 12.";
         public static string FutureYearNotAllowed = "Future year not allowed.";
@@ -153,6 +154,7 @@
         public static string Debit = "Debit";
         public static string AutoCreditOnAttendanceAccept = "Auto credit on attendance accept";
         public static string AutoCreditOnEveningAttendance = "Auto credit on evening attendance";
+        public static string SalaryGivenOnEveningAttendance = "Salary given on evening attendance";
         public static string MonthlyConversion = "Monthly conversion.";
         public static string Open = "Open";
         public static string InProgress = "Inprogress";

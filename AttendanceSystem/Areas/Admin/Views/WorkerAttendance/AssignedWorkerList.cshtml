@@ -117,7 +117,7 @@
                                                 <td>
                                                     @if (!obj.IsClosed)
                                                     {
-                                                        <a href="/admin/workerattendance/add?siteId=@obj.SiteId&employeeId=@obj.EmployeeId&workerAttendanceId=@obj.WorkerAttendanceId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
+                                                        <a href="/admin/workerattendance/add?siteId=@obj.SiteId&employeeId=@obj.EmployeeId&dateStr=@obj.Date.ToString("dd-MM-yyyy")&workerAttendanceId=@obj.WorkerAttendanceId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
                                                     }
                                                 </td>
                                             </tr>

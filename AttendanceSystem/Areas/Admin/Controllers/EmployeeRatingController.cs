@@ -13,7 +13,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
     public class EmployeeRatingController : Controller
     {
         AttendanceSystemEntities _db;
-         
+
         public EmployeeRatingController()
         {
             _db = new AttendanceSystemEntities();
@@ -137,6 +137,12 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         if (employeeRatingVM.EmployeeRatingId > 0)
                         {
                             tbl_EmployeeRating objEmployeeRating = _db.tbl_EmployeeRating.Where(x => x.EmployeeRatingId == employeeRatingVM.EmployeeRatingId).FirstOrDefault();
+                            if ((CommonMethod.CurrentIndianDateTime() - objEmployeeRating.CreatedDate).TotalDays > 7)
+                            {
+                                ModelState.AddModelError(" ", ErrorMessage.EmployeeRatingCanNotModifyAfter7Days);
+                                employeeRatingVM.EmployeeList = GetEmployeeList();
+                                return View(employeeRatingVM);
+                            }
                             objEmployeeRating.RateMonth = employeeRatingVM.RateMonth;
                             objEmployeeRating.RateYear = employeeRatingVM.RateYear;
                             objEmployeeRating.BehaviourRate = employeeRatingVM.BehaviourRate;
@@ -249,10 +255,18 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 }
                 else
                 {
-                    _db.tbl_EmployeeRating.Remove(objEmployeeRating);
-                    _db.SaveChanges();
+                    if ((CommonMethod.CurrentIndianDateTime() - objEmployeeRating.CreatedDate).TotalDays > 7)
+                    {
+                        ReturnMessage = "cannotmodify";
+                    }
+                    else
+                    {
 
-                    ReturnMessage = "success";
+                        _db.tbl_EmployeeRating.Remove(objEmployeeRating);
+                        _db.SaveChanges();
+
+                        ReturnMessage = "success";
+                    }
                 }
             }
             catch (Exception ex)

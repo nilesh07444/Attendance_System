@@ -37,6 +37,7 @@
                                 @Html.HiddenFor(model => model.IsAfternoon)
                                 @Html.HiddenFor(model => model.IsEvening)
 
+                                @Html.HiddenFor(model => model.MonthlySalary)
                                 @Html.HiddenFor(model => model.PerCategoryPrice)
                                 @Html.HiddenFor(model => model.AttendanceDate)
                                 @Html.LabelFor(model => model.SiteName, htmlAttributes: new { @class = "" })
@@ -65,9 +66,13 @@
                                 @Model.EmploymentCategoryText
 
                             </div>
-                            <div class="form-group col-6">
+                            <div class="form-group col-6" id="dvPerCategoryprice">
                                 @Html.LabelFor(model => model.PerCategoryPrice, htmlAttributes: new { @class = "clsPerCategoryPrice" })
-                                @Model.PerCategoryPrice
+                                @Model.PerCategoryPrice.ToString("#.##")
+                            </div>
+                            <div class="form-group col-6" id="dvMonthlySalary">
+                                @Html.LabelFor(model => model.MonthlySalary, htmlAttributes: new { @class = "clsPerCategoryPrice" })
+                                @Model.MonthlySalary
                             </div>
                         </div>
                         <div class="row">
@@ -92,11 +97,6 @@
                                 @Html.LabelFor(model => model.IsEvening, htmlAttributes: new { @class = "" })
                                 @Model.IsEveningText
                             </div>
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.PendingSalary, htmlAttributes: new { @class = "" })
-                                @Model.PendingSalary
-                                @Html.HiddenFor(model => model.PendingSalary)
-                            </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-6">
@@ -105,51 +105,78 @@
                                 @Html.ValidationMessageFor(model => model.AttendanceType, "", new { @class = "text-danger" })
                             </div>
                         </div>
-                        <div class="row" id="dvExtraHours">
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.ExtraHours, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.ExtraHours, new { @type = "number", @class = "form-control ", @placeholder = "Enter Extra Hours", @maxlength = "10", @min = "0" })
-                                @Html.ValidationMessageFor(model => model.ExtraHours, "", new { @class = "text-danger" })
+                        <div id="dvEveningRow">
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    @Html.LabelFor(model => model.PendingSalary, htmlAttributes: new { @class = "" })
+                                    @Html.TextBoxFor(model => model.PendingSalary, new { @type = "number", @class = "form-control ", @readonly = true, @placeholder = "Pending Salary", @maxlength = "10", @min = "0" })
+                                    @Html.HiddenFor(model => model.PendingSalary)
+                                </div>
                             </div>
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.ExtraHoursAmount, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.ExtraHoursAmount, new { @type = "number", @class = "form-control", @readonly = true, @placeholder = "Total Extra Amount", @maxlength = "10", @min = "0" })
-                                @Html.HiddenFor(model => model.ExtraHoursAmount)
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-6" id="dvTodaySalary">
-                                @Html.LabelFor(model => model.TodaySalary, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.TodaySalary, new { @type = "number", @class = "form-control ", @readonly = true, @placeholder = "Today Salary", @maxlength = "10", @min = "0" })
-                                @Html.HiddenFor(model => model.TodaySalary)
-                            </div>
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.SalaryGiven, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.SalaryGiven, new { @type = "number", @class = "form-control", @placeholder = "Salary Given", @maxlength = "10", @min = "0" })
-                                @Html.HiddenFor(model => model.SalaryGiven)
-                            </div>
-                        </div>
-                        <div class="row" id="dvNoOfHoursWorked">
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.NoOfHoursWorked, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.NoOfHoursWorked, new { @type = "number", @class = "form-control ", @placeholder = "Enter No Of Hours Worked", @maxlength = "10", @min = "1" })
-                                @Html.ValidationMessageFor(model => model.NoOfHoursWorked, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.NoOfHoursWorkedAmount, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.NoOfHoursWorkedAmount, new { @type = "number", @class = "form-control", @readonly = true, @placeholder = "Total Amount", @maxlength = "10", @min = "0" })
-                            </div>
-                        </div>
-                        <div class="row" id="dvNoOfUnitWorked">
 
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.NoOfUnitWorked, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.NoOfUnitWorked, new { @type = "number", @class = "form-control required", @placeholder = "Enter No Of Unit Worked", @maxlength = "10", @min = "1" })
-                                @Html.ValidationMessageFor(model => model.NoOfUnitWorked, "", new { @class = "text-danger" })
+                            <div class="row" id="dvExtraHours">
+                                <div class="form-group col-6">
+                                    @Html.LabelFor(model => model.ExtraHours, htmlAttributes: new { @class = "" })
+                                    @Html.TextBoxFor(model => model.ExtraHours, new { @type = "number", @class = "form-control ", @placeholder = "Enter Extra Hours", @maxlength = "10", @min = "0" })
+                                    @Html.ValidationMessageFor(model => model.ExtraHours, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group col-6">
+                                    @Html.LabelFor(model => model.ExtraHoursAmount, htmlAttributes: new { @class = "" })
+                                    @Html.TextBoxFor(model => model.ExtraHoursAmount, new { @type = "number", @class = "form-control", @readonly = true, @placeholder = "Total Extra Amount", @maxlength = "10", @min = "0" })
+                                    @Html.HiddenFor(model => model.ExtraHoursAmount)
+                                </div>
                             </div>
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.NoOfUnitWorkedAmount, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.NoOfUnitWorkedAmount, new { @type = "number", @class = "form-control", @readonly = true, @placeholder = "Total Amount", @maxlength = "10", @min = "0" })
+
+                            <div class="row" id="dvNoOfHoursWorked">
+                                <div class="form-group col-6">
+                                    @Html.LabelFor(model => model.NoOfHoursWorked, htmlAttributes: new { @class = "" })
+                                    @Html.TextBoxFor(model => model.NoOfHoursWorked, new { @type = "number", @class = "form-control ", @placeholder = "Enter No Of Hours Worked", @maxlength = "10", @min = "1" })
+                                    @Html.ValidationMessageFor(model => model.NoOfHoursWorked, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group col-6">
+                                    @Html.LabelFor(model => model.NoOfHoursWorkedAmount, htmlAttributes: new { @class = "" })
+                                    @Html.TextBoxFor(model => model.NoOfHoursWorkedAmount, new { @type = "number", @class = "form-control", @readonly = true, @placeholder = "Total Amount", @maxlength = "10", @min = "0" })
+                                </div>
+                            </div>
+                            <div class="row" id="dvNoOfUnitWorked">
+
+                                <div class="form-group col-6">
+                                    @Html.LabelFor(model => model.NoOfUnitWorked, htmlAttributes: new { @class = "" })
+                                    @Html.TextBoxFor(model => model.NoOfUnitWorked, new { @type = "number", @class = "form-control required", @placeholder = "Enter No Of Unit Worked", @maxlength = "10", @min = "1" })
+                                    @Html.ValidationMessageFor(model => model.NoOfUnitWorked, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group col-6">
+                                    @Html.LabelFor(model => model.NoOfUnitWorkedAmount, htmlAttributes: new { @class = "" })
+                                    @Html.TextBoxFor(model => model.NoOfUnitWorkedAmount, new { @type = "number", @class = "form-control", @readonly = true, @placeholder = "Total Amount", @maxlength = "10", @min = "0" })
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-6" id="dvTodaySalary">
+                                    @Html.LabelFor(model => model.TodaySalary, htmlAttributes: new { @class = "" })
+                                    @Html.TextBoxFor(model => model.TodaySalary, new { @type = "number", @class = "form-control ", @readonly = true, @placeholder = "Today Salary", @maxlength = "10", @min = "0" })
+                                    @Html.HiddenFor(model => model.TodaySalary)
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    @Html.LabelFor(model => model.TotalPendingSalary, htmlAttributes: new { @class = "" })
+                                    @Html.TextBoxFor(model => model.TotalPendingSalary, new { @type = "number", @class = "form-control", @readonly = true, @placeholder = "Total Extra Amount", @maxlength = "10", @min = "0" })
+                                    @Html.HiddenFor(model => model.TotalPendingSalary)
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    @Html.LabelFor(model => model.SalaryGiven, htmlAttributes: new { @class = "" })
+                                    @Html.TextBoxFor(model => model.SalaryGiven, new { @type = "number", @class = "form-control", @placeholder = "Salary Given", @maxlength = "10", @min = "0" })
+                                    @Html.HiddenFor(model => model.SalaryGiven)
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    @Html.LabelFor(model => model.RemainingBalance, htmlAttributes: new { @class = "" })
+                                    @Html.TextBoxFor(model => model.RemainingBalance, new { @type = "number", @class = "form-control", @readonly = true, @placeholder = "Total Extra Amount", @maxlength = "10", @min = "0" })
+                                    @Html.HiddenFor(model => model.RemainingBalance)
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -173,25 +200,33 @@
     $(document).ready(function () {
         $("#dvNoOfUnitWorked").hide();
         $("#dvNoOfHoursWorked").hide();
-        $("#dvTodaySalary").hide();
+        $("#dvEveningRow").hide();
         $("#dvExtraHours").hide();
 
         var EmploymentCategory = $("#EmploymentCategoryId").val();
         if (EmploymentCategory == "1") {
             $("#dvExtraPerHourPrice").show();
             $(".clsPerCategoryPrice").html("Per Day Salary")
+            $("#dvPerCategoryprice").show();
+            $("#dvMonthlySalary").hide();
         }
         else if (EmploymentCategory == "2") {
             $("#dvExtraPerHourPrice").hide();
             $(".clsPerCategoryPrice").html("Per Hour Price")
+            $("#dvPerCategoryprice").show();
+            $("#dvMonthlySalary").hide();
         }
         else if (EmploymentCategory == "3") {
             $("#dvExtraPerHourPrice").show();
             $(".clsPerCategoryPrice").html("Per Month Price")
+            $("#dvPerCategoryprice").hide();
+            $("#dvMonthlySalary").show();
         }
         else if (EmploymentCategory == "4") {
             $("#dvExtraPerHourPrice").hide();
             $(".clsPerCategoryPrice").html("Per Unit Price")
+            $("#dvPerCategoryprice").show();
+            $("#dvMonthlySalary").hide();
         }
 
         $('#btnCancel').click(function () {
@@ -201,18 +236,19 @@
         $('#AttendanceType').change(function () {
             var attendanceType = $('#AttendanceType').val();
             if (attendanceType == "3") {
+                $("#dvEveningRow").show();
                 var employmentCategory = $('#EmploymentCategoryId').val();
                 if (employmentCategory == "1") {
-                    $("#dvTodaySalary").show();
+                    //$("#dvTodaySalary").show();
                     $("#dvExtraHours").show();
                     $("#dvNoOfUnitWorked").hide();
                     $("#dvNoOfHoursWorked").hide();
                     $("#NoOfHoursWorked").removeAttr("min");
                     $("#NoOfUnitWorked").removeAttr("min");
-                    calulateTodaySalaryForDaily();
+                    //calulateTodaySalaryForDaily();
                 }
                 else if (employmentCategory == "2") {
-                    $("#dvTodaySalary").hide();
+                    //$("#dvTodaySalary").hide();
                     $("#dvExtraHours").hide();
                     $("#dvNoOfUnitWorked").hide();
                     $("#dvNoOfHoursWorked").show();
@@ -220,7 +256,7 @@
                     $("#NoOfUnitWorked").removeAttr("min");
                 }
                 else if (employmentCategory == "3") {
-                    $("#dvTodaySalary").hide();
+                    //$("#dvTodaySalary").hide();
                     $("#dvExtraHours").show();
                     $("#dvNoOfUnitWorked").hide();
                     $("#dvNoOfHoursWorked").hide();
@@ -228,19 +264,23 @@
                     $("#NoOfUnitWorked").removeAttr("min");
                 }
                 else if (employmentCategory == "4") {
-                    $("#dvTodaySalary").hide();
+                    //$("#dvTodaySalary").hide();
                     $("#dvExtraHours").hide();
                     $("#dvNoOfUnitWorked").show();
                     $("#dvNoOfHoursWorked").hide();
                     $("#NoOfUnitWorked").attr("min", 1);
                     $("#NoOfHoursWorked").removeAttr("min");
                 }
+                calulateTodaySalary();
             } else {
                 $("#dvNoOfUnitWorked").hide();
                 $("#dvNoOfHoursWorked").hide();
-                $("#dvTodaySalary").hide();
+                // $("#dvTodaySalary").hide();
                 $("#dvExtraHours").hide();
+                $("#dvEveningRow").hide();
             }
+
+
         });
 
         $('#ExtraHours').change(function () {
@@ -248,7 +288,7 @@
             var extraPerHourPrice = $("#ExtraPerHourPrice").val();
             var totalExtraAmount = parseFloat(extraHours) * parseFloat(extraPerHourPrice);
             $("#ExtraHoursAmount").val(totalExtraAmount.toFixed(2));
-            calulateTodaySalaryForDaily();
+            calulateTodaySalary();
         });
 
         $('#NoOfHoursWorked').change(function () {
@@ -256,6 +296,7 @@
             var perCategoryPrice = $("#PerCategoryPrice").val();
             var noOfHoursWorkedAmount = parseFloat(noOfHoursWorked) * parseFloat(perCategoryPrice);
             $("#NoOfHoursWorkedAmount").val(noOfHoursWorkedAmount.toFixed(2));
+            calulateTodaySalary();
         });
 
         $('#NoOfUnitWorked').change(function () {
@@ -263,19 +304,57 @@
             var perCategoryPrice = $("#PerCategoryPrice").val();
             var noOfUnitWorkedAmount = parseFloat(noOfUnitWorked) * parseFloat(perCategoryPrice);
             $("#NoOfUnitWorkedAmount").val(noOfUnitWorkedAmount.toFixed(2));
+            calulateTodaySalary();
         });
+
+        $('#SalaryGiven').change(function () {
+            var totalPendingSalary = $("#TotalPendingSalary").val();
+            var salaryGiven = $('#SalaryGiven').val();
+            var remainingBalance = parseFloat(totalPendingSalary) - parseFloat(salaryGiven);
+            $("#RemainingBalance").val(remainingBalance.toFixed(2));
+        });
+
     })
 
-    function calulateTodaySalaryForDaily() {
-        var extraHoursAmount = $("#ExtraHoursAmount").val();
-        var perCategoryPrice = $("#PerCategoryPrice").val();
-        var isMorning = $("#IsMorning").val();
-        var isAfternoon = $("#IsAfternoon").val();
+    function calulateTodaySalary() {
+        var employmentCategory = $('#EmploymentCategoryId').val();
+        var pendingSalary = $('#PendingSalary').val();
 
-        if (isMorning == "False" && isAfternoon == "True") {
-            perCategoryPrice = parseFloat(perCategoryPrice) / 2;
+        if (employmentCategory == "1" || employmentCategory == "3") {
+            var extraHoursAmount = $("#ExtraHoursAmount").val();
+            var perCategoryPrice = $("#PerCategoryPrice").val();
+            var isMorning = $("#IsMorning").val();
+            var isAfternoon = $("#IsAfternoon").val();
+
+            if (isMorning == "False" && isAfternoon == "True") {
+                perCategoryPrice = parseFloat(perCategoryPrice) / 2;
+            }
+
+            var todaySalary = parseFloat(perCategoryPrice);
+            $("#TodaySalary").val(todaySalary.toFixed(2));
+            var totalPendingSalary = parseFloat(pendingSalary) + parseFloat(todaySalary) + parseFloat(extraHoursAmount);
+            $("#TotalPendingSalary").val(totalPendingSalary.toFixed(2));
+            var salaryGiven = $('#SalaryGiven').val();
+            var remainingBalance = parseFloat(totalPendingSalary) - parseFloat(salaryGiven);
+            $("#RemainingBalance").val(remainingBalance.toFixed(2));
+        } else if (employmentCategory == "2") {
+            var todaySalary = parseFloat($("#NoOfHoursWorkedAmount").val());
+            $("#TodaySalary").val(todaySalary);
+            var totalPendingSalary = parseFloat(pendingSalary) + parseFloat(todaySalary);
+            $("#TotalPendingSalary").val(totalPendingSalary.toFixed(2));
+            var salaryGiven = $('#SalaryGiven').val();
+            var remainingBalance = parseFloat(totalPendingSalary) - parseFloat(salaryGiven);
+            $("#RemainingBalance").val(remainingBalance.toFixed(2));
+        } else if (employmentCategory == "4") {
+            var todaySalary = parseFloat($("#NoOfUnitWorkedAmount").val());
+            $("#TodaySalary").val(todaySalary);
+            var totalPendingSalary = parseFloat(pendingSalary) + parseFloat(todaySalary);
+            $("#TotalPendingSalary").val(totalPendingSalary.toFixed(2));
+            var salaryGiven = $('#SalaryGiven').val();
+            var remainingBalance = parseFloat(totalPendingSalary) - parseFloat(salaryGiven);
+            $("#RemainingBalance").val(remainingBalance.toFixed(2));
         }
-        var todaySalary = parseFloat(perCategoryPrice) + parseFloat(extraHoursAmount);
-        $("#TodaySalary").val(todaySalary.toFixed(2));
+
+
     }
 </script>

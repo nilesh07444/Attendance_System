@@ -80,7 +80,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
                 if (ModelState.IsValid)
                 {
-                    if (_db.tbl_Conversion.Any(x => x.CompanyId == companyId && x.Month == HolidayVM.StartDate.Month && (x.IsEmployeeDone || x.IsWorkerDone)))
+                    if (_db.tbl_Conversion.Any(x => x.CompanyId == companyId && x.Month == HolidayVM.StartDate.Month && x.Year == HolidayVM.StartDate.Year && (x.IsEmployeeDone || x.IsWorkerDone)))
                     {
                         ModelState.AddModelError("", ErrorMessage.MonthlyConvesrionCompletedYouCanNotAddOrModifyHoliday);
                         return View(HolidayVM);
@@ -110,6 +110,12 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     if (HolidayVM.HolidayId > 0)
                     {
                         tbl_Holiday objHoliday = _db.tbl_Holiday.Where(x => x.HolidayId == HolidayVM.HolidayId).FirstOrDefault();
+
+                        if (_db.tbl_Conversion.Any(x => x.CompanyId == companyId && x.Month == objHoliday.StartDate.Month && x.Year == objHoliday.StartDate.Year && (x.IsEmployeeDone || x.IsWorkerDone)))
+                        {
+                            ModelState.AddModelError("", ErrorMessage.MonthlyConvesrionCompletedYouCanNotAddOrModifyHoliday);
+                            return View(HolidayVM);
+                        }
                         objHoliday.StartDate = HolidayVM.StartDate;
                         objHoliday.EndDate = HolidayVM.EndDate;
                         objHoliday.Remark = HolidayVM.Remark;
@@ -136,7 +142,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     List<tbl_Leave> leaveList = (from lv in _db.tbl_Leave
                                                  join emp in _db.tbl_Employee on lv.UserId equals emp.EmployeeId
                                                  where emp.CompanyId == companyId
-                                                 && lv.StartDate >= HolidayVM.StartDate && lv.StartDate <= HolidayVM.EndDate
+                                                 && (lv.StartDate >= HolidayVM.StartDate && lv.StartDate <= HolidayVM.EndDate
+                                                 || lv.EndDate >= HolidayVM.StartDate && lv.EndDate <= HolidayVM.EndDate
+                                                 || HolidayVM.StartDate >= lv.StartDate && HolidayVM.StartDate <= lv.EndDate
+                                                 || HolidayVM.EndDate >= lv.StartDate && HolidayVM.EndDate <= lv.EndDate
+                                                 )
                                                  select lv).ToList();
 
                     leaveList.ForEach(x => {
@@ -199,9 +209,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         public string DeleteHoliday(int HolidayId)
         {
             string ReturnMessage = "";
-
+            long companyId = clsAdminSession.CompanyId;
             try
             {
+               
                 tbl_Holiday objHoliday = _db.tbl_Holiday.Where(x => x.HolidayId == HolidayId).FirstOrDefault();
 
                 if (objHoliday == null)
@@ -210,13 +221,20 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 }
                 else
                 {
-                    long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
-                    objHoliday.IsDeleted = true;
-                    objHoliday.ModifiedBy = LoggedInUserId;
-                    objHoliday.ModifiedDate = CommonMethod.CurrentIndianDateTime();
-                    _db.SaveChanges();
+                    if (_db.tbl_Conversion.Any(x => x.CompanyId == companyId && x.Month == objHoliday.StartDate.Month && x.Year == objHoliday.StartDate.Year && (x.IsEmployeeDone || x.IsWorkerDone)))
+                    {
+                        ReturnMessage = "monthlyconvesrion";
+                    }
+                    else
+                    {
+                        long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
+                        objHoliday.IsDeleted = true;
+                        objHoliday.ModifiedBy = LoggedInUserId;
+                        objHoliday.ModifiedDate = CommonMethod.CurrentIndianDateTime();
+                        _db.SaveChanges();
 
-                    ReturnMessage = "success";
+                        ReturnMessage = "success";
+                    }
                 }
             }
             catch (Exception ex)

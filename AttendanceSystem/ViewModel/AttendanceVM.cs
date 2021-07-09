@@ -168,6 +168,16 @@ namespace AttendanceSystem.ViewModel
 
     public class AddWorkerAttendanceVM
     {
+        public AddWorkerAttendanceVM()
+        {
+            TotalPendingSalary = 0;
+            RemainingBalance = 0;
+            SalaryGiven = 0;
+            NoOfUnitWorked = 0;
+            NoOfUnitWorkedAmount = 0;
+            NoOfHoursWorked = 0;
+            NoOfHoursWorkedAmount = 0;
+        }
         public long AttendanceId { get; set; }
         [Display(Name = "Attendance Date")]
         public DateTime AttendanceDate { get; set; }
@@ -199,13 +209,15 @@ namespace AttendanceSystem.ViewModel
         [Display(Name = "Today Salary")]
         public decimal? TodaySalary { get; set; }
         [Display(Name = "Salary Given")]
-        public decimal? SalaryGiven { get; set; }
+        public decimal SalaryGiven { get; set; }
         public string LocationFrom { get; set; }
         public decimal Latitude { get; set; }
         public decimal Longitude { get; set; }
         [Display(Name = "Pending Salary")]
         public decimal PendingSalary { get; set; }
         public List<SelectListItem> WorkerAttendanceTypeList { get; set; }
+        [Display(Name = "Monthly Salary")]
+        public decimal? MonthlySalary { get; set; }
         public decimal PerCategoryPrice { get; set; }
         [Display(Name = "Extra Per Hour Price")]
         public decimal? ExtraPerHourPrice { get; set; }
@@ -218,6 +230,10 @@ namespace AttendanceSystem.ViewModel
         [Display(Name = "Evening")]
         public bool IsEvening { get; set; }
         public string IsEveningText { get; set; }
+        [Display(Name = "Total Pending Salary")]
+        public decimal TotalPendingSalary { get; set; }
+        [Display(Name = "Remaining Balance")]
+        public decimal RemainingBalance { get; set; }
     }
 
     public class WorkerAttendanceViewVM

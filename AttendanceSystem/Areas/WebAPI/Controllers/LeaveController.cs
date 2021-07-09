@@ -60,7 +60,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     response.AddError(ErrorMessage.LeaveStartAndEndDateshouldBeForSameMonth);
                 }
 
-                if (_db.tbl_Conversion.Any(x => x.CompanyId == companyId && x.Month == leaveVM.StartDate.Month && (x.IsEmployeeDone || x.IsWorkerDone)))
+                if (_db.tbl_Conversion.Any(x => x.CompanyId == companyId && x.Month == leaveVM.StartDate.Month && x.Year == leaveVM.StartDate.Year && (x.IsEmployeeDone || x.IsWorkerDone)))
                 {
                     response.IsError = true;
                     response.AddError(ErrorMessage.MonthlyConvesrionCompletedYouCanNotAddOrModifyLeaveDetails);
@@ -239,7 +239,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     response.AddError(ErrorMessage.LeaveStartAndEndDateshouldBeForSameMonth);
                 }
 
-                if (_db.tbl_Conversion.Any(x => x.CompanyId == companyId && x.Month == leaveVM.StartDate.Month && (x.IsEmployeeDone || x.IsWorkerDone)))
+                if (_db.tbl_Conversion.Any(x => x.CompanyId == companyId && x.Month == leaveVM.StartDate.Month && x.Year == leaveVM.StartDate.Year && (x.IsEmployeeDone || x.IsWorkerDone)))
                 {
                     response.IsError = true;
                     response.AddError(ErrorMessage.MonthlyConvesrionCompletedYouCanNotAddOrModifyLeaveDetails);
@@ -318,7 +318,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         response.AddError(ErrorMessage.PendingLeaveCanBeDeleteOnly);
                     }
 
-                    if (_db.tbl_Conversion.Any(x => x.CompanyId == companyId && x.Month == leaveObject.StartDate.Month && (x.IsEmployeeDone || x.IsWorkerDone)))
+                    if (_db.tbl_Conversion.Any(x => x.CompanyId == companyId && x.Month == leaveObject.StartDate.Month && x.Year == leaveObject.StartDate.Year && (x.IsEmployeeDone || x.IsWorkerDone)))
                     {
                         response.IsError = true;
                         response.AddError(ErrorMessage.MonthlyConvesrionCompletedYouCanNotAddOrModifyLeaveDetails);

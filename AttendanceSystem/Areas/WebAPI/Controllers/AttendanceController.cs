@@ -557,9 +557,10 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 }
 
                 #endregion Validation
+
                 if (!response.IsError)
                 {
-                    tbl_Attendance attendanceObject = _db.tbl_Attendance.FirstOrDefault(x => x.UserId == employeeId && x.AttendanceDate == today && x.InDateTime != null && x.OutDateTime == null);
+                    tbl_Attendance attendanceObject = _db.tbl_Attendance.FirstOrDefault(x => x.UserId == employeeId && x.InDateTime != null && x.OutDateTime == null);
                     attendanceObject.OutLocationFrom = outTimeRequestVM.OutLocationFrom;
                     attendanceObject.Status = (int)AttendanceStatus.Pending;
                     attendanceObject.OutDateTime = CommonMethod.CurrentIndianDateTime();
@@ -610,7 +611,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             try
             {
                 DateTime today = CommonMethod.CurrentIndianDateTime().Date;
-                bool isPresent = _db.tbl_Attendance.Any(x => x.AttendanceDate == today && x.InDateTime != null && x.OutDateTime == null && x.UserId == employeeId);
+                bool isPresent = _db.tbl_Attendance.Any(x => x.InDateTime != null && x.OutDateTime == null && x.UserId == employeeId);
                 response.Data = isPresent;
             }
             catch (Exception ex)
