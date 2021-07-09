@@ -530,7 +530,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 tbl_Employee employeeObj = _db.tbl_Employee.FirstOrDefault(x => x.EmployeeId == employeeId);
 
                 #region Validation
-                if (!_db.tbl_Attendance.Any(x => x.UserId == employeeId && x.AttendanceDate == today && x.InDateTime != null && x.OutDateTime == null))
+                if (!_db.tbl_Attendance.Any(x => x.UserId == employeeId && x.InDateTime != null && x.OutDateTime == null))
                 {
                     response.IsError = true;
                     response.AddError(ErrorMessage.AlreadyOutForTheDay);
