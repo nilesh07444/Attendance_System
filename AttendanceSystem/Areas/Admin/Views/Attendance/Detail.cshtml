@@ -1,7 +1,6 @@
 ﻿@using AttendanceSystem.Helper;
 @model AttendanceSystem.ViewModel.AttendanceVM
 @{
-
     ViewBag.Title = "Attendance";
     List<SelectListItem> lstAttendanceStatus = new List<SelectListItem>();
     lstAttendanceStatus.Add(new SelectListItem { Value = "2", Text = "Accept" });
@@ -10,19 +9,20 @@
 
 <div class="page-body">
 
-    <!-- Container-fluid starts-->
-    <!-- Container-fluid Ends-->
-    <!-- Container-fluid starts-->
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
                 <div class="card">
-                    <div class="card-header" style="background-color: #425C59;">
-                        <h4 style="color: #FFCEA3;">View Attendance</h4>
+                    <div class="card-header" style="background-color: #425C59;display: block;">
+                        <div class="pull-left">
+                            <h4 style="color: #FFCEA3;">View Attendance</h4>
+                        </div>
+                        <div class="pull-right">
+                            <a href="/admin/attendance" class="btn btn-warning pull-right"><i class="fas fa-backward"></i> Back</a>
+                        </div> 
                     </div>
                 </div>
                 <div class="card">
-
                     <div class="card-body">
                         @using (Html.BeginForm("Detail", "Attendance", FormMethod.Post, new { @id = "AttendanceForm", @class = "needs-validation", enctype = "multipart/form-data", role = "form" }))
                         {
@@ -31,14 +31,14 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                        @Model.Name
+                                        @Html.LabelFor(model => model.Name)
+                                        <p>@Model.Name</p>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        @Html.LabelFor(model => model.AttendanceDate, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                        @Model.AttendanceDate.ToString("dd MMM yyyy")
+                                        @Html.LabelFor(model => model.AttendanceDate)
+                                        <p>@Model.AttendanceDate.ToString("dd MMM yyyy")</p>
                                     </div>
                                 </div>
                             </div>
@@ -47,14 +47,14 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.DayType, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                            @Model.DayTypeText
+                                            @Html.LabelFor(model => model.DayType)
+                                            <p>@Model.DayTypeText</p>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.ExtraHours, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                            @Model.ExtraHours
+                                            @Html.LabelFor(model => model.ExtraHours)
+                                            <p>@Model.ExtraHours</p>
                                         </div>
                                     </div>
                                 </div>
@@ -62,56 +62,62 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        @Html.LabelFor(model => model.TodayWorkDetail, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                        @Model.TodayWorkDetail
+                                        @Html.LabelFor(model => model.TodayWorkDetail)
+                                        <p>@Model.TodayWorkDetail</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        @Html.LabelFor(model => model.TomorrowWorkDetail, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                        @Model.TomorrowWorkDetail
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                        @Model.Remarks
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.InDateTime, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                        @Model.InDateTime
+                                        @Html.LabelFor(model => model.TomorrowWorkDetail)
+                                        <p>@Model.TomorrowWorkDetail</p>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                        @Model.StatusText
+                                        @Html.LabelFor(model => model.Remarks)
+                                        <p>@Model.Remarks</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        @Html.LabelFor(model => model.OutDateTime, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                        @Model.OutDateTime
+                                        @Html.LabelFor(model => model.InDateTime)
+                                        @if (Model.InDateTime != null)
+                                        {
+                                            <p>@Model.InDateTime.ToString("dd MMM yyyy hh:mm tt")</p>
+                                        }
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        @Html.LabelFor(model => model.LocationFrom, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                        @Model.LocationFrom
+                                        @Html.LabelFor(model => model.Status)
+                                        <p>@Model.StatusText</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        @Html.LabelFor(model => model.OutLocationFrom, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                        @Model.OutLocationFrom
+                                        @Html.LabelFor(model => model.OutDateTime)
+                                        @if (Model.OutDateTime != null)
+                                        {
+                                            <p>@Convert.ToDateTime(Model.OutDateTime).ToString("dd MMM yyyy hh:mm tt")</p>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.LocationFrom)
+                                        <p>@Model.LocationFrom</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.OutLocationFrom)
+                                        <p>@Model.OutLocationFrom</p>
                                     </div>
                                 </div>
                             </div>
@@ -120,14 +126,14 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.NoOfHoursWorked, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                            @Model.NoOfHoursWorked
+                                            @Html.LabelFor(model => model.NoOfHoursWorked)
+                                            <p>@Model.NoOfHoursWorked</p>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.WorkedHoursAmount, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                            @Model.WorkedHoursAmount.ToString("#.##")
+                                            @Html.LabelFor(model => model.WorkedHoursAmount)
+                                            <p>@Model.WorkedHoursAmount.ToString("#.##")</p>
                                         </div>
                                     </div>
                                 </div>
@@ -137,14 +143,14 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.NoOfUnitWorked, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                            @Model.NoOfUnitWorked
+                                            @Html.LabelFor(model => model.NoOfUnitWorked)
+                                            <p>@Model.NoOfUnitWorked</p>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.WorkedUnitAmount, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                            @Model.WorkedUnitAmount.ToString("#.##")
+                                            @Html.LabelFor(model => model.WorkedUnitAmount)
+                                            <p>@Model.WorkedUnitAmount.ToString("#.##")</p>
                                         </div>
                                     </div>
                                 </div>
@@ -154,8 +160,8 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.RejectReason, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                            @Model.RejectReason
+                                            @Html.LabelFor(model => model.RejectReason)
+                                            <p>@Model.RejectReason</p>
                                         </div>
                                     </div>
 
@@ -166,7 +172,7 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <div class="form-group row">
-                                            @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                            @Html.LabelFor(model => model.Status)
                                             @Html.DropDownListFor(model => model.Status, new SelectList(lstAttendanceStatus, "Value", "Text"), "- Select -", new { @class = "form-control required", @style = "width:20%" })
 
                                             @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
@@ -176,7 +182,7 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <div class="form-group row" id="dvRejectReason">
-                                            @Html.LabelFor(model => model.RejectReason, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
+                                            @Html.LabelFor(model => model.RejectReason)
                                             @Html.TextBoxFor(model => model.RejectReason, new { @type = "text", @class = "form-control", @placeholder = "Enter Reject Reason", @style = "width:50%" })
                                         </div>
                                     </div>
@@ -189,20 +195,12 @@
                                 </div>
 
                             }
-                            else
-                            {
-                                <div class="form-group row">
-                                    <lable class="col-xl-3 col-md-4"></lable>
-                                    <button type="button" class="btn btn-danger" id="btnCancel">Cancel</button>
-                                </div>
-                            }
                         }
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Container-fluid Ends-->
 
 </div>
 

@@ -26,20 +26,20 @@
                                 <div class="card-header ">
                                     <div class="col-sm-2">
                                         <div class="form-group">
-                                            <label style="font-size: 1rem">Start Date</label>
+                                            <label>Start Date</label>
                                             @Html.TextBoxFor(model => model.StartDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Start Date", style = "height: calc(2.25rem + 6px)" })
                                         </div>
                                     </div>
                                     <div class="col-sm-2">
                                         <div class="form-group">
-                                            <label style="font-size: 1rem">End Date</label>
+                                            <label>End Date</label>
                                             @Html.TextBoxFor(model => model.EndDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "End Date", style = "height: calc(2.25rem + 6px)" })
                                         </div>
                                     </div>
 
                                     <div class="col-sm-2">
                                         <div class="form-group">
-                                            <label style="font-size: 1rem">Employee Role</label>
+                                            <label>Employee Role</label>
                                             @Html.DropDownListFor(model => model.UserRole, new SelectList(Model.UserRoleList, "Value", "Text"), "- Select -", new { @class = "form-control required", style = "height: calc(2.25rem + 6px)" })
                                         </div>
                                     </div>

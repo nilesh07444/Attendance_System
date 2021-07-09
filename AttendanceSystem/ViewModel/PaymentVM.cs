@@ -13,29 +13,38 @@ namespace AttendanceSystem.ViewModel
             PendingSalary = 0;
         }
         public long EmployeePaymentId { get; set; }
-        [Required, Display(Name = "Payment Date")]
+        [Display(Name = "Payment Date *")]
+        [Required(ErrorMessage = "This field is required")]
         public DateTime PaymentDate { get; set; }
-        [Required, Display(Name = "Select Employee")]
+
+        [Display(Name = "Select Employee")]
+        [Required(ErrorMessage = "This field is required")]
         public long UserId { get; set; }
         public string UserName { get; set; }
+        
         [Display(Name = "Credit Amount")]
         public decimal? CreditAmount { get; set; }
+        
         [Display(Name = "Debit Amount")]
         public decimal? DebitAmount { get; set; }
-        [Required, Display(Name = "Payment Type")]
+        
+        [Display(Name = "Payment Type")]
+        [Required(ErrorMessage = "This field is required")]
         public int? PaymentType { get; set; }
+          
+        [Display(Name = "Remarks")]
+        public string Remarks { get; set; }
+         
+        [Display(Name = "Pending Salary")]
+        public decimal PendingSalary { get; set; }
+
+        // Additional Field Name
+        public int AdminRoleId { get; set; }
+        public string EmployeeCode { get; set; }
+        public string OTP { get; set; }
         public string PaymentTypeText { get; set; }
         public List<SelectListItem> EmployeeList { get; set; }
         public List<SelectListItem> EmployeePaymentTypeList { get; set; }
-        [ Display(Name = "Remarks")]
-        public string Remarks { get; set; }
-        public string OTP { get; set; }
-        public string EmployeeCode { get; set; }
-        [Display(Name = "Pending Salary")]
-        public decimal PendingSalary { get; set; }
-        public int AdminRoleId { get; set; }
-
-        // Additional Field Name
         public string AdminRoleText { get; set; }
         public string AmountGivenBy { get; set; }
     }

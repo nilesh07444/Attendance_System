@@ -12,7 +12,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
     [PageAccess]
     public class AttendanceController : Controller
     {
-        // GET: Admin/Attendance
+        
         AttendanceSystemEntities _db;
         long companyId;
         long LoggedInUserId;

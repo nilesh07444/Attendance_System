@@ -29,19 +29,19 @@
                                 <div class="card-header ">
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label style="font-size: 1rem">Start Month</label>
+                                            <label>Start Month</label>
                                             @Html.DropDownListFor(model => model.StartMonth, new SelectList(Model.CalenderMonth, "Value", "Text"), "- All -", new { @class = "form-control required", style = "" })
                                         </div>
                                     </div>
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label style="font-size: 1rem">End Month</label>
+                                            <label>End Month</label>
                                             @Html.DropDownListFor(model => model.EndMonth, new SelectList(Model.CalenderMonth, "Value", "Text"), "- All -", new { @class = "form-control required", style = "" })
                                         </div>
                                     </div>
                                     <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label style="font-size: 1rem">Year</label>
+                                            <label>Year</label>
                                             @Html.TextBoxFor(model => model.Year, new { @type = "number", @class = "form-control required", @placeholder = "Year", @max = "9999", @maxLength = 4, @style= "height: calc(2.25rem + 6px)" })
                                         </div>
                                     </div>
