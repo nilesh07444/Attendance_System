@@ -82,7 +82,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
                 if (ModelState.IsValid)
                 {
-                    long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
+                    long LoggedInUserId = (int)PaymentGivenBy.SuperAdmin;
 
                     string fileName = string.Empty;
                     string path = Server.MapPath(SMSPackageDirectoryPath);
@@ -194,7 +194,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                 if (objSMSPackage != null)
                 {
-                    long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
+                    long LoggedInUserId = (int)PaymentGivenBy.SuperAdmin;
                     if (Status == "Active")
                     {
                         objSMSPackage.IsActive = true;
@@ -235,7 +235,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 }
                 else
                 {
-                    long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
+                    long LoggedInUserId = (int)PaymentGivenBy.SuperAdmin;
                     objSMSPackage.IsDeleted = true;
                     objSMSPackage.ModifiedBy = LoggedInUserId;
                     objSMSPackage.ModifiedDate = CommonMethod.CurrentIndianDateTime();

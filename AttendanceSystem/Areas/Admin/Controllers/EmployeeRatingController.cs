@@ -132,7 +132,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     }
                     else
                     {
-                        long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
+                        long LoggedInUserId = (int)PaymentGivenBy.CompanyAdmin;
                         long companyId = Int64.Parse(clsAdminSession.CompanyId.ToString());
 
                         if (employeeRatingVM.EmployeeRatingId > 0)

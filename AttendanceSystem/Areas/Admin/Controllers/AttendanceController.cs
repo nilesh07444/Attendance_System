@@ -134,7 +134,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     attendanceList.ForEach(attendance =>
                     {
                         attendance.Status = (int)LeaveStatus.Accept;
-                        attendance.ModifiedBy = loggedinUser;
+                        attendance.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
                         attendance.ModifiedDate = CommonMethod.CurrentIndianDateTime();
 
                         tbl_Employee employeeObj = _db.tbl_Employee.Where(x => x.EmployeeId == attendance.UserId).FirstOrDefault();
@@ -152,12 +152,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                             objEmployeePayment.Remarks = ErrorMessage.AutoCreditOnAttendanceAccept;
                             objEmployeePayment.Month = attendance.AttendanceDate.Month;
                             objEmployeePayment.Year = attendance.AttendanceDate.Year;
-                            //objEmployeePayment.Status=
-                            //objEmployeePayment.ProcessStatusText
                             objEmployeePayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
-                            objEmployeePayment.CreatedBy = loggedinUser;
+                            objEmployeePayment.CreatedBy = (int)PaymentGivenBy.CompanyAdmin;
                             objEmployeePayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
-                            objEmployeePayment.ModifiedBy = loggedinUser;
+                            objEmployeePayment.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
 
                             if (employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased)
                             {
@@ -251,7 +249,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     {
                         objAttendance.Status = attendanceVM.Status;
                         objAttendance.RejectReason = attendanceVM.RejectReason;
-                        objAttendance.ModifiedBy = LoggedInUserId;
+                        objAttendance.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
                         objAttendance.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         _db.SaveChanges();
 

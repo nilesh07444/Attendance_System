@@ -76,7 +76,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         tbl_MaterialCategory objMaterialCategory = _db.tbl_MaterialCategory.Where(x => x.MaterialCategoryId == MaterialCategoryVM.MaterialCategoryId).FirstOrDefault();
                         objMaterialCategory.MaterialCategoryName = MaterialCategoryVM.MaterialCategoryName;
                         objMaterialCategory.Description = MaterialCategoryVM.Description;
-                        objMaterialCategory.ModifiedBy = LoggedInUserId;
+                        objMaterialCategory.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
                         objMaterialCategory.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     }
                     else
@@ -86,9 +86,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objMaterialCategory.MaterialCategoryName = MaterialCategoryVM.MaterialCategoryName;
                         objMaterialCategory.Description = MaterialCategoryVM.Description;
                         objMaterialCategory.IsActive = true;
-                        objMaterialCategory.CreatedBy = LoggedInUserId;
+                        objMaterialCategory.CreatedBy = (int)PaymentGivenBy.CompanyAdmin;
                         objMaterialCategory.CreatedDate = CommonMethod.CurrentIndianDateTime();
-                        objMaterialCategory.ModifiedBy = LoggedInUserId;
+                        objMaterialCategory.ModifiedBy =  (int)PaymentGivenBy.CompanyAdmin;
                         objMaterialCategory.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         _db.tbl_MaterialCategory.Add(objMaterialCategory);
                     }
@@ -127,7 +127,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objMaterialCategory.IsActive = false;
                     }
 
-                    objMaterialCategory.ModifiedBy = LoggedInUserId;
+                    objMaterialCategory.ModifiedBy =  (int)PaymentGivenBy.CompanyAdmin;
                     objMaterialCategory.ModifiedDate = CommonMethod.CurrentIndianDateTime();
 
                     _db.SaveChanges();

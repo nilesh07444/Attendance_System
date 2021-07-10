@@ -67,7 +67,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
                 if (ModelState.IsValid)
                 {
-                    long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
+                    long LoggedInUserId = (int)PaymentGivenBy.SuperAdmin;
 
                     if (testimonialVM.TestimonialId > 0)
                     {
@@ -147,7 +147,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                 if (objTestimonial != null)
                 {
-                    long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
+                    long LoggedInUserId = (int)PaymentGivenBy.SuperAdmin;
                     if (Status == "Active")
                     {
                         objTestimonial.IsActive = true;

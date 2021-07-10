@@ -189,6 +189,7 @@
         public static string PaymentAmountShouldbeGreaterThanZero = "Payment amount should be greater than 0.";
         public static string PaymentTypeWrong = "Payment Type is wrong, It should be Salary or Extra.";
         public static string Red = "red";
+        public static string CompanyAdmin = "Company Admin";
 
     }
 }

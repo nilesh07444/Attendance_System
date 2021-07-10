@@ -215,7 +215,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     tbl_CompanyRequest objCompanyReq = _db.tbl_CompanyRequest.FirstOrDefault(x => x.CompanyRequestId == companyRequestVM.CompanyRequestId);
                     objCompanyReq.RequestStatus = companyRequestVM.RequestStatus;
                     objCompanyReq.RejectReason = companyRequestVM.RejectReason;
-                    objCompanyReq.ModifiedBy = loggedInUserId;
+                    objCompanyReq.ModifiedBy = (int)PaymentGivenBy.SuperAdmin; 
                     objCompanyReq.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     _db.SaveChanges();
 
@@ -263,9 +263,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objcomp.IsTrialMode = true;
                         objcomp.TrialExpiryDate = CommonMethod.CurrentIndianDateTime().AddDays(objCompanyReq.FreeAccessDays);
                         objcomp.IsActive = true;
-                        objcomp.CreatedBy = loggedInUserId;
+                        objcomp.CreatedBy = (int)PaymentGivenBy.SuperAdmin;
                         objcomp.CreatedDate = CommonMethod.CurrentIndianDateTime();
-                        objcomp.ModifiedBy = loggedInUserId;
+                        objcomp.ModifiedBy = (int)PaymentGivenBy.SuperAdmin;
                         objcomp.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         _db.tbl_Company.Add(objcomp);
                         _db.SaveChanges();
@@ -309,9 +309,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objAdminUser.AadharCardPhoto = objCompanyReq.CompanyAdminAadharCardPhoto;
                         objAdminUser.PanCardPhoto = objCompanyReq.CompanyAdminPanCardPhoto;
                         objAdminUser.IsActive = true;
-                        objAdminUser.CreatedBy = loggedInUserId;
+                        objAdminUser.CreatedBy = (int)PaymentGivenBy.SuperAdmin;
                         objAdminUser.CreatedDate = CommonMethod.CurrentIndianDateTime();
-                        objAdminUser.ModifiedBy = loggedInUserId;
+                        objAdminUser.ModifiedBy = (int)PaymentGivenBy.SuperAdmin;
                         objAdminUser.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         _db.tbl_AdminUser.Add(objAdminUser);
                         _db.SaveChanges();
@@ -696,7 +696,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     objCompany.RegisterProofImage = !string.IsNullOrEmpty(companyRegisterProofFileName) ? companyRegisterProofFileName : objCompany.RegisterProofImage;
                     objCompany.Description = companyRequestVM.CompanyDescription;
                     objCompany.WebisteUrl = companyRequestVM.CompanyWebisteUrl;
-                    objCompany.ModifiedBy = loggedInUserId;
+                    objCompany.ModifiedBy = (int)PaymentGivenBy.SuperAdmin;
                     objCompany.ModifiedDate = CommonMethod.CurrentIndianDateTime();
 
                     string companyCode = string.Empty;
@@ -731,7 +731,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     objUser.AadharCardPhoto = !string.IsNullOrEmpty(companyAdminAdharCardFileName) ? companyAdminAdharCardFileName : objUser.AadharCardPhoto;
                     objUser.PanCardPhoto = !string.IsNullOrEmpty(companyAdminPancardFileName) ? companyAdminPancardFileName : objUser.PanCardPhoto;
                     objUser.PanCardNo = companyRequestVM.CompanyAdminPanCardNo;
-                    objUser.ModifiedBy = loggedInUserId;
+                    objUser.ModifiedBy = (int)PaymentGivenBy.SuperAdmin;
                     objUser.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     if (isCompanyNameChanged)
                     {
@@ -898,7 +898,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objCompany.IsActive = false;
                     }
 
-                    objCompany.ModifiedBy = LoggedInUserId;
+                    objCompany.ModifiedBy = (int)PaymentGivenBy.SuperAdmin;
                     objCompany.ModifiedDate = CommonMethod.CurrentIndianDateTime();
 
                     _db.SaveChanges();

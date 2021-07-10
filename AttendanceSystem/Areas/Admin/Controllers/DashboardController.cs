@@ -245,7 +245,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         });
                     }
 
-                    long loggedinUser = clsAdminSession.UserID;
+                    long loggedinUser = (int)PaymentGivenBy.CompanyAdmin;
                     DateTime firstDayOfMonth = new DateTime(year, month, 1);
                     DateTime lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
                     double totalDaysinMonth = DateTime.DaysInMonth(year, month);
@@ -474,7 +474,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         _db.SaveChanges();
                     });
 
-                    long loggedinUser = clsAdminSession.UserID;
+                    long loggedinUser = (int)PaymentGivenBy.CompanyAdmin;
 
                     int companyTypeId = (int)clsAdminSession.CompanyTypeId;
                     DateTime firstDayOfMonth = new DateTime(year, month, 1);
