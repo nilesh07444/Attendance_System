@@ -183,8 +183,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             }
             return View(dashboardVM);
         }
-
-
+         
         /// <summary>
         /// Conversion of Employment Types: Employee, Supervisor, Checker, Payer
         /// </summary>
@@ -688,10 +687,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                         }).ToList();
             return lst;
         }
-
-        public ActionResult URLRedirect()
-        {
-            return View();
-        }
+         
     }
 }
