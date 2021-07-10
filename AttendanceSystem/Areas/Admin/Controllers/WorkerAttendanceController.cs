@@ -113,11 +113,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                                         select new SelectListItem
                                         {
-                                            Text = emp.FirstName + " " + emp.LastName + " (" + emp.EmployeeCode + ")",
+                                            Text = emp.Prefix + " " + emp.FirstName + " " + emp.LastName + " (" + emp.EmployeeCode + ")",
                                             Value = emp.EmployeeId.ToString()
                                         }).ToList();
-
-
+             
             return Json(lst.Select(c => new { Name = c.Text, ID = c.Value }).ToList(), JsonRequestBehavior.AllowGet);
         }
 
@@ -129,7 +128,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                         && emp.AdminRoleId == (int)AdminRoles.Worker
                                         select new SelectListItem
                                         {
-                                            Text = emp.FirstName + " " + emp.LastName + " (" + emp.EmployeeCode + ")",
+                                            Text = emp.Prefix + " " + emp.FirstName + " " + emp.LastName + " (" + emp.EmployeeCode + ")",
                                             Value = emp.EmployeeId.ToString()
                                         }).ToList();
             return lst;
@@ -243,7 +242,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                              AttendanceDate = at.AttendanceDate,
                                              EmployeeId = at.EmployeeId,
                                              SiteId = siteId,
-                                             EmployeeName = emp.FirstName + " " + emp.LastName,
+                                             EmployeeName = emp.Prefix + " " + emp.FirstName + " " + emp.LastName,
                                              EmployeeCode = emp.EmployeeCode,
                                              EmploymentCategoryId = emp.EmploymentCategory,
                                              MonthlySalary = emp.MonthlySalaryPrice,

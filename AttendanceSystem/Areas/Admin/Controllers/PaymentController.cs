@@ -142,7 +142,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                      UserId = empp.UserId,
                                      PaymentDate = empp.PaymentDate,
                                      EmployeeCode = emp.EmployeeCode,
-                                     UserName = emp.FirstName + " " + emp.LastName,
+                                     UserName = emp.Prefix + " " + emp.FirstName + " " + emp.LastName,
                                      DebitAmount = empp.DebitAmount,
                                      PaymentType = empp.PaymentType,
                                      Remarks = empp.Remarks
@@ -159,7 +159,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                      UserId = empp.UserId,
                                      PaymentDate = empp.PaymentDate,
                                      EmployeeCode = emp.EmployeeCode,
-                                     UserName = emp.FirstName + " " + emp.LastName,
+                                     UserName = emp.Prefix + " " + emp.FirstName + " " + emp.LastName,
                                      DebitAmount = empp.DebitAmount,
                                      PaymentType = empp.PaymentType,
                                      Remarks = empp.Remarks
@@ -336,7 +336,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                         orderby emp.EmployeeId
                                         select new SelectListItem
                                         {
-                                            Text = emp.FirstName + " " + emp.LastName + " (" + emp.EmployeeCode + ")",
+                                            Text = emp.Prefix + " " + emp.FirstName + " " + emp.LastName + " (" + emp.EmployeeCode + ")",
                                             Value = emp.EmployeeId.ToString()
                                         }).ToList();
             return lst;

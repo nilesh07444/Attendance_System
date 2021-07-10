@@ -210,7 +210,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                         where !emp.IsDeleted && emp.CompanyId == companyId
                                         select new SelectListItem
                                         {
-                                            Text = emp.FirstName + " " + emp.LastName + " (" + emp.EmployeeCode + ")",
+                                            Text = emp.Prefix + " " + emp.FirstName + " " + emp.LastName + " (" + emp.EmployeeCode + ")",
                                             Value = emp.EmployeeId.ToString()
                                         }).ToList();
             return lst;
@@ -227,7 +227,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                 {
                                     EmployeeRatingId = er.EmployeeRatingId,
                                     EmployeeId = er.EmployeeId,
-                                    EmployeeName = emp.FirstName + " " + emp.LastName,
+                                    EmployeeName = emp.Prefix + " " + emp.FirstName + " " + emp.LastName,
                                     RateMonth = er.RateMonth,
                                     RateYear = er.RateYear,
                                     BehaviourRate = er.BehaviourRate,
