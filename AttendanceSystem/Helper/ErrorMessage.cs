@@ -102,6 +102,8 @@
         public static string CompanyIsNotActive = "Company is not active.";
         public static string CompanyAccountIsExpired = "Company account is expired.";
         public static string CompanyTrailAccountIsExpired = "Company trail account is expired.";
+        public static string RequestStatusRequired = "Request Status is required";
+        public static string RequestRejectRequired = "Request Reject is required";
 
         public static string SMSPackageIsExpired = "SMS package is expired.";
         public static string WorkerCanAssignForTodayOnly = "Workers can assign for today only.";

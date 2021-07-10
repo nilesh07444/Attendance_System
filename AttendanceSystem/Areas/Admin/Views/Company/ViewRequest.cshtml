@@ -191,203 +191,212 @@
                         </div>
                     </div>
                     <div class="card-body">
+
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CompanyAdminPrefix)
+                                    <p>@Model.CompanyAdminPrefix</p>
+                                    @Html.HiddenFor(model => model.CompanyAdminPrefix)
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CompanyAdminFirstName)
+                                    <p>@Model.CompanyAdminFirstName</p>
+                                    @Html.HiddenFor(model => model.CompanyAdminFirstName)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CompanyAdminMiddleName)
+                                    <p>@Model.CompanyAdminMiddleName</p>
+                                    @Html.HiddenFor(model => model.CompanyAdminMiddleName)
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CompanyAdminLastName)
+                                    <p>@Model.CompanyAdminLastName</p>
+                                    @Html.HiddenFor(model => model.CompanyAdminLastName)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CompanyAdminEmailId)
+                                    <p>@Model.CompanyAdminEmailId</p>
+                                    @Html.HiddenFor(model => model.CompanyAdminEmailId)
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CompanyAdminDOB)
+                                    <p>@Model.CompanyAdminDOB</p>
+                                    @Html.HiddenFor(model => model.CompanyAdminDOB)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CompanyAdminDateOfMarriageAnniversary)
+                                    @if (Model.CompanyAdminDateOfMarriageAnniversary.HasValue)
+                                    {
+                                        <p> @Model.CompanyAdminDateOfMarriageAnniversary.Value.ToString("dd MMM yyyy")</p>
+                                    }
+                                    @Html.HiddenFor(model => model.CompanyAdminDateOfMarriageAnniversary)
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CompanyAdminMobileNo)
+                                    <p>@Model.CompanyAdminMobileNo</p>
+                                    @Html.HiddenFor(model => model.CompanyAdminMobileNo)
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CompanyAdminAlternateMobileNo)
+                                    <p>@Model.CompanyAdminAlternateMobileNo</p>
+                                    @Html.HiddenFor(model => model.CompanyAdminAlternateMobileNo)
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CompanyAdminDesignation)
+                                    <p>@Model.CompanyAdminDesignation</p>
+                                    @Html.HiddenFor(model => model.CompanyAdminDesignation)
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CompanyAdminAddress)
+                                    <p>@Model.CompanyAdminAddress</p>
+                                    @Html.HiddenFor(model => model.CompanyAdminAddress)
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CompanyAdminCity)
+                                    <p>@Model.CompanyAdminCity</p>
+                                    @Html.HiddenFor(model => model.CompanyAdminCity)
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CompanyAdminPincode)
+                                    <p>@Model.CompanyAdminPincode</p>
+                                    @Html.HiddenFor(model => model.CompanyAdminPincode)
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CompanyAdminDistrict)
+                                    <p>@Model.CompanyAdminDistrict</p>
+                                    @Html.HiddenFor(model => model.CompanyAdminDistrict)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CompanyAdminState)
+                                    <p>@Model.CompanyAdminState</p>
+                                    @Html.HiddenFor(model => model.CompanyAdminState)
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CompanyAdminProfilePhotoFile)
+                                    @if (!string.IsNullOrEmpty(Model.CompanyAdminProfilePhoto))
+                                    {
+                                        <p><a target="_blank" href="@ErrorMessage.ProfileDirectoryPath/@Model.CompanyAdminProfilePhoto"> Click here to view image </a></p>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CompanyAdminPanCardNo)
+                                    <p>@Model.CompanyAdminPanCardNo</p>
+                                    @Html.HiddenFor(model => model.CompanyAdminPanCardNo)
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CompanyAdminPanCardPhotoFile)
+                                    @if (!string.IsNullOrEmpty(Model.CompanyAdminPanCardPhoto))
+                                    {
+                                        <p><a target="_blank" href="@ErrorMessage.PancardDirectoryPath/@Model.CompanyAdminPanCardPhoto"> Click here to view image </a></p>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CompanyAdminAadharCardNo)
+                                    <p>@Model.CompanyAdminAadharCardNo</p>
+                                    @Html.HiddenFor(model => model.CompanyAdminAadharCardNo)
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CompanyAdminAadharCardPhotoFile)
+                                    @if (!string.IsNullOrEmpty(Model.CompanyAdminAadharCardPhoto))
+                                    {
+                                        <p><a target="_blank" href="@ErrorMessage.AdharcardDirectoryPath/@Model.CompanyAdminAadharCardPhoto"> Click here to view image </a></p>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr />
+
                         @using (Html.BeginForm("EditRequest", "Company", FormMethod.Post, new { @id = "CompanyRequestForm", @class = "needs-validation", enctype = "multipart/form-data", role = "form" }))
                         {
+
                             @Html.HiddenFor(model => model.CompanyRequestId)
                             @Html.HiddenFor(model => model.CompanyName)
-
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.CompanyAdminPrefix)
-                                        <p>@Model.CompanyAdminPrefix</p>
-                                        @Html.HiddenFor(model => model.CompanyAdminPrefix)
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.CompanyAdminFirstName)
-                                        <p>@Model.CompanyAdminFirstName</p>
-                                        @Html.HiddenFor(model => model.CompanyAdminFirstName)
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.CompanyAdminMiddleName)
-                                        <p>@Model.CompanyAdminMiddleName</p>
-                                        @Html.HiddenFor(model => model.CompanyAdminMiddleName)
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.CompanyAdminLastName)
-                                        <p>@Model.CompanyAdminLastName</p>
-                                        @Html.HiddenFor(model => model.CompanyAdminLastName)
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.CompanyAdminEmailId)
-                                        <p>@Model.CompanyAdminEmailId</p>
-                                        @Html.HiddenFor(model => model.CompanyAdminEmailId)
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.CompanyAdminDOB)
-                                        <p>@Model.CompanyAdminDOB</p>
-                                        @Html.HiddenFor(model => model.CompanyAdminDOB)
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.CompanyAdminDateOfMarriageAnniversary)
-                                        @if (Model.CompanyAdminDateOfMarriageAnniversary.HasValue)
-                                        {
-                                            <p> @Model.CompanyAdminDateOfMarriageAnniversary.Value.ToString("dd MMM yyyy")</p>
-                                        }
-                                        @Html.HiddenFor(model => model.CompanyAdminDateOfMarriageAnniversary)
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.CompanyAdminMobileNo)
-                                        <p>@Model.CompanyAdminMobileNo</p>
-                                        @Html.HiddenFor(model => model.CompanyAdminMobileNo)
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.CompanyAdminAlternateMobileNo)
-                                        <p>@Model.CompanyAdminAlternateMobileNo</p>
-                                        @Html.HiddenFor(model => model.CompanyAdminAlternateMobileNo)
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.CompanyAdminDesignation)
-                                        <p>@Model.CompanyAdminDesignation</p>
-                                        @Html.HiddenFor(model => model.CompanyAdminDesignation)
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.CompanyAdminAddress)
-                                        <p>@Model.CompanyAdminAddress</p>
-                                        @Html.HiddenFor(model => model.CompanyAdminAddress)
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.CompanyAdminCity)
-                                        <p>@Model.CompanyAdminCity</p>
-                                        @Html.HiddenFor(model => model.CompanyAdminCity)
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.CompanyAdminPincode)
-                                        <p>@Model.CompanyAdminPincode</p>
-                                        @Html.HiddenFor(model => model.CompanyAdminPincode)
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.CompanyAdminDistrict)
-                                        <p>@Model.CompanyAdminDistrict</p>
-                                        @Html.HiddenFor(model => model.CompanyAdminDistrict)
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.CompanyAdminState)
-                                        <p>@Model.CompanyAdminState</p>
-                                        @Html.HiddenFor(model => model.CompanyAdminState)
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.CompanyAdminProfilePhotoFile)
-                                        @if (!string.IsNullOrEmpty(Model.CompanyAdminProfilePhoto))
-                                        {
-                                            <p><a target="_blank" href="@ErrorMessage.ProfileDirectoryPath/@Model.CompanyAdminProfilePhoto"> Click here to view image </a></p>
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.CompanyAdminPanCardNo)
-                                        <p>@Model.CompanyAdminPanCardNo</p>
-                                        @Html.HiddenFor(model => model.CompanyAdminPanCardNo)
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.CompanyAdminPanCardPhotoFile)
-                                        @if (!string.IsNullOrEmpty(Model.CompanyAdminPanCardPhoto))
-                                        {
-                                            <p><a target="_blank" href="@ErrorMessage.PancardDirectoryPath/@Model.CompanyAdminPanCardPhoto"> Click here to view image </a></p>
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.CompanyAdminAadharCardNo)
-                                        <p>@Model.CompanyAdminAadharCardNo</p>
-                                        @Html.HiddenFor(model => model.CompanyAdminAadharCardNo)
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.CompanyAdminAadharCardPhotoFile)
-                                        @if (!string.IsNullOrEmpty(Model.CompanyAdminAadharCardPhoto))
-                                        {
-                                            <p><a target="_blank" href="@ErrorMessage.AdharcardDirectoryPath/@Model.CompanyAdminAadharCardPhoto"> Click here to view image </a></p>
-                                        }
-                                    </div>
-                                </div>
-                            </div>
                             if (Model.RequestStatus == (int)CompanyRequestStatus.Pending)
                             {
-                                <div class="form-group row">
-                                    @Html.LabelFor(model => model.RequestStatus)
-                                    @Html.DropDownListFor(model => model.RequestStatus, new SelectList(lstCompanyStatus, "Value", "Text"), "- Select -", new { @class = "form-control required", @style = "width:20%" })
 
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.RequestStatus)
+                                    @Html.DropDownListFor(model => model.RequestStatus, new SelectList(lstCompanyStatus, "Value", "Text"), "- Select -", new { @class = "form-control col-2 required" })
                                     @Html.ValidationMessageFor(model => model.RequestStatus, "", new { @class = "text-danger" })
                                 </div>
-                                <div class="form-group row" id="dvRejectReason">
+
+                                <div class="form-group" id="dvRejectReason">
                                     @Html.LabelFor(model => model.RejectReason)
-                                    @Html.TextBoxFor(model => model.RejectReason, new { @type = "text", @class = "form-control", @placeholder = "Enter Reject Reason", @style = "width:50%" })
+                                    @Html.TextBoxFor(model => model.RejectReason, new { @type = "text", @class = "form-control", @placeholder = "Enter Reject Reason" })
                                 </div>
-                                <div class="form-group row">
+
+                                <div class="form-group">
                                     <lable class="col-xl-3 col-md-4"></lable>
                                     <button type="submit" class="btn btn-success" style="margin-right:10px;" id="btnSubmit">Submit</button>
                                     <button type="button" class="btn btn-danger" id="btnCancel">Cancel</button>
                                 </div>
+
                             }
 
                         }
+
                     </div>
                 </div>
             </div>

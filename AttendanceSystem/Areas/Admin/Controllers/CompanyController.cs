@@ -212,6 +212,22 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    #region
+
+                    if (companyRequestVM.RequestStatus <= 0)
+                    {
+                        ModelState.AddModelError("RequestStatus", ErrorMessage.RequestStatusRequired);
+                        return View(companyRequestVM);
+                    }
+
+                    if (companyRequestVM.RequestStatus == (int)CompanyRequestStatus.Reject && string.IsNullOrEmpty(companyRequestVM.RejectReason))
+                    {
+                        ModelState.AddModelError("RejectReason", ErrorMessage.RequestRejectRequired);
+                        return View(companyRequestVM);
+                    }
+
+                    #endregion
+
                     tbl_CompanyRequest objCompanyReq = _db.tbl_CompanyRequest.FirstOrDefault(x => x.CompanyRequestId == companyRequestVM.CompanyRequestId);
                     objCompanyReq.RequestStatus = companyRequestVM.RequestStatus;
                     objCompanyReq.RejectReason = companyRequestVM.RejectReason;
@@ -671,9 +687,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         }
                     }
                     #endregion PancardImage
-
-
-
+                     
                     #region Edit Company Request
 
                     tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == companyRequestVM.CompanyId).FirstOrDefault();

@@ -167,9 +167,13 @@ namespace AttendanceSystem.ViewModel
         [Display(Name = "Pan Card Photo")]
         public HttpPostedFileBase CompanyAdminPanCardPhotoFile { get; set; }
         public string CompanyAdminPanCardPhoto { get; set; }
-        [Display(Name = "Request Status")]
+        
+        [Display(Name = "Request Status *")]
         public int RequestStatus { get; set; }
+
+        [Display(Name = "Reject Reason *")]
         public string RejectReason { get; set; }
+        
         public long? CompanyId { get; set; }
         public int FreeAccessDays { get; set; }
         public List<SelectListItem> CompanyTypeList { get; set; }
