@@ -357,39 +357,74 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public string DeletePayment(int employeePaymentId)
+        public string DeletePayment(int employeePaymentId, int employeeId)
         {
             string ReturnMessage = string.Empty;
 
             try
             {
                 long companyId = clsAdminSession.CompanyId;
-                tbl_EmployeePayment objEmployeePayment = _db.tbl_EmployeePayment.Where(x => x.EmployeePaymentId == employeePaymentId && !x.IsDeleted).FirstOrDefault();
+                int adminRoleId = _db.tbl_Employee.Where(x => x.EmployeeId == employeeId).Select(x => x.AdminRoleId).FirstOrDefault();
 
-                if (objEmployeePayment == null)
+                if (adminRoleId == (int)AdminRoles.Worker)
                 {
-                    ReturnMessage = "notfound";
+                    tbl_WorkerPayment objWorkerPayment = _db.tbl_WorkerPayment.Where(x => x.WorkerPaymentId == employeePaymentId && !x.IsDeleted).FirstOrDefault();
+
+                    if (objWorkerPayment == null)
+                    {
+                        ReturnMessage = "notfound";
+                    }
+                    else
+                    {
+                        #region validation
+                        if (_db.tbl_Conversion.Any(x => x.CompanyId == companyId && x.Month == objWorkerPayment.PaymentDate.Month && x.Year == objWorkerPayment.PaymentDate.Year && (x.IsEmployeeDone || x.IsWorkerDone)))
+                        {
+                            ReturnMessage = "convertioncomplete";
+                        }
+                        #endregion
+
+                        if (string.IsNullOrEmpty(ReturnMessage))
+                        {
+                            long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
+                            objWorkerPayment.IsDeleted = true;
+                            objWorkerPayment.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
+                            objWorkerPayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
+                            _db.SaveChanges();
+
+                            ReturnMessage = "success";
+                        }
+                    }
                 }
                 else
                 {
-                    #region validation
-                    if (_db.tbl_Conversion.Any(x => x.CompanyId == companyId && x.Month == objEmployeePayment.PaymentDate.Month && x.Year == objEmployeePayment.PaymentDate.Year && (x.IsEmployeeDone || x.IsWorkerDone)))
+                    tbl_EmployeePayment objEmployeePayment = _db.tbl_EmployeePayment.Where(x => x.EmployeePaymentId == employeePaymentId && !x.IsDeleted).FirstOrDefault();
+
+                    if (objEmployeePayment == null)
                     {
-                        ReturnMessage = "convertioncomplete";
+                        ReturnMessage = "notfound";
                     }
-                    #endregion
-
-                    if (string.IsNullOrEmpty(ReturnMessage))
+                    else
                     {
-                        long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
-                        objEmployeePayment.IsDeleted = true;
-                        objEmployeePayment.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
-                        objEmployeePayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
-                        _db.SaveChanges();
+                        #region validation
+                        if (_db.tbl_Conversion.Any(x => x.CompanyId == companyId && x.Month == objEmployeePayment.PaymentDate.Month && x.Year == objEmployeePayment.PaymentDate.Year && (x.IsEmployeeDone || x.IsWorkerDone)))
+                        {
+                            ReturnMessage = "convertioncomplete";
+                        }
+                        #endregion
 
-                        ReturnMessage = "success";
+                        if (string.IsNullOrEmpty(ReturnMessage))
+                        {
+                            long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
+                            objEmployeePayment.IsDeleted = true;
+                            objEmployeePayment.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
+                            objEmployeePayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
+                            _db.SaveChanges();
+
+                            ReturnMessage = "success";
+                        }
                     }
                 }
+                
             }
             catch (Exception ex)
             {
@@ -511,17 +546,21 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             int status = 0;
             string errorMessage = string.Empty;
             decimal? pendingSalary = 0;
+            DateTime today = CommonMethod.CurrentIndianDateTime().Date;
+            int currMonth = today.Month;
+            int currYear = today.Year;
+
             try
             {
                 tbl_Employee objEmployee = _db.tbl_Employee.Where(x => x.EmployeeId == employeeId).FirstOrDefault();
 
                 if (objEmployee.AdminRoleId == (int)AdminRoles.Worker)
                 {
-                    pendingSalary = _db.tbl_WorkerPayment.Any(x => x.UserId == employeeId && !x.IsDeleted && x.PaymentType != (int)EmployeePaymentType.Extra) ? _db.tbl_WorkerPayment.Where(x => x.UserId == employeeId && !x.IsDeleted && x.PaymentType != (int)EmployeePaymentType.Extra).Select(x => (x.CreditAmount.HasValue ? x.CreditAmount.Value : 0) - (x.DebitAmount.HasValue ? x.DebitAmount.Value : 0)).Sum() : 0;
+                    pendingSalary = _db.tbl_WorkerPayment.Any(x => x.UserId == employeeId && !x.IsDeleted && x.Month == currMonth && x.Year == currYear && x.PaymentType != (int)EmployeePaymentType.Extra) ? _db.tbl_WorkerPayment.Where(x => x.UserId == employeeId && !x.IsDeleted && x.Month == currMonth && x.Year == currYear && x.PaymentType != (int)EmployeePaymentType.Extra).Select(x => (x.CreditAmount.HasValue ? x.CreditAmount.Value : 0) - (x.DebitAmount.HasValue ? x.DebitAmount.Value : 0)).Sum() : 0;
                 }
                 else
                 {
-                    pendingSalary = _db.tbl_EmployeePayment.Any(x => x.UserId == employeeId && !x.IsDeleted && x.PaymentType != (int)EmployeePaymentType.Extra) ? _db.tbl_EmployeePayment.Where(x => x.UserId == employeeId && !x.IsDeleted && x.PaymentType != (int)EmployeePaymentType.Extra).Select(x => (x.CreditAmount.HasValue ? x.CreditAmount.Value : 0) - (x.DebitAmount.HasValue ? x.DebitAmount.Value : 0)).Sum() : 0;
+                    pendingSalary = _db.tbl_EmployeePayment.Any(x => x.UserId == employeeId && !x.IsDeleted && x.Month == currMonth && x.Year == currYear && x.PaymentType != (int)EmployeePaymentType.Extra) ? _db.tbl_EmployeePayment.Where(x => x.UserId == employeeId && !x.IsDeleted && x.Month == currMonth && x.Year == currYear && x.PaymentType != (int)EmployeePaymentType.Extra).Select(x => (x.CreditAmount.HasValue ? x.CreditAmount.Value : 0) - (x.DebitAmount.HasValue ? x.DebitAmount.Value : 0)).Sum() : 0;
                 }
                 status = 1;
             }

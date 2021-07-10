@@ -230,6 +230,7 @@
             var OTP = $("#OTP").val();
             var TextOTP = $("#TextOTP").val();
             var employeePayment_Id = $("#hdnDeleteEmployeePaymentId").val();
+            var employee_Id = $("#hdnDeleteEmployeeId").val();
 
             if (TextOTP == OTP) {
                StartLoading();
@@ -238,7 +239,7 @@
                 $.ajax({
                     type: 'POST',
                     async: true,
-                    url: URL + "?employeePaymentId=" + employeePayment_Id ,
+                    url: URL + "?employeePaymentId=" + employeePayment_Id + "&employeeId=" + employee_Id,
                     success: function (result) {
                         if (result == "success") {
                             alert("Payment deleted successfully");

@@ -151,6 +151,12 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     response.AddError(ErrorMessage.EmployeeIdIsNotValid);
                 }
 
+                if (!_db.tbl_Attendance.Any(x => x.UserId == employeeId && x.InDateTime != null && x.OutDateTime == null))
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.YourAttendanceNotTakenYetYouCanNotAssignWorker);
+                }
+
                 if (paymentVM.PaymentType != (int)EmployeePaymentType.Salary && paymentVM.PaymentType != (int)EmployeePaymentType.Extra)
                 {
                     response.IsError = true;
@@ -175,6 +181,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         objEmployeePayment.CreditOrDebitText = "Debit";
                         objEmployeePayment.DebitAmount = paymentVM.DebitAmount;
                         objEmployeePayment.PaymentType = paymentVM.PaymentType;
+                        objEmployeePayment.Month = objEmployeePayment.PaymentDate.Month;
+                        objEmployeePayment.Year = objEmployeePayment.PaymentDate.Year;
                         objEmployeePayment.CreatedBy = employeeId;
                         objEmployeePayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
                         objEmployeePayment.ModifiedBy = employeeId;

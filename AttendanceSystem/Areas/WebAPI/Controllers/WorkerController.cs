@@ -191,7 +191,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             {
                 DateTime today = CommonMethod.CurrentIndianDateTime().Date;
                 companyId = base.UTI.CompanyId;
-
+                int currMonth = today.Month;
+                int currYear = today.Year;
 
                 EmployeePendingSalaryVM employeeDetails = (from e in _db.tbl_Employee
                                                            where e.EmployeeId == id
@@ -204,7 +205,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                            }).FirstOrDefault();
 
                 employeeDetails.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)employeeDetails.EmploymentCategory);
-                employeeDetails.PendingSalary = _db.tbl_WorkerPayment.Any(x => x.UserId == id && !x.IsDeleted && x.PaymentType != (int)EmployeePaymentType.Extra) ? _db.tbl_WorkerPayment.Where(x => x.UserId == id && !x.IsDeleted && x.PaymentType != (int)EmployeePaymentType.Extra).Select(x => x.CreditAmount - x.DebitAmount).Sum() : 0;
+                employeeDetails.PendingSalary = _db.tbl_WorkerPayment.Any(x => x.UserId == id && !x.IsDeleted && x.Month == currMonth && x.Year == currYear && x.PaymentType != (int)EmployeePaymentType.Extra) ? _db.tbl_WorkerPayment.Where(x => x.UserId == id && !x.IsDeleted && x.Month == currMonth && x.Year == currYear && x.PaymentType != (int)EmployeePaymentType.Extra).Select(x => x.CreditAmount - x.DebitAmount).Sum() : 0;
                 response.Data = employeeDetails;
             }
             catch (Exception ex)
