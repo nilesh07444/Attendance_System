@@ -170,6 +170,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 {
                     string newPwd = CommonMethod.Encrypt(changePasswordVM.NewPassword, psSult);
                     data.Password = newPwd;
+                    data.ModifiedBy = (int)PaymentGivenBy.SuperAdmin;
+                    data.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     _db.SaveChanges();
                 }
                 else

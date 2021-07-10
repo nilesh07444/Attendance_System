@@ -1,10 +1,9 @@
 ﻿using AttendanceSystem.Helper;
+using AttendanceSystem.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using AttendanceSystem.Models;
 
 namespace AttendanceSystem.Areas.Admin.Controllers
 {
@@ -17,7 +16,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         {
             _db = new AttendanceSystemEntities();
         }
-         
+
         public ActionResult Index()
         {
             List<DynamicContentVM> lstDyanamicContent = new List<DynamicContentVM>();
@@ -58,14 +57,16 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
                 if (ModelState.IsValid)
                 {
-                    long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
+                    long LoggedInUserId = (int)PaymentGivenBy.SuperAdmin;
 
                     tbl_DynamicContent objContent = new tbl_DynamicContent();
                     objContent.ContentTitle = contentVM.ContentTitle;
                     objContent.ContentDescription = contentVM.ContentDescription;
                     objContent.SeqNo = contentVM.SeqNo != null ? Convert.ToInt32(contentVM.SeqNo) : 0;
                     objContent.DynamicContentType = contentVM.DynamicContentType;
+                    objContent.CreatedBy = LoggedInUserId;
                     objContent.CreatedDate = CommonMethod.CurrentIndianDateTime();
+                    objContent.ModifiedBy = LoggedInUserId;
                     objContent.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     _db.tbl_DynamicContent.Add(objContent);
                     _db.SaveChanges();
@@ -81,7 +82,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
             return View(contentVM);
         }
-         
+
         public ActionResult Edit(int Id)
         {
             DynamicContentVM objDyanamicContent = new DynamicContentVM();
@@ -117,7 +118,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
                 if (ModelState.IsValid)
                 {
-                    long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
+                    long LoggedInUserId = (int)PaymentGivenBy.SuperAdmin;
 
                     tbl_DynamicContent objContent = _db.tbl_DynamicContent.Where(x => x.DynamicContentId == contentVM.DynamicContentId).FirstOrDefault();
 
@@ -125,6 +126,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     objContent.ContentDescription = contentVM.ContentDescription;
                     objContent.SeqNo = contentVM.SeqNo != null ? Convert.ToInt32(contentVM.SeqNo) : 0;
                     objContent.DynamicContentType = contentVM.DynamicContentType;
+                    objContent.ModifiedBy= LoggedInUserId;
                     objContent.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     _db.SaveChanges();
 

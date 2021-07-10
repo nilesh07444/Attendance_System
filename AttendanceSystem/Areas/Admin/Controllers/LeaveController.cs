@@ -110,7 +110,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     leaveList.ForEach(leave =>
                     {
                         leave.LeaveStatus = (int)LeaveStatus.Accept;
-                        leave.ModifiedBy = loggedinUser;
+                        leave.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
                         leave.ModifiedDate = CommonMethod.CurrentIndianDateTime();
 
                         #region Send SMS
@@ -190,7 +190,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     {
                         objleave.LeaveStatus = leaveVM.LeaveStatus;
                         objleave.RejectReason = leaveVM.RejectReason;
-                        objleave.ModifiedBy = LoggedInUserId;
+                        objleave.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
                         objleave.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         _db.SaveChanges();
 

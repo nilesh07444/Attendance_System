@@ -83,7 +83,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
                 if (ModelState.IsValid)
                 {
-                    long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
+                    long LoggedInUserId = (int)PaymentGivenBy.SuperAdmin;
 
                     string fileName = string.Empty;
                     string path = Server.MapPath(packageDirectoryPath);
@@ -198,7 +198,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                 if (objPackage != null)
                 {
-                    long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
+                    long LoggedInUserId = (int)PaymentGivenBy.SuperAdmin;
                     if (Status == "Active")
                     {
                         objPackage.IsActive = true;

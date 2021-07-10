@@ -4,7 +4,6 @@ using AttendanceSystem.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
@@ -25,7 +24,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         public ActionResult Index(int? userRole = null, DateTime? startDate = null, DateTime? endDate = null, int? employmentCategory = null)
         {
             PaymentFilterVM paymentFilterVM = new PaymentFilterVM();
-            
+
             if (userRole.HasValue)
             {
                 paymentFilterVM.UserRole = userRole.Value;
@@ -35,7 +34,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             {
                 paymentFilterVM.EmploymentCategory = employmentCategory.Value;
             }
-             
+
             if (startDate.HasValue && endDate.HasValue)
             {
                 paymentFilterVM.StartDate = startDate.Value;
@@ -71,7 +70,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                    AdminRoleId = emp.AdminRoleId,
                                                    EmploymentCategory = emp.EmploymentCategory,
                                                    AdminRoleText = rl.AdminRoleName,
-                                                   AmountGivenBy = (paidBy != null ? emp.FirstName + " " + emp.LastName : (empp.CreatedBy == (int)PaymentGivenBy.CompanyAdmin ? "Company Admin" : "")),
+                                                   AmountGivenBy = (paidBy != null ? paidBy.Prefix + " " + paidBy.FirstName + " " + paidBy.LastName : (empp.CreatedBy == (int)PaymentGivenBy.CompanyAdmin ? "Company Admin" : string.Empty)),
 
                                                }).OrderByDescending(x => x.EmployeePaymentId).ToList();
 
@@ -105,7 +104,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                              AdminRoleId = emp.AdminRoleId,
                                              EmploymentCategory = emp.EmploymentCategory,
                                              AdminRoleText = rl.AdminRoleName,
-                                             AmountGivenBy = (paidBy != null ? emp.FirstName + " " + emp.LastName : (emp.CreatedBy == (int)PaymentGivenBy.CompanyAdmin ? "Company Admin" : "")),
+                                             AmountGivenBy = (paidBy != null ? paidBy.Prefix + " " + paidBy.FirstName + " " + paidBy.LastName : (emp.CreatedBy == (int)PaymentGivenBy.CompanyAdmin ? "Company Admin" : string.Empty)),
 
                                          }).OrderByDescending(x => x.EmployeePaymentId).ToList();
 
@@ -384,7 +383,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     {
                         long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
                         objEmployeePayment.IsDeleted = true;
-                        objEmployeePayment.ModifiedBy = LoggedInUserId;
+                        objEmployeePayment.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
                         objEmployeePayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         _db.SaveChanges();
 
@@ -581,7 +580,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 Value = paymentSummuryReportFilterVM.Month
             };
 
-             
+
             var yearParam = new SqlParameter()
             {
                 ParameterName = "Year",

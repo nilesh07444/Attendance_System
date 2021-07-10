@@ -70,7 +70,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
                 if (ModelState.IsValid)
                 {
-                    long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
+                    long LoggedInUserId = (int)PaymentGivenBy.CompanyAdmin;
                     long companyId = clsAdminSession.CompanyId;
 
                     if (workerTypeVM.WorkerTypeId > 0)
@@ -119,7 +119,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                 if (objWorkerType != null)
                 {
-                    long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
+                    long LoggedInUserId = (int)PaymentGivenBy.CompanyAdmin; 
                     if (Status == "Active")
                     {
                         objWorkerType.IsActive = true;

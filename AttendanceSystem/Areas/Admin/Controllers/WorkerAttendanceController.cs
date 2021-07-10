@@ -443,7 +443,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                             if (addWorkerAttendanceVM.AttendanceType == (int)WorkerAttendanceType.Evening)
                             {
                                 attendanceObject.IsEvening = true;
-                                attendanceObject.EveningAttendanceBy = employeeId;
+                                attendanceObject.EveningAttendanceBy = (int)PaymentGivenBy.CompanyAdmin;
                                 attendanceObject.EveningAttendanceDate = CommonMethod.CurrentIndianDateTime();
                                 attendanceObject.EveningSiteId = addWorkerAttendanceVM.SiteId;
                                 //attendanceObject.EveningLatitude = addWorkerAttendanceVM.Latitude;
@@ -469,7 +469,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                             else if (addWorkerAttendanceVM.AttendanceType == (int)WorkerAttendanceType.Afternoon)
                             {
                                 attendanceObject.IsAfternoon = true;
-                                attendanceObject.AfternoonAttendanceBy = employeeId;
+                                attendanceObject.AfternoonAttendanceBy = (int)PaymentGivenBy.CompanyAdmin;
                                 attendanceObject.AfternoonAttendanceDate = CommonMethod.CurrentIndianDateTime();
                                 attendanceObject.AfternoonSiteId = addWorkerAttendanceVM.SiteId;
                                 attendanceObject.AfternoonLatitude = addWorkerAttendanceVM.Latitude;
@@ -479,7 +479,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                             else if (addWorkerAttendanceVM.AttendanceType == (int)WorkerAttendanceType.Morning)
                             {
                                 attendanceObject.IsMorning = true;
-                                attendanceObject.MorningAttendanceBy = employeeId;
+                                attendanceObject.MorningAttendanceBy = (int)PaymentGivenBy.CompanyAdmin;
                                 attendanceObject.MorningAttendanceDate = CommonMethod.CurrentIndianDateTime();
                                 attendanceObject.MorningSiteId = addWorkerAttendanceVM.SiteId;
                                 attendanceObject.MorningLatitude = addWorkerAttendanceVM.Latitude;
@@ -498,7 +498,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                             if (addWorkerAttendanceVM.AttendanceType == (int)WorkerAttendanceType.Afternoon)
                             {
                                 attendanceObject.IsAfternoon = true;
-                                attendanceObject.AfternoonAttendanceBy = employeeId;
+                                attendanceObject.AfternoonAttendanceBy = (int)PaymentGivenBy.CompanyAdmin;
                                 attendanceObject.AfternoonAttendanceDate = CommonMethod.CurrentIndianDateTime();
                                 attendanceObject.AfternoonSiteId = addWorkerAttendanceVM.SiteId;
                                 attendanceObject.AfternoonLatitude = addWorkerAttendanceVM.Latitude;
@@ -508,7 +508,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                             else if (addWorkerAttendanceVM.AttendanceType == (int)WorkerAttendanceType.Morning)
                             {
                                 attendanceObject.IsMorning = true;
-                                attendanceObject.MorningAttendanceBy = employeeId;
+                                attendanceObject.MorningAttendanceBy = (int)PaymentGivenBy.CompanyAdmin;
                                 attendanceObject.MorningAttendanceDate = CommonMethod.CurrentIndianDateTime();
                                 attendanceObject.MorningSiteId = addWorkerAttendanceVM.SiteId;
                                 attendanceObject.MorningLatitude = addWorkerAttendanceVM.Latitude;
@@ -537,9 +537,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                     objWorkerPayment.Month = attendanceObject.AttendanceDate.Month;
                                     objWorkerPayment.Year = attendanceObject.AttendanceDate.Year;
                                     objWorkerPayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
-                                    objWorkerPayment.CreatedBy = employeeId;
+                                    objWorkerPayment.CreatedBy = (int)PaymentGivenBy.CompanyAdmin;
                                     objWorkerPayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
-                                    objWorkerPayment.ModifiedBy = employeeId;
+                                    objWorkerPayment.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
 
                                     if (addWorkerAttendanceVM.EmploymentCategoryId == (int)EmploymentCategory.DailyBased)
                                     {
@@ -607,7 +607,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             string ReturnMessage = "";
             try
             {
-                long loggedinUser = clsAdminSession.UserID;
+                //long loggedinUser = clsAdminSession.UserID;
                 // DateTime today = CommonMethod.CurrentIndianDateTime().Date;
                 string[] ids_array = ids.Split(',');
                 List<tbl_Employee> employeeList = _db.tbl_Employee.Where(x => ids_array.Contains(x.EmployeeId.ToString())).ToList();
@@ -692,7 +692,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                     if (attendanceType == (int)WorkerAttendanceType.Evening)
                                     {
                                         attendanceObject.IsEvening = true;
-                                        attendanceObject.EveningAttendanceBy = loggedinUser;
+                                        attendanceObject.EveningAttendanceBy = (int)PaymentGivenBy.CompanyAdmin;
                                         attendanceObject.EveningAttendanceDate = CommonMethod.CurrentIndianDateTime();
                                         attendanceObject.EveningSiteId = siteId;
                                         attendanceObject.IsClosed = true;
@@ -709,7 +709,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                     else if (attendanceType == (int)WorkerAttendanceType.Afternoon)
                                     {
                                         attendanceObject.IsAfternoon = true;
-                                        attendanceObject.AfternoonAttendanceBy = loggedinUser;
+                                        attendanceObject.AfternoonAttendanceBy = (int)PaymentGivenBy.CompanyAdmin;
                                         attendanceObject.AfternoonAttendanceDate = CommonMethod.CurrentIndianDateTime();
                                         attendanceObject.AfternoonSiteId = siteId;
                                         //attendanceObject.AfternoonLatitude = addWorkerAttendanceVM.Latitude;
@@ -719,7 +719,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                     else if (attendanceType == (int)WorkerAttendanceType.Morning)
                                     {
                                         attendanceObject.IsMorning = true;
-                                        attendanceObject.MorningAttendanceBy = loggedinUser;
+                                        attendanceObject.MorningAttendanceBy = (int)PaymentGivenBy.CompanyAdmin;
                                         attendanceObject.MorningAttendanceDate = CommonMethod.CurrentIndianDateTime();
                                         attendanceObject.MorningSiteId = siteId;
                                         //attendanceObject.MorningLatitude = addWorkerAttendanceVM.Latitude;
@@ -738,7 +738,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                     if (attendanceType == (int)WorkerAttendanceType.Afternoon)
                                     {
                                         attendanceObject.IsAfternoon = true;
-                                        attendanceObject.AfternoonAttendanceBy = loggedinUser;
+                                        attendanceObject.AfternoonAttendanceBy = (int)PaymentGivenBy.CompanyAdmin;
                                         attendanceObject.AfternoonAttendanceDate = CommonMethod.CurrentIndianDateTime();
                                         attendanceObject.AfternoonSiteId = siteId;
                                         //attendanceObject.AfternoonLatitude = addWorkerAttendanceVM.Latitude;
@@ -748,7 +748,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                     else if (attendanceType == (int)WorkerAttendanceType.Morning)
                                     {
                                         attendanceObject.IsMorning = true;
-                                        attendanceObject.MorningAttendanceBy = loggedinUser;
+                                        attendanceObject.MorningAttendanceBy = (int)PaymentGivenBy.CompanyAdmin;
                                         attendanceObject.MorningAttendanceDate = CommonMethod.CurrentIndianDateTime();
                                         attendanceObject.MorningSiteId = siteId;
                                         //attendanceObject.MorningLatitude = addWorkerAttendanceVM.Latitude;
@@ -775,9 +775,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                         objWorkerPayment.Month = attendanceObject.AttendanceDate.Month;
                                         objWorkerPayment.Year = attendanceObject.AttendanceDate.Year;
                                         objWorkerPayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
-                                        objWorkerPayment.CreatedBy = loggedinUser;
+                                        objWorkerPayment.CreatedBy = (int)PaymentGivenBy.CompanyAdmin;
                                         objWorkerPayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
-                                        objWorkerPayment.ModifiedBy = loggedinUser;
+                                        objWorkerPayment.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
 
                                         if (emp.EmploymentCategory == (int)EmploymentCategory.DailyBased)
                                         {
@@ -866,11 +866,17 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                 workerAttendanceViewVM.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)workerAttendanceViewVM.EmploymentCategory);
                 workerAttendanceViewVM.IsMorningText = workerAttendanceViewVM.IsMorning ? ErrorMessage.YES : ErrorMessage.NO;
-                workerAttendanceViewVM.MorningAttendanceByName = workerAttendanceViewVM.MorningAttendanceBy != null ? _db.tbl_Employee.Where(x => x.EmployeeId == workerAttendanceViewVM.MorningAttendanceBy).Select(z => z.FirstName + " " + z.LastName).FirstOrDefault() : string.Empty;
+                workerAttendanceViewVM.MorningAttendanceByName = workerAttendanceViewVM.MorningAttendanceBy != null ?
+                    (workerAttendanceViewVM.MorningAttendanceBy == (int)PaymentGivenBy.CompanyAdmin ? ErrorMessage.CompanyAdmin : _db.tbl_Employee.Where(x => x.EmployeeId == workerAttendanceViewVM.MorningAttendanceBy).Select(z => z.FirstName + " " + z.LastName).FirstOrDefault())
+                    : string.Empty;
                 workerAttendanceViewVM.IsAfternoonText = workerAttendanceViewVM.IsAfternoon ? ErrorMessage.YES : ErrorMessage.NO;
-                workerAttendanceViewVM.AfternoonAttendanceByName = workerAttendanceViewVM.AfternoonAttendanceBy != null ? _db.tbl_Employee.Where(x => x.EmployeeId == workerAttendanceViewVM.AfternoonAttendanceBy).Select(z => z.FirstName + " " + z.LastName).FirstOrDefault() : string.Empty;
+                workerAttendanceViewVM.AfternoonAttendanceByName = workerAttendanceViewVM.AfternoonAttendanceBy != null ?
+                    (workerAttendanceViewVM.AfternoonAttendanceBy == (int)PaymentGivenBy.CompanyAdmin ? ErrorMessage.CompanyAdmin : _db.tbl_Employee.Where(x => x.EmployeeId == workerAttendanceViewVM.AfternoonAttendanceBy).Select(z => z.FirstName + " " + z.LastName).FirstOrDefault()) 
+                    : string.Empty;
                 workerAttendanceViewVM.IsEveningText = workerAttendanceViewVM.IsEvening ? ErrorMessage.YES : ErrorMessage.NO;
-                workerAttendanceViewVM.EveningAttendanceByName = workerAttendanceViewVM.EveningAttendanceBy != null ? _db.tbl_Employee.Where(x => x.EmployeeId == workerAttendanceViewVM.EveningAttendanceBy).Select(z => z.FirstName + " " + z.LastName).FirstOrDefault() : string.Empty;
+                workerAttendanceViewVM.EveningAttendanceByName = workerAttendanceViewVM.EveningAttendanceBy != null ?
+                    (workerAttendanceViewVM.EveningAttendanceBy == (int)PaymentGivenBy.CompanyAdmin ? ErrorMessage.CompanyAdmin : _db.tbl_Employee.Where(x => x.EmployeeId == workerAttendanceViewVM.EveningAttendanceBy).Select(z => z.FirstName + " " + z.LastName).FirstOrDefault() )
+                    : string.Empty;
 
             }
             catch (Exception ex)

@@ -101,9 +101,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objCompanySMSPackRenew.PackageExpiryDate = CommonMethod.CurrentIndianDateTime().AddDays(objPackage.AccessDays);
                         objCompanySMSPackRenew.NoOfSMS = objPackage.NoOfSMS;
                         objCompanySMSPackRenew.RemainingSMS = objPackage.NoOfSMS;
-                        objCompanySMSPackRenew.CreatedBy = clsAdminSession.UserID;
+                        objCompanySMSPackRenew.CreatedBy = (int)PaymentGivenBy.CompanyAdmin;
                         objCompanySMSPackRenew.CreatedDate = CommonMethod.CurrentIndianDateTime();
-                        objCompanySMSPackRenew.ModifiedBy = clsAdminSession.UserID;
+                        objCompanySMSPackRenew.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
                         objCompanySMSPackRenew.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         _db.tbl_CompanySMSPackRenew.Add(objCompanySMSPackRenew);
                         _db.SaveChanges();

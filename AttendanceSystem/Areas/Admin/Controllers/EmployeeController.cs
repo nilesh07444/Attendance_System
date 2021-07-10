@@ -245,7 +245,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployee.IsLeaveForward = employeeVM.IsLeaveForward;
                         objEmployee.IsFingerprintEnabled = employeeVM.IsFingerprintEnabled;
                         objEmployee.NoOfFreeLeavePerMonth = employeeVM.NoOfFreeLeavePerMonth;
-                        objEmployee.UpdatedBy = loggedInUserId;
+                        objEmployee.UpdatedBy = (int)PaymentGivenBy.CompanyAdmin; 
                         objEmployee.UpdatedDate = CommonMethod.CurrentIndianDateTime();
                         _db.SaveChanges();
                     }
@@ -297,9 +297,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployee.NoOfFreeLeavePerMonth = employeeVM.NoOfFreeLeavePerMonth;
                         objEmployee.IsActive = isTrailMode ? true : (activeEmployee >= noOfEmployee ? false : true);
                         objEmployee.IsFingerprintEnabled = employeeVM.IsFingerprintEnabled;
-                        objEmployee.CreatedBy = loggedInUserId;
+                        objEmployee.CreatedBy = (int)PaymentGivenBy.CompanyAdmin;
                         objEmployee.CreatedDate = CommonMethod.CurrentIndianDateTime();
-                        objEmployee.UpdatedBy = loggedInUserId;
+                        objEmployee.UpdatedBy = (int)PaymentGivenBy.CompanyAdmin;
                         objEmployee.UpdatedDate = CommonMethod.CurrentIndianDateTime();
                         _db.tbl_Employee.Add(objEmployee);
                         _db.SaveChanges();
@@ -427,7 +427,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployee.IsActive = false;
                     }
 
-                    objEmployee.UpdatedBy = loggedInUserId;
+                    objEmployee.UpdatedBy = (int)PaymentGivenBy.CompanyAdmin;
                     objEmployee.UpdatedDate = CommonMethod.CurrentIndianDateTime();
 
                     _db.SaveChanges();
@@ -459,7 +459,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 else
                 {
                     objEmployee.IsDeleted = true;
-                    objEmployee.UpdatedBy = loggedInUserId;
+                    objEmployee.UpdatedBy = (int)PaymentGivenBy.CompanyAdmin; 
                     objEmployee.UpdatedDate = CommonMethod.CurrentIndianDateTime();
                     _db.SaveChanges();
 

@@ -76,7 +76,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         tbl_Site objSite = _db.tbl_Site.Where(x => x.SiteId == SiteVM.SiteId).FirstOrDefault();
                         objSite.SiteName = SiteVM.SiteName;
                         objSite.SiteDescription = SiteVM.SiteDescription;
-                        objSite.ModifiedBy = LoggedInUserId;
+                        objSite.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
                         objSite.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     }
                     else
@@ -86,9 +86,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objSite.SiteName = SiteVM.SiteName;
                         objSite.SiteDescription = SiteVM.SiteDescription;
                         objSite.IsActive = true;
-                        objSite.CreatedBy = LoggedInUserId;
+                        objSite.CreatedBy = (int)PaymentGivenBy.CompanyAdmin;
                         objSite.CreatedDate = CommonMethod.CurrentIndianDateTime();
-                        objSite.ModifiedBy = LoggedInUserId;
+                        objSite.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
                         objSite.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         _db.tbl_Site.Add(objSite);
                     }
@@ -127,7 +127,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objSite.IsActive = false;
                     }
 
-                    objSite.ModifiedBy = LoggedInUserId;
+                    objSite.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
                     objSite.ModifiedDate = CommonMethod.CurrentIndianDateTime();
 
                     _db.SaveChanges();
@@ -160,7 +160,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 {
                     long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
                     objSite.IsDeleted = true;
-                    objSite.ModifiedBy = LoggedInUserId;
+                    objSite.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
                     objSite.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     _db.SaveChanges();
 

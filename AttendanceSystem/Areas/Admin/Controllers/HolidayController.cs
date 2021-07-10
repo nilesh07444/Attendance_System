@@ -121,7 +121,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objHoliday.EndDate = HolidayVM.EndDate;
                         objHoliday.Remark = HolidayVM.Remark;
                         objHoliday.HolidayReason = HolidayVM.HolidayReason;
-                        objHoliday.ModifiedBy = LoggedInUserId;
+                        objHoliday.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
                         objHoliday.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     }
                     else
@@ -133,9 +133,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objHoliday.Remark = HolidayVM.Remark;
                         objHoliday.IsActive = true;
                         objHoliday.CompanyId = companyId.ToString();
-                        objHoliday.CreatedBy = LoggedInUserId;
+                        objHoliday.CreatedBy = (int)PaymentGivenBy.CompanyAdmin;
                         objHoliday.CreatedDate = CommonMethod.CurrentIndianDateTime();
-                        objHoliday.ModifiedBy = LoggedInUserId;
+                        objHoliday.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
                         objHoliday.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         _db.tbl_Holiday.Add(objHoliday);
                     }
@@ -190,7 +190,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objHoliday.IsActive = false;
                     }
 
-                    objHoliday.ModifiedBy = LoggedInUserId;
+                    objHoliday.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
                     objHoliday.ModifiedDate = CommonMethod.CurrentIndianDateTime();
 
                     _db.SaveChanges();
@@ -230,7 +230,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     {
                         long LoggedInUserId = Int64.Parse(clsAdminSession.UserID.ToString());
                         objHoliday.IsDeleted = true;
-                        objHoliday.ModifiedBy = LoggedInUserId;
+                        objHoliday.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
                         objHoliday.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         _db.SaveChanges();
 

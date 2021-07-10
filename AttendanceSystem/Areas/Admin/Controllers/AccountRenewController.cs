@@ -150,7 +150,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objCompanyRenewPayment.NoOfSMS = objPackage.NoOfSMS;
                         objCompanyRenewPayment.PaymentFor = "Account Renew";
                         objCompanyRenewPayment.PaymentGatewayResponseId = "";
-                        objCompanyRenewPayment.CreatedBy = clsAdminSession.UserID;
+                        objCompanyRenewPayment.CreatedBy = (int)PaymentGivenBy.CompanyAdmin;
                         objCompanyRenewPayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
                         _db.tbl_CompanyRenewPayment.Add(objCompanyRenewPayment);
                         _db.SaveChanges();

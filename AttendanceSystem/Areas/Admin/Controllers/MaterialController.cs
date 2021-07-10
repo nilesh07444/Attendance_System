@@ -145,7 +145,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objMaterial.Qty = materialVM.Qty;
                         objMaterial.InOut = materialVM.InOut;
                         objMaterial.Remarks = materialVM.Remarks;
-                        objMaterial.ModifiedBy = LoggedInUserId;
+                        objMaterial.ModifiedBy =  (int)PaymentGivenBy.CompanyAdmin;
                         objMaterial.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     }
                     else
@@ -159,9 +159,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objMaterial.InOut = materialVM.InOut;
                         objMaterial.Remarks = materialVM.Remarks;
                         objMaterial.IsActive = true;
-                        objMaterial.CreatedBy = LoggedInUserId;
+                        objMaterial.CreatedBy =  (int)PaymentGivenBy.CompanyAdmin;
                         objMaterial.CreatedDate = CommonMethod.CurrentIndianDateTime();
-                        objMaterial.ModifiedBy = LoggedInUserId;
+                        objMaterial.ModifiedBy =  (int)PaymentGivenBy.CompanyAdmin;
                         objMaterial.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         _db.tbl_Material.Add(objMaterial);
                     }
@@ -203,7 +203,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objMaterial.IsActive = false;
                     }
 
-                    objMaterial.ModifiedBy = loggedInUserId;
+                    objMaterial.ModifiedBy =  (int)PaymentGivenBy.CompanyAdmin;
                     objMaterial.ModifiedDate = CommonMethod.CurrentIndianDateTime();
 
                     _db.SaveChanges();
@@ -235,7 +235,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 else
                 {
                     objMaterial.IsDeleted = true;
-                    objMaterial.ModifiedBy = loggedInUserId;
+                    objMaterial.ModifiedBy =  (int)PaymentGivenBy.CompanyAdmin;
                     objMaterial.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     _db.SaveChanges();
 

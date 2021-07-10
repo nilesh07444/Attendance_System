@@ -19,7 +19,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         {
             _db = new AttendanceSystemEntities();
             companyId = clsAdminSession.CompanyId;
-            loggedInUserId = clsAdminSession.UserID;
+            loggedInUserId = (int)PaymentGivenBy.CompanyAdmin;
         }
         // GET: Admin/SMSRenew
         public ActionResult Index()
