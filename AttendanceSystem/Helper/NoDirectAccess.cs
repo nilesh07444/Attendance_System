@@ -18,8 +18,8 @@ namespace AttendanceSystem.Helper
                 filterContext.Result = new RedirectToRouteResult(
                   new RouteValueDictionary
               {
-                        { "controller", "Dashboard" },
-                        { "action", "URLRedirect" }
+                        { "controller", "UnAuthorizeAccess" },
+                        { "action", "Index" }
               });
                
             }

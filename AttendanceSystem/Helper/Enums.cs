@@ -156,7 +156,9 @@ namespace AttendanceSystem.Helper
         LeaveApproved = 13,
         LeaveRejected = 14,
         PaymentOTP = 15,
-        EmployeeProfileEditOTP = 16
+        EmployeeProfileEditOTP = 16,
+        CompanyRequestOTP = 17,
+        EmployeeCreateOTP = 18
     }
 
     public enum DayType

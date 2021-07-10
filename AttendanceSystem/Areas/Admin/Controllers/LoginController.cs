@@ -23,11 +23,25 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         // GET: Admin/Login
         public ActionResult Index()
         {
+
+            /*
+            int SmsId = (int)SMSType.CompanyRequestOTP;
+            string msg = CommonMethod.GetSmsContent(SmsId);
+            msg = msg.Replace("{#var#}", "12345"); 
+            msg = msg.Replace("\r\n", "\n");
+
+            var json = CommonMethod.SendSMSWithoutLog(msg, "9824936252");
+            if (json.Contains("invalidnumber"))
+            {
+                int status = 0; 
+            }
+            else
+            {
+                int status = 1; 
+            }
+            */
+
             LoginVM login = new LoginVM();
-            //{
-            //    UserName = "UN/18042021/1",
-            //    Password = "12345"
-            //};
             return View(login);
         }
 
