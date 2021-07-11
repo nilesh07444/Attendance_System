@@ -202,7 +202,7 @@ namespace AttendanceSystem.ViewModel
         [Display(Name = "No of Unit Worked")]
         public int NoOfUnitWorked { get; set; }
         [Display(Name = "No of Unit Worked Amount")]
-        public int NoOfUnitWorkedAmount { get; set; }
+        public decimal NoOfUnitWorkedAmount { get; set; }
         public long SiteId { get; set; }
         [Display(Name = "Site")]
         public string SiteName { get; set; }
