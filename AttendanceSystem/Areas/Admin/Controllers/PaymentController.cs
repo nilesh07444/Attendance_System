@@ -377,7 +377,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     else
                     {
                         #region validation
-                        if (_db.tbl_Conversion.Any(x => x.CompanyId == companyId && x.Month == objWorkerPayment.PaymentDate.Month && x.Year == objWorkerPayment.PaymentDate.Year && (x.IsEmployeeDone || x.IsWorkerDone)))
+
+                        bool IsConversionDone = _db.tbl_Conversion.Any(x => x.CompanyId == companyId && x.Month == objWorkerPayment.PaymentDate.Month && x.Year == objWorkerPayment.PaymentDate.Year && x.IsWorkerDone);
+
+                        if (IsConversionDone)
                         {
                             ReturnMessage = "convertioncomplete";
                         }
@@ -406,7 +409,13 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     else
                     {
                         #region validation
-                        if (_db.tbl_Conversion.Any(x => x.CompanyId == companyId && x.Month == objEmployeePayment.PaymentDate.Month && x.Year == objEmployeePayment.PaymentDate.Year && (x.IsEmployeeDone || x.IsWorkerDone)))
+
+                        bool IsConversionDone = _db.tbl_Conversion.Any(x => x.CompanyId == companyId 
+                                                    && x.Month == objEmployeePayment.PaymentDate.Month 
+                                                    && x.Year == objEmployeePayment.PaymentDate.Year 
+                                                    && x.IsEmployeeDone);
+
+                        if (IsConversionDone)
                         {
                             ReturnMessage = "convertioncomplete";
                         }
