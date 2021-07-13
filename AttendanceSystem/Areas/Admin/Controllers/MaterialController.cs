@@ -4,6 +4,7 @@ using AttendanceSystem.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -91,7 +92,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 materialFilterVM.MaterialCategoryList = GetMaterialCategoryList();
                 materialFilterVM.MaterialStatusList = GetMaterialStatusList();
                 materialFilterVM.SiteList = GetSiteList();
-                 
+
             }
             catch (Exception ex)
             {
@@ -145,7 +146,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objMaterial.Qty = materialVM.Qty;
                         objMaterial.InOut = materialVM.InOut;
                         objMaterial.Remarks = materialVM.Remarks;
-                        objMaterial.ModifiedBy =  (int)PaymentGivenBy.CompanyAdmin;
+                        objMaterial.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
                         objMaterial.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     }
                     else
@@ -159,9 +160,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objMaterial.InOut = materialVM.InOut;
                         objMaterial.Remarks = materialVM.Remarks;
                         objMaterial.IsActive = true;
-                        objMaterial.CreatedBy =  (int)PaymentGivenBy.CompanyAdmin;
+                        objMaterial.CreatedBy = (int)PaymentGivenBy.CompanyAdmin;
                         objMaterial.CreatedDate = CommonMethod.CurrentIndianDateTime();
-                        objMaterial.ModifiedBy =  (int)PaymentGivenBy.CompanyAdmin;
+                        objMaterial.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
                         objMaterial.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         _db.tbl_Material.Add(objMaterial);
                     }
@@ -203,7 +204,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objMaterial.IsActive = false;
                     }
 
-                    objMaterial.ModifiedBy =  (int)PaymentGivenBy.CompanyAdmin;
+                    objMaterial.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
                     objMaterial.ModifiedDate = CommonMethod.CurrentIndianDateTime();
 
                     _db.SaveChanges();
@@ -235,7 +236,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 else
                 {
                     objMaterial.IsDeleted = true;
-                    objMaterial.ModifiedBy =  (int)PaymentGivenBy.CompanyAdmin;
+                    objMaterial.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
                     objMaterial.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     _db.SaveChanges();
 
@@ -328,6 +329,65 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             {
             }
             return View(material);
+        }
+
+        public ActionResult MaterialReport(DateTime? startDate = null, DateTime? endDate = null, long? materialCategoryId = null, long? siteId = null)
+        {
+            MaterialInWardOutWardReportFilterVM materialInWardOutWardReportFilterVM = new MaterialInWardOutWardReportFilterVM();
+            long companyId = clsAdminSession.CompanyId;
+
+            if (materialCategoryId.HasValue)
+            {
+                materialInWardOutWardReportFilterVM.MaterialCategoryId = materialCategoryId.Value;
+            }
+
+            if (siteId.HasValue)
+            {
+                materialInWardOutWardReportFilterVM.SiteId = siteId.Value;
+            }
+
+            if (startDate.HasValue && endDate.HasValue)
+            {
+                materialInWardOutWardReportFilterVM.StartDate = startDate.Value;
+                materialInWardOutWardReportFilterVM.EndDate = endDate.Value;
+            }
+
+            var materialCategoryIdParam = new SqlParameter()
+            {
+                ParameterName = "MaterialCategory",
+                Value = materialInWardOutWardReportFilterVM.MaterialCategoryId
+            };
+
+            var siteIdParam = new SqlParameter()
+            {
+                ParameterName = "SiteId",
+                Value = materialInWardOutWardReportFilterVM.SiteId
+            };
+
+            var companyIdParam = new SqlParameter()
+            {
+                ParameterName = "CompanyId",
+                Value = companyId
+            };
+
+            var startDateParam = new SqlParameter()
+            {
+                ParameterName = "StartDate",
+                Value = materialInWardOutWardReportFilterVM.StartDate
+            };
+
+
+            var endDateParam = new SqlParameter()
+            {
+                ParameterName = "EndDate",
+                Value = materialInWardOutWardReportFilterVM.EndDate
+            };
+
+            materialInWardOutWardReportFilterVM.MaterialList = _db.Database.SqlQuery<MaterialInWardOutWardReportVM>("exec Usp_GetDateWiseMaterialReport @StartDate,@EndDate,@MaterialCategory,@SiteId,@CompanyId", startDateParam, endDateParam, materialCategoryIdParam, siteIdParam, companyIdParam).ToList<MaterialInWardOutWardReportVM>();
+
+            materialInWardOutWardReportFilterVM.MaterialCategoryList = GetMaterialCategoryList();
+            materialInWardOutWardReportFilterVM.SiteList = GetSiteList();
+            return View(materialInWardOutWardReportFilterVM);
         }
     }
 }

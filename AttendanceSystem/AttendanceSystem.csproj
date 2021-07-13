@@ -1586,6 +1586,7 @@
     <Content Include="Areas\Admin\Views\WorkerAttendance\View.cshtml" />
     <Content Include="Areas\Admin\Views\UnAuthorizeAccess\Index.cshtml" />
     <Content Include="Areas\Admin\Views\SMSLog\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Material\MaterialReport.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
