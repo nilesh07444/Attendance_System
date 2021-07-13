@@ -523,7 +523,7 @@ namespace AttendanceSystem
             }
         }
 
-        public static ResponseDataModel<string> SendSMS(string msg, string mobileNo, long companyId, long employeeId, bool isTrialMode = false)
+        public static ResponseDataModel<string> SendSMS(string msg, string mobileNo, long companyId, long employeeId, string employeeCode, long loggedInUser, bool isTrialMode = false)
         {
             ResponseDataModel<string> response = new ResponseDataModel<string>();
             try
@@ -588,7 +588,10 @@ namespace AttendanceSystem
                             tbl_SMSLog smsLog = new tbl_SMSLog();
                             smsLog.Message = msg;
                             smsLog.MobileNo = mobileNo;
-                            smsLog.CreatedBy = employeeId;
+                            smsLog.CompanyId = companyId;
+                            smsLog.EmployeeId = employeeId;
+                            smsLog.EmployeeCode = employeeCode;
+                            smsLog.CreatedBy = loggedInUser;
                             smsLog.CreatedDate = CommonMethod.CurrentIndianDateTime();
                             _db.tbl_SMSLog.Add(smsLog);
                             _db.SaveChanges();

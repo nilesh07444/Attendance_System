@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace AttendanceSystem.ViewModel
@@ -66,5 +64,35 @@ namespace AttendanceSystem.ViewModel
         public decimal Qty { get; set; }
         public int InOut { get; set; }
         public string Remarks { get; set; }
+    }
+
+    public class MaterialInWardOutWardReportVM
+    {
+        public long MaterialId { get; set; }
+        public long MaterialCategoryId { get; set; }
+        public DateTime MaterialDate { get; set; }
+        public long SiteId { get; set; }
+        public string SiteName { get; set; }
+        public decimal Opening { get; set; }
+        public decimal InWard { get; set; }
+        public decimal OutWard { get; set; }
+        public decimal Closing { get; set; }
+        public string EmployeeName { get; set; }
+    }
+    public class MaterialInWardOutWardReportFilterVM
+    {
+        public MaterialInWardOutWardReportFilterVM()
+        {
+            StartDate = new DateTime(CommonMethod.CurrentIndianDateTime().Year, CommonMethod.CurrentIndianDateTime().Month, 1);
+            EndDate = StartDate.AddMonths(1).AddDays(-1);
+        }
+        public long SiteId { get; set; }
+        public long MaterialCategoryId { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+
+        public List<MaterialInWardOutWardReportVM> MaterialList { get; set; }
+        public List<SelectListItem> MaterialCategoryList { get; set; }
+        public List<SelectListItem> SiteList { get; set; }
     }
 }

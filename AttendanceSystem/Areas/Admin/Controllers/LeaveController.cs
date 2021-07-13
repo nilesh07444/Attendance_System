@@ -125,8 +125,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                         msg = msg.Replace("\r\n", "\n");
 
-                        var json = CommonMethod.SendSMSWithoutLog(msg, objEmployee.MobileNo);
-
+                        //var json = CommonMethod.SendSMSWithoutLog(msg, objEmployee.MobileNo);
+                        ResponseDataModel<string> smsResponse = CommonMethod.SendSMS(msg, objEmployee.MobileNo, objEmployee.CompanyId, objEmployee.EmployeeId, objEmployee.EmployeeCode, (int)PaymentGivenBy.CompanyAdmin, clsAdminSession.IsTrialMode);
                         #endregion
 
                     });
@@ -209,7 +209,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                             msg = msg.Replace("\r\n", "\n");
 
-                            var json = CommonMethod.SendSMSWithoutLog(msg, objEmployee.MobileNo);
+                            //var json = CommonMethod.SendSMSWithoutLog(msg, objEmployee.MobileNo);
+                            ResponseDataModel<string> smsResponse = CommonMethod.SendSMS(msg, objEmployee.MobileNo, objEmployee.CompanyId, objEmployee.EmployeeId, objEmployee.EmployeeCode, (int)PaymentGivenBy.CompanyAdmin, clsAdminSession.IsTrialMode);
                         }
                         if (leaveVM.LeaveStatus == (int)LeaveStatus.Reject)
                         {
@@ -222,7 +223,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                             msg = msg.Replace("\r\n", "\n");
 
-                            var json = CommonMethod.SendSMSWithoutLog(msg, objEmployee.MobileNo);
+                            //var json = CommonMethod.SendSMSWithoutLog(msg, objEmployee.MobileNo);
+                            ResponseDataModel<string> smsResponse = CommonMethod.SendSMS(msg, objEmployee.MobileNo, objEmployee.CompanyId, objEmployee.EmployeeId, objEmployee.EmployeeCode, (int)PaymentGivenBy.CompanyAdmin, clsAdminSession.IsTrialMode);
                         }
 
 

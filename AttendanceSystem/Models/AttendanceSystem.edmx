@@ -622,6 +622,9 @@
           <Property Name="SMSLogId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="MobileNo" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Message" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="CompanyId" Type="bigint" />
+          <Property Name="EmployeeId" Type="bigint" />
+          <Property Name="EmployeeCode" Type="nvarchar" MaxLength="100" />
           <Property Name="CreatedBy" Type="bigint" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
         </EntityType>
@@ -746,12 +749,6 @@
           <Property Name="ModifiedBy" Type="bigint" />
           <Property Name="ModifiedDate" Type="datetime" />
         </EntityType>
-        <Function Name="Usp_GetPatmentReport" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="StartMonth" Type="int" Mode="In" />
-          <Parameter Name="EndMonth" Type="int" Mode="In" />
-          <Parameter Name="Year" Type="int" Mode="In" />
-          <Parameter Name="EmployeeId" Type="bigint" Mode="In" />
-        </Function>
         <EntityContainer Name="AttendanceSystemModelStoreContainer">
           <EntitySet Name="mst_AdminRole" EntityType="Self.mst_AdminRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="mst_CompanyType" EntityType="Self.mst_CompanyType" Schema="dbo" store:Type="Tables" />
@@ -1117,7 +1114,6 @@
           <EntitySet Name="tbl_Testimonial" EntityType="AttendanceSystemModel.tbl_Testimonial" />
           <EntitySet Name="tbl_Attendance" EntityType="AttendanceSystemModel.tbl_Attendance" />
           <EntitySet Name="tbl_CompanySMSPackRenew" EntityType="AttendanceSystemModel.tbl_CompanySMSPackRenew" />
-          <EntitySet Name="tbl_SMSLog" EntityType="AttendanceSystemModel.tbl_SMSLog" />
           <EntitySet Name="tbl_SMSContent" EntityType="AttendanceSystemModel.tbl_SMSContent" />
           <EntitySet Name="tbl_WorkerType" EntityType="AttendanceSystemModel.tbl_WorkerType" />
           <EntitySet Name="tbl_Conversion" EntityType="AttendanceSystemModel.tbl_Conversion" />
@@ -1137,6 +1133,7 @@
           </FunctionImport>
           <EntitySet Name="tbl_Employee" EntityType="AttendanceSystemModel.tbl_Employee" />
           <EntitySet Name="tbl_EmployeePayment" EntityType="AttendanceSystemModel.tbl_EmployeePayment" />
+          <EntitySet Name="tbl_SMSLog" EntityType="AttendanceSystemModel.tbl_SMSLog" />
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -1255,16 +1252,6 @@
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ModifiedBy" Type="Int64" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-        </EntityType>
-        <EntityType Name="tbl_SMSLog">
-          <Key>
-            <PropertyRef Name="SMSLogId" />
-          </Key>
-          <Property Name="SMSLogId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="MobileNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Message" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <EntityType Name="tbl_SMSContent">
           <Key>
@@ -1629,6 +1616,19 @@
           <Property Name="CreatedBy" Type="Int64" Nullable="false" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int64" />
+        </EntityType>
+        <EntityType Name="tbl_SMSLog">
+          <Key>
+            <PropertyRef Name="SMSLogId" />
+          </Key>
+          <Property Name="SMSLogId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MobileNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Message" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyId" Type="Int64" />
+          <Property Name="EmployeeId" Type="Int64" />
+          <Property Name="EmployeeCode" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -2034,17 +2034,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tbl_SMSLog">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_SMSLog">
-              <MappingFragment StoreEntitySet="tbl_SMSLog">
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="Message" ColumnName="Message" />
-                <ScalarProperty Name="MobileNo" ColumnName="MobileNo" />
-                <ScalarProperty Name="SMSLogId" ColumnName="SMSLogId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="tbl_SMSContent">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_SMSContent">
               <MappingFragment StoreEntitySet="tbl_SMSContent">
@@ -2343,18 +2332,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="Usp_GetPatmentReport" FunctionName="AttendanceSystemModel.Store.Usp_GetPatmentReport">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="AttendanceSystemModel.Usp_GetPatmentReport_Result">
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="Opening" ColumnName="Opening" />
-                <ScalarProperty Name="Credit" ColumnName="Credit" />
-                <ScalarProperty Name="Debit" ColumnName="Debit" />
-                <ScalarProperty Name="Remark" ColumnName="Remark" />
-                <ScalarProperty Name="Closing" ColumnName="Closing" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <EntitySetMapping Name="tbl_Employee">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Employee">
               <MappingFragment StoreEntitySet="tbl_Employee">
@@ -2423,6 +2400,20 @@
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="EmployeePaymentId" ColumnName="EmployeePaymentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_SMSLog">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_SMSLog">
+              <MappingFragment StoreEntitySet="tbl_SMSLog">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="EmployeeCode" ColumnName="EmployeeCode" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="MobileNo" ColumnName="MobileNo" />
+                <ScalarProperty Name="SMSLogId" ColumnName="SMSLogId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
