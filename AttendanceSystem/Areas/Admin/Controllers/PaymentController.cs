@@ -470,12 +470,13 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                     msg = msg.Replace("\r\n", "\n");
 
-                    var json = CommonMethod.SendSMSWithoutLog(msg, mobileNo);
+                    //var json = CommonMethod.SendSMSWithoutLog(msg, mobileNo);
+                    ResponseDataModel<string> smsResponse = CommonMethod.SendSMS(msg, objEmployee.MobileNo, objEmployee.CompanyId, objEmployee.EmployeeId, objEmployee.EmployeeCode, (int)PaymentGivenBy.CompanyAdmin, clsAdminSession.IsTrialMode);
 
-                    if (json.Contains("invalidnumber"))
+                    if (smsResponse.IsError)
                     {
                         status = 0;
-                        errorMessage = ErrorMessage.InvalidMobileNo;
+                        errorMessage = smsResponse.ErrorData.FirstOrDefault();
                     }
                     else
                     {

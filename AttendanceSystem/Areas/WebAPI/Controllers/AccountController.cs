@@ -112,12 +112,12 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                     msg = msg.Replace("{#var#}", num.ToString());
                                     msg = msg.Replace("\r\n", "\n");
 
-                                    var json = CommonMethod.SendSMSWithoutLog(msg, data.MobileNo);
+                                    ResponseDataModel<string> smsResponse = CommonMethod.SendSMS(msg, data.MobileNo, data.CompanyId, data.EmployeeId, data.EmployeeCode, data.EmployeeId, companyObj.IsTrialMode);
 
-                                    if (json.Contains("invalidnumber"))
+                                    if (smsResponse.IsError)
                                     {
                                         response.IsError = true;
-                                        response.AddError(ErrorMessage.InvalidMobileNo);
+                                        response.ErrorData = smsResponse.ErrorData;
                                     }
                                     else
                                     {
@@ -235,7 +235,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     authenticateVM.EmploymentCategory = data.EmploymentCategory;
                     authenticateVM.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)data.EmploymentCategory);
                     authenticateVM.IsTrialMode = company.IsTrialMode;
-                    authenticateVM.CompanyName = company.CompanyName; 
+                    authenticateVM.CompanyName = company.CompanyName;
                     response.Data = authenticateVM;
 
                     tbl_LoginHistory objLoginHistory = new tbl_LoginHistory();
@@ -333,6 +333,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     response.IsError = false;
                     loginResponseVM.IsFingerprintEnabled = data.IsFingerprintEnabled;
                     loginResponseVM.EmployeeId = data.EmployeeId;
+                    tbl_Company companyObj = _db.tbl_Company.Where(x => x.CompanyId == data.CompanyId).FirstOrDefault();
+
 
                     Random random = new Random();
                     int num = random.Next(555555, 999999);
@@ -346,12 +348,12 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                     msg = msg.Replace("\r\n", "\n");
 
-                    var json = CommonMethod.SendSMSWithoutLog(msg, data.MobileNo);
-
-                    if (json.Contains("invalidnumber"))
+                    //var json = CommonMethod.SendSMS(msg, data.MobileNo);
+                    ResponseDataModel<string> smsResponse = CommonMethod.SendSMS(msg, data.MobileNo, data.CompanyId, data.EmployeeId, data.EmployeeCode, data.EmployeeId, companyObj.IsTrialMode);
+                    if (smsResponse.IsError)
                     {
                         response.IsError = true;
-                        response.AddError(ErrorMessage.InvalidMobileNo);
+                        response.ErrorData = smsResponse.ErrorData;
                     }
                     else
                     {

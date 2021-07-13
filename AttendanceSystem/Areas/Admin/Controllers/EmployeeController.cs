@@ -339,7 +339,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         msg = regReplace.Replace(msg, employmentCategoryText, 1);
                         msg = msg.Replace("\r\n", "\n");
 
-                        json = CommonMethod.SendSMSWithoutLog(msg, objEmployee.MobileNo);
+                        ResponseDataModel<string> smsResponse = CommonMethod.SendSMS(msg, objEmployee.MobileNo, objEmployee.CompanyId, objEmployee.EmployeeId, objEmployee.EmployeeCode, (int)PaymentGivenBy.CompanyAdmin, isTrailMode); ;
+                        //CommonMethod.SendSMS(msg, objEmployee.MobileNo);
 
                         #endregion
 

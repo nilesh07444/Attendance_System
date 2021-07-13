@@ -314,7 +314,12 @@
                                     <li><a class="nav-link" href="/admin/feedback/add">Add Feedback</a></li>
                                 </ul>
                             </li>
-
+                            <li class="dropdown @(ViewBag.Title == "SMSLog" ? "active" : "")">
+                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="file-minus"></i><span>SMS Log</span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="nav-link" href="/admin/smslog">SMS Log</a></li>
+                                </ul>
+                            </li>
                             <li class="dropdown @(ViewBag.Title == "Report" ? "active" : "")">
                                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="server"></i><span>Report</span></a>
                                 <ul class="dropdown-menu">

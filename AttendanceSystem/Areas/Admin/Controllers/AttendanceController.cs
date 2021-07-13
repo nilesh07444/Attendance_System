@@ -13,7 +13,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
     [NoDirectAccess]
     public class AttendanceController : Controller
     {
-        
+
         AttendanceSystemEntities _db;
         long companyId;
         long LoggedInUserId;
@@ -47,7 +47,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 long companyId = clsAdminSession.CompanyId;
 
                 List<SelectListItem> attendanceStatusList = GetAttendanceStatusList();
-                 
+
                 attendanceFilterVM.AttendanceList = (from at in _db.tbl_Attendance
                                                      join emp in _db.tbl_Employee on at.UserId equals emp.EmployeeId
                                                      where !at.IsDeleted
@@ -266,7 +266,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                             msg = msg.Replace("\r\n", "\n");
 
-                            var json = CommonMethod.SendSMSWithoutLog(msg, objEmployee.MobileNo);
+                            //var json = CommonMethod.SendSMSWithoutLog(msg, objEmployee.MobileNo);
+                            ResponseDataModel<string> smsResponse = CommonMethod.SendSMS(msg, objEmployee.MobileNo, objEmployee.CompanyId, objEmployee.EmployeeId, objEmployee.EmployeeCode, (int)PaymentGivenBy.CompanyAdmin, clsAdminSession.IsTrialMode);
                         }
 
                     }

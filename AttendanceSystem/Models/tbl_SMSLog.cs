@@ -17,6 +17,9 @@ namespace AttendanceSystem.Models
         public long SMSLogId { get; set; }
         public string MobileNo { get; set; }
         public string Message { get; set; }
+        public Nullable<long> CompanyId { get; set; }
+        public Nullable<long> EmployeeId { get; set; }
+        public string EmployeeCode { get; set; }
         public long CreatedBy { get; set; }
         public System.DateTime CreatedDate { get; set; }
     }

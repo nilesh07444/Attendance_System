@@ -28,7 +28,6 @@
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Testimonial" Width="1.5" PointX="5.375" PointY="19.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Attendance" Width="1.5" PointX="19.375" PointY="4.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_CompanySMSPackRenew" Width="1.5" PointX="3.375" PointY="14.75" />
-        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_SMSLog" Width="1.5" PointX="21.375" PointY="0.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_SMSContent" Width="1.5" PointX="0.75" PointY="6.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_WorkerType" Width="1.5" PointX="9.375" PointY="21.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Conversion" Width="1.5" PointX="13.375" PointY="17.75" />
@@ -42,6 +41,7 @@
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_HomeSlider" Width="1.5" PointX="23.375" PointY="0.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Employee" Width="1.5" PointX="3.375" PointY="23.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_EmployeePayment" Width="1.5" PointX="11.375" PointY="21.75" />
+        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_SMSLog" Width="1.5" PointX="23.375" PointY="4.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
