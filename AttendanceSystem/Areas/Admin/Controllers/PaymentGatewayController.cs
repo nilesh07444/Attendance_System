@@ -14,6 +14,25 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         public ActionResult Index()
         {
             ViewBag.StripePublishKey = ConfigurationManager.AppSettings["stripePublishableKey"];
+
+
+            StripeConfiguration.SetApiKey("pk_test_51IvP71SJ3WgQ7vkp7BwTganyt7h1m6xkNK5X04iY3ltxRAGSKxx8o0qzdXaqFg8iIX1NVM8sm71XUupmEhoHDK2P00YYj8L52C");
+            StripeConfiguration.ApiKey = "sk_test_51IvP71SJ3WgQ7vkp6b6Za5tytc5urgyoBDvPah5czjw2zqnUzXQWoHwqwtq0CbdO2kSMxHFjhOHeDLuB7s67qwed00A7xWEN3S";
+
+            string stripeEmail = "prajapati.nileshbhai@gmail.com";
+            string stripeToken = "tok_1JCTfsSJ3WgQ7vkpphD7hdIS";
+
+            var myCharge = new Stripe.ChargeCreateOptions();
+            // always set these properties
+            myCharge.Amount = 500;
+            myCharge.Currency = "USD";
+            myCharge.ReceiptEmail = stripeEmail;
+            myCharge.Description = "Sample Charge";
+            myCharge.Source = stripeToken;
+            myCharge.Capture = true;
+            var chargeService = new Stripe.ChargeService();
+            Charge stripeCharge = chargeService.Create(myCharge);
+
             return View();
         }
 
