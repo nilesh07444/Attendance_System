@@ -449,18 +449,18 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 Random random = new Random();
                 int num = random.Next(555555, 999999);
 
-                int SmsId = (int)SMSType.EmployeeProfileEditOTP;
+                int SmsId = (int)SMSType.EmployeeCreateOTP;
                 string msg = CommonMethod.GetSmsContent(SmsId);
 
                 Regex regReplace = new Regex("{#var#}");
-                msg = regReplace.Replace(msg, fullname, 1);
+                //msg = regReplace.Replace(msg, fullname, 1);
                 msg = regReplace.Replace(msg, num.ToString(), 1);
 
                 msg = msg.Replace("\r\n", "\n");
+                 
+                ResponseDataModel<string> smsResponse = CommonMethod.SendSMS(msg, mobileNo, companyId, 0, "", (int)PaymentGivenBy.CompanyAdmin, isTrailMode);
 
-                var json = CommonMethod.SendSMSWithoutLog(msg, mobileNo);
-
-                if (json.Contains("invalidnumber"))
+                if (smsResponse.Data != null && smsResponse.Data.Contains("invalidnumber"))
                 {
                     status = 0;
                     errorMessage = ErrorMessage.InvalidMobileNo;

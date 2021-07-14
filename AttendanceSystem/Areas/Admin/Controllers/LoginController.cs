@@ -25,7 +25,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         {
 
             /*
-            int SmsId = (int)SMSType.CompanyRequestOTP;
+            int SmsId = (int)SMSType.EmployeeCreateOTP;
             string msg = CommonMethod.GetSmsContent(SmsId);
             msg = msg.Replace("{#var#}", "12345"); 
             msg = msg.Replace("\r\n", "\n");

@@ -339,7 +339,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         msg = regReplace.Replace(msg, employmentCategoryText, 1);
                         msg = msg.Replace("\r\n", "\n");
 
-                        ResponseDataModel<string> smsResponse = CommonMethod.SendSMS(msg, objEmployee.MobileNo, objEmployee.CompanyId, objEmployee.EmployeeId, objEmployee.EmployeeCode, (int)PaymentGivenBy.CompanyAdmin, isTrailMode); ;
+                        ResponseDataModel<string> smsResponse = CommonMethod.SendSMS(msg, objEmployee.MobileNo, objEmployee.CompanyId, objEmployee.EmployeeId, objEmployee.EmployeeCode, (int)PaymentGivenBy.CompanyAdmin, isTrailMode);
                         //CommonMethod.SendSMS(msg, objEmployee.MobileNo);
 
                         #endregion
@@ -506,18 +506,20 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 Random random = new Random();
                 int num = random.Next(555555, 999999);
 
-                int SmsId = (int)SMSType.EmployeeProfileEditOTP;
+                int SmsId = (int)SMSType.EmployeeCreateOTP;
                 string msg = CommonMethod.GetSmsContent(SmsId);
 
                 Regex regReplace = new Regex("{#var#}");
-                msg = regReplace.Replace(msg, fullname, 1);
+                //msg = regReplace.Replace(msg, fullname, 1);
                 msg = regReplace.Replace(msg, num.ToString(), 1);
 
                 msg = msg.Replace("\r\n", "\n");
 
-                var json = CommonMethod.SendSMSWithoutLog(msg, mobileNo);
+                //var json = CommonMethod.SendSMSWithoutLog(msg, mobileNo);
+                 
+                ResponseDataModel<string> smsResponse = CommonMethod.SendSMS(msg, mobileNo, companyId, 0, "", (int)PaymentGivenBy.CompanyAdmin, isTrailMode);
 
-                if (json.Contains("invalidnumber"))
+                if (smsResponse.Data != null && smsResponse.Data.Contains("invalidnumber"))
                 {
                     status = 0;
                     errorMessage = ErrorMessage.InvalidMobileNo;

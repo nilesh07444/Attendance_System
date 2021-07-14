@@ -579,6 +579,7 @@ namespace AttendanceSystem
                             msg = HttpUtility.UrlEncode(msg);
                             string url = GetSMSUrl().Replace("--MOBILE--", mobileNo).Replace("--MSG--", msg);
                             var json = webClient.DownloadString(url);
+
                             response.IsError = false;
                             response.Data = json;
                             activeSMSPackage = _db.tbl_CompanySMSPackRenew.Where(x => x.SMSPackageId == activeSMSPackage.SMSPackageId).FirstOrDefault();
