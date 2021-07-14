@@ -7,6 +7,8 @@
 
     decimal finalAmountWithGST = 0;
     decimal finalAmountWithoutGST = 0;
+
+    string headerBGcolor = "lightgray";
 }
 
 
@@ -16,7 +18,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header" style="background-color: #425C59;">
-                        <h4 style="color: #FFCEA3;">Material Report</h4>
+                        <h4 style="color: #FFCEA3;">Sales Report</h4>
                     </div>
                 </div>
                 <div class="card">
@@ -59,12 +61,18 @@
                             </div>
                         </div>
 
+                        <div class="card-header" style="display: block; margin-bottom: 20px;">
+                            <div class="card-header-action pull-right">
+                                <button class="btn btn-success" style="float: right;" onclick="exportexcel('tbl', 'Sales Report')">Export to Excel</button>
+                            </div>
+                        </div>
+
                         <div class="table-responsive">
-                            <table class="table table-striped table-hover" id="tableExport" style="width:100%;">
+                            <table class="table table-hover" id="tbl" style="width:100%; margin-top:25px;">
                                 <thead>
                                     <tr>
-                                        <td>#</td>
-                                        <th>Buy Date</th>
+                                        @*<td>#</td>*@
+                                        <th width="10%">Buy Date</th>
                                         <th>Company Name</th>
                                         <th>Package Type</th>
                                         <th>Package Name</th>
@@ -94,30 +102,30 @@
                                             if (compareDate != obj.BuyDate.Date)
                                             {
                                                 <tr>
+                                                    @*<td></td>*@
+                                                    <td></td>
+                                                    <td style="font-weight:bold;">Total</td>
                                                     <td></td>
                                                     <td></td>
-                                                    <td>Total</td>
+                                                    <td style="font-weight:bold;">@rowPackageAmount</td>
                                                     <td></td>
-                                                    <td></td>
-                                                    <td>@rowPackageAmount</td>
-                                                    <td></td>
-                                                    <td>@rowGSTAmount</td>
-                                                    <td>@rowFinalAmount</td>
+                                                    <td style="font-weight:bold;">@rowGSTAmount</td>
+                                                    <td style="font-weight:bold;">@rowFinalAmount</td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
                                                 </tr>
+                                                @*<tr>
+                                                        <td colspan="12"></td>
+                                                    </tr>*@
                                                 <tr>
-                                                    <td colspan="12"></td>
-                                                </tr>
-                                                <tr>
                                                     <td></td>
-                                                    <td>GST%</td>
-                                                    <td>Total Package Amount</td>
+                                                    <td style="border: 0.5px solid #000000; font-weight:bold;">GST%</td>
+                                                    <td style="border: 0.5px solid #000000; font-weight:bold;">Total Package Amount</td>
+                                                    <td style="border: 0.5px solid #000000; font-weight:bold;">GST Amount</td>
+                                                    <td style="border: 0.5px solid #000000; font-weight: bold;">Total</td>
                                                     <td></td>
                                                     <td></td>
-                                                    <td>GST Amount</td>
-                                                    <td>Total</td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
@@ -138,12 +146,12 @@
                                                 {
                                                     <tr>
                                                         <td></td>
-                                                        <td>@grpObj.GST</td>
-                                                        <td>@grpObj.PackageAmount</td>
+                                                        <td style="border:0.5px solid #000000;">@grpObj.GST%</td>
+                                                        <td style="border:0.5px solid #000000;">@grpObj.PackageAmount</td>
+                                                        <td style="border:0.5px solid #000000;">@grpObj.GSTAmount</td>
+                                                        <td style="border:0.5px solid #000000;">@grpObj.Total</td>
                                                         <td></td>
                                                         <td></td>
-                                                        <td>@grpObj.GSTAmount</td>
-                                                        <td>@grpObj.Total</td>
                                                         <td></td>
                                                         <td></td>
                                                         <td></td>
@@ -157,17 +165,19 @@
                                                 compareDate = obj.BuyDate.Date;
                                             }
 
+                                            @*<tr>
+                                                    <td colspan="12"></td>
+                                                </tr>
+                                            *@
+
                                             <tr>
-                                                <td colspan="12"></td>
-                                            </tr>
-                                            <tr>
-                                                <td>@counter.</td>
+                                                @*<td>@counter.</td>*@
                                                 <td>@obj.BuyDate.ToString("dd MMM yyyy")</td>
                                                 <td>@obj.CompanyName</td>
                                                 <td>@obj.PackageType</td>
                                                 <td>@obj.PackageName</td>
                                                 <td>@obj.PackageAmount</td>
-                                                <td>@obj.GST</td>
+                                                <td>@obj.GST%</td>
                                                 <td>@obj.GSTAmount</td>
                                                 <td>@obj.FinalAmount</td>
                                                 <td>@obj.TotalFreeEmployee</td>
@@ -185,30 +195,32 @@
                                             {
                                                 compareDate = obj.BuyDate.Date;
                                                 <tr>
+                                                    @*<td></td>*@
+                                                    <td></td>
+                                                    <td style="font-weight:bold;">Total</td>
                                                     <td></td>
                                                     <td></td>
-                                                    <td>Total</td>
+                                                    <td style="font-weight:bold;">@rowPackageAmount</td>
                                                     <td></td>
-                                                    <td></td>
-                                                    <td>@rowPackageAmount</td>
-                                                    <td></td>
-                                                    <td>@rowGSTAmount</td>
-                                                    <td>@rowFinalAmount</td>
+                                                    <td style="font-weight:bold;">@rowGSTAmount</td>
+                                                    <td style="font-weight:bold;">@rowFinalAmount</td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
                                                 </tr>
+
+                                                @*<tr>
+                                                        <td colspan="12"></td>
+                                                    </tr>*@
+
                                                 <tr>
-                                                    <td colspan="12"></td>
-                                                </tr>
-                                                <tr>
                                                     <td></td>
-                                                    <td>GST%</td>
-                                                    <td>Total Package Amount</td>
+                                                    <td style="font-weight:bold; border: 0.5px solid #000000;">GST%</td>
+                                                    <td style="font-weight:bold; border: 0.5px solid #000000;">Total Package Amount</td>
+                                                    <td style="font-weight:bold; border: 0.5px solid #000000;">GST Amount</td>
+                                                    <td style="font-weight:bold; border: 0.5px solid #000000;">Total</td>
                                                     <td></td>
                                                     <td></td>
-                                                    <td>GST Amount</td>
-                                                    <td>Total</td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
@@ -229,12 +241,12 @@
                                                 {
                                                     <tr>
                                                         <td></td>
-                                                        <td>@grpObj.GST</td>
-                                                        <td>@grpObj.PackageAmount</td>
+                                                        <td style="border: 0.5px solid #000000;">@grpObj.GST%</td>
+                                                        <td style="border: 0.5px solid #000000;">@grpObj.PackageAmount</td>
+                                                        <td style="border: 0.5px solid #000000;">@grpObj.GSTAmount</td>
+                                                        <td style="border: 0.5px solid #000000;">@grpObj.Total</td>
                                                         <td></td>
                                                         <td></td>
-                                                        <td>@grpObj.GSTAmount</td>
-                                                        <td>@grpObj.Total</td>
                                                         <td></td>
                                                         <td></td>
                                                         <td></td>
@@ -247,59 +259,63 @@
                                         }
                                     }
                                     <tr>
+                                        <td colspan="12"></td>
+                                    </tr>
+                                    <tr>
                                         <td></td>
                                         <td></td>
-                                        <td>Final Amount Without GST</td>
-                                        <td>@finalAmountWithoutGST</td>
+                                        <td style="font-weight: bold; border: 0.5px solid #000000;">Final Amount Without GST</td>
+                                        <td style="border: 0.5px solid #000000;">@finalAmountWithoutGST</td>
                                         <td></td>
                                         <td colspan="7"></td>
                                     </tr>
                                     <tr>
                                         <td></td>
                                         <td></td>
-                                        <td>Final Amount With GST</td>
-                                        <td>@finalAmountWithGST</td>
+                                        <td style="font-weight: bold; border: 0.5px solid #000000;">Final Amount With GST</td>
+                                        <td style="border: 0.5px solid #000000;">@finalAmountWithGST</td>
                                         <td></td>
                                         <td colspan="7"></td>
                                     </tr>
-                                </tbody>
+                                    <tr>
+                                        <td colspan="12"></td>
+                                    </tr>
+                                    @{
+                                        var finalGrpObjList = Model.SalesReportList
+                                                                  .GroupBy(l => l.GST)
+                                                                   .Select(cl => new
+                                                                   {
+                                                                       GST = cl.First().GST,
+                                                                       PackageAmount = cl.Sum(c => c.PackageAmount).ToString(),
+                                                                       GSTAmount = cl.Sum(c => c.GSTAmount).ToString(),
+                                                                       Total = cl.Sum(c => c.FinalAmount).ToString(),
+                                                                   }).ToList();
 
-                                @{
-                                    var finalGrpObjList = Model.SalesReportList
-                                                              .GroupBy(l => l.GST)
-                                                               .Select(cl => new
-                                                               {
-                                                                   GST = cl.First().GST,
-                                                                   PackageAmount = cl.Sum(c => c.PackageAmount).ToString(),
-                                                                   GSTAmount = cl.Sum(c => c.GSTAmount).ToString(),
-                                                                   Total = cl.Sum(c => c.FinalAmount).ToString(),
-                                                               }).ToList();
-                                    <tbody>
                                         <tr>
                                             <td></td>
+                                            <td style="border: 0.5px solid #000000; font-weight:bold; background-color:@headerBGcolor;">GST(%)</td>
+                                            <td style="border: 0.5px solid #000000; font-weight:bold; background-color:@headerBGcolor;">Total Amount</td>
+                                            <td style="border: 0.5px solid #000000; font-weight:bold; background-color:@headerBGcolor;">Total GST</td>
+                                            <td style="border: 0.5px solid #000000; font-weight: bold; background-color: @headerBGcolor;">Final Amount</td>
                                             <td></td>
                                             <td></td>
                                             <td></td>
-                                            <td></td>
-                                            <td>Total Amount</td>
-                                            <td>Total GST</td>
-                                            <td>Final Amount</td>
                                             <td></td>
                                             <td></td>
                                             <td></td>
                                             <td></td>
                                         </tr>
-                                        @foreach (var grpObj in finalGrpObjList)
+                                        foreach (var grpObj in finalGrpObjList)
                                         {
                                             <tr>
                                                 <td></td>
+                                                <td style="border: 0.5px solid #000000;">@grpObj.GST%</td>
+                                                <td style="border: 0.5px solid #000000;">@grpObj.PackageAmount</td>
+                                                <td style="border: 0.5px solid #000000;">@grpObj.GSTAmount</td>
+                                                <td style="border: 0.5px solid #000000;">@grpObj.Total</td>
                                                 <td></td>
-                                                <td>@grpObj.GST</td>
                                                 <td></td>
                                                 <td></td>
-                                                <td>@grpObj.PackageAmount</td>
-                                                <td>@grpObj.GSTAmount</td>
-                                                <td>@grpObj.Total</td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
@@ -307,10 +323,11 @@
                                             </tr>
                                         }
 
-                                    </tbody>
-                                }
+                                    }
+                                </tbody>
                             </table>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -318,13 +335,20 @@
     </div>
 </section>
 
-
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-
-
+ 
 <script type="text/javascript">
+
+    function exportexcel(tableId, filename) {
+        $("#" + tableId).table2excel({
+            name: "Table2Excel",
+            filename: filename,
+            fileext: ".xls"
+        });
+    }
+
     $(document).ready(function () {
         $('#btnSearch').click(function () {
             var startDate = $("#StartDate").val();

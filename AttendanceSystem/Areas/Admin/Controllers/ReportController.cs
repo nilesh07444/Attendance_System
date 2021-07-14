@@ -122,8 +122,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             salesReportFilterVM.ReportTypeList = GetReportTypeList();
             return View(salesReportFilterVM);
         }
-
-
+         
         private List<SelectListItem> GetReportTypeList()
         {
             string[] reportTypeArr = Enum.GetNames(typeof(SalesReportType));
@@ -141,9 +140,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         private List<SelectListItem> GetCompanyList()
         {
             List<SelectListItem> lst = (from cmp in _db.tbl_Company
+                                        orderby cmp.CompanyId
                                         select new SelectListItem
                                         {
-                                            Text = cmp.CompanyName,
+                                            Text = cmp.CompanyName + " (" + cmp.CompanyCode + ")",
                                             Value = cmp.CompanyId.ToString()
                                         }).ToList();
             return lst;
