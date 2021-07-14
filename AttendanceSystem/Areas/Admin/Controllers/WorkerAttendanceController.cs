@@ -4,6 +4,7 @@ using AttendanceSystem.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -226,7 +227,12 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
         public ActionResult Add(int siteId, long employeeId, string dateStr, long? workerAttendanceId)
         {
-            DateTime date = Convert.ToDateTime(dateStr);// CommonMethod.CurrentIndianDateTime().Date;
+            string[] formats = { "MM/dd/yyyy", "dd/MM/yyyy", "MM-dd-yyyy", "dd-MM-yyyy" };
+            DateTime date = DateTime.ParseExact(dateStr, formats, new CultureInfo("en-US"), DateTimeStyles.None);
+
+            //DateTime date = Convert.ToDateTime(dateStr, CultureInfo.InvariantCulture);// CommonMethod.CurrentIndianDateTime().Date;
+            //DateTime date = DateTime.Parse(dateStr, CultureInfo.CreateSpecificCulture("en-US"));
+
             DateTime today = CommonMethod.CurrentIndianDateTime().Date;
             int currMonth = today.Month;
             int currYear = today.Year;

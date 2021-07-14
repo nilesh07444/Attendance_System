@@ -121,7 +121,7 @@
         public static string PleaseProvideDayType = "Please provide day type.";
         public static string PleaseProvideNoOfHoursWorked = "Please provide no of hours worked.";
         public static string PleaseProvideNoOfUnitWorked = "Please provide no of Unit worked.";
-        public static string YourAttendanceNotTakenYetYouCanNotAssignWorker = "Your attendance not taken yet you can not assign worker.";
+        public static string YourAttendanceNotTakenYetYouCanNotAssignWorker = "Your attendance status not Login, so you can not take attendance.";
 
         public static string PackageAlreadyAssigned = "PackageAlreadyAssigned";
         public static string Success = "success";
