@@ -173,4 +173,10 @@ namespace AttendanceSystem.Helper
         CompanyAdmin = 0,
         SuperAdmin = -1
     }
+    public enum SalesReportType
+    {
+        Account = 1,
+        SMS = 2,
+        Employee = 3
+    }
 }

@@ -1,0 +1,350 @@
+﻿@using AttendanceSystem.Helper
+@using AttendanceSystem.ViewModel;
+@model AttendanceSystem.ViewModel.SalesReportFilterVM
+@{
+    ViewBag.Title = "Report";
+    int counter = 1;
+
+    decimal finalAmountWithGST = 0;
+    decimal finalAmountWithoutGST = 0;
+}
+
+
+<section class="section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header" style="background-color: #425C59;">
+                        <h4 style="color: #FFCEA3;">Material Report</h4>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card-header ">
+                                    <div class="col-sm-2">
+                                        <div class="form-group">
+                                            <label for="StartDate">Start Date</label>
+                                            @Html.TextBoxFor(model => model.StartDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control", @placeholder = "Start Date", style = "height: calc(2.25rem + 6px)" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-2">
+                                        <div class="form-group">
+                                            <label for="EndDate">End Date</label>
+                                            @Html.TextBoxFor(model => model.EndDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control ", @placeholder = "End Date", style = "height: calc(2.25rem + 6px)" })
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <div class="form-group">
+                                            <label for="UserRole">Select Company</label>
+                                            @Html.DropDownListFor(model => model.CompanyId, new SelectList(Model.CompanyList, "Value", "Text"), "- All -", new { @class = "form-control required", style = "" })
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <div class="form-group">
+                                            <label for="UserRole">Select Report Type</label>
+                                            @Html.DropDownListFor(model => model.ReportType, new SelectList(Model.ReportTypeList, "Value", "Text"), "- All -", new { @class = "form-control required", style = "" })
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="card-header-action">
+                                            <button class="btn btn-primary mr-1" style="font-size: 1rem" id="btnSearch" type="button">Search</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover" id="tableExport" style="width:100%;">
+                                <thead>
+                                    <tr>
+                                        <td>#</td>
+                                        <th>Buy Date</th>
+                                        <th>Company Name</th>
+                                        <th>Package Type</th>
+                                        <th>Package Name</th>
+                                        <th>Package Amount</th>
+                                        <th>GST(%)</th>
+                                        <th>GST Amount</th>
+                                        <th>Final Amount</th>
+                                        <th>Total Free Employee</th>
+                                        <th>Free Access Days</th>
+                                        <th>Total Free SMS</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null && Model.SalesReportList.Count > 0)
+                                    {
+                                        DateTime? compareDate = null;
+                                        decimal rowPackageAmount = 0;
+                                        decimal rowGSTAmount = 0;
+                                        decimal rowFinalAmount = 0;
+                                        foreach (SalesReportVM obj in Model.SalesReportList)
+                                        {
+                                            if (compareDate == null)
+                                            {
+                                                compareDate = obj.BuyDate.Date;
+                                            }
+
+                                            if (compareDate != obj.BuyDate.Date)
+                                            {
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>Total</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>@rowPackageAmount</td>
+                                                    <td></td>
+                                                    <td>@rowGSTAmount</td>
+                                                    <td>@rowFinalAmount</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="12"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td>GST%</td>
+                                                    <td>Total Package Amount</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>GST Amount</td>
+                                                    <td>Total</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+
+                                                var grpObjList = Model.SalesReportList.Where(x => x.BuyDate.Date == compareDate)
+                                                               .GroupBy(l => l.GST)
+                                                                .Select(cl => new
+                                                                {
+                                                                    GST = cl.First().GST,
+                                                                    PackageAmount = cl.Sum(c => c.PackageAmount).ToString(),
+                                                                    GSTAmount = cl.Sum(c => c.GSTAmount).ToString(),
+                                                                    Total = cl.Sum(c => c.FinalAmount).ToString(),
+                                                                }).ToList();
+                                                foreach (var grpObj in grpObjList)
+                                                {
+                                                    <tr>
+                                                        <td></td>
+                                                        <td>@grpObj.GST</td>
+                                                        <td>@grpObj.PackageAmount</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td>@grpObj.GSTAmount</td>
+                                                        <td>@grpObj.Total</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                }
+                                                rowPackageAmount = 0;
+                                                rowGSTAmount = 0;
+                                                rowFinalAmount = 0;
+                                                compareDate = obj.BuyDate.Date;
+                                            }
+
+                                            <tr>
+                                                <td colspan="12"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>@counter.</td>
+                                                <td>@obj.BuyDate.ToString("dd MMM yyyy")</td>
+                                                <td>@obj.CompanyName</td>
+                                                <td>@obj.PackageType</td>
+                                                <td>@obj.PackageName</td>
+                                                <td>@obj.PackageAmount</td>
+                                                <td>@obj.GST</td>
+                                                <td>@obj.GSTAmount</td>
+                                                <td>@obj.FinalAmount</td>
+                                                <td>@obj.TotalFreeEmployee</td>
+                                                <td>@obj.FreeAccessDays</td>
+                                                <td>@obj.TotalFreeSMS</td>
+                                            </tr>
+
+                                            rowPackageAmount = rowPackageAmount + obj.PackageAmount;
+                                            rowGSTAmount = rowGSTAmount + obj.GSTAmount;
+                                            rowFinalAmount = rowFinalAmount + obj.FinalAmount;
+                                            finalAmountWithGST = finalAmountWithGST + obj.FinalAmount;
+                                            finalAmountWithoutGST = finalAmountWithoutGST + obj.PackageAmount;
+
+                                            if (Model.SalesReportList.Count == counter)
+                                            {
+                                                compareDate = obj.BuyDate.Date;
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>Total</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>@rowPackageAmount</td>
+                                                    <td></td>
+                                                    <td>@rowGSTAmount</td>
+                                                    <td>@rowFinalAmount</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="12"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td>GST%</td>
+                                                    <td>Total Package Amount</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>GST Amount</td>
+                                                    <td>Total</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+
+                                                var grpObjList = Model.SalesReportList.Where(x => x.BuyDate.Date == compareDate)
+                                                               .GroupBy(l => l.GST)
+                                                                .Select(cl => new
+                                                                {
+                                                                    GST = cl.First().GST,
+                                                                    PackageAmount = cl.Sum(c => c.PackageAmount).ToString(),
+                                                                    GSTAmount = cl.Sum(c => c.GSTAmount).ToString(),
+                                                                    Total = cl.Sum(c => c.FinalAmount).ToString(),
+                                                                }).ToList();
+                                                foreach (var grpObj in grpObjList)
+                                                {
+                                                    <tr>
+                                                        <td></td>
+                                                        <td>@grpObj.GST</td>
+                                                        <td>@grpObj.PackageAmount</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td>@grpObj.GSTAmount</td>
+                                                        <td>@grpObj.Total</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                }
+                                            }
+                                            counter++;
+                                        }
+                                    }
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td>Final Amount Without GST</td>
+                                        <td>@finalAmountWithoutGST</td>
+                                        <td></td>
+                                        <td colspan="7"></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td>Final Amount With GST</td>
+                                        <td>@finalAmountWithGST</td>
+                                        <td></td>
+                                        <td colspan="7"></td>
+                                    </tr>
+                                </tbody>
+
+                                @{
+                                    var finalGrpObjList = Model.SalesReportList
+                                                              .GroupBy(l => l.GST)
+                                                               .Select(cl => new
+                                                               {
+                                                                   GST = cl.First().GST,
+                                                                   PackageAmount = cl.Sum(c => c.PackageAmount).ToString(),
+                                                                   GSTAmount = cl.Sum(c => c.GSTAmount).ToString(),
+                                                                   Total = cl.Sum(c => c.FinalAmount).ToString(),
+                                                               }).ToList();
+                                    <tbody>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>Total Amount</td>
+                                            <td>Total GST</td>
+                                            <td>Final Amount</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        @foreach (var grpObj in finalGrpObjList)
+                                        {
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td>@grpObj.GST</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td>@grpObj.PackageAmount</td>
+                                                <td>@grpObj.GSTAmount</td>
+                                                <td>@grpObj.Total</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                        }
+
+                                    </tbody>
+                                }
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnSearch').click(function () {
+            var startDate = $("#StartDate").val();
+            var endDate = $("#EndDate").val();
+            var companyId = $("#CompanyId").val();
+            var reportType = $("#ReportType").val();
+
+            if (startDate == "") {
+                alert("Please select valid start date");
+                return false;
+            }
+
+            if (endDate == "") {
+                alert("Please select valid end date");
+                return false;
+            }
+
+            StartLoading();
+            window.location.href = "/admin/report/salesreport?startDate=" + startDate + "&endDate=" + endDate + "&companyId=" + companyId + "&reportType=" + reportType;
+        });
+    })
+
+</script>
