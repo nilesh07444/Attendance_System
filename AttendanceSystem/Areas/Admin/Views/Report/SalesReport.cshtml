@@ -92,15 +92,17 @@
                                         decimal rowPackageAmount = 0;
                                         decimal rowGSTAmount = 0;
                                         decimal rowFinalAmount = 0;
+                                        bool showDate = false;
                                         foreach (SalesReportVM obj in Model.SalesReportList)
                                         {
                                             if (compareDate == null)
                                             {
                                                 compareDate = obj.BuyDate.Date;
+                                                showDate = true;
                                             }
-
-                                            if (compareDate != obj.BuyDate.Date)
+                                            else if (compareDate != obj.BuyDate.Date)
                                             {
+                                                showDate = true;
                                                 <tr>
                                                     @*<td></td>*@
                                                     <td></td>
@@ -164,6 +166,10 @@
                                                 rowFinalAmount = 0;
                                                 compareDate = obj.BuyDate.Date;
                                             }
+                                            else
+                                            {
+                                                showDate = false;
+                                            }
 
                                             @*<tr>
                                                     <td colspan="12"></td>
@@ -172,7 +178,7 @@
 
                                             <tr>
                                                 @*<td>@counter.</td>*@
-                                                <td>@obj.BuyDate.ToString("dd MMM yyyy")</td>
+                                                <td>@if (showDate) { @obj.BuyDate.ToString("dd MMM yyyy")}</td>
                                                 <td>@obj.CompanyName</td>
                                                 <td>@obj.PackageType</td>
                                                 <td>@obj.PackageName</td>
