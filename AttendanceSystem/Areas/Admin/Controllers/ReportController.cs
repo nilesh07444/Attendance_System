@@ -51,6 +51,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             {
                 AccountSalesReportList = (from apkg in _db.tbl_CompanyRenewPayment
                                           join cmp in _db.tbl_Company on apkg.CompanyId equals cmp.CompanyId
+                                          where apkg.CreatedDate >= salesReportFilterVM.StartDate && apkg.CreatedDate <= salesReportFilterVM.EndDate
+                                          && (salesReportFilterVM.CompanyId.HasValue ? apkg.CompanyId == salesReportFilterVM.CompanyId.Value : true)
                                           select new SalesReportVM
                                           {
                                               BuyDate = apkg.CreatedDate,
@@ -78,6 +80,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             {
                 SMSSalesReportList = (from apkg in _db.tbl_CompanySMSPackRenew
                                       join cmp in _db.tbl_Company on apkg.CompanyId equals cmp.CompanyId
+                                      where apkg.CreatedDate >= salesReportFilterVM.StartDate && apkg.CreatedDate <= salesReportFilterVM.EndDate
+                                      && (salesReportFilterVM.CompanyId.HasValue ? apkg.CompanyId == salesReportFilterVM.CompanyId.Value : true)
                                       select new SalesReportVM
                                       {
                                           BuyDate = apkg.CreatedDate,
@@ -100,6 +104,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             {
                 EmployeeSalesReportList = (from apkg in _db.tbl_EmployeeBuyTransaction
                                            join cmp in _db.tbl_Company on apkg.CompanyId equals cmp.CompanyId
+                                           where apkg.CreatedDate >= salesReportFilterVM.StartDate && apkg.CreatedDate <= salesReportFilterVM.EndDate
+                                           && (salesReportFilterVM.CompanyId.HasValue ? apkg.CompanyId == salesReportFilterVM.CompanyId.Value : true)
                                            select new SalesReportVM
                                            {
                                                BuyDate = apkg.CreatedDate,
@@ -122,7 +128,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             salesReportFilterVM.ReportTypeList = GetReportTypeList();
             return View(salesReportFilterVM);
         }
-         
+
         private List<SelectListItem> GetReportTypeList()
         {
             string[] reportTypeArr = Enum.GetNames(typeof(SalesReportType));
