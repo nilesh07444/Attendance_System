@@ -19,15 +19,56 @@
                         </div>
                         <div class="pull-right">
                             <a href="/admin/attendance" class="btn btn-warning pull-right"><i class="fas fa-backward"></i> Back</a>
-                        </div> 
+                        </div>
                     </div>
                 </div>
+                @if (Model.Status == (int)AttendanceStatus.Pending)
+                {
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="pull-left">
+                                <h4>Change Status of Attendance</h4>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            @using (Html.BeginForm("Detail", "Attendance", FormMethod.Post, new { @id = "AttendanceForm", @class = "", enctype = "multipart/form-data", role = "form" }))
+                            {
+                                @Html.HiddenFor(model => model.AttendanceId)
+                                <div style="margin-left:20px;">
+                                    <div class="row">
+                                        <div class="col-sm-2">
+                                            <div class="form-group row">
+                                                @Html.LabelFor(model => model.Status)
+                                                @Html.DropDownListFor(model => model.Status, new SelectList(lstAttendanceStatus, "Value", "Text"), "- Select -", new { @class = "form-control required", @style = "" })
+
+                                                @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-8">
+                                            <div class="form-group row" id="dvRejectReason">
+                                                @Html.LabelFor(model => model.RejectReason)
+                                                @Html.TextBoxFor(model => model.RejectReason, new { @type = "text", @class = "form-control", @placeholder = "Enter Reject Reason" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group ">
+                                            <button type="submit" class="btn btn-primary" style="margin-right:10px;" id="btnSubmit">Submit</button>
+                                            <button type="button" class="btn btn-danger" id="btnCancel">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            </div>
+                    </div>
+                }
                 <div class="card">
                     <div class="card-body">
-                        @using (Html.BeginForm("Detail", "Attendance", FormMethod.Post, new { @id = "AttendanceForm", @class = "needs-validation", enctype = "multipart/form-data", role = "form" }))
-                        {
-                            @Html.HiddenFor(model => model.AttendanceId)
-
+                         
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group">
@@ -42,7 +83,7 @@
                                     </div>
                                 </div>
                             </div>
-                            if (Model.EmploymentCategory == (int)EmploymentCategory.MonthlyBased || Model.EmploymentCategory == (int)EmploymentCategory.DailyBased)
+                            @if (Model.EmploymentCategory == (int)EmploymentCategory.MonthlyBased || Model.EmploymentCategory == (int)EmploymentCategory.DailyBased)
                             {
                                 <div class="row">
                                     <div class="col-sm-6">
@@ -121,7 +162,7 @@
                                     </div>
                                 </div>
                             </div>
-                            if (Model.EmploymentCategory == (int)EmploymentCategory.HourlyBased)
+                            @if (Model.EmploymentCategory == (int)EmploymentCategory.HourlyBased)
                             {
                                 <div class="row">
                                     <div class="col-sm-6">
@@ -138,7 +179,7 @@
                                     </div>
                                 </div>
                             }
-                            if (Model.EmploymentCategory == (int)EmploymentCategory.UnitBased)
+                            @if (Model.EmploymentCategory == (int)EmploymentCategory.UnitBased)
                             {
                                 <div class="row">
                                     <div class="col-sm-6">
@@ -155,7 +196,7 @@
                                     </div>
                                 </div>
                             }
-                            if (Model.Status == (int)AttendanceStatus.Reject)
+                            @if (Model.Status == (int)AttendanceStatus.Reject)
                             {
                                 <div class="row">
                                     <div class="col-sm-6">
@@ -167,35 +208,7 @@
 
                                 </div>
                             }
-                            if (Model.Status == (int)AttendanceStatus.Pending)
-                            {
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <div class="form-group row">
-                                            @Html.LabelFor(model => model.Status)
-                                            @Html.DropDownListFor(model => model.Status, new SelectList(lstAttendanceStatus, "Value", "Text"), "- Select -", new { @class = "form-control required", @style = "width:20%" })
 
-                                            @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <div class="form-group row" id="dvRejectReason">
-                                            @Html.LabelFor(model => model.RejectReason)
-                                            @Html.TextBoxFor(model => model.RejectReason, new { @type = "text", @class = "form-control", @placeholder = "Enter Reject Reason", @style = "width:50%" })
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <lable class="col-xl-3 col-md-4"></lable>
-                                    <button type="submit" class="btn btn-primary" style="margin-right:10px;" id="btnSubmit">Submit</button>
-                                    <button type="button" class="btn btn-danger" id="btnCancel">Cancel</button>
-                                </div>
-
-                            }
-                        }
                     </div>
                 </div>
             </div>
@@ -244,6 +257,7 @@
                     alert("Please enter reject reason.");
                     return false;
                 }
+                StartLoading();
             }
             else {
                 return false;
