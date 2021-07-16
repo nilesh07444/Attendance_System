@@ -111,5 +111,59 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
             return RedirectToAction("index");
         }
+
+        public ActionResult RenewList(DateTime? startDate, DateTime? endDate, long? companyId)
+        {
+            EmployeeBuyTransactionFilterVM employeeBuyTransactionFilterVM = new EmployeeBuyTransactionFilterVM();
+            if (companyId.HasValue)
+            {
+                employeeBuyTransactionFilterVM.CompanyId = companyId;
+            }
+
+            if (startDate.HasValue && endDate.HasValue)
+            {
+                employeeBuyTransactionFilterVM.StartDate = startDate.Value;
+                employeeBuyTransactionFilterVM.EndDate = endDate.Value;
+            }
+
+            try
+            {
+                employeeBuyTransactionFilterVM.RenewList = (from eb in _db.tbl_EmployeeBuyTransaction
+                                                            join cmp in _db.tbl_Company on eb.CompanyId equals cmp.CompanyId
+                                                            where eb.CreatedDate >= employeeBuyTransactionFilterVM.StartDate && eb.CreatedDate <= employeeBuyTransactionFilterVM.EndDate
+                                                            && (employeeBuyTransactionFilterVM.CompanyId.HasValue ? eb.CompanyId == employeeBuyTransactionFilterVM.CompanyId.Value : true)
+                                                            select new EmployeeBuyTransactionVM
+                                                            {
+                                                                EmployeeBuyTransactionId = eb.EmployeeBuyTransactionId,
+                                                                CompanyId = eb.CompanyId,
+                                                                CompanyName = cmp.CompanyName,
+                                                                NoOfEmpToBuy = eb.NoOfEmpToBuy,
+                                                                AmountPerEmp = eb.AmountPerEmp,
+                                                                TotalPaidAmount = eb.TotalPaidAmount,
+                                                                PaymentGatewayTransactionId = eb.PaymentGatewayTransactionId,
+                                                                ExpiryDate = eb.ExpiryDate,
+                                                                CreatedDate = eb.CreatedDate,
+                                                            }).OrderBy(x => x.EmployeeBuyTransactionId).ToList();
+
+                employeeBuyTransactionFilterVM.CompanyList = GetCompanyList();
+            }
+            catch (Exception ex)
+            {
+                string ErrorMessage = ex.Message.ToString();
+                throw ex;
+            }
+            return View(employeeBuyTransactionFilterVM);
+        }
+        private List<SelectListItem> GetCompanyList()
+        {
+            List<SelectListItem> lst = (from cmp in _db.tbl_Company
+                                        orderby cmp.CompanyId
+                                        select new SelectListItem
+                                        {
+                                            Text = cmp.CompanyName + " (" + cmp.CompanyCode + ")",
+                                            Value = cmp.CompanyId.ToString()
+                                        }).ToList();
+            return lst;
+        }
     }
 }

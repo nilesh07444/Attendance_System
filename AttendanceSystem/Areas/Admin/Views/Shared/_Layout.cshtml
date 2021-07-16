@@ -120,9 +120,19 @@
                                 <ul class="dropdown-menu">
                                     <li><a class="nav-link" href="/admin/company/requests">Company Request List</a></li>
                                     <li><a class="nav-link" href="/admin/company/registered">Company Registered List</a></li>
-                                    <li><a class="nav-link" href="/admin/company/renew">Company Renew List</a></li>
                                 </ul>
                             </li>
+                            <li class="dropdown @(ViewBag.Title == "Renew" ? "active" : "")">
+                                <a href="#" class="menu-toggle nav-link has-dropdown">
+                                    <i data-feather="briefcase"></i><span>Renew</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="nav-link" href="/admin/company/renew">Company Renew List</a></li>
+                                    <li><a class="nav-link" href="/admin/smsrenew/renewlist">SMS Package Buy List</a></li>
+                                    <li><a class="nav-link" href="/admin/employeebuyTransaction/renewlist">Employee Buy List</a></li>
+                                </ul>
+                            </li>
+
                             <li class="dropdown @(ViewBag.Title == "Package" ? "active" : "")">
                                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="command"></i><span>Account Package</span></a>
                                 <ul class="dropdown-menu">

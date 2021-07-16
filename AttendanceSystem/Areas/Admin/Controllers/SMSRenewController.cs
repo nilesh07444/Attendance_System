@@ -156,5 +156,60 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             }
             return View(companySMSPackRenewVM);
         }
+
+        public ActionResult RenewList(DateTime? startDate, DateTime? endDate, long? companyId)
+        {
+            CompanySMSRenewFilterVM companySMSRenewFilterVM = new CompanySMSRenewFilterVM();
+            if (companyId.HasValue)
+            {
+                companySMSRenewFilterVM.CompanyId = companyId;
+            }
+
+            if (startDate.HasValue && endDate.HasValue)
+            {
+                companySMSRenewFilterVM.StartDate = startDate.Value;
+                companySMSRenewFilterVM.EndDate = endDate.Value;
+            }
+
+
+            try
+            {
+                companySMSRenewFilterVM.RenewList = (from cp in _db.tbl_CompanySMSPackRenew
+                                                     join cmp in _db.tbl_Company on cp.CompanyId equals cmp.CompanyId
+                                                     where cp.RenewDate >= companySMSRenewFilterVM.StartDate && cp.RenewDate <= companySMSRenewFilterVM.EndDate
+                                                      && (companySMSRenewFilterVM.CompanyId.HasValue ? cp.CompanyId == companySMSRenewFilterVM.CompanyId.Value : true)
+                                                     select new CompanySMSPackRenewVM
+                                                     {
+                                                         CompanySMSPackRenewId = cp.CompanySMSPackRenewId,
+                                                         CompanyId = cp.CompanyId,
+                                                         CompanyName = cmp.CompanyName,
+                                                         SMSPackageId = cp.SMSPackageId,
+                                                         SMSPackageName = cp.SMSPackageName,
+                                                         RenewDate = cp.RenewDate,
+                                                         AccessDays = cp.AccessDays,
+                                                         PackageExpiryDate = cp.PackageExpiryDate,
+                                                         NoOfSMS = cp.NoOfSMS
+                                                     }).OrderByDescending(x => x.CompanySMSPackRenewId).ToList();
+
+                companySMSRenewFilterVM.CompanyList = GetCompanyList();
+            }
+            catch (Exception ex)
+            {
+                string ErrorMessage = ex.Message.ToString();
+                throw ex;
+            }
+            return View(companySMSRenewFilterVM);
+        }
+        private List<SelectListItem> GetCompanyList()
+        {
+            List<SelectListItem> lst = (from cmp in _db.tbl_Company
+                                        orderby cmp.CompanyId
+                                        select new SelectListItem
+                                        {
+                                            Text = cmp.CompanyName + " (" + cmp.CompanyCode + ")",
+                                            Value = cmp.CompanyId.ToString()
+                                        }).ToList();
+            return lst;
+        }
     }
 }

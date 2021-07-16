@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+using System.Web.Mvc;
 
 namespace AttendanceSystem.ViewModel
 {
@@ -10,6 +9,7 @@ namespace AttendanceSystem.ViewModel
     {
         public long CompanySMSPackRenewId { get; set; }
         public long CompanyId { get; set; }
+        public string CompanyName { get; set; }
         public long SMSPackageId { get; set; }
         [Display(Name = "Package Name")]
         public string SMSPackageName { get; set; }
@@ -25,5 +25,19 @@ namespace AttendanceSystem.ViewModel
         public int? NoOfSMS { get; set; }
         [Display(Name = "Remaining SMS")]
         public int? RemainingSMS { get; set; }
+    }
+
+    public class CompanySMSRenewFilterVM
+    {
+        public CompanySMSRenewFilterVM()
+        {
+            StartDate = new DateTime(CommonMethod.CurrentIndianDateTime().Year, CommonMethod.CurrentIndianDateTime().Month, 1);
+            EndDate = StartDate.AddMonths(1).AddDays(-1);
+        }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public long? CompanyId { get; set; }
+        public List<SelectListItem> CompanyList { get; set; }
+        public List<CompanySMSPackRenewVM> RenewList { get; set; }
     }
 }
