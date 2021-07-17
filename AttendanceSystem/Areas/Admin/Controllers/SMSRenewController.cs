@@ -91,6 +91,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                     if (objPackage != null)
                     {
+                        string invoiceNo = GenerateSMSRenewInvoiceNo();
                         tbl_CompanySMSPackRenew objCompanySMSPackRenew = new tbl_CompanySMSPackRenew();
                         objCompanySMSPackRenew.CompanyId = clsAdminSession.CompanyId;
                         objCompanySMSPackRenew.SMSPackageId = objPackage.SMSPackageId;
@@ -101,6 +102,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objCompanySMSPackRenew.PackageExpiryDate = CommonMethod.CurrentIndianDateTime().AddDays(objPackage.AccessDays);
                         objCompanySMSPackRenew.NoOfSMS = objPackage.NoOfSMS;
                         objCompanySMSPackRenew.RemainingSMS = objPackage.NoOfSMS;
+                        objCompanySMSPackRenew.InvoiceNo = invoiceNo;
                         objCompanySMSPackRenew.CreatedBy = (int)PaymentGivenBy.CompanyAdmin;
                         objCompanySMSPackRenew.CreatedDate = CommonMethod.CurrentIndianDateTime();
                         objCompanySMSPackRenew.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
@@ -109,6 +111,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         _db.SaveChanges();
 
                         isSuccess = true;
+                        message = ErrorMessage.SMSPackageBuySuccessfully;
                     }
                 }
                 else
@@ -210,6 +213,40 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                             Value = cmp.CompanyId.ToString()
                                         }).ToList();
             return lst;
+        }
+
+        public string GenerateSMSRenewInvoiceNo()
+        {
+            string invoiceNo = string.Empty;
+            long newNo = 0;
+            tbl_InvoiceLastDocNo lastDocNoObj = _db.tbl_InvoiceLastDocNo.Where(x => x.PackageType == (int)SalesReportType.SMS).FirstOrDefault();
+
+            if (lastDocNoObj != null)
+            {
+                newNo = lastDocNoObj.LastDocNo + 1;
+            }
+            else
+            {
+                newNo = 1;
+            }
+            string numberInStringFormat = String.Format("{0:0000}", newNo);
+            string yearString = CommonMethod.InvoiceFinancialYear();
+            invoiceNo = ErrorMessage.InvoicePrefix + ErrorMessage.InvoiceNoSaperator + yearString + ErrorMessage.InvoiceNoSaperator + ErrorMessage.SMSInvoiceNoPrefix + ErrorMessage.InvoiceNoSaperator + numberInStringFormat;
+
+            if (lastDocNoObj == null)
+            {
+                lastDocNoObj = new tbl_InvoiceLastDocNo();
+                lastDocNoObj.PackageType = (int)SalesReportType.SMS;
+                lastDocNoObj.LastDocNo = newNo;
+                _db.tbl_InvoiceLastDocNo.Add(lastDocNoObj);
+                _db.SaveChanges();
+            }
+            else
+            {
+                lastDocNoObj.LastDocNo = newNo;
+                _db.SaveChanges();
+            }
+            return invoiceNo;
         }
     }
 }

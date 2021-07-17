@@ -50,8 +50,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         }
         public ActionResult Buy()
         {
+            DateTime today = CommonMethod.CurrentIndianDateTime();
             EmployeeBuyTransactionVM employeeBuyTransactionVM = new EmployeeBuyTransactionVM();
-            tbl_CompanyRenewPayment companyPackage = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == companyId && DateTime.Today >= x.StartDate && DateTime.Today < x.EndDate).FirstOrDefault();
+            tbl_CompanyRenewPayment companyPackage = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == companyId && today >= x.StartDate && today < x.EndDate).FirstOrDefault();
             if (companyPackage != null && !clsAdminSession.IsTrialMode)
             {
                 employeeBuyTransactionVM.CompanyId = companyId;
@@ -71,21 +72,22 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         {
             string message = string.Empty;
             bool isSuccess = true;
-
+            DateTime today = CommonMethod.CurrentIndianDateTime();
             try
             {
                 if (employeeBuyTransactionVM != null)
                 {
 
                     // Get selected package detail
-                    tbl_CompanyRenewPayment companyPackage = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == companyId && DateTime.Today >= x.StartDate && DateTime.Today < x.EndDate).FirstOrDefault();
-
+                    tbl_CompanyRenewPayment companyPackage = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == companyId && today >= x.StartDate && today < x.EndDate).FirstOrDefault();
+                    string invoiceNo = GenerateEmployeeBuyInvoiceNo();
                     tbl_EmployeeBuyTransaction employeeBuyTransaction = new tbl_EmployeeBuyTransaction();
                     employeeBuyTransaction.CompanyId = employeeBuyTransactionVM.CompanyId;
                     employeeBuyTransaction.NoOfEmpToBuy = employeeBuyTransactionVM.NoOfEmpToBuy;
                     employeeBuyTransaction.AmountPerEmp = employeeBuyTransactionVM.AmountPerEmp;
                     employeeBuyTransaction.TotalPaidAmount = employeeBuyTransactionVM.TotalPaidAmount;
                     employeeBuyTransaction.ExpiryDate = companyPackage.EndDate;
+                    employeeBuyTransaction.InvoiceNo = invoiceNo;
                     employeeBuyTransaction.CreatedDate = CommonMethod.CurrentIndianDateTime();
                     employeeBuyTransaction.CreatedBy = loggedInUserId;
                     employeeBuyTransaction.ModifiedDate = CommonMethod.CurrentIndianDateTime();
@@ -164,6 +166,40 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                             Value = cmp.CompanyId.ToString()
                                         }).ToList();
             return lst;
+        }
+
+        public string GenerateEmployeeBuyInvoiceNo()
+        {
+            string invoiceNo = string.Empty;
+            long newNo = 0;
+            tbl_InvoiceLastDocNo lastDocNoObj = _db.tbl_InvoiceLastDocNo.Where(x => x.PackageType == (int)SalesReportType.Employee).FirstOrDefault();
+
+            if (lastDocNoObj != null)
+            {
+                newNo = lastDocNoObj.LastDocNo + 1;
+            }
+            else
+            {
+                newNo = 1;
+            }
+            string numberInStringFormat = String.Format("{0:0000}", newNo);
+            string yearString = CommonMethod.InvoiceFinancialYear();
+            invoiceNo = ErrorMessage.InvoicePrefix + ErrorMessage.InvoiceNoSaperator + yearString + ErrorMessage.InvoiceNoSaperator + ErrorMessage.EmployeeInvoiceNoPrefix + ErrorMessage.InvoiceNoSaperator + numberInStringFormat;
+
+            if (lastDocNoObj == null)
+            {
+                lastDocNoObj = new tbl_InvoiceLastDocNo();
+                lastDocNoObj.PackageType = (int)SalesReportType.Employee;
+                lastDocNoObj.LastDocNo = newNo;
+                _db.tbl_InvoiceLastDocNo.Add(lastDocNoObj);
+                _db.SaveChanges();
+            }
+            else
+            {
+                lastDocNoObj.LastDocNo = newNo;
+                _db.SaveChanges();
+            }
+            return invoiceNo;
         }
     }
 }

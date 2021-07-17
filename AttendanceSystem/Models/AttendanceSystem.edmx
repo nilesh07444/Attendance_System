@@ -179,6 +179,7 @@
           <Property Name="PaymentFor" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="PaymentGatewayResponseId" Type="nvarchar" MaxLength="500" />
           <Property Name="BuyNoOfEmployee" Type="int" Nullable="false" />
+          <Property Name="InvoiceNo" Type="nvarchar" MaxLength="100" />
           <Property Name="CreatedBy" Type="bigint" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="ModifiedBy" Type="bigint" />
@@ -251,6 +252,7 @@
           <Property Name="PackageExpiryDate" Type="datetime" Nullable="false" />
           <Property Name="NoOfSMS" Type="int" />
           <Property Name="RemainingSMS" Type="int" />
+          <Property Name="InvoiceNo" Type="nvarchar" MaxLength="100" />
           <Property Name="CreatedBy" Type="bigint" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="ModifiedBy" Type="bigint" />
@@ -351,6 +353,7 @@
           <Property Name="TotalPaidAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="PaymentGatewayTransactionId" Type="nvarchar" MaxLength="200" />
           <Property Name="ExpiryDate" Type="datetime" Nullable="false" />
+          <Property Name="InvoiceNo" Type="nvarchar" MaxLength="100" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="CreatedBy" Type="bigint" Nullable="false" />
           <Property Name="ModifiedDate" Type="datetime" />
@@ -466,6 +469,14 @@
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="ModifiedBy" Type="bigint" />
           <Property Name="ModifiedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="tbl_InvoiceLastDocNo">
+          <Key>
+            <PropertyRef Name="PackageType" />
+          </Key>
+          <Property Name="SrNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PackageType" Type="int" Nullable="false" />
+          <Property Name="LastDocNo" Type="bigint" Nullable="false" />
         </EntityType>
         <EntityType Name="tbl_Leave">
           <Key>
@@ -772,6 +783,7 @@
           <EntitySet Name="tbl_Holiday" EntityType="Self.tbl_Holiday" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_HomeImage" EntityType="Self.tbl_HomeImage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_HomeSlider" EntityType="Self.tbl_HomeSlider" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_InvoiceLastDocNo" EntityType="Self.tbl_InvoiceLastDocNo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Leave" EntityType="Self.tbl_Leave" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_LoginHistory" EntityType="Self.tbl_LoginHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Material" EntityType="Self.tbl_Material" Schema="dbo" store:Type="Tables" />
@@ -822,29 +834,6 @@
           <Property Name="ModifiedBy" Type="Int64" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
         </EntityType>
-        <EntityType Name="tbl_CompanyRenewPayment">
-          <Key>
-            <PropertyRef Name="CompanyRegistrationPaymentId" />
-          </Key>
-          <Property Name="CompanyRegistrationPaymentId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CompanyId" Type="Int64" Nullable="false" />
-          <Property Name="PackageId" Type="Int64" Nullable="false" />
-          <Property Name="PackageName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="GSTPer" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="AccessDays" Type="Int32" Nullable="false" />
-          <Property Name="NoOfEmployee" Type="Int32" Nullable="false" />
-          <Property Name="NoOfSMS" Type="Int32" Nullable="false" />
-          <Property Name="PaymentFor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="PaymentGatewayResponseId" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int64" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="BuyNoOfEmployee" Type="Int32" Nullable="false" />
-        </EntityType>
         <EntityType Name="tbl_DynamicContent">
           <Key>
             <PropertyRef Name="DynamicContentId" />
@@ -858,22 +847,6 @@
           <Property Name="CreatedBy" Type="Int64" Nullable="false" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int64" />
-        </EntityType>
-        <EntityType Name="tbl_EmployeeBuyTransaction">
-          <Key>
-            <PropertyRef Name="EmployeeBuyTransactionId" />
-          </Key>
-          <Property Name="EmployeeBuyTransactionId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CompanyId" Type="Int64" Nullable="false" />
-          <Property Name="NoOfEmpToBuy" Type="Int32" Nullable="false" />
-          <Property Name="AmountPerEmp" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="TotalPaidAmount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
-          <Property Name="PaymentGatewayTransactionId" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int64" />
-          <Property Name="ExpiryDate" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <EntityType Name="tbl_EmployeeFingerprint">
           <Key>
@@ -1064,9 +1037,7 @@
           <EntitySet Name="mst_AdminRole" EntityType="Self.mst_AdminRole" />
           <EntitySet Name="mst_CompanyType" EntityType="Self.mst_CompanyType" />
           <EntitySet Name="tbl_CompanyFollowup" EntityType="Self.tbl_CompanyFollowup" />
-          <EntitySet Name="tbl_CompanyRenewPayment" EntityType="Self.tbl_CompanyRenewPayment" />
           <EntitySet Name="tbl_DynamicContent" EntityType="Self.tbl_DynamicContent" />
-          <EntitySet Name="tbl_EmployeeBuyTransaction" EntityType="Self.tbl_EmployeeBuyTransaction" />
           <EntitySet Name="tbl_EmployeeFingerprint" EntityType="Self.tbl_EmployeeFingerprint" />
           <EntitySet Name="tbl_EmployeeRating" EntityType="Self.tbl_EmployeeRating" />
           <EntitySet Name="tbl_Feedback" EntityType="Self.tbl_Feedback" />
@@ -1113,7 +1084,6 @@
           <EntitySet Name="tbl_ContactForm" EntityType="AttendanceSystemModel.tbl_ContactForm" />
           <EntitySet Name="tbl_Testimonial" EntityType="AttendanceSystemModel.tbl_Testimonial" />
           <EntitySet Name="tbl_Attendance" EntityType="AttendanceSystemModel.tbl_Attendance" />
-          <EntitySet Name="tbl_CompanySMSPackRenew" EntityType="AttendanceSystemModel.tbl_CompanySMSPackRenew" />
           <EntitySet Name="tbl_SMSContent" EntityType="AttendanceSystemModel.tbl_SMSContent" />
           <EntitySet Name="tbl_WorkerType" EntityType="AttendanceSystemModel.tbl_WorkerType" />
           <EntitySet Name="tbl_Conversion" EntityType="AttendanceSystemModel.tbl_Conversion" />
@@ -1134,6 +1104,10 @@
           <EntitySet Name="tbl_Employee" EntityType="AttendanceSystemModel.tbl_Employee" />
           <EntitySet Name="tbl_EmployeePayment" EntityType="AttendanceSystemModel.tbl_EmployeePayment" />
           <EntitySet Name="tbl_SMSLog" EntityType="AttendanceSystemModel.tbl_SMSLog" />
+          <EntitySet Name="tbl_CompanyRenewPayment" EntityType="AttendanceSystemModel.tbl_CompanyRenewPayment" />
+          <EntitySet Name="tbl_CompanySMSPackRenew" EntityType="AttendanceSystemModel.tbl_CompanySMSPackRenew" />
+          <EntitySet Name="tbl_EmployeeBuyTransaction" EntityType="AttendanceSystemModel.tbl_EmployeeBuyTransaction" />
+          <EntitySet Name="tbl_InvoiceLastDocNo" EntityType="AttendanceSystemModel.tbl_InvoiceLastDocNo" />
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -1229,25 +1203,6 @@
           <Property Name="NoOfUnitWorked" Type="Int32" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int64" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-        </EntityType>
-        <EntityType Name="tbl_CompanySMSPackRenew">
-          <Key>
-            <PropertyRef Name="CompanySMSPackRenewId" />
-          </Key>
-          <Property Name="CompanySMSPackRenewId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CompanyId" Type="Int64" Nullable="false" />
-          <Property Name="SMSPackageId" Type="Int64" Nullable="false" />
-          <Property Name="SMSPackageName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="RenewDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="PackageAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="AccessDays" Type="Int32" Nullable="false" />
-          <Property Name="PackageExpiryDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="NoOfSMS" Type="Int32" />
-          <Property Name="RemainingSMS" Type="Int32" />
           <Property Name="CreatedBy" Type="Int64" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ModifiedBy" Type="Int64" />
@@ -1630,6 +1585,75 @@
           <Property Name="CreatedBy" Type="Int64" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
+        <EntityType Name="tbl_CompanyRenewPayment">
+          <Key>
+            <PropertyRef Name="CompanyRegistrationPaymentId" />
+          </Key>
+          <Property Name="CompanyRegistrationPaymentId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyId" Type="Int64" Nullable="false" />
+          <Property Name="PackageId" Type="Int64" Nullable="false" />
+          <Property Name="PackageName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="GSTPer" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="AccessDays" Type="Int32" Nullable="false" />
+          <Property Name="NoOfEmployee" Type="Int32" Nullable="false" />
+          <Property Name="NoOfSMS" Type="Int32" Nullable="false" />
+          <Property Name="PaymentFor" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PaymentGatewayResponseId" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="BuyNoOfEmployee" Type="Int32" Nullable="false" />
+          <Property Name="InvoiceNo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int64" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="tbl_CompanySMSPackRenew">
+          <Key>
+            <PropertyRef Name="CompanySMSPackRenewId" />
+          </Key>
+          <Property Name="CompanySMSPackRenewId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyId" Type="Int64" Nullable="false" />
+          <Property Name="SMSPackageId" Type="Int64" Nullable="false" />
+          <Property Name="SMSPackageName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RenewDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PackageAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="AccessDays" Type="Int32" Nullable="false" />
+          <Property Name="PackageExpiryDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="NoOfSMS" Type="Int32" />
+          <Property Name="RemainingSMS" Type="Int32" />
+          <Property Name="InvoiceNo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int64" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="tbl_EmployeeBuyTransaction">
+          <Key>
+            <PropertyRef Name="EmployeeBuyTransactionId" />
+          </Key>
+          <Property Name="EmployeeBuyTransactionId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyId" Type="Int64" Nullable="false" />
+          <Property Name="NoOfEmpToBuy" Type="Int32" Nullable="false" />
+          <Property Name="AmountPerEmp" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="TotalPaidAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="PaymentGatewayTransactionId" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ExpiryDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="InvoiceNo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int64" />
+        </EntityType>
+        <EntityType Name="tbl_InvoiceLastDocNo">
+          <Key>
+            <PropertyRef Name="PackageType" />
+          </Key>
+          <Property Name="SrNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PackageType" Type="Int32" Nullable="false" />
+          <Property Name="LastDocNo" Type="Int64" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1669,30 +1693,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tbl_CompanyRenewPayment">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_CompanyRenewPayment">
-              <MappingFragment StoreEntitySet="tbl_CompanyRenewPayment">
-                <ScalarProperty Name="BuyNoOfEmployee" ColumnName="BuyNoOfEmployee" />
-                <ScalarProperty Name="CompanyRegistrationPaymentId" ColumnName="CompanyRegistrationPaymentId" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="PackageId" ColumnName="PackageId" />
-                <ScalarProperty Name="PackageName" ColumnName="PackageName" />
-                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="GSTPer" ColumnName="GSTPer" />
-                <ScalarProperty Name="AccessDays" ColumnName="AccessDays" />
-                <ScalarProperty Name="NoOfEmployee" ColumnName="NoOfEmployee" />
-                <ScalarProperty Name="NoOfSMS" ColumnName="NoOfSMS" />
-                <ScalarProperty Name="PaymentFor" ColumnName="PaymentFor" />
-                <ScalarProperty Name="PaymentGatewayResponseId" ColumnName="PaymentGatewayResponseId" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="tbl_DynamicContent">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_DynamicContent">
               <MappingFragment StoreEntitySet="tbl_DynamicContent">
@@ -1701,23 +1701,6 @@
                 <ScalarProperty Name="ContentTitle" ColumnName="ContentTitle" />
                 <ScalarProperty Name="ContentDescription" ColumnName="ContentDescription" />
                 <ScalarProperty Name="SeqNo" ColumnName="SeqNo" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbl_EmployeeBuyTransaction">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_EmployeeBuyTransaction">
-              <MappingFragment StoreEntitySet="tbl_EmployeeBuyTransaction">
-                <ScalarProperty Name="ExpiryDate" ColumnName="ExpiryDate" />
-                <ScalarProperty Name="EmployeeBuyTransactionId" ColumnName="EmployeeBuyTransactionId" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="NoOfEmpToBuy" ColumnName="NoOfEmpToBuy" />
-                <ScalarProperty Name="AmountPerEmp" ColumnName="AmountPerEmp" />
-                <ScalarProperty Name="TotalPaidAmount" ColumnName="TotalPaidAmount" />
-                <ScalarProperty Name="PaymentGatewayTransactionId" ColumnName="PaymentGatewayTransactionId" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
@@ -2011,26 +1994,6 @@
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="AttendanceId" ColumnName="AttendanceId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbl_CompanySMSPackRenew">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_CompanySMSPackRenew">
-              <MappingFragment StoreEntitySet="tbl_CompanySMSPackRenew">
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="RemainingSMS" ColumnName="RemainingSMS" />
-                <ScalarProperty Name="NoOfSMS" ColumnName="NoOfSMS" />
-                <ScalarProperty Name="PackageExpiryDate" ColumnName="PackageExpiryDate" />
-                <ScalarProperty Name="AccessDays" ColumnName="AccessDays" />
-                <ScalarProperty Name="PackageAmount" ColumnName="PackageAmount" />
-                <ScalarProperty Name="RenewDate" ColumnName="RenewDate" />
-                <ScalarProperty Name="SMSPackageName" ColumnName="SMSPackageName" />
-                <ScalarProperty Name="SMSPackageId" ColumnName="SMSPackageId" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="CompanySMSPackRenewId" ColumnName="CompanySMSPackRenewId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2414,6 +2377,79 @@
                 <ScalarProperty Name="Message" ColumnName="Message" />
                 <ScalarProperty Name="MobileNo" ColumnName="MobileNo" />
                 <ScalarProperty Name="SMSLogId" ColumnName="SMSLogId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_CompanyRenewPayment">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_CompanyRenewPayment">
+              <MappingFragment StoreEntitySet="tbl_CompanyRenewPayment">
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="InvoiceNo" ColumnName="InvoiceNo" />
+                <ScalarProperty Name="BuyNoOfEmployee" ColumnName="BuyNoOfEmployee" />
+                <ScalarProperty Name="PaymentGatewayResponseId" ColumnName="PaymentGatewayResponseId" />
+                <ScalarProperty Name="PaymentFor" ColumnName="PaymentFor" />
+                <ScalarProperty Name="NoOfSMS" ColumnName="NoOfSMS" />
+                <ScalarProperty Name="NoOfEmployee" ColumnName="NoOfEmployee" />
+                <ScalarProperty Name="AccessDays" ColumnName="AccessDays" />
+                <ScalarProperty Name="GSTPer" ColumnName="GSTPer" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="PackageName" ColumnName="PackageName" />
+                <ScalarProperty Name="PackageId" ColumnName="PackageId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="CompanyRegistrationPaymentId" ColumnName="CompanyRegistrationPaymentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_CompanySMSPackRenew">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_CompanySMSPackRenew">
+              <MappingFragment StoreEntitySet="tbl_CompanySMSPackRenew">
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="InvoiceNo" ColumnName="InvoiceNo" />
+                <ScalarProperty Name="RemainingSMS" ColumnName="RemainingSMS" />
+                <ScalarProperty Name="NoOfSMS" ColumnName="NoOfSMS" />
+                <ScalarProperty Name="PackageExpiryDate" ColumnName="PackageExpiryDate" />
+                <ScalarProperty Name="AccessDays" ColumnName="AccessDays" />
+                <ScalarProperty Name="PackageAmount" ColumnName="PackageAmount" />
+                <ScalarProperty Name="RenewDate" ColumnName="RenewDate" />
+                <ScalarProperty Name="SMSPackageName" ColumnName="SMSPackageName" />
+                <ScalarProperty Name="SMSPackageId" ColumnName="SMSPackageId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="CompanySMSPackRenewId" ColumnName="CompanySMSPackRenewId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_EmployeeBuyTransaction">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_EmployeeBuyTransaction">
+              <MappingFragment StoreEntitySet="tbl_EmployeeBuyTransaction">
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="InvoiceNo" ColumnName="InvoiceNo" />
+                <ScalarProperty Name="ExpiryDate" ColumnName="ExpiryDate" />
+                <ScalarProperty Name="PaymentGatewayTransactionId" ColumnName="PaymentGatewayTransactionId" />
+                <ScalarProperty Name="TotalPaidAmount" ColumnName="TotalPaidAmount" />
+                <ScalarProperty Name="AmountPerEmp" ColumnName="AmountPerEmp" />
+                <ScalarProperty Name="NoOfEmpToBuy" ColumnName="NoOfEmpToBuy" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="EmployeeBuyTransactionId" ColumnName="EmployeeBuyTransactionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_InvoiceLastDocNo">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_InvoiceLastDocNo">
+              <MappingFragment StoreEntitySet="tbl_InvoiceLastDocNo">
+                <ScalarProperty Name="LastDocNo" ColumnName="LastDocNo" />
+                <ScalarProperty Name="PackageType" ColumnName="PackageType" />
+                <ScalarProperty Name="SrNo" ColumnName="SrNo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -157,10 +157,16 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             {
                 var data = _db.tbl_AdminUser.Where(x => x.UserName == login.UserName).FirstOrDefault();
                 var roleData = _db.mst_AdminRole.Where(x => x.AdminRoleId == data.AdminUserRoleId).FirstOrDefault();
+                DateTime today = CommonMethod.CurrentIndianDateTime();
                 tbl_Company companyObj = null;
+                tbl_CompanyRenewPayment companyPackage = null;
                 if (data.CompanyId.HasValue)
                 {
                     companyObj = _db.tbl_Company.Where(x => x.CompanyId == data.CompanyId).FirstOrDefault();
+                    if (!companyObj.IsTrialMode)
+                    {
+                        companyPackage = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == data.CompanyId && today >= x.StartDate && today < x.EndDate).FirstOrDefault();
+                    }
                 }
 
                 clsAdminSession.SessionID = Session.SessionID;
@@ -176,6 +182,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 clsAdminSession.IsTrialMode = companyObj != null ? companyObj.IsTrialMode : false;
                 clsAdminSession.CompanyLogo = companyObj != null ? companyObj.CompanyLogoImage : string.Empty;
                 clsAdminSession.SetOtp = setOtp != null ? setOtp.Value : false;
+                clsAdminSession.IsPackageExpired = companyObj.IsTrialMode ? companyObj.TrialExpiryDate < today : (companyPackage != null ? companyPackage.EndDate < today : true);
             }
             catch (Exception ex)
             {

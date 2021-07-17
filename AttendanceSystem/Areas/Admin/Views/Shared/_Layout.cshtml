@@ -2,6 +2,7 @@
 @{
     var roleId = clsAdminSession.RoleID;
     var companyLogo = clsAdminSession.CompanyLogo;
+    var isPackageExpired = clsAdminSession.IsPackageExpired;
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -193,114 +194,115 @@
                             <li class="dropdown @(ViewBag.Title == "Dashboard" ? "active" : "")">
                                 <a href="/admin/dashboard" class="nav-link"><i data-feather="monitor"></i><span>Dashboard</span></a>
                             </li>
-
-                            <li class="dropdown @(ViewBag.Title == "Employee" ? "active" : "")">
-                                <a href="#" class="menu-toggle nav-link has-dropdown">
-                                    <i data-feather="users"></i><span>Employee</span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="nav-link" href="/admin/employee/add/0">Add Employee</a></li>
-                                    <li><a class="nav-link" href="/admin/employee">Employee List</a></li>
-                                    <li><a class="nav-link" href="/admin/employee/loginhistory">Login History</a></li>
-                                </ul>
-                            </li>
-                            if (clsAdminSession.CompanyTypeId == (int)CompanyType.ConstructionCompany)
+                            if (!isPackageExpired)
                             {
-                                <li class="dropdown @(ViewBag.Title == "Worker" ? "active" : "")">
+                                <li class="dropdown @(ViewBag.Title == "Employee" ? "active" : "")">
                                     <a href="#" class="menu-toggle nav-link has-dropdown">
-                                        <i data-feather="users"></i><span>Worker</span>
+                                        <i data-feather="users"></i><span>Employee</span>
                                     </a>
                                     <ul class="dropdown-menu">
-                                        <li><a class="nav-link" href="/admin/worker/add/0">Add Worker</a></li>
-                                        <li><a class="nav-link" href="/admin/worker">Worker List</a></li>
+                                        <li><a class="nav-link" href="/admin/employee/add/0">Add Employee</a></li>
+                                        <li><a class="nav-link" href="/admin/employee">Employee List</a></li>
+                                        <li><a class="nav-link" href="/admin/employee/loginhistory">Login History</a></li>
+                                    </ul>
+                                </li>
+                                if (clsAdminSession.CompanyTypeId == (int)CompanyType.ConstructionCompany)
+                                {
+                                    <li class="dropdown @(ViewBag.Title == "Worker" ? "active" : "")">
+                                        <a href="#" class="menu-toggle nav-link has-dropdown">
+                                            <i data-feather="users"></i><span>Worker</span>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="nav-link" href="/admin/worker/add/0">Add Worker</a></li>
+                                            <li><a class="nav-link" href="/admin/worker">Worker List</a></li>
+                                        </ul>
+                                    </li>
+                                }
+                                <li class="dropdown @(ViewBag.Title == "Leave" ? "active" : "")">
+                                    <a href="#" class="menu-toggle nav-link has-dropdown">
+                                        <i data-feather="briefcase"></i><span>Leave</span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="nav-link" href="/admin/leave">Leave List</a></li>
+                                    </ul>
+                                </li>
+
+                                <li class="dropdown @(ViewBag.Title == "Holiday" ? "active" : "")">
+                                    <a href="#" class="menu-toggle nav-link has-dropdown">
+                                        <i data-feather="film"></i><span>Holiday</span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="nav-link" href="/admin/holiday/add/0">Add Holiday</a></li>
+                                        <li><a class="nav-link" href="/admin/holiday">Holiday List</a></li>
+                                    </ul>
+                                </li>
+
+                                <li class="dropdown @(ViewBag.Title == "Payment" ? "active" : "")">
+                                    <a href="#" class="menu-toggle nav-link has-dropdown">
+                                        <i data-feather="dollar-sign"></i><span>Payment</span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="nav-link" href="/admin/payment/add/0">Give Payment</a></li>
+                                        <li><a class="nav-link" href="/admin/payment">Payment List</a></li>
+                                        <li><a class="nav-link" href="/admin/payment/deletedpayment">Deleted Payment List</a></li>
+                                    </ul>
+                                </li>
+
+                                <li class="dropdown @(ViewBag.Title == "Attendance" ? "active" : "")">
+                                    <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="command"></i><span>Attendance</span></a>
+                                    <ul class="dropdown-menu">
+                                        @*<li><a class="nav-link" href="/admin/payment/add/0">Add Attendance</a></li>*@
+                                        <li><a class="nav-link" href="/admin/attendance">Attendance List</a></li>
+                                    </ul>
+                                </li>
+                                if (clsAdminSession.CompanyTypeId == (int)CompanyType.ConstructionCompany)
+                                {
+                                    <li class="dropdown @(ViewBag.Title == "WorkerAttendance" ? "active" : "")">
+                                        <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="command"></i><span>Worker Attendance</span></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="nav-link" href="/admin/workerattendance">Worker Attendance List</a></li>
+                                            <li><a class="nav-link" href="/admin/workerattendance/assignedworkerlist">Assigned Worker List</a></li>
+                                        </ul>
+                                    </li>
+
+                                    <li class="dropdown @(ViewBag.Title == "Site" ? "active" : "")">
+                                        <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="clock"></i><span>Site Location</span></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="nav-link" href="/admin/site/add/0">Add Site Location</a></li>
+                                            <li><a class="nav-link" href="/admin/site">Site Location List</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown @(ViewBag.Title == "MaterialCategory" ? "active" : "")">
+                                        <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="box"></i><span>Material Category</span></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="nav-link" href="/admin/materialcategory/add/0">Add Material Category</a></li>
+                                            <li><a class="nav-link" href="/admin/materialcategory">Material Category List</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown @(ViewBag.Title == "Material" ? "active" : "")">
+                                        <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="aperture"></i><span>Material</span></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="nav-link" href="/admin/material/add/0">Add Material</a></li>
+                                            <li><a class="nav-link" href="/admin/material">Material List</a></li>
+                                            <li><a class="nav-link" href="/admin/material/deletedmaterial">Deleted Material List</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown @(ViewBag.Title == "WorkerType" ? "active" : "")">
+                                        <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="box"></i><span>Worker Type</span></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="nav-link" href="/admin/workertype/add/0">Add Worker Type</a></li>
+                                            <li><a class="nav-link" href="/admin/workertype">Worker Type List</a></li>
+                                        </ul>
+                                    </li>
+                                }
+                                <li class="dropdown @(ViewBag.Title == "EmployeeRating" ? "active" : "")">
+                                    <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="file-text"></i><span>Employee Rating</span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="nav-link" href="/admin/employeerating/add/0">Add Employee Rating</a></li>
+                                        <li><a class="nav-link" href="/admin/employeerating">Employee Rating List</a></li>
                                     </ul>
                                 </li>
                             }
-                            <li class="dropdown @(ViewBag.Title == "Leave" ? "active" : "")">
-                                <a href="#" class="menu-toggle nav-link has-dropdown">
-                                    <i data-feather="briefcase"></i><span>Leave</span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="nav-link" href="/admin/leave">Leave List</a></li>
-                                </ul>
-                            </li>
-
-                            <li class="dropdown @(ViewBag.Title == "Holiday" ? "active" : "")">
-                                <a href="#" class="menu-toggle nav-link has-dropdown">
-                                    <i data-feather="film"></i><span>Holiday</span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="nav-link" href="/admin/holiday/add/0">Add Holiday</a></li>
-                                    <li><a class="nav-link" href="/admin/holiday">Holiday List</a></li>
-                                </ul>
-                            </li>
-
-                            <li class="dropdown @(ViewBag.Title == "Payment" ? "active" : "")">
-                                <a href="#" class="menu-toggle nav-link has-dropdown">
-                                    <i data-feather="dollar-sign"></i><span>Payment</span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="nav-link" href="/admin/payment/add/0">Give Payment</a></li>
-                                    <li><a class="nav-link" href="/admin/payment">Payment List</a></li>
-                                    <li><a class="nav-link" href="/admin/payment/deletedpayment">Deleted Payment List</a></li>
-                                </ul>
-                            </li>
-
-                            <li class="dropdown @(ViewBag.Title == "Attendance" ? "active" : "")">
-                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="command"></i><span>Attendance</span></a>
-                                <ul class="dropdown-menu">
-                                    @*<li><a class="nav-link" href="/admin/payment/add/0">Add Attendance</a></li>*@
-                                    <li><a class="nav-link" href="/admin/attendance">Attendance List</a></li>
-                                </ul>
-                            </li>
-                            if (clsAdminSession.CompanyTypeId == (int)CompanyType.ConstructionCompany)
-                            {
-                                <li class="dropdown @(ViewBag.Title == "WorkerAttendance" ? "active" : "")">
-                                    <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="command"></i><span>Worker Attendance</span></a>
-                                    <ul class="dropdown-menu">                                        
-                                        <li><a class="nav-link" href="/admin/workerattendance">Worker Attendance List</a></li>
-                                        <li><a class="nav-link" href="/admin/workerattendance/assignedworkerlist">Assigned Worker List</a></li>
-                                    </ul>
-                                </li>
-
-                                <li class="dropdown @(ViewBag.Title == "Site" ? "active" : "")">
-                                    <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="clock"></i><span>Site Location</span></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="nav-link" href="/admin/site/add/0">Add Site Location</a></li>
-                                        <li><a class="nav-link" href="/admin/site">Site Location List</a></li>
-                                    </ul>
-                                </li>
-                                <li class="dropdown @(ViewBag.Title == "MaterialCategory" ? "active" : "")">
-                                    <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="box"></i><span>Material Category</span></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="nav-link" href="/admin/materialcategory/add/0">Add Material Category</a></li>
-                                        <li><a class="nav-link" href="/admin/materialcategory">Material Category List</a></li>
-                                    </ul>
-                                </li>
-                                <li class="dropdown @(ViewBag.Title == "Material" ? "active" : "")">
-                                    <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="aperture"></i><span>Material</span></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="nav-link" href="/admin/material/add/0">Add Material</a></li>
-                                        <li><a class="nav-link" href="/admin/material">Material List</a></li>
-                                        <li><a class="nav-link" href="/admin/material/deletedmaterial">Deleted Material List</a></li>
-                                    </ul>
-                                </li>
-                                <li class="dropdown @(ViewBag.Title == "WorkerType" ? "active" : "")">
-                                    <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="box"></i><span>Worker Type</span></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="nav-link" href="/admin/workertype/add/0">Add Worker Type</a></li>
-                                        <li><a class="nav-link" href="/admin/workertype">Worker Type List</a></li>
-                                    </ul>
-                                </li>
-                            }
-                            <li class="dropdown @(ViewBag.Title == "EmployeeRating" ? "active" : "")">
-                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="file-text"></i><span>Employee Rating</span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="nav-link" href="/admin/employeerating/add/0">Add Employee Rating</a></li>
-                                    <li><a class="nav-link" href="/admin/employeerating">Employee Rating List</a></li>
-                                </ul>
-                            </li>
-
                             <li class="dropdown @(ViewBag.Title == "AccountRenew" ? "active" : "")">
                                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="compass"></i><span>Account Package Renew</span></a>
                                 <ul class="dropdown-menu">
@@ -323,20 +325,22 @@
                                     <li><a class="nav-link" href="/admin/employeebuytransaction">Buy Employee List</a></li>
                                 </ul>
                             </li>
-
-                            <li class="dropdown @(ViewBag.Title == "Feedback" ? "active" : "")">
-                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="file-minus"></i><span>Feedback</span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="nav-link" href="/admin/feedback">Feedback List</a></li>
-                                    <li><a class="nav-link" href="/admin/feedback/add">Add Feedback</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown @(ViewBag.Title == "SMSLog" ? "active" : "")">
-                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="file-minus"></i><span>SMS Log</span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="nav-link" href="/admin/smslog">SMS Log List</a></li>
-                                </ul>
-                            </li>
+                            if (!isPackageExpired)
+                            {
+                                <li class="dropdown @(ViewBag.Title == "Feedback" ? "active" : "")">
+                                    <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="file-minus"></i><span>Feedback</span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="nav-link" href="/admin/feedback">Feedback List</a></li>
+                                        <li><a class="nav-link" href="/admin/feedback/add">Add Feedback</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown @(ViewBag.Title == "SMSLog" ? "active" : "")">
+                                    <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="file-minus"></i><span>SMS Log</span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="nav-link" href="/admin/smslog">SMS Log List</a></li>
+                                    </ul>
+                                </li>
+                            }
                             <li class="dropdown @(ViewBag.Title == "Report" ? "active" : "")">
                                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="server"></i><span>Report</span></a>
                                 <ul class="dropdown-menu">

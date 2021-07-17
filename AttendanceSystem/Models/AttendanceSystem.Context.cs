@@ -30,9 +30,7 @@ namespace AttendanceSystem.Models
         public virtual DbSet<mst_AdminRole> mst_AdminRole { get; set; }
         public virtual DbSet<mst_CompanyType> mst_CompanyType { get; set; }
         public virtual DbSet<tbl_CompanyFollowup> tbl_CompanyFollowup { get; set; }
-        public virtual DbSet<tbl_CompanyRenewPayment> tbl_CompanyRenewPayment { get; set; }
         public virtual DbSet<tbl_DynamicContent> tbl_DynamicContent { get; set; }
-        public virtual DbSet<tbl_EmployeeBuyTransaction> tbl_EmployeeBuyTransaction { get; set; }
         public virtual DbSet<tbl_EmployeeFingerprint> tbl_EmployeeFingerprint { get; set; }
         public virtual DbSet<tbl_EmployeeRating> tbl_EmployeeRating { get; set; }
         public virtual DbSet<tbl_Feedback> tbl_Feedback { get; set; }
@@ -49,7 +47,6 @@ namespace AttendanceSystem.Models
         public virtual DbSet<tbl_ContactForm> tbl_ContactForm { get; set; }
         public virtual DbSet<tbl_Testimonial> tbl_Testimonial { get; set; }
         public virtual DbSet<tbl_Attendance> tbl_Attendance { get; set; }
-        public virtual DbSet<tbl_CompanySMSPackRenew> tbl_CompanySMSPackRenew { get; set; }
         public virtual DbSet<tbl_SMSContent> tbl_SMSContent { get; set; }
         public virtual DbSet<tbl_WorkerType> tbl_WorkerType { get; set; }
         public virtual DbSet<tbl_Conversion> tbl_Conversion { get; set; }
@@ -64,6 +61,10 @@ namespace AttendanceSystem.Models
         public virtual DbSet<tbl_Employee> tbl_Employee { get; set; }
         public virtual DbSet<tbl_EmployeePayment> tbl_EmployeePayment { get; set; }
         public virtual DbSet<tbl_SMSLog> tbl_SMSLog { get; set; }
+        public virtual DbSet<tbl_CompanyRenewPayment> tbl_CompanyRenewPayment { get; set; }
+        public virtual DbSet<tbl_CompanySMSPackRenew> tbl_CompanySMSPackRenew { get; set; }
+        public virtual DbSet<tbl_EmployeeBuyTransaction> tbl_EmployeeBuyTransaction { get; set; }
+        public virtual DbSet<tbl_InvoiceLastDocNo> tbl_InvoiceLastDocNo { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

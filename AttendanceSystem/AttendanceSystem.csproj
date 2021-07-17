@@ -335,6 +335,9 @@
     <Compile Include="Models\tbl_HomeSlider.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\tbl_InvoiceLastDocNo.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tbl_Leave.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>

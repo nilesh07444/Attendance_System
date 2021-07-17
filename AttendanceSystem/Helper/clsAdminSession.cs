@@ -178,5 +178,16 @@ namespace AttendanceSystem.Helper
                 HttpContext.Current.Session["SetOtp"] = value;
             }
         }
+        public static bool IsPackageExpired
+        {
+            get
+            {
+                return HttpContext.Current.Session["IsPackageExpired"] != null ? Convert.ToBoolean(HttpContext.Current.Session["IsPackageExpired"]) : false;
+            }
+            set
+            {
+                HttpContext.Current.Session["IsPackageExpired"] = value;
+            }
+        }
     }
 }

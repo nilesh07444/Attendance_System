@@ -707,5 +707,14 @@ namespace AttendanceSystem
             }
             return ConvertedString;
         }
+
+        public static string InvoiceFinancialYear()
+        {
+            DateTime today = CurrentIndianDateTime().Date;
+            int currYear = today.Month >= (int)CalenderMonths.April ? today.Year : today.Year - 1;
+            int nextYear = currYear + 1;
+            string invoiceYear = currYear + "-" + nextYear;
+            return invoiceYear;
+        }
     }
 }

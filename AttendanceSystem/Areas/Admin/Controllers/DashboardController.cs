@@ -57,7 +57,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     }
                     else
                     {
-                        tbl_CompanyRenewPayment objCompanyRenewPayment = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == companyId && x.StartDate <= today && x.EndDate >= today).FirstOrDefault();
+                        tbl_CompanyRenewPayment objCompanyRenewPayment = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == companyId && x.StartDate <= currentDateTime && x.EndDate >= currentDateTime).FirstOrDefault();
                         dashboardVM.AccountExpiryDate = objCompanyRenewPayment.EndDate;
                         dashboardVM.CurrentPackageId = objCompanyRenewPayment.CompanyRegistrationPaymentId;
                     }

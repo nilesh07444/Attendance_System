@@ -1,6 +1,6 @@
 ﻿namespace AttendanceSystem.Helper
 {
-    
+
     public static class ErrorMessage
     {
         public const string ThisFieldRequired = "This field is required";
@@ -89,7 +89,7 @@
         public static double HalfDay = 0.5;
         public static string DefaultTime = "00:00:00";
 
-        public static string EmployeeRatingCanNotModifyAfter7Days= "Employee rating can not modify after 7 days.";
+        public static string EmployeeRatingCanNotModifyAfter7Days = "Employee rating can not modify after 7 days.";
         public static string EmployeeRatingAlreadyExist = "Employee rating already exist.";
         public static string MonthShouldBeFrom1To12 = "Month should be from 1 to 12.";
         public static string FutureYearNotAllowed = "Future year not allowed.";
@@ -192,6 +192,13 @@
         public static string PaymentTypeWrong = "Payment Type is wrong, It should be Salary or Extra.";
         public static string Red = "red";
         public static string CompanyAdmin = "Company Admin";
-
+        public static string InvoicePrefix = "CB";
+        public static string InvoiceNoSaperator = "/";
+        public static string AccountInvoiceNoPrefix = "PKG";
+        public static string SMSInvoiceNoPrefix = "SMS";
+        public static string EmployeeInvoiceNoPrefix = "EMP";
+        public static string EmployeePackageBuySuccessfully = "Employee package buy successfully";
+        public static string SMSPackageBuySuccessfully = "SMS package buy successfully";
+        public static string AccountPackageBuySuccessfully = "Account package buy successfully";
     }
 }

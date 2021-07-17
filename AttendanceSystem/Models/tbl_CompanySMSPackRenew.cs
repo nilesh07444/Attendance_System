@@ -24,6 +24,7 @@ namespace AttendanceSystem.Models
         public System.DateTime PackageExpiryDate { get; set; }
         public Nullable<int> NoOfSMS { get; set; }
         public Nullable<int> RemainingSMS { get; set; }
+        public string InvoiceNo { get; set; }
         public long CreatedBy { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public Nullable<long> ModifiedBy { get; set; }

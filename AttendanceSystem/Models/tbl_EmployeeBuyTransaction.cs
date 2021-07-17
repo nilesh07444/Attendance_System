@@ -20,10 +20,11 @@ namespace AttendanceSystem.Models
         public decimal AmountPerEmp { get; set; }
         public decimal TotalPaidAmount { get; set; }
         public string PaymentGatewayTransactionId { get; set; }
+        public System.DateTime ExpiryDate { get; set; }
+        public string InvoiceNo { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public long CreatedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public Nullable<long> ModifiedBy { get; set; }
-        public System.DateTime ExpiryDate { get; set; }
     }
 }

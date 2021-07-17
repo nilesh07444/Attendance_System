@@ -27,10 +27,11 @@ namespace AttendanceSystem.Models
         public int NoOfSMS { get; set; }
         public string PaymentFor { get; set; }
         public string PaymentGatewayResponseId { get; set; }
+        public int BuyNoOfEmployee { get; set; }
+        public string InvoiceNo { get; set; }
         public long CreatedBy { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public Nullable<long> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
-        public int BuyNoOfEmployee { get; set; }
     }
 }

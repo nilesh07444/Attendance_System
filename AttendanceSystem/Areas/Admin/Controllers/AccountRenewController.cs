@@ -120,7 +120,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         {
             string message = string.Empty;
             bool isSuccess = true;
-
+            long companyId = clsAdminSession.CompanyId;
+            DateTime today = CommonMethod.CurrentIndianDateTime();
             try
             {
                 if (packageBuyVM != null && packageBuyVM.PackageId != 0)
@@ -132,17 +133,18 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     tbl_Package objPackage = _db.tbl_Package.Where(x => x.PackageId == packageBuyVM.PackageId).FirstOrDefault();
 
                     // Get last bought package of company
-                    tbl_CompanyRenewPayment objLastBoughtPackage = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == clsAdminSession.CompanyId)
+                    tbl_CompanyRenewPayment objLastBoughtPackage = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == companyId)
                                                                                                 .OrderByDescending(x => x.CompanyRegistrationPaymentId).FirstOrDefault();
 
                     if (objPackage != null)
                     {
+                        string invoiceNo = GenerateAccountRenewInvoiceNo();
                         tbl_CompanyRenewPayment objCompanyRenewPayment = new tbl_CompanyRenewPayment();
-                        objCompanyRenewPayment.CompanyId = clsAdminSession.CompanyId;
+                        objCompanyRenewPayment.CompanyId = companyId;
                         objCompanyRenewPayment.PackageId = objPackage.PackageId;
                         objCompanyRenewPayment.PackageName = objPackage.PackageName;
-                        objCompanyRenewPayment.StartDate = CommonMethod.CurrentIndianDateTime();
-                        objCompanyRenewPayment.EndDate = CommonMethod.CurrentIndianDateTime().AddDays(objPackage.AccessDays);
+                        objCompanyRenewPayment.StartDate = today;
+                        objCompanyRenewPayment.EndDate = today.AddDays(objPackage.AccessDays);
                         objCompanyRenewPayment.Amount = objPackage.Amount;
                         objCompanyRenewPayment.GSTPer = objSetting.AccountPackageBuyGSTPer.Value;
                         objCompanyRenewPayment.AccessDays = objPackage.AccessDays;
@@ -150,12 +152,30 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objCompanyRenewPayment.NoOfSMS = objPackage.NoOfSMS;
                         objCompanyRenewPayment.PaymentFor = "Account Renew";
                         objCompanyRenewPayment.PaymentGatewayResponseId = "";
+                        objCompanyRenewPayment.InvoiceNo = invoiceNo;
                         objCompanyRenewPayment.CreatedBy = (int)PaymentGivenBy.CompanyAdmin;
-                        objCompanyRenewPayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
+                        objCompanyRenewPayment.CreatedDate = today;
                         _db.tbl_CompanyRenewPayment.Add(objCompanyRenewPayment);
                         _db.SaveChanges();
 
+                        tbl_Company companyObj = _db.tbl_Company.Where(x => x.CompanyId == companyId).FirstOrDefault();
+                        if (companyObj.IsTrialMode)
+                        {
+                            companyObj.IsTrialMode = false;
+                            companyObj.AccountExpiryDate = objCompanyRenewPayment.EndDate;
+                            companyObj.CurrentPackageId = objCompanyRenewPayment.CompanyRegistrationPaymentId;
+                            _db.SaveChanges();
+                        }
+                        else
+                        {
+                            if (objLastBoughtPackage.EndDate < today)
+                            {
+                                companyObj.CurrentPackageId = objCompanyRenewPayment.CompanyRegistrationPaymentId;
+                                _db.SaveChanges();
+                            }
+                        }
                         isSuccess = true;
+                        message = ErrorMessage.AccountPackageBuySuccessfully;
                     }
                 }
                 else
@@ -209,6 +229,40 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 throw ex;
             }
             return View(companyRenewPaymentVM);
+        }
+
+        public string GenerateAccountRenewInvoiceNo()
+        {
+            string invoiceNo = string.Empty;
+            long newNo = 0;
+            tbl_InvoiceLastDocNo lastDocNoObj = _db.tbl_InvoiceLastDocNo.Where(x => x.PackageType == (int)SalesReportType.Account).FirstOrDefault();
+
+            if (lastDocNoObj != null)
+            {
+                newNo = lastDocNoObj.LastDocNo + 1;
+            }
+            else
+            {
+                newNo = 1;
+            }
+            string numberInStringFormat = String.Format("{0:0000}", newNo);
+            string yearString = CommonMethod.InvoiceFinancialYear();
+            invoiceNo = ErrorMessage.InvoicePrefix + ErrorMessage.InvoiceNoSaperator + yearString + ErrorMessage.InvoiceNoSaperator + ErrorMessage.AccountInvoiceNoPrefix + ErrorMessage.InvoiceNoSaperator + numberInStringFormat;
+
+            if (lastDocNoObj == null)
+            {
+                lastDocNoObj = new tbl_InvoiceLastDocNo();
+                lastDocNoObj.PackageType = (int)SalesReportType.Account;
+                lastDocNoObj.LastDocNo = newNo;
+                _db.tbl_InvoiceLastDocNo.Add(lastDocNoObj);
+                _db.SaveChanges();
+            }
+            else
+            {
+                lastDocNoObj.LastDocNo = newNo;
+                _db.SaveChanges();
+            }
+            return invoiceNo;
         }
     }
 }
