@@ -1,6 +1,6 @@
 ﻿@using AttendanceSystem.ViewModel
 @{
-    ViewBag.Title = "SMS Renew";
+    ViewBag.Title = "SMSPackageRenew";
     List<SMSPackageVM> lstSMSPackages = ViewData["lstSMSPackages"] as List<SMSPackageVM>;
 }
 <style>
@@ -100,12 +100,18 @@
 </style>
 
 <section class="section">
+
     <div class="card">
-        <div class="card-header" style="background-color: #425C59;">
-            <h4 style="color: #FFCEA3;">Buy New SMS Package</h4>
+        <div class="card-header" style="background-color: #425C59; display: block;">
+            <div class="pull-left">
+                <h4 style="color: #FFCEA3;">Buy New SMS Package</h4>
+            </div>
+            <div class="pull-right">
+                <a href="/admin/smsrenew" class="btn btn-warning pull-right"><i class="fas fa-backward"></i> Back</a>
+            </div>
         </div>
     </div>
-    
+     
     <div class="section-body">
         <div class="col-sm-12">
             <div class="row">

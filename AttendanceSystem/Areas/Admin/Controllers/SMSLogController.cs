@@ -60,11 +60,12 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             long companyId = clsAdminSession.CompanyId;
             List<SelectListItem> lst = (from emp in _db.tbl_Employee
                                         where !emp.IsDeleted && emp.CompanyId == companyId
+                                        orderby emp.EmployeeId
                                         select new SelectListItem
                                         {
                                             Text = emp.Prefix + " " + emp.FirstName + " " + emp.LastName + " (" + emp.EmployeeCode + ")",
                                             Value = emp.EmployeeId.ToString()
-                                        }).OrderBy(x => x.Text).ToList();
+                                        }).ToList();
             return lst;
         }
     }

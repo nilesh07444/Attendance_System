@@ -1,7 +1,7 @@
 ﻿@using AttendanceSystem.Helper;
 @model AttendanceSystem.ViewModel.AddWorkerAttendanceVM
 @{
-
+    ViewBag.Title = "WorkerAttendance";
 }
 
 <section class="section">
@@ -18,10 +18,11 @@
                     </div>
                 </div>
             </div>
-            <div class="card card-primary">
+            @using (Html.BeginForm("Add", "WorkerAttendance", FormMethod.Post, new { @id = "WorkerAttendanceFormId", @class = "", enctype = "multipart/form-data", role = "form" }))
+            {
+                <div class="card card-primary">
 
-                @using (Html.BeginForm("Add", "WorkerAttendance", FormMethod.Post, new { @id = "WorkerAttendanceFormId", @class = "", enctype = "multipart/form-data", role = "form" }))
-                {
+
                     @Html.ValidationSummary()
                     <div class="card-body">
                         <div class="row">
@@ -40,67 +41,74 @@
                                 @Html.HiddenFor(model => model.MonthlySalary)
                                 @Html.HiddenFor(model => model.PerCategoryPrice)
                                 @Html.HiddenFor(model => model.AttendanceDate)
-                                @Html.LabelFor(model => model.SiteName, htmlAttributes: new { @class = "" })
-                                @Model.SiteName
+                                @Html.LabelFor(model => model.SiteName)
+                                <p>@Model.SiteName</p>
                             </div>
                             <div class="form-group col-6">
-                                @Html.LabelFor(model => model.AttendanceDate, htmlAttributes: new { @class = "" })
-                                @Model.AttendanceDate.ToString("dd MMM yyyy")
+                                @Html.LabelFor(model => model.AttendanceDate)
+                                <p>@Model.AttendanceDate.ToString("dd MMM yyyy")</p>
 
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-6">
                                 @Html.HiddenFor(model => model.EmployeeId)
-                                @Html.LabelFor(model => model.EmployeeCode, htmlAttributes: new { @class = "" })
-                                @Model.EmployeeCode
+                                @Html.LabelFor(model => model.EmployeeCode)
+                                <p>@Model.EmployeeCode</p>
                             </div>
                             <div class="form-group col-6">
-                                @Html.LabelFor(model => model.EmployeeName, htmlAttributes: new { @class = "" })
-                                @Model.EmployeeName
+                                @Html.LabelFor(model => model.EmployeeName)
+                                <p>@Model.EmployeeName</p>
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-6">
-                                @Html.LabelFor(model => model.EmploymentCategoryText, htmlAttributes: new { @class = "" })
-                                @Model.EmploymentCategoryText
-
+                                @Html.LabelFor(model => model.EmploymentCategoryText)
+                                <p>@Model.EmploymentCategoryText</p>
                             </div>
                             <div class="form-group col-6" id="dvPerCategoryprice">
                                 @Html.LabelFor(model => model.PerCategoryPrice, htmlAttributes: new { @class = "clsPerCategoryPrice" })
-                                @Model.PerCategoryPrice.ToString("#.##")
+                                <p>@Model.PerCategoryPrice.ToString("#.##")</p>
                             </div>
                             <div class="form-group col-6" id="dvMonthlySalary">
                                 @Html.LabelFor(model => model.MonthlySalary, htmlAttributes: new { @class = "clsPerCategoryPrice" })
-                                @Model.MonthlySalary
+                                <p>@Model.MonthlySalary</p>
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-6" id="dvExtraPerHourPrice">
-                                @Html.LabelFor(model => model.ExtraPerHourPrice, htmlAttributes: new { @class = "" })
-                                @Model.ExtraPerHourPrice
+                                @Html.LabelFor(model => model.ExtraPerHourPrice)
+                                <p>@Model.ExtraPerHourPrice</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.IsMorning)
+                                <p>@Model.IsMorningText</p>
+                            </div>
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.IsAfternoon)
+                                <p>@Model.IsAfternoonText</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.IsEvening)
+                                <p>@Model.IsEveningText</p>
+                            </div>
+                        </div>
 
-                            </div>
-                        </div>
+                    </div>
+
+
+
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
                         <div class="row">
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.IsMorning, htmlAttributes: new { @class = "" })
-                                @Model.IsMorningText
-                            </div>
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.IsAfternoon, htmlAttributes: new { @class = "" })
-                                @Model.IsAfternoonText
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.IsEvening, htmlAttributes: new { @class = "" })
-                                @Model.IsEveningText
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.AttendanceType, htmlAttributes: new { @class = "" })
+                            <div class="form-group col-3">
+                                @Html.LabelFor(model => model.AttendanceType)
                                 @Html.DropDownListFor(model => model.AttendanceType, new SelectList(Model.WorkerAttendanceTypeList, "Value", "Text"), "- Select -", new { @class = "form-control required" })
                                 @Html.ValidationMessageFor(model => model.AttendanceType, "", new { @class = "text-danger" })
                             </div>
@@ -108,7 +116,7 @@
                         <div id="dvEveningRow">
                             <div class="row">
                                 <div class="form-group col-6">
-                                    @Html.LabelFor(model => model.PendingSalary, htmlAttributes: new { @class = "" })
+                                    @Html.LabelFor(model => model.PendingSalary)
                                     @Html.TextBoxFor(model => model.PendingSalary, new { @type = "number", @class = "form-control ", @readonly = true, @placeholder = "Pending Salary" })
                                     @Html.HiddenFor(model => model.PendingSalary)
                                 </div>
@@ -116,12 +124,12 @@
 
                             <div class="row" id="dvExtraHours">
                                 <div class="form-group col-6">
-                                    @Html.LabelFor(model => model.ExtraHours, htmlAttributes: new { @class = "" })
+                                    @Html.LabelFor(model => model.ExtraHours)
                                     @Html.TextBoxFor(model => model.ExtraHours, new { @type = "number", @class = "form-control ", @placeholder = "Enter Extra Hours", @maxlength = "10", @min = "0" })
                                     @Html.ValidationMessageFor(model => model.ExtraHours, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group col-6">
-                                    @Html.LabelFor(model => model.ExtraHoursAmount, htmlAttributes: new { @class = "" })
+                                    @Html.LabelFor(model => model.ExtraHoursAmount)
                                     @Html.TextBoxFor(model => model.ExtraHoursAmount, new { @type = "number", @class = "form-control", @readonly = true, @placeholder = "Total Extra Amount", @maxlength = "10", @min = "0" })
                                     @Html.HiddenFor(model => model.ExtraHoursAmount)
                                 </div>
@@ -129,66 +137,63 @@
 
                             <div class="row" id="dvNoOfHoursWorked">
                                 <div class="form-group col-6">
-                                    @Html.LabelFor(model => model.NoOfHoursWorked, htmlAttributes: new { @class = "" })
+                                    @Html.LabelFor(model => model.NoOfHoursWorked)
                                     @Html.TextBoxFor(model => model.NoOfHoursWorked, new { @type = "number", @class = "form-control ", @placeholder = "Enter No Of Hours Worked", @maxlength = "10", @min = "1" })
                                     @Html.ValidationMessageFor(model => model.NoOfHoursWorked, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group col-6">
-                                    @Html.LabelFor(model => model.NoOfHoursWorkedAmount, htmlAttributes: new { @class = "" })
+                                    @Html.LabelFor(model => model.NoOfHoursWorkedAmount)
                                     @Html.TextBoxFor(model => model.NoOfHoursWorkedAmount, new { @type = "number", @class = "form-control", @readonly = true, @placeholder = "Total Amount", @maxlength = "10", @min = "0" })
                                 </div>
                             </div>
                             <div class="row" id="dvNoOfUnitWorked">
 
                                 <div class="form-group col-6">
-                                    @Html.LabelFor(model => model.NoOfUnitWorked, htmlAttributes: new { @class = "" })
+                                    @Html.LabelFor(model => model.NoOfUnitWorked)
                                     @Html.TextBoxFor(model => model.NoOfUnitWorked, new { @type = "number", @class = "form-control required", @placeholder = "Enter No Of Unit Worked", @maxlength = "10", @min = "1" })
                                     @Html.ValidationMessageFor(model => model.NoOfUnitWorked, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group col-6">
-                                    @Html.LabelFor(model => model.NoOfUnitWorkedAmount, htmlAttributes: new { @class = "" })
+                                    @Html.LabelFor(model => model.NoOfUnitWorkedAmount)
                                     @Html.TextBoxFor(model => model.NoOfUnitWorkedAmount, new { @type = "number", @class = "form-control", @readonly = true, @placeholder = "Total Amount", @maxlength = "10", @min = "0" })
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group col-6" id="dvTodaySalary">
-                                    @Html.LabelFor(model => model.TodaySalary, htmlAttributes: new { @class = "" })
+                                    @Html.LabelFor(model => model.TodaySalary)
                                     @Html.TextBoxFor(model => model.TodaySalary, new { @type = "number", @class = "form-control ", @readonly = true, @placeholder = "Today Salary", @maxlength = "10", @min = "0" })
                                     @Html.HiddenFor(model => model.TodaySalary)
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group col-6">
-                                    @Html.LabelFor(model => model.TotalPendingSalary, htmlAttributes: new { @class = "" })
+                                    @Html.LabelFor(model => model.TotalPendingSalary)
                                     @Html.TextBoxFor(model => model.TotalPendingSalary, new { @type = "number", @class = "form-control", @readonly = true, @placeholder = "Total Pending Salary" })
                                     @Html.HiddenFor(model => model.TotalPendingSalary)
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group col-6">
-                                    @Html.LabelFor(model => model.SalaryGiven, htmlAttributes: new { @class = "" })
+                                    @Html.LabelFor(model => model.SalaryGiven)
                                     @Html.TextBoxFor(model => model.SalaryGiven, new { @type = "number", @class = "form-control", @placeholder = "Salary Given", @maxlength = "10", @min = "0" })
                                     @Html.HiddenFor(model => model.SalaryGiven)
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group col-6">
-                                    @Html.LabelFor(model => model.RemainingBalance, htmlAttributes: new { @class = "" })
+                                    @Html.LabelFor(model => model.RemainingBalance)
                                     @Html.TextBoxFor(model => model.RemainingBalance, new { @type = "number", @class = "form-control", @readonly = true, @placeholder = "Remaining Balance" })
                                     @Html.HiddenFor(model => model.RemainingBalance)
                                 </div>
                             </div>
                         </div>
                     </div>
-
                     <div class="card-footer text-center">
                         <button class="btn btn-success mr-1" type="submit" id="btnSubmit">Submit</button>
                         <a href="/admin/workerattendance/assignedworkerlist" class="btn btn-secondary">Cancel</a>
                     </div>
-
-                }
-
-            </div>
+                </div>
+            }
         </div>
     </div>
 

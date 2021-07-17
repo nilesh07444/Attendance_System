@@ -239,7 +239,7 @@ namespace AttendanceSystem.ViewModel
     public class WorkerAttendanceViewVM
     {
         public long AttendanceId { get; set; }
-        [Display(Name = "Date")]
+        [Display(Name = "Attendance Date")]
         public DateTime AttendanceDate { get; set; }
         public string EmployeeCode { get; set; }
         public long EmployeeId { get; set; }

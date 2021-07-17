@@ -1,61 +1,63 @@
 ﻿@using AttendanceSystem.Helper;
 @model AttendanceSystem.ViewModel.CompanySMSPackRenewVM
 @{
-    ViewBag.Title = "SMS Renew";
+    ViewBag.Title = "SMSPackageRenew";
 }
 
 <section class="section">
 
     <div class="row">
         <div class="col-12">
-            <div class="card card-primary">
-                <div class="card-header">
-                    <h4>SMS Package</h4>
+            <div class="card">
+                <div class="card-header" style="background-color: #425C59; display: block;">
+                    <div class="pull-left">
+                        <h4 style="color: #FFCEA3;">View SMS Package Renew Detail</h4>
+                    </div>
+                    <div class="pull-right">
+                        <a href="/admin/smsrenew" class="btn btn-warning pull-right"><i class="fas fa-backward"></i> Back</a>
+                    </div>
                 </div>
-
+            </div>
+            <div class="card card-primary">
+                
                 <div class="card-body">
                     <div class="row">
                         <div class="form-group col-6">
-                            @Html.LabelFor(model => model.SMSPackageName, htmlAttributes: new { @class = "" })
-                            @Model.SMSPackageName
+                            @Html.LabelFor(model => model.SMSPackageName)
+                            <p>@Model.SMSPackageName</p>
                         </div>
                         <div class="form-group col-6">
-                            @Html.LabelFor(model => model.RenewDate, htmlAttributes: new { @class = "" })
-                            @Model.RenewDate
+                            @Html.LabelFor(model => model.RenewDate)
+                            <p>@Model.RenewDate</p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-6">
-                            @Html.LabelFor(model => model.AccessDays, htmlAttributes: new { @class = "" })
-                            @Model.AccessDays
+                            @Html.LabelFor(model => model.AccessDays)
+                            <p>@Model.AccessDays</p>
                         </div>
                         <div class="form-group col-6">
-                            @Html.LabelFor(model => model.PackageExpiryDate, htmlAttributes: new { @class = "" })
-                            @Model.PackageExpiryDate.ToString("dd MMM yyyy")
+                            @Html.LabelFor(model => model.PackageExpiryDate)
+                            <p>@Model.PackageExpiryDate.ToString("dd MMM yyyy")</p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-6">
-                            @Html.LabelFor(model => model.PackageAmount, htmlAttributes: new { @class = "" })
-                            @Model.PackageAmount
+                            @Html.LabelFor(model => model.PackageAmount)
+                            <p>@Model.PackageAmount</p>
                         </div>
                         <div class="form-group col-6">
-                            @Html.LabelFor(model => model.NoOfSMS, htmlAttributes: new { @class = "" })
-                            @Model.NoOfSMS
+                            @Html.LabelFor(model => model.NoOfSMS)
+                            <p>@Model.NoOfSMS</p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-6">
-                            @Html.LabelFor(model => model.RemainingSMS, htmlAttributes: new { @class = "" })
-                            @Model.RemainingSMS
+                            @Html.LabelFor(model => model.RemainingSMS)
+                            <p>@Model.RemainingSMS</p>
                         </div>
-                        
                     </div>
 
-                </div>
-
-                <div class="card-footer text-center">
-                    <a href="/admin/smsrenew" class="btn btn-secondary">Cancel</a>
                 </div>
 
             </div>

@@ -35,25 +35,25 @@
                                 <div class="col-sm-2">
                                     <div class="form-group">
                                         <label>Employee Role</label>
-                                        @Html.DropDownListFor(model => model.UserRole, new SelectList(Model.UserRoleList, "Value", "Text"), "- All -", new { @class = "form-control required", style = "" })
+                                        @Html.DropDownListFor(model => model.UserRole, new SelectList(Model.UserRoleList, "Value", "Text"), "- All -", new { @class = "form-control", style = "" })
                                     </div>
                                 </div>
                                 <div class="col-sm-2">
                                     <div class="form-group">
                                         <label>Start Month</label>
-                                        @Html.DropDownListFor(model => model.StartMonth, new SelectList(Model.CalenderMonth, "Value", "Text"), "- All -", new { @class = "form-control required", style = "" })
+                                        @Html.DropDownListFor(model => model.StartMonth, new SelectList(Model.CalenderMonth, "Value", "Text"), "- All -", new { @class = "form-control", style = "" })
                                     </div>
                                 </div>
                                 <div class="col-sm-2">
                                     <div class="form-group">
                                         <label>End Month</label>
-                                        @Html.DropDownListFor(model => model.EndMonth, new SelectList(Model.CalenderMonth, "Value", "Text"), "- All -", new { @class = "form-control required", style = "" })
+                                        @Html.DropDownListFor(model => model.EndMonth, new SelectList(Model.CalenderMonth, "Value", "Text"), "- All -", new { @class = "form-control", style = "" })
                                     </div>
                                 </div>
                                 <div class="col-sm-2">
                                     <div class="form-group">
                                         <label>Year</label>
-                                        @Html.TextBoxFor(model => model.Year, new { @type = "number", @class = "form-control required", @placeholder = "Year", @max = "9999", @maxLength = 4, @style= "height: calc(2.25rem + 6px)" })
+                                        @Html.TextBoxFor(model => model.Year, new { @type = "number", @class = "form-control", @placeholder = "Year", @max = "9999", @maxLength = 4, @style= "height: calc(2.25rem + 6px)" })
                                     </div>
                                 </div>
                                 <div class="col-sm-2">
@@ -76,7 +76,7 @@
                                 <thead>
                                     <tr>
                                         <td>#</td>
-                                        <th>Date</th>
+                                        <th width="10%">Date</th>
                                         <th>Employee Code</th>
                                         <th>Employee Name</th>
                                         <th>Month</th>

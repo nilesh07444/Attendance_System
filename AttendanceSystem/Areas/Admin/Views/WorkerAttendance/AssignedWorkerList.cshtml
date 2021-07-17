@@ -19,44 +19,47 @@
 
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label>Date</label>
-                                    @Html.TextBoxFor(model => model.Date, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control", @placeholder = "Date" })
+                            <div class="card-header ">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Date</label>
+                                        @Html.TextBoxFor(model => model.Date, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control", @placeholder = "Date", @style = "height: calc(2.25rem + 6px)" })
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label>Site Location</label>
-                                    @Html.DropDownListFor(model => model.SiteId, new SelectList(Model.SiteList, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8", style = "" })
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Site Location</label>
+                                        @Html.DropDownListFor(model => model.SiteId, new SelectList(Model.SiteList, "Value", "Text"), "- Select -", new { @class = "form-control", style = "" })
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label>Worker</label>
-                                    @Html.DropDownListFor(model => model.EmployeeId, new SelectList(Model.EmployeeList, "Value", "Text"), "- All -", new { @class = "form-control col-md-8", style = "" })
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Worker</label>
+                                        @Html.DropDownListFor(model => model.EmployeeId, new SelectList(Model.EmployeeList, "Value", "Text"), "- All -", new { @class = "form-control", style = "" })
 
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label style="padding-top:45px"></label>
-                                    <button class="btn btn-primary mr-1" id="btnSearch" type="button">Search</button>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label style="padding-top:45px"></label>
+                                        <button class="btn btn-primary mr-1" id="btnSearch" type="button">Search</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label>Attendance</label>
-                                    @Html.DropDownListFor(model => model.AttendanceType, new SelectList(Model.AttendanceTypeList, "Value", "Text"), "- Select -", new { @class = "form-control col-md-8", style = "" })
-
+                            <div class="card-header ">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Attendance</label>
+                                        @Html.DropDownListFor(model => model.AttendanceType, new SelectList(Model.AttendanceTypeList, "Value", "Text"), "- Select -", new { @class = "form-control", style = "" })
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label style="padding-top:45px"></label>
-                                    <button class="btn btn-primary mr-1" id="btnAddAttendance" type="button">Add Attendance</button>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label style="padding-top:45px"></label>
+                                        <button class="btn btn-primary mr-1" id="btnAddAttendance" type="button">Add Attendance</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

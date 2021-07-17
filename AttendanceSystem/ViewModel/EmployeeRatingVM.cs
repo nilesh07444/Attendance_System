@@ -2,27 +2,41 @@
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using System;
+using AttendanceSystem.Helper;
 
 namespace AttendanceSystem.ViewModel
 {
     public class EmployeeRatingVM
     {
         public long EmployeeRatingId { get; set; }
-        [Required, Display(Name = "Employee")]
+
+        [Display(Name = "Employee Name *")]
+        [Required(ErrorMessage = ErrorMessage.ThisFieldRequired)]
         public long EmployeeId { get; set; }
         public string EmployeeName { get; set; }
         public string EmployeeCode { get; set; }
-        [Required, Display(Name = "Rate Month")]
+
+        [Display(Name = "Rate Month *")]
+        [Required(ErrorMessage = ErrorMessage.ThisFieldRequired)]
         public int RateMonth { get; set; }
         public string RateMonthText { get; set; }
-        [Required, Display(Name = "Rate Year")]
+
+        [Display(Name = "Rate Year *")]
+        [Required(ErrorMessage = ErrorMessage.ThisFieldRequired)]
         public int RateYear { get; set; }
-        [Required, Display(Name = "Behaviour Rate")]
+
+        [Display(Name = "Behaviour Rate *")]
+        [Required(ErrorMessage = ErrorMessage.ThisFieldRequired)]
         public decimal BehaviourRate { get; set; }
-        [Required, Display(Name = "Ragularity Rate")]
+
+        [Display(Name = "Ragularity Rate *")]
+        [Required(ErrorMessage = ErrorMessage.ThisFieldRequired)]
         public decimal RegularityRate { get; set; }
-        [Required, Display(Name = "Work Rate")]
+
+        [Display(Name = "Work Rate *")]
+        [Required(ErrorMessage = ErrorMessage.ThisFieldRequired)]
         public decimal WorkRate { get; set; }
+
         [Display(Name = "Remarks")]
         public string Remarks { get; set; }
 

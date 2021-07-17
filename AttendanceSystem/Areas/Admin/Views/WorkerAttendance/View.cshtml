@@ -6,16 +6,18 @@
 }
 
 <div class="page-body">
-
-    <!-- Container-fluid starts-->
-    <!-- Container-fluid Ends-->
-    <!-- Container-fluid starts-->
+     
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
                 <div class="card">
-                    <div class="card-header" style="background-color: #425C59;">
-                        <h4 style="color: #FFCEA3;">View Attendance</h4>
+                    <div class="card-header" style="background-color: #425C59; display: block;">
+                        <div class="pull-left">
+                            <h4 style="color: #FFCEA3;">View Attendance</h4>
+                        </div>
+                        <div class="pull-right">
+                            <a href="/admin/workerattendance" class="btn btn-warning pull-right"><i class="fas fa-backward"></i> Back</a>
+                        </div>
                     </div>
                 </div>
                 <div class="card">
@@ -27,164 +29,164 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    @Html.LabelFor(model => model.EmployeeName, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                    @Model.EmployeeName
+                                    @Html.LabelFor(model => model.EmployeeName)
+                                    <p>@Model.EmployeeName</p>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    @Html.LabelFor(model => model.AttendanceDate, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                    @Model.AttendanceDate.ToString("dd MMM yyyy")
+                                    @Html.LabelFor(model => model.AttendanceDate)
+                                    <p>@Model.AttendanceDate.ToString("dd MMM yyyy")</p>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    @Html.LabelFor(model => model.IsMorningText, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                    @Model.IsMorningText
+                                    @Html.LabelFor(model => model.IsMorningText)
+                                    <p>@Model.IsMorningText</p>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    @Html.LabelFor(model => model.MorningSite, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                    @Model.MorningSite
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.MorningAttendanceByName, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                    @Model.MorningAttendanceByName
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.MorningAttendanceDate, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                    @Model.MorningAttendanceDate
+                                    @Html.LabelFor(model => model.MorningSite)
+                                    <p> @Model.MorningSite</p>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    @Html.LabelFor(model => model.MorningLatitude, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                    @Model.MorningLatitude
+                                    @Html.LabelFor(model => model.MorningAttendanceByName)
+                                    <p>@Model.MorningAttendanceByName</p>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    @Html.LabelFor(model => model.MorningLongitude, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                    @Model.MorningLongitude
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.MorningLocationFrom, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                    @Model.MorningLocationFrom
+                                    @Html.LabelFor(model => model.MorningAttendanceDate)
+                                    <p>@Model.MorningAttendanceDate</p>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    @Html.LabelFor(model => model.IsAfternoonText, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                    @Model.IsAfternoonText
+                                    @Html.LabelFor(model => model.MorningLatitude)
+                                    <p>@Model.MorningLatitude</p>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    @Html.LabelFor(model => model.AfternoonSite, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                    @Model.AfternoonSite
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.AfternoonAttendanceByName, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                    @Model.AfternoonAttendanceByName
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.AfternoonAttendanceDate, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                    @Model.AfternoonAttendanceDate
+                                    @Html.LabelFor(model => model.MorningLongitude)
+                                    <p>@Model.MorningLongitude</p>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    @Html.LabelFor(model => model.AfternoonLatitude, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                    @Model.AfternoonLatitude
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.AfternoonLongitude, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                    @Model.AfternoonLongitude
+                                    @Html.LabelFor(model => model.MorningLocationFrom)
+                                    <p>@Model.MorningLocationFrom</p>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    @Html.LabelFor(model => model.AfternoonLocationFrom, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                    @Model.AfternoonLocationFrom
+                                    @Html.LabelFor(model => model.IsAfternoonText)
+                                    <p>@Model.IsAfternoonText</p>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.AfternoonSite)
+                                    <p>@Model.AfternoonSite</p>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    @Html.LabelFor(model => model.IsEveningText, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                    @Model.IsEveningText
+                                    @Html.LabelFor(model => model.AfternoonAttendanceByName)
+                                    <p>@Model.AfternoonAttendanceByName</p>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    @Html.LabelFor(model => model.EveningSite, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                    @Model.EveningSite
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.EveningAttendanceByName, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                    @Model.EveningAttendanceByName
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    @Html.LabelFor(model => model.EveningAttendanceDate, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                    @Model.EveningAttendanceDate
+                                    @Html.LabelFor(model => model.AfternoonAttendanceDate)
+                                    <p>@Model.AfternoonAttendanceDate</p>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    @Html.LabelFor(model => model.EveningLatitude, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                    @Model.EveningLatitude
+                                    @Html.LabelFor(model => model.AfternoonLatitude)
+                                    <p>@Model.AfternoonLatitude</p>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    @Html.LabelFor(model => model.EveningLongitude, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                    @Model.EveningLongitude
+                                    @Html.LabelFor(model => model.AfternoonLongitude)
+                                    <p>@Model.AfternoonLongitude</p>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    @Html.LabelFor(model => model.EveningLocationFrom, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                    @Model.EveningLocationFrom
+                                    @Html.LabelFor(model => model.AfternoonLocationFrom)
+                                    <p>@Model.AfternoonLocationFrom</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.IsEveningText)
+                                    <p>@Model.IsEveningText</p>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.EveningSite)
+                                    <p>@Model.EveningSite</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.EveningAttendanceByName)
+                                    <p>@Model.EveningAttendanceByName</p>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.EveningAttendanceDate)
+                                    <p>@Model.EveningAttendanceDate</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.EveningLatitude)
+                                    <p>@Model.EveningLatitude</p>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.EveningLongitude)
+                                    <p>@Model.EveningLongitude</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.EveningLocationFrom)
+                                    <p>@Model.EveningLocationFrom</p>
                                 </div>
                             </div>
                         </div>
@@ -194,8 +196,8 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        @Html.LabelFor(model => model.ExtraHours, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                        @Model.ExtraHours
+                                        @Html.LabelFor(model => model.ExtraHours)
+                                        <p>@Model.ExtraHours</p>
                                     </div>
                                 </div>
                             </div>
@@ -205,8 +207,8 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        @Html.LabelFor(model => model.NoOfHoursWorked, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                        @Model.NoOfHoursWorked
+                                        @Html.LabelFor(model => model.NoOfHoursWorked)
+                                        <p>@Model.NoOfHoursWorked</p>
                                     </div>
                                 </div>
                             </div>
@@ -216,31 +218,25 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        @Html.LabelFor(model => model.NoOfUnitWorked, htmlAttributes: new { @class = "col-xl-3 col-md-4" })
-                                        @Model.NoOfUnitWorked
+                                        @Html.LabelFor(model => model.NoOfUnitWorked)
+                                        <p>@Model.NoOfUnitWorked</p>
                                     </div>
                                 </div>
                             </div>
                         }
-
-                        <div class="form-group row">
-                            <lable class="col-xl-3 col-md-4"></lable>
-                            <button type="button" class="btn btn-danger" id="btnCancel">Cancel</button>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Container-fluid Ends-->
-
+      
 </div>
 
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-
-
+ 
 <script type="text/javascript">
     $(document).ready(function () {
         $('#btnCancel').click(function () {

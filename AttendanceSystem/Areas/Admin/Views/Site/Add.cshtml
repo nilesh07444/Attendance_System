@@ -7,17 +7,7 @@
 
     <div class="row">
         <div class="col-12">
-            <div class="card">
-                <div class="card-header" style="background-color: #425C59; display: block;">
-                    <div class="pull-left">
-                        <h4 style="color: #FFCEA3;">@(Model.SiteId == 0 ? "Add" : "Edit") Site Location</h4>
-                    </div>
-                    <div class="pull-right">
-                        <a href="/admin/site" class="btn btn-warning pull-right"><i class="fas fa-backward"></i> Back</a>
-                    </div>
-                </div>
-            </div>
-
+             
             <div class="card card-primary">
 
                 @using (Html.BeginForm("Add", "Site", FormMethod.Post, new { @id = "SiteFormId", @class = "", enctype = "multipart/form-data", role = "form" }))
@@ -63,12 +53,10 @@
 
         $('#btnSubmit').click(function () {
             if ($("#SiteFormId").valid()) {
-
             }
             else {
                 return false;
             }
-
         });
 
         $("#SiteName").change(function () {
@@ -85,7 +73,6 @@
                         alert("Site with same location already exist, Please use another location.")
                         $("#SiteName").val("");
                     }
-
                 },
                 error: function (req, status, error) {
                     alert(error);

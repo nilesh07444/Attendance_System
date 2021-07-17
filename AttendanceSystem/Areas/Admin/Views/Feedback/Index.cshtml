@@ -23,8 +23,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header"  style="display: block;">
-                        @*<h4>Company Feedback</h4>*@
-                        <div class="card-header-action ">
+                        <div class="card-header-action pull-right">
                             @if (clsAdminSession.RoleID == (int)AdminRoles.CompanyAdmin)
                             {
                                 <a href="/admin/feedback/add" class="btn btn-icon icon-left btn-primary"><i class="fas fa-plus-circle"></i> Add Feedback</a>
@@ -66,6 +65,7 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
+                                        <th>Feedback Date</th>
                                         @if (clsAdminSession.RoleID == (int)AdminRoles.SuperAdmin)
                                         {
                                             <th>Company Name</th>
@@ -97,24 +97,25 @@
                                                 feedbackStatusClass = "badge-danger";
                                             }
 
-                                            <tr class="gradeX">
-                                                <td>@counter.</td>
-                                                @if (clsAdminSession.RoleID == (int)AdminRoles.SuperAdmin)
-                                                {
-                                                    <td>@obj.CompanyName</td>
-                                                }
-                                                <td>@obj.FeedbackTypeText</td>
-                                                <td><span class="badge @feedbackStatusClass">@obj.FeedbackStatusText</span></td>
-                                                <td>@obj.FeedbackText</td>
-                                                <td>
+                                    <tr class="gradeX">
+                                        <td>@counter.</td>
+                                        <td>@obj.CreatedDate</td>
+                                        @if (clsAdminSession.RoleID == (int)AdminRoles.SuperAdmin)
+                                        {
+                                            <td>@obj.CompanyName</td>
+                                        }
+                                        <td>@obj.FeedbackTypeText</td>
+                                        <td><span class="badge @feedbackStatusClass">@obj.FeedbackStatusText</span></td>
+                                        <td>@obj.FeedbackText</td>
+                                        <td>
 
-                                                    <a href="/admin/feedback/view/@obj.FeedbackId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
-                                                    @if (clsAdminSession.RoleID == (int)AdminRoles.SuperAdmin && obj.FeedbackStatus == (int)FeedbackStatus.Pending)
-                                                    {
-                                                        <a href="/admin/feedback/edit/@obj.FeedbackId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
-                                                    }
-                                                </td>
-                                            </tr>
+                                            <a href="/admin/feedback/view/@obj.FeedbackId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
+                                            @if (clsAdminSession.RoleID == (int)AdminRoles.SuperAdmin && obj.FeedbackStatus == (int)FeedbackStatus.Pending)
+                                            {
+                                                <a href="/admin/feedback/edit/@obj.FeedbackId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
+                                            }
+                                        </td>
+                                    </tr>
                                             counter++;
                                         }
                                     }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AttendanceSystem.Helper;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
@@ -13,21 +14,34 @@ namespace AttendanceSystem.ViewModel
         }
         public long MaterialId { get; set; }
         public long CompanyId { get; set; }
-        [Required, Display(Name = "Material Category")]
+
+        [Display(Name = "Material Category *")]
+        [Required(ErrorMessage = ErrorMessage.ThisFieldRequired)]
         public long MaterialCategoryId { get; set; }
+
         public string MaterialCategoryText { get; set; }
-        [Required, Display(Name = "Material Date")]
+
+        [Display(Name = "Material Date *")]
+        [Required(ErrorMessage = ErrorMessage.ThisFieldRequired)]
         public DateTime MaterialDate { get; set; }
-        [Required, Display(Name = "Site")]
+
+        [Display(Name = "Site Location *")]
+        [Required(ErrorMessage = ErrorMessage.ThisFieldRequired)]
         public long SiteId { get; set; }
         public string SiteName { get; set; }
-        [Required, Display(Name = "Qty")]
+
+        [Display(Name = "Qty *")]
+        [Required(ErrorMessage = ErrorMessage.ThisFieldRequired)]
         public decimal Qty { get; set; }
-        [Required, Display(Name = "Material Type")]
+
+        [Display(Name = "Material Type *")]
+        [Required(ErrorMessage = ErrorMessage.ThisFieldRequired)]
         public int InOut { get; set; }
         public string InOutText { get; set; }
+
         [Display(Name = "Remark")]
         public string Remarks { get; set; }
+
         public bool IsActive { get; set; }
 
         public List<SelectListItem> MaterialCategoryList { get; set; }

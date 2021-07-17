@@ -6,18 +6,25 @@
 <section class="section"> 
     <div class="row">
         <div class="col-12">
+
             <div class="card">
-                <div class="card-header" style="background-color: #425C59;">
-                    <h4 style="color: #FFCEA3;">@(Model.FeedbackId == 0 ? "Add" : "Edit") Feedback</h4>
+                <div class="card-header" style="background-color: #425C59; display: block;">
+                    <div class="pull-left">
+                        <h4 style="color: #FFCEA3;">@(Model.FeedbackId == 0 ? "Add" : "Edit") Feedback</h4>
+                    </div>
+                    <div class="pull-right">
+                        <a href="/admin/feedback" class="btn btn-warning pull-right"><i class="fas fa-backward"></i> Back</a>
+                    </div>
                 </div>
             </div>
+
             <div class="card card-primary">
-                  
+
                 @using (Html.BeginForm("Add", "Feedback", FormMethod.Post, new { @id = "FeedbackFormId", @class = "", enctype = "multipart/form-data", role = "form" }))
                 {
                     <div class="card-body">
                         <div class="row">
-                            <div class="form-group col-6">
+                            <div class="form-group col-3">
                                 @Html.LabelFor(model => model.FeedbackType, htmlAttributes: new { @class = "" })
                                 @Html.DropDownListFor(model => model.FeedbackType, new SelectList(Model.FeedBackTypeList, "Value", "Text"), "- Select -", new { @class = "form-control required" })
                                 @Html.ValidationMessageFor(model => model.FeedbackType, "", new { @class = "text-danger" })

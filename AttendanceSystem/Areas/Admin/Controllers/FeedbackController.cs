@@ -56,7 +56,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                      Remarks = fb.Remarks,
                                                      SuperAdminFeedbackText = fb.SuperAdminFeedbackText,
                                                      IsDeleted = fb.IsDeleted,
-                                                     IsActive = fb.IsActive
+                                                     IsActive = fb.IsActive,
+                                                     CreatedDate = fb.CreatedDate
                                                  }).ToList();
 
                 feedBackFilterVM.FeedBackList.ForEach(x =>

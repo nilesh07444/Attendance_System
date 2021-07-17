@@ -1,5 +1,4 @@
-﻿ 
-@model AttendanceSystem.ViewModel.EmployeeBuyTransactionVM
+﻿ @model AttendanceSystem.ViewModel.EmployeeBuyTransactionVM
 @{
     ViewBag.Title = "BuyEmployee";
 }
@@ -8,13 +7,20 @@
 
     <div class="row">
         <div class="col-12">
+
             <div class="card">
-                <div class="card-header" style="background-color: #425C59;">
-                    <h4 style="color: #FFCEA3;">Buy Employee</h4>
+                <div class="card-header" style="background-color: #425C59; display: block;">
+                    <div class="pull-left">
+                        <h4 style="color: #FFCEA3;">Buy Employee</h4>
+                    </div>
+                    <div class="pull-right">
+                        <a href="/admin/employeebuytransaction" class="btn btn-warning pull-right"><i class="fas fa-backward"></i> Back</a>
+                    </div>
                 </div>
             </div>
+             
             <div class="card card-primary">
-                 
+
                 @if (string.IsNullOrEmpty(Model.ErrorMessage))
                 {
                     using (Html.BeginForm("Buy", "EmployeeBuyTransaction", FormMethod.Post, new { @id = "BuyEmployeeFormId", @class = "", enctype = "multipart/form-data", role = "form" }))

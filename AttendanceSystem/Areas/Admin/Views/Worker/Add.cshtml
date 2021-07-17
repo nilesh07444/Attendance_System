@@ -145,7 +145,7 @@
 
                             <div class="form-group col-6" id="dvPerCatPrice">
                                 @Html.LabelFor(model => model.PerCategoryPrice, htmlAttributes: new { @class = "clsPerCategoryPrice" })
-                                @Html.TextBoxFor(model => model.PerCategoryPrice, new { @type = "text", @class = "form-control required", @placeholder = "Enter Per Category Price", @maxlength = "8" })
+                                @Html.TextBoxFor(model => model.PerCategoryPrice, new { @type = "text", @class = "form-control", @placeholder = "Enter Per Category Price", @maxlength = "8" })
                                 @Html.ValidationMessageFor(model => model.PerCategoryPrice, "", new { @class = "text-danger" })
                             </div>
                             <div class="form-group col-6" id="dvMonthlySal">
@@ -157,7 +157,7 @@
                         <div class="row">
                             <div class="form-group col-6" id="dvExtraHours">
                                 @Html.LabelFor(model => model.ExtraPerHourPrice, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.ExtraPerHourPrice, new { @type = "text", @class = "form-control required", @placeholder = "Enter Extra Per Hour Price", @maxlength = "8", @min = "0" })
+                                @Html.TextBoxFor(model => model.ExtraPerHourPrice, new { @type = "text", @class = "form-control", @placeholder = "Enter Extra Per Hour Price", @maxlength = "8", @min = "0" })
                                 @Html.ValidationMessageFor(model => model.ExtraPerHourPrice, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -179,7 +179,7 @@
 
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.NoOfFreeLeavePerMonth, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.NoOfFreeLeavePerMonth, new { @type = "text", @class = "form-control required", @placeholder = "Enter Extra Per Hour Price", @maxlength = "2", @min = "0", @max = "30" })
+                                @Html.TextBoxFor(model => model.NoOfFreeLeavePerMonth, new { @type = "text", @class = "form-control", @placeholder = "Enter Extra Per Hour Price", @maxlength = "2", @min = "0", @max = "30" })
                             </div>
                         </div>
                     </div>
@@ -308,6 +308,7 @@
                 });
             }
             else {
+                debugger;
                 return false;
             }
             return false;

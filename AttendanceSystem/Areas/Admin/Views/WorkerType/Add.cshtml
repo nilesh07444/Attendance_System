@@ -1,7 +1,7 @@
 ﻿ 
 @model AttendanceSystem.ViewModel.WorkerTypeVM
 @{
-     
+    ViewBag.Title = "WorkerType";
 }
 
 <section class="section">
@@ -14,7 +14,7 @@
                         <h4 style="color: #FFCEA3;">@(Model.WorkerTypeId == 0 ? "Add" : "Edit") Worker Type</h4>
                     </div>
                     <div class="pull-right">
-                        <a href="/admin/WorkerType" class="btn btn-warning pull-right"><i class="fas fa-backward"></i> Back</a>
+                        <a href="/admin/workertype" class="btn btn-warning pull-right"><i class="fas fa-backward"></i> Back</a>
                     </div>
                 </div>
             </div>

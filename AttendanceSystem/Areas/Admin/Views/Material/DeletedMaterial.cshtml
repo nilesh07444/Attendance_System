@@ -1,4 +1,5 @@
 ﻿@using AttendanceSystem.ViewModel;
+@using AttendanceSystem.Helper;
 @model List<AttendanceSystem.ViewModel.MaterialVM>
 @{
     ViewBag.Title = "Material";
@@ -16,8 +17,8 @@
                     </div>
                 </div>
 
-                <div class="card"> 
-                    <div class="card-body"> 
+                <div class="card">
+                    <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-striped table-hover" id="tableExport" style="width:100%;">
                                 <thead>
@@ -26,8 +27,8 @@
                                         <th>Material Category Name</th>
                                         <th>Site Name</th>
                                         <th>Material Date</th>
-                                        <th>Qty</th>
-                                        <th>In/Out</th>
+                                        <th>Inward</th>
+                                        <th>Outward</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -39,9 +40,9 @@
                                                 <td>@counter.</td>
                                                 <td>@obj.MaterialCategoryText</td>
                                                 <td>@obj.SiteName</td>
-                                                <td>@obj.MaterialDate</td>
-                                                <td>@obj.Qty</td>
-                                                <td>@obj.InOutText</td>
+                                                <td>@obj.MaterialDate.ToString("dd MMM yyyy")</td>
+                                                <td>@(obj.InOut == (int)MaterialStatus.Inward ? obj.Qty.ToString() : "")</td>
+                                                <td>@(obj.InOut == (int)MaterialStatus.Outward ? obj.Qty.ToString() : "")</td>
                                             </tr>
 
                                             counter++;
