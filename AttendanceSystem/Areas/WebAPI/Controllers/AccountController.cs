@@ -43,6 +43,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             {
                 LoginResponseVM loginResponseVM = new LoginResponseVM();
                 response.IsError = false;
+                DateTime today = CommonMethod.CurrentIndianDateTime();
                 if (!string.IsNullOrEmpty(loginRequestVM.UserName) && !string.IsNullOrEmpty(loginRequestVM.PassWord))
                 {
                     string encryptPassword = CommonMethod.Encrypt(loginRequestVM.PassWord, psSult);
@@ -61,20 +62,20 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                 response.AddError(ErrorMessage.CompanyIsNotActive);
                             }
 
-                            tbl_CompanyRenewPayment companyPackage = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == data.CompanyId && DateTime.Today >= x.StartDate && DateTime.Today < x.EndDate).FirstOrDefault();
-                            tbl_CompanySMSPackRenew companySMSPackage = _db.tbl_CompanySMSPackRenew.Where(x => x.CompanyId == data.CompanyId && DateTime.Today >= x.RenewDate && DateTime.Today < x.PackageExpiryDate).FirstOrDefault();
+                            tbl_CompanyRenewPayment companyPackage = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == data.CompanyId && today >= x.StartDate && today < x.EndDate).FirstOrDefault();
+                            tbl_CompanySMSPackRenew companySMSPackage = _db.tbl_CompanySMSPackRenew.Where(x => x.CompanyId == data.CompanyId && today >= x.RenewDate && today < x.PackageExpiryDate).FirstOrDefault();
 
-                            if (companyObj.IsTrialMode && companyObj.TrialExpiryDate < DateTime.Today && companyPackage == null)
+                            if (companyObj.IsTrialMode && companyObj.TrialExpiryDate < today && companyPackage == null)
                             {
                                 response.IsError = true;
                                 response.AddError(ErrorMessage.CompanyTrailAccountIsExpired);
                             }
-                            else if (!companyObj.IsTrialMode && companyObj.AccountExpiryDate < DateTime.Today && companyPackage == null)
+                            else if (!companyObj.IsTrialMode && companyObj.AccountExpiryDate < today && companyPackage == null)
                             {
                                 response.IsError = true;
                                 response.AddError(ErrorMessage.CompanyAccountIsExpired);
                             }
-                            else if (!companyObj.IsTrialMode && companyObj.AccountExpiryDate < DateTime.Today && companyPackage != null)
+                            else if (!companyObj.IsTrialMode && companyObj.AccountExpiryDate < today && companyPackage != null)
                             {
                                 companyObj.CurrentPackageId = companyPackage.PackageId;
                                 companyObj.AccountStartDate = companyPackage.StartDate;

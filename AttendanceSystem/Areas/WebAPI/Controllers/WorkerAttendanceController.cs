@@ -220,7 +220,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         _db.SaveChanges();
                     }
 
-                    if (employeeObj.EmploymentCategory != (int)EmploymentCategory.MonthlyBased && workerAttendanceRequestVM.AttendanceType == (int)WorkerAttendanceType.Evening)
+                    if (workerAttendanceRequestVM.AttendanceType == (int)WorkerAttendanceType.Evening)
                     {
                         if (!_db.tbl_WorkerPayment.Any(x => x.UserId == attendanceObject.EmployeeId && !x.IsDeleted && x.AttendanceId == attendanceObject.WorkerAttendanceId && x.PaymentType != (int)EmployeePaymentType.Extra))
                         {
@@ -251,6 +251,12 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                             else if (employeeObj.EmploymentCategory == (int)EmploymentCategory.UnitBased)
                             {
                                 objWorkerPayment.CreditAmount = employeeObj.PerCategoryPrice * workerAttendanceRequestVM.NoOfUnitWorked;
+                            }
+                            else if (employeeObj.EmploymentCategory == (int)EmploymentCategory.MonthlyBased)
+                            {
+                                decimal totalDaysinMonth = DateTime.DaysInMonth(today.Year, today.Month);
+                                decimal perDayAmount = Math.Round((employeeObj.MonthlySalaryPrice.HasValue ? employeeObj.MonthlySalaryPrice.Value : 0) / totalDaysinMonth, 2);
+                                objWorkerPayment.CreditAmount = (attendanceObject.IsMorning && attendanceObject.IsAfternoon && attendanceObject.IsEvening ? perDayAmount : Math.Round((perDayAmount / 2), 2)) + (employeeObj.ExtraPerHourPrice * workerAttendanceRequestVM.ExtraHours);
                             }
                             _db.tbl_WorkerPayment.Add(objWorkerPayment);
                             _db.SaveChanges();

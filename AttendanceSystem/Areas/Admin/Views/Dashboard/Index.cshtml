@@ -537,6 +537,7 @@
                     success: function (result) {
                         if (result.Status == 1) {
                             alert("Conversion complete successfully");
+                            window.location.reload();
                         }
                         else {
 
@@ -564,6 +565,7 @@
                     success: function (result) {
                         if (result.Status == 1) {
                             alert("Conversion complete successfully");
+                            window.location.reload();
                         }
                         else {
                             alert(result.ErrorMessage);

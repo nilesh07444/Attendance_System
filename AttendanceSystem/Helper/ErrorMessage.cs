@@ -159,6 +159,8 @@
         public static string AutoCreditOnEveningAttendance = "Auto credit on evening attendance";
         public static string SalaryGivenOnEveningAttendance = "Salary given on evening attendance";
         public static string MonthlyConversion = "Monthly conversion.";
+        public static string SalaryCreditForLeave = "Salary credit for leave.";
+        public static string SalaryCreditForHoliday = "Salary credit for holiday.";
         public static string Open = "Open";
         public static string InProgress = "Inprogress";
         public static string Complete = "Complete";

@@ -183,7 +183,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             }
             return View(dashboardVM);
         }
-         
+
         /// <summary>
         /// Conversion of Employment Types: Employee, Supervisor, Checker, Payer
         /// </summary>
@@ -226,10 +226,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                 if (status == 1)
                 {
+                    int[] monthstoCheck = new int[] { month, nextMonth };
                     List<tbl_EmployeePayment> inProcessEmployeePaymentList = (from p in _db.tbl_EmployeePayment
                                                                               where !p.IsDeleted && p.CompanyId == companyId
                                                                               && p.ProcessStatusText == ErrorMessage.InProgress
-                                                                              && p.Month == month
+                                                                              && monthstoCheck.Contains(p.Month)
                                                                               && p.Year == dateYear
                                                                               && p.PaymentType != (int)EmployeePaymentType.Extra
                                                                               select p
@@ -250,7 +251,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     double totalDaysinMonth = DateTime.DaysInMonth(year, month);
 
                     var currentMonthHolidays = _db.tbl_Holiday.Where(x => !x.IsDeleted && x.CompanyId == companyId.ToString() && x.StartDate >= firstDayOfMonth && x.EndDate <= lastDayOfMonth).ToList();
-                    double holidays = currentMonthHolidays.Select(x => (x.EndDate - x.StartDate).TotalDays + 1).Sum();
+                    //double holidays = currentMonthHolidays.Select(x => (x.EndDate - x.StartDate).TotalDays + 1).Sum();
                     // For Only Employees
 
                     // Get All Employees
@@ -310,41 +311,126 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                     lstEmployees.Where(x => x.EmploymentCategory == (int)EmploymentCategory.MonthlyBased).ToList().ForEach(x =>
                     {
-                        List<tbl_Attendance> attendanceList = _db.tbl_Attendance.Where(y => y.UserId == x.EmployeeId && y.AttendanceDate >= firstDayOfMonth && y.AttendanceDate <= lastDayOfMonth).ToList();
-                        double presentDays = attendanceList.Count > 0 ? attendanceList.Select(z => z.DayType).Sum() : 0;
-                        decimal extraHours = attendanceList.Count > 0 ? attendanceList.Select(z => z.ExtraHours).Sum() : 0;
-                        double absentDays = totalDaysinMonth - presentDays;
+                        //List<tbl_Attendance> attendanceList = _db.tbl_Attendance.Where(y => y.UserId == x.EmployeeId && y.AttendanceDate >= firstDayOfMonth && y.AttendanceDate <= lastDayOfMonth).ToList();
+                        //double presentDays = attendanceList.Count > 0 ? attendanceList.Select(z => z.DayType).Sum() : 0;
+                        //decimal extraHours = attendanceList.Count > 0 ? attendanceList.Select(z => z.ExtraHours).Sum() : 0;
+                        //double absentDays = totalDaysinMonth - presentDays;
+
+                        //double deductedLeave = 0;
+                        //if (absentDays > (holidays + (double)totalFreeLeave))
+                        //{
+                        //    deductedLeave = absentDays - (holidays + (double)totalFreeLeave);
+                        //}
+
+                        decimal carryForwardLeave = x.CarryForwardLeave;
+                        List<tbl_Leave> leaveList = _db.tbl_Leave.Where(z => z.UserId == x.EmployeeId && !z.IsDeleted && z.StartDate.Month == month && z.StartDate.Year == year && z.LeaveStatus == (int)LeaveStatus.Accept).ToList();
+                        decimal leaveDays = leaveList.Count > 0 ? leaveList.Sum(z => z.NoOfDays) : 0;
+
+                        decimal perDayAmount = Math.Round((x.MonthlySalaryPrice.HasValue ? x.MonthlySalaryPrice.Value : 0) / (decimal)totalDaysinMonth, 2);
                         decimal totalFreeLeave = x.NoOfFreeLeavePerMonth + x.CarryForwardLeave;
-                        double deductedLeave = 0;
-                        if (absentDays > (holidays + (double)totalFreeLeave))
+
+                        if (leaveDays > 0)
                         {
-                            deductedLeave = absentDays - (holidays + (double)totalFreeLeave);
+                            decimal leaveIndex = totalFreeLeave;
+                            if (leaveDays <= totalFreeLeave)
+                            {
+                                leaveIndex = leaveDays;
+                                carryForwardLeave = carryForwardLeave - leaveDays;
+                            }
+                            else
+                            {
+                                carryForwardLeave = 0;
+                            }
+
+                            leaveList.ForEach(leave =>
+                            {
+                                if (leaveIndex > 0)
+                                {
+                                    tbl_EmployeePayment objLeaveEmployeePayment = new tbl_EmployeePayment();
+                                    objLeaveEmployeePayment.CompanyId = companyId;
+                                    objLeaveEmployeePayment.UserId = x.EmployeeId;
+                                    objLeaveEmployeePayment.PaymentDate = leave.StartDate;
+                                    objLeaveEmployeePayment.PaymentType = (int)EmployeePaymentType.Salary;
+                                    objLeaveEmployeePayment.CreditOrDebitText = ErrorMessage.Credit;
+                                    objLeaveEmployeePayment.DebitAmount = 0;
+                                    objLeaveEmployeePayment.CreditAmount = perDayAmount;
+                                    objLeaveEmployeePayment.Remarks = ErrorMessage.SalaryCreditForLeave;
+                                    objLeaveEmployeePayment.Month = leave.StartDate.Month;
+                                    objLeaveEmployeePayment.Year = leave.StartDate.Year;
+                                    objLeaveEmployeePayment.Status = ErrorMessage.Open;
+                                    objLeaveEmployeePayment.ProcessStatusText = ErrorMessage.InProgress;
+                                    objLeaveEmployeePayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
+                                    objLeaveEmployeePayment.CreatedBy = loggedinUser;
+                                    objLeaveEmployeePayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
+                                    objLeaveEmployeePayment.ModifiedBy = loggedinUser;
+
+                                    _db.tbl_EmployeePayment.Add(objLeaveEmployeePayment);
+                                    leaveIndex--;
+                                }
+                            });
+                            _db.SaveChanges();
                         }
 
-                        decimal carryForwardLeave = 0;
-                        if (absentDays < holidays)
+                        if (currentMonthHolidays.Count > 0)
                         {
-                            carryForwardLeave = totalFreeLeave;
-                        }
-                        else if (absentDays < (holidays + (double)totalFreeLeave))
-                        {
-                            carryForwardLeave = totalFreeLeave - (decimal)(absentDays - holidays);
-                        }
-                        double monthlySalary = (double)x.MonthlySalaryPrice;
-                        List<decimal> debitAmountList = _db.tbl_EmployeePayment.Where(e => e.UserId == x.EmployeeId && !x.IsDeleted
-                                                && e.Month == month
-                                                && e.Year == year
-                                                && e.DebitAmount > 0 && e.PaymentType != (int)EmployeePaymentType.Extra).Select(e => e.DebitAmount.HasValue ? e.DebitAmount.Value : 0).ToList();
-                        double advancePaid = Convert.ToDouble(debitAmountList.Count > 0 ? debitAmountList.Sum() : 0);
-                        double extraHourSalary = Convert.ToDouble(extraHours * x.ExtraPerHourPrice);
+                            currentMonthHolidays.ForEach(holiday =>
+                            {
+                                DateTime holidayDate = holiday.StartDate;
+                                while (holidayDate <= holiday.EndDate)
+                                {
+                                    tbl_EmployeePayment objHolidayEmployeePayment = new tbl_EmployeePayment();
+                                    objHolidayEmployeePayment.CompanyId = companyId;
+                                    objHolidayEmployeePayment.UserId = x.EmployeeId;
+                                    objHolidayEmployeePayment.PaymentDate = holidayDate;
+                                    objHolidayEmployeePayment.PaymentType = (int)EmployeePaymentType.Salary;
+                                    objHolidayEmployeePayment.CreditOrDebitText = ErrorMessage.Credit;
+                                    objHolidayEmployeePayment.DebitAmount = 0;
+                                    objHolidayEmployeePayment.CreditAmount = perDayAmount;
+                                    objHolidayEmployeePayment.Remarks = ErrorMessage.SalaryCreditForHoliday;
+                                    objHolidayEmployeePayment.Month = holidayDate.Month;
+                                    objHolidayEmployeePayment.Year = holidayDate.Year;
+                                    objHolidayEmployeePayment.Status = ErrorMessage.Open;
+                                    objHolidayEmployeePayment.ProcessStatusText = ErrorMessage.InProgress;
+                                    objHolidayEmployeePayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
+                                    objHolidayEmployeePayment.CreatedBy = loggedinUser;
+                                    objHolidayEmployeePayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
+                                    objHolidayEmployeePayment.ModifiedBy = loggedinUser;
 
-                        if (deductedLeave > 0)
-                        {
-                            double perDaySalary = monthlySalary / totalDaysinMonth;
-                            double deductedSalary = deductedLeave * perDaySalary;
-                            monthlySalary = (monthlySalary - deductedSalary);
+                                    _db.tbl_EmployeePayment.Add(objHolidayEmployeePayment);
+                                    holidayDate = holidayDate.AddDays(1);
+                                }
+                            });
+                            _db.SaveChanges();
                         }
-                        monthlySalary = monthlySalary + extraHourSalary - advancePaid;
+
+                        //if (absentDays < holidays)
+                        //{
+                        //    carryForwardLeave = totalFreeLeave;
+                        //}
+                        //else if (absentDays < (holidays + (double)totalFreeLeave))
+                        //{
+                        //    carryForwardLeave = totalFreeLeave - (decimal)(absentDays - holidays);
+                        //}
+                        //double monthlySalary = (double)x.MonthlySalaryPrice;
+                        //List<decimal> debitAmountList = _db.tbl_EmployeePayment.Where(e => e.UserId == x.EmployeeId && !x.IsDeleted
+                        //                        && e.Month == month
+                        //                        && e.Year == year
+                        //                        && e.DebitAmount > 0 && e.PaymentType != (int)EmployeePaymentType.Extra).Select(e => e.DebitAmount.HasValue ? e.DebitAmount.Value : 0).ToList();
+                        //double advancePaid = Convert.ToDouble(debitAmountList.Count > 0 ? debitAmountList.Sum() : 0);
+                        //double extraHourSalary = Convert.ToDouble(extraHours * x.ExtraPerHourPrice);
+
+                        //if (deductedLeave > 0)
+                        //{
+                        //    double perDaySalary = monthlySalary / totalDaysinMonth;
+                        //    double deductedSalary = deductedLeave * perDaySalary;
+                        //    monthlySalary = (monthlySalary - deductedSalary);
+                        //}
+                        //monthlySalary = monthlySalary + extraHourSalary - advancePaid;
+
+
+                        decimal monthlySalary = _db.tbl_EmployeePayment.Any(z => z.UserId == x.EmployeeId && !z.IsDeleted && z.Month == month && z.Year == year && z.PaymentType != (int)EmployeePaymentType.Extra) ?
+                    _db.tbl_EmployeePayment.Where(z => z.UserId == x.EmployeeId && !z.IsDeleted && z.Month == month && z.Year == year && z.PaymentType != (int)EmployeePaymentType.Extra).
+                    Select(z => (z.CreditAmount.HasValue ? z.CreditAmount.Value : 0) - (z.DebitAmount.HasValue ? z.DebitAmount.Value : 0)).Sum() : 0;
 
                         tbl_EmployeePayment objEmployeePayment = new tbl_EmployeePayment();
                         objEmployeePayment.CompanyId = companyId;
@@ -353,7 +439,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         //objEmployeePayment.PaymentType = (int)EmployeePaymentType.Salary;
                         objEmployeePayment.CreditOrDebitText = ErrorMessage.Credit;
                         objEmployeePayment.DebitAmount = 0;
-                        objEmployeePayment.CreditAmount = (decimal)monthlySalary;
+                        objEmployeePayment.CreditAmount = monthlySalary;
                         objEmployeePayment.Remarks = ErrorMessage.MonthlyConversion;
                         objEmployeePayment.Month = nextMonth;
                         objEmployeePayment.Year = year;
@@ -378,10 +464,16 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     });
 
 
-                    List<tbl_EmployeePayment> employeePaymentList = _db.tbl_EmployeePayment.Where(x => !x.IsDeleted && x.ProcessStatusText == ErrorMessage.InProgress && x.Month == nextMonth && x.Year == dateYear && x.PaymentType != (int)EmployeePaymentType.Extra).ToList();
+                    List<tbl_EmployeePayment> employeePaymentList = _db.tbl_EmployeePayment.Where(x => !x.IsDeleted && x.ProcessStatusText == ErrorMessage.InProgress
+                    && monthstoCheck.Contains(x.Month) && x.Year == dateYear && x.PaymentType != (int)EmployeePaymentType.Extra).ToList();
                     employeePaymentList.ForEach(x =>
                     {
                         x.ProcessStatusText = ErrorMessage.Complete;
+                        if (x.Remarks == ErrorMessage.SalaryCreditForHoliday || x.Remarks == ErrorMessage.SalaryCreditForLeave)
+                        {
+                            x.Status = string.Empty;
+                            x.ProcessStatusText = string.Empty;
+                        }
                         _db.SaveChanges();
                     });
 
@@ -464,8 +556,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                 if (status == 1)
                 {
+                    int[] monthstoCheck = new int[] { month, nextMonth };
                     List<tbl_WorkerPayment> inProcessWorkerPaymentList = _db.tbl_WorkerPayment.Where(x => !x.IsDeleted && x.CompanyId == companyId && x.ProcessStatusText == ErrorMessage.InProgress
-                    && x.Month == month && x.Year == dateyear && x.PaymentType != (int)EmployeePaymentType.Extra).ToList();
+                    && monthstoCheck.Contains(x.Month) && x.Year == dateyear && x.PaymentType != (int)EmployeePaymentType.Extra).ToList();
 
                     inProcessWorkerPaymentList.ForEach(x =>
                     {
@@ -482,7 +575,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
 
                     var currentMonthHolidays = _db.tbl_Holiday.Where(x => !x.IsDeleted && x.CompanyId == companyId.ToString() && x.StartDate >= firstDayOfMonth && x.EndDate <= lastDayOfMonth).ToList();
-                    double holidays = currentMonthHolidays.Select(x => (x.EndDate - x.StartDate).TotalDays + 1).Sum();
+                    //double holidays = currentMonthHolidays.Select(x => (x.EndDate - x.StartDate).TotalDays + 1).Sum();
                     // For Only Employees
 
                     // Get All Employees
@@ -541,58 +634,144 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                     lstWorkers.Where(x => x.EmploymentCategory == (int)EmploymentCategory.MonthlyBased).ToList().ForEach(x =>
                     {
-                        var dayTypeAttendanceList = (from at in _db.tbl_WorkerAttendance
-                                                     where at.EmployeeId == x.EmployeeId
-                                                     && at.AttendanceDate >= firstDayOfMonth
-                                                     && at.AttendanceDate <= lastDayOfMonth
-                                                     select new
-                                                     {
-                                                         dayType = at.IsMorning && at.IsAfternoon && at.IsEvening ? 1 : ((at.IsMorning || at.IsAfternoon) && at.IsEvening ? 0.5 : 0),
-                                                         extraHours = at.ExtraHours.HasValue ? at.ExtraHours.Value : 0
-                                                     }).ToList();
+                        //var dayTypeAttendanceList = (from at in _db.tbl_WorkerAttendance
+                        //                             where at.EmployeeId == x.EmployeeId
+                        //                             && at.AttendanceDate >= firstDayOfMonth
+                        //                             && at.AttendanceDate <= lastDayOfMonth
+                        //                             select new
+                        //                             {
+                        //                                 dayType = at.IsMorning && at.IsAfternoon && at.IsEvening ? 1 : ((at.IsMorning || at.IsAfternoon) && at.IsEvening ? 0.5 : 0),
+                        //                                 extraHours = at.ExtraHours.HasValue ? at.ExtraHours.Value : 0
+                        //                             }).ToList();
 
-                        double presentDays = dayTypeAttendanceList.Select(z => z.dayType).Sum();
-                        decimal extraHours = dayTypeAttendanceList.Count > 0 ? dayTypeAttendanceList.Select(z => z.extraHours).Sum() : 0;
-                        double absentDays = totalDaysinMonth - presentDays;
+                        //double presentDays = dayTypeAttendanceList.Select(z => z.dayType).Sum();
+                        //decimal extraHours = dayTypeAttendanceList.Count > 0 ? dayTypeAttendanceList.Select(z => z.extraHours).Sum() : 0;
+                        //double absentDays = totalDaysinMonth - presentDays;
+
+                        decimal carryForwardLeave = x.CarryForwardLeave;
+                        List<tbl_Leave> leaveList = _db.tbl_Leave.Where(z => z.UserId == x.EmployeeId && !z.IsDeleted && z.StartDate.Month == month && z.StartDate.Year == year && z.LeaveStatus == (int)LeaveStatus.Accept).ToList();
+                        decimal leaveDays = leaveList.Count > 0 ? leaveList.Sum(z => z.NoOfDays) : 0;
+
+                        decimal perDayAmount = Math.Round((x.MonthlySalaryPrice.HasValue ? x.MonthlySalaryPrice.Value : 0) / (decimal)totalDaysinMonth, 2);
                         decimal totalFreeLeave = x.NoOfFreeLeavePerMonth + x.CarryForwardLeave;
-                        double deductedLeave = 0;
-                        if (absentDays > (holidays + (double)totalFreeLeave))
+
+                        if (leaveDays > 0)
                         {
-                            deductedLeave = absentDays - (holidays + (double)totalFreeLeave);
+                            decimal leaveIndex = totalFreeLeave;
+                            if (leaveDays <= totalFreeLeave)
+                            {
+                                leaveIndex = leaveDays;
+                                carryForwardLeave = carryForwardLeave - leaveDays;
+                            }
+                            else
+                            {
+                                carryForwardLeave = 0;
+                            }
+
+                            leaveList.ForEach(leave =>
+                            {
+                                if (leaveIndex > 0)
+                                {
+                                    tbl_WorkerPayment objLeaveWorkerPayment = new tbl_WorkerPayment();
+                                    objLeaveWorkerPayment.CompanyId = companyId;
+                                    objLeaveWorkerPayment.UserId = x.EmployeeId;
+                                    objLeaveWorkerPayment.PaymentDate = leave.StartDate;
+                                    objLeaveWorkerPayment.PaymentType = (int)EmployeePaymentType.Salary;
+                                    objLeaveWorkerPayment.CreditOrDebitText = ErrorMessage.Credit;
+                                    objLeaveWorkerPayment.DebitAmount = 0;
+                                    objLeaveWorkerPayment.CreditAmount = perDayAmount;
+                                    objLeaveWorkerPayment.Remarks = ErrorMessage.SalaryCreditForLeave;
+                                    objLeaveWorkerPayment.Month = leave.StartDate.Month;
+                                    objLeaveWorkerPayment.Year = leave.StartDate.Year;
+                                    objLeaveWorkerPayment.Status = ErrorMessage.Open;
+                                    objLeaveWorkerPayment.ProcessStatusText = ErrorMessage.InProgress;
+                                    objLeaveWorkerPayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
+                                    objLeaveWorkerPayment.CreatedBy = loggedinUser;
+                                    objLeaveWorkerPayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
+                                    objLeaveWorkerPayment.ModifiedBy = loggedinUser;
+
+                                    _db.tbl_WorkerPayment.Add(objLeaveWorkerPayment);
+                                    leaveIndex--;
+                                }
+                            });
+                            _db.SaveChanges();
                         }
 
-                        decimal carryForwardLeave = 0;
-                        if (absentDays < holidays)
+                        if (currentMonthHolidays.Count > 0)
                         {
-                            carryForwardLeave = totalFreeLeave;
+                            currentMonthHolidays.ForEach(holiday =>
+                            {
+                                DateTime holidayDate = holiday.StartDate;
+                                while (holidayDate <= holiday.EndDate)
+                                {
+                                    tbl_WorkerPayment objHolidayWorkerPayment = new tbl_WorkerPayment();
+                                    objHolidayWorkerPayment.CompanyId = companyId;
+                                    objHolidayWorkerPayment.UserId = x.EmployeeId;
+                                    objHolidayWorkerPayment.PaymentDate = holidayDate;
+                                    objHolidayWorkerPayment.PaymentType = (int)EmployeePaymentType.Salary;
+                                    objHolidayWorkerPayment.CreditOrDebitText = ErrorMessage.Credit;
+                                    objHolidayWorkerPayment.DebitAmount = 0;
+                                    objHolidayWorkerPayment.CreditAmount = perDayAmount;
+                                    objHolidayWorkerPayment.Remarks = ErrorMessage.SalaryCreditForHoliday;
+                                    objHolidayWorkerPayment.Month = holidayDate.Month;
+                                    objHolidayWorkerPayment.Year = holidayDate.Year;
+                                    objHolidayWorkerPayment.Status = ErrorMessage.Open;
+                                    objHolidayWorkerPayment.ProcessStatusText = ErrorMessage.InProgress;
+                                    objHolidayWorkerPayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
+                                    objHolidayWorkerPayment.CreatedBy = loggedinUser;
+                                    objHolidayWorkerPayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
+                                    objHolidayWorkerPayment.ModifiedBy = loggedinUser;
+
+                                    _db.tbl_WorkerPayment.Add(objHolidayWorkerPayment);
+                                    holidayDate = holidayDate.AddDays(1);
+                                }
+                            });
+                            _db.SaveChanges();
                         }
-                        else if (absentDays < (holidays + (double)totalFreeLeave))
-                        {
-                            carryForwardLeave = totalFreeLeave - (decimal)(absentDays - holidays);
-                        }
-                        double monthlySalary = (double)x.MonthlySalaryPrice;
-                        //double advancePaid = (double)_db.tbl_WorkerPayment.Where(e => e.UserId == x.EmployeeId && !x.IsDeleted
-                        //                        && e.Month == month
-                        //                        && e.Year == year
-                        //                        && e.DebitAmount > 0 && e.PaymentType != (int)EmployeePaymentType.Extra).Select(e => e.DebitAmount).Sum();
 
-                        List<decimal> debitAmountList = _db.tbl_WorkerPayment.Where(e => e.UserId == x.EmployeeId && !x.IsDeleted
-                                               && e.Month == month
-                                               && e.Year == year
-                                               && e.DebitAmount > 0 && e.PaymentType != (int)EmployeePaymentType.Extra).Select(e => e.DebitAmount.HasValue ? e.DebitAmount.Value : 0).ToList();
-                        double advancePaid = Convert.ToDouble(debitAmountList.Count > 0 ? debitAmountList.Sum() : 0);
+                        //double deductedLeave = 0;
+                        //if (absentDays > (holidays + (double)totalFreeLeave))
+                        //{
+                        //    deductedLeave = absentDays - (holidays + (double)totalFreeLeave);
+                        //}
 
-                        double extraHourSalary = Convert.ToDouble(extraHours * x.ExtraPerHourPrice);
+                        //decimal carryForwardLeave = 0;
+                        //if (absentDays < holidays)
+                        //{
+                        //    carryForwardLeave = totalFreeLeave;
+                        //}
+                        //else if (absentDays < (holidays + (double)totalFreeLeave))
+                        //{
+                        //    carryForwardLeave = totalFreeLeave - (decimal)(absentDays - holidays);
+                        //}
+                        //double monthlySalary = (double)x.MonthlySalaryPrice;
+                        ////double advancePaid = (double)_db.tbl_WorkerPayment.Where(e => e.UserId == x.EmployeeId && !x.IsDeleted
+                        ////                        && e.Month == month
+                        ////                        && e.Year == year
+                        ////                        && e.DebitAmount > 0 && e.PaymentType != (int)EmployeePaymentType.Extra).Select(e => e.DebitAmount).Sum();
+
+                        //List<decimal> debitAmountList = _db.tbl_WorkerPayment.Where(e => e.UserId == x.EmployeeId && !x.IsDeleted
+                        //                       && e.Month == month
+                        //                       && e.Year == year
+                        //                       && e.DebitAmount > 0 && e.PaymentType != (int)EmployeePaymentType.Extra).Select(e => e.DebitAmount.HasValue ? e.DebitAmount.Value : 0).ToList();
+                        //double advancePaid = Convert.ToDouble(debitAmountList.Count > 0 ? debitAmountList.Sum() : 0);
+
+                        //double extraHourSalary = Convert.ToDouble(extraHours * x.ExtraPerHourPrice);
 
 
-                        if (deductedLeave > 0)
-                        {
-                            double perDaySalary = monthlySalary / totalDaysinMonth;
-                            double deductedSalary = deductedLeave * perDaySalary;
-                            monthlySalary = (monthlySalary - deductedSalary);
-                        }
+                        //if (deductedLeave > 0)
+                        //{
+                        //    double perDaySalary = monthlySalary / totalDaysinMonth;
+                        //    double deductedSalary = deductedLeave * perDaySalary;
+                        //    monthlySalary = (monthlySalary - deductedSalary);
+                        //}
 
-                        monthlySalary = monthlySalary + extraHourSalary - advancePaid;
+                        //monthlySalary = monthlySalary + extraHourSalary - advancePaid;
+
+                        decimal monthlySalary = _db.tbl_WorkerPayment.Any(z => z.UserId == x.EmployeeId && !z.IsDeleted && z.Month == month && z.Year == year && z.PaymentType != (int)EmployeePaymentType.Extra) ?
+                  _db.tbl_WorkerPayment.Where(z => z.UserId == x.EmployeeId && !z.IsDeleted && z.Month == month && z.Year == year && z.PaymentType != (int)EmployeePaymentType.Extra).
+                  Select(z => (z.CreditAmount.HasValue ? z.CreditAmount.Value : 0) - (z.DebitAmount.HasValue ? z.DebitAmount.Value : 0)).Sum() : 0;
+
 
                         tbl_WorkerPayment objWorkerPayment = new tbl_WorkerPayment();
                         objWorkerPayment.CompanyId = companyId;
@@ -626,11 +805,18 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     });
 
 
-                    List<tbl_WorkerPayment> workerPaymentList = _db.tbl_WorkerPayment.Where(x => !x.IsDeleted && x.ProcessStatusText == ErrorMessage.InProgress && x.Month == nextMonth && x.Year == dateyear
+                    List<tbl_WorkerPayment> workerPaymentList = _db.tbl_WorkerPayment.Where(x => !x.IsDeleted && x.ProcessStatusText == ErrorMessage.InProgress
+                    && monthstoCheck.Contains(x.Month) && x.Year == dateyear
                     && x.PaymentType != (int)EmployeePaymentType.Extra).ToList();
                     workerPaymentList.ForEach(x =>
                     {
                         x.ProcessStatusText = ErrorMessage.Complete;
+                        if (x.Remarks == ErrorMessage.SalaryCreditForHoliday || x.Remarks == ErrorMessage.SalaryCreditForLeave)
+                        {
+                            x.Status = string.Empty;
+                            x.ProcessStatusText = string.Empty;
+                        }
+                        //x.Status= 
                         _db.SaveChanges();
                     });
 
@@ -687,6 +873,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                         }).ToList();
             return lst;
         }
-         
+
     }
 }

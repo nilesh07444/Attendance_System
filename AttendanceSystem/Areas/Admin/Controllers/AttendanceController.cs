@@ -128,51 +128,55 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 long loggedinUser = clsAdminSession.UserID;
                 string[] ids_array = ids.Split(',');
                 List<tbl_Attendance> attendanceList = _db.tbl_Attendance.Where(x => ids_array.Contains(x.AttendanceId.ToString())).ToList();
-
+                DateTime today = CommonMethod.CurrentIndianDateTime();
                 if (attendanceList != null)
                 {
                     attendanceList.ForEach(attendance =>
                     {
                         attendance.Status = (int)LeaveStatus.Accept;
                         attendance.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
-                        attendance.ModifiedDate = CommonMethod.CurrentIndianDateTime();
+                        attendance.ModifiedDate = today;
 
                         tbl_Employee employeeObj = _db.tbl_Employee.Where(x => x.EmployeeId == attendance.UserId).FirstOrDefault();
 
-                        if (employeeObj.EmploymentCategory != (int)EmploymentCategory.MonthlyBased)
+
+                        tbl_EmployeePayment objEmployeePayment = new tbl_EmployeePayment();
+                        objEmployeePayment.CompanyId = attendance.CompanyId;
+                        objEmployeePayment.UserId = attendance.UserId;
+                        objEmployeePayment.AttendanceId = attendance.AttendanceId;
+                        objEmployeePayment.PaymentDate = attendance.AttendanceDate;
+                        objEmployeePayment.PaymentType = (int)EmployeePaymentType.Salary;
+                        objEmployeePayment.CreditOrDebitText = ErrorMessage.Credit;
+                        objEmployeePayment.DebitAmount = 0;
+                        objEmployeePayment.Remarks = ErrorMessage.AutoCreditOnAttendanceAccept;
+                        objEmployeePayment.Month = attendance.AttendanceDate.Month;
+                        objEmployeePayment.Year = attendance.AttendanceDate.Year;
+                        objEmployeePayment.CreatedDate = today;
+                        objEmployeePayment.CreatedBy = (int)PaymentGivenBy.CompanyAdmin;
+                        objEmployeePayment.ModifiedDate = today;
+                        objEmployeePayment.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
+
+                        if (employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased)
                         {
-                            tbl_EmployeePayment objEmployeePayment = new tbl_EmployeePayment();
-                            objEmployeePayment.CompanyId = attendance.CompanyId;
-                            objEmployeePayment.UserId = attendance.UserId;
-                            objEmployeePayment.AttendanceId = attendance.AttendanceId;
-                            objEmployeePayment.PaymentDate = attendance.AttendanceDate;
-                            objEmployeePayment.PaymentType = (int)EmployeePaymentType.Salary;
-                            objEmployeePayment.CreditOrDebitText = ErrorMessage.Credit;
-                            objEmployeePayment.DebitAmount = 0;
-                            objEmployeePayment.Remarks = ErrorMessage.AutoCreditOnAttendanceAccept;
-                            objEmployeePayment.Month = attendance.AttendanceDate.Month;
-                            objEmployeePayment.Year = attendance.AttendanceDate.Year;
-                            objEmployeePayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
-                            objEmployeePayment.CreatedBy = (int)PaymentGivenBy.CompanyAdmin;
-                            objEmployeePayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
-                            objEmployeePayment.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
-
-                            if (employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased)
-                            {
-                                objEmployeePayment.CreditAmount = (employeeObj.PerCategoryPrice) + (employeeObj.ExtraPerHourPrice * attendance.ExtraHours);
-                            }
-                            else if (employeeObj.EmploymentCategory == (int)EmploymentCategory.HourlyBased)
-                            {
-                                objEmployeePayment.CreditAmount = employeeObj.PerCategoryPrice * attendance.NoOfHoursWorked;
-                            }
-                            else if (employeeObj.EmploymentCategory == (int)EmploymentCategory.UnitBased)
-                            {
-                                objEmployeePayment.CreditAmount = employeeObj.PerCategoryPrice * attendance.NoOfUnitWorked;
-                            }
-                            _db.tbl_EmployeePayment.Add(objEmployeePayment);
-                            _db.SaveChanges();
-
+                            objEmployeePayment.CreditAmount = (employeeObj.PerCategoryPrice) + (employeeObj.ExtraPerHourPrice * attendance.ExtraHours);
                         }
+                        else if (employeeObj.EmploymentCategory == (int)EmploymentCategory.HourlyBased)
+                        {
+                            objEmployeePayment.CreditAmount = employeeObj.PerCategoryPrice * attendance.NoOfHoursWorked;
+                        }
+                        else if (employeeObj.EmploymentCategory == (int)EmploymentCategory.UnitBased)
+                        {
+                            objEmployeePayment.CreditAmount = employeeObj.PerCategoryPrice * attendance.NoOfUnitWorked;
+                        }
+                        else if (employeeObj.EmploymentCategory == (int)EmploymentCategory.MonthlyBased)
+                        {
+                            decimal totalDaysinMonth = DateTime.DaysInMonth(attendance.AttendanceDate.Year, attendance.AttendanceDate.Month);
+                            decimal perDayAmount = Math.Round((employeeObj.MonthlySalaryPrice.HasValue ? employeeObj.MonthlySalaryPrice.Value : 0) / totalDaysinMonth, 2);
+                            objEmployeePayment.CreditAmount = attendance.DayType == (double)DayType.FullDay ? perDayAmount : Math.Round((perDayAmount / 2), 2);
+                        }
+
+                        _db.tbl_EmployeePayment.Add(objEmployeePayment);
+                        _db.SaveChanges();
 
                     });
 
@@ -247,10 +251,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     tbl_Attendance objAttendance = _db.tbl_Attendance.FirstOrDefault(x => x.AttendanceId == attendanceVM.AttendanceId);
                     if (objAttendance != null)
                     {
+                        DateTime today = CommonMethod.CurrentIndianDateTime();
                         objAttendance.Status = attendanceVM.Status;
                         objAttendance.RejectReason = attendanceVM.RejectReason;
                         objAttendance.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
-                        objAttendance.ModifiedDate = CommonMethod.CurrentIndianDateTime();
+                        objAttendance.ModifiedDate = today;
                         _db.SaveChanges();
 
                         if (attendanceVM.Status == (int)AttendanceStatus.Reject)
@@ -268,6 +273,47 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                             //var json = CommonMethod.SendSMSWithoutLog(msg, objEmployee.MobileNo);
                             ResponseDataModel<string> smsResponse = CommonMethod.SendSMS(msg, objEmployee.MobileNo, objEmployee.CompanyId, objEmployee.EmployeeId, objEmployee.EmployeeCode, (int)PaymentGivenBy.CompanyAdmin, clsAdminSession.IsTrialMode);
+                        }
+                        else if (attendanceVM.Status == (int)AttendanceStatus.Accept)
+                        {
+                            tbl_Employee employeeObj = _db.tbl_Employee.Where(x => x.EmployeeId == objAttendance.UserId).FirstOrDefault();
+
+                            tbl_EmployeePayment objEmployeePayment = new tbl_EmployeePayment();
+                            objEmployeePayment.CompanyId = objAttendance.CompanyId;
+                            objEmployeePayment.UserId = objAttendance.UserId;
+                            objEmployeePayment.AttendanceId = objAttendance.AttendanceId;
+                            objEmployeePayment.PaymentDate = objAttendance.AttendanceDate;
+                            objEmployeePayment.PaymentType = (int)EmployeePaymentType.Salary;
+                            objEmployeePayment.CreditOrDebitText = ErrorMessage.Credit;
+                            objEmployeePayment.DebitAmount = 0;
+                            objEmployeePayment.Remarks = ErrorMessage.AutoCreditOnAttendanceAccept;
+                            objEmployeePayment.Month = objAttendance.AttendanceDate.Month;
+                            objEmployeePayment.Year = objAttendance.AttendanceDate.Year;
+                            objEmployeePayment.CreatedDate = today;
+                            objEmployeePayment.CreatedBy = (int)PaymentGivenBy.CompanyAdmin;
+                            objEmployeePayment.ModifiedDate = today;
+                            objEmployeePayment.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
+
+                            if (employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased)
+                            {
+                                objEmployeePayment.CreditAmount = (employeeObj.PerCategoryPrice) + (employeeObj.ExtraPerHourPrice * objAttendance.ExtraHours);
+                            }
+                            else if (employeeObj.EmploymentCategory == (int)EmploymentCategory.HourlyBased)
+                            {
+                                objEmployeePayment.CreditAmount = employeeObj.PerCategoryPrice * objAttendance.NoOfHoursWorked;
+                            }
+                            else if (employeeObj.EmploymentCategory == (int)EmploymentCategory.UnitBased)
+                            {
+                                objEmployeePayment.CreditAmount = employeeObj.PerCategoryPrice * objAttendance.NoOfUnitWorked;
+                            }
+                            else if (employeeObj.EmploymentCategory == (int)EmploymentCategory.MonthlyBased)
+                            {
+                                decimal totalDaysinMonth = DateTime.DaysInMonth(objAttendance.AttendanceDate.Year, objAttendance.AttendanceDate.Month);
+                                decimal perDayAmount = Math.Round((employeeObj.MonthlySalaryPrice.HasValue ? employeeObj.MonthlySalaryPrice.Value : 0) / totalDaysinMonth, 2);
+                                objEmployeePayment.CreditAmount = objAttendance.DayType == (double)DayType.FullDay ? perDayAmount : Math.Round((perDayAmount / 2), 2);
+                            }
+                            _db.tbl_EmployeePayment.Add(objEmployeePayment);
+                            _db.SaveChanges();
                         }
 
                     }
