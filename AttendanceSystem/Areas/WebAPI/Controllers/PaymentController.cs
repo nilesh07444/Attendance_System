@@ -71,13 +71,13 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             response.IsError = false;
             try
             {
-                List<PaymentVM> paymentList = (from emp in _db.tbl_EmployeePayment
+                List<PaymentVM> paymentList = (from emp in _db.tbl_WorkerPayment
                                                where !emp.IsDeleted && emp.DebitAmount > 0
                                                && emp.PaymentDate >= workerPaymentFilterVM.StartDate && emp.PaymentDate <= workerPaymentFilterVM.EndDate
                                                && (workerPaymentFilterVM.EmployeeIds.Count > 0 ? workerPaymentFilterVM.EmployeeIds.Contains(emp.UserId) : true)
                                                select new PaymentVM
                                                {
-                                                   EmployeePaymentId = emp.EmployeePaymentId,
+                                                   EmployeePaymentId = emp.WorkerPaymentId,
                                                    UserId = emp.UserId,
                                                    PaymentDate = emp.PaymentDate,
                                                    DebitAmount = emp.DebitAmount,
@@ -109,13 +109,13 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             response.IsError = false;
             try
             {
-                PaymentVM paymentDetails = (from emp in _db.tbl_EmployeePayment
+                PaymentVM paymentDetails = (from emp in _db.tbl_WorkerPayment
                                             where !emp.IsDeleted && emp.UserId == employeeId
-                                            && emp.EmployeePaymentId == id
+                                            && emp.WorkerPaymentId == id
                                             select new PaymentVM
                                             {
 
-                                                EmployeePaymentId = emp.EmployeePaymentId,
+                                                EmployeePaymentId = emp.WorkerPaymentId,
                                                 UserId = emp.UserId,
                                                 PaymentDate = emp.PaymentDate,
                                                 DebitAmount = emp.DebitAmount,
@@ -174,20 +174,20 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                     if (!response.IsError)
                     {
-                        tbl_EmployeePayment objEmployeePayment = new tbl_EmployeePayment();
-                        objEmployeePayment.CompanyId = companyId;
-                        objEmployeePayment.UserId = paymentVM.UserId;
-                        objEmployeePayment.PaymentDate = CommonMethod.CurrentIndianDateTime(); //paymentVM.PaymentDate;
-                        objEmployeePayment.CreditOrDebitText = "Debit";
-                        objEmployeePayment.DebitAmount = paymentVM.DebitAmount;
-                        objEmployeePayment.PaymentType = paymentVM.PaymentType;
-                        objEmployeePayment.Month = objEmployeePayment.PaymentDate.Month;
-                        objEmployeePayment.Year = objEmployeePayment.PaymentDate.Year;
-                        objEmployeePayment.CreatedBy = employeeId;
-                        objEmployeePayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
-                        objEmployeePayment.ModifiedBy = employeeId;
-                        objEmployeePayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
-                        _db.tbl_EmployeePayment.Add(objEmployeePayment);
+                        tbl_WorkerPayment objWorkerPayment = new tbl_WorkerPayment();
+                        objWorkerPayment.CompanyId = companyId;
+                        objWorkerPayment.UserId = paymentVM.UserId;
+                        objWorkerPayment.PaymentDate = CommonMethod.CurrentIndianDateTime(); //paymentVM.PaymentDate;
+                        objWorkerPayment.CreditOrDebitText = ErrorMessage.Debit;
+                        objWorkerPayment.DebitAmount = paymentVM.DebitAmount;
+                        objWorkerPayment.PaymentType = paymentVM.PaymentType;
+                        objWorkerPayment.Month = objWorkerPayment.PaymentDate.Month;
+                        objWorkerPayment.Year = objWorkerPayment.PaymentDate.Year;
+                        objWorkerPayment.CreatedBy = employeeId;
+                        objWorkerPayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
+                        objWorkerPayment.ModifiedBy = employeeId;
+                        objWorkerPayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
+                        _db.tbl_WorkerPayment.Add(objWorkerPayment);
                         _db.SaveChanges();
                         response.Data = true;
                     }
