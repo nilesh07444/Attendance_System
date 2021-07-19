@@ -1,10 +1,16 @@
 ﻿using AttendanceSystem.Helper;
 using AttendanceSystem.Models;
 using AttendanceSystem.ViewModel;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using iTextSharp.tool.xml;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.SqlServer;
+using System.IO;
 using System.Linq;
+using System.Text;
+using System.Web;
 using System.Web.Mvc;
 
 namespace AttendanceSystem.Areas.Admin.Controllers
@@ -278,5 +284,103 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
             return ReturnMessage;
         }
+
+        public string DownloadEmployeeRatingPDF(int Id) // Id = EmployeeRatingId
+        {
+
+            string Result = "";
+            try
+            {
+                string blank_rating_image_url = System.Web.HttpContext.Current.Server.MapPath("~/Content/admin-theme/assets/img/contrabook/blank_certificate.jpg");
+
+                EmployeeRatingVM objEmployeeRating = (from er in _db.tbl_EmployeeRating
+                                                      join emp in _db.tbl_Employee on er.EmployeeId equals emp.EmployeeId
+                                                      where er.EmployeeRatingId == Id
+                                                      select new EmployeeRatingVM
+                                                      {
+                                                          EmployeeRatingId = er.EmployeeRatingId,
+                                                          EmployeeId = er.EmployeeId,
+                                                          EmployeeCode = emp.EmployeeCode,
+                                                          EmployeeName = emp.Prefix + " " + emp.FirstName + " " + emp.LastName,
+                                                          RateMonth = er.RateMonth,
+                                                          RateYear = er.RateYear,
+                                                          BehaviourRate = er.BehaviourRate,
+                                                          RegularityRate = er.RegularityRate,
+                                                          WorkRate = er.WorkRate,
+                                                          Remarks = er.Remarks,
+                                                          CreatedDate = er.CreatedDate,
+                                                          AvgRate = SqlFunctions.StringConvert((new decimal[] { er.BehaviourRate, er.RegularityRate, er.WorkRate }).Average(), 4, 2)
+                                                      }).FirstOrDefault();
+
+                List<DateTime> lstDateTemp = new List<DateTime>();
+                StringBuilder strHTML = new StringBuilder();
+                 
+                strHTML.Append("<label style='position:absolute; top: 150px;'> Hello Nilesh </label>");
+
+                //strHTML.Append("<div id=\"divArea1\" style=\"position:absolute;left:50px;top:250px;font-weight:bold;\">Area1</div>");
+
+                StringReader sr = new StringReader(strHTML.ToString());
+
+                var myString = strHTML.ToString();
+                var myByteArray = System.Text.Encoding.UTF8.GetBytes(myString);
+                var ms = new MemoryStream(myByteArray);
+
+                Document pdfDoc = new Document(PageSize.A4.Rotate(), 20f, 20f, 20f, 20f);
+                PdfWriter writer = PdfWriter.GetInstance(pdfDoc, Response.OutputStream);
+                writer.PageEvent = new PDFGeneratePageEventHelper();
+                pdfDoc.Open();
+
+                XMLWorkerHelper objHelp = XMLWorkerHelper.GetInstance();
+                objHelp.ParseXHtml(writer, pdfDoc, ms, null, Encoding.UTF8, new UnicodeFontFactory());
+
+                //Add the Image file to the PDF document object.
+                //Image img = Image.GetInstance(postedFile.InputStream);
+                //pdfDoc.Add(img);
+
+                Image jpg = Image.GetInstance(blank_rating_image_url);
+
+                //Resize image depend upon your need
+                //jpg.ScaleToFit(140f, 120f);
+
+                float pageWidth = pdfDoc.PageSize.Width + 30;
+                float pageHeight = pdfDoc.PageSize.Height - 50;
+                jpg.ScaleToFit(pageWidth, pageHeight);
+                 
+                //Give space before image
+                //jpg.SpacingBefore = 10f;
+
+                //Give some space after the image
+                //jpg.SpacingAfter = 1f;
+                jpg.Alignment = Element.ALIGN_CENTER; 
+                pdfDoc.Add(jpg);
+                 
+                pdfDoc.Close();
+                Response.ContentType = "application/pdf";
+                Response.AddHeader("content-disposition", "download;filename=Employee Rating Of " + objEmployeeRating.EmployeeName + ".pdf");
+                Response.Cache.SetCacheability(HttpCacheability.NoCache);
+                Response.Write(pdfDoc);
+                Response.End();
+
+                PdfPTable table = new PdfPTable(2);
+                PdfPCell cell = new PdfPCell();
+                Paragraph p = new Paragraph();
+                p.Add(new Phrase("Hello World"));
+                cell.AddElement(p);
+                table.AddCell(cell); 
+                pdfDoc.Add(table);
+
+                return Result;
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
+            finally
+            {
+            }
+
+        }
+
+
     }
 }

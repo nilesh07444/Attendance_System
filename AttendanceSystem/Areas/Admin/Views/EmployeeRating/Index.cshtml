@@ -53,7 +53,7 @@
                                 <div class="col-sm-2">
                                     <div class="form-group">
                                         <label>Year</label>
-                                        @Html.TextBoxFor(model => model.Year, new { @type = "number", @class = "form-control", @placeholder = "Year", @max = "9999", @maxLength = 4, @style= "height: calc(2.25rem + 6px)" })
+                                        @Html.TextBoxFor(model => model.Year, new { @type = "number", @class = "form-control", @placeholder = "Year", @max = "9999", @maxLength = 4, @style = "height: calc(2.25rem + 6px)" })
                                     </div>
                                 </div>
                                 <div class="col-sm-2">
@@ -85,6 +85,7 @@
                                         <th>Ragularity</th>
                                         <th>Work</th>
                                         <th>Avg. Rate</th>
+                                        <th>Download</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -104,6 +105,9 @@
                                                 <td>@obj.RegularityRate</td>
                                                 <td>@obj.WorkRate</td>
                                                 <td>@obj.AvgRate</td>
+                                                <td>
+                                                    <a href="javascript:void(0);" onclick="return fnDownloadRatingPDF(@obj.EmployeeRatingId)" title="Download PDF" class="btn btn-icon btn-outline-primary"><i class="fas fa-download"></i></a>
+                                                </td>
                                                 <td>
                                                     @if ((CommonMethod.CurrentIndianDateTime() - obj.CreatedDate).TotalDays <= 7)
                                                     {
@@ -210,4 +214,11 @@
         $("#hdnDeleteEmployeeRating").val(EmployeeRating_Id);
         $('#deleteEmployeeRatingModal').modal('show');
     }
+
+    function fnDownloadRatingPDF(ratingId) {
+        alert("PDF is under development.");
+
+        window.location.href = "/admin/EmployeeRating/DownloadEmployeeRatingPDF/" + ratingId;
+    }
+
 </script> 
