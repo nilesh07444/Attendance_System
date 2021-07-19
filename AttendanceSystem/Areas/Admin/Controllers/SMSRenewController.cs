@@ -91,6 +91,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                     if (objPackage != null)
                     {
+                        // Get setting for GST Per
+                        tbl_Setting objSetting = _db.tbl_Setting.FirstOrDefault();
+
                         string invoiceNo = GenerateSMSRenewInvoiceNo();
                         tbl_CompanySMSPackRenew objCompanySMSPackRenew = new tbl_CompanySMSPackRenew();
                         objCompanySMSPackRenew.CompanyId = clsAdminSession.CompanyId;
@@ -103,6 +106,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objCompanySMSPackRenew.NoOfSMS = objPackage.NoOfSMS;
                         objCompanySMSPackRenew.RemainingSMS = objPackage.NoOfSMS;
                         objCompanySMSPackRenew.InvoiceNo = invoiceNo;
+                        objCompanySMSPackRenew.GSTPer = (objSetting != null && objSetting.SMSPackageBuyGSTPer != null ? objSetting.SMSPackageBuyGSTPer.Value : 0);
                         objCompanySMSPackRenew.CreatedBy = (int)PaymentGivenBy.CompanyAdmin;
                         objCompanySMSPackRenew.CreatedDate = CommonMethod.CurrentIndianDateTime();
                         objCompanySMSPackRenew.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;

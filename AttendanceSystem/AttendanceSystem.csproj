@@ -280,6 +280,9 @@
     <Compile Include="Models\mst_CompanyType.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\mst_FinancialYear.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>

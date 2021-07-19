@@ -77,13 +77,17 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             {
                 if (employeeBuyTransactionVM != null)
                 {
+                    // Get setting for GST Per
+                    tbl_Setting objSetting = _db.tbl_Setting.FirstOrDefault();
 
                     // Get selected package detail
                     tbl_CompanyRenewPayment companyPackage = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == companyId && today >= x.StartDate && today < x.EndDate).FirstOrDefault();
                     string invoiceNo = GenerateEmployeeBuyInvoiceNo();
+
                     tbl_EmployeeBuyTransaction employeeBuyTransaction = new tbl_EmployeeBuyTransaction();
                     employeeBuyTransaction.CompanyId = employeeBuyTransactionVM.CompanyId;
                     employeeBuyTransaction.NoOfEmpToBuy = employeeBuyTransactionVM.NoOfEmpToBuy;
+                    employeeBuyTransaction.GSTPer = (objSetting != null && objSetting.EmployeeBuyGSTPer != null ? objSetting.EmployeeBuyGSTPer : 0);
                     employeeBuyTransaction.AmountPerEmp = employeeBuyTransactionVM.AmountPerEmp;
                     employeeBuyTransaction.TotalPaidAmount = employeeBuyTransactionVM.TotalPaidAmount;
                     employeeBuyTransaction.ExpiryDate = companyPackage.EndDate;

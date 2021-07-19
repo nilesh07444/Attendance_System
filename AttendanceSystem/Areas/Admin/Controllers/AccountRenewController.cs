@@ -146,7 +146,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objCompanyRenewPayment.StartDate = today;
                         objCompanyRenewPayment.EndDate = today.AddDays(objPackage.AccessDays);
                         objCompanyRenewPayment.Amount = objPackage.Amount;
-                        objCompanyRenewPayment.GSTPer = objSetting.AccountPackageBuyGSTPer.Value;
+                        objCompanyRenewPayment.GSTPer = (objSetting != null && objSetting.AccountPackageBuyGSTPer != null ? objSetting.AccountPackageBuyGSTPer.Value : 0);
                         objCompanyRenewPayment.AccessDays = objPackage.AccessDays;
                         objCompanyRenewPayment.NoOfEmployee = objPackage.NoOfEmployee;
                         objCompanyRenewPayment.NoOfSMS = objPackage.NoOfSMS;
