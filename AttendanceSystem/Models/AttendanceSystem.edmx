@@ -19,6 +19,15 @@
           <Property Name="CompanyTypeId" Type="bigint" Nullable="false" />
           <Property Name="CompanyTypeName" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="mst_FinancialYear">
+          <Key>
+            <PropertyRef Name="FinancialYearId" />
+          </Key>
+          <Property Name="FinancialYearId" Type="bigint" Nullable="false" />
+          <Property Name="StartYear" Type="int" Nullable="false" />
+          <Property Name="EndYear" Type="int" Nullable="false" />
+          <Property Name="FinancialYearText" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="tbl_AdminUser">
           <Key>
             <PropertyRef Name="AdminUserId" />
@@ -180,6 +189,7 @@
           <Property Name="PaymentGatewayResponseId" Type="nvarchar" MaxLength="500" />
           <Property Name="BuyNoOfEmployee" Type="int" Nullable="false" />
           <Property Name="InvoiceNo" Type="nvarchar" MaxLength="100" />
+          <Property Name="FinancialYearId" Type="bigint" />
           <Property Name="CreatedBy" Type="bigint" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="ModifiedBy" Type="bigint" />
@@ -248,11 +258,13 @@
           <Property Name="SMSPackageName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="RenewDate" Type="datetime" Nullable="false" />
           <Property Name="PackageAmount" Type="numeric" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="GSTPer" Type="decimal" Precision="18" Scale="2" />
           <Property Name="AccessDays" Type="int" Nullable="false" />
           <Property Name="PackageExpiryDate" Type="datetime" Nullable="false" />
           <Property Name="NoOfSMS" Type="int" />
           <Property Name="RemainingSMS" Type="int" />
           <Property Name="InvoiceNo" Type="nvarchar" MaxLength="100" />
+          <Property Name="FinancialYearId" Type="bigint" />
           <Property Name="CreatedBy" Type="bigint" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="ModifiedBy" Type="bigint" />
@@ -351,6 +363,8 @@
           <Property Name="NoOfEmpToBuy" Type="int" Nullable="false" />
           <Property Name="AmountPerEmp" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="TotalPaidAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="GSTPer" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="FinancialYearId" Type="bigint" />
           <Property Name="PaymentGatewayTransactionId" Type="nvarchar" MaxLength="200" />
           <Property Name="ExpiryDate" Type="datetime" Nullable="false" />
           <Property Name="InvoiceNo" Type="nvarchar" MaxLength="100" />
@@ -386,6 +400,7 @@
           <Property Name="Remarks" Type="nvarchar" MaxLength="500" />
           <Property Name="Status" Type="nvarchar" MaxLength="50" />
           <Property Name="ProcessStatusText" Type="nvarchar" MaxLength="50" />
+          <Property Name="FinancialYearId" Type="bigint" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="CreatedBy" Type="bigint" Nullable="false" />
@@ -525,6 +540,7 @@
           <Property Name="Qty" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="InOut" Type="int" Nullable="false" />
           <Property Name="Remarks" Type="nvarchar" MaxLength="500" />
+          <Property Name="FinancialYearId" Type="bigint" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="CreatedBy" Type="bigint" Nullable="false" />
@@ -739,6 +755,7 @@
           <Property Name="Remarks" Type="nvarchar" MaxLength="500" />
           <Property Name="Status" Type="nvarchar" MaxLength="50" />
           <Property Name="ProcessStatusText" Type="nvarchar" MaxLength="50" />
+          <Property Name="FinancialYearId" Type="bigint" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="CreatedBy" Type="bigint" Nullable="false" />
@@ -763,6 +780,7 @@
         <EntityContainer Name="AttendanceSystemModelStoreContainer">
           <EntitySet Name="mst_AdminRole" EntityType="Self.mst_AdminRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="mst_CompanyType" EntityType="Self.mst_CompanyType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="mst_FinancialYear" EntityType="Self.mst_FinancialYear" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_AdminUser" EntityType="Self.tbl_AdminUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_AssignWorker" EntityType="Self.tbl_AssignWorker" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Attendance" EntityType="Self.tbl_Attendance" Schema="dbo" store:Type="Tables" />
@@ -946,6 +964,7 @@
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ModifiedBy" Type="Int64" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="FinancialYearId" Type="Int64" />
         </EntityType>
         <EntityType Name="tbl_MaterialCategory">
           <Key>
@@ -1108,6 +1127,7 @@
           <EntitySet Name="tbl_CompanySMSPackRenew" EntityType="AttendanceSystemModel.tbl_CompanySMSPackRenew" />
           <EntitySet Name="tbl_EmployeeBuyTransaction" EntityType="AttendanceSystemModel.tbl_EmployeeBuyTransaction" />
           <EntitySet Name="tbl_InvoiceLastDocNo" EntityType="AttendanceSystemModel.tbl_InvoiceLastDocNo" />
+          <EntitySet Name="mst_FinancialYear" EntityType="AttendanceSystemModel.mst_FinancialYear" />
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -1269,6 +1289,7 @@
           <Property Name="CreatedBy" Type="Int64" Nullable="false" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int64" />
+          <Property Name="FinancialYearId" Type="Int64" />
         </EntityType>
         <EntityType Name="tbl_HomeImage">
           <Key>
@@ -1571,6 +1592,7 @@
           <Property Name="CreatedBy" Type="Int64" Nullable="false" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int64" />
+          <Property Name="FinancialYearId" Type="Int64" />
         </EntityType>
         <EntityType Name="tbl_SMSLog">
           <Key>
@@ -1608,6 +1630,7 @@
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ModifiedBy" Type="Int64" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="FinancialYearId" Type="Int64" />
         </EntityType>
         <EntityType Name="tbl_CompanySMSPackRenew">
           <Key>
@@ -1628,6 +1651,8 @@
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ModifiedBy" Type="Int64" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="FinancialYearId" Type="Int64" />
+          <Property Name="GSTPer" Type="Decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="tbl_EmployeeBuyTransaction">
           <Key>
@@ -1645,6 +1670,8 @@
           <Property Name="CreatedBy" Type="Int64" Nullable="false" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int64" />
+          <Property Name="GSTPer" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="FinancialYearId" Type="Int64" />
         </EntityType>
         <EntityType Name="tbl_InvoiceLastDocNo">
           <Key>
@@ -1653,6 +1680,15 @@
           <Property Name="SrNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PackageType" Type="Int32" Nullable="false" />
           <Property Name="LastDocNo" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="mst_FinancialYear">
+          <Key>
+            <PropertyRef Name="FinancialYearId" />
+          </Key>
+          <Property Name="FinancialYearId" Type="Int64" Nullable="false" />
+          <Property Name="StartYear" Type="Int32" Nullable="false" />
+          <Property Name="EndYear" Type="Int32" Nullable="false" />
+          <Property Name="FinancialYearText" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1796,6 +1832,7 @@
           <EntitySetMapping Name="tbl_Material">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Material">
               <MappingFragment StoreEntitySet="tbl_Material">
+                <ScalarProperty Name="FinancialYearId" ColumnName="FinancialYearId" />
                 <ScalarProperty Name="MaterialId" ColumnName="MaterialId" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="MaterialCategoryId" ColumnName="MaterialCategoryId" />
@@ -2041,6 +2078,7 @@
           <EntitySetMapping Name="tbl_WorkerPayment">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_WorkerPayment">
               <MappingFragment StoreEntitySet="tbl_WorkerPayment">
+                <ScalarProperty Name="FinancialYearId" ColumnName="FinancialYearId" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
@@ -2344,6 +2382,7 @@
           <EntitySetMapping Name="tbl_EmployeePayment">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_EmployeePayment">
               <MappingFragment StoreEntitySet="tbl_EmployeePayment">
+                <ScalarProperty Name="FinancialYearId" ColumnName="FinancialYearId" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
@@ -2383,6 +2422,7 @@
           <EntitySetMapping Name="tbl_CompanyRenewPayment">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_CompanyRenewPayment">
               <MappingFragment StoreEntitySet="tbl_CompanyRenewPayment">
+                <ScalarProperty Name="FinancialYearId" ColumnName="FinancialYearId" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
@@ -2408,6 +2448,8 @@
           <EntitySetMapping Name="tbl_CompanySMSPackRenew">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_CompanySMSPackRenew">
               <MappingFragment StoreEntitySet="tbl_CompanySMSPackRenew">
+                <ScalarProperty Name="GSTPer" ColumnName="GSTPer" />
+                <ScalarProperty Name="FinancialYearId" ColumnName="FinancialYearId" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
@@ -2429,6 +2471,8 @@
           <EntitySetMapping Name="tbl_EmployeeBuyTransaction">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_EmployeeBuyTransaction">
               <MappingFragment StoreEntitySet="tbl_EmployeeBuyTransaction">
+                <ScalarProperty Name="FinancialYearId" ColumnName="FinancialYearId" />
+                <ScalarProperty Name="GSTPer" ColumnName="GSTPer" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
@@ -2450,6 +2494,16 @@
                 <ScalarProperty Name="LastDocNo" ColumnName="LastDocNo" />
                 <ScalarProperty Name="PackageType" ColumnName="PackageType" />
                 <ScalarProperty Name="SrNo" ColumnName="SrNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mst_FinancialYear">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.mst_FinancialYear">
+              <MappingFragment StoreEntitySet="mst_FinancialYear">
+                <ScalarProperty Name="FinancialYearText" ColumnName="FinancialYearText" />
+                <ScalarProperty Name="EndYear" ColumnName="EndYear" />
+                <ScalarProperty Name="StartYear" ColumnName="StartYear" />
+                <ScalarProperty Name="FinancialYearId" ColumnName="FinancialYearId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

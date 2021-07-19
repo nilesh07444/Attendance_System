@@ -43,6 +43,7 @@
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_CompanySMSPackRenew" Width="1.5" PointX="9.75" PointY="4.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_EmployeeBuyTransaction" Width="1.5" PointX="3.75" PointY="14.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_InvoiceLastDocNo" Width="1.5" PointX="0.75" PointY="3.75" />
+        <EntityTypeShape EntityType="AttendanceSystemModel.mst_FinancialYear" Width="1.5" PointX="5.375" PointY="10.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
