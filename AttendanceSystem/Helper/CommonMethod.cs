@@ -534,9 +534,12 @@ namespace AttendanceSystem
 
                     AttendanceSystemEntities _db = new AttendanceSystemEntities();
                     tbl_CompanySMSPackRenew activeSMSPackage = null;
+
+                    tbl_Company companyObj = _db.tbl_Company.Where(x => x.CompanyId == companyId).FirstOrDefault();
                     tbl_CompanySMSPackRenew currentSMSPackage = _db.tbl_CompanySMSPackRenew.Where(x => x.CompanyId == companyId
                     && x.RenewDate <= currentDateTime
-                    && x.PackageExpiryDate > currentDateTime).FirstOrDefault();
+                    && x.PackageExpiryDate > currentDateTime 
+                    && (companyObj.CurrentSMSPackageId.HasValue ? x.CompanySMSPackRenewId == companyObj.CurrentSMSPackageId.Value : true)).FirstOrDefault();
 
                     //could not found any active package 
                     if (currentSMSPackage == null)
@@ -561,6 +564,7 @@ namespace AttendanceSystem
                                 currentSMSPackage.PackageExpiryDate = CommonMethod.CurrentIndianDateTime().AddMinutes(-1);
                                 nextSMSPackage.RenewDate = CommonMethod.CurrentIndianDateTime();
                                 nextSMSPackage.PackageExpiryDate = CommonMethod.CurrentIndianDateTime().AddDays(nextSMSPackage.AccessDays);
+                                companyObj.CurrentSMSPackageId =Convert.ToInt32(nextSMSPackage.CompanySMSPackRenewId);
                                 _db.SaveChanges();
 
                                 activeSMSPackage = nextSMSPackage;

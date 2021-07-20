@@ -63,7 +63,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                             }
 
                             tbl_CompanyRenewPayment companyPackage = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == data.CompanyId && today >= x.StartDate && today < x.EndDate).FirstOrDefault();
-                            tbl_CompanySMSPackRenew companySMSPackage = _db.tbl_CompanySMSPackRenew.Where(x => x.CompanyId == data.CompanyId && today >= x.RenewDate && today < x.PackageExpiryDate).FirstOrDefault();
+                            //tbl_CompanySMSPackRenew companySMSPackage = _db.tbl_CompanySMSPackRenew.Where(x => x.CompanyId == data.CompanyId && today >= x.RenewDate && today < x.PackageExpiryDate).FirstOrDefault();
 
                             if (companyObj.IsTrialMode && companyObj.TrialExpiryDate < today && companyPackage == null)
                             {

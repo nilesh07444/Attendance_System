@@ -189,5 +189,27 @@ namespace AttendanceSystem.Helper
                 HttpContext.Current.Session["IsPackageExpired"] = value;
             }
         }
+        public static long CurrentAccountPackageId
+        {
+            get
+            {
+                return HttpContext.Current.Session["CurrentAccountPackageId"] != null ? Int32.Parse(Convert.ToString(HttpContext.Current.Session["CurrentAccountPackageId"])) : 0;
+            }
+            set
+            {
+                HttpContext.Current.Session["CurrentAccountPackageId"] = value;
+            }
+        }
+        public static long CurrentSMSPackageId
+        {
+            get
+            {
+                return HttpContext.Current.Session["CurrentSMSPackageId"] != null ? Int32.Parse(Convert.ToString(HttpContext.Current.Session["CurrentSMSPackageId"])) : 0;
+            }
+            set
+            {
+                HttpContext.Current.Session["CurrentSMSPackageId"] = value;
+            }
+        }
     }
 }
