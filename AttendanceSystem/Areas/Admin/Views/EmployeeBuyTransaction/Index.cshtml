@@ -32,6 +32,7 @@
                                         <th>Total Paid Amount</th>
                                         <th>Expiry Date</th>
                                         <th>Payment Gateway Transaction Id</th>
+                                        <th>Invoice</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -39,14 +40,19 @@
                                     {
                                         foreach (EmployeeBuyTransactionVM obj in Model)
                                         {
-                                            <tr>
-                                                <td>@counter.</td>
-                                                <td>@obj.NoOfEmpToBuy</td>
-                                                <td>@obj.AmountPerEmp</td>
-                                                <td>@obj.TotalPaidAmount</td>
-                                                <td>@obj.ExpiryDate</td>
-                                                <td>@obj.PaymentGatewayTransactionId</td>
-                                            </tr>
+                                    <tr>
+                                        <td>@counter.</td>
+                                        <td>@obj.NoOfEmpToBuy</td>
+                                        <td>@obj.AmountPerEmp</td>
+                                        <td>@obj.TotalPaidAmount</td>
+                                        <td>@obj.ExpiryDate</td>
+                                        <td>@obj.PaymentGatewayTransactionId</td>
+                                        <td>
+                                            <a onclick="return downloadEmployeeBuyInvoice(@obj.EmployeeBuyTransactionId)" title="Download Invoice PDF" href="javascript:void(0);" class="btn btn-icon icon-left btn-info">
+                                                <i class="fas fa-download"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
 
                                             counter++;
                                         }
@@ -61,4 +67,11 @@
         </div>
     </div>
 </section>
- 
+
+<script>
+
+    function downloadEmployeeBuyInvoice(Id) {
+        alert("Invoice PDF generation is in development.");
+    }
+
+</script>

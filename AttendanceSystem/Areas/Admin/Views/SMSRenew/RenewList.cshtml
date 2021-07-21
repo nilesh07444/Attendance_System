@@ -59,6 +59,7 @@
                                         <th>Access Days</th>
                                         <th>No Of SMS</th>
                                         <th>Package Expiry Date</th>
+                                        <th>Invoice</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -75,6 +76,11 @@
                                                 <td>@obj.AccessDays</td>
                                                 <td>@obj.NoOfSMS</td>
                                                 <td>@obj.PackageExpiryDate.ToString("dd MMM yyyy")</td>
+                                                <td>
+                                                    <a onclick="return downloadSMSPackageInvoice(@obj.CompanySMSPackRenewId)" title="Download Invoice PDF" href="javascript:void(0);" class="btn btn-icon icon-left btn-info">
+                                                        <i class="fas fa-download"></i>
+                                                    </a>
+                                                </td>
                                             </tr>
                                             counter++;
                                         }
@@ -120,8 +126,12 @@
             }
 
             StartLoading();
-            window.location.href = "/admin/smsrenew/renewlist?startDate=" + startDate + "&endDate=" + endDate + "&companyId=" + companyId ;
+            window.location.href = "/admin/smsrenew/renewlist?startDate=" + startDate + "&endDate=" + endDate + "&companyId=" + companyId;
         });
-    })
+    });
+
+    function downloadSMSPackageInvoice(Id) {
+        alert("Invoice PDF generation is in development.");
+    }
 
 </script>

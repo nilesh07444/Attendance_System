@@ -26,6 +26,7 @@
                                         <th>Renew Date</th>
                                         <th>Access Days</th>
                                         <th>Package Expiry Date</th>
+                                        <th>Invoice</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -35,16 +36,21 @@
                                     {
                                         foreach (CompanySMSPackRenewVM obj in Model)
                                         {
-                                            <tr class="gradeX">
-                                                <td>@counter.</td>
-                                                <td>@obj.SMSPackageName</td>
-                                                <td>@obj.RenewDate.ToString("dd MMM yyyy")</td>
-                                                <td>@obj.AccessDays</td>
-                                                <td>@obj.PackageExpiryDate.ToString("dd MMM yyyy")</td>
-                                                <td>
-                                                    <a href="/admin/smsrenew/view/@obj.CompanySMSPackRenewId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
-                                                </td>
-                                            </tr>
+                                    <tr class="gradeX">
+                                        <td>@counter.</td>
+                                        <td>@obj.SMSPackageName</td>
+                                        <td>@obj.RenewDate.ToString("dd MMM yyyy")</td>
+                                        <td>@obj.AccessDays</td>
+                                        <td>@obj.PackageExpiryDate.ToString("dd MMM yyyy")</td>
+                                        <td>
+                                            <a onclick="return downloadSMSPackageInvoice(@obj.CompanySMSPackRenewId)" title="Download Invoice PDF" href="javascript:void(0);" class="btn btn-icon icon-left btn-info">
+                                                <i class="fas fa-download"></i>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="/admin/smsrenew/view/@obj.CompanySMSPackRenewId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
+                                        </td>
+                                    </tr>
                                             counter++;
                                         }
                                     }
@@ -57,4 +63,12 @@
             </div>
         </div>
     </div>
-</section> 
+</section>
+
+<script>
+
+    function downloadSMSPackageInvoice(Id) {
+        alert("Invoice PDF generation is in development.");
+    }
+
+</script>

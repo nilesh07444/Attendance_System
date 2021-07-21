@@ -41,13 +41,13 @@
                                     </div>
                                     <div class="col-sm-2">
                                         <div class="form-group">
-                                            <label for="UserRole">Select Material Category</label>
+                                            <label for="UserRole">Material Category</label>
                                             @Html.DropDownListFor(model => model.MaterialCategoryId, new SelectList(Model.MaterialCategoryList, "Value", "Text"), "- Select -", new { @class = "form-control required", style = "" })
                                         </div>
                                     </div>
                                     <div class="col-sm-2">
                                         <div class="form-group">
-                                            <label for="UserRole">Select Site</label>
+                                            <label for="UserRole">Site Location</label>
                                             @Html.DropDownListFor(model => model.SiteId, new SelectList(Model.SiteList, "Value", "Text"), "- All -", new { @class = "form-control required", style = "" })
                                         </div>
                                     </div>
