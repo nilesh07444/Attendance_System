@@ -219,7 +219,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 clsAdminSession.IsTrialMode = companyObj != null ? companyObj.IsTrialMode : false;
                 clsAdminSession.CompanyLogo = companyObj != null ? companyObj.CompanyLogoImage : string.Empty;
                 clsAdminSession.SetOtp = setOtp != null ? setOtp.Value : false;
-                clsAdminSession.IsPackageExpired = companyObj.IsTrialMode ? companyObj.TrialExpiryDate < today : (companyPackage != null ? companyPackage.EndDate < today : true);
+                clsAdminSession.IsPackageExpired = companyObj != null && companyObj.IsTrialMode ? companyObj.TrialExpiryDate < today : (companyPackage != null ? companyPackage.EndDate < today : true);
                 clsAdminSession.CurrentAccountPackageId = companyObj != null && companyObj.CurrentPackageId.HasValue ? companyObj.CurrentPackageId.Value : 0;
                 clsAdminSession.CurrentSMSPackageId = companyObj != null && companyObj.CurrentSMSPackageId.HasValue ? companyObj.CurrentSMSPackageId.Value : 0;
             }

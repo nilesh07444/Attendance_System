@@ -193,6 +193,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 companyId = base.UTI.CompanyId;
                 int currMonth = today.Month;
                 int currYear = today.Year;
+                double totalDaysinMonth = DateTime.DaysInMonth(currYear, currMonth);
 
                 EmployeePendingSalaryVM employeeDetails = (from e in _db.tbl_Employee
                                                            where e.EmployeeId == id
@@ -201,11 +202,41 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                                EmployeeId = e.EmployeeId,
                                                                EmploymentCategory = e.EmploymentCategory,
                                                                PerCategoryPrice = e.PerCategoryPrice,
-                                                               ExtraPerHourPrice = e.ExtraPerHourPrice
+                                                               ExtraPerHourPrice = e.ExtraPerHourPrice,
+                                                               MonthlySalary = e.MonthlySalaryPrice
                                                            }).FirstOrDefault();
 
+
+                if (employeeDetails.EmploymentCategory == (int)EmploymentCategory.MonthlyBased)
+                {
+                    decimal perDayAmount = Math.Round((employeeDetails.MonthlySalary.HasValue ? employeeDetails.MonthlySalary.Value : 0) / (decimal)totalDaysinMonth, 2);
+                    employeeDetails.PerCategoryPrice = perDayAmount;
+                    tbl_WorkerAttendance attendanceObject = _db.tbl_WorkerAttendance.Where(x => x.EmployeeId == id && x.AttendanceDate == today && !x.IsClosed).FirstOrDefault();
+                    if (attendanceObject != null)
+                    {
+                        if (attendanceObject.IsMorning && attendanceObject.IsAfternoon)
+                        {
+                            employeeDetails.TodaySalary = perDayAmount;
+                        }
+                        else
+                        {
+                            employeeDetails.TodaySalary = Math.Round(perDayAmount / 2, 2);
+                        }
+                    }
+                    else
+                    {
+                        employeeDetails.TodaySalary = 0;
+                    }
+                }
+
                 employeeDetails.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)employeeDetails.EmploymentCategory);
-                employeeDetails.PendingSalary = _db.tbl_WorkerPayment.Any(x => x.UserId == id && !x.IsDeleted && x.Month == currMonth && x.Year == currYear && x.PaymentType != (int)EmployeePaymentType.Extra) ? _db.tbl_WorkerPayment.Where(x => x.UserId == id && !x.IsDeleted && x.Month == currMonth && x.Year == currYear && x.PaymentType != (int)EmployeePaymentType.Extra).Select(x => x.CreditAmount - x.DebitAmount).Sum() : 0;
+                employeeDetails.PendingSalary = _db.tbl_WorkerPayment.Any(x => x.UserId == id && !x.IsDeleted && x.Month == currMonth && x.Year == currYear && x.PaymentType != (int)EmployeePaymentType.Extra) ?
+                    _db.tbl_WorkerPayment.Where(x => x.UserId == id
+                    && !x.IsDeleted
+                    && x.Month == currMonth
+                    && x.Year == currYear
+                    && x.PaymentType != (int)EmployeePaymentType.Extra)
+                    .Select(x => (x.CreditAmount.HasValue ? x.CreditAmount.Value : 0) - (x.DebitAmount.HasValue ? x.DebitAmount.Value : 0)).Sum() : 0;
                 response.Data = employeeDetails;
             }
             catch (Exception ex)

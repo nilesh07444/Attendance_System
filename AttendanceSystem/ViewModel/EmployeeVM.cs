@@ -157,6 +157,8 @@ namespace AttendanceSystem.ViewModel
         public decimal PerCategoryPrice { get; set; }
         public decimal? ExtraPerHourPrice { get; set; }
         public decimal? PendingSalary { get; set; }
+        public decimal? MonthlySalary { get; set; }
+        public decimal? TodaySalary { get; set; }
     }
 
     public class SiteAssignedWorkerVM
