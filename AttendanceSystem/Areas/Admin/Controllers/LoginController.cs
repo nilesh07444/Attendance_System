@@ -1,6 +1,7 @@
 ﻿using AttendanceSystem.Helper;
 using AttendanceSystem.Models;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -165,7 +166,43 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     companyObj = _db.tbl_Company.Where(x => x.CompanyId == data.CompanyId).FirstOrDefault();
                     if (!companyObj.IsTrialMode)
                     {
-                        companyPackage = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == data.CompanyId && today >= x.StartDate && today < x.EndDate).FirstOrDefault();
+                        if (companyObj.AccountExpiryDate < today)
+                        {
+                            companyPackage = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == data.CompanyId && today >= x.StartDate && today < x.EndDate).FirstOrDefault();
+                            if (companyPackage != null)
+                            {
+                                companyObj.CurrentPackageId = companyPackage.PackageId;
+                                companyObj.AccountStartDate = companyPackage.StartDate;
+                                companyObj.AccountExpiryDate = companyPackage.EndDate;
+                                companyObj.CurrentEmployeeAccess = companyPackage.NoOfEmployee;
+                                _db.SaveChanges();
+
+                                List<tbl_Employee> listEmployee = _db.tbl_Employee.Where(x => x.CompanyId == companyObj.CompanyId && x.IsActive).ToList();
+                                if (listEmployee.Count > companyPackage.NoOfEmployee)
+                                {
+                                    List<tbl_Employee> listEmployeeToDeactive = listEmployee.OrderBy(x => x.EmployeeId).Skip(companyPackage.NoOfEmployee).ToList();
+                                    listEmployeeToDeactive.ForEach(emp =>
+                                    {
+                                        emp.IsActive = false;
+                                        emp.UpdatedBy = -1;
+                                        emp.UpdatedDate = CommonMethod.CurrentIndianDateTime();
+                                        _db.SaveChanges();
+                                    });
+                                }
+                            }
+                        }
+                        else
+                        {
+                            companyPackage = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyRegistrationPaymentId == companyObj.CurrentPackageId).FirstOrDefault();
+                        }
+                    }
+                    else
+                    {
+                        if (companyObj.TrialExpiryDate < today)
+                        {
+                            companyObj.IsTrialMode = false;
+                            _db.SaveChanges();
+                        }
                     }
                 }
 

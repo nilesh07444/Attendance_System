@@ -188,7 +188,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         }
                         else
                         {
-                            if (objLastBoughtPackage.EndDate < today)
+                            if (objLastBoughtPackage == null || (objLastBoughtPackage != null && objLastBoughtPackage.EndDate < today))
                             {
                                 companyObj.CurrentPackageId = objCompanyRenewPayment.CompanyRegistrationPaymentId;
                                 _db.SaveChanges();
