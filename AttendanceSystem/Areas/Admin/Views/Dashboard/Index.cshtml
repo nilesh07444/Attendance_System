@@ -22,69 +22,67 @@
     {
 
         <div class="row ">
-            @if (!clsAdminSession.IsTrialMode)
-            {
-                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                    <div class="card">
-                        <div class="card-statistic-4">
-                            <div class="align-items-center justify-content-between">
-                                <div class="row ">
-                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
-                                        <div class="card-content">
-                                            <h5 class="font-15">Account Expiry Date</h5>
-                                            <h2 class="mb-3 font-18">@Model.AccountExpiryDate.ToString("dd MMM yyyy")</h2>
-                                            @if (clsAdminSession.IsTrialMode)
-                                            {
-                                                <h5 class="font-15">Trial Mode</h5>
-                                            }
-                                            else
-                                            {
-                                                <a href="/admin/accountrenew/view/@Model.CurrentPackageId">More info</a>
-                                            }
-                                        </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="card">
+                    <div class="card-statistic-4">
+                        <div class="align-items-center justify-content-between">
+                            <div class="row ">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
+                                    <div class="card-content">
+                                        <h5 class="font-15">Account Expiry Date</h5>
+                                        <h2 class="mb-3 font-18">@Model.AccountExpiryDate.ToString("dd MMM yyyy")</h2>
+                                        @if (clsAdminSession.IsTrialMode)
+                                        {
+                                            <h5 class="font-15">Trial Mode</h5>
+                                        }
+                                        else if (!clsAdminSession.IsPackageExpired)
+                                        {
+                                            <a href="/admin/accountrenew/view/@Model.CurrentPackageId">More info</a>
+                                        }
                                     </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
-                                        <div class="banner-img">
-                                            @*<img src="~/Content/admin-theme/assets/img/banner/3.png" alt="">*@
-                                            <img src="~/Content/admin-theme/assets/img/contrabook/clipart/companyadmin/account-expiry-date.jpg" alt="">
-                                        </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
+                                    <div class="banner-img">
+                                        @*<img src="~/Content/admin-theme/assets/img/banner/3.png" alt="">*@
+                                        <img src="~/Content/admin-theme/assets/img/contrabook/clipart/companyadmin/account-expiry-date.jpg" alt="">
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                    <div class="card">
-                        <div class="card-statistic-4">
-                            <div class="align-items-center justify-content-between">
-                                <div class="row ">
-                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
-                                        <div class="card-content">
-                                            <h5 class="font-15">SMS Left</h5>
-                                            <h2 class="mb-3 font-18">@Model.SMSLeft</h2>
-                                            @if (clsAdminSession.IsTrialMode)
-                                            {
-                                                <h5 class="font-15">Trial Mode</h5>
-                                            }
-                                            else
-                                            {
-                                                <a href="/admin/smsrenew/view/@Model.CurrentSMSPackageId">More info</a>
-                                            }
-                                        </div>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="card">
+                    <div class="card-statistic-4">
+                        <div class="align-items-center justify-content-between">
+                            <div class="row ">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
+                                    <div class="card-content">
+                                        <h5 class="font-15">SMS Left</h5>
+                                        <h2 class="mb-3 font-18">@Model.SMSLeft</h2>
+                                        @if (clsAdminSession.IsTrialMode)
+                                        {
+                                            <h5 class="font-15">Trial Mode</h5>
+                                        }
+                                        else if (!clsAdminSession.IsPackageExpired)
+                                        {
+                                            <a href="/admin/smsrenew/view/@Model.CurrentSMSPackageId">More info</a>
+                                        }
                                     </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
-                                        <div class="banner-img">
-                                            @*<img src="~/Content/admin-theme/assets/img/banner/3.png" alt="">*@
-                                            <img src="~/Content/admin-theme/assets/img/contrabook/clipart/companyadmin/sms-left.jpg" alt="">
-                                        </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
+                                    <div class="banner-img">
+                                        @*<img src="~/Content/admin-theme/assets/img/banner/3.png" alt="">*@
+                                        <img src="~/Content/admin-theme/assets/img/contrabook/clipart/companyadmin/sms-left.jpg" alt="">
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            }
+            </div>
+
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
                 <div class="card">
                     <div class="card-statistic-4">
@@ -94,7 +92,10 @@
                                     <div class="card-content">
                                         <h5 class="font-15"> Pending Attendance</h5>
                                         <h2 class="mb-3 font-18">@Model.PendingAttendance</h2>
-                                        <a href="/admin/attendance">More info</a>
+                                        @if (!clsAdminSession.IsPackageExpired)
+                                        {
+                                            <a href="/admin/attendance">More info</a>
+                                        }
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
@@ -117,7 +118,10 @@
                                     <div class="card-content">
                                         <h5 class="font-15">Pending Leaves</h5>
                                         <h2 class="mb-3 font-18">@Model.PendingLeaves</h2>
-                                        <a href="/admin/leave/Index?userRole=&leaveStatus=1&startMonth=&endMonth=&year=@CurrentYear">More info</a>
+                                        @if (!clsAdminSession.IsPackageExpired)
+                                        {
+                                            <a href="/admin/leave/Index?userRole=&leaveStatus=1&startMonth=&endMonth=&year=@CurrentYear">More info</a>
+                                        }
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
@@ -140,7 +144,10 @@
                                     <div class="card-content">
                                         <h5 class="font-15">Current Month Holiday</h5>
                                         <h2 class="mb-3 font-18">@Model.ThisMonthHoliday</h2>
-                                        <a href="/admin/holiday">More info</a>
+                                        @if (!clsAdminSession.IsPackageExpired)
+                                        {
+                                            <a href="/admin/holiday">More info</a>
+                                        }
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
@@ -166,7 +173,10 @@
                                     <div class="card-content">
                                         <h5 class="font-15">Employees</h5>
                                         <h2 class="mb-3 font-18">@Model.Employee</h2>
-                                        <a href="/admin/employee/Index?userRole=3&userStatus=">More info</a>
+                                        @if (!clsAdminSession.IsPackageExpired)
+                                        {
+                                            <a href="/admin/employee/Index?userRole=3&userStatus=">More info</a>
+                                        }
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
@@ -191,7 +201,10 @@
                                         <div class="card-content">
                                             <h5 class="font-15"> Supervisors</h5>
                                             <h2 class="mb-3 font-18">@Model.Supervisor</h2>
-                                            <a href="/admin/employee/Index?userRole=4&userStatus=">More info</a>
+                                            @if (!clsAdminSession.IsPackageExpired)
+                                            {
+                                                <a href="/admin/employee/Index?userRole=4&userStatus=">More info</a>
+                                            }
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
@@ -214,7 +227,10 @@
                                         <div class="card-content">
                                             <h5 class="font-15">Checkers</h5>
                                             <h2 class="mb-3 font-18">@Model.Checker</h2>
-                                            <a href="/admin/employee/Index?userRole=5&userStatus=">More info</a>
+                                            @if (!clsAdminSession.IsPackageExpired)
+                                            {
+                                                <a href="/admin/employee/Index?userRole=5&userStatus=">More info</a>
+                                            }
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
@@ -237,7 +253,10 @@
                                         <div class="card-content">
                                             <h5 class="font-15">Payers</h5>
                                             <h2 class="mb-3 font-18">@Model.Payer</h2>
-                                            <a href="/admin/employee/Index?userRole=6&userStatus=">More info</a>
+                                            @if (!clsAdminSession.IsPackageExpired)
+                                            {
+                                                <a href="/admin/employee/Index?userRole=6&userStatus=">More info</a>
+                                            }
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
@@ -260,7 +279,10 @@
                                         <div class="card-content">
                                             <h5 class="font-15">Workers</h5>
                                             <h2 class="mb-3 font-18">@Model.Worker</h2>
-                                            <a href="/admin/worker">More info</a>
+                                            @if (!clsAdminSession.IsPackageExpired)
+                                            {
+                                                <a href="/admin/worker">More info</a>
+                                            }
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">

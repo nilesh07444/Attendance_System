@@ -97,7 +97,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                                                  }).OrderByDescending(x => x.EmployeeId).ToList();
 
-                employeeFilterVM.NoOfEmployee = _db.tbl_Employee.Where(x => x.CompanyId == companyId && x.IsActive && !x.IsDeleted && x.AdminRoleId != (int)AdminRoles.Worker).Count();
+                employeeFilterVM.NoOfEmployee = _db.tbl_Employee.Where(x => x.CompanyId == companyId && !x.IsDeleted && x.AdminRoleId != (int)AdminRoles.Worker).Count();
 
                 employeeFilterVM.EmployeeList.ForEach(x =>
                 {
@@ -251,7 +251,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     }
                     else
                     {
-                        int noOfEmployee = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == companyId && DateTime.Today >= x.StartDate && DateTime.Today < x.EndDate).Select(x => x.NoOfEmployee).FirstOrDefault();
+                        int noOfEmployee = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyRegistrationPaymentId == clsAdminSession.CurrentAccountPackageId).Select(x => x.NoOfEmployee).FirstOrDefault();
                         var empCount = (from emp in _db.tbl_Employee
                                         where emp.CompanyId == companyId
                                         select new

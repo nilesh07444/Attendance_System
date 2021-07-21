@@ -1,6 +1,9 @@
 ﻿@using AttendanceSystem.ViewModel;
+@using AttendanceSystem.Helper
 @model List<AttendanceSystem.ViewModel.CompanySMSPackRenewVM>
 @{
+    /**/
+
     ViewBag.Title = "SMSPackageRenew";
     int counter = 1;
 }
@@ -25,6 +28,7 @@
                                         <th>SMS Package Name </th>
                                         <th>Renew Date</th>
                                         <th>Access Days</th>
+                                        <th>No Of SMS</th>
                                         <th>Package Expiry Date</th>
                                         <th>Invoice</th>
                                         <th>Action</th>
@@ -36,12 +40,18 @@
                                     {
                                         foreach (CompanySMSPackRenewVM obj in Model)
                                         {
-                                    <tr class="gradeX">
+                                            string bgcolor = "white";
+                                            if (obj.CompanySMSPackRenewId == clsAdminSession.CurrentSMSPackageId)
+                                            {
+                                                bgcolor = "green";
+                                            }
+                                    <tr class="gradeX" style="background-color:@bgcolor">
                                         <td>@counter.</td>
                                         <td>@obj.SMSPackageName</td>
                                         <td>@obj.RenewDate.ToString("dd MMM yyyy")</td>
                                         <td>@obj.AccessDays</td>
-                                        <td>@obj.PackageExpiryDate.ToString("dd MMM yyyy")</td>
+                                        <td>@obj.NoOfSMS</td>
+                                        <td>@obj.PackageExpiryDate.ToString("dd MMM yyyy hh:mm tt")</td>
                                         <td>
                                             <a onclick="return downloadSMSPackageInvoice(@obj.CompanySMSPackRenewId)" title="Download Invoice PDF" href="javascript:void(0);" class="btn btn-icon icon-left btn-info">
                                                 <i class="fas fa-download"></i>

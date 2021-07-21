@@ -3,6 +3,7 @@ using AttendanceSystem.Models;
 using AttendanceSystem.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -51,7 +52,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             {
                 AccountSalesReportList = (from apkg in _db.tbl_CompanyRenewPayment
                                           join cmp in _db.tbl_Company on apkg.CompanyId equals cmp.CompanyId
-                                          where apkg.CreatedDate >= salesReportFilterVM.StartDate && apkg.CreatedDate <= salesReportFilterVM.EndDate
+                                          where DbFunctions.TruncateTime(apkg.CreatedDate) >= DbFunctions.TruncateTime(salesReportFilterVM.StartDate)
+                                          && DbFunctions.TruncateTime(apkg.CreatedDate) <= DbFunctions.TruncateTime(salesReportFilterVM.EndDate)
                                           && (salesReportFilterVM.CompanyId.HasValue ? apkg.CompanyId == salesReportFilterVM.CompanyId.Value : true)
                                           select new SalesReportVM
                                           {
@@ -80,7 +82,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             {
                 SMSSalesReportList = (from apkg in _db.tbl_CompanySMSPackRenew
                                       join cmp in _db.tbl_Company on apkg.CompanyId equals cmp.CompanyId
-                                      where apkg.CreatedDate >= salesReportFilterVM.StartDate && apkg.CreatedDate <= salesReportFilterVM.EndDate
+                                      where DbFunctions.TruncateTime(apkg.CreatedDate) >= DbFunctions.TruncateTime(salesReportFilterVM.StartDate)
+                                      && DbFunctions.TruncateTime(apkg.CreatedDate) <= DbFunctions.TruncateTime(salesReportFilterVM.EndDate)
                                       && (salesReportFilterVM.CompanyId.HasValue ? apkg.CompanyId == salesReportFilterVM.CompanyId.Value : true)
                                       select new SalesReportVM
                                       {
@@ -90,7 +93,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                           PackageType = SalesReportType.SMS.ToString(),
                                           PackageName = apkg.SMSPackageName,
                                           PackageAmount = apkg.PackageAmount,
-                                          GST = 0,
+                                          GST = apkg.GSTPer.HasValue ? apkg.GSTPer.Value : 0,
                                           GSTAmount = 0,
                                           FinalAmount = apkg.PackageAmount,
                                           TotalFreeEmployee = 0,
@@ -98,13 +101,19 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                           TotalFreeSMS = (long)apkg.NoOfSMS
                                       }).ToList();
 
+                SMSSalesReportList.ForEach(x =>
+                {
+                    x.PackageAmount = Math.Round((x.FinalAmount / (100 + x.GST)) * 100, 2);
+                    x.GSTAmount = Math.Round(x.PackageAmount * x.GST / 100, 2);
+                });
             }
 
             if (salesReportFilterVM.ReportType == 0 || salesReportFilterVM.ReportType == (int)SalesReportType.Employee)
             {
                 EmployeeSalesReportList = (from apkg in _db.tbl_EmployeeBuyTransaction
                                            join cmp in _db.tbl_Company on apkg.CompanyId equals cmp.CompanyId
-                                           where apkg.CreatedDate >= salesReportFilterVM.StartDate && apkg.CreatedDate <= salesReportFilterVM.EndDate
+                                           where DbFunctions.TruncateTime(apkg.CreatedDate) >= DbFunctions.TruncateTime(salesReportFilterVM.StartDate)
+                                           && DbFunctions.TruncateTime(apkg.CreatedDate) <= DbFunctions.TruncateTime(salesReportFilterVM.EndDate)
                                            && (salesReportFilterVM.CompanyId.HasValue ? apkg.CompanyId == salesReportFilterVM.CompanyId.Value : true)
                                            select new SalesReportVM
                                            {
@@ -114,13 +123,19 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                PackageType = SalesReportType.Employee.ToString(),
                                                PackageName = string.Empty,
                                                PackageAmount = apkg.TotalPaidAmount,
-                                               GST = 0,
+                                               GST = apkg.GSTPer.HasValue ? apkg.GSTPer.Value : 0,
                                                GSTAmount = 0,
                                                FinalAmount = apkg.TotalPaidAmount,
                                                TotalFreeEmployee = apkg.NoOfEmpToBuy,
                                                FreeAccessDays = 0,
                                                TotalFreeSMS = 0
                                            }).ToList();
+
+                EmployeeSalesReportList.ForEach(x =>
+                {
+                    x.PackageAmount = Math.Round((x.FinalAmount / (100 + x.GST)) * 100, 2);
+                    x.GSTAmount = Math.Round(x.PackageAmount * x.GST / 100, 2);
+                });
 
             }
             salesReportFilterVM.SalesReportList = AccountSalesReportList.Union(SMSSalesReportList).Union(EmployeeSalesReportList).OrderBy(x => x.BuyDate).ToList();

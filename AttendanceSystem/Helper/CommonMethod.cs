@@ -538,7 +538,7 @@ namespace AttendanceSystem
                     tbl_Company companyObj = _db.tbl_Company.Where(x => x.CompanyId == companyId).FirstOrDefault();
                     tbl_CompanySMSPackRenew currentSMSPackage = _db.tbl_CompanySMSPackRenew.Where(x => x.CompanyId == companyId
                     && x.RenewDate <= currentDateTime
-                    && x.PackageExpiryDate > currentDateTime 
+                    && x.PackageExpiryDate > currentDateTime
                     && (companyObj.CurrentSMSPackageId.HasValue ? x.CompanySMSPackRenewId == companyObj.CurrentSMSPackageId.Value : true)).FirstOrDefault();
 
                     //could not found any active package 
@@ -564,9 +564,9 @@ namespace AttendanceSystem
                                 currentSMSPackage.PackageExpiryDate = CommonMethod.CurrentIndianDateTime().AddMinutes(-1);
                                 nextSMSPackage.RenewDate = CommonMethod.CurrentIndianDateTime();
                                 nextSMSPackage.PackageExpiryDate = CommonMethod.CurrentIndianDateTime().AddDays(nextSMSPackage.AccessDays);
-                                companyObj.CurrentSMSPackageId =Convert.ToInt32(nextSMSPackage.CompanySMSPackRenewId);
+                                companyObj.CurrentSMSPackageId = Convert.ToInt32(nextSMSPackage.CompanySMSPackRenewId);
                                 _db.SaveChanges();
-
+                                clsAdminSession.CurrentSMSPackageId = companyObj.CurrentSMSPackageId.HasValue ? companyObj.CurrentSMSPackageId.Value : 0;
                                 activeSMSPackage = nextSMSPackage;
                             }
                         }
@@ -580,7 +580,9 @@ namespace AttendanceSystem
                     {
                         using (WebClient webClient = new WebClient())
                         {
+                            string formattedMsg = msg;
                             msg = HttpUtility.UrlEncode(msg);
+
                             string url = GetSMSUrl().Replace("--MOBILE--", mobileNo).Replace("--MSG--", msg);
                             var json = webClient.DownloadString(url);
 
@@ -591,7 +593,7 @@ namespace AttendanceSystem
                             _db.SaveChanges();
 
                             tbl_SMSLog smsLog = new tbl_SMSLog();
-                            smsLog.Message = msg;
+                            smsLog.Message = formattedMsg;
                             smsLog.MobileNo = mobileNo;
                             smsLog.CompanyId = companyId;
                             smsLog.EmployeeId = employeeId;

@@ -1,4 +1,5 @@
 ﻿@using AttendanceSystem.ViewModel;
+@using AttendanceSystem.Helper;
 @model List<AttendanceSystem.ViewModel.CompanyRenewPaymentVM>
 @{
     /**/
@@ -48,7 +49,12 @@
                                     {
                                         foreach (CompanyRenewPaymentVM obj in Model)
                                         {
-                                            <tr class="gradeX">
+                                            string bgcolor = "white";
+                                            if (obj.CompanyRegistrationPaymentId == clsAdminSession.CurrentAccountPackageId)
+                                            {
+                                                bgcolor = "green";
+                                            }
+                                            <tr class="gradeX" style="background-color:@bgcolor">
                                                 <td>@counter.</td>
                                                 <td>@obj.CreatedDate.ToString("dd/MM/yyyy hh:mm tt")</td>
                                                 <td>@obj.PackageName</td>

@@ -310,23 +310,22 @@
                                     <li><a class="nav-link" href="/admin/accountrenew">Account Renew List</a></li>
                                 </ul>
                             </li>
-
-                            <li class="dropdown @(ViewBag.Title == "SMSPackageRenew" ? "active" : "")">
-                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="cpu"></i><span>SMS Package Renew</span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="nav-link" href="/admin/smsrenew/buy">Buy SMS Package</a></li>
-                                    <li><a class="nav-link" href="/admin/smsrenew">SMS Package Renew List</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown @(ViewBag.Title == "BuyEmployee" ? "active" : "")">
-                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="cpu"></i><span>Buy Employee</span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="nav-link" href="/admin/employeebuytransaction/buy">Buy Employee</a></li>
-                                    <li><a class="nav-link" href="/admin/employeebuytransaction">Buy Employee List</a></li>
-                                </ul>
-                            </li>
                             if (!isPackageExpired)
                             {
+                                <li class="dropdown @(ViewBag.Title == "SMSPackageRenew" ? "active" : "")">
+                                    <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="cpu"></i><span>SMS Package Renew</span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="nav-link" href="/admin/smsrenew/buy">Buy SMS Package</a></li>
+                                        <li><a class="nav-link" href="/admin/smsrenew">SMS Package Renew List</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown @(ViewBag.Title == "BuyEmployee" ? "active" : "")">
+                                    <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="cpu"></i><span>Buy Employee</span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="nav-link" href="/admin/employeebuytransaction/buy">Buy Employee</a></li>
+                                        <li><a class="nav-link" href="/admin/employeebuytransaction">Buy Employee List</a></li>
+                                    </ul>
+                                </li>
                                 <li class="dropdown @(ViewBag.Title == "Feedback" ? "active" : "")">
                                     <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="file-minus"></i><span>Feedback</span></a>
                                     <ul class="dropdown-menu">
@@ -346,9 +345,12 @@
                                 <ul class="dropdown-menu">
                                     <li><a class="nav-link" href="/admin/payment/employeepaymentsummury">Employee Payment Summary</a></li>
                                     <li><a class="nav-link" href="/admin/payment/employeePaymentReport">Employee Payment Report</a></li>
-                                    <li><a class="nav-link" href="/admin/payment/workerpaymentsummury">Worker Payment Summary</a></li>
-                                    <li><a class="nav-link" href="/admin/payment/workerpaymentreport">Worker Payment Report</a></li>
-                                    <li><a class="nav-link" href="/admin/material/MaterialReport">Material Report</a></li>
+                                    @if (clsAdminSession.CompanyTypeId == (int)CompanyType.ConstructionCompany)
+                                    {
+                                        <li><a class="nav-link" href="/admin/payment/workerpaymentsummury">Worker Payment Summary</a></li>
+                                        <li><a class="nav-link" href="/admin/payment/workerpaymentreport">Worker Payment Report</a></li>
+                                        <li><a class="nav-link" href="/admin/material/MaterialReport">Material Report</a></li>
+                                    }
                                 </ul>
                             </li>
 

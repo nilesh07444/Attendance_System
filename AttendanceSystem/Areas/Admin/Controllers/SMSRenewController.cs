@@ -35,6 +35,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                              RenewDate = cp.RenewDate,
                                              AccessDays = cp.AccessDays,
                                              PackageExpiryDate = cp.PackageExpiryDate,
+                                             NoOfSMS = cp.NoOfSMS
                                          }).OrderByDescending(x => x.CompanySMSPackRenewId).ToList();
             }
             catch (Exception ex)

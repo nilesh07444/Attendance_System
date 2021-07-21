@@ -28,9 +28,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 DateTime currentDateTime = CommonMethod.CurrentIndianDateTime();
                 if (roleId == (int)AdminRoles.CompanyAdmin)
                 {
-                    tbl_CompanySMSPackRenew objCompanySMSPackRenew = _db.tbl_CompanySMSPackRenew.Where(x => x.CompanyId == companyId
-                       && x.RenewDate <= currentDateTime
-                       && x.PackageExpiryDate >= today).FirstOrDefault();
+                    tbl_CompanySMSPackRenew objCompanySMSPackRenew =
+                        _db.tbl_CompanySMSPackRenew
+                        .Where(x => clsAdminSession.CurrentSMSPackageId > 0 ? (x.CompanySMSPackRenewId == clsAdminSession.CurrentSMSPackageId) :
+                        (x.CompanyId == companyId && x.RenewDate <= currentDateTime && x.PackageExpiryDate >= today)).FirstOrDefault();
 
                     dashboardVM.SMSLeft = objCompanySMSPackRenew != null ? objCompanySMSPackRenew.RemainingSMS : 0;
                     dashboardVM.CurrentSMSPackageId = objCompanySMSPackRenew != null ? objCompanySMSPackRenew.CompanySMSPackRenewId : 0;
@@ -51,15 +52,24 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                      select at.AttendanceId
                                                ).Count();
 
+                    tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == companyId).FirstOrDefault();
+
                     if (clsAdminSession.IsTrialMode)
                     {
-                        dashboardVM.AccountExpiryDate = _db.tbl_Company.Where(x => x.CompanyId == companyId).Select(z => z.TrialExpiryDate.Value).FirstOrDefault();
+                        dashboardVM.AccountExpiryDate = objCompany.TrialExpiryDate.Value;
                     }
                     else
                     {
                         tbl_CompanyRenewPayment objCompanyRenewPayment = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == companyId && x.StartDate <= currentDateTime && x.EndDate >= currentDateTime).FirstOrDefault();
-                        dashboardVM.AccountExpiryDate = objCompanyRenewPayment.EndDate;
-                        dashboardVM.CurrentPackageId = objCompanyRenewPayment.CompanyRegistrationPaymentId;
+                        if (objCompanyRenewPayment != null)
+                        {
+                            dashboardVM.AccountExpiryDate = objCompanyRenewPayment.EndDate;
+                            dashboardVM.CurrentPackageId = objCompanyRenewPayment.CompanyRegistrationPaymentId;
+                        }
+                        else
+                        {
+                            dashboardVM.AccountExpiryDate = objCompany.TrialExpiryDate.Value;
+                        }
                     }
 
                     var startDate = new DateTime(CommonMethod.CurrentIndianDateTime().Year, CommonMethod.CurrentIndianDateTime().Month, 1);
@@ -76,7 +86,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
 
                     dashboardVM.ThisMonthHoliday = Convert.ToInt64(holidayList.Select(x => (x.EndDate - x.StartDate).TotalDays + 1).Sum());
-                    tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == companyId).FirstOrDefault();
+
                     if (objCompany != null)
                     {
                         if (objCompany.CompanyTypeId == (int)CompanyType.Banking_OfficeCompany)
@@ -119,6 +129,16 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         dashboardVM.Year = applyYear;
                         dashboardVM.AllowForEmployee = true;
                         dashboardVM.AllowForWorker = clsAdminSession.CompanyTypeId == (int)CompanyType.ConstructionCompany ? true : false;
+
+                        if (dashboardVM.Employee == 0)
+                        {
+                            dashboardVM.AllowForEmployee = false;
+                        }
+
+                        if (dashboardVM.Worker == 0)
+                        {
+                            dashboardVM.AllowForWorker = false;
+                        }
                     }
                     else
                     {
