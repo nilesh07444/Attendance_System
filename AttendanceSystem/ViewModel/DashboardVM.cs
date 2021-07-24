@@ -36,6 +36,7 @@ namespace AttendanceSystem.ViewModel
         public long TotalClientForOffice { get; set; }
         public long CurrentPackageId { get; set; }
         public long CurrentSMSPackageId { get; set; }
+        public int NoOfEmployeeAllowed { get; set; }
 
     }
 }

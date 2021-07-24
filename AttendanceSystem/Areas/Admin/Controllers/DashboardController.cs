@@ -60,15 +60,19 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     }
                     else
                     {
-                        tbl_CompanyRenewPayment objCompanyRenewPayment = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == companyId && x.StartDate <= currentDateTime && x.EndDate >= currentDateTime).FirstOrDefault();
+                        tbl_CompanyRenewPayment objCompanyRenewPayment = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == companyId
+                        && x.StartDate <= currentDateTime && x.EndDate >= currentDateTime
+                        && (clsAdminSession.CurrentAccountPackageId > 0 ? x.CompanyRegistrationPaymentId == clsAdminSession.CurrentAccountPackageId : true)).FirstOrDefault();
                         if (objCompanyRenewPayment != null)
                         {
                             dashboardVM.AccountExpiryDate = objCompanyRenewPayment.EndDate;
                             dashboardVM.CurrentPackageId = objCompanyRenewPayment.CompanyRegistrationPaymentId;
+                            dashboardVM.NoOfEmployeeAllowed = objCompanyRenewPayment.NoOfEmployee + objCompanyRenewPayment.BuyNoOfEmployee;
                         }
                         else
                         {
                             dashboardVM.AccountExpiryDate = objCompany.TrialExpiryDate.Value;
+                            dashboardVM.NoOfEmployeeAllowed = 0;
                         }
                     }
 

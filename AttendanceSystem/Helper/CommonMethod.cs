@@ -588,7 +588,7 @@ namespace AttendanceSystem
 
                             response.IsError = false;
                             response.Data = json;
-                            activeSMSPackage = _db.tbl_CompanySMSPackRenew.Where(x => x.SMSPackageId == activeSMSPackage.SMSPackageId).FirstOrDefault();
+                            activeSMSPackage = _db.tbl_CompanySMSPackRenew.Where(x => x.CompanySMSPackRenewId == activeSMSPackage.CompanySMSPackRenewId).FirstOrDefault();
                             activeSMSPackage.RemainingSMS = activeSMSPackage.RemainingSMS - 1;
                             _db.SaveChanges();
 

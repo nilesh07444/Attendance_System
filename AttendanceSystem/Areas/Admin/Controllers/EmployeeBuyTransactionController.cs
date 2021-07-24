@@ -39,7 +39,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                 TotalPaidAmount = eb.TotalPaidAmount,
                                                 PaymentGatewayTransactionId = eb.PaymentGatewayTransactionId,
                                                 ExpiryDate = eb.ExpiryDate,
+                                                CreatedDate = eb.CreatedDate,
+                                                RemainingDays = eb.Days
                                             }).OrderByDescending(x => x.EmployeeBuyTransactionId).ToList();
+
             }
             catch (Exception ex)
             {
@@ -81,26 +84,50 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     tbl_Setting objSetting = _db.tbl_Setting.FirstOrDefault();
 
                     // Get selected package detail
-                    tbl_CompanyRenewPayment companyPackage = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == companyId && today >= x.StartDate && today < x.EndDate).FirstOrDefault();
+                    tbl_CompanyRenewPayment companyPackage = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == companyId && x.StartDate <= today && x.EndDate >= today
+                    && (clsAdminSession.CurrentAccountPackageId > 0 ? x.CompanyRegistrationPaymentId == clsAdminSession.CurrentAccountPackageId : true)).FirstOrDefault();
+
                     string invoiceNo = GenerateEmployeeBuyInvoiceNo();
 
                     tbl_EmployeeBuyTransaction employeeBuyTransaction = new tbl_EmployeeBuyTransaction();
                     employeeBuyTransaction.CompanyId = employeeBuyTransactionVM.CompanyId;
                     employeeBuyTransaction.NoOfEmpToBuy = employeeBuyTransactionVM.NoOfEmpToBuy;
+                    employeeBuyTransaction.Days = employeeBuyTransactionVM.RemainingDays;
                     employeeBuyTransaction.GSTPer = (objSetting != null && objSetting.EmployeeBuyGSTPer != null ? objSetting.EmployeeBuyGSTPer : 0);
                     employeeBuyTransaction.AmountPerEmp = employeeBuyTransactionVM.AmountPerEmp;
                     employeeBuyTransaction.TotalPaidAmount = employeeBuyTransactionVM.TotalPaidAmount;
                     employeeBuyTransaction.ExpiryDate = companyPackage.EndDate;
                     employeeBuyTransaction.InvoiceNo = invoiceNo;
-                    employeeBuyTransaction.CreatedDate = CommonMethod.CurrentIndianDateTime();
+                    employeeBuyTransaction.CreatedDate = today;
                     employeeBuyTransaction.CreatedBy = loggedInUserId;
-                    employeeBuyTransaction.ModifiedDate = CommonMethod.CurrentIndianDateTime();
+                    employeeBuyTransaction.ModifiedDate = today;
                     employeeBuyTransaction.ModifiedBy = loggedInUserId;
                     _db.tbl_EmployeeBuyTransaction.Add(employeeBuyTransaction);
                     _db.SaveChanges();
 
                     companyPackage.BuyNoOfEmployee = companyPackage.BuyNoOfEmployee + employeeBuyTransaction.NoOfEmpToBuy;
                     _db.SaveChanges();
+
+                    List<tbl_Employee> totalEmployeeList = _db.tbl_Employee.Where(x => x.CompanyId == companyId && !x.IsDeleted).ToList();
+                    int activeEmployee = totalEmployeeList.Where(x => x.IsActive).Count();
+                    int allowedEmployees = companyPackage.NoOfEmployee + companyPackage.BuyNoOfEmployee;
+                    int employeeToActive = allowedEmployees - activeEmployee;
+
+                    if (employeeToActive > 0)
+                    {
+                        List<tbl_Employee> employeeListToBeActive = totalEmployeeList.Where(x => !x.IsActive).OrderBy(x => x.EmployeeId).Take(employeeToActive).ToList();
+                        if (employeeListToBeActive.Count > 0)
+                        {
+                            employeeListToBeActive.ForEach(x =>
+                            {
+                                x.IsActive = true;
+                                x.UpdatedBy = loggedInUserId;
+                                x.UpdatedDate = today;
+                                _db.SaveChanges();
+                            });
+                        }
+                    }
+
                 }
                 else
                 {

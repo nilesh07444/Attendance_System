@@ -17,8 +17,11 @@ namespace AttendanceSystem.Models
         public long EmployeeBuyTransactionId { get; set; }
         public long CompanyId { get; set; }
         public int NoOfEmpToBuy { get; set; }
+        public int Days { get; set; }
         public decimal AmountPerEmp { get; set; }
         public decimal TotalPaidAmount { get; set; }
+        public Nullable<decimal> GSTPer { get; set; }
+        public Nullable<long> FinancialYearId { get; set; }
         public string PaymentGatewayTransactionId { get; set; }
         public System.DateTime ExpiryDate { get; set; }
         public string InvoiceNo { get; set; }
@@ -26,7 +29,5 @@ namespace AttendanceSystem.Models
         public long CreatedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public Nullable<long> ModifiedBy { get; set; }
-        public Nullable<decimal> GSTPer { get; set; }
-        public Nullable<long> FinancialYearId { get; set; }
     }
 }

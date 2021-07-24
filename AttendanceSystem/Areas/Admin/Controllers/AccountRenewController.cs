@@ -122,6 +122,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             bool isSuccess = true;
             long companyId = clsAdminSession.CompanyId;
             DateTime today = CommonMethod.CurrentIndianDateTime();
+            long loggedInUserId = (int)PaymentGivenBy.CompanyAdmin;
             try
             {
                 if (packageBuyVM != null && packageBuyVM.PackageId != 0)
@@ -153,7 +154,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objCompanyRenewPayment.PaymentFor = "Account Renew";
                         objCompanyRenewPayment.PaymentGatewayResponseId = "";
                         objCompanyRenewPayment.InvoiceNo = invoiceNo;
-                        objCompanyRenewPayment.CreatedBy = (int)PaymentGivenBy.CompanyAdmin;
+                        objCompanyRenewPayment.CreatedBy = loggedInUserId;
                         objCompanyRenewPayment.CreatedDate = today;
                         _db.tbl_CompanyRenewPayment.Add(objCompanyRenewPayment);
                         _db.SaveChanges();
@@ -170,9 +171,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objCompanySMSPackRenew.RemainingSMS = objPackage.NoOfSMS;
                         objCompanySMSPackRenew.InvoiceNo = invoiceNo;
                         objCompanySMSPackRenew.GSTPer = (objSetting != null && objSetting.SMSPackageBuyGSTPer != null ? objSetting.SMSPackageBuyGSTPer.Value : 0);
-                        objCompanySMSPackRenew.CreatedBy = (int)PaymentGivenBy.CompanyAdmin;
+                        objCompanySMSPackRenew.CreatedBy = loggedInUserId;
                         objCompanySMSPackRenew.CreatedDate = today;
-                        objCompanySMSPackRenew.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
+                        objCompanySMSPackRenew.ModifiedBy = loggedInUserId;
                         objCompanySMSPackRenew.ModifiedDate = today;
                         _db.tbl_CompanySMSPackRenew.Add(objCompanySMSPackRenew);
                         _db.SaveChanges();
@@ -185,6 +186,52 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                             companyObj.CurrentPackageId = objCompanyRenewPayment.CompanyRegistrationPaymentId;
                             companyObj.CurrentSMSPackageId = Convert.ToInt32(objCompanySMSPackRenew.CompanySMSPackRenewId);
                             _db.SaveChanges();
+
+                            #region checkEmployee
+
+                            List<tbl_Employee> totalEmployeeList = _db.tbl_Employee.Where(x => x.CompanyId == companyId && !x.IsDeleted).ToList();
+                            int activeEmployee = totalEmployeeList.Where(x => x.IsActive).Count();
+                            int allowedEmployees = objCompanyRenewPayment.NoOfEmployee;
+
+                            if (allowedEmployees > activeEmployee)
+                            {
+                                int employeeToActive = allowedEmployees - activeEmployee;
+                                if (employeeToActive > 0)
+                                {
+                                    List<tbl_Employee> employeeListToBeActive = totalEmployeeList.Where(x => !x.IsActive).OrderBy(x => x.EmployeeId).Take(employeeToActive).ToList();
+                                    if (employeeListToBeActive.Count > 0)
+                                    {
+                                        employeeListToBeActive.ForEach(x =>
+                                        {
+                                            x.IsActive = true;
+                                            x.UpdatedBy = loggedInUserId;
+                                            x.UpdatedDate = today;
+                                            _db.SaveChanges();
+                                        });
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                int employeeToDeActive = activeEmployee - allowedEmployees;
+                                if (employeeToDeActive > 0)
+                                {
+                                    List<tbl_Employee> employeeListToBeDeActive = totalEmployeeList.Where(x => x.IsActive).OrderBy(x => x.EmployeeId).Take(employeeToDeActive).ToList();
+                                    if (employeeListToBeDeActive.Count > 0)
+                                    {
+                                        employeeListToBeDeActive.ForEach(x =>
+                                        {
+                                            x.IsActive = false;
+                                            x.UpdatedBy = loggedInUserId;
+                                            x.UpdatedDate = today;
+                                            _db.SaveChanges();
+                                        });
+                                    }
+                                }
+                            }
+
+
+                            #endregion checkEmployee
                         }
                         else
                         {

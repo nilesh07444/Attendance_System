@@ -168,27 +168,65 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     {
                         if (companyObj.AccountExpiryDate < today)
                         {
-                            companyPackage = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == data.CompanyId && today >= x.StartDate && today < x.EndDate).FirstOrDefault();
+                            companyPackage = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == data.CompanyId && today < x.EndDate).OrderBy(x => x.CompanyRegistrationPaymentId).FirstOrDefault();
                             if (companyPackage != null)
                             {
-                                companyObj.CurrentPackageId = companyPackage.PackageId;
+                                companyPackage.StartDate = companyObj.AccountExpiryDate.Value.AddMinutes(1);
+                                companyPackage.EndDate = companyObj.AccountExpiryDate.Value.AddDays(companyPackage.AccessDays);
+
+                                companyObj.CurrentPackageId = companyPackage.CompanyRegistrationPaymentId;
                                 companyObj.AccountStartDate = companyPackage.StartDate;
                                 companyObj.AccountExpiryDate = companyPackage.EndDate;
                                 companyObj.CurrentEmployeeAccess = companyPackage.NoOfEmployee;
                                 _db.SaveChanges();
 
-                                List<tbl_Employee> listEmployee = _db.tbl_Employee.Where(x => x.CompanyId == companyObj.CompanyId && x.IsActive).ToList();
-                                if (listEmployee.Count > companyPackage.NoOfEmployee)
+                                clsAdminSession.CurrentAccountPackageId = companyObj.CurrentPackageId.Value;
+
+                                #region checkEmployee
+
+                                List<tbl_Employee> totalEmployeeList = _db.tbl_Employee.Where(x => x.CompanyId == data.CompanyId && !x.IsDeleted).ToList();
+                                int activeEmployee = totalEmployeeList.Where(x => x.IsActive).Count();
+                                int allowedEmployees = companyPackage.NoOfEmployee;
+
+                                if (allowedEmployees > activeEmployee)
                                 {
-                                    List<tbl_Employee> listEmployeeToDeactive = listEmployee.OrderBy(x => x.EmployeeId).Skip(companyPackage.NoOfEmployee).ToList();
-                                    listEmployeeToDeactive.ForEach(emp =>
+                                    int employeeToActive = allowedEmployees - activeEmployee;
+                                    if (employeeToActive > 0)
                                     {
-                                        emp.IsActive = false;
-                                        emp.UpdatedBy = -1;
-                                        emp.UpdatedDate = CommonMethod.CurrentIndianDateTime();
-                                        _db.SaveChanges();
-                                    });
+                                        List<tbl_Employee> employeeListToBeActive = totalEmployeeList.Where(x => !x.IsActive).OrderBy(x => x.EmployeeId).Take(employeeToActive).ToList();
+                                        if (employeeListToBeActive.Count > 0)
+                                        {
+                                            employeeListToBeActive.ForEach(x =>
+                                            {
+                                                x.IsActive = true;
+                                                x.UpdatedBy = (int)PaymentGivenBy.CompanyAdmin;
+                                                x.UpdatedDate = today;
+                                                _db.SaveChanges();
+                                            });
+                                        }
+                                    }
                                 }
+                                else
+                                {
+                                    int employeeToDeActive = activeEmployee - allowedEmployees;
+                                    if (employeeToDeActive > 0)
+                                    {
+                                        List<tbl_Employee> employeeListToBeDeActive = totalEmployeeList.Where(x => x.IsActive).OrderBy(x => x.EmployeeId).Take(employeeToDeActive).ToList();
+                                        if (employeeListToBeDeActive.Count > 0)
+                                        {
+                                            employeeListToBeDeActive.ForEach(x =>
+                                            {
+                                                x.IsActive = false;
+                                                x.UpdatedBy = (int)PaymentGivenBy.CompanyAdmin;
+                                                x.UpdatedDate = today;
+                                                _db.SaveChanges();
+                                            });
+                                        }
+                                    }
+                                }
+
+
+                                #endregion checkEmployee
                             }
                         }
                         else

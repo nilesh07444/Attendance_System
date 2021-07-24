@@ -63,9 +63,9 @@ namespace AttendanceSystem.Models
         public virtual DbSet<tbl_SMSLog> tbl_SMSLog { get; set; }
         public virtual DbSet<tbl_CompanyRenewPayment> tbl_CompanyRenewPayment { get; set; }
         public virtual DbSet<tbl_CompanySMSPackRenew> tbl_CompanySMSPackRenew { get; set; }
-        public virtual DbSet<tbl_EmployeeBuyTransaction> tbl_EmployeeBuyTransaction { get; set; }
         public virtual DbSet<tbl_InvoiceLastDocNo> tbl_InvoiceLastDocNo { get; set; }
         public virtual DbSet<mst_FinancialYear> mst_FinancialYear { get; set; }
+        public virtual DbSet<tbl_EmployeeBuyTransaction> tbl_EmployeeBuyTransaction { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

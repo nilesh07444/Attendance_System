@@ -361,6 +361,7 @@
           <Property Name="EmployeeBuyTransactionId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CompanyId" Type="bigint" Nullable="false" />
           <Property Name="NoOfEmpToBuy" Type="int" Nullable="false" />
+          <Property Name="Days" Type="int" Nullable="false" />
           <Property Name="AmountPerEmp" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="TotalPaidAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="GSTPer" Type="decimal" Precision="18" Scale="2" />
@@ -1125,9 +1126,9 @@
           <EntitySet Name="tbl_SMSLog" EntityType="AttendanceSystemModel.tbl_SMSLog" />
           <EntitySet Name="tbl_CompanyRenewPayment" EntityType="AttendanceSystemModel.tbl_CompanyRenewPayment" />
           <EntitySet Name="tbl_CompanySMSPackRenew" EntityType="AttendanceSystemModel.tbl_CompanySMSPackRenew" />
-          <EntitySet Name="tbl_EmployeeBuyTransaction" EntityType="AttendanceSystemModel.tbl_EmployeeBuyTransaction" />
           <EntitySet Name="tbl_InvoiceLastDocNo" EntityType="AttendanceSystemModel.tbl_InvoiceLastDocNo" />
           <EntitySet Name="mst_FinancialYear" EntityType="AttendanceSystemModel.mst_FinancialYear" />
+          <EntitySet Name="tbl_EmployeeBuyTransaction" EntityType="AttendanceSystemModel.tbl_EmployeeBuyTransaction" />
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -1654,25 +1655,6 @@
           <Property Name="FinancialYearId" Type="Int64" />
           <Property Name="GSTPer" Type="Decimal" Precision="18" Scale="2" />
         </EntityType>
-        <EntityType Name="tbl_EmployeeBuyTransaction">
-          <Key>
-            <PropertyRef Name="EmployeeBuyTransactionId" />
-          </Key>
-          <Property Name="EmployeeBuyTransactionId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CompanyId" Type="Int64" Nullable="false" />
-          <Property Name="NoOfEmpToBuy" Type="Int32" Nullable="false" />
-          <Property Name="AmountPerEmp" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="TotalPaidAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="PaymentGatewayTransactionId" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="ExpiryDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="InvoiceNo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int64" />
-          <Property Name="GSTPer" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="FinancialYearId" Type="Int64" />
-        </EntityType>
         <EntityType Name="tbl_InvoiceLastDocNo">
           <Key>
             <PropertyRef Name="PackageType" />
@@ -1689,6 +1671,26 @@
           <Property Name="StartYear" Type="Int32" Nullable="false" />
           <Property Name="EndYear" Type="Int32" Nullable="false" />
           <Property Name="FinancialYearText" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tbl_EmployeeBuyTransaction">
+          <Key>
+            <PropertyRef Name="EmployeeBuyTransactionId" />
+          </Key>
+          <Property Name="EmployeeBuyTransactionId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyId" Type="Int64" Nullable="false" />
+          <Property Name="NoOfEmpToBuy" Type="Int32" Nullable="false" />
+          <Property Name="Days" Type="Int32" Nullable="false" />
+          <Property Name="AmountPerEmp" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="TotalPaidAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="GSTPer" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="FinancialYearId" Type="Int64" />
+          <Property Name="PaymentGatewayTransactionId" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ExpiryDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="InvoiceNo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int64" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -2468,26 +2470,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tbl_EmployeeBuyTransaction">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_EmployeeBuyTransaction">
-              <MappingFragment StoreEntitySet="tbl_EmployeeBuyTransaction">
-                <ScalarProperty Name="FinancialYearId" ColumnName="FinancialYearId" />
-                <ScalarProperty Name="GSTPer" ColumnName="GSTPer" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="InvoiceNo" ColumnName="InvoiceNo" />
-                <ScalarProperty Name="ExpiryDate" ColumnName="ExpiryDate" />
-                <ScalarProperty Name="PaymentGatewayTransactionId" ColumnName="PaymentGatewayTransactionId" />
-                <ScalarProperty Name="TotalPaidAmount" ColumnName="TotalPaidAmount" />
-                <ScalarProperty Name="AmountPerEmp" ColumnName="AmountPerEmp" />
-                <ScalarProperty Name="NoOfEmpToBuy" ColumnName="NoOfEmpToBuy" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="EmployeeBuyTransactionId" ColumnName="EmployeeBuyTransactionId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="tbl_InvoiceLastDocNo">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_InvoiceLastDocNo">
               <MappingFragment StoreEntitySet="tbl_InvoiceLastDocNo">
@@ -2504,6 +2486,27 @@
                 <ScalarProperty Name="EndYear" ColumnName="EndYear" />
                 <ScalarProperty Name="StartYear" ColumnName="StartYear" />
                 <ScalarProperty Name="FinancialYearId" ColumnName="FinancialYearId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_EmployeeBuyTransaction">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_EmployeeBuyTransaction">
+              <MappingFragment StoreEntitySet="tbl_EmployeeBuyTransaction">
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="InvoiceNo" ColumnName="InvoiceNo" />
+                <ScalarProperty Name="ExpiryDate" ColumnName="ExpiryDate" />
+                <ScalarProperty Name="PaymentGatewayTransactionId" ColumnName="PaymentGatewayTransactionId" />
+                <ScalarProperty Name="FinancialYearId" ColumnName="FinancialYearId" />
+                <ScalarProperty Name="GSTPer" ColumnName="GSTPer" />
+                <ScalarProperty Name="TotalPaidAmount" ColumnName="TotalPaidAmount" />
+                <ScalarProperty Name="AmountPerEmp" ColumnName="AmountPerEmp" />
+                <ScalarProperty Name="Days" ColumnName="Days" />
+                <ScalarProperty Name="NoOfEmpToBuy" ColumnName="NoOfEmpToBuy" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="EmployeeBuyTransactionId" ColumnName="EmployeeBuyTransactionId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
