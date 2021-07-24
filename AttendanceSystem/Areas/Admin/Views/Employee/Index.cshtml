@@ -1,16 +1,14 @@
 ﻿@using AttendanceSystem.Helper
 @using AttendanceSystem.ViewModel;
 @model AttendanceSystem.ViewModel.EmployeeFilterVM
-@{
-    ViewBag.Title = "Employee";
+
+@{ ViewBag.Title = "Employee";
     int counter = 1;
     var isTrailMode = clsAdminSession.IsTrialMode;
 
     List<SelectListItem> lstEmployeeStatus = new List<SelectListItem>();
     lstEmployeeStatus.Add(new SelectListItem { Value = "1", Text = "Active" });
-    lstEmployeeStatus.Add(new SelectListItem { Value = "0", Text = "InActive" });
-}
-
+    lstEmployeeStatus.Add(new SelectListItem { Value = "0", Text = "InActive" }); }
 
 <section class="section">
     <div class="section-body">
@@ -21,7 +19,9 @@
                         <h4 style="color: #FFCEA3;">Employee List</h4>
                     </div>
                 </div>
+
                 <div class="card">
+
                     <div class="card-header" style="display: block;">
                         <div class="card-header-action pull-left">
                             <label><strong>No of Employee Allowed : @Model.NoOfEmployeeAllowed</strong></label><br />
@@ -37,6 +37,7 @@
                             <a href="/admin/employee/add/0" class="btn btn-icon icon-left btn-primary"><i class="fas fa-plus-circle"></i> Add Employee</a>
                         </div>
                     </div>
+
                     <div class="card-body">
 
                         <div class="row">
@@ -90,74 +91,63 @@
                                     {
                                         foreach (EmployeeVM obj in Model.EmployeeList)
                                         {
-                                            <tr>
-                                                <td>@counter.</td>
-                                                <td>
-                                                    @if (!string.IsNullOrEmpty(obj.ProfilePicture))
-                                                    {
-                                                        if (File.Exists(Server.MapPath(ErrorMessage.EmployeeDirectoryPath + obj.ProfilePicture)))
-                                                        {
-                                                            <img src="@ErrorMessage.EmployeeDirectoryPath/@obj.ProfilePicture" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height:40px;" />
-                                                        }
-                                                        else
-                                                        {
-                                                            <img src="@ErrorMessage.DefaultImagePath" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height: 40px;" />
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        <img src="@ErrorMessage.DefaultImagePath" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height: 40px;" />
-                                                    }
+                        <tr>
+                            <td>@counter.</td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(obj.ProfilePicture))
+                                {
+                                    if (File.Exists(Server.MapPath(ErrorMessage.EmployeeDirectoryPath + obj.ProfilePicture)))
+                                    {
+            <img src="@ErrorMessage.EmployeeDirectoryPath/@obj.ProfilePicture" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height:40px;" /> }
+                                    else
+                                    {
+            <img src="@ErrorMessage.DefaultImagePath" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height: 40px;" /> }
+                                }
+                                else
+                                {
+            <img src="@ErrorMessage.DefaultImagePath" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height: 40px;" />}
+                            </td>
+                            <td>@obj.Prefix @obj.FirstName @obj.LastName</td>
+                            <td>@obj.EmployeeCode</td>
+                            <td>@obj.Designation</td>
+                            <td>@obj.AdminRoleText</td>
+                            <td>@obj.MobileNo</td>
+                            <td>@obj.EmploymentCategoryText</td>
 
-                                                </td>
-                                                <td>@obj.Prefix @obj.FirstName @obj.LastName</td>
-                                                <td>@obj.EmployeeCode</td>
-                                                <td>@obj.Designation</td>
-                                                <td>@obj.AdminRoleText</td>
-                                                <td>@obj.MobileNo</td>
-                                                <td>@obj.EmploymentCategoryText</td>
-                                                <td>
-                                                    @if (obj.EmploymentCategory == (int)EmploymentCategory.MonthlyBased)
-                                                    {
-                                                        @obj.MonthlySalaryPrice
-                                                    }
-                                                    else
-                                                    {
-                                                        @obj.PerCategoryPrice
-                                                    }
-                                                </td>
-                                                @if (obj.IsActive == true)
-                                                {
-                                                    <td><span class="badge badge-success" style="cursor:pointer;" title="Click to Inactive" onclick="fnChangeStatus('@obj.EmployeeId','InActive');">Active</span></td>
-                                                }
-                                                else
-                                                {
-                                                    if (!Model.IsNoOfEmployeeExceed)
-                                                    {
-                                                        <td><span class="badge badge-danger" style="cursor:pointer;" title="Click to Active" onclick="fnChangeStatus('@obj.EmployeeId','Active');">InActive</span></td>
-                                                    }
-                                                    else
-                                                    {
-                                                        <td><span class="badge badge-danger" style="cursor:pointer;" title="Active employee exceed">InActive</span></td>
-                                                    }
-                                                }
+                            <td>
+                                @if (obj.EmploymentCategory == (int)EmploymentCategory.MonthlyBased)
+                                {
+            @obj.MonthlySalaryPrice }
+                                else
+                                {
+            @obj.PerCategoryPrice}
+                            </td>
 
-                                    <td>
-                                        <a href="/admin/employee/fingerprint/@obj.EmployeeId" title="Fingerprint">
-                                            <img src="~/Content/admin-theme/assets/img/contrabook/fingerprint.jpg" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 50px; height: 50px;" />
-                                        </a>
-                                    </td>
+                            @if (obj.IsActive == true)
+                            {
+        <td><span class="badge badge-success" style="cursor:pointer;" title="Click to Inactive" onclick="fnChangeStatus('@obj.EmployeeId','InActive');">Active</span></td> }
+                            else
+                            {
+                                if (!Model.IsNoOfEmployeeExceed)
+                                {
+        <td><span class="badge badge-danger" style="cursor:pointer;" title="Click to Active" onclick="fnChangeStatus('@obj.EmployeeId','Active');">InActive</span></td> }
+                                else
+                                {
+        <td><span class="badge badge-danger" style="cursor:pointer;" title="Active employee exceed">InActive</span></td>}
+                            }
 
-                                        <td>
+                            <td>
+                                <a href="/admin/employee/fingerprint/@obj.EmployeeId" title="Fingerprint">
+                                    <img src="~/Content/admin-theme/assets/img/contrabook/fingerprint.jpg" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 50px; height: 50px;" />
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/admin/employee/view/@obj.EmployeeId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
+                                <a href="/admin/employee/add/@obj.EmployeeId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
+                                <a href="javascript:void(0);" title="Delete" class="btn btn-icon btn-danger" onclick="fnDeleteEmployee('@obj.EmployeeId')"><i class="fas fa-trash-alt"></i></a>
 
-                                                    <a href="/admin/employee/view/@obj.EmployeeId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
-                                                    <a href="/admin/employee/add/@obj.EmployeeId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
-                                                    <a href="javascript:void(0);" title="Delete" class="btn btn-icon btn-danger" onclick="fnDeleteEmployee('@obj.EmployeeId')"><i class="fas fa-trash-alt"></i></a>
-
-                                                </td>
-                                            </tr>
-
-                                            counter++;
+                            </td>
+                        </tr>counter++;
                                         }
                                     }
 
@@ -170,6 +160,7 @@
         </div>
     </div>
 </section>
+
 <div class="modal fade open" id="deleteEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -188,6 +179,7 @@
         </div>
     </div>
 </div>
+
 <div class="modal fade open" id="activeinactiveModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -212,10 +204,8 @@
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
-
 <script type="text/javascript">
     $(document).ready(function () {
-
 
         $('#btnDeleteEmployee').click(function () {
             var Employee_Id = jQuery("#hdnDeleteEmployee").val();
@@ -307,5 +297,5 @@
         }
         $('#activeinactiveModal').modal('show');
     }
-     
+
 </script>

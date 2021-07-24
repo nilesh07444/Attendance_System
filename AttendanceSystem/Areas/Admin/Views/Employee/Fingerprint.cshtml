@@ -1,7 +1,9 @@
 ﻿@using AttendanceSystem.Helper;
 @model AttendanceSystem.ViewModel.EmployeeVM
+
 @{
     ViewBag.Title = "Employee";
+    List<EmployeeFirgerprintVM> lstFingerprint = ViewData["lstFingerprint"] as List<EmployeeFirgerprintVM>;
 }
 
 <div class="page-body">
@@ -18,182 +20,94 @@
                     </div>
                 </div>
             </div>
+
             <div class="card">
                 <div class="card-header" style="display: block;">
                     <div class="pull-right">
                         <a href="/admin/employee/view/@Model.EmployeeId" class="btn btn-primary pull-right"><i class="fas fa-eye"></i> View More</a>
                     </div>
                 </div>
+
                 <div class="card-body">
-                    <div class="card-body">
 
-                        <div class="row">
-                            <div class="form-group col-4">
-                                <label>@Html.LabelFor(model => model.AdminRoleId)</label>
-                                <p>@Model.AdminRoleText</p>
-                            </div>
-                            <div class="form-group col-4">
-                                <label>@Html.LabelFor(model => model.EmployeeCode)</label>
-                                <p>@Model.EmployeeCode</p>
-                            </div>
+                    <div class="row">
+                        <div class="form-group col-4">
+                            <label>@Html.LabelFor(model => model.AdminRoleId)</label>
+                            <p>@Model.AdminRoleText</p>
+                        </div>
+                        <div class="form-group col-4">
+                            <label>@Html.LabelFor(model => model.EmployeeCode)</label>
+                            <p>@Model.EmployeeCode</p>
+                        </div>
+                        <div class="form-group col-4">
+                            <label>@Html.LabelFor(model => model.EmploymentCategory)</label>
+                            <p>@Model.EmploymentCategoryText</p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-4">
+                            <label>@Html.LabelFor(model => model.Prefix)</label>
+                            <p>@Model.Prefix</p>
+                        </div>
+                        <div class="form-group col-4">
+                            <label>@Html.LabelFor(model => model.FirstName)</label>
+                            <p>@Model.FirstName</p>
+                        </div>
+                        <div class="form-group col-4">
+                            <label>@Html.LabelFor(model => model.LastName)</label>
+                            <p>@Model.LastName</p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-4">
+                            <label>@Html.LabelFor(model => model.Email)</label>
+                            <p>@Model.Email</p>
+                        </div>
+                        <div class="form-group col-4">
+                            <label>@Html.LabelFor(model => model.MobileNo)</label>
+                            <p>@Model.MobileNo</p>
                         </div>
 
-                        <div class="row">
-                            <div class="form-group col-4">
-                                <label>@Html.LabelFor(model => model.Prefix)</label>
-                                <p>@Model.Prefix</p>
-                            </div>
-                            <div class="form-group col-4">
-                                <label>@Html.LabelFor(model => model.FirstName)</label>
-                                <p>@Model.FirstName</p>
-                            </div>
-                            <div class="form-group col-4">
-                                <label>@Html.LabelFor(model => model.LastName)</label>
-                                <p>@Model.LastName</p>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-4">
-                                <label>@Html.LabelFor(model => model.Email)</label>
-                                <p>@Model.Email</p>
-                            </div>
-                            <div class="form-group col-4">
-                                <label>@Html.LabelFor(model => model.MobileNo)</label>
-                                <p>@Model.MobileNo</p>
-                            </div>
-                            <div class="form-group col-4">
-                                <label>@Html.LabelFor(model => model.AlternateMobile)</label>
-                                <p>@Model.AlternateMobile</p>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-4">
-                                <label>@Html.LabelFor(model => model.Designation)</label>
-                                <p>@Model.Designation</p>
-                            </div>
-                            <div class="form-group col-4">
-                                <label>@Html.LabelFor(model => model.Address)</label>
-                                <p>@Model.Address</p>
-                            </div>
-                            <div class="form-group col-4">
-                                <label>@Html.LabelFor(model => model.City)</label>
-                                <p>@Model.City</p>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-4">
-                                <label>@Html.LabelFor(model => model.Dob)</label>
-                                <p>@(Model.Dob != null ? Model.Dob.Value.ToString("dd-MM-yyyy") : "")</p>
-                            </div>
-                            <div class="form-group col-4">
-                                <label>@Html.LabelFor(model => model.DateOfJoin)</label>
-                                <p>@(Model.DateOfJoin != null ? Model.DateOfJoin.Value.ToString("dd-MM-yyyy") : "")</p>
-                            </div>
-                            <div class="form-group col-4">
-                                <label>@Html.LabelFor(model => model.BloodGroup)</label>
-                                <p>@Model.BloodGroup</p>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-4">
-                                <label>@Html.LabelFor(model => model.WorkingTime)</label>
-                                <p>@Model.WorkingTime</p>
-                            </div>
-                            <div class="form-group col-4">
-                                <label>@Html.LabelFor(model => model.AdharCardNo)</label>
-                                <p>@Model.AdharCardNo</p>
-                            </div>
-                            <div class="form-group col-4">
-                                <label>@Html.LabelFor(model => model.DateOfIdCardExpiry)</label>
-                                <p>@(Model.DateOfIdCardExpiry != null ? Model.DateOfIdCardExpiry.Value.ToString("dd-MM-yyyy") : "")</p>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-4">
-                                <label>@Html.LabelFor(model => model.AdharCardNo)</label>
-                                <p>@Model.AdharCardNo</p>
-                            </div>
-                            <div class="form-group col-4">
-                                <label>@Html.LabelFor(model => model.EmploymentCategory)</label>
-                                <p>@Model.EmploymentCategoryText</p>
-                            </div>
-                            <div class="form-group col-4">
-                                <label>@Html.LabelFor(model => model.Remarks)</label>
-                                <p>@Model.Remarks</p>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-4">
-                                @if (Model.EmploymentCategory == (int)EmploymentCategory.DailyBased)
-                                {
-                                    <label>Per Day Salary</label>
-                                }
-                                else if (Model.EmploymentCategory == (int)EmploymentCategory.HourlyBased)
-                                {
-                                    <label>Per Hour Price</label>
-                                }
-                                else if (Model.EmploymentCategory == (int)EmploymentCategory.UnitBased)
-                                {
-                                    <label>Per Unit Price</label>
-                                }
-                                else
-                                {
-                                    @Html.LabelFor(model => model.PerCategoryPrice)
-                                }
-                                <p>@Model.PerCategoryPrice</p>
-                            </div>
-                            @if (Model.EmploymentCategory == (int)EmploymentCategory.MonthlyBased)
-                            {
-                                <div class="form-group col-4">
-                                    <label>@Html.LabelFor(model => model.MonthlySalaryPrice)</label>
-                                    <p>@Model.MonthlySalaryPrice</p>
-                                </div>
-                            }
-                            <div class="form-group col-4">
-                                <label>@Html.LabelFor(model => model.ExtraPerHourPrice)</label>
-                                <p>@Model.ExtraPerHourPrice</p>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-4">
-                                <label>@Html.LabelFor(model => model.IsLeaveForward)</label>
-                                <p>@(Model.IsLeaveForward ? "Yes" : "No")</p>
-                            </div>
-                            @if (Model.EmploymentCategory == (int)EmploymentCategory.MonthlyBased)
-                            {
-                                <div class="form-group col-4">
-                                    <label>@Html.LabelFor(model => model.NoOfFreeLeavePerMonth)</label>
-                                    <p>@Model.NoOfFreeLeavePerMonth</p>
-                                </div>
-                                <div class="form-group col-4">
-                                    <label>@Html.LabelFor(model => model.CarryForwardLeave)</label>
-                                    <p>@Model.CarryForwardLeave</p>
-                                </div>
-                            }
-                            <div class="form-group col-4">
-                                <label>@Html.LabelFor(model => model.IsFingerprintEnabled)</label>
-                                <p>@(Model.IsFingerprintEnabled ? "Yes" : "No")</p>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-4">
-                                <label>@Html.LabelFor(model => model.ProfileImageFile)</label>
-                                <p><a target="_blank" href="@ErrorMessage.EmployeeDirectoryPath/@Model.ProfilePicture"> Click here to view image </a></p>
-                            </div>
+                        <div class="form-group col-4">
+                            <label>@Html.LabelFor(model => model.ProfileImageFile)</label>
+                            <p><a target="_blank" href="@ErrorMessage.EmployeeDirectoryPath/@Model.ProfilePicture"> Click here to view image </a></p>
                         </div>
 
                     </div>
+
+
+
                 </div>
+
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover" id="tableExport" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <td width="5%">#</td>
+                                    <th width="5%">ISO Code</th> 
+                                    <th width="18%">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1.</td>
+                                    <td>12345</td>
+                                    <td>
+                                        <a href="javascript:void(0);" title="Delete" class="btn btn-icon btn-danger"><i class="fas fa-trash-alt"></i></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
             </div>
         </div>
-    </div>
 
-</div>
+    </div>

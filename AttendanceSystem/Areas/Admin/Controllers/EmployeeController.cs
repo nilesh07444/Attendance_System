@@ -627,50 +627,71 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return lst;
         }
 
-        public ActionResult Fingerprint(int id)
+        public ActionResult Fingerprint(int Id)
         {
             EmployeeVM employeeVM = new EmployeeVM();
+            try
+            {
 
-            employeeVM = (from emp in _db.tbl_Employee
-                          join rl in _db.mst_AdminRole on emp.AdminRoleId equals rl.AdminRoleId
-                          where !emp.IsDeleted && emp.EmployeeId == id
-                          select new EmployeeVM
-                          {
-                              EmployeeId = emp.EmployeeId,
-                              CompanyId = emp.CompanyId,
-                              AdminRoleId = emp.AdminRoleId,
-                              AdminRoleText = rl.AdminRoleName,
-                              Prefix = emp.Prefix,
-                              FirstName = emp.FirstName,
-                              LastName = emp.LastName,
-                              Email = emp.Email,
-                              EmployeeCode = emp.EmployeeCode,
-                              Password = emp.Password,
-                              MobileNo = emp.MobileNo,
-                              AlternateMobile = emp.AlternateMobile,
-                              Address = emp.Address,
-                              City = emp.City,
-                              Designation = emp.Designation,
-                              Dob = emp.Dob,
-                              DateOfJoin = emp.DateOfJoin,
-                              BloodGroup = emp.BloodGroup,
-                              WorkingTime = emp.WorkingTime,
-                              AdharCardNo = emp.AdharCardNo,
-                              DateOfIdCardExpiry = emp.DateOfIdCardExpiry,
-                              Remarks = emp.Remarks,
-                              ProfilePicture = emp.ProfilePicture,
-                              EmploymentCategory = emp.EmploymentCategory,
-                              PerCategoryPrice = emp.PerCategoryPrice,
-                              MonthlySalaryPrice = emp.MonthlySalaryPrice,
-                              ExtraPerHourPrice = emp.ExtraPerHourPrice,
-                              IsLeaveForward = emp.IsLeaveForward,
-                              IsActive = emp.IsActive,
-                              IsDeleted = emp.IsDeleted,
-                              IsFingerprintEnabled = emp.IsFingerprintEnabled,
-                              NoOfFreeLeavePerMonth = emp.NoOfFreeLeavePerMonth,
-                              CarryForwardLeave = emp.CarryForwardLeave
-                          }).FirstOrDefault();
-            employeeVM.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)employeeVM.EmploymentCategory);
+                List<EmployeeFirgerprintVM> lstFingerprint = (from f in _db.tbl_EmployeeFingerprint
+                                                              where f.EmployeeId == Id
+                                                              select new EmployeeFirgerprintVM
+                                                              {
+                                                                  EmployeeId = f.EmployeeId,
+                                                                  BitmapCode = f.BitmapCode,
+                                                                  ISOCode = f.ISOCode
+                                                              }).ToList();
+
+                ViewData["lstFingerprint"] = lstFingerprint;
+
+                employeeVM = (from emp in _db.tbl_Employee
+                              join rl in _db.mst_AdminRole on emp.AdminRoleId equals rl.AdminRoleId
+                              where !emp.IsDeleted && emp.EmployeeId == Id
+                              select new EmployeeVM
+                              {
+                                  EmployeeId = emp.EmployeeId,
+                                  CompanyId = emp.CompanyId,
+                                  AdminRoleId = emp.AdminRoleId,
+                                  AdminRoleText = rl.AdminRoleName,
+                                  Prefix = emp.Prefix,
+                                  FirstName = emp.FirstName,
+                                  LastName = emp.LastName,
+                                  Email = emp.Email,
+                                  EmployeeCode = emp.EmployeeCode,
+                                  Password = emp.Password,
+                                  MobileNo = emp.MobileNo,
+                                  AlternateMobile = emp.AlternateMobile,
+                                  Address = emp.Address,
+                                  City = emp.City,
+                                  Designation = emp.Designation,
+                                  Dob = emp.Dob,
+                                  DateOfJoin = emp.DateOfJoin,
+                                  BloodGroup = emp.BloodGroup,
+                                  WorkingTime = emp.WorkingTime,
+                                  AdharCardNo = emp.AdharCardNo,
+                                  DateOfIdCardExpiry = emp.DateOfIdCardExpiry,
+                                  Remarks = emp.Remarks,
+                                  ProfilePicture = emp.ProfilePicture,
+                                  EmploymentCategory = emp.EmploymentCategory,
+                                  PerCategoryPrice = emp.PerCategoryPrice,
+                                  MonthlySalaryPrice = emp.MonthlySalaryPrice,
+                                  ExtraPerHourPrice = emp.ExtraPerHourPrice,
+                                  IsLeaveForward = emp.IsLeaveForward,
+                                  IsActive = emp.IsActive,
+                                  IsDeleted = emp.IsDeleted,
+                                  IsFingerprintEnabled = emp.IsFingerprintEnabled,
+                                  NoOfFreeLeavePerMonth = emp.NoOfFreeLeavePerMonth,
+                                  CarryForwardLeave = emp.CarryForwardLeave
+                              }).FirstOrDefault();
+
+                employeeVM.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)employeeVM.EmploymentCategory);
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
             return View(employeeVM);
         }
 
