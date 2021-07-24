@@ -24,15 +24,21 @@
                 <div class="card">
                     <div class="card-header" style="display: block;">
                         <div class="card-header-action pull-left">
-                            <label><strong>No of Employee  : @Model.NoOfEmployee</strong></label><br />
+                            <label><strong>No of Employee Allowed : @Model.NoOfEmployeeAllowed</strong></label><br />
+                            <label><strong>No of Employee  : @Model.NoOfEmployee</strong></label>
+                            @if (clsAdminSession.CompanyTypeId == (int)CompanyType.ConstructionCompany)
+                            {<label><strong>No of Worker  : @Model.NoOfWorker</strong></label>}
+                            <br />
                             <label><strong>Active Employee : @Model.ActiveEmployee</strong></label>
+                            @if (clsAdminSession.CompanyTypeId == (int)CompanyType.ConstructionCompany)
+                            {<label><strong>Active Worker : @Model.ActiveWorker</strong></label>}
                         </div>
                         <div class="card-header-action pull-right">
                             <a href="/admin/employee/add/0" class="btn btn-icon icon-left btn-primary"><i class="fas fa-plus-circle"></i> Add Employee</a>
                         </div>
                     </div>
                     <div class="card-body">
-                          
+
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="card-header ">
@@ -83,66 +89,66 @@
                                     {
                                         foreach (EmployeeVM obj in Model.EmployeeList)
                                         {
-                                    <tr>
-                                        <td>@counter.</td>
-                                        <td>
-                                            @if (!string.IsNullOrEmpty(obj.ProfilePicture))
-                                            {
-                                                if (File.Exists(Server.MapPath(ErrorMessage.EmployeeDirectoryPath + obj.ProfilePicture)))
+                                            <tr>
+                                                <td>@counter.</td>
+                                                <td>
+                                                    @if (!string.IsNullOrEmpty(obj.ProfilePicture))
+                                                    {
+                                                        if (File.Exists(Server.MapPath(ErrorMessage.EmployeeDirectoryPath + obj.ProfilePicture)))
+                                                        {
+                                                            <img src="@ErrorMessage.EmployeeDirectoryPath/@obj.ProfilePicture" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height:40px;" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <img src="@ErrorMessage.DefaultImagePath" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height: 40px;" />
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="@ErrorMessage.DefaultImagePath" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height: 40px;" />
+                                                    }
+
+                                                </td>
+                                                <td>@obj.Prefix @obj.FirstName @obj.LastName</td>
+                                                <td>@obj.EmployeeCode</td>
+                                                <td>@obj.Designation</td>
+                                                <td>@obj.AdminRoleText</td>
+                                                <td>@obj.MobileNo</td>
+                                                <td>@obj.EmploymentCategoryText</td>
+                                                <td>
+                                                    @if (obj.EmploymentCategory == (int)EmploymentCategory.MonthlyBased)
+                                                    {
+                                                        @obj.MonthlySalaryPrice
+                                                    }
+                                                    else
+                                                    {
+                                                        @obj.PerCategoryPrice
+                                                    }
+                                                </td>
+                                                @if (obj.IsActive == true)
                                                 {
-                                                    <img src="@ErrorMessage.EmployeeDirectoryPath/@obj.ProfilePicture" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height:40px;" />
+                                                    <td><span class="badge badge-success" style="cursor:pointer;" title="Click to Inactive" onclick="fnChangeStatus('@obj.EmployeeId','InActive');">Active</span></td>
                                                 }
                                                 else
                                                 {
-                                                    <img src="@ErrorMessage.DefaultImagePath" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height: 40px;" />
+                                                    if (!Model.IsNoOfEmployeeExceed)
+                                                    {
+                                                        <td><span class="badge badge-danger" style="cursor:pointer;" title="Click to Active" onclick="fnChangeStatus('@obj.EmployeeId','Active');">InActive</span></td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td><span class="badge badge-danger" style="cursor:pointer;" title="Active employee exceed">InActive</span></td>
+                                                    }
                                                 }
-                                            }
-                                            else
-                                            {
-                                                <img src="@ErrorMessage.DefaultImagePath" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 40px; height: 40px;" />
-                                            }
 
-                                        </td>
-                                        <td>@obj.Prefix @obj.FirstName @obj.LastName</td>
-                                        <td>@obj.EmployeeCode</td>
-                                        <td>@obj.Designation</td>
-                                        <td>@obj.AdminRoleText</td>
-                                        <td>@obj.MobileNo</td>
-                                        <td>@obj.EmploymentCategoryText</td>
-                                        <td>
-                                            @if (obj.EmploymentCategory == (int)EmploymentCategory.MonthlyBased)
-                                            {
-                                                @obj.MonthlySalaryPrice
-                                            }
-                                            else
-                                            {
-                                                @obj.PerCategoryPrice
-                                            }
-                                        </td>
-                                        @if (obj.IsActive == true)
-                                        {
-                                            <td><span class="badge badge-success" style="cursor:pointer;" title="Click to Inactive" onclick="fnChangeStatus('@obj.EmployeeId','InActive');">Active</span></td>
-                                        }
-                                        else
-                                        {
-                                            if (isTrailMode || Model.NoOfEmployee > Model.ActiveEmployee)
-                                            {
-                                                <td><span class="badge badge-danger" style="cursor:pointer;" title="Click to Active" onclick="fnChangeStatus('@obj.EmployeeId','Active');">InActive</span></td>
-                                            }
-                                            else
-                                            {
-                                                <td><span class="badge badge-danger" style="cursor:pointer;" title="Active employee exceed">InActive</span></td>
-                                            }
-                                        }
+                                                <td>
 
-                                        <td>
+                                                    <a href="/admin/employee/view/@obj.EmployeeId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
+                                                    <a href="/admin/employee/add/@obj.EmployeeId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
+                                                    <a href="javascript:void(0);" title="Delete" class="btn btn-icon btn-danger" onclick="fnDeleteEmployee('@obj.EmployeeId')"><i class="fas fa-trash-alt"></i></a>
 
-                                            <a href="/admin/employee/view/@obj.EmployeeId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
-                                            <a href="/admin/employee/add/@obj.EmployeeId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
-                                            <a href="javascript:void(0);" title="Delete" class="btn btn-icon btn-danger" onclick="fnDeleteEmployee('@obj.EmployeeId')"><i class="fas fa-trash-alt"></i></a>
-
-                                        </td>
-                                    </tr>
+                                                </td>
+                                            </tr>
 
                                             counter++;
                                         }

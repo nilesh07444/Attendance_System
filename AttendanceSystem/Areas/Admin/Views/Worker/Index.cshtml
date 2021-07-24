@@ -24,8 +24,14 @@
                 <div class="card">
                     <div class="card-header" style="display:block;">
                         <div class="card-header-action pull-left">
-                            <label><strong>No of Employee  : @Model.NoOfEmployee</strong></label><br/>
+                            <label><strong>No of Employee Allowed : @Model.NoOfEmployeeAllowed</strong></label><br />
+                            <label><strong>No of Employee  : @Model.NoOfEmployee</strong></label>
+                            @if (clsAdminSession.CompanyTypeId == (int)CompanyType.ConstructionCompany)
+                            {<label><strong>No of Worker  : @Model.NoOfWorker</strong></label>}
+                            <br />
                             <label><strong>Active Employee : @Model.ActiveEmployee</strong></label>
+                            @if (clsAdminSession.CompanyTypeId == (int)CompanyType.ConstructionCompany)
+                            {<label><strong>Active Worker : @Model.ActiveWorker</strong></label>}
                         </div>
                         <div class="card-header-action pull-right">
                             <a href="/admin/worker/add/0" class="btn btn-icon icon-left btn-primary"><i class="fas fa-plus-circle"></i> Add Worker</a>
@@ -114,7 +120,7 @@
                                         }
                                         else
                                         {
-                                            if (isTrailMode || Model.NoOfEmployee > Model.ActiveEmployee)
+                                            if (!Model.IsNoOfEmployeeExceed)
                                             {
                                                 <td><span class="badge badge-danger" style="cursor:pointer;" title="Click to Active" onclick="fnChangeStatus('@obj.EmployeeId','Active');">InActive</span></td>
                                             }

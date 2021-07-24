@@ -97,8 +97,30 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     x.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)x.EmploymentCategory);
                 });
 
-                employeeFilterVM.NoOfEmployee = _db.tbl_Employee.Where(x => x.CompanyId == companyId && !x.IsDeleted && x.AdminRoleId == (int)AdminRoles.Worker).Count();
-                employeeFilterVM.ActiveEmployee = employeeFilterVM.EmployeeList.Where(x => x.IsActive).Count();
+                List<tbl_Employee> totalEmployeeList = _db.tbl_Employee.Where(x => x.CompanyId == companyId && !x.IsDeleted).ToList();
+                employeeFilterVM.NoOfEmployee = totalEmployeeList.Where(x => x.AdminRoleId != (int)AdminRoles.Worker).Count();
+                employeeFilterVM.NoOfWorker = totalEmployeeList.Where(x => x.AdminRoleId == (int)AdminRoles.Worker).Count();
+                employeeFilterVM.ActiveEmployee = totalEmployeeList.Where(x => x.IsActive && x.AdminRoleId != (int)AdminRoles.Worker).Count();
+                employeeFilterVM.ActiveWorker = totalEmployeeList.Where(x => x.IsActive && x.AdminRoleId == (int)AdminRoles.Worker).Count();
+                if (clsAdminSession.IsTrialMode)
+                {
+                    employeeFilterVM.IsNoOfEmployeeExceed = false;
+                }
+                else
+                {
+                    tbl_CompanyRenewPayment companyPackage = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == companyId && DateTime.Today >= x.StartDate
+                    && DateTime.Today < x.EndDate
+                    && (clsAdminSession.CurrentAccountPackageId > 0 ? x.CompanyRegistrationPaymentId == clsAdminSession.CurrentAccountPackageId : true)).FirstOrDefault();
+                    employeeFilterVM.NoOfEmployeeAllowed = companyPackage.NoOfEmployee + companyPackage.BuyNoOfEmployee;
+                    if (employeeFilterVM.NoOfEmployeeAllowed > (employeeFilterVM.ActiveEmployee + employeeFilterVM.ActiveWorker))
+                    {
+                        employeeFilterVM.IsNoOfEmployeeExceed = false;
+                    }
+                    else
+                    {
+                        employeeFilterVM.IsNoOfEmployeeExceed = true;
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -243,7 +265,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     }
                     else
                     {
-                        int noOfEmployee = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == companyId && DateTime.Today >= x.StartDate && DateTime.Today < x.EndDate).Select(x => x.NoOfEmployee).FirstOrDefault();
+                        int noOfEmployee = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyRegistrationPaymentId == clsAdminSession.CurrentAccountPackageId).Select(x => x.NoOfEmployee + x.BuyNoOfEmployee).FirstOrDefault();
                         var empCount = (from emp in _db.tbl_Employee
                                         where emp.CompanyId == companyId
                                         select new
