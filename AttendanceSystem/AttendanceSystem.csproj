@@ -437,7 +437,7 @@
     <Compile Include="ViewModel\WebAPI\AssignWorkerRequestVM.cs" />
     <Compile Include="ViewModel\WebAPI\ChangePasswordVM.cs" />
     <Compile Include="ViewModel\WebAPI\DashboardCountVM.cs" />
-    <Compile Include="ViewModel\WebAPI\EmployeeFirgerprintVM.cs" />
+    <Compile Include="ViewModel\WebAPI\EmployeeFingerprintVM.cs" />
     <Compile Include="ViewModel\WebAPI\JWTAccessTokenVM.cs" />
     <Compile Include="ViewModel\WebAPI\LeaveVM.cs" />
     <Compile Include="ViewModel\WebAPI\LoginRequestVM.cs" />

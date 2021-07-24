@@ -5,8 +5,9 @@ using System.Web;
 
 namespace AttendanceSystem
 {
-    public class EmployeeFirgerprintVM
+    public class EmployeeFingerprintVM
     {
+        public long EmployeeFingerprintId { get; set; }
         public long EmployeeId { get; set; }
         public string ISOCode { get; set; }
         public string BitmapCode { get; set; }

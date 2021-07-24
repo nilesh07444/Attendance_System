@@ -25,7 +25,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
         [HttpPost]
         [Route("AddFingerprint")]
-        public ResponseDataModel<bool> AddFingerprint(EmployeeFirgerprintVM fingerprintVM)
+        public ResponseDataModel<bool> AddFingerprint(EmployeeFingerprintVM fingerprintVM)
         {
             ResponseDataModel<bool> response = new ResponseDataModel<bool>();
             response.IsError = false;
@@ -124,17 +124,17 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
         [HttpGet]
         [Route("GetAllEmployeeFingerPrintList")]
-        public ResponseDataModel<List<EmployeeFirgerprintVM>> GetAllEmployeeFingerPrintList()
+        public ResponseDataModel<List<EmployeeFingerprintVM>> GetAllEmployeeFingerPrintList()
         {
-            ResponseDataModel<List<EmployeeFirgerprintVM>> response = new ResponseDataModel<List<EmployeeFirgerprintVM>>();
+            ResponseDataModel<List<EmployeeFingerprintVM>> response = new ResponseDataModel<List<EmployeeFingerprintVM>>();
             try
             {
                 companyId = base.UTI.CompanyId;
-                List<EmployeeFirgerprintVM> lstEmployeeFingerPrints = (from f in _db.tbl_EmployeeFingerprint
+                List<EmployeeFingerprintVM> lstEmployeeFingerPrints = (from f in _db.tbl_EmployeeFingerprint
                                                                        join e in _db.tbl_Employee on f.EmployeeId equals e.EmployeeId
                                                                        where e.AdminRoleId == (int)AdminRoles.Worker
                                                                        && e.CompanyId == companyId
-                                                                       select new EmployeeFirgerprintVM
+                                                                       select new EmployeeFingerprintVM
                                                                        {
                                                                            EmployeeId = f.EmployeeId,
                                                                            ISOCode = f.ISOCode
@@ -152,21 +152,21 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
         [HttpGet]
         [Route("GetAssignedEmployeeFingerPrintList/{id}")]
-        public ResponseDataModel<List<EmployeeFirgerprintVM>> GetAssignedEmployeeFingerPrintList(long id)
+        public ResponseDataModel<List<EmployeeFingerprintVM>> GetAssignedEmployeeFingerPrintList(long id)
         {
-            ResponseDataModel<List<EmployeeFirgerprintVM>> response = new ResponseDataModel<List<EmployeeFirgerprintVM>>();
+            ResponseDataModel<List<EmployeeFingerprintVM>> response = new ResponseDataModel<List<EmployeeFingerprintVM>>();
             try
             {
                 DateTime today = CommonMethod.CurrentIndianDateTime().Date;
                 companyId = base.UTI.CompanyId;
-                List<EmployeeFirgerprintVM> lstEmployeeFingerPrints = (from f in _db.tbl_EmployeeFingerprint
+                List<EmployeeFingerprintVM> lstEmployeeFingerPrints = (from f in _db.tbl_EmployeeFingerprint
                                                                        join e in _db.tbl_Employee on f.EmployeeId equals e.EmployeeId
                                                                        join aw in _db.tbl_AssignWorker on e.EmployeeId equals aw.EmployeeId
                                                                        where e.AdminRoleId == (int)AdminRoles.Worker
                                                                        && e.CompanyId == companyId
                                                                        && aw.Date == today
                                                                        && aw.SiteId == id
-                                                                       select new EmployeeFirgerprintVM
+                                                                       select new EmployeeFingerprintVM
                                                                        {
                                                                            EmployeeId = f.EmployeeId,
                                                                            ISOCode = f.ISOCode

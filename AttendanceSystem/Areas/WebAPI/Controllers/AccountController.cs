@@ -481,7 +481,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
         [HttpPost]
         [Route("ValidateFingerprint")]
-        public ResponseDataModel<string> ValidateFingerprint(EmployeeFirgerprintVM fingerprintVM)
+        public ResponseDataModel<string> ValidateFingerprint(EmployeeFingerprintVM fingerprintVM)
         {
             ResponseDataModel<string> response = new ResponseDataModel<string>();
             try
@@ -525,16 +525,16 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
         [HttpGet]
         [Route("GetEmployeeFingerPrintList/{Id}")]
-        public ResponseDataModel<List<EmployeeFirgerprintVM>> GetEmployeeFingerPrintList(long Id)
+        public ResponseDataModel<List<EmployeeFingerprintVM>> GetEmployeeFingerPrintList(long Id)
         {
-            ResponseDataModel<List<EmployeeFirgerprintVM>> response = new ResponseDataModel<List<EmployeeFirgerprintVM>>();
+            ResponseDataModel<List<EmployeeFingerprintVM>> response = new ResponseDataModel<List<EmployeeFingerprintVM>>();
             try
             {
                 if (Id > 0)
                 {
-                    List<EmployeeFirgerprintVM> lstEmployeeFingerPrints = (from f in _db.tbl_EmployeeFingerprint
+                    List<EmployeeFingerprintVM> lstEmployeeFingerPrints = (from f in _db.tbl_EmployeeFingerprint
                                                                            where f.EmployeeId == Id
-                                                                           select new EmployeeFirgerprintVM
+                                                                           select new EmployeeFingerprintVM
                                                                            {
                                                                                EmployeeId = f.EmployeeId,
                                                                                ISOCode = f.ISOCode

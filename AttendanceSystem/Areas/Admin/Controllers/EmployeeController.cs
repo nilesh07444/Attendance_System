@@ -635,10 +635,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             try
             {
 
-                List<EmployeeFirgerprintVM> lstFingerprint = (from f in _db.tbl_EmployeeFingerprint
+                List<EmployeeFingerprintVM> lstFingerprint = (from f in _db.tbl_EmployeeFingerprint
                                                               where f.EmployeeId == Id
-                                                              select new EmployeeFirgerprintVM
+                                                              select new EmployeeFingerprintVM
                                                               {
+                                                                  EmployeeFingerprintId = f.EmployeeFingerprintId,
                                                                   EmployeeId = f.EmployeeId,
                                                                   BitmapCode = f.BitmapCode,
                                                                   ISOCode = f.ISOCode
@@ -695,6 +696,36 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             }
 
             return View(employeeVM);
+        }
+
+        [HttpPost]
+        public string DeleteEmployeeFingerprint(int EmployeeFingerprintId)
+        {
+            string ReturnMessage = "";
+
+            try
+            {
+                tbl_EmployeeFingerprint objEmployeeFingerprint = _db.tbl_EmployeeFingerprint.Where(x => x.EmployeeFingerprintId == EmployeeFingerprintId).FirstOrDefault();
+
+                if (objEmployeeFingerprint == null)
+                {
+                    ReturnMessage = "notfound";
+                }
+                else
+                {
+                    _db.tbl_EmployeeFingerprint.Remove(objEmployeeFingerprint);
+                    _db.SaveChanges();
+
+                    ReturnMessage = "success";
+                }
+            }
+            catch (Exception ex)
+            {
+                string msg = ex.Message.ToString();
+                ReturnMessage = "exception";
+            }
+
+            return ReturnMessage;
         }
 
 
