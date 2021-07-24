@@ -44,6 +44,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 LoginResponseVM loginResponseVM = new LoginResponseVM();
                 response.IsError = false;
                 DateTime today = CommonMethod.CurrentIndianDateTime();
+                long loggedInUserId = (int)PaymentGivenBy.CompanyAdmin;
+
                 if (!string.IsNullOrEmpty(loginRequestVM.UserName) && !string.IsNullOrEmpty(loginRequestVM.PassWord))
                 {
                     string encryptPassword = CommonMethod.Encrypt(loginRequestVM.PassWord, psSult);
@@ -87,6 +89,25 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                 companyObj.CurrentEmployeeAccess = companyPackage.NoOfEmployee;
                                 _db.SaveChanges();
 
+                                tbl_CompanySMSPackRenew objCompanySMSPackRenew = new tbl_CompanySMSPackRenew();
+                                objCompanySMSPackRenew.CompanyId = companyObj.CompanyId;
+                                objCompanySMSPackRenew.SMSPackageId = companyPackage.PackageId;
+                                objCompanySMSPackRenew.SMSPackageName = companyPackage.PackageName;
+                                objCompanySMSPackRenew.RenewDate = today;
+                                objCompanySMSPackRenew.PackageAmount = companyPackage.Amount;
+                                objCompanySMSPackRenew.AccessDays = companyPackage.AccessDays;
+                                objCompanySMSPackRenew.PackageExpiryDate = today.AddDays(companyPackage.AccessDays);
+                                objCompanySMSPackRenew.NoOfSMS = companyPackage.NoOfSMS;
+                                objCompanySMSPackRenew.RemainingSMS = companyPackage.NoOfSMS;
+                                objCompanySMSPackRenew.InvoiceNo = companyPackage.InvoiceNo;
+                                objCompanySMSPackRenew.GSTPer = companyPackage.GSTPer;
+                                objCompanySMSPackRenew.CreatedBy = loggedInUserId;
+                                objCompanySMSPackRenew.CreatedDate = today;
+                                objCompanySMSPackRenew.ModifiedBy = loggedInUserId;
+                                objCompanySMSPackRenew.ModifiedDate = today;
+                                _db.tbl_CompanySMSPackRenew.Add(objCompanySMSPackRenew);
+                                _db.SaveChanges();
+
                                 #region checkEmployee
 
                                 List<tbl_Employee> totalEmployeeList = _db.tbl_Employee.Where(x => x.CompanyId == data.CompanyId && !x.IsDeleted).ToList();
@@ -104,7 +125,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                             employeeListToBeActive.ForEach(x =>
                                             {
                                                 x.IsActive = true;
-                                                x.UpdatedBy = (int)PaymentGivenBy.CompanyAdmin;
+                                                x.UpdatedBy = loggedInUserId;
                                                 x.UpdatedDate = today;
                                                 _db.SaveChanges();
                                             });
@@ -122,7 +143,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                             employeeListToBeDeActive.ForEach(x =>
                                             {
                                                 x.IsActive = false;
-                                                x.UpdatedBy = (int)PaymentGivenBy.CompanyAdmin;
+                                                x.UpdatedBy = loggedInUserId;
                                                 x.UpdatedDate = today;
                                                 _db.SaveChanges();
                                             });

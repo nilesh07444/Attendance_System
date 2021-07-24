@@ -161,6 +161,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 DateTime today = CommonMethod.CurrentIndianDateTime();
                 tbl_Company companyObj = null;
                 tbl_CompanyRenewPayment companyPackage = null;
+                long loggedInUserId = (int)PaymentGivenBy.CompanyAdmin;
                 if (data.CompanyId.HasValue)
                 {
                     companyObj = _db.tbl_Company.Where(x => x.CompanyId == data.CompanyId).FirstOrDefault();
@@ -181,6 +182,26 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                 _db.SaveChanges();
 
                                 clsAdminSession.CurrentAccountPackageId = companyObj.CurrentPackageId.Value;
+
+
+                                tbl_CompanySMSPackRenew objCompanySMSPackRenew = new tbl_CompanySMSPackRenew();
+                                objCompanySMSPackRenew.CompanyId = companyObj.CompanyId;
+                                objCompanySMSPackRenew.SMSPackageId = companyPackage.PackageId;
+                                objCompanySMSPackRenew.SMSPackageName = companyPackage.PackageName;
+                                objCompanySMSPackRenew.RenewDate = today;
+                                objCompanySMSPackRenew.PackageAmount = companyPackage.Amount;
+                                objCompanySMSPackRenew.AccessDays = companyPackage.AccessDays;
+                                objCompanySMSPackRenew.PackageExpiryDate = today.AddDays(companyPackage.AccessDays);
+                                objCompanySMSPackRenew.NoOfSMS = companyPackage.NoOfSMS;
+                                objCompanySMSPackRenew.RemainingSMS = companyPackage.NoOfSMS;
+                                objCompanySMSPackRenew.InvoiceNo = companyPackage.InvoiceNo;
+                                objCompanySMSPackRenew.GSTPer = companyPackage.GSTPer;
+                                objCompanySMSPackRenew.CreatedBy = loggedInUserId;
+                                objCompanySMSPackRenew.CreatedDate = today;
+                                objCompanySMSPackRenew.ModifiedBy = loggedInUserId;
+                                objCompanySMSPackRenew.ModifiedDate = today;
+                                _db.tbl_CompanySMSPackRenew.Add(objCompanySMSPackRenew);
+                                _db.SaveChanges();
 
                                 #region checkEmployee
 
