@@ -550,7 +550,7 @@ namespace AttendanceSystem
                     else
                     {
                         //current package expired or sms get over
-                        if (currentSMSPackage.RemainingSMS == 0 || currentSMSPackage.PackageExpiryDate < CommonMethod.CurrentIndianDateTime())
+                        if (currentSMSPackage.RemainingSMS <= 0 || currentSMSPackage.PackageExpiryDate < CommonMethod.CurrentIndianDateTime())
                         {
                             tbl_CompanySMSPackRenew nextSMSPackage = _db.tbl_CompanySMSPackRenew.Where(x => x.CompanyId == companyId
                                                                     && x.RemainingSMS > 0).OrderBy(z => z.SMSPackageId).Take(1).FirstOrDefault();

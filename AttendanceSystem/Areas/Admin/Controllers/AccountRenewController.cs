@@ -159,28 +159,31 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         _db.tbl_CompanyRenewPayment.Add(objCompanyRenewPayment);
                         _db.SaveChanges();
 
-                        tbl_CompanySMSPackRenew objCompanySMSPackRenew = new tbl_CompanySMSPackRenew();
-                        objCompanySMSPackRenew.CompanyId = clsAdminSession.CompanyId;
-                        objCompanySMSPackRenew.SMSPackageId = objPackage.PackageId;
-                        objCompanySMSPackRenew.SMSPackageName = objPackage.PackageName;
-                        objCompanySMSPackRenew.RenewDate = today;
-                        objCompanySMSPackRenew.PackageAmount = objPackage.Amount;
-                        objCompanySMSPackRenew.AccessDays = objPackage.AccessDays;
-                        objCompanySMSPackRenew.PackageExpiryDate = today.AddDays(objPackage.AccessDays);
-                        objCompanySMSPackRenew.NoOfSMS = objPackage.NoOfSMS;
-                        objCompanySMSPackRenew.RemainingSMS = objPackage.NoOfSMS;
-                        objCompanySMSPackRenew.InvoiceNo = invoiceNo;
-                        objCompanySMSPackRenew.GSTPer = (objSetting != null && objSetting.SMSPackageBuyGSTPer != null ? objSetting.SMSPackageBuyGSTPer.Value : 0);
-                        objCompanySMSPackRenew.CreatedBy = loggedInUserId;
-                        objCompanySMSPackRenew.CreatedDate = today;
-                        objCompanySMSPackRenew.ModifiedBy = loggedInUserId;
-                        objCompanySMSPackRenew.ModifiedDate = today;
-                        _db.tbl_CompanySMSPackRenew.Add(objCompanySMSPackRenew);
-                        _db.SaveChanges();
-
+                       
                         tbl_Company companyObj = _db.tbl_Company.Where(x => x.CompanyId == companyId).FirstOrDefault();
                         if (companyObj.IsTrialMode)
                         {
+
+                            tbl_CompanySMSPackRenew objCompanySMSPackRenew = new tbl_CompanySMSPackRenew();
+                            objCompanySMSPackRenew.CompanyId = companyObj.CompanyId;
+                            objCompanySMSPackRenew.SMSPackageId = objPackage.PackageId;
+                            objCompanySMSPackRenew.SMSPackageName = objPackage.PackageName;
+                            objCompanySMSPackRenew.RenewDate = today;
+                            objCompanySMSPackRenew.PackageAmount = objPackage.Amount;
+                            objCompanySMSPackRenew.AccessDays = objPackage.AccessDays;
+                            objCompanySMSPackRenew.PackageExpiryDate = today.AddDays(objPackage.AccessDays);
+                            objCompanySMSPackRenew.NoOfSMS = objPackage.NoOfSMS;
+                            objCompanySMSPackRenew.RemainingSMS = objPackage.NoOfSMS;
+                            objCompanySMSPackRenew.InvoiceNo = invoiceNo;
+                            objCompanySMSPackRenew.GSTPer = (objSetting != null && objSetting.SMSPackageBuyGSTPer != null ? objSetting.SMSPackageBuyGSTPer.Value : 0);
+                            objCompanySMSPackRenew.CreatedBy = loggedInUserId;
+                            objCompanySMSPackRenew.CreatedDate = today;
+                            objCompanySMSPackRenew.ModifiedBy = loggedInUserId;
+                            objCompanySMSPackRenew.ModifiedDate = today;
+                            _db.tbl_CompanySMSPackRenew.Add(objCompanySMSPackRenew);
+                            _db.SaveChanges();
+
+
                             companyObj.IsTrialMode = false;
                             companyObj.AccountExpiryDate = objCompanyRenewPayment.EndDate;
                             companyObj.CurrentPackageId = objCompanyRenewPayment.CompanyRegistrationPaymentId;
@@ -237,6 +240,26 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         {
                             if (objLastBoughtPackage == null || (objLastBoughtPackage != null && objLastBoughtPackage.EndDate < today))
                             {
+                                tbl_CompanySMSPackRenew objCompanySMSPackRenew = new tbl_CompanySMSPackRenew();
+                                objCompanySMSPackRenew.CompanyId = companyObj.CompanyId;
+                                objCompanySMSPackRenew.SMSPackageId = objPackage.PackageId;
+                                objCompanySMSPackRenew.SMSPackageName = objPackage.PackageName;
+                                objCompanySMSPackRenew.RenewDate = today;
+                                objCompanySMSPackRenew.PackageAmount = objPackage.Amount;
+                                objCompanySMSPackRenew.AccessDays = objPackage.AccessDays;
+                                objCompanySMSPackRenew.PackageExpiryDate = today.AddDays(objPackage.AccessDays);
+                                objCompanySMSPackRenew.NoOfSMS = objPackage.NoOfSMS;
+                                objCompanySMSPackRenew.RemainingSMS = objPackage.NoOfSMS;
+                                objCompanySMSPackRenew.InvoiceNo = invoiceNo;
+                                objCompanySMSPackRenew.GSTPer = (objSetting != null && objSetting.SMSPackageBuyGSTPer != null ? objSetting.SMSPackageBuyGSTPer.Value : 0);
+                                objCompanySMSPackRenew.CreatedBy = loggedInUserId;
+                                objCompanySMSPackRenew.CreatedDate = today;
+                                objCompanySMSPackRenew.ModifiedBy = loggedInUserId;
+                                objCompanySMSPackRenew.ModifiedDate = today;
+                                _db.tbl_CompanySMSPackRenew.Add(objCompanySMSPackRenew);
+                                _db.SaveChanges();
+
+
                                 companyObj.CurrentPackageId = objCompanyRenewPayment.CompanyRegistrationPaymentId;
                                 companyObj.CurrentSMSPackageId = companyObj.CurrentSMSPackageId == null ? Convert.ToInt32(objCompanySMSPackRenew.CompanySMSPackRenewId) : companyObj.CurrentSMSPackageId;
                                 _db.SaveChanges();
@@ -332,5 +355,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             }
             return invoiceNo;
         }
+
+        //[HttpPost]
+        //public string DownloadInvoice(long id)
+        //{
+
+        //}
     }
 }

@@ -38,6 +38,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         public ActionResult Index(int? userRole = null, int? userStatus = null)
         {
             EmployeeFilterVM employeeFilterVM = new EmployeeFilterVM();
+            DateTime currentDateTime = CommonMethod.CurrentIndianDateTime();
             if (userRole.HasValue)
             {
                 employeeFilterVM.UserRole = userRole.Value;
@@ -111,8 +112,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 }
                 else
                 {
-                    tbl_CompanyRenewPayment companyPackage = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == companyId && DateTime.Today >= x.StartDate
-                    && DateTime.Today < x.EndDate
+                    tbl_CompanyRenewPayment companyPackage = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == companyId 
+                    && x.StartDate <= currentDateTime && x.EndDate >= currentDateTime
+                        && (clsAdminSession.CurrentAccountPackageId > 0 ? x.CompanyRegistrationPaymentId == clsAdminSession.CurrentAccountPackageId : true)
                     && (clsAdminSession.CurrentAccountPackageId > 0 ? x.CompanyRegistrationPaymentId == clsAdminSession.CurrentAccountPackageId : true)).FirstOrDefault();
                     employeeFilterVM.NoOfEmployeeAllowed = companyPackage.NoOfEmployee + companyPackage.BuyNoOfEmployee;
                     if (employeeFilterVM.NoOfEmployeeAllowed > (employeeFilterVM.ActiveEmployee + employeeFilterVM.ActiveWorker))
