@@ -9,3 +9,4 @@ packages
 .vs/*
 .git/
 .dll
+/AttendanceSystem/App_Data/24-07-21.txt

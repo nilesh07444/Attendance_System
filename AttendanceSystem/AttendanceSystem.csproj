@@ -1609,6 +1609,7 @@
     <Content Include="Areas\Admin\Views\Report\SalesReport.cshtml" />
     <Content Include="Areas\Admin\Views\SMSRenew\RenewList.cshtml" />
     <Content Include="Areas\Admin\Views\EmployeeBuyTransaction\RenewList.cshtml" />
+    <Content Include="Areas\Admin\Views\Employee\Fingerprint.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
