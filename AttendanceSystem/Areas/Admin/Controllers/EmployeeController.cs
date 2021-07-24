@@ -50,7 +50,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
             try
             {
-                tbl_CompanyRenewPayment companyPackage = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == companyId && DateTime.Today >= x.StartDate && DateTime.Today < x.EndDate).FirstOrDefault();
+
 
 
                 employeeFilterVM.EmployeeList = (from emp in _db.tbl_Employee
@@ -97,8 +97,33 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                                                  }).OrderByDescending(x => x.EmployeeId).ToList();
 
-                employeeFilterVM.NoOfEmployee = _db.tbl_Employee.Where(x => x.CompanyId == companyId && !x.IsDeleted && x.AdminRoleId != (int)AdminRoles.Worker).Count();
+                //employeeFilterVM.NoOfEmployee = _db.tbl_Employee.Where(x => x.CompanyId == companyId && !x.IsDeleted && x.AdminRoleId != (int)AdminRoles.Worker).Count();
+                //employeeFilterVM.NoOfEmployeeAllowed = companyPackage != null ? (companyPackage.NoOfEmployee + companyPackage.BuyNoOfEmployee) : 0;
 
+                List<tbl_Employee> totalEmployeeList = _db.tbl_Employee.Where(x => x.CompanyId == companyId && !x.IsDeleted).ToList();
+                employeeFilterVM.NoOfEmployee = totalEmployeeList.Where(x => x.AdminRoleId != (int)AdminRoles.Worker).Count();
+                employeeFilterVM.NoOfWorker = totalEmployeeList.Where(x => x.AdminRoleId == (int)AdminRoles.Worker).Count();
+                employeeFilterVM.ActiveEmployee = totalEmployeeList.Where(x => x.IsActive && x.AdminRoleId != (int)AdminRoles.Worker).Count();
+                employeeFilterVM.ActiveWorker = totalEmployeeList.Where(x => x.IsActive && x.AdminRoleId == (int)AdminRoles.Worker).Count();
+                if (clsAdminSession.IsTrialMode)
+                {
+                    employeeFilterVM.IsNoOfEmployeeExceed = false;
+                }
+                else
+                {
+                    tbl_CompanyRenewPayment companyPackage = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == companyId && DateTime.Today >= x.StartDate
+                    && DateTime.Today < x.EndDate
+                    && (clsAdminSession.CurrentAccountPackageId > 0 ? x.CompanyRegistrationPaymentId == clsAdminSession.CurrentAccountPackageId : true)).FirstOrDefault();
+                    employeeFilterVM.NoOfEmployeeAllowed = companyPackage.NoOfEmployee + companyPackage.BuyNoOfEmployee;
+                    if (employeeFilterVM.NoOfEmployeeAllowed > (employeeFilterVM.ActiveEmployee + employeeFilterVM.ActiveWorker))
+                    {
+                        employeeFilterVM.IsNoOfEmployeeExceed = false;
+                    }
+                    else
+                    {
+                        employeeFilterVM.IsNoOfEmployeeExceed = true;
+                    }
+                }
                 employeeFilterVM.EmployeeList.ForEach(x =>
                 {
                     x.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)x.EmploymentCategory);
@@ -245,13 +270,13 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployee.IsLeaveForward = employeeVM.IsLeaveForward;
                         objEmployee.IsFingerprintEnabled = employeeVM.IsFingerprintEnabled;
                         objEmployee.NoOfFreeLeavePerMonth = employeeVM.NoOfFreeLeavePerMonth;
-                        objEmployee.UpdatedBy = (int)PaymentGivenBy.CompanyAdmin; 
+                        objEmployee.UpdatedBy = (int)PaymentGivenBy.CompanyAdmin;
                         objEmployee.UpdatedDate = CommonMethod.CurrentIndianDateTime();
                         _db.SaveChanges();
                     }
                     else
                     {
-                        int noOfEmployee = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyRegistrationPaymentId == clsAdminSession.CurrentAccountPackageId).Select(x => x.NoOfEmployee).FirstOrDefault();
+                        int noOfEmployee = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyRegistrationPaymentId == clsAdminSession.CurrentAccountPackageId).Select(x => x.NoOfEmployee + x.BuyNoOfEmployee).FirstOrDefault();
                         var empCount = (from emp in _db.tbl_Employee
                                         where emp.CompanyId == companyId
                                         select new
@@ -460,7 +485,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 else
                 {
                     objEmployee.IsDeleted = true;
-                    objEmployee.UpdatedBy = (int)PaymentGivenBy.CompanyAdmin; 
+                    objEmployee.UpdatedBy = (int)PaymentGivenBy.CompanyAdmin;
                     objEmployee.UpdatedDate = CommonMethod.CurrentIndianDateTime();
                     _db.SaveChanges();
 
@@ -516,7 +541,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 msg = msg.Replace("\r\n", "\n");
 
                 //var json = CommonMethod.SendSMSWithoutLog(msg, mobileNo);
-                 
+
                 ResponseDataModel<string> smsResponse = CommonMethod.SendSMS(msg, mobileNo, companyId, 0, "", (int)PaymentGivenBy.CompanyAdmin, isTrailMode);
 
                 if (smsResponse.Data != null && smsResponse.Data.Contains("invalidnumber"))

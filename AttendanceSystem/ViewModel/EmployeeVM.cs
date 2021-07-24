@@ -146,7 +146,11 @@ namespace AttendanceSystem.ViewModel
         public List<SelectListItem> UserRoleList { get; set; }
         public List<EmployeeVM> EmployeeList { get; set; }
         public int NoOfEmployee { get; set; }
+        public int NoOfWorker { get; set; }
         public int ActiveEmployee { get; set; }
+        public int ActiveWorker { get; set; }
+        public int NoOfEmployeeAllowed { get; set; }
+        public bool IsNoOfEmployeeExceed { get; set; }
     }
 
     public class EmployeePendingSalaryVM
