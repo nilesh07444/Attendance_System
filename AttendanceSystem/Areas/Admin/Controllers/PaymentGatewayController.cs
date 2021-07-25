@@ -3,7 +3,6 @@ using AttendanceSystem.Models;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using iTextSharp.tool.xml;
-using Stripe;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -12,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using Razorpay.Api;
 
 namespace AttendanceSystem.Areas.Admin.Controllers
 {
@@ -19,6 +19,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
     {
         AttendanceSystemEntities _db;
         public string packageDirectoryPath = "";
+
         public PaymentGatewayController()
         {
             _db = new AttendanceSystemEntities(); 
@@ -26,60 +27,34 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
         public ActionResult Index()
         {
-            ViewBag.StripePublishKey = ConfigurationManager.AppSettings["stripePublishableKey"];
-
-
-            StripeConfiguration.SetApiKey("pk_test_51IvP71SJ3WgQ7vkp7BwTganyt7h1m6xkNK5X04iY3ltxRAGSKxx8o0qzdXaqFg8iIX1NVM8sm71XUupmEhoHDK2P00YYj8L52C");
-            StripeConfiguration.ApiKey = "sk_test_51IvP71SJ3WgQ7vkp6b6Za5tytc5urgyoBDvPah5czjw2zqnUzXQWoHwqwtq0CbdO2kSMxHFjhOHeDLuB7s67qwed00A7xWEN3S";
-
-            string stripeEmail = "prajapati.nileshbhai@gmail.com";
-            string stripeToken = "tok_1JCTfsSJ3WgQ7vkpphD7hdIS";
-
-            var myCharge = new Stripe.ChargeCreateOptions();
-            // always set these properties
-            myCharge.Amount = 500;
-            myCharge.Currency = "USD";
-            myCharge.ReceiptEmail = stripeEmail;
-            myCharge.Description = "Sample Charge";
-            myCharge.Source = stripeToken;
-            myCharge.Capture = true;
-            var chargeService = new Stripe.ChargeService();
-            Charge stripeCharge = chargeService.Create(myCharge);
-
+            
             return View();
         }
 
-        //[HttpPost]
-        //public ActionResult Charge(string stripeToken, string stripeEmail)
-        //{
-        //    Stripe.StripeConfiguration.SetApiKey("pk_test_51J0dCDSHPBrMzwLwUJro7gGUprYVNdVKTz51icD7wHLCcML9E2PwpIBIcdGfjjqsYx4BYG7Oz5bwIg2ZfRvr37WZ00cP2ivuR7");
-        //    Stripe.StripeConfiguration.ApiKey = "sk_test_51J0dCDSHPBrMzwLwvuMSiHrey5q2y9e2rwWWnHJE0XxgOtA2z5koG8WvR8a6llsbxBhtMX85cGcw5ykJhCJL3vGF00uSgi0caW";
-
-        //    var myCharge = new Stripe.ChargeCreateOptions();
-        //    // always set these properties
-        //    myCharge.Amount = 500;
-        //    myCharge.Currency = "USD";
-        //    myCharge.ReceiptEmail = stripeEmail;
-        //    myCharge.Description = "Sample Charge";
-        //    myCharge.Source = stripeToken;
-        //    myCharge.Capture = true;
-        //    var chargeService = new Stripe.ChargeService();
-        //    Charge stripeCharge = chargeService.Create(myCharge);
-        //    return View();
-        //}
-
-        [HttpPost]
-        public ActionResult Charge(string stripeEmail, string stripeToken)
+        public PartialViewResult CreateRazorPaymentOrder(decimal Amount, string description)
         {
-            Stripe.CustomerCreateOptions customer = new Stripe.CustomerCreateOptions();
+            Dictionary<string, object> input = new Dictionary<string, object>();
+            input.Add("amount", Amount * 100); // this amount should be same as transaction amount
+            input.Add("currency", "INR");
+            input.Add("receipt", "12121");
+            input.Add("payment_capture", 1);
 
-            var custService = new Stripe.CustomerService();
+            //string key = "rzp_test_zuh84ANOrtOQmD";
+            //string secret = "cz7iS82ILhjrQDKOBRFJXZ5I";
 
-            Stripe.Customer stpCustomer = custService.Create(customer);
+            string key = "rzp_live_KyrxYWW59Zw2r6";
+            string secret = "g99Zv6BjdaJMPkU76fTrG5Tl";
 
-            return View();
+            RazorpayClient client = new RazorpayClient(key, secret);
+
+            Razorpay.Api.Order order = client.Order.Create(input);
+            ViewBag.OrderId = order["id"];
+            ViewBag.Description = description;
+            ViewBag.Amount = Amount * 100;
+            ViewBag.Key = key;
+            return PartialView("~/Areas/Admin/Views/PaymentGateway/_RazorPayPayment.cshtml");
         }
-         
+
         public string downloadTestPDF()
         {
 
@@ -224,7 +199,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             }
 
         }
-
-
+         
     }
 }

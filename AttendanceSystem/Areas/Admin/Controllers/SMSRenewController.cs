@@ -1,8 +1,10 @@
 ﻿using AttendanceSystem.Helper;
 using AttendanceSystem.Models;
 using AttendanceSystem.ViewModel;
+using Razorpay.Api;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -17,7 +19,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         {
             _db = new AttendanceSystemEntities();
         }
-        // GET: Admin/SMSRenew
+
         public ActionResult Index()
         {
             List<CompanySMSPackRenewVM> companySMSPackRenewVM = new List<CompanySMSPackRenewVM>();
@@ -45,6 +47,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             }
             return View(companySMSPackRenewVM);
         }
+
         public ActionResult Buy()
         {
             List<SMSPackageVM> lstSMSPackages = new List<SMSPackageVM>();
@@ -74,7 +77,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
             return View();
         }
-
 
         [HttpPost]
         public JsonResult BuySelectedsmsPackage(PackageBuyVM packageBuyVM)
@@ -135,14 +137,14 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return Json(new { IsSuccess = isSuccess, Message = message }, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult View(long id)
+        public ActionResult View(long Id)
         {
             CompanySMSPackRenewVM companySMSPackRenewVM = new CompanySMSPackRenewVM();
             try
             {
                 long companyId = clsAdminSession.CompanyId;
                 companySMSPackRenewVM = (from cp in _db.tbl_CompanySMSPackRenew
-                                         where cp.CompanyId == companyId
+                                         where cp.CompanyId == companyId && cp.CompanySMSPackRenewId == Id
                                          select new CompanySMSPackRenewVM
                                          {
                                              CompanySMSPackRenewId = cp.CompanySMSPackRenewId,
@@ -208,6 +210,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             }
             return View(companySMSRenewFilterVM);
         }
+
         private List<SelectListItem> GetCompanyList()
         {
             List<SelectListItem> lst = (from cmp in _db.tbl_Company
@@ -253,5 +256,47 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             }
             return invoiceNo;
         }
+
+        public PartialViewResult CreateRazorPaymentOrder(decimal Amount, string description)
+        {
+            string RazorPayKey = string.Empty;
+            string RazorPaySecretKey = string.Empty;
+            string IsRazorPayTestMode = ConfigurationManager.AppSettings["IsRazorPayTestMode"];
+
+            if (IsRazorPayTestMode == "true")
+            {
+                RazorPayKey = ConfigurationManager.AppSettings["RazorPayTestKey"];
+                RazorPaySecretKey = ConfigurationManager.AppSettings["RazorPayTestSecretKey"];
+            }
+            else
+            {
+                RazorPayKey = ConfigurationManager.AppSettings["RazorPayLiveKey"];
+                RazorPaySecretKey = ConfigurationManager.AppSettings["RazorPayLiveSecretKey"];
+            }
+             
+            Dictionary<string, object> input = new Dictionary<string, object>();
+            input.Add("amount", Amount * 100); // this amount should be same as transaction amount
+            input.Add("currency", "INR");
+            input.Add("receipt", "12121");
+            input.Add("payment_capture", 1);
+
+            RazorpayClient client = new RazorpayClient(RazorPayKey, RazorPaySecretKey);
+
+            Razorpay.Api.Order order = client.Order.Create(input);
+            ViewBag.OrderId = order["id"];
+            ViewBag.Description = description;
+            ViewBag.Amount = Amount * 100;
+            ViewBag.Key = RazorPayKey;
+
+            long loggedInUserId = clsAdminSession.UserID;
+            tbl_AdminUser objAdminUser = _db.tbl_AdminUser.Where(x => x.AdminUserId == loggedInUserId).FirstOrDefault();
+
+            ViewBag.FullName = objAdminUser.FirstName + " " + objAdminUser.LastName;
+            ViewBag.EmailId = objAdminUser.EmailId;
+            ViewBag.MobileNo = objAdminUser.MobileNo;
+
+            return PartialView("~/Areas/Admin/Views/SMSRenew/_RazorPayPayment.cshtml");
+        }
+
     }
 }

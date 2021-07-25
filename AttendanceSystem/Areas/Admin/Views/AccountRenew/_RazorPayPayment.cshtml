@@ -1,0 +1,60 @@
+﻿
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+    var options = {
+        "key": "@ViewBag.Key", // Enter the Key ID generated from the Dashboard
+        "amount": "@ViewBag.Amount", // Amount is in currency subunits. Default currency is INR. Hence, 50000 means 50000 paise or ₹500.
+        "currency": "INR",
+        "name": "Contract Book",
+        "description": "@ViewBag.Description",
+        "image": "https://contractbook.in/Content/admin-theme/assets/img/contrabook/superadmin_company_logo.png",
+        "order_id": "@ViewBag.OrderId",// Replace this with the order_id created using Orders API (https://razorpay.com/docs/api/orders).
+        "handler": function (response) {
+             
+            // PlaceOrder(response.razorpay_payment_id, response.razorpay_order_id, response.razorpay_signature); 
+
+            StartLoading();
+            var selectedPackageId = $("#hdnSelectedPackageId").val(); 
+            var StrURL = '/admin/accountrenew/BuySelectedAccountPackage';
+            $.ajax({
+                url: StrURL,
+                cache: false,
+                data: {
+                    'PackageId': selectedPackageId
+                },
+                type: 'POST',
+                success: function (data) {
+                    StopLoading();
+                    if (data != null) {
+                        alert(data.Message);
+                        window.location.href = "/admin/accountrenew";
+                    }
+                    else {
+                        alert("Something went wrong. Please try again later.")
+                    }
+                },
+                error: function (req, status, error) {
+                    StopLoading();
+                    alert(error);
+                }
+            });
+
+        },
+        "prefill": {
+            "name": "@ViewBag.FullName",
+            "email": "@ViewBag.EmailId",
+            "contact": "@ViewBag.MobileNo"
+        },
+        "notes": {
+            "address": "note value"
+        },
+        "theme": {
+            "color": "#F37254"
+        }
+    };
+
+    var rzp1 = new Razorpay(options);
+    rzp1.open();
+
+</script>

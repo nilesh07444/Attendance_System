@@ -3,142 +3,39 @@
     Layout = null;
 }
 
-<!DOCTYPE html>
+<a href="javascript:void(0);" class="btn-solid btn" id="btnBuy">Buy</a>
+ 
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>ProcessPayment | Merchant Dashboard</title>
-    <script src="https://js.stripe.com/v3/"></script>
-    <script>
-        var stripe = Stripe('pk_test_51H1XOgCuKWbkvTE3V6VYOV0qVBLrEcZMCISGPWJ3nZeDqq3JgWb1GL1c2HRxk4NAve4j7YFkZeAvWoatocuvgzLb00bSZL72k3');
-        var elements = stripe.elements();
+<div class="dvrazorpayscript"></div> 
 
-        // Custom styling can be passed to options when creating an Element.
-        var style = {
-            base: {
-                // Add your base input styles here. For example:
-                fontSize: '16px',
-                color: '#32325d',
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+
+    $(document).on("click", "#btnBuy", function () {
+
+        var StrURL = '/Admin/PaymentGateway/CreateRazorPaymentOrder'; 
+        $.ajax({
+            url: StrURL,
+            type: "post",
+            dataType: "html",
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify({ Amount: 5, description: "Test" }), //add parameter
+            success: function (data) {
+                debugger;
+                //success
+                $('.dvrazorpayscript').html(data); //populate the tab content. 
+
+                
+
             },
-        };
-
-        // Create an instance of the card Element.
-        var card = elements.create('card', { style: style });
-
-        // Add an instance of the card Element into the `card-element` <div>.
-        card.mount('#card-element');
-
-        // Create a token or display an error when the form is submitted.
-        var form = document.getElementById('payment-form');
-        form.addEventListener('submit', function (event) {
-            event.preventDefault();
-
-            stripe.createToken(card).then(function (result) {
-                if (result.error) {
-                    // Inform the customer that there was an error.
-                    var errorElement = document.getElementById('card-errors');
-                    errorElement.textContent = result.error.message;
-                } else {
-                    // Send the token to your server.
-                    stripeTokenHandler(result.token);
-                }
-            });
+            error: function () {
+                debugger;
+                alert("error");
+            }
         });
 
-        function stripeTokenHandler(token) {
-            // Insert the token ID into the form so it gets submitted to the server
-            var form = document.getElementById('payment-form');
-            var hiddenInput = document.createElement('input');
-            hiddenInput.setAttribute('type', 'hidden');
-            hiddenInput.setAttribute('name', 'stripeToken');
-            hiddenInput.setAttribute('value', token.id);
-            form.appendChild(hiddenInput);
+    });
 
-            // Submit the form
-            form.submit();
-        }
-
-        // Set your secret key. Remember to switch to your live secret key in production!
-        // See your keys here: https://dashboard.stripe.com/account/apikeys
-        StripeConfiguration.ApiKey = "pk_test_51H1XOgCuKWbkvTE3V6VYOV0qVBLrEcZMCISGPWJ3nZeDqq3JgWb1GL1c2HRxk4NAve4j7YFkZeAvWoatocuvgzLb00bSZL72k3";
-
-        // Token is created using Checkout or Elements!
-        // Get the payment token submitted by the form:
-        var token = model.Token; // Using ASP.NET MVC
-
-        var options = new ChargeCreateOptions
-        {
-            Amount = 999,
-                Currency = "usd",
-                Description = "Example charge",
-                Source = token,
-};
-
-        var service = new ChargeService();
-        var charge = service.Create(options);
-    </script>
-</head>
-<body>
-
-    <form action="/charge" method="post" id="payment-form">
-        <div class="form-row">
-            <label for="card-element">
-                Credit or debit card
-            </label>
-            <div id="card-element">
-                <!-- A Stripe Element will be inserted here. -->
-            </div>
-
-            <!-- Used to display Element errors. -->
-            <div id="card-errors" role="alert"></div>
-        </div>
-
-        <button>Submit Payment</button>
-    </form>
-</body>
-</html>
-
-<!--
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
-</head>
-<body>
-    <div>-->
-@*<form action="/Home/Charge" method="POST">
-        <article>
-            <label>Amount: $5.00</label>
-        </article>
-        <script src="//checkout.stripe.com/v2/checkout.js"
-                class="stripe-button"
-                data-key="@ViewBag.StripePublishKey"
-                data-locale="auto"
-                data-description="Sample Charge"
-                data-amount="500">
-        </script>
-    </form>*@
-
-
-<!--</div>
-    <div class="row">
-        <div class="container col-md-2 col-md-offset-5">
-            <h5>Upgrade your account</h5>
-            <form action="/Premium/Charge" method="POST">
-                <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                        data-key="MYKEY"
-                        data-amount="1000"
-                        data-name="My Project Name"
-                        data-description="Premium Account (€10)"
-                        data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
-                        data-locale="auto"
-                        data-zip-code="true"
-                        data-currency="eur">
-                </script>
-            </form>
-        </div>
-</body>
-</html>-->
+</script>

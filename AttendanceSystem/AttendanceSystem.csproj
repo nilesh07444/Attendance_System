@@ -76,8 +76,8 @@
     <Reference Include="Microsoft.IdentityModel.Tokens, Version=6.10.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.IdentityModel.Tokens.6.10.2\lib\net472\Microsoft.IdentityModel.Tokens.dll</HintPath>
     </Reference>
-    <Reference Include="Stripe.net, Version=39.53.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Stripe.net.39.53.0\lib\net461\Stripe.net.dll</HintPath>
+    <Reference Include="Razorpay, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Razorpay.3.0.0\lib\net45\Razorpay.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -1610,6 +1610,10 @@
     <Content Include="Areas\Admin\Views\SMSRenew\RenewList.cshtml" />
     <Content Include="Areas\Admin\Views\EmployeeBuyTransaction\RenewList.cshtml" />
     <Content Include="Areas\Admin\Views\Employee\Fingerprint.cshtml" />
+    <Content Include="Areas\Admin\Views\PaymentGateway\_RazorPayPayment.cshtml" />
+    <Content Include="Areas\Admin\Views\SMSRenew\_RazorPayPayment.cshtml" />
+    <Content Include="Areas\Admin\Views\AccountRenew\_RazorPayPayment.cshtml" />
+    <Content Include="Areas\Admin\Views\EmployeeBuyTransaction\_RazorPayPayment.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />

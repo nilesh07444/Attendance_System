@@ -1,6 +1,7 @@
 ﻿using AttendanceSystem.Helper;
 using AttendanceSystem.Models;
 using AttendanceSystem.ViewModel;
+using Razorpay.Api;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -355,11 +356,47 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             }
             return invoiceNo;
         }
+        
+        public PartialViewResult CreateRazorPaymentOrder(decimal Amount, string description)
+        {
+            string RazorPayKey = string.Empty;
+            string RazorPaySecretKey = string.Empty;
+            string IsRazorPayTestMode = ConfigurationManager.AppSettings["IsRazorPayTestMode"];
 
-        //[HttpPost]
-        //public string DownloadInvoice(long id)
-        //{
+            if (IsRazorPayTestMode == "true")
+            {
+                RazorPayKey = ConfigurationManager.AppSettings["RazorPayTestKey"];
+                RazorPaySecretKey = ConfigurationManager.AppSettings["RazorPayTestSecretKey"];
+            }
+            else
+            {
+                RazorPayKey = ConfigurationManager.AppSettings["RazorPayLiveKey"];
+                RazorPaySecretKey = ConfigurationManager.AppSettings["RazorPayLiveSecretKey"];
+            }
 
-        //}
+            Dictionary<string, object> input = new Dictionary<string, object>();
+            input.Add("amount", Amount * 100); // this amount should be same as transaction amount
+            input.Add("currency", "INR");
+            input.Add("receipt", "12121");
+            input.Add("payment_capture", 1);
+
+            RazorpayClient client = new RazorpayClient(RazorPayKey, RazorPaySecretKey);
+
+            Razorpay.Api.Order order = client.Order.Create(input);
+            ViewBag.OrderId = order["id"];
+            ViewBag.Description = description;
+            ViewBag.Amount = Amount * 100;
+            ViewBag.Key = RazorPayKey;
+
+            long loggedInUserId = clsAdminSession.UserID;
+            tbl_AdminUser objAdminUser = _db.tbl_AdminUser.Where(x => x.AdminUserId == loggedInUserId).FirstOrDefault();
+
+            ViewBag.FullName = objAdminUser.FirstName + " " + objAdminUser.LastName;
+            ViewBag.EmailId = objAdminUser.EmailId;
+            ViewBag.MobileNo = objAdminUser.MobileNo;
+
+            return PartialView("~/Areas/Admin/Views/AccountRenew/_RazorPayPayment.cshtml");
+        }
+
     }
 }

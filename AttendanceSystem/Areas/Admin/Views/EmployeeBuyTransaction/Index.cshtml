@@ -27,12 +27,12 @@
                                 <thead>
                                     <tr>
                                         <td>#</td>
+                                        <th>Buy Date</th>
                                         <th>No Of Employee</th>
                                         <th>No Of Days</th>
                                         <th>Amount Per Employee</th>
                                         <th>Total Paid Amount</th>
                                         <th>Expiry Date</th>
-                                        <th>Payment Gateway Transaction Id</th>
                                         <th>Invoice</th>
                                     </tr>
                                 </thead>
@@ -43,12 +43,12 @@
                                         {
                                     <tr>
                                         <td>@counter.</td>
+                                        <td>@obj.CreatedDate.ToString("dd/MM/yyyy hh:mm tt")</td>
                                         <td>@obj.NoOfEmpToBuy</td>
                                         <td>@obj.RemainingDays</td>
                                         <td>@obj.AmountPerEmp</td>
                                         <td>@obj.TotalPaidAmount</td>
-                                        <td>@obj.ExpiryDate</td>
-                                        <td>@obj.PaymentGatewayTransactionId</td>
+                                        <td>@obj.ExpiryDate</td> 
                                         <td>
                                             <a onclick="return downloadEmployeeBuyInvoice(@obj.EmployeeBuyTransactionId)" title="Download Invoice PDF" href="javascript:void(0);" class="btn btn-icon icon-left btn-info">
                                                 <i class="fas fa-download"></i>

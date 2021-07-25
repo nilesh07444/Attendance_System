@@ -1,8 +1,10 @@
 ﻿using AttendanceSystem.Helper;
 using AttendanceSystem.Models;
 using AttendanceSystem.ViewModel;
+using Razorpay.Api;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -15,13 +17,14 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         AttendanceSystemEntities _db;
         long companyId;
         long loggedInUserId;
+
         public EmployeeBuyTransactionController()
         {
             _db = new AttendanceSystemEntities();
             companyId = clsAdminSession.CompanyId;
             loggedInUserId = (int)PaymentGivenBy.CompanyAdmin;
         }
-        // GET: Admin/SMSRenew
+
         public ActionResult Index()
         {
             List<EmployeeBuyTransactionVM> employeeBuyTransactionVM = new List<EmployeeBuyTransactionVM>();
@@ -51,6 +54,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             }
             return View(employeeBuyTransactionVM);
         }
+
         public ActionResult Buy()
         {
             DateTime today = CommonMethod.CurrentIndianDateTime();
@@ -69,9 +73,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return View(employeeBuyTransactionVM);
         }
 
-
         [HttpPost]
-        public ActionResult Buy(EmployeeBuyTransactionVM employeeBuyTransactionVM)
+        public JsonResult Buy(EmployeeBuyTransactionVM employeeBuyTransactionVM)
         {
             string message = string.Empty;
             bool isSuccess = true;
@@ -90,7 +93,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     string invoiceNo = GenerateEmployeeBuyInvoiceNo();
 
                     tbl_EmployeeBuyTransaction employeeBuyTransaction = new tbl_EmployeeBuyTransaction();
-                    employeeBuyTransaction.CompanyId = employeeBuyTransactionVM.CompanyId;
+                    employeeBuyTransaction.CompanyId = clsAdminSession.CompanyId;
                     employeeBuyTransaction.NoOfEmpToBuy = employeeBuyTransactionVM.NoOfEmpToBuy;
                     employeeBuyTransaction.Days = employeeBuyTransactionVM.RemainingDays;
                     employeeBuyTransaction.GSTPer = (objSetting != null && objSetting.EmployeeBuyGSTPer != null ? objSetting.EmployeeBuyGSTPer : 0);
@@ -128,6 +131,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         }
                     }
 
+                    isSuccess = true;
+                    message = ErrorMessage.EmployeePackageBuySuccessfully;
                 }
                 else
                 {
@@ -142,7 +147,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 message = ex.Message.ToString();
             }
 
-            return RedirectToAction("index");
+            return Json(new { IsSuccess = isSuccess, Message = message }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult RenewList(DateTime? startDate, DateTime? endDate, long? companyId)
@@ -187,6 +192,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             }
             return View(employeeBuyTransactionFilterVM);
         }
+
         private List<SelectListItem> GetCompanyList()
         {
             List<SelectListItem> lst = (from cmp in _db.tbl_Company
@@ -232,5 +238,47 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             }
             return invoiceNo;
         }
+
+        public PartialViewResult CreateRazorPaymentOrder(decimal Amount, string description)
+        {
+            string RazorPayKey = string.Empty;
+            string RazorPaySecretKey = string.Empty;
+            string IsRazorPayTestMode = ConfigurationManager.AppSettings["IsRazorPayTestMode"];
+
+            if (IsRazorPayTestMode == "true")
+            {
+                RazorPayKey = ConfigurationManager.AppSettings["RazorPayTestKey"];
+                RazorPaySecretKey = ConfigurationManager.AppSettings["RazorPayTestSecretKey"];
+            }
+            else
+            {
+                RazorPayKey = ConfigurationManager.AppSettings["RazorPayLiveKey"];
+                RazorPaySecretKey = ConfigurationManager.AppSettings["RazorPayLiveSecretKey"];
+            }
+
+            Dictionary<string, object> input = new Dictionary<string, object>();
+            input.Add("amount", Amount * 100); // this amount should be same as transaction amount
+            input.Add("currency", "INR");
+            input.Add("receipt", "12121");
+            input.Add("payment_capture", 1);
+
+            RazorpayClient client = new RazorpayClient(RazorPayKey, RazorPaySecretKey);
+
+            Razorpay.Api.Order order = client.Order.Create(input);
+            ViewBag.OrderId = order["id"];
+            ViewBag.Description = description;
+            ViewBag.Amount = Amount * 100;
+            ViewBag.Key = RazorPayKey;
+
+            long loggedInUserId = clsAdminSession.UserID;
+            tbl_AdminUser objAdminUser = _db.tbl_AdminUser.Where(x => x.AdminUserId == loggedInUserId).FirstOrDefault();
+
+            ViewBag.FullName = objAdminUser.FirstName + " " + objAdminUser.LastName;
+            ViewBag.EmailId = objAdminUser.EmailId;
+            ViewBag.MobileNo = objAdminUser.MobileNo;
+
+            return PartialView("~/Areas/Admin/Views/EmployeeBuyTransaction/_RazorPayPayment.cshtml");
+        }
+
     }
 }

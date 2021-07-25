@@ -141,7 +141,7 @@
                                     </ul>
                                 </div>
                                 <div class="pricingTable-signup">
-                                    <a href="javascript:void(0);" style="background: @obj.PackageColorCode" onclick="fnBuyNowPackage('@obj.PackageId', '@obj.PackageName')">
+                                    <a href="javascript:void(0);" style="background: @obj.PackageColorCode" onclick="fnBuyNowPackage('@obj.PackageId', '@obj.PackageName', '@obj.Amount')">
                                         Buy Now <i class="fas fa-arrow-right"></i>
 
                                         @*<form action="/Premium/Charge" method="POST">
@@ -174,7 +174,33 @@
     </div>
 </section>
 
+<!-- Render Payment Gateway popup -->
+<div class="dvrazorpayscript"></div>
+
+<!-- Confirmation to Buy -->
+<div class="modal fade open" id="packageBuyConfirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Buy Confirm</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                Are you sure ?
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" id="hdnSelectedPackageName" />
+                <input type="hidden" id="hdnSelectedPackageAmount" />
+                <input type="hidden" id="hdnSelectedPackageId" />
+                <button data-dismiss="modal" class="btn btn-primary" type="button">Close</button>
+                <button id="btnConfirmBuy" class="btn btn-danger" type="button">Buy</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script> 
 
 <script type="text/javascript">
 
@@ -190,7 +216,7 @@
         $("#per_" + counter).css("color", colorcode);
     }
 
-
+    /*
     function fnBuyNowPackage(packageId, packageName) {
         var r = confirm("Are you sure want to buy '" + packageName + "' package ?");
         if (r == true) {
@@ -221,6 +247,7 @@
 
         }
     }
+    */
 
     function GetSelectedAccountPackageDetail(packageId) {
 
@@ -244,5 +271,44 @@
         });
 
     }
+     
+    function fnBuyNowPackage(packageId, packageName, packageAmount) {
+        $("#hdnSelectedPackageId").val(packageId);
+        $("#hdnSelectedPackageAmount").val(packageAmount);
+        $("#hdnSelectedPackageName").val(packageName);
+        $("#packageBuyConfirmModal .modal-body").text("Are you sure want to buy " + packageName + " Package ?");
+        $('#packageBuyConfirmModal').modal('show');
+    }
+
+    $('#btnConfirmBuy').click(function () {
+        var selectedPackageId = $("#hdnSelectedPackageId").val();
+        var packageAmount = parseFloat($("#hdnSelectedPackageAmount").val());
+        var packageName = $("#hdnSelectedPackageName").val();
+
+        if (selectedPackageId != "" && selectedPackageId != null) {
+            $('#packageBuyConfirmModal').modal('hide');
+
+            StartLoading();
+            var StrURL = '/Admin/AccountRenew/CreateRazorPaymentOrder';
+
+            $.ajax({
+                url: StrURL,
+                type: "post",
+                dataType: "html",
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({ Amount: packageAmount, description: packageName }), //add parameter
+                success: function (data) {
+                    StopLoading();
+                    $('.dvrazorpayscript').html(data); //populate the tab content.
+                },
+                error: function () {
+                    StopLoading();
+                    alert("error");
+                }
+            });
+
+        }
+    });
+
 
 </script>

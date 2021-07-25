@@ -199,7 +199,7 @@
         public static string AccountInvoiceNoPrefix = "PKG";
         public static string SMSInvoiceNoPrefix = "SMS";
         public static string EmployeeInvoiceNoPrefix = "EMP";
-        public static string EmployeePackageBuySuccessfully = "Employee package buy successfully";
+        public static string EmployeePackageBuySuccessfully = "Employee buy successfully";
         public static string SMSPackageBuySuccessfully = "SMS package buy successfully";
         public static string AccountPackageBuySuccessfully = "Account package buy successfully";
     }
