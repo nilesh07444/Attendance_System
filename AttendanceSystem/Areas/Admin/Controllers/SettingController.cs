@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using static AttendanceSystem.ViewModel.AccountModels;
@@ -159,33 +160,56 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public ActionResult ChangePassword(ChangePasswordVM changePasswordVM)
+        public JsonResult ValidateCurrentPassword(string currentPassword)
         {
+            bool IsValid = false;
+            string sentOTP = string.Empty;
             try
             {
-                string curPwd = CommonMethod.Encrypt(changePasswordVM.CurrentPassword, psSult);
-                tbl_AdminUser data = _db.tbl_AdminUser.Where(x => x.UserName == clsAdminSession.UserName && x.Password == curPwd).FirstOrDefault();
-
-                if (data != null)
+                string curPwd = CommonMethod.Encrypt(currentPassword, psSult);
+                tbl_AdminUser objUser = _db.tbl_AdminUser.Where(x => x.UserName == clsAdminSession.UserName && x.Password == curPwd).FirstOrDefault();
+                if (objUser != null)
                 {
-                    string newPwd = CommonMethod.Encrypt(changePasswordVM.NewPassword, psSult);
-                    data.Password = newPwd;
-                    data.ModifiedBy = (int)PaymentGivenBy.SuperAdmin;
-                    data.ModifiedDate = CommonMethod.CurrentIndianDateTime();
-                    _db.SaveChanges();
-                }
-                else
-                {
-                    ViewBag.ErrorMessage = ErrorMessage.InvalidPassword;
-                    return View("ChangePassword", changePasswordVM);
+                    sentOTP = SendChangePasswordOTP(objUser);
+                    IsValid = true;
                 }
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("error", ex.Message);
-                return RedirectToAction("ChangePassword", "Setting");
+                IsValid = false;
             }
-            return RedirectToAction("Index", "Dashboard");
+
+            return Json(new { IsValid = IsValid, OTP = sentOTP }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public string ChangePassword(string NewPassword)
+        {
+            string message = string.Empty;
+            try
+            {
+                tbl_AdminUser data = _db.tbl_AdminUser.Where(x => x.UserName == clsAdminSession.UserName).FirstOrDefault();
+
+                if (data != null)
+                {
+                    string newPwd = CommonMethod.Encrypt(NewPassword, psSult);
+                    data.Password = newPwd;
+                    data.ModifiedBy = clsAdminSession.RoleID == (int)AdminRoles.SuperAdmin ? (int)PaymentGivenBy.SuperAdmin : (int)PaymentGivenBy.CompanyAdmin;
+                    data.ModifiedDate = CommonMethod.CurrentIndianDateTime();
+                    _db.SaveChanges();
+
+                    message = "success";
+                }
+                else
+                {
+                    message = "notfound";
+                }
+            }
+            catch (Exception ex)
+            {
+                message = "exception";
+            }
+            return message;
         }
 
         [HttpPost]
@@ -588,6 +612,48 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             }
 
             return View(settingVM);
+        }
+
+
+        private string SendChangePasswordOTP(tbl_AdminUser objUser)
+        {
+            string sentOTP = string.Empty;
+            try
+            {
+                Random random = new Random();
+                int num = random.Next(555555, 999999);
+
+                int SmsId = (int)SMSType.ChangePasswordOTP;
+                string msg = CommonMethod.GetSmsContent(SmsId);
+
+                Regex regReplace = new Regex("{#var#}");
+                msg = regReplace.Replace(msg, objUser.FirstName + " " + objUser.LastName, 1);
+                msg = regReplace.Replace(msg, num.ToString(), 1);
+
+                msg = msg.Replace("\r\n", "\n");
+
+                if (clsAdminSession.RoleID == (int)AdminRoles.SuperAdmin)
+                {
+                    var json = CommonMethod.SendSMSWithoutLog(msg, objUser.MobileNo);
+                    if (!json.Contains("invalidnumber"))
+                    {
+                        sentOTP = num.ToString();
+                    }
+                }
+                else
+                {
+                    ResponseDataModel<string> json = CommonMethod.SendSMS(msg, objUser.MobileNo, clsAdminSession.CompanyId, (int)PaymentGivenBy.CompanyAdmin, "", (int)PaymentGivenBy.CompanyAdmin, clsAdminSession.IsTrialMode);
+                    if (!json.Data.Contains("invalidnumber"))
+                    {
+                        sentOTP = num.ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return sentOTP;
         }
 
     }

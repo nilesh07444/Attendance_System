@@ -506,19 +506,7 @@ namespace AttendanceSystem
             {
                 msg = HttpUtility.UrlEncode(msg);
                 string url = GetSMSUrl().Replace("--MOBILE--", mobileNo).Replace("--MSG--", msg);
-                var json = webClient.DownloadString(url);
-
-                /*
-                AttendanceSystemEntities _db = new AttendanceSystemEntities();
-                tbl_SMSLog smsLog = new tbl_SMSLog();
-                smsLog.Message = msg;
-                smsLog.MobileNo = mobileNo;
-                smsLog.CreatedBy = employeeId;
-                smsLog.CreatedDate = CommonMethod.CurrentIndianDateTime();
-                _db.tbl_SMSLog.Add(smsLog);
-                _db.SaveChanges();
-                */
-
+                var json = webClient.DownloadString(url); 
                 return json;
             }
         }
@@ -566,6 +554,7 @@ namespace AttendanceSystem
                                 nextSMSPackage.PackageExpiryDate = CommonMethod.CurrentIndianDateTime().AddDays(nextSMSPackage.AccessDays);
                                 companyObj.CurrentSMSPackageId = Convert.ToInt32(nextSMSPackage.CompanySMSPackRenewId);
                                 _db.SaveChanges();
+
                                 clsAdminSession.CurrentSMSPackageId = companyObj.CurrentSMSPackageId.HasValue ? companyObj.CurrentSMSPackageId.Value : 0;
                                 activeSMSPackage = nextSMSPackage;
                             }
