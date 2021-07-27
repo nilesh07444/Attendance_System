@@ -1,0 +1,248 @@
+﻿@model List<FollowupVM>
+@{
+    ViewBag.Title = "Followup";
+
+    int counter = 1;
+}
+
+<style>
+    label.form-check-label {
+        font-size: 14px;
+    }
+</style>
+
+<section class="section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12">
+
+                <div class="card">
+                    <div class="card-header" style="background-color: #425C59;">
+                        <h4 style="color: #FFCEA3;">Followup List - @ViewBag.CompanyName</h4>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header" style="display: block;">
+                        <div class="card-header-action pull-right">
+                            <a id="btnAddFollowup" href="javascript:void(0);" class="btn btn-icon icon-left btn-primary"><i class="fas fa-plus-circle"></i> Add Followup</a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover" id="tableExport" style="width:100%;">
+                                <thead>
+                                    <tr>
+                                        <td>#</td>
+                                        <th>Followup Date</th>
+                                        <th>Followup Status</th>
+                                        <th>Next Followup Date</th>
+                                        <th>Description</th>
+                                        <th>Remarks</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null && Model.Count > 0)
+                                    {
+                                        foreach (FollowupVM obj in Model)
+                                        {
+                                            <tr>
+                                                <td>@counter.</td>
+                                                <td>@obj.CreatedDate.ToString("dd MMM yyyy hh:mm tt")</td>
+                                                <td>@obj.FollowupStatus</td>
+                                                <td>@(obj.NextFollowupDate != null ? Convert.ToDateTime(obj.NextFollowupDate).ToString("dd MMM yyyy") : "")</td>
+                                                <td>@obj.Description</td>
+                                                <td>@obj.Remarks</td>
+                                            </tr>
+
+                                            counter++;
+                                        }
+                                    }
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade open" id="addFollowupModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="max-width:800px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add Followup</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="d-block">Followup Primary Status *</label>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input clsRadioPrimaryStatus" type="radio" id="rdoOpen" name="rdoPrimaryStatus" value="1">
+                        <label class="form-check-label" for="rdoOpen">Open</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input clsRadioPrimaryStatus" type="radio" id="rdoClose" name="rdoPrimaryStatus" value="4">
+                        <label class="form-check-label" for="rdoClose">Close</label>
+                    </div>
+                    <p><span id="spn_error_followupprimarystatus" class="validation-summary-errors"></span></p>
+                </div>
+
+                <div class="form-group dvSecondaryStatus">
+                    <label class="d-block">Followup Secondary Status *</label>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input clsRadioSecondaryStatus" type="radio" id="rdoInterested" name="rdoSecondaryStatus" value="2">
+                        <label class="form-check-label" for="rdoInterested">Interested</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input clsRadioSecondaryStatus" type="radio" id="rdoNotInterested" name="rdoSecondaryStatus" value="3">
+                        <label class="form-check-label" for="rdoNotInterested">Not Interested</label>
+                    </div>
+                    <p><span id="spn_error_followupsecondarystatus" class="validation-summary-errors"></span></p>
+                </div>
+
+                <div class="form-group col-4 dvNextFollowupDate" style="padding:0px;">
+                    <label>Next Followup Date *</label>
+                    <input id="txtNextFollowupDate" type="date" class="form-control">
+                    <p><span id="spn_error_nextfollowupdate" class="validation-summary-errors"></span></p>
+                </div>
+
+                <div class="form-group">
+                    <label>Description *</label>
+                    <textarea id="txtDescription" class="form-control" rows="5" placeholder="Enter Description" maxlength="500"></textarea>
+                    <p><span id="spn_error_description" class="validation-summary-errors"></span></p>
+                </div>
+
+                <div class="form-group">
+                    <label>Remarks</label>
+                    <textarea id="txtRemarks" class="form-control" rows="5" placeholder="Enter Remarks" maxlength="500"></textarea>
+                    <p><span id="spn_error_remarks" class="validation-summary-errors"></span></p>
+                </div>
+
+            </div>
+            <div class="modal-footer"> 
+                <button data-dismiss="modal" class="btn btn-primary" type="button">Close</button>
+                <button id="btnSaveFollowup" class="btn btn-success" type="button">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<script>
+
+    $(document).ready(function () {
+        $(".dvSecondaryStatus, .dvNextFollowupDate").hide();
+    });
+
+    $(document).on("click", "#btnAddFollowup", function () {
+        resetForm();
+        $('#addFollowupModal').modal('show');
+
+    });
+
+    $(document).on("click", ".clsRadioPrimaryStatus", function () {
+        var value = $("input[name='rdoPrimaryStatus']:checked").val();
+        $("input[name='rdoSecondaryStatus']").prop('checked', false);
+
+        if (value == "4") {
+            $(".dvSecondaryStatus").show();
+            $(".dvNextFollowupDate").hide();
+        }
+        else {
+            $(".dvNextFollowupDate").show();
+            $(".dvSecondaryStatus").hide();
+        }
+    });
+
+    function resetForm() {
+        $(".dvSecondaryStatus").hide();
+        $("#txtDescription").val('');
+        $("#txtRemarks").val('');
+        $("input[name='rdoPrimaryStatus']").prop('checked', false);
+        $("input[name='rdoSecondaryStatus']").prop('checked', false);
+    }
+
+    $(document).on("click", "#btnSaveFollowup", function () {
+        
+        var primaryStatus = $("input[name='rdoPrimaryStatus']:checked").val();
+        var secondaryStatus = $("input[name='rdoSecondaryStatus']:checked").val();
+        var secondaryStatus = $("input[name='rdoSecondaryStatus']:checked").val();
+        var nextFollowupDate = $("#txtNextFollowupDate").val();
+        var description = $("#txtDescription").val();
+        var remarks = $("#txtRemarks").val();
+
+        var isFormValid = checkValidation();
+
+        if (isFormValid) {
+            alert("true");
+        }
+        else {
+            alert("false");
+        }
+
+    });
+
+    function checkValidation() {
+        var requiredText = "This field is required";
+        var isValid = true;
+
+        var primaryStatus = $("input[name='rdoPrimaryStatus']:checked").val();
+        var secondaryStatus = $("input[name='rdoSecondaryStatus']:checked").val();
+        var secondaryStatus = $("input[name='rdoSecondaryStatus']:checked").val();
+        var nextFollowupDate = $("#txtNextFollowupDate").val();
+        var description = $("#txtDescription").val();
+        var remarks = $("#txtRemarks").val();
+
+        if (IsEmptyOrNull(primaryStatus)) {
+            isValid = false;
+            $("#spn_error_followupprimarystatus").show();
+            $("#spn_error_followupprimarystatus").text(requiredText);
+        }
+        else {
+            $("#spn_error_followupprimarystatus").hide();
+        }
+
+        if (primaryStatus == "4" && IsEmptyOrNull(secondaryStatus)) {
+            isValid = false;
+            $("#spn_error_followupsecondarystatus").show();
+            $("#spn_error_followupsecondarystatus").text(requiredText);
+        }
+        else {
+            $("#spn_error_followupsecondarystatus").hide();
+        }
+
+        if (primaryStatus == "1" && IsEmptyOrNull(nextFollowupDate)) {
+            isValid = false;
+            $("#spn_error_nextfollowupdate").show();
+            $("#spn_error_nextfollowupdate").text(requiredText);
+        }
+        else {
+            $("#spn_error_nextfollowupdate").hide();
+        }
+
+        if (IsEmptyOrNull(description)) {
+            isValid = false;
+            $("#spn_error_description").show();
+            $("#spn_error_description").text(requiredText);
+        }
+        else {
+            $("#spn_error_description").hide();
+        }
+
+        return isValid;
+    }
+
+    function IsEmptyOrNull(value) {
+        if (value == "" || value == undefined || value == NaN)
+            return true;
+        else
+            return false;
+    }
+
+</script>

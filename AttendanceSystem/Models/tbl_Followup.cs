@@ -12,18 +12,15 @@ namespace AttendanceSystem.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class tbl_CompanyFollowup
+    public partial class tbl_Followup
     {
-        public long CompanyFollowupId { get; set; }
+        public long FollowupId { get; set; }
         public long CompanyId { get; set; }
-        public System.DateTime FollowupDate { get; set; }
-        public string FollowupText { get; set; }
-        public string Remarks { get; set; }
         public int FollowupStatus { get; set; }
-        public Nullable<System.DateTime> NextDate { get; set; }
-        public long CreatedBy { get; set; }
+        public Nullable<System.DateTime> NextFollowupDate { get; set; }
+        public string Remarks { get; set; }
         public System.DateTime CreatedDate { get; set; }
-        public Nullable<long> ModifiedBy { get; set; }
-        public Nullable<System.DateTime> ModifiedDate { get; set; }
+        public long CreatedBy { get; set; }
+        public string Description { get; set; }
     }
 }

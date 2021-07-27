@@ -167,6 +167,13 @@
                                     <li><a class="nav-link" href="/admin/feedback">Feedback List</a></li>
                                 </ul>
                             </li>
+                            <li class="dropdown @(ViewBag.Title == "Followup" ? "active" : "")">
+                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="message-circle"></i><span>Followup</span></a>
+                                <ul class="dropdown-menu"> 
+                                    <li><a class="nav-link" href="/admin/followup">Followup List</a></li>
+                                    <li><a class="nav-link" href="/admin/followup/reminders">Reminder List</a></li>
+                                </ul>
+                            </li>
                             <li class="dropdown @(ViewBag.Title == "Contact" ? "active" : "")">
                                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="message-circle"></i><span>Contact Form</span></a>
                                 <ul class="dropdown-menu">

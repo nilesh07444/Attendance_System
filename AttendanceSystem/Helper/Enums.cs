@@ -92,16 +92,24 @@ namespace AttendanceSystem.Helper
 
     public enum FeedbackStatus
     {
+        [Description("Pending")]
         Pending = 1,
+        [Description("Resolved")]
         Resolved = 2,
+        [Description("Not Resolved")]
         NotResolved = 3
     }
 
     public enum FollowupStatus
     {
+        [Description("Open")]
         Open = 1,
-        Close = 2,
-        NotInterested = 3
+        [Description("Interested")]
+        Interested = 2,
+        [Description("Not Interested")]
+        NotInterested = 3,
+        [Description("Close")]
+        Close = 4
     }
 
     public enum MaterialStatus

@@ -147,26 +147,12 @@
           <Property Name="SMSPackExpiryDate" Type="datetime" />
           <Property Name="TotalSMSReceived" Type="int" />
           <Property Name="RemainingSMSToUse" Type="int" />
+          <Property Name="NextFollowupDate" Type="datetime" />
+          <Property Name="FollowupStatus" Type="int" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="CreatedBy" Type="bigint" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" />
-          <Property Name="ModifiedBy" Type="bigint" />
-          <Property Name="ModifiedDate" Type="datetime" />
-        </EntityType>
-        <EntityType Name="tbl_CompanyFollowup">
-          <Key>
-            <PropertyRef Name="CompanyFollowupId" />
-          </Key>
-          <Property Name="CompanyFollowupId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="CompanyId" Type="bigint" Nullable="false" />
-          <Property Name="FollowupDate" Type="datetime" Nullable="false" />
-          <Property Name="FollowupText" Type="nvarchar" MaxLength="500" Nullable="false" />
-          <Property Name="Remarks" Type="nvarchar" MaxLength="500" />
-          <Property Name="FollowupStatus" Type="int" Nullable="false" />
-          <Property Name="NextDate" Type="datetime" />
-          <Property Name="CreatedBy" Type="bigint" Nullable="false" />
-          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="ModifiedBy" Type="bigint" />
           <Property Name="ModifiedDate" Type="datetime" />
         </EntityType>
@@ -442,6 +428,19 @@
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="ModifiedBy" Type="bigint" />
           <Property Name="ModifiedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="tbl_Followup">
+          <Key>
+            <PropertyRef Name="FollowupId" />
+          </Key>
+          <Property Name="FollowupId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyId" Type="bigint" Nullable="false" />
+          <Property Name="FollowupStatus" Type="int" Nullable="false" />
+          <Property Name="NextFollowupDate" Type="datetime" />
+          <Property Name="Description" Type="nvarchar" MaxLength="500" />
+          <Property Name="Remarks" Type="nvarchar" MaxLength="500" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="CreatedBy" Type="bigint" Nullable="false" />
         </EntityType>
         <EntityType Name="tbl_Holiday">
           <Key>
@@ -786,7 +785,6 @@
           <EntitySet Name="tbl_AssignWorker" EntityType="Self.tbl_AssignWorker" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Attendance" EntityType="Self.tbl_Attendance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Company" EntityType="Self.tbl_Company" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="tbl_CompanyFollowup" EntityType="Self.tbl_CompanyFollowup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_CompanyRenewPayment" EntityType="Self.tbl_CompanyRenewPayment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_CompanyRequest" EntityType="Self.tbl_CompanyRequest" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_CompanySMSPackRenew" EntityType="Self.tbl_CompanySMSPackRenew" Schema="dbo" store:Type="Tables" />
@@ -799,6 +797,7 @@
           <EntitySet Name="tbl_EmployeePayment" EntityType="Self.tbl_EmployeePayment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_EmployeeRating" EntityType="Self.tbl_EmployeeRating" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Feedback" EntityType="Self.tbl_Feedback" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_Followup" EntityType="Self.tbl_Followup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Holiday" EntityType="Self.tbl_Holiday" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_HomeImage" EntityType="Self.tbl_HomeImage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_HomeSlider" EntityType="Self.tbl_HomeSlider" Schema="dbo" store:Type="Tables" />
@@ -836,22 +835,6 @@
           </Key>
           <Property Name="CompanyTypeId" Type="Int64" Nullable="false" />
           <Property Name="CompanyTypeName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-        </EntityType>
-        <EntityType Name="tbl_CompanyFollowup">
-          <Key>
-            <PropertyRef Name="CompanyFollowupId" />
-          </Key>
-          <Property Name="CompanyFollowupId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CompanyId" Type="Int64" Nullable="false" />
-          <Property Name="FollowupDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="FollowupText" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="FollowupStatus" Type="Int32" Nullable="false" />
-          <Property Name="NextDate" Type="DateTime" Precision="3" />
-          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int64" />
-          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="tbl_DynamicContent">
           <Key>
@@ -1056,7 +1039,6 @@
         <EntityContainer Name="AttendanceSystemEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="mst_AdminRole" EntityType="Self.mst_AdminRole" />
           <EntitySet Name="mst_CompanyType" EntityType="Self.mst_CompanyType" />
-          <EntitySet Name="tbl_CompanyFollowup" EntityType="Self.tbl_CompanyFollowup" />
           <EntitySet Name="tbl_DynamicContent" EntityType="Self.tbl_DynamicContent" />
           <EntitySet Name="tbl_EmployeeFingerprint" EntityType="Self.tbl_EmployeeFingerprint" />
           <EntitySet Name="tbl_EmployeeRating" EntityType="Self.tbl_EmployeeRating" />
@@ -1129,6 +1111,7 @@
           <EntitySet Name="tbl_InvoiceLastDocNo" EntityType="AttendanceSystemModel.tbl_InvoiceLastDocNo" />
           <EntitySet Name="mst_FinancialYear" EntityType="AttendanceSystemModel.mst_FinancialYear" />
           <EntitySet Name="tbl_EmployeeBuyTransaction" EntityType="AttendanceSystemModel.tbl_EmployeeBuyTransaction" />
+          <EntitySet Name="tbl_Followup" EntityType="AttendanceSystemModel.tbl_Followup" />
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -1450,6 +1433,8 @@
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int64" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="NextFollowupDate" Type="DateTime" Precision="3" />
+          <Property Name="FollowupStatus" Type="Int32" />
         </EntityType>
         <EntityType Name="tbl_CompanyRequest">
           <Key>
@@ -1692,6 +1677,19 @@
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int64" />
         </EntityType>
+        <EntityType Name="tbl_Followup">
+          <Key>
+            <PropertyRef Name="FollowupId" />
+          </Key>
+          <Property Name="FollowupId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyId" Type="Int64" Nullable="false" />
+          <Property Name="FollowupStatus" Type="Int32" Nullable="false" />
+          <Property Name="NextFollowupDate" Type="DateTime" Precision="3" />
+          <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1711,23 +1709,6 @@
               <MappingFragment StoreEntitySet="mst_CompanyType">
                 <ScalarProperty Name="CompanyTypeId" ColumnName="CompanyTypeId" />
                 <ScalarProperty Name="CompanyTypeName" ColumnName="CompanyTypeName" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tbl_CompanyFollowup">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_CompanyFollowup">
-              <MappingFragment StoreEntitySet="tbl_CompanyFollowup">
-                <ScalarProperty Name="CompanyFollowupId" ColumnName="CompanyFollowupId" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
-                <ScalarProperty Name="FollowupDate" ColumnName="FollowupDate" />
-                <ScalarProperty Name="FollowupText" ColumnName="FollowupText" />
-                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
-                <ScalarProperty Name="FollowupStatus" ColumnName="FollowupStatus" />
-                <ScalarProperty Name="NextDate" ColumnName="NextDate" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2225,6 +2206,8 @@
           <EntitySetMapping Name="tbl_Company">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Company">
               <MappingFragment StoreEntitySet="tbl_Company">
+                <ScalarProperty Name="FollowupStatus" ColumnName="FollowupStatus" />
+                <ScalarProperty Name="NextFollowupDate" ColumnName="NextFollowupDate" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
@@ -2510,6 +2493,20 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="tbl_Followup">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Followup">
+              <MappingFragment StoreEntitySet="tbl_Followup">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="NextFollowupDate" ColumnName="NextFollowupDate" />
+                <ScalarProperty Name="FollowupStatus" ColumnName="FollowupStatus" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="FollowupId" ColumnName="FollowupId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -2524,7 +2521,7 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />

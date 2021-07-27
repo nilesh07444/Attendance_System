@@ -190,6 +190,7 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\ContactFormController.cs" />
     <Compile Include="Areas\Admin\Controllers\EmployeeBuyTransactionController.cs" />
+    <Compile Include="Areas\Admin\Controllers\FollowupController.cs" />
     <Compile Include="Areas\Admin\Controllers\PaymentGatewayController.cs" />
     <Compile Include="Areas\Admin\Controllers\ReportController.cs" />
     <Compile Include="Areas\Admin\Controllers\SMSLogController.cs" />
@@ -301,9 +302,6 @@
     <Compile Include="Models\tbl_Company.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\tbl_CompanyFollowup.cs">
-      <DependentUpon>AttendanceSystem.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\tbl_CompanyRenewPayment.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
@@ -338,6 +336,9 @@
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tbl_Feedback.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tbl_Followup.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tbl_Holiday.cs">
@@ -415,6 +416,7 @@
     <Compile Include="ViewModel\EmployeeRatingVM.cs" />
     <Compile Include="ViewModel\EmployeeVM.cs" />
     <Compile Include="ViewModel\FeedbackVM.cs" />
+    <Compile Include="ViewModel\FollowupVM.cs" />
     <Compile Include="ViewModel\GeneralResponseVM.cs" />
     <Compile Include="ViewModel\HolidayVM.cs" />
     <Compile Include="ViewModel\HomeImageVM.cs" />
@@ -1614,6 +1616,10 @@
     <Content Include="Areas\Admin\Views\SMSRenew\_RazorPayPayment.cshtml" />
     <Content Include="Areas\Admin\Views\AccountRenew\_RazorPayPayment.cshtml" />
     <Content Include="Areas\Admin\Views\EmployeeBuyTransaction\_RazorPayPayment.cshtml" />
+    <Content Include="Areas\Admin\Views\Followup\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Followup\Reminders.cshtml" />
+    <Content Include="Areas\Admin\Views\Followup\Add.cshtml" />
+    <Content Include="Areas\Client\Views\HowToUse\Index.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />

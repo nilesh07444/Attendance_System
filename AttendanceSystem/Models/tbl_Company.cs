@@ -53,5 +53,7 @@ namespace AttendanceSystem.Models
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<long> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
+        public Nullable<System.DateTime> NextFollowupDate { get; set; }
+        public Nullable<int> FollowupStatus { get; set; }
     }
 }

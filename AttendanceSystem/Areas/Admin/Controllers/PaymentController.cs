@@ -848,22 +848,13 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             List<SelectListItem> lst = (from pt in listEmploymentCategory
                                         select new SelectListItem
                                         {
-                                            Text = GetEnumDescription((EmploymentCategory)pt.Key),
+                                            Text = CommonMethod.GetEnumDescription((EmploymentCategory)pt.Key),
                                             Value = pt.Key.ToString()
                                         }).ToList();
             return lst;
 
         }
 
-        // NOTE: returns Descriptor if there is no Description
-        private static string GetEnumDescription(Enum value)
-        {
-            FieldInfo fi = value.GetType().GetField(value.ToString());
-            DescriptionAttribute[] attributes = (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
-            if (attributes != null && attributes.Length > 0)
-                return attributes[0].Description;
-            else
-                return value.ToString();
-        }
+        
     }
 }

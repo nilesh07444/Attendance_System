@@ -7,7 +7,6 @@
       <Diagram DiagramId="143924d791744324899ea6aecada5bec" Name="Diagram1" ZoomLevel="86">
         <EntityTypeShape EntityType="AttendanceSystemModel.mst_AdminRole" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AttendanceSystemModel.mst_CompanyType" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_CompanyFollowup" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_DynamicContent" Width="1.5" PointX="2.75" PointY="10.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_EmployeeFingerprint" Width="1.5" PointX="8.75" PointY="11.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_EmployeeRating" Width="1.5" PointX="12.75" PointY="0.75" IsExpanded="true" />
@@ -44,6 +43,7 @@
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_InvoiceLastDocNo" Width="1.5" PointX="0.75" PointY="3.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.mst_FinancialYear" Width="1.5" PointX="5.375" PointY="10.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_EmployeeBuyTransaction" Width="1.5" PointX="3.375" PointY="14.75" />
+        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Followup" Width="1.5" PointX="5.375" PointY="23.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

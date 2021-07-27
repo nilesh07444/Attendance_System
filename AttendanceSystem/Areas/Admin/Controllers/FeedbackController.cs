@@ -264,7 +264,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             List<SelectListItem> lst = (from pt in listfeedbackStatus
                                         select new SelectListItem
                                         {
-                                            Text = pt.Value,
+                                            Text = CommonMethod.GetEnumDescription((FeedbackStatus)pt.Key),
                                             Value = pt.Key.ToString()
                                         }).ToList();
             return lst;
