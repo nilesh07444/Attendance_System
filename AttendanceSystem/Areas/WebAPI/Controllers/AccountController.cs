@@ -83,7 +83,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                 companyPackage.StartDate = companyObj.AccountExpiryDate.Value.AddMinutes(1);
                                 companyPackage.EndDate = companyObj.AccountExpiryDate.Value.AddDays(companyPackage.AccessDays);
 
-                                companyObj.CurrentPackageId = companyPackage.PackageId;
+                                companyObj.CurrentPackageId = companyPackage.CompanyRegistrationPaymentId;
                                 companyObj.AccountStartDate = companyPackage.StartDate;
                                 companyObj.AccountExpiryDate = companyPackage.EndDate;
                                 companyObj.CurrentEmployeeAccess = companyPackage.NoOfEmployee;
