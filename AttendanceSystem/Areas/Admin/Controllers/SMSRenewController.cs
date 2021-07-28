@@ -26,6 +26,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             try
             {
                 long companyId = clsAdminSession.CompanyId;
+                tbl_Company company = _db.tbl_Company.Where(x => x.CompanyId == companyId).FirstOrDefault();
+                clsAdminSession.CurrentSMSPackageId = company.CurrentSMSPackageId.HasValue ? company.CurrentSMSPackageId.Value : 0;
+
                 companySMSPackRenewVM = (from cp in _db.tbl_CompanySMSPackRenew
                                          where cp.CompanyId == companyId
                                          select new CompanySMSPackRenewVM

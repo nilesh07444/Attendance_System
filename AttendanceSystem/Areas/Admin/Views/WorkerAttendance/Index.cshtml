@@ -1,5 +1,5 @@
 ﻿@using AttendanceSystem.ViewModel;
-@model AttendanceSystem.ViewModel.WorkerAttendanceFilterVM
+@model AttendanceSystem.ViewModel.WorkerAttendanceReportListFilterVM
 @{
     ViewBag.Title = "WorkerAttendance";
     int counter = 1;
@@ -18,25 +18,37 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="card-header ">
-                                <div class="col-sm-3">
+                                <div class="col-sm-2">
                                     <div class="form-group">
                                         <label>Attendance Date</label>
-                                        @Html.TextBoxFor(model => model.AttendanceDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control", @placeholder = "Attendance Date", style = "height: calc(2.25rem + 6px)" })
+                                        @Html.TextBoxFor(model => model.StartDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control", @placeholder = "Start Date", style = "height: calc(2.25rem + 6px)" })
                                     </div>
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label>Attendance Date</label>
+                                        @Html.TextBoxFor(model => model.EndDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control", @placeholder = "End Date", style = "height: calc(2.25rem + 6px)" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
                                     <div class="form-group">
                                         <label>Site Location</label>
                                         @Html.DropDownListFor(model => model.SiteId, new SelectList(Model.SiteList, "Value", "Text"), "- All -", new { @class = "form-control", style = "" })
                                     </div>
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-2">
                                     <div class="form-group">
                                         <label>Worker</label>
                                         @Html.DropDownListFor(model => model.EmployeeId, new SelectList(Model.EmployeeList, "Value", "Text"), "- All -", new { @class = "form-control", style = "" })
                                     </div>
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label>Employment Category</label>
+                                        @Html.DropDownListFor(model => model.EmploymentCategory, new SelectList(Model.EmploymentCategoryList, "Value", "Text"), "- All -", new { @class = "form-control", style = "" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
                                     <div class="form-group">
                                         <label style="padding-top:45px"></label>
                                         <button class="btn btn-primary mr-1" id="btnSearch" type="button">Search</button>
@@ -63,7 +75,7 @@
                                 <tbody>
                                     @if (Model != null && Model.AttendanceList.Count > 0)
                                     {
-                                        foreach (WorkerAttendanceVM obj in Model.AttendanceList)
+                                        foreach (WorkerAttendanceReportVM obj in Model.AttendanceList)
                                         {
                                             <tr style="background-color:@obj.BgColor;">
                                                 <td>@counter.</td>
@@ -123,12 +135,14 @@
                 return false;
             }
 
-            var attendanceDate = $("#AttendanceDate").val();
+            var startDate = $("#StartDate").val();
+            var endDate = $("#EndDate").val();
             var siteId = $("#SiteId").val();
             var employeeId = $("#EmployeeId").val();
+            var employmentCategory = $("#EmploymentCategory").val();
 
             StartLoading();
-            window.location.href = "/admin/workerattendance/Index?attendanceDate=" + attendanceDate + "&siteId=" + siteId + "&employeeId=" + employeeId;
+            window.location.href = "/admin/workerattendance/Index?startDate=" + startDate + "&endDate=" + endDate + "&siteId=" + siteId + "&employeeId=" + employeeId + "&employmentCategory=" + employmentCategory;
         });
     });
 

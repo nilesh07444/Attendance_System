@@ -52,8 +52,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             try
             {
 
-
-
                 employeeFilterVM.EmployeeList = (from emp in _db.tbl_Employee
                                                  join rl in _db.mst_AdminRole on emp.AdminRoleId equals rl.AdminRoleId
                                                  where !emp.IsDeleted && emp.CompanyId == companyId && emp.AdminRoleId != (int)AdminRoles.Worker
@@ -112,7 +110,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 }
                 else
                 {
-                    tbl_CompanyRenewPayment companyPackage = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == companyId 
+                    long? companyAccountPackageId = _db.tbl_Company.Where(x => x.CompanyId == companyId).Select(x => x.CurrentPackageId).FirstOrDefault();
+                    clsAdminSession.CurrentAccountPackageId = companyAccountPackageId.HasValue ? companyAccountPackageId.Value : 0;
+
+                    tbl_CompanyRenewPayment companyPackage = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == companyId
                     && x.StartDate <= currentDateTime && x.EndDate >= currentDateTime
                         && (clsAdminSession.CurrentAccountPackageId > 0 ? x.CompanyRegistrationPaymentId == clsAdminSession.CurrentAccountPackageId : true)
                     && (clsAdminSession.CurrentAccountPackageId > 0 ? x.CompanyRegistrationPaymentId == clsAdminSession.CurrentAccountPackageId : true)).FirstOrDefault();

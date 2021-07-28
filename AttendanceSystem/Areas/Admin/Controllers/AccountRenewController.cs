@@ -26,14 +26,15 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             try
             {
                 long companyId = clsAdminSession.CompanyId;
+                tbl_Company company = _db.tbl_Company.Where(x => x.CompanyId == companyId).FirstOrDefault();
+                clsAdminSession.CurrentAccountPackageId = company.CurrentPackageId.HasValue ? company.CurrentPackageId.Value : 0;
+
                 companyRenewPaymentVM = (from cp in _db.tbl_CompanyRenewPayment
-                                         join cm in _db.tbl_Company on cp.CompanyId equals cm.CompanyId
                                          where cp.CompanyId == companyId
                                          select new CompanyRenewPaymentVM
                                          {
                                              CompanyRegistrationPaymentId = cp.CompanyRegistrationPaymentId,
                                              CompanyId = cp.CompanyId,
-                                             CompanyName = cm.CompanyName,
                                              Amount = cp.Amount,
                                              PaymentFor = cp.PaymentFor,
                                              PaymentGatewayResponseId = cp.PaymentGatewayResponseId,
@@ -46,6 +47,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                              NoOfSMS = cp.NoOfSMS,
                                              CreatedDate = cp.CreatedDate
                                          }).OrderByDescending(x => x.CompanyRegistrationPaymentId).ToList();
+
             }
             catch (Exception ex)
             {
@@ -160,7 +162,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         _db.tbl_CompanyRenewPayment.Add(objCompanyRenewPayment);
                         _db.SaveChanges();
 
-                       
+
                         tbl_Company companyObj = _db.tbl_Company.Where(x => x.CompanyId == companyId).FirstOrDefault();
                         if (companyObj.IsTrialMode)
                         {
@@ -260,7 +262,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                 _db.tbl_CompanySMSPackRenew.Add(objCompanySMSPackRenew);
                                 _db.SaveChanges();
 
-
+                                companyObj.AccountExpiryDate = objCompanyRenewPayment.EndDate;
                                 companyObj.CurrentPackageId = objCompanyRenewPayment.CompanyRegistrationPaymentId;
                                 companyObj.CurrentSMSPackageId = companyObj.CurrentSMSPackageId == null ? Convert.ToInt32(objCompanySMSPackRenew.CompanySMSPackRenewId) : companyObj.CurrentSMSPackageId;
                                 _db.SaveChanges();
@@ -356,7 +358,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             }
             return invoiceNo;
         }
-        
+
         public PartialViewResult CreateRazorPaymentOrder(decimal Amount, string description)
         {
             string RazorPayKey = string.Empty;

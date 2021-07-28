@@ -92,7 +92,28 @@
 <script>
 
     function downloadAccountPackageInvoice(Id) {
-        alert("Invoice PDF generation is in development.");
+        if (Id > 0) {
+             var URL = '@Url.Action("DownloadInvoice", "AccountRenew")';
+                $.ajax({
+                    type: 'POST',
+                    async: true,
+                    url: URL + "?id=" + Id,
+                    success: function (result) {
+                        if (result == "success") {
+                            alert("Invoice download Successfully...");
+                            window.location.reload();
+                        }
+                        else {
+                            alert("Something went wrong. Please try again");
+                        }
+
+                       //StopLoading();
+                    },
+                    error: function (resultData) {
+                        //StopLoading();
+                    }
+                });
+        }
     }
 
 </script>

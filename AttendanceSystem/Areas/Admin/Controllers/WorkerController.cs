@@ -108,6 +108,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 }
                 else
                 {
+                    long? companyAccountPackageId = _db.tbl_Company.Where(x => x.CompanyId == companyId).Select(x => x.CurrentPackageId).FirstOrDefault();
+                    clsAdminSession.CurrentAccountPackageId = companyAccountPackageId.HasValue ? companyAccountPackageId.Value : 0;
+
                     tbl_CompanyRenewPayment companyPackage = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == companyId 
                     && x.StartDate <= currentDateTime && x.EndDate >= currentDateTime
                     && (clsAdminSession.CurrentAccountPackageId > 0 ? x.CompanyRegistrationPaymentId == clsAdminSession.CurrentAccountPackageId : true)).FirstOrDefault();

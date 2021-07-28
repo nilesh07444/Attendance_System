@@ -22,15 +22,16 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             _db = new AttendanceSystemEntities();
             companyId = clsAdminSession.CompanyId;
         }
-        public ActionResult Index(DateTime? attendanceDate, int? siteId, long? employeeId)
+        public ActionResult Index(DateTime? startDate, DateTime? endDate, int? siteId, long? employeeId, long? employmentCategory)
         {
-            WorkerAttendanceFilterVM workerAttendanceFilterVM = new WorkerAttendanceFilterVM();
+            WorkerAttendanceReportListFilterVM workerAttendanceFilterVM = new WorkerAttendanceReportListFilterVM();
             try
             {
                 companyId = clsAdminSession.CompanyId;
-                if (attendanceDate.HasValue)
+                if (startDate.HasValue && endDate.HasValue)
                 {
-                    workerAttendanceFilterVM.AttendanceDate = attendanceDate.Value;
+                    workerAttendanceFilterVM.StartDate = startDate.Value;
+                    workerAttendanceFilterVM.EndDate = endDate.Value;
                 }
                 if (siteId.HasValue)
                 {
@@ -40,6 +41,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 if (employeeId.HasValue)
                 {
                     workerAttendanceFilterVM.EmployeeId = employeeId.Value;
+                }
+
+                if (employmentCategory.HasValue)
+                {
+                    workerAttendanceFilterVM.EmploymentCategory = employmentCategory.Value;
                 }
 
                 workerAttendanceFilterVM.AttendanceList = (from at in _db.tbl_WorkerAttendance
@@ -52,12 +58,13 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                            from workerTypeInfo in outerworkerTypeInfo.DefaultIfEmpty()
 
                                                            where emp.CompanyId == companyId
-                                                           && at.AttendanceDate == workerAttendanceFilterVM.AttendanceDate
+                                                           && at.AttendanceDate >= workerAttendanceFilterVM.StartDate && at.AttendanceDate<= workerAttendanceFilterVM.EndDate
                                                            && (workerAttendanceFilterVM.SiteId > 0 ? (at.MorningSiteId == workerAttendanceFilterVM.SiteId
                                                            || at.AfternoonSiteId == workerAttendanceFilterVM.SiteId
                                                            || at.EveningSiteId == workerAttendanceFilterVM.SiteId) : true)
                                                            && (workerAttendanceFilterVM.EmployeeId.HasValue ? at.EmployeeId == workerAttendanceFilterVM.EmployeeId.Value : true)
-                                                           select new WorkerAttendanceVM
+                                                           && (workerAttendanceFilterVM.EmploymentCategory.HasValue ? emp.EmploymentCategory == workerAttendanceFilterVM.EmploymentCategory.Value : true)
+                                                           select new WorkerAttendanceReportVM
                                                            {
                                                                AttendanceId = at.WorkerAttendanceId,
                                                                CompanyId = emp.CompanyId,
@@ -85,6 +92,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 });
                 workerAttendanceFilterVM.EmployeeList = GetWorkerList();
                 workerAttendanceFilterVM.SiteList = GetSiteList();
+                workerAttendanceFilterVM.EmploymentCategoryList = GetEmploymentCategoryList();
             }
             catch (Exception ex)
             {
@@ -896,6 +904,20 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             {
             }
             return View(workerAttendanceViewVM);
+        }
+
+        public static List<SelectListItem> GetEmploymentCategoryList()
+        {
+            string[] employmentCategoryArr = Enum.GetNames(typeof(EmploymentCategory));
+            var listEmploymentCategory = employmentCategoryArr.Select((value, key) => new { value, key }).ToDictionary(x => x.key + 1, x => x.value);
+
+            List<SelectListItem> lst = (from pt in listEmploymentCategory
+                                        select new SelectListItem
+                                        {
+                                            Text = pt.Value,
+                                            Value = pt.Key.ToString()
+                                        }).ToList();
+            return lst;
         }
     }
 }

@@ -130,7 +130,49 @@ namespace AttendanceSystem.ViewModel
         public List<SelectListItem> EmployeeList { get; set; }
     }
 
+    public class WorkerAttendanceReportListFilterVM
+    {
+        public WorkerAttendanceReportListFilterVM()
+        {
+            StartDate = new DateTime(CommonMethod.CurrentIndianDateTime().Year, CommonMethod.CurrentIndianDateTime().Month, 1);
+            EndDate = StartDate.AddMonths(1).AddDays(-1);
+        }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public int SiteId { get; set; }
+        public long? EmployeeId { get; set; }
+        public long? EmploymentCategory { get; set; }
+
+        public List<WorkerAttendanceReportVM> AttendanceList { get; set; }
+        public List<SelectListItem> SiteList { get; set; }
+        public List<SelectListItem> EmployeeList { get; set; }
+        public List<SelectListItem> EmploymentCategoryList { get; set; }
+    }
+
     public class WorkerAttendanceVM
+    {
+        public long AttendanceId { get; set; }
+        public long CompanyId { get; set; }
+        public long EmployeeId { get; set; }
+        public string EmployeeCode { get; set; }
+        public string WorkerTypeName { get; set; }
+        public string Name { get; set; }
+        public DateTime AttendanceDate { get; set; }
+        public string ProfilePicture { get; set; }
+        public int EmploymentCategory { get; set; }
+        public string EmploymentCategoryText { get; set; }
+        public bool IsMorning { get; set; }
+        public string IsMorningText { get; set; }
+        public bool IsAfternoon { get; set; }
+        public string IsAfternoonText { get; set; }
+        public bool IsEvening { get; set; }
+        public string IsEveningText { get; set; }
+        public string SiteName { get; set; }
+        public string BgColor { get; set; }
+
+    }
+
+    public class WorkerAttendanceReportVM
     {
         public long AttendanceId { get; set; }
         public long CompanyId { get; set; }

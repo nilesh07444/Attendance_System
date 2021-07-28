@@ -28,6 +28,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 DateTime currentDateTime = CommonMethod.CurrentIndianDateTime();
                 if (roleId == (int)AdminRoles.CompanyAdmin)
                 {
+                    tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == companyId).FirstOrDefault();
+                    clsAdminSession.CurrentAccountPackageId = objCompany.CurrentPackageId.HasValue ? objCompany.CurrentPackageId.Value : 0;
+                    clsAdminSession.CurrentSMSPackageId = objCompany.CurrentSMSPackageId.HasValue ? objCompany.CurrentSMSPackageId.Value : 0;
+
                     tbl_CompanySMSPackRenew objCompanySMSPackRenew =
                         _db.tbl_CompanySMSPackRenew
                         .Where(x => clsAdminSession.CurrentSMSPackageId > 0 ? (x.CompanySMSPackRenewId == clsAdminSession.CurrentSMSPackageId) :
@@ -52,7 +56,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                      select at.AttendanceId
                                                ).Count();
 
-                    tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == companyId).FirstOrDefault();
+
 
                     if (clsAdminSession.IsTrialMode)
                     {
@@ -71,7 +75,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         }
                         else
                         {
-                            dashboardVM.AccountExpiryDate = objCompany.TrialExpiryDate.Value;
+                            dashboardVM.AccountExpiryDate = objCompany.AccountExpiryDate.Value;
                             dashboardVM.NoOfEmployeeAllowed = 0;
                         }
                     }
