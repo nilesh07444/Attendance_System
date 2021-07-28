@@ -37,7 +37,11 @@ namespace AttendanceSystem
 
     public class CreateFollowupVM
     {
-
+        public long CompanyId { get; set; }
+        public int? FollowupStatus { get; set; }
+        public DateTime? NextFollowupDate { get; set; }
+        public string Description { get; set; }
+        public string Remarks { get; set; }
     }
 
 }

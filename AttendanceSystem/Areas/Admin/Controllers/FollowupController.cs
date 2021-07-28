@@ -84,7 +84,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                      IsCompanyInTrialMode = c.IsTrialMode,
                                                      CompanyAccountExpiryDate = (c.IsTrialMode ? c.TrialExpiryDate : c.AccountExpiryDate),
                                                      FollowupStatus = c.FollowupStatus,
-                                                     IsActive = c.IsActive
+                                                     IsActive = c.IsActive,
+                                                     NextFollowupDate = c.NextFollowupDate
                                                  }).OrderBy(x => x.CompanyAccountExpiryDate).ToList();
 
                 followupFilterVM.FollowupList.ForEach(x =>
@@ -125,17 +126,79 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                     Remarks = f.Remarks,
                                     CreatedDate = f.CreatedDate,
                                 }).OrderByDescending(x => x.CreatedDate).ToList();
+
+                ViewBag.CompanyId = companyId;
             }
             catch (Exception ex)
             {
             }
 
-            return View();
+            return View(lstFollowups);
+        }
+
+        [HttpPost]
+        public string Add(CreateFollowupVM followupVM)
+        {
+            string msg = string.Empty;
+
+            try
+            {
+                tbl_Followup objFollowup = new tbl_Followup();
+                objFollowup.CompanyId = followupVM.CompanyId;
+                objFollowup.NextFollowupDate = followupVM.NextFollowupDate;
+                objFollowup.FollowupStatus = followupVM.FollowupStatus.Value;
+                objFollowup.Description = followupVM.Description;
+                objFollowup.Remarks = followupVM.Remarks;
+                objFollowup.CreatedDate = CommonMethod.CurrentIndianDateTime();
+                objFollowup.CreatedBy = (int)PaymentGivenBy.SuperAdmin;
+                _db.tbl_Followup.Add(objFollowup);
+                _db.SaveChanges();
+
+                tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == followupVM.CompanyId).FirstOrDefault();
+                if (objCompany != null)
+                {
+                    objCompany.FollowupStatus = followupVM.FollowupStatus;
+                    objCompany.NextFollowupDate = followupVM.FollowupStatus == (int)FollowupStatus.Open ? followupVM.NextFollowupDate : null;
+                    _db.SaveChanges();
+                }
+
+                msg = "success";
+            }
+            catch (Exception ex)
+            {
+                msg = "exception";
+            }
+
+            return msg;
         }
 
         public ActionResult Reminders()
         {
-            return View();
+            List<FollowupVM> followupReminderList = new List<FollowupVM>();
+            try
+            {
+                DateTime currentDate = CommonMethod.CurrentIndianDateTime();
+                followupReminderList = (from c in _db.tbl_Company
+                                where !c.IsDeleted
+                                && c.FollowupStatus == (int)FollowupStatus.Open 
+                                && DbFunctions.TruncateTime(c.NextFollowupDate) <= DbFunctions.TruncateTime(currentDate)
+                                select new FollowupVM
+                                {
+                                    CompanyId = c.CompanyId,
+                                    CompanyName = c.CompanyName,
+                                    CompanyCode = c.CompanyCode,
+                                    IsCompanyInTrialMode = c.IsTrialMode,
+                                    CompanyAccountExpiryDate = (c.IsTrialMode ? c.TrialExpiryDate : c.AccountExpiryDate),
+                                    FollowupStatus = c.FollowupStatus,
+                                    IsActive = c.IsActive,
+                                    NextFollowupDate = c.NextFollowupDate
+                                }).OrderBy(x => x.CompanyAccountExpiryDate).ToList();
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return View(followupReminderList);
         }
 
         private List<SelectListItem> GetFollowupStatusList()

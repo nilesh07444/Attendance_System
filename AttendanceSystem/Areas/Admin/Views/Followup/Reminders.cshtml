@@ -1,17 +1,108 @@
-﻿
+﻿@using AttendanceSystem.Helper;
+@model List<FollowupVM>
 @{
-    Layout = null;
+    ViewBag.Title = "Followup";
+
+    int counter = 1;
 }
 
-<!DOCTYPE html>
+<section class="section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12">
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Reminders</title>
-</head>
-<body>
-    <div> 
+                <div class="card">
+                    <div class="card-header" style="background-color: #425C59;">
+                        <h4 style="color: #FFCEA3;">Followup Reminder List</h4>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover" id="tableExport" style="width:100%;">
+                                <thead>
+                                    <tr>
+                                        <td>#</td>
+                                        <th>Company Name</th>
+                                        <th>Company Code</th>
+                                        <th>Expiry Date</th>
+                                        <th>Trial Mode</th>
+                                        <th>Primary Status</th>
+                                        <th>Secondary Status</th>
+                                        <th>Next Followup Date</th>
+                                        <th>Company Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null && Model.Count > 0)
+                                    {
+                                        foreach (FollowupVM obj in Model)
+                                        {
+                                            <tr>
+                                                <td>@counter.</td>
+                                                <td>@obj.CompanyName</td>
+                                                <td>@obj.CompanyCode</td>
+                                                <td>@Convert.ToDateTime(obj.CompanyAccountExpiryDate).ToString("dd MMM yyyy")</td>
+                                                <td>@(obj.IsCompanyInTrialMode ? "Yes" : "No")</td>
+                                                <td>
+                                                    @if (obj.FollowupStatus == (int)FollowupStatus.Open)
+                                                    {
+                                                        <span>Open</span>
+                                                    }
+                                                    else if (obj.FollowupStatus == (int)FollowupStatus.Interested || obj.FollowupStatus == (int)FollowupStatus.NotInterested)
+                                                    {
+                                                        <span>Close</span>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @if (obj.FollowupStatus != (int)FollowupStatus.Open)
+                                                    {
+                                                        if (obj.FollowupStatus == (int)FollowupStatus.Interested)
+                                                        {
+                                                            <span>Interested</span>
+                                                        }
+                                                        else if (obj.FollowupStatus == (int)FollowupStatus.NotInterested)
+                                                        {
+                                                            <span>Not Interested</span>
+                                                        }
+                                                    }
+                                                </td>
+                                                <td>@(obj.NextFollowupDate != null ? Convert.ToDateTime(obj.NextFollowupDate).ToString("dd MMM yyyy") : "")</td>
+                                                @if (obj.IsActive == true)
+                                                {
+                                                    <td><span class="badge badge-success">Active</span></td>
+                                                }
+                                                else
+                                                {
+                                                    <td><span class="badge badge-danger">InActive</span></td>
+                                                }
+                                                <td>
+                                                    @if (obj.FollowupStatus != (int)FollowupStatus.NotInterested)
+                                                    {
+                                                        <a target="_blank" href="/admin/followup/add/@obj.CompanyId" class="btn btn-icon btn-danger">Followup</a>
+                                                    }
+                                                </td>
+                                            </tr>
+
+                                            counter++;
+                                        }
+                                    }
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</body>
-</html>
+</section>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+

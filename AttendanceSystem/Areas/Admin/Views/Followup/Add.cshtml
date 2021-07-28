@@ -1,7 +1,7 @@
-﻿@model List<FollowupVM>
+﻿@using AttendanceSystem.Helper;
+@model List<FollowupVM>
 @{
-    ViewBag.Title = "Followup";
-
+    ViewBag.Title = "Followup"; 
     int counter = 1;
 }
 
@@ -15,13 +15,17 @@
     <div class="section-body">
         <div class="row">
             <div class="col-12">
-
                 <div class="card">
-                    <div class="card-header" style="background-color: #425C59;">
-                        <h4 style="color: #FFCEA3;">Followup List - @ViewBag.CompanyName</h4>
+                    <div class="card-header" style="background-color: #425C59; display: block;">
+                        <div class="pull-left">
+                            <h4 style="color: #FFCEA3;">Followup List - @ViewBag.CompanyName</h4>
+                        </div>
+                        <div class="pull-right">
+                            <a href="/admin/followup" class="btn btn-warning pull-right"><i class="fas fa-backward"></i> Back</a>
+                        </div>
                     </div>
                 </div>
-
+                  
                 <div class="card">
                     <div class="card-header" style="display: block;">
                         <div class="card-header-action pull-right">
@@ -35,7 +39,8 @@
                                     <tr>
                                         <td>#</td>
                                         <th>Followup Date</th>
-                                        <th>Followup Status</th>
+                                        <th>Primary Status</th>
+                                        <th>Secondary Status</th>
                                         <th>Next Followup Date</th>
                                         <th>Description</th>
                                         <th>Remarks</th>
@@ -49,7 +54,29 @@
                                             <tr>
                                                 <td>@counter.</td>
                                                 <td>@obj.CreatedDate.ToString("dd MMM yyyy hh:mm tt")</td>
-                                                <td>@obj.FollowupStatus</td>
+                                                <td>
+                                                    @if (obj.FollowupStatus == (int)FollowupStatus.Open)
+                                                    {
+                                                        <span>Open</span>
+                                                    }
+                                                    else if (obj.FollowupStatus == (int)FollowupStatus.Interested || obj.FollowupStatus == (int)FollowupStatus.NotInterested)
+                                                    {
+                                                        <span>Close</span>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @if (obj.FollowupStatus != (int)FollowupStatus.Open)
+                                                    {
+                                                        if (obj.FollowupStatus == (int)FollowupStatus.Interested)
+                                                        {
+                                                            <span>Interested</span>
+                                                        }
+                                                        else if (obj.FollowupStatus == (int)FollowupStatus.NotInterested)
+                                                        {
+                                                            <span>Not Interested</span>
+                                                        }
+                                                    }
+                                                </td>
                                                 <td>@(obj.NextFollowupDate != null ? Convert.ToDateTime(obj.NextFollowupDate).ToString("dd MMM yyyy") : "")</td>
                                                 <td>@obj.Description</td>
                                                 <td>@obj.Remarks</td>
@@ -124,7 +151,7 @@
                 </div>
 
             </div>
-            <div class="modal-footer"> 
+            <div class="modal-footer">
                 <button data-dismiss="modal" class="btn btn-primary" type="button">Close</button>
                 <button id="btnSaveFollowup" class="btn btn-success" type="button">Save</button>
             </div>
@@ -167,26 +194,6 @@
         $("input[name='rdoPrimaryStatus']").prop('checked', false);
         $("input[name='rdoSecondaryStatus']").prop('checked', false);
     }
-
-    $(document).on("click", "#btnSaveFollowup", function () {
-        
-        var primaryStatus = $("input[name='rdoPrimaryStatus']:checked").val();
-        var secondaryStatus = $("input[name='rdoSecondaryStatus']:checked").val();
-        var secondaryStatus = $("input[name='rdoSecondaryStatus']:checked").val();
-        var nextFollowupDate = $("#txtNextFollowupDate").val();
-        var description = $("#txtDescription").val();
-        var remarks = $("#txtRemarks").val();
-
-        var isFormValid = checkValidation();
-
-        if (isFormValid) {
-            alert("true");
-        }
-        else {
-            alert("false");
-        }
-
-    });
 
     function checkValidation() {
         var requiredText = "This field is required";
@@ -244,5 +251,52 @@
         else
             return false;
     }
+
+    $(document).on("click", "#btnSaveFollowup", function () {
+
+        var primaryStatus = $("input[name='rdoPrimaryStatus']:checked").val();
+        var secondaryStatus = $("input[name='rdoSecondaryStatus']:checked").val();
+        var nextFollowupDate = $("#txtNextFollowupDate").val();
+        var description = $("#txtDescription").val();
+        var remarks = $("#txtRemarks").val();
+
+        var isFormValid = checkValidation();
+
+        if (isFormValid) {
+            $('#addFollowupModal').modal('hide');
+            StartLoading();
+
+            var companyId = '@ViewBag.CompanyId';
+            var actualStatus = (primaryStatus == "1" ? primaryStatus : secondaryStatus);
+
+            var StrURL = '/Admin/Followup/Add';
+            $.ajax({
+                url: StrURL,
+                cache: false,
+                data: {
+                    'CompanyId': parseInt(companyId),
+                    'FollowupStatus': parseInt(actualStatus),
+                    'NextFollowupDate': (primaryStatus == "1" ? nextFollowupDate : null),
+                    'Description': description,
+                    'Remarks': remarks
+                },
+                type: 'POST',
+                success: function (data) {
+                    StopLoading();
+                    if (data == "success") {
+                        alert("Followup saved successfully");
+                        window.location.reload();
+                    }
+                    else {
+                        alert("Something went wrong. Please try again later.")
+                    }
+                },
+                error: function (req, status, error) {
+                    alert(error);
+                }
+            });
+        }
+
+    });
 
 </script>

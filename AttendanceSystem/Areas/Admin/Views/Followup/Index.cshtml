@@ -59,9 +59,10 @@
                                         <th>Company Name</th>
                                         <th>Company Code</th>
                                         <th>Expiry Date</th>
-                                        <th>Trail Mode</th>
+                                        <th>Trial Mode</th>
                                         <th>Primary Status</th>
                                         <th>Secondary Status</th>
+                                        <th>Next Followup Date</th>
                                         <th>Company Status</th>
                                         <th>Action</th>
                                     </tr>
@@ -100,6 +101,7 @@
                                                         }
                                                     }
                                                 </td>
+                                                <td>@(obj.NextFollowupDate != null ? Convert.ToDateTime(obj.NextFollowupDate).ToString("dd MM yyyy") : "")</td>
                                                 @if (obj.IsActive == true)
                                                 {
                                                     <td><span class="badge badge-success">Active</span></td>
@@ -109,7 +111,10 @@
                                                     <td><span class="badge badge-danger">InActive</span></td>
                                                 }
                                                 <td>
-                                                    <a href="/admin/followup/add/@obj.CompanyId" class="btn btn-icon btn-danger">Followup</a>
+                                                    @if (obj.FollowupStatus != (int)FollowupStatus.NotInterested)
+                                                    {
+                                                        <a href="/admin/followup/add/@obj.CompanyId" class="btn btn-icon btn-danger">Followup</a>
+                                                    }
                                                 </td>
                                             </tr>
 
@@ -134,7 +139,7 @@
 
 <script type="text/javascript">
 
-    $('#btnSearch').click(function () { 
+    $('#btnSearch').click(function () {
         var expiryDate = $("#ExpiryDate").val();
         var ddlPrimaryStatus = $("#PrimaryFollowupStatus").val();
         var ddlSecondaryStatus = ddlPrimaryStatus == "4" ? $("#SecondaryFollowupStatus").val() : "";
