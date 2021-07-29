@@ -192,6 +192,13 @@ namespace AttendanceSystem.ViewModel
         public string IsEveningText { get; set; }
         public string SiteName { get; set; }
         public string BgColor { get; set; }
+        public decimal CalcTodaySalary { get; set; }
+        public decimal ActTodaySalary { get; set; }
+        public decimal TotalTodaySalary { get; set; }
+        public decimal SalaryGiven { get; set; }
+        public decimal MonthlySalary { get; set; }
+        public decimal PerCategoryPrice { get; set; }
+        public bool IsClosed { get; set; }
 
     }
 

@@ -42,5 +42,7 @@ namespace AttendanceSystem.Models
         public Nullable<decimal> NoOfHoursWorked { get; set; }
         public Nullable<int> NoOfUnitWorked { get; set; }
         public bool IsClosed { get; set; }
+        public decimal TodaySalary { get; set; }
+        public decimal SalaryGiven { get; set; }
     }
 }

@@ -58,7 +58,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                            from workerTypeInfo in outerworkerTypeInfo.DefaultIfEmpty()
 
                                                            where emp.CompanyId == companyId
-                                                           && at.AttendanceDate >= workerAttendanceFilterVM.StartDate && at.AttendanceDate<= workerAttendanceFilterVM.EndDate
+                                                           && at.AttendanceDate >= workerAttendanceFilterVM.StartDate && at.AttendanceDate <= workerAttendanceFilterVM.EndDate
                                                            && (workerAttendanceFilterVM.SiteId > 0 ? (at.MorningSiteId == workerAttendanceFilterVM.SiteId
                                                            || at.AfternoonSiteId == workerAttendanceFilterVM.SiteId
                                                            || at.EveningSiteId == workerAttendanceFilterVM.SiteId) : true)
@@ -79,6 +79,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                                IsEvening = (workerAttendanceFilterVM.SiteId == 0 && at.IsEvening ? true : (at.IsEvening && at.EveningSiteId == workerAttendanceFilterVM.SiteId ? true : false)),
                                                                ProfilePicture = emp.ProfilePicture,
                                                                SiteName = (siteInfo != null ? siteInfo.SiteName : ""),
+                                                               SalaryGiven = at.SalaryGiven,
+                                                               TotalTodaySalary = at.TodaySalary,
+                                                               IsClosed = at.IsClosed,
+                                                               MonthlySalary = emp.MonthlySalaryPrice.HasValue ? emp.MonthlySalaryPrice.Value : 0,
+                                                               PerCategoryPrice = emp.PerCategoryPrice
                                                            }).OrderByDescending(x => x.AttendanceDate).ToList();
 
                 workerAttendanceFilterVM.AttendanceList.ForEach(x =>
@@ -89,6 +94,62 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     x.IsAfternoonText = x.IsAfternoon ? ErrorMessage.YES : ErrorMessage.NO;
                     x.IsEveningText = x.IsEvening ? ErrorMessage.YES : ErrorMessage.NO;
                     x.BgColor = workerAttendanceFilterVM.AttendanceList.Any(z => z.EmployeeId == x.EmployeeId && z.AttendanceDate == x.AttendanceDate && z.AttendanceId != x.AttendanceId) ? ErrorMessage.Red : string.Empty;
+
+                    decimal totalDaysinMonth = DateTime.DaysInMonth(x.AttendanceDate.Year, x.AttendanceDate.Month);
+                    if (x.EmploymentCategory == (int)EmploymentCategory.DailyBased)
+                    {
+                        if (x.IsClosed)
+                        {
+                            x.ActTodaySalary = (x.IsMorning && x.IsAfternoon && x.IsEvening ? (x.PerCategoryPrice) : (x.PerCategoryPrice / 2));
+                            x.CalcTodaySalary = 0;
+                        }
+                        else
+                        {
+                            x.CalcTodaySalary = (x.IsMorning && x.IsAfternoon && x.IsEvening ? (x.PerCategoryPrice) : (x.PerCategoryPrice / 2));
+                            x.ActTodaySalary = 0;
+                        }
+                    }
+                    else if (x.EmploymentCategory == (int)EmploymentCategory.HourlyBased)
+                    {
+                        if (x.IsClosed)
+                        {
+                            x.ActTodaySalary = x.TotalTodaySalary;
+                            x.CalcTodaySalary = 0;
+                        }
+                        else
+                        {
+                            x.CalcTodaySalary = 0;
+                            x.ActTodaySalary = 0;
+                        }
+                    }
+                    else if (x.EmploymentCategory == (int)EmploymentCategory.UnitBased)
+                    {
+                        if (x.IsClosed)
+                        {
+                            x.ActTodaySalary = x.TotalTodaySalary;
+                            x.CalcTodaySalary = 0;
+                        }
+                        else
+                        {
+                            x.CalcTodaySalary = 0;
+                            x.ActTodaySalary = 0;
+                        }
+                    }
+                    else if (x.EmploymentCategory == (int)EmploymentCategory.MonthlyBased)
+                    {
+                        decimal perDayAmount = Math.Round(x.MonthlySalary / totalDaysinMonth, 2);
+                        if (x.IsClosed)
+                        {
+                            x.ActTodaySalary = (x.IsMorning && x.IsAfternoon && x.IsEvening ? (perDayAmount) : (perDayAmount / 2));
+                            x.CalcTodaySalary = 0;
+                        }
+                        else
+                        {
+                            x.CalcTodaySalary = (x.IsMorning && x.IsAfternoon && x.IsEvening ? (perDayAmount) : (perDayAmount / 2));
+                            x.ActTodaySalary = 0;
+                        }
+                    }
+
                 });
                 workerAttendanceFilterVM.EmployeeList = GetWorkerList();
                 workerAttendanceFilterVM.SiteList = GetSiteList();
@@ -474,6 +535,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                                 if (addWorkerAttendanceVM.EmploymentCategoryId == (int)EmploymentCategory.UnitBased)
                                     attendanceObject.NoOfHoursWorked = addWorkerAttendanceVM.NoOfUnitWorked;
+
+                                attendanceObject.SalaryGiven = addWorkerAttendanceVM.SalaryGiven > 0 ? addWorkerAttendanceVM.SalaryGiven : 0;
+                                attendanceObject.TodaySalary = (addWorkerAttendanceVM.TodaySalary.HasValue ? addWorkerAttendanceVM.TodaySalary.Value : 0) + addWorkerAttendanceVM.ExtraHoursAmount;
 
                                 tbl_AssignWorker assignedWorker = _db.tbl_AssignWorker.Where(x => x.SiteId == addWorkerAttendanceVM.SiteId && x.Date == addWorkerAttendanceVM.AttendanceDate && x.EmployeeId == addWorkerAttendanceVM.EmployeeId && !x.IsClosed).FirstOrDefault();
                                 if (assignedWorker != null)

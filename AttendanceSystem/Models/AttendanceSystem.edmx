@@ -736,6 +736,8 @@
           <Property Name="NoOfHoursWorked" Type="numeric" Precision="18" Scale="2" />
           <Property Name="NoOfUnitWorked" Type="int" />
           <Property Name="IsClosed" Type="bit" Nullable="false" />
+          <Property Name="TodaySalary" Type="numeric" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="SalaryGiven" Type="numeric" Precision="18" Scale="2" Nullable="false" />
         </EntityType>
         <EntityType Name="tbl_WorkerPayment">
           <Key>
@@ -1091,7 +1093,6 @@
           <EntitySet Name="tbl_Conversion" EntityType="AttendanceSystemModel.tbl_Conversion" />
           <EntitySet Name="tbl_WorkerPayment" EntityType="AttendanceSystemModel.tbl_WorkerPayment" />
           <EntitySet Name="tbl_HomeImage" EntityType="AttendanceSystemModel.tbl_HomeImage" />
-          <EntitySet Name="tbl_WorkerAttendance" EntityType="AttendanceSystemModel.tbl_WorkerAttendance" />
           <EntitySet Name="tbl_Setting" EntityType="AttendanceSystemModel.tbl_Setting" />
           <EntitySet Name="tbl_AdminUser" EntityType="AttendanceSystemModel.tbl_AdminUser" />
           <EntitySet Name="tbl_Company" EntityType="AttendanceSystemModel.tbl_Company" />
@@ -1112,6 +1113,7 @@
           <EntitySet Name="mst_FinancialYear" EntityType="AttendanceSystemModel.mst_FinancialYear" />
           <EntitySet Name="tbl_EmployeeBuyTransaction" EntityType="AttendanceSystemModel.tbl_EmployeeBuyTransaction" />
           <EntitySet Name="tbl_Followup" EntityType="AttendanceSystemModel.tbl_Followup" />
+          <EntitySet Name="tbl_WorkerAttendance" EntityType="AttendanceSystemModel.tbl_WorkerAttendance" />
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -1287,39 +1289,6 @@
           <Property Name="CreatedBy" Type="Int64" Nullable="false" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int64" />
-        </EntityType>
-        <EntityType Name="tbl_WorkerAttendance">
-          <Key>
-            <PropertyRef Name="WorkerAttendanceId" />
-          </Key>
-          <Property Name="WorkerAttendanceId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="EmployeeId" Type="Int64" Nullable="false" />
-          <Property Name="AttendanceDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="IsMorning" Type="Boolean" Nullable="false" />
-          <Property Name="MorningSiteId" Type="Int64" />
-          <Property Name="MorningAttendanceBy" Type="Int64" />
-          <Property Name="MorningAttendanceDate" Type="DateTime" Precision="3" />
-          <Property Name="MorningLatitude" Type="Decimal" Precision="11" Scale="8" />
-          <Property Name="MorningLongitude" Type="Decimal" Precision="11" Scale="8" />
-          <Property Name="MorningLocationFrom" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="IsAfternoon" Type="Boolean" Nullable="false" />
-          <Property Name="AfternoonSiteId" Type="Int64" />
-          <Property Name="AfternoonAttendanceBy" Type="Int64" />
-          <Property Name="AfternoonAttendanceDate" Type="DateTime" Precision="3" />
-          <Property Name="AfternoonLatitude" Type="Decimal" Precision="11" Scale="8" />
-          <Property Name="AfternoonLongitude" Type="Decimal" Precision="11" Scale="8" />
-          <Property Name="AfternoonLocationFrom" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="IsEvening" Type="Boolean" Nullable="false" />
-          <Property Name="EveningSiteId" Type="Int64" />
-          <Property Name="EveningAttendanceBy" Type="Int64" />
-          <Property Name="EveningAttendanceDate" Type="DateTime" Precision="3" />
-          <Property Name="EveningLatitude" Type="Decimal" Precision="11" Scale="8" />
-          <Property Name="EveningLongitude" Type="Decimal" Precision="11" Scale="8" />
-          <Property Name="EveningLocationFrom" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="ExtraHours" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="NoOfHoursWorked" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="NoOfUnitWorked" Type="Int32" />
-          <Property Name="IsClosed" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="tbl_Setting">
           <Key>
@@ -1689,6 +1658,41 @@
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="CreatedBy" Type="Int64" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tbl_WorkerAttendance">
+          <Key>
+            <PropertyRef Name="WorkerAttendanceId" />
+          </Key>
+          <Property Name="WorkerAttendanceId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="Int64" Nullable="false" />
+          <Property Name="AttendanceDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsMorning" Type="Boolean" Nullable="false" />
+          <Property Name="MorningSiteId" Type="Int64" />
+          <Property Name="MorningAttendanceBy" Type="Int64" />
+          <Property Name="MorningAttendanceDate" Type="DateTime" Precision="3" />
+          <Property Name="MorningLatitude" Type="Decimal" Precision="11" Scale="8" />
+          <Property Name="MorningLongitude" Type="Decimal" Precision="11" Scale="8" />
+          <Property Name="MorningLocationFrom" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="IsAfternoon" Type="Boolean" Nullable="false" />
+          <Property Name="AfternoonSiteId" Type="Int64" />
+          <Property Name="AfternoonAttendanceBy" Type="Int64" />
+          <Property Name="AfternoonAttendanceDate" Type="DateTime" Precision="3" />
+          <Property Name="AfternoonLatitude" Type="Decimal" Precision="11" Scale="8" />
+          <Property Name="AfternoonLongitude" Type="Decimal" Precision="11" Scale="8" />
+          <Property Name="AfternoonLocationFrom" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="IsEvening" Type="Boolean" Nullable="false" />
+          <Property Name="EveningSiteId" Type="Int64" />
+          <Property Name="EveningAttendanceBy" Type="Int64" />
+          <Property Name="EveningAttendanceDate" Type="DateTime" Precision="3" />
+          <Property Name="EveningLatitude" Type="Decimal" Precision="11" Scale="8" />
+          <Property Name="EveningLongitude" Type="Decimal" Precision="11" Scale="8" />
+          <Property Name="EveningLocationFrom" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ExtraHours" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="NoOfHoursWorked" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="NoOfUnitWorked" Type="Int32" />
+          <Property Name="IsClosed" Type="Boolean" Nullable="false" />
+          <Property Name="TodaySalary" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="SalaryGiven" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -2098,40 +2102,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tbl_WorkerAttendance">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_WorkerAttendance">
-              <MappingFragment StoreEntitySet="tbl_WorkerAttendance">
-                <ScalarProperty Name="IsClosed" ColumnName="IsClosed" />
-                <ScalarProperty Name="NoOfUnitWorked" ColumnName="NoOfUnitWorked" />
-                <ScalarProperty Name="NoOfHoursWorked" ColumnName="NoOfHoursWorked" />
-                <ScalarProperty Name="ExtraHours" ColumnName="ExtraHours" />
-                <ScalarProperty Name="EveningLocationFrom" ColumnName="EveningLocationFrom" />
-                <ScalarProperty Name="EveningLongitude" ColumnName="EveningLongitude" />
-                <ScalarProperty Name="EveningLatitude" ColumnName="EveningLatitude" />
-                <ScalarProperty Name="EveningAttendanceDate" ColumnName="EveningAttendanceDate" />
-                <ScalarProperty Name="EveningAttendanceBy" ColumnName="EveningAttendanceBy" />
-                <ScalarProperty Name="EveningSiteId" ColumnName="EveningSiteId" />
-                <ScalarProperty Name="IsEvening" ColumnName="IsEvening" />
-                <ScalarProperty Name="AfternoonLocationFrom" ColumnName="AfternoonLocationFrom" />
-                <ScalarProperty Name="AfternoonLongitude" ColumnName="AfternoonLongitude" />
-                <ScalarProperty Name="AfternoonLatitude" ColumnName="AfternoonLatitude" />
-                <ScalarProperty Name="AfternoonAttendanceDate" ColumnName="AfternoonAttendanceDate" />
-                <ScalarProperty Name="AfternoonAttendanceBy" ColumnName="AfternoonAttendanceBy" />
-                <ScalarProperty Name="AfternoonSiteId" ColumnName="AfternoonSiteId" />
-                <ScalarProperty Name="IsAfternoon" ColumnName="IsAfternoon" />
-                <ScalarProperty Name="MorningLocationFrom" ColumnName="MorningLocationFrom" />
-                <ScalarProperty Name="MorningLongitude" ColumnName="MorningLongitude" />
-                <ScalarProperty Name="MorningLatitude" ColumnName="MorningLatitude" />
-                <ScalarProperty Name="MorningAttendanceDate" ColumnName="MorningAttendanceDate" />
-                <ScalarProperty Name="MorningAttendanceBy" ColumnName="MorningAttendanceBy" />
-                <ScalarProperty Name="MorningSiteId" ColumnName="MorningSiteId" />
-                <ScalarProperty Name="IsMorning" ColumnName="IsMorning" />
-                <ScalarProperty Name="AttendanceDate" ColumnName="AttendanceDate" />
-                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
-                <ScalarProperty Name="WorkerAttendanceId" ColumnName="WorkerAttendanceId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="tbl_Setting">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Setting">
               <MappingFragment StoreEntitySet="tbl_Setting">
@@ -2504,6 +2474,42 @@
                 <ScalarProperty Name="FollowupStatus" ColumnName="FollowupStatus" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="FollowupId" ColumnName="FollowupId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_WorkerAttendance">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_WorkerAttendance">
+              <MappingFragment StoreEntitySet="tbl_WorkerAttendance">
+                <ScalarProperty Name="SalaryGiven" ColumnName="SalaryGiven" />
+                <ScalarProperty Name="TodaySalary" ColumnName="TodaySalary" />
+                <ScalarProperty Name="IsClosed" ColumnName="IsClosed" />
+                <ScalarProperty Name="NoOfUnitWorked" ColumnName="NoOfUnitWorked" />
+                <ScalarProperty Name="NoOfHoursWorked" ColumnName="NoOfHoursWorked" />
+                <ScalarProperty Name="ExtraHours" ColumnName="ExtraHours" />
+                <ScalarProperty Name="EveningLocationFrom" ColumnName="EveningLocationFrom" />
+                <ScalarProperty Name="EveningLongitude" ColumnName="EveningLongitude" />
+                <ScalarProperty Name="EveningLatitude" ColumnName="EveningLatitude" />
+                <ScalarProperty Name="EveningAttendanceDate" ColumnName="EveningAttendanceDate" />
+                <ScalarProperty Name="EveningAttendanceBy" ColumnName="EveningAttendanceBy" />
+                <ScalarProperty Name="EveningSiteId" ColumnName="EveningSiteId" />
+                <ScalarProperty Name="IsEvening" ColumnName="IsEvening" />
+                <ScalarProperty Name="AfternoonLocationFrom" ColumnName="AfternoonLocationFrom" />
+                <ScalarProperty Name="AfternoonLongitude" ColumnName="AfternoonLongitude" />
+                <ScalarProperty Name="AfternoonLatitude" ColumnName="AfternoonLatitude" />
+                <ScalarProperty Name="AfternoonAttendanceDate" ColumnName="AfternoonAttendanceDate" />
+                <ScalarProperty Name="AfternoonAttendanceBy" ColumnName="AfternoonAttendanceBy" />
+                <ScalarProperty Name="AfternoonSiteId" ColumnName="AfternoonSiteId" />
+                <ScalarProperty Name="IsAfternoon" ColumnName="IsAfternoon" />
+                <ScalarProperty Name="MorningLocationFrom" ColumnName="MorningLocationFrom" />
+                <ScalarProperty Name="MorningLongitude" ColumnName="MorningLongitude" />
+                <ScalarProperty Name="MorningLatitude" ColumnName="MorningLatitude" />
+                <ScalarProperty Name="MorningAttendanceDate" ColumnName="MorningAttendanceDate" />
+                <ScalarProperty Name="MorningAttendanceBy" ColumnName="MorningAttendanceBy" />
+                <ScalarProperty Name="MorningSiteId" ColumnName="MorningSiteId" />
+                <ScalarProperty Name="IsMorning" ColumnName="IsMorning" />
+                <ScalarProperty Name="AttendanceDate" ColumnName="AttendanceDate" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="WorkerAttendanceId" ColumnName="WorkerAttendanceId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

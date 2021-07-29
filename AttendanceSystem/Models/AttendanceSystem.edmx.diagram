@@ -29,7 +29,6 @@
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Conversion" Width="1.5" PointX="13.375" PointY="17.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_WorkerPayment" Width="1.5" PointX="21.375" PointY="13.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_HomeImage" Width="1.5" PointX="15.375" PointY="21.75" />
-        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_WorkerAttendance" Width="1.5" PointX="0.75" PointY="19.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Setting" Width="1.5" PointX="17.375" PointY="21.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_AdminUser" Width="1.5" PointX="5.375" PointY="0.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Company" Width="1.5" PointX="21.375" PointY="3.75" />
@@ -44,6 +43,7 @@
         <EntityTypeShape EntityType="AttendanceSystemModel.mst_FinancialYear" Width="1.5" PointX="5.375" PointY="10.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_EmployeeBuyTransaction" Width="1.5" PointX="3.375" PointY="14.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Followup" Width="1.5" PointX="5.375" PointY="23.75" />
+        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_WorkerAttendance" Width="1.5" PointX="0.75" PointY="19.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

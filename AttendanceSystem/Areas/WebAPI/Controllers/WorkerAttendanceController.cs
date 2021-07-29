@@ -160,6 +160,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                             if (employeeObj.EmploymentCategory == (int)EmploymentCategory.UnitBased)
                                 attendanceObject.NoOfHoursWorked = workerAttendanceRequestVM.NoOfUnitWorked;
 
+                            attendanceObject.SalaryGiven = workerAttendanceRequestVM.TodaySalary.HasValue ? workerAttendanceRequestVM.TodaySalary.Value : 0;
+
                             tbl_AssignWorker assignedWorker = _db.tbl_AssignWorker.Where(x => x.SiteId == workerAttendanceRequestVM.SiteId && x.Date == today && x.EmployeeId == workerAttendanceRequestVM.EmployeeId && !x.IsClosed).FirstOrDefault();
                             if (assignedWorker != null)
                             {
@@ -258,6 +260,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                 decimal perDayAmount = Math.Round((employeeObj.MonthlySalaryPrice.HasValue ? employeeObj.MonthlySalaryPrice.Value : 0) / totalDaysinMonth, 2);
                                 objWorkerPayment.CreditAmount = (attendanceObject.IsMorning && attendanceObject.IsAfternoon && attendanceObject.IsEvening ? perDayAmount : Math.Round((perDayAmount / 2), 2)) + (employeeObj.ExtraPerHourPrice * workerAttendanceRequestVM.ExtraHours);
                             }
+
+                            attendanceObject.TodaySalary = objWorkerPayment.CreditAmount.HasValue ? objWorkerPayment.CreditAmount.Value : 0;
                             _db.tbl_WorkerPayment.Add(objWorkerPayment);
                             _db.SaveChanges();
                         }
