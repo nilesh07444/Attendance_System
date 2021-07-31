@@ -2,16 +2,16 @@
 @using AttendanceSystem.ViewModel;
 @model AttendanceSystem.ViewModel.AttendanceFilterVM
 @{
-                /**/
+    /**/
 
-                ViewBag.Title = "Attendance";
-                int counter = 1;
+    ViewBag.Title = "Attendance";
+    int counter = 1;
 
-                List<SelectListItem> lstAttendanceStatus = new List<SelectListItem>();
-                lstAttendanceStatus.Add(new SelectListItem { Value = "1", Text = "Pending" });
-                lstAttendanceStatus.Add(new SelectListItem { Value = "2", Text = "Accept" });
-                lstAttendanceStatus.Add(new SelectListItem { Value = "3", Text = "Reject" });
-                lstAttendanceStatus.Add(new SelectListItem { Value = "4", Text = "Login" });
+    List<SelectListItem> lstAttendanceStatus = new List<SelectListItem>();
+    lstAttendanceStatus.Add(new SelectListItem { Value = "1", Text = "Pending" });
+    lstAttendanceStatus.Add(new SelectListItem { Value = "2", Text = "Accept" });
+    lstAttendanceStatus.Add(new SelectListItem { Value = "3", Text = "Reject" });
+    lstAttendanceStatus.Add(new SelectListItem { Value = "4", Text = "Login" });
 
 }
 
@@ -79,14 +79,32 @@
                             <table class="table table-striped table-hover" id="tableExport1" style="width:100%;">
                                 <thead>
                                     <tr>
-                                        <td>#</td>
+                                        <th>#</th>
                                         <th>Approve <br /><input type="checkbox" class="chkBox" id='chkAll' name="Select"></th>
+                                        <th style="display:none">Attendance Id</th>
+                                        <th style="display:none">Company Id</th>
+                                        <th style="display:none">User Id</th>
                                         <th>Attendance Date</th>
                                         <th>Employee</th>
                                         <th>Employee Code</th>
                                         <th>Designation</th>
                                         <th>Day Type</th>
+                                        <th style="display:none">In Date Time</th>
+                                        <th style="display:none">Out Date Time</th>
                                         <th>Extra Hours</th>
+                                        <th style="display:none">Today Work Detail</th>
+                                        <th style="display:none">Tomorrow Work Detail</th>
+                                        <th style="display:none">In Location</th>
+                                        <th style="display:none">Out Location</th>
+                                        <th style="display:none">In Latitude</th>
+                                        <th style="display:none">In Longitude</th>
+                                        <th style="display:none">Out Latitude</th>
+                                        <th style="display:none">Out Longitude</th>
+                                        <th style="display:none">Reject Reason</th>
+                                        <th style="display:none">No Of Hours Worked</th>
+                                        <th style="display:none">No Of Unit Worked</th>
+                                        <th style="display:none">Reject Reason</th>
+                                        <th style="display:none">Remarks</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
@@ -96,32 +114,50 @@
                                     {
                                         foreach (AttendanceVM obj in Model.AttendanceList)
                                         {
-                                            <tr  style="background-color:@obj.BgColor;">
-                                                <td>@counter.</td>
-                                                <td>
-                                                    @if (obj.Status == (int)AttendanceStatus.Pending)
-                                                    {
-                                                        <input type="checkbox" class="chkBox" id='@obj.AttendanceId' name="Select">
-                                                    }
-                                                </td>
-                                                <td>@obj.AttendanceDate.ToString("dd MMM yyyy")</td>
-                                                <td>@obj.Name</td>
-                                                <td>@obj.EmployeeCode</td>
-                                                <td>@obj.EmployeeDesignation</td>
-                                                <td>@obj.DayTypeText</td>
-                                                <td>@obj.ExtraHours</td>
-                                                <td>@obj.StatusText</td>
-                                                <td>
-                                                    @if (obj.Status == (int)AttendanceStatus.Pending)
-                                                    {
-                                                        <a href="/admin/attendance/detail/@obj.AttendanceId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
-                                                    }
-                                                    else
-                                                    {
-                                                        <a href="/admin/attendance/detail/@obj.AttendanceId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
-                                                    }
-                                                </td>
-                                            </tr>
+                                    <tr style="background-color:@obj.BgColor;">
+                                        <td>@counter.</td>
+                                        <td>
+                                            @if (obj.Status == (int)AttendanceStatus.Pending)
+                                            {
+                                                <input type="checkbox" class="chkBox" id='@obj.AttendanceId' name="Select">
+                                            }
+                                        </td>
+                                        <td style="display:none">@obj.AttendanceId</td>
+                                        <td style="display:none">@obj.CompanyId</td>
+                                        <td style="display:none">@obj.UserId</td>
+                                        <td>@obj.AttendanceDate.ToString("dd MMM yyyy")</td>
+                                        <td>@obj.Name</td>
+                                        <td>@obj.EmployeeCode</td>
+                                        <td>@obj.EmployeeDesignation</td>
+                                        <td>@obj.DayTypeText</td>
+                                        <td style="display:none">@obj.InDateTime</td>
+                                        <td style="display:none">@obj.OutDateTime</td>
+                                        <td>@obj.ExtraHours</td>
+                                        <td style="display:none">@obj.TodayWorkDetail</td>
+                                        <td style="display:none">@obj.TomorrowWorkDetail</td>
+                                        <td style="display:none">@obj.LocationFrom</td>
+                                        <td style="display:none">@obj.OutLocationFrom</td>
+                                        <td style="display:none">@obj.InLatitude</td>
+                                        <td style="display:none">@obj.InLongitude</td>
+                                        <td style="display:none">@obj.OutLatitude</td>
+                                        <td style="display:none">@obj.OutLongitude</td>
+                                        <td style="display:none">@obj.RejectReason</td>
+                                        <td style="display:none">@obj.NoOfHoursWorked</td>
+                                        <td style="display:none">@obj.NoOfUnitWorked</td>
+                                        <td style="display:none">@obj.RejectReason</td>
+                                        <td style="display:none">@obj.Remarks</td>
+                                        <td>@obj.StatusText</td>
+                                        <td>
+                                            @if (obj.Status == (int)AttendanceStatus.Pending)
+                                            {
+                                                <a href="/admin/attendance/detail/@obj.AttendanceId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
+                                            }
+                                            else
+                                            {
+                                                <a href="/admin/attendance/detail/@obj.AttendanceId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
+                                            }
+                                        </td>
+                                    </tr>
 
                                             counter++;
                                         }

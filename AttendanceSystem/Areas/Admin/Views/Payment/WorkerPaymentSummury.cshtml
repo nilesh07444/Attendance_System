@@ -1,4 +1,4 @@
-﻿ 
+﻿
 @using AttendanceSystem.ViewModel;
 @model AttendanceSystem.ViewModel.PaymentSummuryReportFilterVM
 @{
@@ -6,7 +6,7 @@
     int counter = 1;
     decimal totalPendingSalary = 0;
 }
- 
+
 <section class="section">
     <div class="section-body">
         <div class="row">
@@ -30,7 +30,7 @@
                                     <div class="col-sm-2">
                                         <div class="form-group">
                                             <label>Year</label>
-                                            @Html.TextBoxFor(model => model.Year, new { @type = "number", @class = "form-control required", @placeholder = "Year", @max = "9999", @maxLength = 4, @style= "height: calc(2.25rem + 6px)" })
+                                            @Html.TextBoxFor(model => model.Year, new { @type = "number", @class = "form-control required", @placeholder = "Year", @max = "9999", @maxLength = 4, @style = "height: calc(2.25rem + 6px)" })
                                         </div>
                                     </div>
                                     <div class="col-sm-2">
@@ -56,6 +56,7 @@
                                         <td>#</td>
                                         <th>Employee Code</th>
                                         <th>Employee Name</th>
+                                        <th style="display:none">Designation</th>
                                         <th>Employee Category</th>
                                         <th>Pending Salary</th>
                                     </tr>
@@ -69,6 +70,7 @@
                                                 <td>@counter.</td>
                                                 <td>@obj.EmployeeCode</td>
                                                 <td>@obj.EmployeeName</td>
+                                                <td style="display:none">@obj.Designation</td>
                                                 <td>@obj.EmploymentCategoryText</td>
                                                 <td>@obj.PendingSalary</td>
                                             </tr>

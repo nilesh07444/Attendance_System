@@ -31,6 +31,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                       CompanyPersonName = t.CompanyPersonName,
                                       FeedbackText = t.FeedbackText,
                                       IsActive = t.IsActive,
+                                      CreatedDate = t.CreatedDate,
                                   }).OrderByDescending(x => x.TestimonialId).ToList();
             }
             catch (Exception ex)

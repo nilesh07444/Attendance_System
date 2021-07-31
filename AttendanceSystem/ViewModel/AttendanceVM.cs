@@ -66,7 +66,7 @@ namespace AttendanceSystem.ViewModel
     public class AttendanceFilterVM
     {
         public AttendanceFilterVM()
-        {            
+        {
             Year = CommonMethod.CurrentIndianDateTime().Year;
             AttendanceStatus = (int)Helper.AttendanceStatus.Pending;
         }
@@ -199,6 +199,24 @@ namespace AttendanceSystem.ViewModel
         public decimal MonthlySalary { get; set; }
         public decimal PerCategoryPrice { get; set; }
         public bool IsClosed { get; set; }
+        public string MorningAttendanceBy { get; set; }
+        public DateTime? MorningAttendanceDate { get; set; }
+        public decimal? MorningLatitude { get; set; }
+        public decimal? MorningLongitude { get; set; }
+        public string MorningLocationFrom { get; set; }
+        public string AfternoonAttendanceBy { get; set; }
+        public DateTime? AfternoonAttendanceDate { get; set; }
+        public decimal? AfternoonLatitude { get; set; }
+        public decimal? AfternoonLongitude { get; set; }
+        public string AfternoonLocationFrom { get; set; }
+        public string EveningAttendanceBy { get; set; }
+        public DateTime? EveningAttendanceDate { get; set; }
+        public decimal? EveningLatitude { get; set; }
+        public decimal? EveningLongitude { get; set; }
+        public string EveningLocationFrom { get; set; }
+        public decimal? ExtraHours { get; set; }
+        public decimal? NoOfHoursWorked { get; set; }
+        public decimal? NoOfUnitWorked { get; set; }
 
     }
 
@@ -206,7 +224,7 @@ namespace AttendanceSystem.ViewModel
     {
         public WorkerAttendanceReportFilterVM()
         {
-            StartDate = CommonMethod.CurrentIndianDateTime(); 
+            StartDate = CommonMethod.CurrentIndianDateTime();
             EndDate = CommonMethod.CurrentIndianDateTime();
         }
         public DateTime StartDate { get; set; }

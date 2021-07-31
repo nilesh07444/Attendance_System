@@ -21,7 +21,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                         
+
                         <div class="table-responsive">
                             <table class="table table-striped table-hover" id="tableExport" style="width:100%;">
                                 <thead>
@@ -30,6 +30,7 @@
                                         <th width="15%">Company Name</th>
                                         <th width="15%">Company Person Name</th>
                                         <th>Feedback Text</th>
+                                        <th style="display:none">Created Date</th>
                                         <th width="10%">Active</th>
                                         <th width="10%">Action</th>
                                     </tr>
@@ -45,6 +46,7 @@
                                                 <td>@obj.CompanyName</td>
                                                 <td>@obj.CompanyPersonName</td>
                                                 <td>@obj.FeedbackText</td>
+                                                <td style="display:none">@obj.CreatedDate.ToString("dd MMM yyyy")</td>
                                                 @if (obj.IsActive == true)
                                                 {
                                                     <td><span class="badge badge-success" style="cursor:pointer;" title="Click to Inactive" onclick="fnChangeStatus('@obj.TestimonialId', 'InActive');">Active</span></td>

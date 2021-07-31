@@ -9,7 +9,7 @@ namespace AttendanceSystem.ViewModel
     public class CompanyRequestVM
     {
         public long CompanyRequestId { get; set; }
-         
+
         [Display(Name = "Company Type *")]
         [Required(ErrorMessage = "This field is required")]
         public long? CompanyTypeId { get; set; }
@@ -36,11 +36,11 @@ namespace AttendanceSystem.ViewModel
 
         [Display(Name = "Company GST No")]
         public string CompanyGSTNo { get; set; }
-         
+
         [Display(Name = "Company GST Photo")]
         public HttpPostedFileBase CompanyGSTPhotoFile { get; set; }
         public string CompanyGSTPhoto { get; set; }
-        
+
         [Display(Name = "Company Pan Card No")]
         [Required(ErrorMessage = "This field is required")]
         [RegularExpression("^([A-Za-z]){5}([0-9]){4}([A-Za-z]){1}$", ErrorMessage = "Invalid PAN No")]
@@ -58,16 +58,16 @@ namespace AttendanceSystem.ViewModel
         [Required(ErrorMessage = "This field is required")]
         [RegularExpression(@"^([0-9]{6})$", ErrorMessage = "Invalid Pincode.")]
         public string CompanyPincode { get; set; }
-        
+
         [Display(Name = "Company City *")]
         [Required(ErrorMessage = "This field is required")]
         public string CompanyCity { get; set; }
-        
+
         [Display(Name = "Company State *")]
         [Required(ErrorMessage = "This field is required")]
         public string CompanyState { get; set; }
 
-        [Display(Name = "Company District *")] 
+        [Display(Name = "Company District *")]
         public string CompanyDistrict { get; set; }
 
         [Display(Name = "Company Logo Image")]
@@ -143,7 +143,7 @@ namespace AttendanceSystem.ViewModel
         [Required(ErrorMessage = "This field is required")]
         public string CompanyAdminState { get; set; }
 
-        [Display(Name = "District *")] 
+        [Display(Name = "District *")]
         public string CompanyAdminDistrict { get; set; }
 
         [Display(Name = "Aadhar Card No *")]
@@ -167,13 +167,13 @@ namespace AttendanceSystem.ViewModel
         [Display(Name = "Pan Card Photo")]
         public HttpPostedFileBase CompanyAdminPanCardPhotoFile { get; set; }
         public string CompanyAdminPanCardPhoto { get; set; }
-        
+
         [Display(Name = "Request Status *")]
         public int RequestStatus { get; set; }
 
         [Display(Name = "Reject Reason *")]
         public string RejectReason { get; set; }
-        
+
         public long? CompanyId { get; set; }
         public int FreeAccessDays { get; set; }
         public List<SelectListItem> CompanyTypeList { get; set; }
@@ -191,6 +191,8 @@ namespace AttendanceSystem.ViewModel
         public string RequestStatusText { get; set; }
         [Display(Name = "Employee Code *")]
         public string EmployeeCode { get; set; }
+
+        public DateTime? CreatedDate { get; set; }
     }
 
     public class CompanyRequestFilterVM
@@ -205,7 +207,7 @@ namespace AttendanceSystem.ViewModel
         [Display(Name = "Company Type *")]
         [Required(ErrorMessage = "This field is required")]
         public long? CompanyTypeId { get; set; }
-        
+
         [Display(Name = "Company Name *")]
         [Required(ErrorMessage = "This field is required")]
         public string CompanyName { get; set; }
@@ -217,7 +219,7 @@ namespace AttendanceSystem.ViewModel
         [Display(Name = "State *")]
         [Required(ErrorMessage = "This field is required")]
         public string State { get; set; }
-         
+
         [Display(Name = "GST No")]
         public string GSTNo { get; set; }
 
@@ -243,6 +245,19 @@ namespace AttendanceSystem.ViewModel
 
         public bool IsActive { get; set; }
 
+        public bool IsTrialMode { get; set; }
+        public DateTime? TrialExpiryDate { get; set; }
+        public DateTime? AccountExpiryDate { get; set; }
+        public string ContactNo { get; set; }
+        public string AlternateContactNo { get; set; }
+        public string District { get; set; }
+        public string PanNo { get; set; }
+        public string Description { get; set; }
+        public string WebsiteUrl { get; set; }
+        public string EmailId { get; set; }
+        public string Address { get; set; }
+        public string Pincode { get; set; }
+        public DateTime? CreatedDate { get; set; }
     }
 
     public class CompanyRegisteredFilterVM

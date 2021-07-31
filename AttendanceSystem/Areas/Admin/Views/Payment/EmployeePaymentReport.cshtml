@@ -2,13 +2,13 @@
 @using AttendanceSystem.ViewModel;
 @model AttendanceSystem.ViewModel.PaymentReportFilterVM
 @{
-                /**/
+    /**/
 
-                ViewBag.Title = "Report";
-                int counter = 1;
+    ViewBag.Title = "Report";
+    int counter = 1;
 
-                decimal totalcredit = 0;
-                decimal totaldebit = 0;
+    decimal totalcredit = 0;
+    decimal totaldebit = 0;
 }
 
 
@@ -60,6 +60,7 @@
                                 <thead>
                                     <tr>
                                         <td>#</td>
+                                        <th style="display:none">Employee Name</th>
                                         <th>Date</th>
                                         <th>Opening</th>
                                         <th>Credit</th>
@@ -75,6 +76,7 @@
                                         {
                                             <tr>
                                                 <td>@counter.</td>
+                                                <td style="display:none">@obj.EmployeeName</td>
                                                 <td>@obj.Date.ToString("dd MMM yyyy")</td>
                                                 <td>@obj.Opening</td>
                                                 <td>@obj.Credit</td>
@@ -91,6 +93,7 @@
                                 </tbody>
                                 <thead>
                                     <tr>
+                                        <th style="display:none"></th>
                                         <th colspan="3">Total</th>
                                         <th>@totalcredit</th>
                                         <th>@totaldebit</th>
@@ -120,7 +123,7 @@
             var endDate = $("#EndDate").val();
             var employeeId = $("#EmployeeId").val();
 
-            if (startDate == "" ) {
+            if (startDate == "") {
                 alert("Please select valid start date");
                 return false;
             }

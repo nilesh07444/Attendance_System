@@ -70,7 +70,21 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                                        GSTNo = cp.GSTNo,
                                                                        CompanyLogoImage = cp.CompanyLogoImage,
                                                                        CompanyCode = cp.CompanyCode,
-                                                                       IsActive = cp.IsActive
+                                                                       IsActive = cp.IsActive,
+                                                                       IsTrialMode = cp.IsTrialMode,
+                                                                       TrialExpiryDate = cp.TrialExpiryDate,
+                                                                       AccountExpiryDate = cp.AccountExpiryDate,
+                                                                       EmailId = cp.EmailId,
+                                                                       ContactNo = cp.ContactNo,
+                                                                       AlternateContactNo = cp.AlternateContactNo,
+                                                                       Address = cp.Address,
+                                                                       Pincode = cp.Pincode,
+                                                                       District = cp.District,
+                                                                       PanNo = cp.PanNo,
+                                                                       Description = cp.Description,
+                                                                       WebsiteUrl = cp.WebisteUrl,
+                                                                       FreeAccessDays = cp.FreeAccessDays,
+                                                                       CreatedDate = cp.CreatedDate
                                                                    }).OrderByDescending(x => x.CompanyId).ToList();
             }
             catch (Exception ex)
@@ -108,7 +122,14 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                              CompanyAdminMobileNo = cp.CompanyAdminMobileNo,
                                                              CompanyAdminCity = cp.CompanyAdminCity,
                                                              CompanyAdminState = cp.CompanyAdminState,
-                                                             RequestStatus = cp.RequestStatus
+                                                             RequestStatus = cp.RequestStatus,
+                                                             dtCompanyAdminDOB = cp.CompanyAdminDOB,
+                                                             CompanyAdminDateOfMarriageAnniversary = cp.CompanyAdminDateOfMarriageAnniversary,
+                                                             CreatedDate = cp.CreatedDate,
+                                                             CompanyAddress = cp.CompanyAddress,
+                                                             CompanyAdminAddress = cp.CompanyAdminAddress,
+                                                             CompanyAdminEmailId = cp.CompanyAdminEmailId,
+
                                                          }).OrderByDescending(x => x.CompanyRequestId).ToList();
 
                 if (companyRequestFilterVM.companyRequest != null && companyRequestFilterVM.companyRequest.Count > 0)
@@ -687,7 +708,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         }
                     }
                     #endregion PancardImage
-                     
+
                     #region Edit Company Request
 
                     tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == companyRequestVM.CompanyId).FirstOrDefault();

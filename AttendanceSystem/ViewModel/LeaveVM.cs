@@ -28,6 +28,7 @@ namespace AttendanceSystem.ViewModel
         public string EmployeeCode { get; set; }
         public DateTime CreatedDate { get; set; }
 
+        public string ContactNo { get; set; }
     }
     public class LeaveFilterVM
     {

@@ -72,10 +72,25 @@
                                         <th>Worker Code</th>
                                         <th>Worker Type</th>
                                         <th>Mobile No</th>
+                                        <th style="display:none">AlternateMobile</th>
+                                        <th style="display:none">Address</th>
+                                        <th style="display:none">City</th>
+                                        <th style="display:none">Pincode</th>
+                                        <th style="display:none">State</th>
+                                        <th style="display:none">Designation</th>
+                                        <th style="display:none">Dob</th>
+                                        <th style="display:none">DateOfJoin</th>
+                                        <th style="display:none">BloodGroup</th>
+                                        <th style="display:none">WorkingTime</th>
+                                        <th style="display:none">AdharCardNo</th>
+                                        <th style="display:none">DateOfIdCardExpiry</th>
+                                        <th style="display:none">Remarks</th>
+                                        <th style="display:none">ExtraPerHourPrice</th>
                                         <th>Category</th>
                                         <th>Salary</th>
                                         <th>Status</th>
                                         <th>Fingerprint</th>
+                                        <th style="display:none">CreatedDate</th>
                                         <th width="18%">Action</th>
                                     </tr>
                                 </thead>
@@ -108,6 +123,35 @@
                                                 <td>@obj.EmployeeCode</td>
                                                 <td>@obj.WorkerTypeText</td>
                                                 <td>@obj.MobileNo</td>
+                                                <td style="display:none">@obj.AlternateMobile</td>
+                                                <td style="display:none">@obj.Address</td>
+                                                <td style="display:none">@obj.City</td>
+                                                <td style="display:none">@obj.Pincode</td>
+                                                <td style="display:none">@obj.State</td>
+                                                <td style="display:none">@obj.Designation</td>
+                                                <td style="display:none">
+                                                    @if (obj.Dob.HasValue)
+                                                    {
+                                                        @obj.Dob.Value.ToString("dd MMM yyyy")
+                                                    }
+                                                </td>
+                                                <td style="display:none">
+                                                    @if (obj.DateOfJoin.HasValue)
+                                                    {
+                                                        @obj.DateOfJoin.Value.ToString("dd MMM yyyy")
+                                                    }
+                                                </td>
+                                                <td style="display:none">@obj.BloodGroup</td>
+                                                <td style="display:none">@obj.WorkingTime</td>
+                                                <td style="display:none">@obj.AdharCardNo</td>
+                                                <td style="display:none">
+                                                    @if (obj.DateOfIdCardExpiry.HasValue)
+                                                    {
+                                                        @obj.DateOfIdCardExpiry.Value.ToString("dd MMM yyyy")
+                                                    }
+                                                </td>
+                                                <td style="display:none">@obj.Remarks</td>
+                                                <td style="display:none">@obj.ExtraPerHourPrice</td>
                                                 <td>@obj.EmploymentCategoryText</td>
                                                 <td>
                                                     @if (obj.EmploymentCategory == (int)EmploymentCategory.MonthlyBased)
@@ -138,6 +182,12 @@
                                                     <a href="/admin/employee/fingerprint/@obj.EmployeeId" title="Fingerprint">
                                                         <img src="~/Content/admin-theme/assets/img/contrabook/fingerprint.jpg" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 50px; height: 50px;" />
                                                     </a>
+                                                </td>
+                                                <td style="display:none">
+                                                    @if (obj.CreatedDate.HasValue)
+                                                    {
+                                                        @obj.CreatedDate.Value.ToString("dd MMM yyyy")
+                                                    }
                                                 </td>
                                                 <td>
 

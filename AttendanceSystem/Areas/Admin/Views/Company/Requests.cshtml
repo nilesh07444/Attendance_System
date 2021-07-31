@@ -52,12 +52,19 @@
                                         <th>#</th>
                                         <th>Company Type</th>
                                         <th>Company Name</th>
+                                        <th style="display:none">Company EmailId</th>
+                                        <th style="display:none">Company Address</th>
                                         <th>First name</th>
                                         <th>Last name</th>
                                         <th>Mobile No</th>
+                                        <th style="display:none">EmailId</th>
+                                        <th style="display:none">Date Of Birth</th>
+                                        <th style="display:none">Anniversary Date</th>
+                                        <th style="display:none">Company Admin Address</th>
                                         <th>City</th>
                                         <th>State</th>
                                         <th>Status</th>
+                                        <th style="display:none">Created Date</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -87,13 +94,25 @@
                                                     @obj.CompanyTypeText
                                                 </td>
                                                 <td>@obj.CompanyName</td>
+                                                <td style="display:none">@obj.CompanyEmailId</td>
+                                                <td style="display:none">@obj.CompanyAddress</td>
                                                 <td>@obj.CompanyAdminFirstName</td>
                                                 <td>@obj.CompanyAdminLastName</td>
                                                 <td>@obj.CompanyAdminMobileNo</td>
+                                                <td style="display:none">@obj.CompanyAdminEmailId</td>
+                                                <td style="display:none">@obj.dtCompanyAdminDOB.ToString("dd MMM yyyy")</td>
+                                                <td style="display:none">
+                                                    @if (obj.CompanyAdminDateOfMarriageAnniversary.HasValue)
+                                                    {@obj.CompanyAdminDateOfMarriageAnniversary.Value.ToString("dd MMM yyyy")}
+                                                </td>
+                                                <td style="display:none">@obj.CompanyAdminAddress</td>
                                                 <td>@obj.CompanyAdminCity</td>
                                                 <td>@obj.CompanyAdminState</td>
                                                 <td><span class="badge @statusClassName">@obj.RequestStatusText</span></td>
-
+                                                <td style="display:none">
+                                                    @if (obj.CreatedDate.HasValue)
+                                                    {@obj.CreatedDate.Value.ToString("dd MMM yyyy")}
+                                                </td>
                                                 <td>
                                                     <a href="/admin/company/viewrequest/@obj.CompanyRequestId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
                                                 </td>

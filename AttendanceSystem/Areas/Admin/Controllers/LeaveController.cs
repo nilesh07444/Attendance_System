@@ -61,18 +61,19 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                LeaveId = lv.LeaveId,
                                                UserId = lv.UserId,
                                                UserName = ur.Prefix + " " + ur.FirstName + " " + ur.LastName,
-                                               EmployeeCode=ur.EmployeeCode,
+                                               EmployeeCode = ur.EmployeeCode,
                                                StartDate = lv.StartDate,
                                                EndDate = lv.EndDate,
                                                NoOfDays = lv.NoOfDays,
                                                LeaveStatus = lv.LeaveStatus,
                                                RejectReason = lv.RejectReason,
                                                CreatedDate = lv.CreatedDate,
+                                               ContactNo = ur.MobileNo
                                            }).OrderByDescending(x => x.StartDate).ToList();
 
                 leaveFIlterVM.LeaveList.ForEach(x =>
                 {
-                    x.LeaveStatusText = CommonMethod.GetEnumDescription((LeaveStatus)x.LeaveStatus); 
+                    x.LeaveStatusText = CommonMethod.GetEnumDescription((LeaveStatus)x.LeaveStatus);
                 });
                 leaveFIlterVM.UserRoleList = GetUserRoleList();
                 leaveFIlterVM.CalenderMonth = CommonMethod.GetCalenderMonthList();

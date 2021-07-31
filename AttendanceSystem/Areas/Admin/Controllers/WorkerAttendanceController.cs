@@ -83,7 +83,25 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                                TotalTodaySalary = at.TodaySalary,
                                                                IsClosed = at.IsClosed,
                                                                MonthlySalary = emp.MonthlySalaryPrice.HasValue ? emp.MonthlySalaryPrice.Value : 0,
-                                                               PerCategoryPrice = emp.PerCategoryPrice
+                                                               PerCategoryPrice = emp.PerCategoryPrice,
+                                                               MorningAttendanceBy = PaymentGivenBy.CompanyAdmin.ToString(),
+                                                               MorningAttendanceDate = at.MorningAttendanceDate,
+                                                               MorningLatitude = at.MorningLatitude,
+                                                               MorningLongitude = at.MorningLongitude,
+                                                               MorningLocationFrom = at.MorningLocationFrom,
+                                                               AfternoonAttendanceBy = PaymentGivenBy.CompanyAdmin.ToString(),
+                                                               AfternoonAttendanceDate = at.AfternoonAttendanceDate,
+                                                               AfternoonLatitude = at.AfternoonLatitude,
+                                                               AfternoonLongitude = at.AfternoonLongitude,
+                                                               AfternoonLocationFrom = at.AfternoonLocationFrom,
+                                                               EveningAttendanceBy = PaymentGivenBy.CompanyAdmin.ToString(),
+                                                               EveningAttendanceDate = at.EveningAttendanceDate,
+                                                               EveningLatitude = at.EveningLatitude,
+                                                               EveningLongitude = at.EveningLongitude,
+                                                               EveningLocationFrom = at.EveningLocationFrom,
+                                                               ExtraHours = at.ExtraHours,
+                                                               NoOfHoursWorked = at.NoOfHoursWorked,
+                                                               NoOfUnitWorked = at.NoOfUnitWorked,
                                                            }).OrderByDescending(x => x.AttendanceDate).ToList();
 
                 workerAttendanceFilterVM.AttendanceList.ForEach(x =>

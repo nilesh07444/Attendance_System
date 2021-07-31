@@ -66,14 +66,35 @@
                                 <thead>
                                     <tr>
                                         <td>#</td>
+                                        <th style="display:none">CompanyId</th>
                                         <th>Worker Name</th>
                                         <th>Worker Code</th>
+                                        <th style="display:none">WorkerType</th>
                                         <th>Attendance Date</th>
                                         <th>Employment Category</th>
                                         <th>Site Location</th>
                                         <th>Morning</th>
+                                        <th style="display:none">Morning Attendance By</th>
+                                        <th style="display:none">Morning Attendance Date</th>
+                                        <th style="display:none">Morning Attendance Latitude</th>
+                                        <th style="display:none">Morning Attendance Longitude</th>
+                                        <th style="display:none">Morning Attendance Location</th>
+
                                         <th>Afternoon</th>
+                                        <th style="display:none">Afternoon Attendance By</th>
+                                        <th style="display:none">Afternoon Attendance Date</th>
+                                        <th style="display:none">Afternoon Attendance Latitude</th>
+                                        <th style="display:none">Afternoon Attendance Longitude</th>
+                                        <th style="display:none">Afternoon Attendance Location</th>
                                         <th>Evening</th>
+                                        <th style="display:none">Evening Attendance By</th>
+                                        <th style="display:none">Evening Attendance Date</th>
+                                        <th style="display:none">Evening Attendance Latitude</th>
+                                        <th style="display:none">Evening Attendance Longitude</th>
+                                        <th style="display:none">Evening Attendance Location</th>
+                                        <th style="display:none">Extra Hours</th>
+                                        <th style="display:none">No Of Hours Worked</th>
+                                        <th style="display:none">No Of Units Worked</th>
                                         <th>Salary</th>
                                         <th>Act Salary</th>
                                         <th>Today Salary</th>
@@ -88,20 +109,40 @@
                                         {
                                             <tr style="background-color:@obj.BgColor;">
                                                 <td>@counter.</td>
+                                                <td style="display:none">@obj.CompanyId</td>
                                                 <td>@obj.Name</td>
                                                 <td>@obj.EmployeeCode</td>
+                                                <td style="display:none">@obj.WorkerTypeName</td>
                                                 <td>@obj.AttendanceDate.ToString("dd MMM yyyy")</td>
                                                 <td>@obj.EmploymentCategoryText</td>
                                                 <td>@obj.SiteName</td>
                                                 <td>
                                                     @obj.IsMorningText
                                                 </td>
+                                                <td style="display:none">@obj.MorningAttendanceBy</td>
+                                                <td style="display:none">@obj.MorningAttendanceDate</td>
+                                                <td style="display:none">@obj.MorningLatitude</td>
+                                                <td style="display:none">@obj.MorningLongitude</td>
+                                                <td style="display:none">@obj.MorningLocationFrom</td>
                                                 <td>
                                                     @obj.IsAfternoonText
                                                 </td>
+                                                <td style="display:none">@obj.AfternoonAttendanceBy</td>
+                                                <td style="display:none">@obj.AfternoonAttendanceDate</td>
+                                                <td style="display:none">@obj.AfternoonLatitude</td>
+                                                <td style="display:none">@obj.AfternoonLongitude</td>
+                                                <td style="display:none">@obj.AfternoonLocationFrom</td>
                                                 <td>
                                                     @obj.IsEveningText
                                                 </td>
+                                                <td style="display:none">@obj.EveningAttendanceBy</td>
+                                                <td style="display:none">@obj.EveningAttendanceDate</td>
+                                                <td style="display:none">@obj.EveningLatitude</td>
+                                                <td style="display:none">@obj.EveningLongitude</td>
+                                                <td style="display:none">@obj.EveningLocationFrom</td>
+                                                <td style="display:none">@obj.ExtraHours</td>
+                                                <td style="display:none">@obj.NoOfHoursWorked</td>
+                                                <td style="display:none">@obj.NoOfUnitWorked</td>
                                                 <td>
                                                     @obj.CalcTodaySalary
                                                 </td>

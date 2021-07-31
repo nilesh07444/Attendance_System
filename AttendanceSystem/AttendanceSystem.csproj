@@ -421,6 +421,7 @@
     <Compile Include="ViewModel\HolidayVM.cs" />
     <Compile Include="ViewModel\HomeImageVM.cs" />
     <Compile Include="ViewModel\HomeSliderVM.cs" />
+    <Compile Include="ViewModel\InvoiceFieldsVM.cs" />
     <Compile Include="ViewModel\LeaveVM.cs" />
     <Compile Include="ViewModel\LoginHistoryVM.cs" />
     <Compile Include="ViewModel\SalesReportVM.cs" />
@@ -1376,6 +1377,7 @@
     <Content Include="Content\client-theme\assets\js\vendor\jquery-1.12.4.min.js" />
     <Content Include="Content\client-theme\assets\js\vendor\modernizr-3.5.0.min.js" />
     <Content Include="Content\client-theme\assets\js\wow.min.js" />
+    <Content Include="Content\Invoice.htm" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />

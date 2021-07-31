@@ -1,11 +1,17 @@
 ﻿using AttendanceSystem.Helper;
 using AttendanceSystem.Models;
 using AttendanceSystem.ViewModel;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using iTextSharp.tool.xml;
 using Razorpay.Api;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
+using System.Text;
+using System.Web;
 using System.Web.Mvc;
 
 namespace AttendanceSystem.Areas.Admin.Controllers
@@ -400,5 +406,61 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return PartialView("~/Areas/Admin/Views/AccountRenew/_RazorPayPayment.cshtml");
         }
 
+        public string DownloadInvoice(long id)
+        {
+            string response = "failed";
+            try
+            {
+                InvoiceFieldsVM invoiceFieldsVM = (from pkg in _db.tbl_CompanyRenewPayment
+                                                   join cmp in _db.tbl_Company on pkg.CompanyId equals cmp.CompanyId
+                                                   join ur in _db.tbl_AdminUser on cmp.CompanyCode equals ur.UserName
+                                                   where pkg.CompanyRegistrationPaymentId == id
+                                                   select new InvoiceFieldsVM
+                                                   {
+                                                       CompanyName = cmp.CompanyName,
+                                                       InvoiceNo = pkg.InvoiceNo,
+                                                       CustomerName = ur.FirstName + " " + ur.LastName,
+                                                       InvoiceDatetime = pkg.CreatedDate,
+                                                       Address = cmp.Address,
+                                                       Phone = cmp.ContactNo,
+                                                       GstNo = cmp.GSTNo,
+                                                       PanNo = cmp.PanNo,
+                                                       PackageName = pkg.PackageName,
+                                                       GSTRate = pkg.GSTPer,
+                                                       TotalAmount = pkg.Amount
+                                                   }).FirstOrDefault();
+
+                invoiceFieldsVM.InvoiceDate = invoiceFieldsVM.InvoiceDatetime.ToString("dd MMM yyyy");
+                invoiceFieldsVM.HsnCode = "9982";
+                invoiceFieldsVM.Rate = Math.Round((invoiceFieldsVM.TotalAmount / (100 + invoiceFieldsVM.GSTRate)) * 100, 2);
+                decimal gstAmount = Math.Round(invoiceFieldsVM.Rate * invoiceFieldsVM.GSTRate / 100, 2);
+                invoiceFieldsVM.CGST = Math.Round(gstAmount / 2, 2);
+                invoiceFieldsVM.SGST = Math.Round(gstAmount / 2, 2);
+                invoiceFieldsVM.IGST = 0;
+
+                string htmlContent = CommonMethod.GetInvoiceContent(invoiceFieldsVM);
+                var myByteArray = System.Text.Encoding.UTF8.GetBytes(htmlContent);
+                var ms = new MemoryStream(myByteArray);
+
+                Document pdfDoc = new Document(PageSize.A4.Rotate(), 20f, 20f, 20f, 20f);
+                PdfWriter writer = PdfWriter.GetInstance(pdfDoc, Response.OutputStream);
+                writer.PageEvent = new PDFGeneratePageEventHelper();
+                pdfDoc.Open();
+
+                XMLWorkerHelper objHelp = XMLWorkerHelper.GetInstance();
+                objHelp.ParseXHtml(writer, pdfDoc, ms, null, Encoding.UTF8, new UnicodeFontFactory());
+
+                pdfDoc.Close();
+                Response.ContentType = "application/pdf";
+                Response.AddHeader("content-disposition", "download;filename=Expense List" + ".pdf");
+                Response.Cache.SetCacheability(HttpCacheability.NoCache);
+                Response.Write(pdfDoc);
+                Response.End();
+                response = "success";
+            }
+            catch (Exception ex)
+            { response = ex.Message; }
+            return response;
+        }
     }
 }

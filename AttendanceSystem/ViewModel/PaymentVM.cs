@@ -49,7 +49,8 @@ namespace AttendanceSystem.ViewModel
         public string AmountGivenBy { get; set; }
         public int EmploymentCategory { get; set; }
         public string EmploymentCategoryText { get; set; }
-        
+        public string Designation { get; set; }
+        public DateTime? DeletedDate { get; set; }
     }
 
     public class PaymentFilterVM
@@ -73,6 +74,7 @@ namespace AttendanceSystem.ViewModel
         public long EmployeeId { get; set; }
         public string EmployeeCode { get; set; }
         public string EmployeeName { get; set; }
+        public string Designation { get; set; }
         public int EmploymentCategory { get; set; }
         public string EmploymentCategoryText { get; set; }
         public decimal PendingSalary { get; set; }
@@ -115,5 +117,6 @@ namespace AttendanceSystem.ViewModel
         public decimal Debit { get; set; }
         public decimal Closing { get; set; }
         public string Remark { get; set; }
+        public string EmployeeName { get; set; }
     }
 }
