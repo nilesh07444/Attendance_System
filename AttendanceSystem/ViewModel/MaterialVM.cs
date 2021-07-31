@@ -47,6 +47,7 @@ namespace AttendanceSystem.ViewModel
         public List<SelectListItem> MaterialCategoryList { get; set; }
         public List<SelectListItem> SiteList { get; set; }
         public List<SelectListItem> MaterialStatusList { get; set; }
+        public string InwardOutwardBy { get; set; }
     }
 
     public class MaterialFilterVM

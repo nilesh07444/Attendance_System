@@ -3,10 +3,8 @@ using AttendanceSystem.Models;
 using AttendanceSystem.ViewModel;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 
@@ -70,6 +68,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                    AdminRoleId = emp.AdminRoleId,
                                                    EmploymentCategory = emp.EmploymentCategory,
                                                    AdminRoleText = rl.AdminRoleName,
+                                                   Designation = emp.Designation,
                                                    AmountGivenBy = (paidBy != null ? paidBy.Prefix + " " + paidBy.FirstName + " " + paidBy.LastName : (empp.CreatedBy == (int)PaymentGivenBy.CompanyAdmin ? "Company Admin" : string.Empty)),
 
                                                }).OrderByDescending(x => x.EmployeePaymentId).ToList();
@@ -410,9 +409,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     {
                         #region validation
 
-                        bool IsConversionDone = _db.tbl_Conversion.Any(x => x.CompanyId == companyId 
-                                                    && x.Month == objEmployeePayment.PaymentDate.Month 
-                                                    && x.Year == objEmployeePayment.PaymentDate.Year 
+                        bool IsConversionDone = _db.tbl_Conversion.Any(x => x.CompanyId == companyId
+                                                    && x.Month == objEmployeePayment.PaymentDate.Month
+                                                    && x.Year == objEmployeePayment.PaymentDate.Year
                                                     && x.IsEmployeeDone);
 
                         if (IsConversionDone)
@@ -433,7 +432,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         }
                     }
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -536,6 +535,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                    CreditAmount = empp.CreditAmount,
                                                    DebitAmount = empp.DebitAmount,
                                                    PaymentType = empp.PaymentType,
+                                                   DeletedDate = empp.ModifiedDate
                                                }).OrderByDescending(x => x.EmployeePaymentId).ToList();
 
                 paymentFilterVM.PaymentList.ForEach(x =>
@@ -855,6 +855,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
         }
 
-        
+
     }
 }

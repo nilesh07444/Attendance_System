@@ -57,6 +57,7 @@
                                         <td>#</td>
                                         <th>Employee Code</th>
                                         <th>Employee Name</th>
+                                        <th style="display:none">Designation</th>
                                         <th>Employee Category</th>
                                         <th>Pending Salary</th>
                                     </tr>
@@ -70,6 +71,7 @@
                                                 <td>@counter.</td>
                                                 <td>@obj.EmployeeCode</td>
                                                 <td>@obj.EmployeeName</td>
+                                                <td style="display:none">@obj.Designation</td>
                                                 <td>@obj.EmploymentCategoryText</td>
                                                 <td>@obj.PendingSalary</td>
                                             </tr>
@@ -111,7 +113,7 @@
                 alert("Please select valid start month");
                 return false;
             }
- 
+
             if (year == "" || year == 0) {
                 alert("Please select valid year");
                 return false;

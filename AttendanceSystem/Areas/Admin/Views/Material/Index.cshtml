@@ -3,7 +3,7 @@
 @model AttendanceSystem.ViewModel.MaterialFilterVM
 @{
     ViewBag.Title = "Material";
-     
+
     int counter = 1;
 
     decimal totalInwardQty = 0;
@@ -90,7 +90,8 @@
                                         <th>Material Date</th>
                                         <th>Inward</th>
                                         <th>Outward</th>
-                                        @*<th>Status</th>*@
+                                        <th style="display:none">Inward Outward By</th>
+                                        <th style="display:none">Remarks</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -114,6 +115,8 @@
                                                     {
                                                         <td><span class="badge badge-danger" style="cursor:pointer;" title="Click to Active" onclick="fnChangeStatus('@obj.MaterialId','Active');">InActive</span></td>
                                                     }*@
+                                                <td style="display:none">@obj.InwardOutwardBy</td>
+                                                <td style="display:none">@obj.Remarks</td>
                                                 <td>
                                                     @*<a href="/admin/material/add/@obj.MaterialId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>*@
                                                     <a href="javascript:void(0);" title="Delete" class="btn btn-icon btn-danger" onclick="fnDeleteMaterial('@obj.MaterialId')"><i class="fas fa-trash-alt"></i></a>
@@ -286,4 +289,3 @@
     });
 
 </script>
- 

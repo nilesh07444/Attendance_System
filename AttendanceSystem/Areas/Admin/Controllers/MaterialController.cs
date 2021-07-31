@@ -82,6 +82,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                      InOut = mt.InOut,
                                                      Remarks = mt.Remarks,
                                                      IsActive = mt.IsActive,
+                                                     InwardOutwardBy = PaymentGivenBy.CompanyAdmin.ToString()
                                                  }).OrderByDescending(x => x.MaterialId).ToList();
 
                 materialFilterVM.MaterialList.ForEach(x =>

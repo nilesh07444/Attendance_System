@@ -60,6 +60,7 @@
                                 <thead>
                                     <tr>
                                         <td>#</td>
+                                        <td style="display:none">Worker Name</td>
                                         <th>Date</th>
                                         <th>Opening</th>
                                         <th>Credit</th>
@@ -76,6 +77,7 @@
                                         {
                                             <tr>
                                                 <td>@counter.</td>
+                                                <td style="display:none">@obj.EmployeeName</td>
                                                 <td>@obj.Date.ToString("dd MMM yyyy")</td>
                                                 <td>@obj.Opening</td>
                                                 <td>@obj.Credit</td>
@@ -93,6 +95,7 @@
                                 </tbody>
                                 <thead>
                                     <tr>
+                                        <th style="display:none"></th>
                                         <th colspan="2">Total</th>
                                         <th>@opening</th>
                                         <th>@totalcredit</th>
@@ -123,7 +126,7 @@
             var endDate = $("#EndDate").val();
             var employeeId = $("#EmployeeId").val();
 
-            if (startDate == "" ) {
+            if (startDate == "") {
                 alert("Please select valid start date");
                 return false;
             }

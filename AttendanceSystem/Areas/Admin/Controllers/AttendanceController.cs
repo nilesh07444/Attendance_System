@@ -74,7 +74,16 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                          LocationFrom = at.LocationFrom,
                                                          Status = at.Status,
                                                          RejectReason = at.RejectReason,
-                                                         EmploymentCategory = emp.EmploymentCategory
+                                                         EmploymentCategory = emp.EmploymentCategory,
+                                                         InDateTime = at.InDateTime,
+                                                         OutDateTime = at.OutDateTime,
+                                                         OutLocationFrom = at.OutLocationFrom,
+                                                         InLatitude = at.InLatitude,
+                                                         InLongitude = at.InLongitude,
+                                                         OutLatitude = at.OutLatitude,
+                                                         OutLongitude = at.OutLongitude,
+                                                         NoOfHoursWorked = at.NoOfHoursWorked.HasValue ? at.NoOfHoursWorked.Value : 0,
+                                                         NoOfUnitWorked = at.NoOfUnitWorked.HasValue ? at.NoOfUnitWorked.Value : 0,
                                                      }).OrderByDescending(x => x.AttendanceDate).ToList();
 
                 attendanceFilterVM.EmployeeList = GetEmployeeList();

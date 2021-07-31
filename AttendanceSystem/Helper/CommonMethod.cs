@@ -1,5 +1,6 @@
 ﻿using AttendanceSystem.Helper;
 using AttendanceSystem.Models;
+using AttendanceSystem.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -506,7 +507,7 @@ namespace AttendanceSystem
             {
                 msg = HttpUtility.UrlEncode(msg);
                 string url = GetSMSUrl().Replace("--MOBILE--", mobileNo).Replace("--MSG--", msg);
-                var json = webClient.DownloadString(url); 
+                var json = webClient.DownloadString(url);
                 return json;
             }
         }
@@ -711,6 +712,32 @@ namespace AttendanceSystem
             string invoiceYear = currYear + "-" + nextYear;
             return invoiceYear;
         }
- 
+
+        public static string GetInvoiceContent(InvoiceFieldsVM fields)
+        {
+            string htmlContent = string.Empty;
+            string path = System.Web.Hosting.HostingEnvironment.MapPath("~\\Content\\Invoice.htm");
+            StreamReader objReader = new StreamReader(path);
+            htmlContent = objReader.ReadToEnd();
+            htmlContent = Regex.Replace(htmlContent, "##companyname##", fields.CompanyName);
+            htmlContent = Regex.Replace(htmlContent, "##invoiceno##", fields.InvoiceNo);
+            htmlContent = Regex.Replace(htmlContent, "##customername##", fields.CustomerName);
+            htmlContent = Regex.Replace(htmlContent, "##invoicedate##", fields.InvoiceDate);
+            htmlContent = Regex.Replace(htmlContent, "##address##", fields.Address);
+            htmlContent = Regex.Replace(htmlContent, "##phone##", fields.Phone);
+            htmlContent = Regex.Replace(htmlContent, "##gstno##", fields.GstNo);
+            htmlContent = Regex.Replace(htmlContent, "##panno##", fields.PanNo);
+            htmlContent = Regex.Replace(htmlContent, "##packagename##", fields.PackageName);
+            htmlContent = Regex.Replace(htmlContent, "##hsncode##", fields.HsnCode);
+            htmlContent = Regex.Replace(htmlContent, "##qty##", fields.Qty.ToString("#.##"));
+            htmlContent = Regex.Replace(htmlContent, "##rate##", fields.Rate.ToString("#.##"));
+            htmlContent = Regex.Replace(htmlContent, "##gstrate##", fields.GSTRate.ToString("#.##"));
+            htmlContent = Regex.Replace(htmlContent, "##cgst##", fields.CGST.ToString("#.##"));
+            htmlContent = Regex.Replace(htmlContent, "##sgst##", fields.SGST.ToString("#.##"));
+            htmlContent = Regex.Replace(htmlContent, "##igst##", fields.IGST.ToString("#.##"));
+            htmlContent = Regex.Replace(htmlContent, "##totalamount##", fields.TotalAmount.ToString("#.##"));
+            //\Content\Invoice.htm
+            return htmlContent.Replace("\r\n","");
+        }
     }
 }

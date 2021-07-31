@@ -137,6 +137,7 @@ namespace AttendanceSystem.ViewModel
         public string WorkerTypeText { get; set; }
         public List<SelectListItem> WorkerTypeList { get; set; }
         public string EmploymentCategoryText { get; set; }
+        public DateTime? CreatedDate { get; set; }
     }
 
     public class EmployeeFilterVM

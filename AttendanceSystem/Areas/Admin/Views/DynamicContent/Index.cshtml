@@ -1,4 +1,4 @@
-﻿@using AttendanceSystem.Helper 
+﻿@using AttendanceSystem.Helper
 @model List<DynamicContentVM>
 @{
     ViewBag.Title = "WebsiteContent";
@@ -15,14 +15,14 @@
                     </div>
                 </div>
                 <div class="card">
-                    <div class="card-header"  style="display: block;">
+                    <div class="card-header" style="display: block;">
                         @*<h4>Dynamic Content</h4>*@
                         <div class="card-header-action pull-right">
                             <a href="/admin/dynamiccontent/add" class="btn btn-icon icon-left btn-primary"><i class="fas fa-plus-circle"></i> Add Dynamic Content</a>
                         </div>
                     </div>
                     <div class="card-body">
-                         
+
                         <div class="table-responsive">
                             <table class="table table-striped table-hover" id="tableExport" style="width:100%;">
                                 <thead>
@@ -31,11 +31,12 @@
                                         <th width="15%">Content Type</th>
                                         <th width="20%">Dynamic Title</th>
                                         <th width="15%">Sequence Number</th>
+                                        <th width="15%" style="display:none">Content Description</th>
                                         <th width="10%">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                     
+
                                     @if (Model != null && Model.Count > 0)
                                     {
                                         foreach (DynamicContentVM obj in Model)
@@ -62,6 +63,7 @@
                                                 </td>
                                                 <td>@obj.ContentTitle</td>
                                                 <td>@obj.SeqNo</td>
+                                                <td style="display:none">@obj.ContentDescription</td>
                                                 <td>
                                                     <a href="/admin/dynamiccontent/edit/@obj.DynamicContentId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
                                                     <a href="javascript:void(0);" title="Delete" class="btn btn-icon btn-danger" onclick="fnDeletedynamiccontent('@obj.DynamicContentId')"><i class="fas fa-trash-alt"></i></a>
@@ -122,7 +124,7 @@
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
- 
+
 <script type="text/javascript">
     $(document).ready(function () {
 

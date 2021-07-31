@@ -46,7 +46,7 @@
                                     <div class="col-sm-2">
                                         <div class="form-group">
                                             <label>Year</label>
-                                            @Html.TextBoxFor(model => model.Year, new { @type = "number", @class = "form-control required", @placeholder = "Year", @max = "9999", @maxLength = 4, @style= "height: calc(2.25rem + 6px)" })
+                                            @Html.TextBoxFor(model => model.Year, new { @type = "number", @class = "form-control required", @placeholder = "Year", @max = "9999", @maxLength = 4, @style = "height: calc(2.25rem + 6px)" })
                                         </div>
                                     </div>
                                     <div class="col-sm-2">
@@ -87,11 +87,11 @@
                                         <th>Accept</th>
                                         <th>Employee Code</th>
                                         <th>Employee Name</th>
+                                        <th style="display:none">Contact No</th>
                                         <th>Applied Date</th>
-                                        <th>Start Date</th>
-                                        <th>End Date</th>
+                                        <th>Leave Date</th>
                                         <th>No Of Days</th>
-                                        <th>Leave Status</th> 
+                                        <th>Leave Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -110,11 +110,11 @@
                                                 </td>
                                                 <td>@obj.EmployeeCode</td>
                                                 <td>@obj.UserName</td>
+                                                <td style="display:none">@obj.ContactNo</td>
                                                 <td>@obj.CreatedDate.ToString("dd MMM yyyy")</td>
                                                 <td>@obj.StartDate.ToString("dd MMM yyyy")</td>
-                                                <td>@obj.EndDate.ToString("dd MMM yyyy")</td>
                                                 <td>@obj.NoOfDays</td>
-                                                <td>@obj.LeaveStatusText</td> 
+                                                <td>@obj.LeaveStatusText</td>
                                                 <td>
                                                     @if (obj.LeaveStatus == (int)LeaveStatus.Pending)
                                                     {
