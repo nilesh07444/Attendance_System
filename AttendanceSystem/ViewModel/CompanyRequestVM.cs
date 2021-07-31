@@ -193,6 +193,12 @@ namespace AttendanceSystem.ViewModel
         public string EmployeeCode { get; set; }
 
         public DateTime? CreatedDate { get; set; }
+        [Display(Name = "Trail Mode")]
+        public bool IsTrialMode { get; set; }
+        [Display(Name = "Expiry Date")]
+        public DateTime? TrialExpiryDate { get; set; }
+        [Display(Name = "Expiry Date")]
+        public DateTime? AccountExpiryDate { get; set; }
     }
 
     public class CompanyRequestFilterVM

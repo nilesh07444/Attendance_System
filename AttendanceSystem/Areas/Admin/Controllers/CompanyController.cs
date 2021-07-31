@@ -902,7 +902,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                         CompanyAdminPanCardPhoto = emp.PanCardPhoto,
                                         CompanyAdminPanCardNo = emp.PanCardNo,
                                         FreeAccessDays = cp.FreeAccessDays,
-                                        CompanyTypeText = ct.CompanyTypeName
+                                        CompanyTypeText = ct.CompanyTypeName,
+                                        IsTrialMode = cp.IsTrialMode,
+                                        TrialExpiryDate = cp.TrialExpiryDate,
+                                        AccountExpiryDate = cp.AccountExpiryDate
                                     }).FirstOrDefault();
             }
             catch (Exception ex)

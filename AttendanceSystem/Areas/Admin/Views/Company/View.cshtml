@@ -1,9 +1,10 @@
 ﻿@using AttendanceSystem.Helper;
 @model AttendanceSystem.ViewModel.CompanyRequestVM
 @{
-                /**/
+    /**/
 
-                ViewBag.Title = "Company";
+    ViewBag.Title = "Company";
+    var trialMode = Model.IsTrialMode ? ErrorMessage.YES : ErrorMessage.NO;
 }
 
 <div class="page-body">
@@ -148,6 +149,23 @@
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.CompanyState) :
                                 <p>@Model.CompanyState</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.IsTrialMode) :
+                                <p>@trialMode</p>
+                            </div>
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.TrialExpiryDate) :
+                                @if (Model.IsTrialMode)
+                                {
+                                    <p>@Model.TrialExpiryDate.Value.ToString("dd MMM yyyy")</p>
+                                }
+                                else
+                                {
+                                    <p>@Model.AccountExpiryDate.Value.ToString("dd MMM yyyy")</p>
+                                }
                             </div>
                         </div>
 
