@@ -3,39 +3,160 @@
     Layout = null;
 }
 
-<a href="javascript:void(0);" class="btn-solid btn" id="btnBuy">Buy</a>
- 
+<html>
+<head>
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script src="~/Content/admin-theme/assets/js/mfs100-9.0.2.6.js"></script>
+</head>
+<body>
 
-<div class="dvrazorpayscript"></div> 
+    <div>
+        <button id="btnCaptureFinderprint">Capture Finderprint</button>
+        <img src="" />
+    </div>
+      
+    <script>
 
-<script src="~/Scripts/jquery-3.4.1.min.js"></script>
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+        $(document).on("click", "#btnCaptureFinderprint", function () {
 
-<script>
+            //...Globally Declare...
+            var thumbCaptured = 1;
+            var quality = 70; //(1 to 100) (recommanded minimum 55)
+            var timeout = 10; // seconds (minimum=10(recommanded), maximum=60, unlimited=0)
 
-    $(document).on("click", "#btnBuy", function () {
-
-        var StrURL = '/Admin/PaymentGateway/CreateRazorPaymentOrder'; 
-        $.ajax({
-            url: StrURL,
-            type: "post",
-            dataType: "html",
-            contentType: 'application/json; charset=utf-8',
-            data: JSON.stringify({ Amount: 5, description: "Test" }), //add parameter
-            success: function (data) {
+            //...Thumb Scan Click Event...
+            setTimeout(function () {
+                var res = CaptureFinger(quality, timeout);
                 debugger;
-                //success
-                $('.dvrazorpayscript').html(data); //populate the tab content. 
+                $("img").attr("src", "data:image/png;base64," + res.data.BitmapData);
+                if (res.httpStaus) {
+                    if (res.data.ErrorCode == "0") {
+                        if (thumbCaptured == 1) {
+                            $('#thumb1').addClass("text-success");
+                            $('#hdnThumbImg1').val(res.data.BitmapData);
+                            $('#hdnThumbData1').val(res.data.IsoTemplate);
+                        }
+                        else if (thumbCaptured == 2) {
+                            var result = VerifyFinger($('#hdnThumbData1').val(), res.data.AnsiTemplate);
+                            if (result.httpStaus) {
+                                if (result.data.Status) {
+                                    $('#thumb2').addClass("text-success");
+                                    $('#hdnThumbImg2').val(res.data.BitmapData);
+                                    $('#hdnThumbData2').val(res.data.AnsiTemplate);
+                                }
+                                else {
+                                    thumbCaptured--;
+                                    if (result.data.ErrorCode != "0") {
+                                        alert(result.data.ErrorDescription);
+                                    }
+                                    else {
+                                        alert("Please use only left hand thumb!");
+                                    }
+                                }
+                            }
+                            else {
+                                thumbCaptured--;
+                                alert(result.err);
+                            }
+                        }
+                        else if (thumbCaptured == 3) {
+                            var result1 = VerifyFinger($('#hdnThumbData2').val(), res.data.AnsiTemplate);
+                            if (result1.httpStaus) {
+                                if (result1.data.Status) {
+                                    $('#thumb3').addClass("text-success");
+                                    $('#hdnThumbImg3').val(res.data.BitmapData);
+                                    $('#hdnThumbData3').val(res.data.IsoTemplate);
+                                    $('#imgThumb1').removeClass("border border-danger");
+                                    $('#imgThumb1').addClass("border border-success");
+                                    $('#imgThumb1').attr("src", "/Content/assets/images/verifiedThumb.png");
+                                    $('#btnThumb1').prop('disabled', true);
+                                }
+                                else {
+                                    thumbCaptured--;
+                                    if (result1.data.ErrorCode != "0") {
+                                        alert(result1.data.ErrorDescription);
+                                    }
+                                    else {
+                                        alert("Please use only left hand thumb!");
+                                    }
+                                }
+                            }
+                            else {
+                                thumbCaptured--;
+                                alert(result1.err);
+                            }
+                        }
+                    } else {
+                        $('#imgThumb1').addClass("border border-danger");
+                        alert(res.data.ErrorDescription);
+                        alert("Please reset and try again!");
+                        if (thumbCaptured == 1) {
+                            $('#thumb1').addClass("text-danger");
+                            $('#hdnThumbImg1').val("");
+                            $('#hdnThumbData1').val("");
+                        }
+                        else if (thumbCaptured == 2) {
+                            $('#thumb2').addClass("text-danger");
+                            $('#hdnThumbImg2').val("");
+                            $('#hdnThumbData2').val("");
+                        }
+                        else if (thumbCaptured == 3) {
+                            $('#thumb3').addClass("text-danger");
+                            $('#hdnThumbImg3').val("");
+                            $('#hdnThumbData3').val("");
+                            $('#btnThumb1').prop('disabled', true);
+                        }
+                    }
+                    thumbCaptured++;
+                    $('#mblThumb').modal('hide');
+                }
+                else {
+                    alert(res.err);
+                    $('#mblThumb').modal('hide');
+                }
+            }, 500);
 
-                
-
-            },
-            error: function () {
-                debugger;
-                alert("error");
-            }
         });
 
-    });
+        $(document).on("click", "#btnFinderprintMatch", function () {
 
-</script>
+            //...Thumb Verify ...
+            var thumbsArr = [];
+            //get user three iso template
+
+            setTimeout(function () {
+                var res = CaptureFinger(quality, timeout);
+                var isValid = false;
+                if (res.httpStaus) {
+
+                    if (res.data.ErrorCode == "0") {
+                        for (var i = 0; i < thumbsArr.length; i++) {
+                            var result = VerifyFinger(thumbsArr[i], res.data.IsoTemplate);
+                            if (result.httpStaus) {
+                                if (result.data.Status) {
+                                    isValid = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (isValid) {
+
+                        } else {
+                            alert("Fingerprint does not match!");
+                        }
+
+                    }
+
+                }
+                else {
+                    alert("An error was encountered. Please contact system administrator.");
+                }
+            }, 500);
+
+        });
+
+    </script>
+
+</body>
+</html>

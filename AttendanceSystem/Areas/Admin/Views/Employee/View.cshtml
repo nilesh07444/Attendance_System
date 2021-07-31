@@ -1,7 +1,17 @@
 ﻿@using AttendanceSystem.Helper;
 @model AttendanceSystem.ViewModel.EmployeeVM
+@using System.Configuration
 @{
     ViewBag.Title = "Employee";
+
+    string strEmpType = (Model.AdminRoleId == (int)AdminRoles.Worker ? "Worker" : "Employee");
+
+    ViewBag.Title = strEmpType;
+    List<EmployeeFingerprintVM> lstFingerprint = ViewData["lstFingerprint"] as List<EmployeeFingerprintVM>;
+
+    int totalAddedFingerprint = (lstFingerprint != null ? lstFingerprint.Count : 0);
+    int maximumEmployeeFingerprint = Convert.ToInt32(ConfigurationManager.AppSettings["MaximumEmployeeFingerprint"].ToString());
+
 }
 
 <div class="page-body">
@@ -193,9 +203,124 @@
                 </div>
 
             </div>
-             
+
+            <div class="card">
+                @*<div class="card-header" style="display: block;">
+                        <div class="card-header-action pull-right">
+                            <a id="btnAddEmployeeFingerprint" href="javascript:void(0);" class="btn btn-icon icon-left btn-primary"><i class="fas fa-plus-circle"></i> Add @strEmpType Fingerprint</a>
+                        </div>
+                    </div>*@
+                <div class="card-header">
+                    <div class="card-header-action pull-left">
+                        <h4>Fingerprint List - @Model.Prefix @Model.FirstName @Model.LastName</h4>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover" id="tableExport" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th width="10%">#</th>
+                                    <th width="10%">Fingerprint</th>
+                                    <th>ISO Code</th>
+                                    <th width="10%">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (lstFingerprint != null && lstFingerprint.Count > 0)
+                                {
+                                    int counter = 1;
+                                    foreach (EmployeeFingerprintVM obj in lstFingerprint)
+                                    {
+                                        <tr>
+                                            <td>@counter.</td>
+                                            <td>
+                                                <a href="/admin/employee/fingerprint/@obj.EmployeeId" title="Fingerprint">
+                                                    <img src="~/Content/admin-theme/assets/img/contrabook/fingerprint.jpg" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 50px; height: 50px;" />
+                                                </a>
+                                            </td>
+                                            <td>@obj.ISOCode</td>
+                                            <td>
+                                                <a href="javascript:void(0);" title="Delete" class="btn btn-icon btn-danger" onclick="fnDeleteEmployeeFingerprint('@obj.EmployeeFingerprintId')"><i class="fas fa-trash-alt"></i></a>
+                                            </td>
+                                        </tr>
+                                        counter++;
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
         </div>
 
     </div>
 
 </div>
+
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script>
+
+    $('#btnDeleteEmployeeFingerprint').click(function () {
+        var EmployeeFingerprint_Id = jQuery("#hdnDeleteEmployeeFingerprint").val();
+        if (EmployeeFingerprint_Id != "" && EmployeeFingerprint_Id != null) {
+                $('#deleteEmployeeModal').modal('hide');
+
+                StartLoading();
+
+                var URL = '@Url.Action("DeleteEmployeeFingerprint", "Employee")';
+                $.ajax({
+                    type: 'POST',
+                    async: true,
+                    url: URL + "?EmployeeFingerprintId=" + EmployeeFingerprint_Id,
+                    success: function (result) {
+                        if (result == "success") {
+                            alert("Fingerprint deleted successfully");
+                            window.location.reload();
+                        }
+                        else if (result == "notfound") {
+                            alert("Fingerprint Not Found");
+                        }
+                        else {
+                            alert("Something went wrong. Please try again");
+                        }
+
+                       StopLoading();
+                    },
+                    error: function (resultData) {
+                       StopLoading();
+                    }
+                });
+            }
+    });
+
+    function fnDeleteEmployeeFingerprint(EmployeeFingerprint_Id) {
+        jQuery("#hdnDeleteEmployeeFingerprint").val(EmployeeFingerprint_Id);
+        $('#deleteEmployeeModal').modal('show');
+    }
+
+    $(document).on("click", "#btnAddEmployeeFingerprint", function () {
+
+        var isFingerprintEnabled = '@Model.IsFingerprintEnabled';
+        var totalAddedFingerprint = '@totalAddedFingerprint';
+        var maximumEmployeeFingerprint = '@maximumEmployeeFingerprint';
+
+        if (isFingerprintEnabled == "False") {
+            alert("Fingerprint is not enabled for this @strEmpType, so you can't take fingerprint.");
+            return;
+        }
+
+        if (parseInt(totalAddedFingerprint) >= parseInt(maximumEmployeeFingerprint)) {
+            alert("Fingerprint limit is exceed for this @strEmpType, so you can't take fingerprint.");
+            return;
+        }
+
+        // let's add fingerprint now
+
+
+    });
+
+</script>

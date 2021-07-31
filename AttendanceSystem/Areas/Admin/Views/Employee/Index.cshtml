@@ -11,6 +11,7 @@
     lstEmployeeStatus.Add(new SelectListItem { Value = "0", Text = "InActive" });
     var totalEmployee = Model.NoOfEmployee + Model.NoOfWorker;
     var totalActiveEmployee = Model.ActiveEmployee + Model.ActiveWorker;
+
 }
 
 <section class="section">
@@ -142,7 +143,8 @@
                                                 }
 
                                                 <td>
-                                                    <a href="/admin/employee/fingerprint/@obj.EmployeeId" title="Fingerprint">
+                                                    @{ string employeeFullName = obj.Prefix + ' ' + obj.FirstName + ' ' + obj.LastName;  }
+                                                    <a onclick="return fnTakeFingerprint('@obj.EmployeeId', '@employeeFullName')" href="javascript:void(0);" title="Fingerprint">
                                                         <img src="~/Content/admin-theme/assets/img/contrabook/fingerprint.jpg" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 50px; height: 50px;" />
                                                     </a>
                                                 </td>
@@ -207,11 +209,66 @@
     </div>
 </div>
 
+<!-- Fingerprint Popup -->
+<div class="modal fade open" id="addFingerprintModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="max-width:800px;">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #425C59; padding-bottom: 15px;">
+                <h4 class="modal-title" style="color: #FFCEA3;"></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style=" background: white;">&times;</button>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-group">
+                    <button id="btnCaptureFingerprint" class="btn btn-warning">Capture</button>
+                </div>
+
+                <div class="form-group">
+                    <label>Thumb Image *</label>
+                    
+                    <div class="dvBlankThumb">
+                        <label>No Thumb found !!</label>
+                    </div>
+
+                    <div class="dvThumbImage" style="display:none;">
+                        <img id="imgEmployeeThumb" src="" alt="Employee Thumb Image" style="width:100px;" />
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label>ISO Code *</label>
+                    <textarea id="txtISOCode" class="form-control" placeholder="Generated ISO Code" disabled></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Remarks</label>
+                    <textarea id="txtRemarks" class="form-control" rows="5" placeholder="Enter Remarks" maxlength="500"></textarea>
+                    <p><span id="spn_error_remarks" class="validation-summary-errors"></span></p>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" id="selectedFingerprintEmployeeId" />
+                <button data-dismiss="modal" class="btn btn-primary" type="button">Close</button>
+                <button id="btnSaveFingerprint" class="btn btn-secondary" type="button">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Content/admin-theme/assets/js/mfs100-9.0.2.6.js"></script>
 
 <script type="text/javascript">
+
+    //...Globally Declare...
+    var thumbCaptured = 1;
+    var quality = 70; //(1 to 100) (recommanded minimum 55)
+    var timeout = 10; // seconds (minimum=10(recommanded), maximum=60, unlimited=0)
+
     $(document).ready(function () {
 
         $('#btnDeleteEmployee').click(function () {
@@ -304,5 +361,81 @@
         }
         $('#activeinactiveModal').modal('show');
     }
+
+    // Fingerprint
+
+    function fnTakeFingerprint(employeeId, employeeName) {
+        $("#hdnSelectedFingerprintEmployee").val(employeeId);
+        $('#addFingerprintModal .modal-title').text('Add Fingerprint - ' + employeeName);
+        $('#addFingerprintModal').modal('show');
+
+    }
+
+
+    $(document).on("click", "#btnSaveFingerprint", function () {
+
+        var primaryStatus = $("input[name='rdoPrimaryStatus']:checked").val();
+        var secondaryStatus = $("input[name='rdoSecondaryStatus']:checked").val();
+        var nextFollowupDate = $("#txtNextFollowupDate").val();
+        var description = $("#txtDescription").val();
+        var remarks = $("#txtRemarks").val();
+
+        var isFormValid = checkValidation();
+
+        if (isFormValid) {
+            $('#addFingerprintModal').modal('hide');
+            StartLoading();
+
+            var companyId = '@ViewBag.CompanyId';
+            var actualStatus = (primaryStatus == "1" ? primaryStatus : secondaryStatus);
+
+            var StrURL = '/Admin/Followup/Add';
+            $.ajax({
+                url: StrURL,
+                cache: false,
+                data: {
+                    'CompanyId': parseInt(companyId),
+                    'FollowupStatus': parseInt(actualStatus),
+                    'NextFollowupDate': (primaryStatus == "1" ? nextFollowupDate : null),
+                    'Description': description,
+                    'Remarks': remarks
+                },
+                type: 'POST',
+                success: function (data) {
+                    StopLoading();
+                    if (data == "success") {
+                        alert("Followup saved successfully");
+                        window.location.reload();
+                    }
+                    else {
+                        alert("Something went wrong. Please try again later.")
+                    }
+                },
+                error: function (req, status, error) {
+                    alert(error);
+                }
+            });
+        }
+
+    });
+     
+    $(document).on("click", "#btnCaptureFingerprint", function () {
+
+        var selectedFingerprintEmployeeId = $("#selectedFingerprintEmployeeId").val();
+
+        $.blockUI({ message: '<h4> Put finger on device...</h4>' });
+        setTimeout(function () {
+            var res = CaptureFinger(quality, timeout);
+            $.unblockUI();
+            console.log("respnse", res);
+            debugger;
+
+            $(".dvBlankThumb").hide();
+            $(".dvThumbImage").show();
+            $("#imgEmployeeThumb").attr("src", "data:image/png;base64," + res.data.BitmapData);
+            $("#txtISOCode").val(res.data.IsoTemplate);
+        }, 500);
+
+    });
 
 </script>

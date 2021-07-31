@@ -390,13 +390,13 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult View(int id)
+        public ActionResult View(int Id)
         {
             EmployeeVM employeeVM = new EmployeeVM();
 
             employeeVM = (from emp in _db.tbl_Employee
                           join rl in _db.mst_AdminRole on emp.AdminRoleId equals rl.AdminRoleId
-                          where !emp.IsDeleted && emp.EmployeeId == id
+                          where !emp.IsDeleted && emp.EmployeeId == Id
                           select new EmployeeVM
                           {
                               EmployeeId = emp.EmployeeId,
@@ -434,6 +434,21 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                               CarryForwardLeave = emp.CarryForwardLeave
                           }).FirstOrDefault();
             employeeVM.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)employeeVM.EmploymentCategory);
+
+            // Get Fingerprint List
+            List<EmployeeFingerprintVM> lstFingerprint = (from f in _db.tbl_EmployeeFingerprint
+                                                          where f.EmployeeId == Id
+                                                          select new EmployeeFingerprintVM
+                                                          {
+                                                              EmployeeFingerprintId = f.EmployeeFingerprintId,
+                                                              EmployeeId = f.EmployeeId,
+                                                              BitmapCode = f.BitmapCode,
+                                                              ISOCode = f.ISOCode,
+                                                              //CreatedDate = 
+                                                          }).ToList();
+
+            ViewData["lstFingerprint"] = lstFingerprint;
+
             return View(employeeVM);
         }
 

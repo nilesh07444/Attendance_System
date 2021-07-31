@@ -30,31 +30,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             
             return View();
         }
-
-        public PartialViewResult CreateRazorPaymentOrder(decimal Amount, string description)
-        {
-            Dictionary<string, object> input = new Dictionary<string, object>();
-            input.Add("amount", Amount * 100); // this amount should be same as transaction amount
-            input.Add("currency", "INR");
-            input.Add("receipt", "12121");
-            input.Add("payment_capture", 1);
-
-            //string key = "rzp_test_zuh84ANOrtOQmD";
-            //string secret = "cz7iS82ILhjrQDKOBRFJXZ5I";
-
-            string key = "rzp_live_KyrxYWW59Zw2r6";
-            string secret = "g99Zv6BjdaJMPkU76fTrG5Tl";
-
-            RazorpayClient client = new RazorpayClient(key, secret);
-
-            Razorpay.Api.Order order = client.Order.Create(input);
-            ViewBag.OrderId = order["id"];
-            ViewBag.Description = description;
-            ViewBag.Amount = Amount * 100;
-            ViewBag.Key = key;
-            return PartialView("~/Areas/Admin/Views/PaymentGateway/_RazorPayPayment.cshtml");
-        }
-
+         
         public string downloadTestPDF()
         {
 

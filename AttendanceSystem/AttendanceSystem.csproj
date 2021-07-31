@@ -1183,6 +1183,7 @@
     <Content Include="Content\admin-theme\assets\img\users\user-9.png" />
     <Content Include="Content\admin-theme\assets\js\app.min.js" />
     <Content Include="Content\admin-theme\assets\js\custom.js" />
+    <Content Include="Content\admin-theme\assets\js\mfs100-9.0.2.6.js" />
     <Content Include="Content\admin-theme\assets\js\page\advance-table.js" />
     <Content Include="Content\admin-theme\assets\js\page\auth-register.js" />
     <Content Include="Content\admin-theme\assets\js\page\calendar.js" />
@@ -1612,7 +1613,6 @@
     <Content Include="Areas\Admin\Views\SMSRenew\RenewList.cshtml" />
     <Content Include="Areas\Admin\Views\EmployeeBuyTransaction\RenewList.cshtml" />
     <Content Include="Areas\Admin\Views\Employee\Fingerprint.cshtml" />
-    <Content Include="Areas\Admin\Views\PaymentGateway\_RazorPayPayment.cshtml" />
     <Content Include="Areas\Admin\Views\SMSRenew\_RazorPayPayment.cshtml" />
     <Content Include="Areas\Admin\Views\AccountRenew\_RazorPayPayment.cshtml" />
     <Content Include="Areas\Admin\Views\EmployeeBuyTransaction\_RazorPayPayment.cshtml" />
