@@ -1151,6 +1151,7 @@
     <Content Include="Content\admin-theme\assets\img\image-gallery\thumb\thumb-7.png" />
     <Content Include="Content\admin-theme\assets\img\image-gallery\thumb\thumb-8.png" />
     <Content Include="Content\admin-theme\assets\img\image-gallery\thumb\thumb-9.png" />
+    <Content Include="Content\admin-theme\assets\img\invoicelogo.png" />
     <Content Include="Content\admin-theme\assets\img\loading.gif" />
     <Content Include="Content\admin-theme\assets\img\logo.png" />
     <Content Include="Content\admin-theme\assets\img\posts\post11.png" />
