@@ -717,6 +717,7 @@ namespace AttendanceSystem
         {
             string htmlContent = string.Empty;
             string path = System.Web.Hosting.HostingEnvironment.MapPath("~\\Content\\Invoice.htm");
+            string logoPath = System.Web.Hosting.HostingEnvironment.MapPath("~\\Content\\admin-theme\\assets\\img\\invoicelogo.png");
             StreamReader objReader = new StreamReader(path);
             htmlContent = objReader.ReadToEnd();
             htmlContent = Regex.Replace(htmlContent, "##companyname##", fields.CompanyName);
@@ -736,6 +737,7 @@ namespace AttendanceSystem
             htmlContent = Regex.Replace(htmlContent, "##sgst##", fields.SGST.ToString("#.##"));
             htmlContent = Regex.Replace(htmlContent, "##igst##", fields.IGST.ToString("#.##"));
             htmlContent = Regex.Replace(htmlContent, "##totalamount##", fields.TotalAmount.ToString("#.##"));
+            htmlContent = Regex.Replace(htmlContent, "##logo##", logoPath);
             //\Content\Invoice.htm
             return htmlContent.Replace("\r\n","");
         }

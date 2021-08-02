@@ -57,7 +57,7 @@
                                                 <td>@obj.NoOfSMS</td>
                                                 <td>@obj.PackageExpiryDate.ToString("dd MMM yyyy hh:mm tt")</td>
                                                 <td>
-                                                    <a onclick="return downloadSMSPackageInvoice(@obj.CompanySMSPackRenewId)" title="Download Invoice PDF" href="javascript:void(0);" class="btn btn-icon icon-left btn-info">
+                                                    <a  title="Download Invoice PDF" href="/admin/smsrenew/downloadinvoice/@obj.CompanySMSPackRenewId" class="btn btn-icon icon-left btn-info">
                                                         <i class="fas fa-download"></i>
                                                     </a>
                                                 </td>
@@ -80,9 +80,6 @@
 </section>
 
 <script>
-
-    function downloadSMSPackageInvoice(Id) {
-        alert("Invoice PDF generation is in development.");
-    }
+     
 
 </script>

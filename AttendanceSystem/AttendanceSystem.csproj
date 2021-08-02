@@ -1668,6 +1668,7 @@
     <Folder Include="Areas\WebAPI\Views\Admin\" />
     <Folder Include="Areas\WebAPI\Views\Setting\" />
     <Folder Include="Areas\WebAPI\Views\Shared\" />
+    <Folder Include="Content\Invoice\" />
     <Folder Include="Documents\" />
     <Folder Include="Images\" />
   </ItemGroup>

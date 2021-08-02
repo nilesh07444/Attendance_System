@@ -1,11 +1,16 @@
 ﻿using AttendanceSystem.Helper;
 using AttendanceSystem.Models;
 using AttendanceSystem.ViewModel;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using iTextSharp.tool.xml;
 using Razorpay.Api;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 
 namespace AttendanceSystem.Areas.Admin.Controllers
@@ -280,5 +285,57 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return PartialView("~/Areas/Admin/Views/EmployeeBuyTransaction/_RazorPayPayment.cshtml");
         }
 
+        public void DownloadInvoice(long id)
+        {
+            try
+            {
+                InvoiceFieldsVM invoiceFieldsVM = (from pkg in _db.tbl_EmployeeBuyTransaction
+                                                   join cmp in _db.tbl_Company on pkg.CompanyId equals cmp.CompanyId
+                                                   join ur in _db.tbl_AdminUser on cmp.CompanyCode equals ur.UserName
+                                                   where pkg.EmployeeBuyTransactionId == id
+                                                   select new InvoiceFieldsVM
+                                                   {
+                                                       CompanyName = cmp.CompanyName,
+                                                       InvoiceNo = pkg.InvoiceNo,
+                                                       CustomerName = ur.FirstName + " " + ur.LastName,
+                                                       InvoiceDatetime = pkg.CreatedDate,
+                                                       Address = cmp.Address,
+                                                       Phone = cmp.ContactNo,
+                                                       GstNo = cmp.GSTNo,
+                                                       PanNo = cmp.PanNo,
+                                                       PackageName = "Employee Buy",
+                                                       GSTRate = pkg.GSTPer.HasValue? pkg.GSTPer.Value:0,
+                                                       TotalAmount = pkg.TotalPaidAmount
+                                                   }).FirstOrDefault();
+
+                invoiceFieldsVM.InvoiceDate = invoiceFieldsVM.InvoiceDatetime.ToString("dd MMM yyyy");
+                invoiceFieldsVM.HsnCode = "9982";
+                invoiceFieldsVM.Rate = Math.Round((invoiceFieldsVM.TotalAmount / (100 + invoiceFieldsVM.GSTRate)) * 100, 2);
+                decimal gstAmount = Math.Round(invoiceFieldsVM.Rate * invoiceFieldsVM.GSTRate / 100, 2);
+                invoiceFieldsVM.CGST = Math.Round(gstAmount / 2, 2);
+                invoiceFieldsVM.SGST = Math.Round(gstAmount / 2, 2);
+                invoiceFieldsVM.IGST = 0;
+                invoiceFieldsVM.Qty = 1;
+
+                string htmlContent = CommonMethod.GetInvoiceContent(invoiceFieldsVM);
+
+
+                StringReader sr = new StringReader(htmlContent);
+                Document pdfDoc1 = new Document(PageSize.A4, 10f, 10f, 10f, 0f);
+                PdfWriter writer1 = PdfWriter.GetInstance(pdfDoc1, Response.OutputStream);
+                pdfDoc1.Open();
+                XMLWorkerHelper.GetInstance().ParseXHtml(writer1, pdfDoc1, sr);
+                pdfDoc1.Close();
+                Response.ContentType = "application/pdf";
+                Response.AddHeader("content-disposition", "attachment;filename=" + invoiceFieldsVM.InvoiceNo + ".pdf");
+                Response.Cache.SetCacheability(HttpCacheability.NoCache);
+                Response.Write(pdfDoc1);
+                Response.End();
+                 
+            }
+            catch (Exception ex)
+            {  }
+             
+        }
     }
 }

@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
@@ -406,7 +405,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return PartialView("~/Areas/Admin/Views/AccountRenew/_RazorPayPayment.cshtml");
         }
 
-        public string DownloadInvoice(long id)
+        public void DownloadInvoice(long id)
         {
             string response = "failed";
             try
@@ -437,30 +436,30 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 invoiceFieldsVM.CGST = Math.Round(gstAmount / 2, 2);
                 invoiceFieldsVM.SGST = Math.Round(gstAmount / 2, 2);
                 invoiceFieldsVM.IGST = 0;
+                invoiceFieldsVM.Qty = 1;
 
                 string htmlContent = CommonMethod.GetInvoiceContent(invoiceFieldsVM);
-                var myByteArray = System.Text.Encoding.UTF8.GetBytes(htmlContent);
-                var ms = new MemoryStream(myByteArray);
+               
 
-                Document pdfDoc = new Document(PageSize.A4.Rotate(), 20f, 20f, 20f, 20f);
-                PdfWriter writer = PdfWriter.GetInstance(pdfDoc, Response.OutputStream);
-                writer.PageEvent = new PDFGeneratePageEventHelper();
-                pdfDoc.Open();
-
-                XMLWorkerHelper objHelp = XMLWorkerHelper.GetInstance();
-                objHelp.ParseXHtml(writer, pdfDoc, ms, null, Encoding.UTF8, new UnicodeFontFactory());
-
-                pdfDoc.Close();
+                StringReader sr = new StringReader(htmlContent);
+                Document pdfDoc1 = new Document(PageSize.A4, 10f, 10f, 10f, 0f);
+                PdfWriter writer1 = PdfWriter.GetInstance(pdfDoc1, Response.OutputStream);
+                pdfDoc1.Open();
+                XMLWorkerHelper.GetInstance().ParseXHtml(writer1, pdfDoc1, sr);
+                pdfDoc1.Close();
                 Response.ContentType = "application/pdf";
-                Response.AddHeader("content-disposition", "download;filename=Expense List" + ".pdf");
+                Response.AddHeader("content-disposition", "attachment;filename=" + invoiceFieldsVM.InvoiceNo + ".pdf");
                 Response.Cache.SetCacheability(HttpCacheability.NoCache);
-                Response.Write(pdfDoc);
+                Response.Write(pdfDoc1);
                 Response.End();
+
+
                 response = "success";
             }
             catch (Exception ex)
             { response = ex.Message; }
-            return response;
+            //return response;
         }
+
     }
 }

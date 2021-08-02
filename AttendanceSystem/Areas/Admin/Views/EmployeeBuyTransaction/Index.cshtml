@@ -50,7 +50,7 @@
                                         <td>@obj.TotalPaidAmount</td>
                                         <td>@obj.ExpiryDate</td> 
                                         <td>
-                                            <a onclick="return downloadEmployeeBuyInvoice(@obj.EmployeeBuyTransactionId)" title="Download Invoice PDF" href="javascript:void(0);" class="btn btn-icon icon-left btn-info">
+                                            <a title="Download Invoice PDF" href="/admin/EmployeeBuyTransaction/downloadinvoice/@obj.EmployeeBuyTransactionId" class="btn btn-icon icon-left btn-info">
                                                 <i class="fas fa-download"></i>
                                             </a>
                                         </td>
@@ -71,9 +71,6 @@
 </section>
 
 <script>
-
-    function downloadEmployeeBuyInvoice(Id) {
-        alert("Invoice PDF generation is in development.");
-    }
+     
 
 </script>
