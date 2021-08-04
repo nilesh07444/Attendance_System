@@ -181,19 +181,22 @@
 
                                                 @if (obj.IsActive == true)
                                                 {
-                                                    <td><span class="badge badge-success" style="cursor:pointer;" title="Click to Inactive" onclick="fnChangeStatus('@obj.EmployeeId','InActive');">Active</span></td> }
+                                                    <td><span class="badge badge-success" style="cursor:pointer;" title="Click to Inactive" onclick="fnChangeStatus('@obj.EmployeeId','InActive');">Active</span></td>
+                                                }
                                                 else
                                                 {
                                                     if (!Model.IsNoOfEmployeeExceed)
                                                     {
-                                                        <td><span class="badge badge-danger" style="cursor:pointer;" title="Click to Active" onclick="fnChangeStatus('@obj.EmployeeId','Active');">InActive</span></td> }
+                                                        <td><span class="badge badge-danger" style="cursor:pointer;" title="Click to Active" onclick="fnChangeStatus('@obj.EmployeeId','Active');">InActive</span></td>
+                                                    }
                                                     else
                                                     {
-                                                        <td><span class="badge badge-danger" style="cursor:pointer;" title="Active employee exceed">InActive</span></td>}
+                                                        <td><span class="badge badge-danger" style="cursor:pointer;" title="Active employee exceed">InActive</span></td>
+                                                    }
                                                 }
 
                                                 <td>
-                                                    @{ string employeeFullName = obj.Prefix + ' ' + obj.FirstName + ' ' + obj.LastName;  }
+                                                    @{ string employeeFullName = obj.Prefix + ' ' + obj.FirstName + ' ' + obj.LastName; }
                                                     <a onclick="return fnTakeFingerprint('@obj.EmployeeId', '@employeeFullName')" href="javascript:void(0);" title="Fingerprint">
                                                         <img src="~/Content/admin-theme/assets/img/contrabook/fingerprint.jpg" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 50px; height: 50px;" />
                                                     </a>
@@ -211,7 +214,8 @@
                                                     <a href="javascript:void(0);" title="Delete" class="btn btn-icon btn-danger" onclick="fnDeleteEmployee('@obj.EmployeeId')"><i class="fas fa-trash-alt"></i></a>
 
                                                 </td>
-                                            </tr>counter++;
+                                            </tr>
+                                            counter++;
                                         }
                                     }
 
@@ -280,7 +284,7 @@
 
                 <div class="form-group">
                     <label>Thumb Image *</label>
-                    
+
                     <div class="dvBlankThumb">
                         <label>No Thumb found !!</label>
                     </div>
@@ -308,6 +312,26 @@
                 <button data-dismiss="modal" class="btn btn-primary" type="button">Close</button>
                 <button id="btnSaveFingerprint" class="btn btn-secondary" type="button">Save</button>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Fingerprint Popup -->
+<div class="modal fade open " id="fingerprintPlayModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #425C59; padding-bottom: 15px;">
+                <h4 class="modal-title" style="color: #FFCEA3;">Nilesh Prajapati</h4>
+                @*<button type="button" class="close" data-dismiss="modal" aria-hidden="true" style=" background: white;">&times;</button>*@
+            </div>
+    
+                <img id="imgFingerprintPlay" src="~/Content/admin-theme/assets/img/contrabook/fingerprint_play.gif" alt="Employee Thumb Image" style="" />
+         
+            @*<div class="modal-footer">
+                <input type="hidden" id="selectedFingerprintEmployeeId" />
+                <button data-dismiss="modal" class="btn btn-primary" type="button">Close</button>
+                <button id="btnSaveFingerprint" class="btn btn-secondary" type="button">Save</button>
+            </div>*@
         </div>
     </div>
 </div>
@@ -420,50 +444,50 @@
     // Fingerprint
 
     function fnTakeFingerprint(employeeId, employeeName) {
-        $("#hdnSelectedFingerprintEmployee").val(employeeId);
-        $('#addFingerprintModal .modal-title').text('Add Fingerprint - ' + employeeName);
-        $('#addFingerprintModal').modal('show');
+         
+        $('#fingerprintPlayModal').modal('show');
+
+        //$("#hdnSelectedFingerprintEmployee").val(employeeId);
+        //$('#addFingerprintModal .modal-title').text('Add Fingerprint - ' + employeeName);
+        //$('#addFingerprintModal').modal('show');
 
     }
 
-
     $(document).on("click", "#btnSaveFingerprint", function () {
-
-        var primaryStatus = $("input[name='rdoPrimaryStatus']:checked").val();
-        var secondaryStatus = $("input[name='rdoSecondaryStatus']:checked").val();
-        var nextFollowupDate = $("#txtNextFollowupDate").val();
-        var description = $("#txtDescription").val();
+        var employeeId = $("#hdnSelectedFingerprintEmployee").val();
+        var ISOCode = $("#hdnISOCode").val();
+        var BitmapCode = $("#hdnBitmapCode").val();
         var remarks = $("#txtRemarks").val();
+        var isValid = true;
 
-        var isFormValid = checkValidation();
-
-        if (isFormValid) {
+        if (isValid) {
             $('#addFingerprintModal').modal('hide');
             StartLoading();
 
-            var companyId = '@ViewBag.CompanyId';
-            var actualStatus = (primaryStatus == "1" ? primaryStatus : secondaryStatus);
-
-            var StrURL = '/Admin/Followup/Add';
+            var StrURL = '/Admin/Employee/SaveEmployeeFingerprint';
             $.ajax({
                 url: StrURL,
                 cache: false,
                 data: {
-                    'CompanyId': parseInt(companyId),
-                    'FollowupStatus': parseInt(actualStatus),
-                    'NextFollowupDate': (primaryStatus == "1" ? nextFollowupDate : null),
-                    'Description': description,
+                    'EmployeeFingerprintId': 0,
+                    'EmployeeId': employeeId,
+                    'ISOCode': ISOCode,
+                    'BitmapCode': BitmapCode,
                     'Remarks': remarks
                 },
                 type: 'POST',
-                success: function (data) {
+                success: function (result) {
                     StopLoading();
-                    if (data == "success") {
-                        alert("Followup saved successfully");
+                    if (result.isSuccess) {
+                        alert("Fingerprint saved successfully");
                         window.location.reload();
                     }
+                    else if (!result.isSuccess && result.errorMessage == "exception")
+                    {
+                         alert("Something went wrong. Please try again later.");
+                    }
                     else {
-                        alert("Something went wrong. Please try again later.")
+                        alert(result.errorMessage);
                     }
                 },
                 error: function (req, status, error) {
@@ -473,7 +497,7 @@
         }
 
     });
-     
+
     $(document).on("click", "#btnCaptureFingerprint", function () {
 
         var selectedFingerprintEmployeeId = $("#selectedFingerprintEmployeeId").val();

@@ -741,5 +741,23 @@ namespace AttendanceSystem
             //\Content\Invoice.htm
             return htmlContent.Replace("\r\n","");
         }
+
+        public static string GetRatingCertificateContent(EmployeeRatingVM objEmployeeRating)
+        {
+            string htmlContent = string.Empty;
+            string path = System.Web.Hosting.HostingEnvironment.MapPath("~\\Content\\certificate.htm");
+            string logoPath = System.Web.Hosting.HostingEnvironment.MapPath("~\\Content\\blank_certificate.jpg");
+            StreamReader objReader = new StreamReader(path);
+            htmlContent = objReader.ReadToEnd();
+
+            htmlContent = Regex.Replace(htmlContent, "##name##", objEmployeeRating.EmployeeName);
+            htmlContent = Regex.Replace(htmlContent, "##behave##", GetFormatterAmount(objEmployeeRating.BehaviourRate).ToString() + "/10");
+            htmlContent = Regex.Replace(htmlContent, "##Reglr##", GetFormatterAmount(objEmployeeRating.RegularityRate).ToString() + "/10");
+            htmlContent = Regex.Replace(htmlContent, "##Work##", GetFormatterAmount(objEmployeeRating.WorkRate).ToString() + "/10");  
+            htmlContent = Regex.Replace(htmlContent, "##logo##", logoPath);
+
+            return htmlContent.Replace("\r\n", "");
+        }
+
     }
 }

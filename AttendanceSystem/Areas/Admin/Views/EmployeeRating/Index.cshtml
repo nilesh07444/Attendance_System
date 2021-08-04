@@ -12,8 +12,7 @@
     lstRateYear.Add(new SelectListItem { Value = (CommonMethod.CurrentIndianDateTime().Year - 3).ToString(), Text = (CommonMethod.CurrentIndianDateTime().Year - 3).ToString() });
     lstRateYear.Add(new SelectListItem { Value = (CommonMethod.CurrentIndianDateTime().Year - 4).ToString(), Text = (CommonMethod.CurrentIndianDateTime().Year - 4).ToString() });
 }
-
-
+ 
 <section class="section">
     <div class="section-body">
         <div class="row">
@@ -86,7 +85,7 @@
                                         <th>Work</th>
                                         <th>Avg. Rate</th>
                                         <th>Download</th>
-                                        <th>Action</th>
+                                        <th width="15%">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -215,9 +214,7 @@
         $('#deleteEmployeeRatingModal').modal('show');
     }
 
-    function fnDownloadRatingPDF(ratingId) {
-        alert("PDF is under development.");
-
+    function fnDownloadRatingPDF(ratingId) {    
         window.location.href = "/admin/EmployeeRating/DownloadEmployeeRatingPDF/" + ratingId;
     }
 

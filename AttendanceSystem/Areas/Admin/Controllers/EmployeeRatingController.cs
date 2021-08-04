@@ -193,7 +193,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-
         private List<SelectListItem> GetUserRoleList()
         {
             long[] adminRole = new long[] { (long)AdminRoles.CompanyAdmin, (long)AdminRoles.SuperAdmin };
@@ -206,8 +205,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                         }).ToList();
             return lst;
         }
-
-
 
         private List<SelectListItem> GetEmployeeList()
         {
@@ -285,13 +282,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return ReturnMessage;
         }
 
-        public string DownloadEmployeeRatingPDF(int Id) // Id = EmployeeRatingId
+        public void DownloadEmployeeRatingPDF(int Id) // Id = EmployeeRatingId
         {
-
-            string Result = "";
             try
             {
-                string blank_rating_image_url = System.Web.HttpContext.Current.Server.MapPath("~/Content/admin-theme/assets/img/contrabook/blank_certificate.jpg");
+                //string blank_rating_image_url = System.Web.HttpContext.Current.Server.MapPath("~/Content/admin-theme/assets/img/contrabook/blank_certificate.jpg");
 
                 EmployeeRatingVM objEmployeeRating = (from er in _db.tbl_EmployeeRating
                                                       join emp in _db.tbl_Employee on er.EmployeeId equals emp.EmployeeId
@@ -312,6 +307,23 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                           AvgRate = SqlFunctions.StringConvert((new decimal[] { er.BehaviourRate, er.RegularityRate, er.WorkRate }).Average(), 4, 2)
                                                       }).FirstOrDefault();
 
+                string htmlContent = CommonMethod.GetRatingCertificateContent(objEmployeeRating);
+                 
+                StringReader sr = new StringReader(htmlContent);
+                Document pdfDoc1 = new Document(PageSize.A4.Rotate(), 10f, 10f, 10f, 0f); 
+                PdfWriter writer1 = PdfWriter.GetInstance(pdfDoc1, Response.OutputStream); 
+                pdfDoc1.Open();
+                XMLWorkerHelper.GetInstance().ParseXHtml(writer1, pdfDoc1, sr);
+                pdfDoc1.Close();
+                Response.ContentType = "application/pdf";
+                Response.AddHeader("content-disposition", "attachment;filename=RatingCertificate.pdf");
+                Response.Cache.SetCacheability(HttpCacheability.NoCache);
+                Response.Write(pdfDoc1);
+                Response.End();
+
+                #region
+
+                /*
                 List<DateTime> lstDateTemp = new List<DateTime>();
                 StringBuilder strHTML = new StringBuilder();
                  
@@ -370,6 +382,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 pdfDoc.Add(table);
 
                 return Result;
+                */
+
+                #endregion
+
             }
             catch (Exception exception)
             {

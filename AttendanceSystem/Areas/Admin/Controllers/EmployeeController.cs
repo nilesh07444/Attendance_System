@@ -24,7 +24,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         long companyId;
         long loggedInUserId;
         bool isTrailMode;
-
+            
         public EmployeeController()
         {
             _db = new AttendanceSystemEntities();
@@ -645,75 +645,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return lst;
         }
 
-        public ActionResult Fingerprint(int Id)
-        {
-            EmployeeVM employeeVM = new EmployeeVM();
-            try
-            {
-
-                List<EmployeeFingerprintVM> lstFingerprint = (from f in _db.tbl_EmployeeFingerprint
-                                                              where f.EmployeeId == Id
-                                                              select new EmployeeFingerprintVM
-                                                              {
-                                                                  EmployeeFingerprintId = f.EmployeeFingerprintId,
-                                                                  EmployeeId = f.EmployeeId,
-                                                                  BitmapCode = f.BitmapCode,
-                                                                  ISOCode = f.ISOCode
-                                                              }).ToList();
-
-                ViewData["lstFingerprint"] = lstFingerprint;
-
-                employeeVM = (from emp in _db.tbl_Employee
-                              join rl in _db.mst_AdminRole on emp.AdminRoleId equals rl.AdminRoleId
-                              where !emp.IsDeleted && emp.EmployeeId == Id
-                              select new EmployeeVM
-                              {
-                                  EmployeeId = emp.EmployeeId,
-                                  CompanyId = emp.CompanyId,
-                                  AdminRoleId = emp.AdminRoleId,
-                                  AdminRoleText = rl.AdminRoleName,
-                                  Prefix = emp.Prefix,
-                                  FirstName = emp.FirstName,
-                                  LastName = emp.LastName,
-                                  Email = emp.Email,
-                                  EmployeeCode = emp.EmployeeCode,
-                                  Password = emp.Password,
-                                  MobileNo = emp.MobileNo,
-                                  AlternateMobile = emp.AlternateMobile,
-                                  Address = emp.Address,
-                                  City = emp.City,
-                                  Designation = emp.Designation,
-                                  Dob = emp.Dob,
-                                  DateOfJoin = emp.DateOfJoin,
-                                  BloodGroup = emp.BloodGroup,
-                                  WorkingTime = emp.WorkingTime,
-                                  AdharCardNo = emp.AdharCardNo,
-                                  DateOfIdCardExpiry = emp.DateOfIdCardExpiry,
-                                  Remarks = emp.Remarks,
-                                  ProfilePicture = emp.ProfilePicture,
-                                  EmploymentCategory = emp.EmploymentCategory,
-                                  PerCategoryPrice = emp.PerCategoryPrice,
-                                  MonthlySalaryPrice = emp.MonthlySalaryPrice,
-                                  ExtraPerHourPrice = emp.ExtraPerHourPrice,
-                                  IsLeaveForward = emp.IsLeaveForward,
-                                  IsActive = emp.IsActive,
-                                  IsDeleted = emp.IsDeleted,
-                                  IsFingerprintEnabled = emp.IsFingerprintEnabled,
-                                  NoOfFreeLeavePerMonth = emp.NoOfFreeLeavePerMonth,
-                                  CarryForwardLeave = emp.CarryForwardLeave
-                              }).FirstOrDefault();
-
-                employeeVM.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)employeeVM.EmploymentCategory);
-
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            return View(employeeVM);
-        }
-
         [HttpPost]
         public string DeleteEmployeeFingerprint(int EmployeeFingerprintId)
         {
@@ -744,6 +675,70 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return ReturnMessage;
         }
 
+        public JsonResult SaveEmployeeFingerprint(EmployeeFingerprintVM employeeFingerprintVM)
+        {
+            string errorMessage = string.Empty;
+            bool isSuccess = false;
+
+            int maximumEmployeeFingerprint = Convert.ToInt32(ConfigurationManager.AppSettings["MaximumEmployeeFingerprint"].ToString());
+
+            try
+            {
+                List<tbl_EmployeeFingerprint> lstExistFingerprint = _db.tbl_EmployeeFingerprint.Where(x => x.EmployeeId == employeeFingerprintVM.EmployeeId).ToList();
+
+                if (lstExistFingerprint != null && lstExistFingerprint.Count >= maximumEmployeeFingerprint)
+                {
+                    errorMessage = "Fingerprint limit exceed, so you can not save more fingerint of this employee.";
+                    isSuccess = false;
+                }
+                else
+                {
+                    tbl_EmployeeFingerprint objFingerprint = new tbl_EmployeeFingerprint();
+                    objFingerprint.BitmapCode = employeeFingerprintVM.BitmapCode;
+                    objFingerprint.EmployeeId = employeeFingerprintVM.EmployeeId;
+                    objFingerprint.ISOCode = employeeFingerprintVM.ISOCode;
+                    _db.tbl_EmployeeFingerprint.Add(objFingerprint);
+                    _db.SaveChanges();
+
+                    isSuccess = true;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                errorMessage = "exception";
+                isSuccess = false;
+            }
+
+            return Json(new { isSuccess = isSuccess, ErrorMessage = errorMessage }, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetOtherEmployeesFingerprints(int employeeId)
+        {
+            List<EmployeeFingerprintVM> lstEmployeeFingerprint = new List<EmployeeFingerprintVM>();
+            bool isSuccess = false;
+            try
+            {
+                lstEmployeeFingerprint = (from f in _db.tbl_EmployeeFingerprint
+                                          join e in _db.tbl_Employee on f.EmployeeId equals e.EmployeeId
+                                          where f.EmployeeId != employeeId
+                                          && e.AdminRoleId != (int)AdminRoles.Worker
+                                          && e.CompanyId == companyId
+                                          select new EmployeeFingerprintVM
+                                          {
+                                              EmployeeFingerprintId = f.EmployeeFingerprintId,
+                                              EmployeeId = f.EmployeeId,
+                                              ISOCode = f.ISOCode
+                                          }).ToList();
+
+                isSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                isSuccess = false;
+            }
+            return Json(new { isSuccess = isSuccess, data = lstEmployeeFingerprint }, JsonRequestBehavior.AllowGet);
+        }
 
     }
 }
