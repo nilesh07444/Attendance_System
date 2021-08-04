@@ -4,6 +4,7 @@ using AttendanceSystem.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -744,6 +745,17 @@ namespace AttendanceSystem
 
         public static string GetRatingCertificateContent(EmployeeRatingVM objEmployeeRating)
         {
+            long companyId = clsAdminSession.CompanyId;
+            string companyLogo = System.Web.Hosting.HostingEnvironment.MapPath("~\\Images\\default_image.png");
+
+            AttendanceSystemEntities _db = new AttendanceSystemEntities();
+            tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == companyId).FirstOrDefault();
+            if (objCompany != null && !string.IsNullOrEmpty(objCompany.CompanyLogoImage))
+            {
+                string domainUrl = ConfigurationManager.AppSettings["DomainUrl"].ToString();
+                companyLogo = domainUrl + "/Images/CompanyLogo/" + objCompany.CompanyLogoImage;
+            }
+
             string htmlContent = string.Empty;
             string path = System.Web.Hosting.HostingEnvironment.MapPath("~\\Content\\certificate.htm");
             string logoPath = System.Web.Hosting.HostingEnvironment.MapPath("~\\Content\\blank_certificate.jpg");
@@ -751,6 +763,7 @@ namespace AttendanceSystem
             htmlContent = objReader.ReadToEnd();
 
             htmlContent = Regex.Replace(htmlContent, "##name##", objEmployeeRating.EmployeeName);
+            htmlContent = Regex.Replace(htmlContent, "##companylogo##", companyLogo);
             htmlContent = Regex.Replace(htmlContent, "##behave##", GetFormatterAmount(objEmployeeRating.BehaviourRate).ToString() + "/10");
             htmlContent = Regex.Replace(htmlContent, "##Reglr##", GetFormatterAmount(objEmployeeRating.RegularityRate).ToString() + "/10");
             htmlContent = Regex.Replace(htmlContent, "##Work##", GetFormatterAmount(objEmployeeRating.WorkRate).ToString() + "/10");  
