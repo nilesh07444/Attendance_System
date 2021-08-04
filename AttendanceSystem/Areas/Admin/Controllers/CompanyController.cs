@@ -742,7 +742,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     }
                     _db.SaveChanges();
 
-                    tbl_AdminUser objUser = _db.tbl_AdminUser.Where(x => x.UserName == objCompany.CompanyCode).FirstOrDefault();
+                    tbl_AdminUser objUser = _db.tbl_AdminUser.Where(x => x.CompanyId == objCompany.CompanyId).FirstOrDefault();
                     objUser.Prefix = companyRequestVM.CompanyAdminPrefix;
                     objUser.FirstName = companyRequestVM.CompanyAdminFirstName;
                     objUser.MIddleName = companyRequestVM.CompanyAdminMiddleName;

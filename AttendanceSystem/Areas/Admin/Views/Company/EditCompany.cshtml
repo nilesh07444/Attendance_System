@@ -38,7 +38,7 @@
                         @using (Html.BeginForm("EditCompany", "company", FormMethod.Post, new { @id = "CompanyEditForm", @class = "needs-validation", enctype = "multipart/form-data", role = "form" }))
                         {
                             @Html.HiddenFor(model => model.CompanyId)
-                            @Html.HiddenFor(model => model.CompanyName)
+                            @*@Html.HiddenFor(model => model.CompanyName)*@
                             @Html.HiddenFor(model => model.CompanyTypeId)
                             @Html.HiddenFor(model => model.CompanyTypeText)
                             @*<div class="row">
