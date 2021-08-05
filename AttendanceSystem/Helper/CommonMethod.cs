@@ -740,13 +740,64 @@ namespace AttendanceSystem
             htmlContent = Regex.Replace(htmlContent, "##totalamount##", fields.TotalAmount.ToString("#.##"));
             htmlContent = Regex.Replace(htmlContent, "##logo##", logoPath);
             //\Content\Invoice.htm
-            return htmlContent.Replace("\r\n","");
+            return htmlContent.Replace("\r\n", "");
+        }
+
+        public static string GetDurationOfJoining(DateTime? JoiningDate)
+        {
+            string duration = string.Empty;
+
+            if (JoiningDate != null)
+            {
+                DateTime currentDate = CurrentIndianDateTime();
+
+                const double ApproxDaysPerMonth = 30.4375;
+                const double ApproxDaysPerYear = 365.25;
+
+                int iDays = (currentDate - Convert.ToDateTime(JoiningDate)).Days;
+
+                int iYear = (int)(iDays / ApproxDaysPerYear);
+                iDays -= (int)(iYear * ApproxDaysPerYear);
+
+                int iMonths = (int)(iDays / ApproxDaysPerMonth);
+                iDays -= (int)(iMonths * ApproxDaysPerMonth);
+
+                // Get years
+                if (iYear > 0)
+                {
+                    duration = "<span style='text-decoration: underline;'>" + iYear + "</span>" + " years";
+                }
+                else
+                {
+                    if (iMonths > 0)
+                    {
+                        duration = "<span style='text-decoration: underline;'>" + iMonths + "</span>" + " months";
+                    }
+                    else
+                    {
+                        if (iDays > 0)
+                        {
+                            duration = "<span style='text-decoration: underline;'>" + iDays + "</span>" + " days";
+                        }
+                    }
+                }
+
+            }
+
+            return duration;
         }
 
         public static string GetRatingCertificateContent(EmployeeRatingVM objEmployeeRating)
         {
             long companyId = clsAdminSession.CompanyId;
             string companyLogo = System.Web.Hosting.HostingEnvironment.MapPath("~\\Images\\default_image.png");
+
+            string duration = GetDurationOfJoining(objEmployeeRating.EmployeeJoiningDate);
+            duration = !string.IsNullOrEmpty(duration) ? " for the last " + duration : "";
+
+            string designation = !string.IsNullOrEmpty(objEmployeeRating.EmployeeDesignation) ? " as a <span style='text-decoration: underline;'>" + objEmployeeRating.EmployeeDesignation + "</span>" : "";
+
+            string description = "This guy has been working with us" + duration + designation + ", His behaviour is very nice towards the company. <br /> He doesn't have any legal offenses. It is very simple and quit in nature.";
 
             AttendanceSystemEntities _db = new AttendanceSystemEntities();
             tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == companyId).FirstOrDefault();
@@ -766,8 +817,9 @@ namespace AttendanceSystem
             htmlContent = Regex.Replace(htmlContent, "##companylogo##", companyLogo);
             htmlContent = Regex.Replace(htmlContent, "##behave##", GetFormatterAmount(objEmployeeRating.BehaviourRate).ToString() + "/10");
             htmlContent = Regex.Replace(htmlContent, "##Reglr##", GetFormatterAmount(objEmployeeRating.RegularityRate).ToString() + "/10");
-            htmlContent = Regex.Replace(htmlContent, "##Work##", GetFormatterAmount(objEmployeeRating.WorkRate).ToString() + "/10");  
+            htmlContent = Regex.Replace(htmlContent, "##Work##", GetFormatterAmount(objEmployeeRating.WorkRate).ToString() + "/10");
             htmlContent = Regex.Replace(htmlContent, "##logo##", logoPath);
+            htmlContent = Regex.Replace(htmlContent, "##description##", description);
 
             return htmlContent.Replace("\r\n", "");
         }

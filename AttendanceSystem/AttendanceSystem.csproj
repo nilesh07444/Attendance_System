@@ -1616,7 +1616,7 @@
     <Content Include="Areas\Admin\Views\Material\MaterialReport.cshtml" />
     <Content Include="Areas\Admin\Views\Report\SalesReport.cshtml" />
     <Content Include="Areas\Admin\Views\SMSRenew\RenewList.cshtml" />
-    <Content Include="Areas\Admin\Views\EmployeeBuyTransaction\RenewList.cshtml" /> 
+    <Content Include="Areas\Admin\Views\EmployeeBuyTransaction\RenewList.cshtml" />
     <Content Include="Areas\Admin\Views\SMSRenew\_RazorPayPayment.cshtml" />
     <Content Include="Areas\Admin\Views\AccountRenew\_RazorPayPayment.cshtml" />
     <Content Include="Areas\Admin\Views\EmployeeBuyTransaction\_RazorPayPayment.cshtml" />

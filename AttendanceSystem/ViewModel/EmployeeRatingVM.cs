@@ -44,6 +44,10 @@ namespace AttendanceSystem.ViewModel
         public List<SelectListItem> EmployeeList { get; set; }
 
         public DateTime CreatedDate { get; set; }
+        
+        //
+        public string EmployeeDesignation { get; set; }
+        public DateTime? EmployeeJoiningDate { get; set; }
     }
 
     public class EmployeeRatingFilterVM
