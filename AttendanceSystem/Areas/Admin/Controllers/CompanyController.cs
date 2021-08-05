@@ -734,12 +734,15 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     objCompany.ModifiedBy = (int)PaymentGivenBy.SuperAdmin;
                     objCompany.ModifiedDate = CommonMethod.CurrentIndianDateTime();
 
+                    /*
                     string companyCode = string.Empty;
                     if (isCompanyNameChanged)
                     {
                         companyCode = getCompanyCodeFormat(objCompany.CompanyId, companyRequestVM.CompanyName);
                         objCompany.CompanyCode = companyCode;
                     }
+                    */
+
                     _db.SaveChanges();
 
                     tbl_AdminUser objUser = _db.tbl_AdminUser.Where(x => x.CompanyId == objCompany.CompanyId).FirstOrDefault();
@@ -768,10 +771,14 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     objUser.PanCardNo = companyRequestVM.CompanyAdminPanCardNo;
                     objUser.ModifiedBy = (int)PaymentGivenBy.SuperAdmin;
                     objUser.ModifiedDate = CommonMethod.CurrentIndianDateTime();
+
+                    /*
                     if (isCompanyNameChanged)
                     {
                         objUser.UserName = companyCode;
                     }
+                    */
+
                     _db.SaveChanges();
 
                     #endregion
@@ -808,16 +815,21 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 if (!string.IsNullOrEmpty(mobileNo))
                 {
 
+                    #region Send SMS
 
                     Random random = new Random();
                     int num = random.Next(555555, 999999);
 
                     int SmsId = (int)SMSType.CompanyProfileEditOTP;
-                    string msg = CommonMethod.GetSmsContent(SmsId);
+                    var objSms = _db.tbl_SMSContent.Where(o => o.SMSContentId == SmsId).FirstOrDefault();
 
+                    string msg = objSms.SMSDescription;
                     Regex regReplace = new Regex("{#var#}");
                     msg = regReplace.Replace(msg, objCompanyAdmin.FirstName + " " + objCompanyAdmin.LastName, 1);
                     msg = regReplace.Replace(msg, num.ToString(), 1);
+
+
+                    var emailContent = msg.Replace("\r\n", "<br/>");
 
                     msg = msg.Replace("\r\n", "\n");
 
@@ -831,10 +843,20 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     else
                     {
                         status = 1;
-
                         otp = num.ToString();
                     }
 
+                    #endregion
+
+                    #region Send Email
+
+                    if (!string.IsNullOrEmpty(objCompanyAdmin.EmailId))
+                    {
+                        var smsResponse = CommonMethod.SendEmail(objCompanyAdmin.EmailId, objSms.SMSTitle, emailContent);
+                    }
+
+                    #endregion
+                     
                 }
                 else
                 {

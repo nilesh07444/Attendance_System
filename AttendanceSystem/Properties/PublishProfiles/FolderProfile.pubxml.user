@@ -33,10 +33,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>06/18/2021 10:20:56</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Company/EditCompany.cshtml">
-      <publishTime>08/04/2021 11:25:24</publishTime>
+      <publishTime>08/05/2021 14:43:07</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Company/Registered.cshtml">
-      <publishTime>07/31/2021 23:33:05</publishTime>
+      <publishTime>08/05/2021 14:37:12</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Company/Renew.cshtml">
       <publishTime>07/21/2021 22:59:55</publishTime>
@@ -78,13 +78,13 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>04/18/2021 10:26:17</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Employee/Add.cshtml">
-      <publishTime>08/04/2021 11:25:24</publishTime>
+      <publishTime>08/05/2021 14:42:58</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Employee/Fingerprint.cshtml">
       <publishTime>07/25/2021 00:51:03</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Employee/Index.cshtml">
-      <publishTime>03/08/2021 15:30:13</publishTime>
+      <publishTime>08/03/2021 15:30:13</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Employee/LoginHistory.cshtml">
       <publishTime>07/08/2021 23:18:59</publishTime>
@@ -162,7 +162,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>06/23/2021 00:06:19</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Login/ForgotPassword.cshtml">
-      <publishTime>05/26/2021 10:02:44</publishTime>
+      <publishTime>08/05/2021 14:42:45</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Login/Index.cshtml">
       <publishTime>07/07/2021 00:09:24</publishTime>
@@ -207,7 +207,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>07/08/2021 23:09:55</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Payment/Add.cshtml">
-      <publishTime>06/30/2021 09:57:33</publishTime>
+      <publishTime>08/05/2021 14:42:18</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Payment/DeletedPayment.cshtml">
       <publishTime>07/31/2021 23:33:05</publishTime>
@@ -219,7 +219,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>07/31/2021 23:33:05</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Payment/Index.cshtml">
-      <publishTime>07/31/2021 23:33:05</publishTime>
+      <publishTime>08/05/2021 14:42:12</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Payment/WorkerPaymentReport.cshtml">
       <publishTime>07/31/2021 23:33:05</publishTime>
@@ -228,7 +228,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>07/31/2021 23:33:05</publishTime>
     </File>
     <File Include="Areas/Admin/Views/PaymentGateway/Index.cshtml">
-      <publishTime>07/31/2021 17:01:30</publishTime>
+      <publishTime>08/05/2021 12:08:59</publishTime>
     </File>
     <File Include="Areas/Admin/Views/PaymentGateway/_RazorPayPayment.cshtml">
       <publishTime>07/25/2021 20:34:04</publishTime>
@@ -306,7 +306,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>04/15/2021 23:40:49</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Worker/Add.cshtml">
-      <publishTime>07/16/2021 23:52:14</publishTime>
+      <publishTime>08/05/2021 14:42:06</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Worker/Index.cshtml">
       <publishTime>07/31/2021 23:33:05</publishTime>
@@ -339,7 +339,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>07/27/2021 19:26:08</publishTime>
     </File>
     <File Include="Areas/Client/Views/CompanyRequest/Index.cshtml">
-      <publishTime>07/27/2021 19:32:09</publishTime>
+      <publishTime>08/05/2021 14:41:57</publishTime>
     </File>
     <File Include="Areas/Client/Views/CompanyRequest/ThankYou.cshtml">
       <publishTime>07/27/2021 19:32:19</publishTime>
@@ -393,10 +393,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>09/10/2013 16:29:20</publishTime>
     </File>
     <File Include="bin/AttendanceSystem.dll">
-      <publishTime>08/05/2021 10:58:10</publishTime>
+      <publishTime>08/05/2021 14:44:29</publishTime>
     </File>
     <File Include="bin/AttendanceSystem.pdb">
-      <publishTime>08/05/2021 10:58:10</publishTime>
+      <publishTime>08/05/2021 14:44:29</publishTime>
     </File>
     <File Include="bin/BouncyCastle.Crypto.dll">
       <publishTime>02/21/2020 16:24:54</publishTime>
@@ -612,7 +612,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>11/28/2018 13:04:24</publishTime>
     </File>
     <File Include="bin/System.Web.Http.dll">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>11/28/2018 13:01:00</publishTime>
     </File>
     <File Include="bin/System.Web.Http.WebHost.dll">
       <publishTime>11/28/2018 13:02:56</publishTime>
@@ -2736,7 +2736,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>11/09/2019 22:28:28</publishTime>
     </File>
     <File Include="Content/admin-theme/assets/img/favicon.ico">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>11/14/2019 10:40:00</publishTime>
     </File>
     <File Include="Content/admin-theme/assets/img/image-64.png">
       <publishTime>11/09/2019 22:27:52</publishTime>
@@ -3042,7 +3042,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>11/09/2019 22:28:00</publishTime>
     </File>
     <File Include="Content/admin-theme/assets/js/page/index.js">
-      <publishTime>01/01/0001 00:00:00</publishTime>
+      <publishTime>11/14/2019 10:40:00</publishTime>
     </File>
     <File Include="Content/admin-theme/assets/js/page/ion-icons.js">
       <publishTime>11/09/2019 22:28:24</publishTime>
@@ -3816,7 +3816,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>04/15/2021 23:38:39</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>08/04/2021 11:26:21</publishTime>
+      <publishTime>08/05/2021 12:48:25</publishTime>
     </File>
   </ItemGroup>
 </Project>

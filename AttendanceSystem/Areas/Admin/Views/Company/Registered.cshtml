@@ -60,7 +60,7 @@
                                     <tr>
                                         <th>#</th>
                                         <th style="display:none">Company Id</th>
-                                        <th>Company Logo</th>
+                                        <th width="5%">Logo</th>
                                         <th>Company Type</th>
                                         <th>Company Name</th>
                                         <th>Company Code</th>
@@ -78,10 +78,10 @@
                                         <th style="display:none">Website</th>
                                         <th style="display:none">Free Access Days</th>
                                         <th style="display:none">Created Date</th>
+                                        <th width="5%">Trial Mode</th>
+                                        <th width="10%">Expiry Date</th>
                                         <th>Status</th>
-                                        <th>Trial Mode</th>
-                                        <th>Expiry Date</th>
-                                        <th>Action</th>
+                                        <th width="10%">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -138,8 +138,12 @@
                                                 <td style="display:none">@obj.Description</td>
                                                 <td style="display:none">@obj.WebsiteUrl</td>
                                                 <td style="display:none">@obj.FreeAccessDays</td>
-                                                <td style="display:none">@if (obj.CreatedDate.HasValue)
-                                                {@obj.CreatedDate.Value.ToString("dd MMM yyyy")}</td>
+                                                <td style="display:none">
+                                                    @if (obj.CreatedDate.HasValue)
+                                                    {@obj.CreatedDate.Value.ToString("dd MMM yyyy")}
+                                                </td>
+                                                <td>@trialMode</td>
+                                                <td>@expiryDate</td>
                                                 @if (obj.IsActive == true)
                                                 {
                                                     <td><span class="badge badge-success" style="cursor:pointer;" title="Click to Inactive" onclick="fnChangeStatus('@obj.CompanyId', 'InActive');">Active</span></td>
@@ -148,8 +152,6 @@
                                                 {
                                                     <td><span class="badge badge-danger" style="cursor:pointer;" title="Click to Active" onclick="fnChangeStatus('@obj.CompanyId','Active');">InActive</span></td>
                                                 }
-                                                <td>@trialMode</td>
-                                                <td>@expiryDate</td>
                                                 <td>
 
                                                     <a href="/admin/company/view/@obj.CompanyId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>

@@ -1,21 +1,73 @@
-﻿
+﻿@using AttendanceSystem.Models
 @{
     Layout = null;
+
+    AttendanceSystemEntities _db= new AttendanceSystemEntities();
+    tbl_Setting objGensetting = _db.tbl_Setting.FirstOrDefault(); 
 }
 
 <html>
 <head>
     <script src="~/Scripts/jquery-3.4.1.js"></script>
     <script src="~/Content/admin-theme/assets/js/mfs100-9.0.2.6.js"></script>
+    <script src="~/Scripts/jquery.blockUI.js"></script>
 </head>
 <body>
 
     <div>
-        <button id="btnCaptureFinderprint">Capture Finderprint</button>
-        <img src="" />
+        <p>FROM: @objGensetting.SMTPFromEmailId</p>
+        <p>SMTP Port: @objGensetting.SMTPPort</p>
+        <p>SMTP Email: @objGensetting.SMTPEmail</p>
+        <p>SMTP Password: @objGensetting.SMTPPassword</p>
+        <p>SMTP Host: @objGensetting.SMTPHost</p>
+        <p>Enable SSL: @objGensetting.SMTPEnableSSL</p>
     </div>
-      
+
+    <div>
+
+
+        <button id="btnSendEmail">Send Email</button>
+
+        @*<button id="btnCaptureFinderprint">Capture Finderprint</button>
+            <img src="" />*@
+    </div>
+
+    <div>
+        <p>
+            <label id="lblMessage" style="color:red;"></label>
+        </p>
+    </div>
+
     <script>
+
+        $(document).on("click", "#btnSendEmail", function () {
+
+            $.blockUI({ message: '<h4> Please Wait...</h4>' });
+
+            var StrURL = '/admin/PaymentGateway/SendEmail';
+            $.ajax({
+                url: StrURL,
+                cache: false,
+                type: 'POST',
+                success: function (result) {
+                    $.unblockUI();
+                    if (result.IsSuccess) {
+                        $("#lblMessage").css({ "color": "green" });
+                        $("#lblMessage").text("Email Sent Successfully.");
+                    }
+                    else {
+                        $("#lblMessage").css({ "color": "red" });
+                        $("#lblMessage").text("Failed");
+                        $("#lblMessage").text(result.ErrorMessage);
+                    }
+                },
+                error: function (req, status, error) {
+                    $.unblockUI();
+                    debugger;
+                    alert("error: " + error);
+                }
+            });
+        });
 
         $(document).on("click", "#btnCaptureFinderprint", function () {
 

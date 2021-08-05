@@ -333,15 +333,11 @@
                         $.unblockUI();
                         if (data.Status == 1) {
                             $('#OtpModal').modal('show');
-                            $("#OTP").val(data.Otp);
-                            if (data.SetOtp) {
-                                $("#TextOTP").val(data.Otp);
-                            }
+                            $("#OTP").val(data.Otp); 
                         }
                         else {
                             alert(data.ErrorMessage);
-                        }
-
+                        } 
                     },
                     error: function (req, status, error) {
                         $.unblockUI();
@@ -367,7 +363,7 @@
         });
 
     })
-     
+
     function fnShowHideBasedOnEmploymentCategory() {
         var EmploymentCategory = $('#EmploymentCategory').val();
         if (EmploymentCategory == "3") {

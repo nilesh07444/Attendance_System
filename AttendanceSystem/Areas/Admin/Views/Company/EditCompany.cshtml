@@ -440,7 +440,7 @@
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
- 
+
 <script type="text/javascript">
     $(document).ready(function () {
 
@@ -465,14 +465,11 @@
                         if (data.Status == 1) {
                             $('#OtpModal').modal('show');
                             $("#OTP").val(data.Otp);
-                            //if (data.SetOtp) {
-                            //    $("#TextOTP").val(data.Otp);
-                            //}
                         }
                         else {
                             StopLoading();
                             alert(data.ErrorMessage);
-                        } 
+                        }
                     },
                     error: function (req, status, error) {
                         StopLoading();

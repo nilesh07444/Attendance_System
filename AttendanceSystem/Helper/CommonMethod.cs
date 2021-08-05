@@ -611,46 +611,75 @@ namespace AttendanceSystem
             return response;
         }
 
-        public static void SendEmail(string To, string from, string subject, string body)
+        public static GeneralResponseVM SendEmail(string To, string subject, string body)
         {
+            GeneralResponseVM responseVM = new GeneralResponseVM();
+
             try
             {
                 AttendanceSystemEntities _db = new AttendanceSystemEntities();
+                tbl_Setting objGensetting = _db.tbl_Setting.FirstOrDefault();
+
+                string environnment = ConfigurationManager.AppSettings["Environment"].ToString();
+
+                string SMTPFromEmailId = "";
+                string SMTPHost = "";
+                int SMTPPort = 0;
+                string SMTPEmail = "";
+                string SMTPPassword = "";
+                bool SMTPEnableSSL = true;
+
+                if (environnment == "Development")
+                {
+                    SMTPFromEmailId = ConfigurationManager.AppSettings["SMTPFromEmailId"].ToString();
+                    SMTPHost = ConfigurationManager.AppSettings["SMTPHost"].ToString();
+                    SMTPPort = Convert.ToInt32(ConfigurationManager.AppSettings["SMTPPort"].ToString());
+                    SMTPEmail = ConfigurationManager.AppSettings["SMTPEmail"].ToString();
+                    SMTPPassword = ConfigurationManager.AppSettings["SMTPPassword"].ToString();
+                    SMTPEnableSSL = Convert.ToBoolean(ConfigurationManager.AppSettings["SMTPEnableSSL"].ToString());
+                }
+                else
+                {
+                    SMTPFromEmailId = objGensetting.SMTPFromEmailId;
+                    SMTPHost = objGensetting.SMTPHost;
+                    SMTPPort = objGensetting.SMTPPort.Value;
+                    SMTPEmail = objGensetting.SMTPEmail;
+                    SMTPPassword = objGensetting.SMTPPassword;
+                    SMTPEnableSSL = objGensetting.SMTPEnableSSL.Value;
+                }
+                 
                 MailMessage mailMessage = new MailMessage(
-                      from, // From field
+                      SMTPFromEmailId, // From field
                       To, // Recipient field
                      subject, // Subject of the email message
                       body // Email message body
-           );
-                mailMessage.From = new MailAddress(from, "Contract Book");
+                 );
 
-                tbl_Setting objGensetting = _db.tbl_Setting.FirstOrDefault();
-                string SMTPHost = objGensetting.SMTPHost;
-                int SMTpPort = Convert.ToInt32(objGensetting.SMTPPort);
-                string SMTPEMail = objGensetting.SMTPEmail;
-                string SMTPPwd = objGensetting.SMTPPassword;
-
+                mailMessage.From = new MailAddress(SMTPFromEmailId, "Contract Book"); 
                 mailMessage.IsBodyHtml = true;
-                // System.Net.Mail.MailMessage mailMessage = (System.Net.Mail.MailMessage)mailMsg;
-
-                /* Setting should be kept somewhere so no need to 
-                   pass as a parameter (might be in web.config)       */
+                 
                 using (SmtpClient client = new SmtpClient())
                 {
-                    client.EnableSsl = objGensetting.SMTPEnableSSL == true ? true : false;
+                    client.EnableSsl = SMTPEnableSSL == true ? true : false;
                     client.UseDefaultCredentials = false;
-                    client.Host = objGensetting.SMTPHost;
-                    client.Port = Convert.ToInt32(objGensetting.SMTPPort);
-                    client.Credentials = new NetworkCredential(SMTPEMail, SMTPPwd);
+                    client.Host = SMTPHost;
+                    client.Port = Convert.ToInt32(SMTPPort);
+                    client.Credentials = new NetworkCredential(SMTPEmail, SMTPPassword);
                     client.DeliveryMethod = SmtpDeliveryMethod.Network;
                     mailMessage.IsBodyHtml = true;
+                    client.Timeout = 10000;
                     client.Send(mailMessage);
+
+                    responseVM.IsError = false;
                 }
             }
             catch (Exception e)
             {
-
+                responseVM.IsError = true;
+                responseVM.ErrorMessage = e.Message.ToString();
             }
+
+            return responseVM;
         }
         public static List<SelectListItem> GetCalenderMonthList()
         {

@@ -12,6 +12,8 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using Razorpay.Api;
+using System.Net.Mail;
+using System.Net;
 
 namespace AttendanceSystem.Areas.Admin.Controllers
 {
@@ -22,15 +24,14 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
         public PaymentGatewayController()
         {
-            _db = new AttendanceSystemEntities(); 
+            _db = new AttendanceSystemEntities();
         }
 
         public ActionResult Index()
         {
-            
             return View();
         }
-         
+
         public string downloadTestPDF()
         {
 
@@ -175,6 +176,30 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             }
 
         }
-         
+
+        [HttpPost]
+        public JsonResult SendEmail()
+        {
+
+            bool isSuccess = false;
+            string errorMessage = string.Empty;
+
+            try
+            {
+                string To = "prajapati.nileshbhai@gmail.com";
+                string subject = "Sample Email - Contract Book";
+                string body = "This is body message";
+
+                GeneralResponseVM response = CommonMethod.SendEmail(To, subject, body);
+                isSuccess = response.IsError;
+                errorMessage = response.ErrorMessage;
+            }
+            catch (Exception ex)
+            {
+                errorMessage = ex.Message.ToString();
+            }
+            return Json(new { IsSuccess = !isSuccess, ErrorMessage = errorMessage }, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

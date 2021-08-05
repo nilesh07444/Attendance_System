@@ -39,10 +39,10 @@
                     <div class="pull-right">
                         <a href="/admin/worker" class="btn btn-warning pull-right"><i class="fas fa-backward"></i> Back</a>
                     </div>
-                </div> 
+                </div>
             </div>
             <div class="card card-primary">
-                  
+
                 @using (Html.BeginForm("Add", "Worker", FormMethod.Post, new { @id = "EmployeeFormId", @class = "", enctype = "multipart/form-data", role = "form" }))
                 {
                     <div class="card-body">
@@ -235,7 +235,7 @@
         var employeeId = $("#EmployeeId").val();
 
         if (employeeId > 0) {
-            $("#EmploymentCategory").attr("disabled", true); 
+            $("#EmploymentCategory").attr("disabled", true);
 
             var employeeCategory = '@Model.EmploymentCategory';
             if (employeeCategory == 3) {
@@ -255,7 +255,7 @@
         $('#btnCancel').click(function () {
             window.location.href = "/admin/worker";
         });
-         
+
         $('#EmploymentCategory').change(function () {
             fnShowHideBasedOnEmploymentCategory();
         });
@@ -291,10 +291,7 @@
                         $.unblockUI();
                         if (data.Status == 1) {
                             $('#OtpModal').modal('show');
-                            $("#OTP").val(data.Otp);
-                            if (data.SetOtp) {
-                                $("#TextOTP").val(data.Otp);
-                            }
+                            $("#OTP").val(data.Otp); 
                         }
                         else {
                             alert(data.ErrorMessage);
