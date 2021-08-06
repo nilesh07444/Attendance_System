@@ -91,7 +91,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 attendanceFilterVM.AttendanceList.ForEach(x =>
                 {
                     x.StatusText = attendanceStatusList.Where(z => z.Value == x.Status.ToString()).Select(c => c.Text).FirstOrDefault();
-                    x.DayTypeText = (x.EmploymentCategory == (int)EmploymentCategory.MonthlyBased || x.EmploymentCategory == (int)EmploymentCategory.DailyBased) ? (x.DayType == 1 ? CommonMethod.GetEnumDescription(DayType.FullDay) : CommonMethod.GetEnumDescription(DayType.HalfDay)) : string.Empty;
+                    if (x.DayType != 0)
+                    {
+                        x.DayTypeText = (x.EmploymentCategory == (int)EmploymentCategory.MonthlyBased || x.EmploymentCategory == (int)EmploymentCategory.DailyBased) ? (x.DayType == 1 ? CommonMethod.GetEnumDescription(DayType.FullDay) : CommonMethod.GetEnumDescription(DayType.HalfDay)) : string.Empty;
+                    }
                     x.BgColor = attendanceFilterVM.AttendanceList.Any(z => z.UserId == x.UserId && z.AttendanceDate == x.AttendanceDate && z.AttendanceId != x.AttendanceId) ? ErrorMessage.Red : string.Empty;
                 });
             }
@@ -237,7 +240,12 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                 }).FirstOrDefault();
 
                 attendanceVM.StatusText = CommonMethod.GetEnumDescription((AttendanceStatus)attendanceVM.Status);
-                attendanceVM.DayTypeText = attendanceVM.DayType == 1 ? CommonMethod.GetEnumDescription(DayType.FullDay) : CommonMethod.GetEnumDescription(DayType.HalfDay);
+
+                if (attendanceVM.DayType != 0)
+                {
+                    attendanceVM.DayTypeText = attendanceVM.DayType == 1 ? CommonMethod.GetEnumDescription(DayType.FullDay) : CommonMethod.GetEnumDescription(DayType.HalfDay);
+                }
+
                 attendanceVM.WorkedHoursAmount = attendanceVM.NoOfHoursWorked * attendanceVM.PerCategoryPrice;
                 attendanceVM.WorkedUnitAmount = attendanceVM.NoOfUnitWorked * attendanceVM.PerCategoryPrice;
             }
@@ -340,7 +348,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             }
             return RedirectToAction("index");
         }
-
-
+         
     }
 }
