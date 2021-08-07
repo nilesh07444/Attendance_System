@@ -272,8 +272,18 @@
 
 
 <script type="text/javascript">
+    $(document).on('keypress', function (e) {
+        if (e.which == 13) {
+            if ($('#OtpModal').hasClass('show')) {
+                $('#BtnOtpSubmit').click();
+                return false;
+            } else {
+                $('#btnSubmit').click();
+                return false;
+            }
+        }
+    });
     $(document).ready(function () {
-
         fnShowHideBasedOnEmploymentCategory();
         var employeeId = $("#EmployeeId").val();
         if (employeeId > 0) {
@@ -333,11 +343,11 @@
                         $.unblockUI();
                         if (data.Status == 1) {
                             $('#OtpModal').modal('show');
-                            $("#OTP").val(data.Otp); 
+                            $("#OTP").val(data.Otp);
                         }
                         else {
                             alert(data.ErrorMessage);
-                        } 
+                        }
                     },
                     error: function (req, status, error) {
                         $.unblockUI();
