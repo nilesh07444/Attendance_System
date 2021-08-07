@@ -426,20 +426,23 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                        PanNo = cmp.PanNo,
                                                        PackageName = pkg.PackageName,
                                                        GSTRate = pkg.GSTPer,
-                                                       TotalAmount = pkg.Amount
+                                                       TotalAmount = pkg.Amount,
+                                                       State = cmp.State
                                                    }).FirstOrDefault();
 
                 invoiceFieldsVM.InvoiceDate = invoiceFieldsVM.InvoiceDatetime.ToString("dd MMM yyyy");
                 invoiceFieldsVM.HsnCode = "9982";
+                bool isCGSTSGSTApply = invoiceFieldsVM.State.ToLower() == ErrorMessage.Gujarat.ToLower();
+
                 invoiceFieldsVM.Rate = Math.Round((invoiceFieldsVM.TotalAmount / (100 + invoiceFieldsVM.GSTRate)) * 100, 2);
                 decimal gstAmount = Math.Round(invoiceFieldsVM.Rate * invoiceFieldsVM.GSTRate / 100, 2);
-                invoiceFieldsVM.CGST = Math.Round(gstAmount / 2, 2);
-                invoiceFieldsVM.SGST = Math.Round(gstAmount / 2, 2);
-                invoiceFieldsVM.IGST = 0;
+                invoiceFieldsVM.CGST = isCGSTSGSTApply ? Math.Round(gstAmount / 2, 2) : 0;
+                invoiceFieldsVM.SGST = isCGSTSGSTApply ? Math.Round(gstAmount / 2, 2) : 0;
+                invoiceFieldsVM.IGST = !isCGSTSGSTApply ? gstAmount : 0;
                 invoiceFieldsVM.Qty = 1;
 
                 string htmlContent = CommonMethod.GetInvoiceContent(invoiceFieldsVM);
-               
+
 
                 StringReader sr = new StringReader(htmlContent);
                 Document pdfDoc1 = new Document(PageSize.A4, 10f, 10f, 10f, 0f);

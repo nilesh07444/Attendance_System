@@ -202,5 +202,7 @@
         public static string EmployeePackageBuySuccessfully = "Employee buy successfully";
         public static string SMSPackageBuySuccessfully = "SMS package buy successfully";
         public static string AccountPackageBuySuccessfully = "Account package buy successfully";
+
+        public static string Gujarat = "Gujarat";
     }
 }
