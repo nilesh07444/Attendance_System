@@ -1,4 +1,5 @@
-﻿@using AttendanceSystem.Helper;
+﻿@using System.Configuration;
+@using AttendanceSystem.Helper;
 @using AttendanceSystem.ViewModel;
 @model AttendanceSystem.ViewModel.EmployeeFilterVM
 @{
@@ -11,6 +12,8 @@
     lstEmployeeStatus.Add(new SelectListItem { Value = "0", Text = "InActive" });
     var totalEmployee = Model.NoOfEmployee + Model.NoOfWorker;
     var totalActiveEmployee = Model.ActiveEmployee + Model.ActiveWorker;
+
+    int MaximumEmployeeFingerprint = Convert.ToInt32(ConfigurationManager.AppSettings["MaximumEmployeeFingerprint"]);
 
 }
 
@@ -196,10 +199,14 @@
                                                 }
 
                                                 <td>
-                                                    @{ string employeeFullName = obj.Prefix + ' ' + obj.FirstName + ' ' + obj.LastName; }
-                                                    <a onclick="return fnTakeFingerprint('@obj.EmployeeId', '@employeeFullName')" href="javascript:void(0);" title="Fingerprint">
-                                                        <img src="~/Content/admin-theme/assets/img/contrabook/fingerprint.jpg" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 50px; height: 50px;" />
-                                                    </a>
+                                                    @if (obj.TotalSavedFingerprint < MaximumEmployeeFingerprint)
+                                                    {
+                                                        string employeeFullName = obj.Prefix + ' ' + obj.FirstName + ' ' + obj.LastName;
+
+                                                        <a onclick="return fnTakeFingerprint('@obj.EmployeeId', '@employeeFullName')" href="javascript:void(0);" title="Fingerprint">
+                                                            <img src="~/Content/admin-theme/assets/img/contrabook/fingerprint.jpg" alt="" class="img-fluid img-40 blur-up lazyloaded" style="width: 50px; height: 50px;" />
+                                                        </a>
+                                                    }
                                                 </td>
                                                 <td style="display:none">
                                                     @if (obj.CreatedDate.HasValue)
@@ -269,69 +276,15 @@
 </div>
 
 <!-- Fingerprint Popup -->
-<div class="modal fade open" id="addFingerprintModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="max-width:800px;">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #425C59; padding-bottom: 15px;">
-                <h4 class="modal-title" style="color: #FFCEA3;"></h4>
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style=" background: white;">&times;</button>
-            </div>
-            <div class="modal-body">
-
-                <div class="form-group">
-                    <button id="btnCaptureFingerprint" class="btn btn-warning">Capture</button>
-                </div>
-
-                <div class="form-group">
-                    <label>Thumb Image *</label>
-
-                    <div class="dvBlankThumb">
-                        <label>No Thumb found !!</label>
-                    </div>
-
-                    <div class="dvThumbImage" style="display:none;">
-                        <img id="imgEmployeeThumb" src="" alt="Employee Thumb Image" style="width:100px;" />
-                    </div>
-
-                </div>
-
-                <div class="form-group">
-                    <label>ISO Code *</label>
-                    <textarea id="txtISOCode" class="form-control" placeholder="Generated ISO Code" disabled></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label>Remarks</label>
-                    <textarea id="txtRemarks" class="form-control" rows="5" placeholder="Enter Remarks" maxlength="500"></textarea>
-                    <p><span id="spn_error_remarks" class="validation-summary-errors"></span></p>
-                </div>
-
-            </div>
-            <div class="modal-footer">
-                <input type="hidden" id="selectedFingerprintEmployeeId" />
-                <button data-dismiss="modal" class="btn btn-primary" type="button">Close</button>
-                <button id="btnSaveFingerprint" class="btn btn-secondary" type="button">Save</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Fingerprint Popup -->
 <div class="modal fade open " id="fingerprintPlayModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #425C59; padding-bottom: 15px;">
-                <h4 class="modal-title" style="color: #FFCEA3;">Nilesh Prajapati</h4>
+        <div class="modal-content" style="align-items: center; background-color: #425C59; padding-bottom: 25px;">
+            <div class="modal-header" style="background-color: #425C59; padding-bottom: 15px; ">
+                <h4 class="modal-title" style="color: #FFCEA3;"></h4>
                 @*<button type="button" class="close" data-dismiss="modal" aria-hidden="true" style=" background: white;">&times;</button>*@
             </div>
-    
-                <img id="imgFingerprintPlay" src="~/Content/admin-theme/assets/img/contrabook/fingerprint_play.gif" alt="Employee Thumb Image" style="" />
-         
-            @*<div class="modal-footer">
-                <input type="hidden" id="selectedFingerprintEmployeeId" />
-                <button data-dismiss="modal" class="btn btn-primary" type="button">Close</button>
-                <button id="btnSaveFingerprint" class="btn btn-secondary" type="button">Save</button>
-            </div>*@
+
+            <img style="width: 200px;" id="imgFingerprintPlay" src="~/Content/admin-theme/assets/img/contrabook/fingerprint_play.gif" alt="Employee Thumb Image" />
         </div>
     </div>
 </div>
@@ -441,53 +394,146 @@
         $('#activeinactiveModal').modal('show');
     }
 
-    // Fingerprint
-
     function fnTakeFingerprint(employeeId, employeeName) {
-         
-        $('#fingerprintPlayModal').modal('show');
+        StartLoading();
+        var fingerprintCapturedData = [];
 
-        //$("#hdnSelectedFingerprintEmployee").val(employeeId);
-        //$('#addFingerprintModal .modal-title').text('Add Fingerprint - ' + employeeName);
-        //$('#addFingerprintModal').modal('show');
+        var StrURL = '/Admin/Employee/GetTotalPendingFingerprint?employeeId=' + employeeId;
+        $.ajax({
+            url: StrURL,
+            cache: false,
+            type: 'POST',
+            success: function (result) {
+                StopLoading();
+                if (result.TotalPendingFingerprintCount == 0) {
+                    alert("All fingerprints are already taken of this employee.");
+                }
+                else if (result.TotalPendingFingerprintCount > 0) {
+
+                    setTimeout(() => {
+
+                        var scannerConnectionValid = PrepareScanner();
+                        //console.log("scannerConnectionValid = "+ scannerConnectionValid);
+
+                        if (scannerConnectionValid) {
+
+                            $('#fingerprintPlayModal .modal-title').text(employeeName);
+                            $('#fingerprintPlayModal').modal('show');
+                            setTimeout(() => {
+                                for (i = 1; i <= result.TotalPendingFingerprintCount; i++) {
+
+                                    var fingerprintResponse = newFingerprintResponse();
+
+                                    if (fingerprintResponse.data.ErrorDescription == "MFS100 not Found") {
+
+                                        iziToast.error({
+                                            //title: '',
+                                            message: 'Fingerprint device is not found.',
+                                            position: 'topCenter'
+                                        });
+
+                                        setTimeout(() => {
+                                            $('#fingerprintPlayModal').modal('hide');
+                                        }, 300);
+
+                                        break;
+                                    }
+                                    else if (fingerprintResponse.data.ErrorDescription == "Timeout") {
+                                        alert("Timeout !!!");
+                                    }
+                                    else {
+                                        alert("Fingerprint Captured");
+
+                                        //var IsMatched = MatchFingerPrintAllEmployees(employeeId, fingerprintResponse.data.IsoTemplate);
+
+                                        //if (IsMatched) {
+                                        //    alert("Fingerprint matched with other employee.");
+                                        //}
+                                        //else {
+                                            
+                                            var obj = {
+                                                "ISOCode": fingerprintResponse.data.IsoTemplate,
+                                                "BitmapCode": fingerprintResponse.data.BitmapData
+                                            }
+
+                                            fingerprintCapturedData.push(obj);
+                                        //}
+
+                                    }
+
+                                    if (i == result.TotalPendingFingerprintCount) {
+
+                                        //console.log("fingerprintCapturedData = ", fingerprintCapturedData);
+
+                                        setTimeout(() => {
+                                            $('#fingerprintPlayModal').modal('hide');
+
+                                            // Save all fingerprints
+                                            if (fingerprintCapturedData != null && fingerprintCapturedData.length > 0) {
+                                                SaveFingerprints(fingerprintCapturedData, employeeId);
+                                            }
+
+                                        }, 100);
+                                    }
+                                }
+                            }, 200);
+                        }
+                        else {
+                            setTimeout(() => {
+                                alert("Fingerprint device service not properly connected.");
+                            }, 200);
+                        }
+
+                    }, 200);
+                }
+                else {
+                    alert("Something went wrong. Please try again later.");
+                    window.location.reload();
+                }
+
+            },
+            error: function (req, status, error) {
+                StopLoading();
+                alert(error);
+            }
+        });
 
     }
 
-    $(document).on("click", "#btnSaveFingerprint", function () {
-        var employeeId = $("#hdnSelectedFingerprintEmployee").val();
-        var ISOCode = $("#hdnISOCode").val();
-        var BitmapCode = $("#hdnBitmapCode").val();
-        var remarks = $("#txtRemarks").val();
-        var isValid = true;
+    function newFingerprintResponse() {
+        return CaptureFinger(quality, timeout);
+    }
 
-        if (isValid) {
-            $('#addFingerprintModal').modal('hide');
+    function SaveFingerprints(lstFingerprints, employeeId) {
+
+        if (lstFingerprints != null)
+        {
             StartLoading();
 
-            var StrURL = '/Admin/Employee/SaveEmployeeFingerprint';
+            var requestObj = {
+                'FingerprintTemplateList': lstFingerprints,
+                'EmployeeId': employeeId,
+            };
+
+            var StrURL = '/Admin/Employee/SaveEmployeeFingerprints';
             $.ajax({
                 url: StrURL,
                 cache: false,
                 data: {
-                    'EmployeeFingerprintId': 0,
-                    'EmployeeId': employeeId,
-                    'ISOCode': ISOCode,
-                    'BitmapCode': BitmapCode,
-                    'Remarks': remarks
+                    'fingerprintData': JSON.stringify(requestObj)
                 },
                 type: 'POST',
                 success: function (result) {
                     StopLoading();
-                    if (result.isSuccess) {
+                    if (result.IsSuccess) {
                         alert("Fingerprint saved successfully");
                         window.location.reload();
                     }
-                    else if (!result.isSuccess && result.errorMessage == "exception")
-                    {
-                         alert("Something went wrong. Please try again later.");
+                    else if (!result.IsSuccess && result.ErrorMessage == "exception") {
+                        alert("Something went wrong. Please try again later.");
                     }
                     else {
-                        alert(result.errorMessage);
+                        alert(result.ErrorMessage);
                     }
                 },
                 error: function (req, status, error) {
@@ -496,25 +542,52 @@
             });
         }
 
-    });
+    }
 
-    $(document).on("click", "#btnCaptureFingerprint", function () {
+    function MatchFingerPrintAllEmployees(employeeId, ISOTemplateCode) {
+        var isMatched = false;
+        StartLoading();
 
-        var selectedFingerprintEmployeeId = $("#selectedFingerprintEmployeeId").val();
+        var StrURL = '/Admin/Employee/GetOtherEmployeesFingerprints?employeeId=' + employeeId;
+        $.ajax({
+            url: StrURL,
+            cache: false,
+            type: 'GET',
+            success: function (result) {
+               
+                StopLoading();
+                if (result.IsSuccess) {
+                    //console.log("result.data = ", result.data);
+                    var allEmployeeFingerprintList = result.data;
+                    if (allEmployeeFingerprintList != null) {
 
-        $.blockUI({ message: '<h4> Put finger on device...</h4>' });
-        setTimeout(function () {
-            var res = CaptureFinger(quality, timeout);
-            $.unblockUI();
-            console.log("respnse", res);
-            debugger;
+                        for (var f in allEmployeeFingerprintList) {
+                            var o = allEmployeeFingerprintList[f];
+                             
+                            var resultVerify = VerifyFinger(o.ISOCode, ISOTemplateCode);
+                            if (resultVerify.httpStaus) {
+                                if (resultVerify.data.Status) {
+                                    isMatched = true;
+                                    break;
+                                }
+                            }
 
-            $(".dvBlankThumb").hide();
-            $(".dvThumbImage").show();
-            $("#imgEmployeeThumb").attr("src", "data:image/png;base64," + res.data.BitmapData);
-            $("#txtISOCode").val(res.data.IsoTemplate);
-        }, 500);
+                        }
 
-    });
+                        console.log("Nilesh isMatched = " + isMatched);
+
+                    }
+                }
+                else {
+                    alert("Something went wrong.");
+                }
+            },
+            error: function (req, status, error) {
+                alert(error);
+            }
+        });
+
+        return isMatched;
+    }
 
 </script>

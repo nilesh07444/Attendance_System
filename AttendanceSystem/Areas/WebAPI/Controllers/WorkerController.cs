@@ -56,6 +56,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         objEmployeeFingerprint.EmployeeId = fingerprintVM.EmployeeId;
                         objEmployeeFingerprint.ISOCode = fingerprintVM.ISOCode;
                         objEmployeeFingerprint.BitmapCode = fingerprintVM.BitmapCode;
+                        objEmployeeFingerprint.CreatedDate = CommonMethod.CurrentIndianDateTime();
                         _db.tbl_EmployeeFingerprint.Add(objEmployeeFingerprint);
                         _db.SaveChanges();
                         response.Data = true;

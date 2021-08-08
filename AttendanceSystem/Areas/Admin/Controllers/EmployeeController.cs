@@ -1,6 +1,7 @@
 ﻿using AttendanceSystem.Helper;
 using AttendanceSystem.Models;
 using AttendanceSystem.ViewModel;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -24,7 +25,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         long companyId;
         long loggedInUserId;
         bool isTrailMode;
-            
+
         public EmployeeController()
         {
             _db = new AttendanceSystemEntities();
@@ -35,6 +36,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             loggedInUserId = clsAdminSession.UserID;
             isTrailMode = clsAdminSession.IsTrialMode;
         }
+
         public ActionResult Index(int? userRole = null, int? userStatus = null)
         {
             EmployeeFilterVM employeeFilterVM = new EmployeeFilterVM();
@@ -92,7 +94,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                      IsActive = emp.IsActive,
                                                      IsDeleted = emp.IsDeleted,
                                                      IsFingerprintEnabled = emp.IsFingerprintEnabled,
-                                                     NoOfFreeLeavePerMonth = emp.NoOfFreeLeavePerMonth
+                                                     NoOfFreeLeavePerMonth = emp.NoOfFreeLeavePerMonth,
+
+                                                     TotalSavedFingerprint = _db.tbl_EmployeeFingerprint.Where(x => x.EmployeeId == emp.EmployeeId).ToList().Count
 
                                                  }).OrderByDescending(x => x.EmployeeId).ToList();
 
@@ -444,7 +448,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                               EmployeeId = f.EmployeeId,
                                                               BitmapCode = f.BitmapCode,
                                                               ISOCode = f.ISOCode,
-                                                              //CreatedDate = 
+                                                              CreatedDate = f.CreatedDate
                                                           }).ToList();
 
             ViewData["lstFingerprint"] = lstFingerprint;
@@ -675,44 +679,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return ReturnMessage;
         }
 
-        public JsonResult SaveEmployeeFingerprint(EmployeeFingerprintVM employeeFingerprintVM)
-        {
-            string errorMessage = string.Empty;
-            bool isSuccess = false;
-
-            int maximumEmployeeFingerprint = Convert.ToInt32(ConfigurationManager.AppSettings["MaximumEmployeeFingerprint"].ToString());
-
-            try
-            {
-                List<tbl_EmployeeFingerprint> lstExistFingerprint = _db.tbl_EmployeeFingerprint.Where(x => x.EmployeeId == employeeFingerprintVM.EmployeeId).ToList();
-
-                if (lstExistFingerprint != null && lstExistFingerprint.Count >= maximumEmployeeFingerprint)
-                {
-                    errorMessage = "Fingerprint limit exceed, so you can not save more fingerint of this employee.";
-                    isSuccess = false;
-                }
-                else
-                {
-                    tbl_EmployeeFingerprint objFingerprint = new tbl_EmployeeFingerprint();
-                    objFingerprint.BitmapCode = employeeFingerprintVM.BitmapCode;
-                    objFingerprint.EmployeeId = employeeFingerprintVM.EmployeeId;
-                    objFingerprint.ISOCode = employeeFingerprintVM.ISOCode;
-                    _db.tbl_EmployeeFingerprint.Add(objFingerprint);
-                    _db.SaveChanges();
-
-                    isSuccess = true;
-                }
-
-            }
-            catch (Exception ex)
-            {
-                errorMessage = "exception";
-                isSuccess = false;
-            }
-
-            return Json(new { isSuccess = isSuccess, ErrorMessage = errorMessage }, JsonRequestBehavior.AllowGet);
-        }
-
         public JsonResult GetOtherEmployeesFingerprints(int employeeId)
         {
             List<EmployeeFingerprintVM> lstEmployeeFingerprint = new List<EmployeeFingerprintVM>();
@@ -722,7 +688,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 lstEmployeeFingerprint = (from f in _db.tbl_EmployeeFingerprint
                                           join e in _db.tbl_Employee on f.EmployeeId equals e.EmployeeId
                                           where f.EmployeeId != employeeId
-                                          && e.AdminRoleId != (int)AdminRoles.Worker
+                                          //&& e.AdminRoleId != (int)AdminRoles.Worker
                                           && e.CompanyId == companyId
                                           select new EmployeeFingerprintVM
                                           {
@@ -737,7 +703,73 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             {
                 isSuccess = false;
             }
-            return Json(new { isSuccess = isSuccess, data = lstEmployeeFingerprint }, JsonRequestBehavior.AllowGet);
+            return Json(new { IsSuccess = isSuccess, data = lstEmployeeFingerprint }, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetTotalPendingFingerprint(int employeeId)
+        {
+            int totalPendingFingerprintCount = 0;
+            try
+            {
+                int maximumEmployeeFingerprint = Convert.ToInt32(ConfigurationManager.AppSettings["MaximumEmployeeFingerprint"].ToString());
+
+                List<tbl_EmployeeFingerprint> lstExistFingerprint = _db.tbl_EmployeeFingerprint.Where(x => x.EmployeeId == employeeId).ToList();
+                if (lstExistFingerprint != null)
+                {
+                    totalPendingFingerprintCount = maximumEmployeeFingerprint - lstExistFingerprint.Count;
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+            return Json(new { TotalPendingFingerprintCount = totalPendingFingerprintCount }, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult SaveEmployeeFingerprints(string fingerprintData)
+        {
+            string errorMessage = string.Empty;
+            bool isSuccess = false;
+            int totalPendingFingerprintCount = 0;
+            int maximumEmployeeFingerprint = Convert.ToInt32(ConfigurationManager.AppSettings["MaximumEmployeeFingerprint"].ToString());
+
+            try
+            {
+                FingerprintSaveVM fingerprintDataVM = JsonConvert.DeserializeObject<FingerprintSaveVM>(fingerprintData);
+
+                if (fingerprintDataVM != null && fingerprintDataVM.EmployeeId > 0 && fingerprintDataVM.FingerprintTemplateList != null && fingerprintDataVM.FingerprintTemplateList.Count > 0)
+                {
+                    fingerprintDataVM.FingerprintTemplateList.ForEach(fingerprint =>
+                    {
+
+                        List<tbl_EmployeeFingerprint> lstExistFingerprint = _db.tbl_EmployeeFingerprint.Where(x => x.EmployeeId == fingerprintDataVM.EmployeeId).ToList();
+                        if (lstExistFingerprint != null)
+                        {
+                            totalPendingFingerprintCount = maximumEmployeeFingerprint - lstExistFingerprint.Count;
+                        }
+
+                        if (totalPendingFingerprintCount > 0)
+                        {
+                            tbl_EmployeeFingerprint objFingerprint = new tbl_EmployeeFingerprint();
+                            objFingerprint.BitmapCode = fingerprint.BitmapCode;
+                            objFingerprint.EmployeeId = fingerprintDataVM.EmployeeId;
+                            objFingerprint.ISOCode = fingerprint.ISOCode;
+                            objFingerprint.CreatedDate = CommonMethod.CurrentIndianDateTime();
+                            _db.tbl_EmployeeFingerprint.Add(objFingerprint);
+                            _db.SaveChanges();
+                        }
+                        isSuccess = true;
+                    });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                errorMessage = "exception";
+                isSuccess = false;
+            }
+
+            return Json(new { IsSuccess = isSuccess, ErrorMessage = errorMessage }, JsonRequestBehavior.AllowGet);
+
         }
 
     }

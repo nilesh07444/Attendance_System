@@ -368,6 +368,7 @@
           <Property Name="EmployeeId" Type="bigint" Nullable="false" />
           <Property Name="ISOCode" Type="nvarchar(max)" Nullable="false" />
           <Property Name="BitmapCode" Type="nvarchar(max)" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="tbl_EmployeePayment">
           <Key>
@@ -860,6 +861,7 @@
           <Property Name="EmployeeId" Type="Int64" Nullable="false" />
           <Property Name="ISOCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="BitmapCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <EntityType Name="tbl_EmployeeRating">
           <Key>
@@ -1734,6 +1736,7 @@
           <EntitySetMapping Name="tbl_EmployeeFingerprint">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_EmployeeFingerprint">
               <MappingFragment StoreEntitySet="tbl_EmployeeFingerprint">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="EmployeeFingerprintId" ColumnName="EmployeeFingerprintId" />
                 <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
                 <ScalarProperty Name="ISOCode" ColumnName="ISOCode" />
