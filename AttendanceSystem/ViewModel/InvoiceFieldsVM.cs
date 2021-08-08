@@ -22,5 +22,6 @@ namespace AttendanceSystem.ViewModel
         public decimal SGST { get; set; }
         public decimal IGST { get; set; }
         public decimal TotalAmount { get; set; }
+        public string State { get; set; }
     }
 }

@@ -304,17 +304,20 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                        GstNo = cmp.GSTNo,
                                                        PanNo = cmp.PanNo,
                                                        PackageName = "Employee Buy",
-                                                       GSTRate = pkg.GSTPer.HasValue? pkg.GSTPer.Value:0,
-                                                       TotalAmount = pkg.TotalPaidAmount
+                                                       GSTRate = pkg.GSTPer.HasValue ? pkg.GSTPer.Value : 0,
+                                                       TotalAmount = pkg.TotalPaidAmount,
+                                                       State = cmp.State
                                                    }).FirstOrDefault();
 
                 invoiceFieldsVM.InvoiceDate = invoiceFieldsVM.InvoiceDatetime.ToString("dd MMM yyyy");
                 invoiceFieldsVM.HsnCode = "9982";
+                bool isCGSTSGSTApply = invoiceFieldsVM.State.ToLower() == ErrorMessage.Gujarat.ToLower();
+
                 invoiceFieldsVM.Rate = Math.Round((invoiceFieldsVM.TotalAmount / (100 + invoiceFieldsVM.GSTRate)) * 100, 2);
                 decimal gstAmount = Math.Round(invoiceFieldsVM.Rate * invoiceFieldsVM.GSTRate / 100, 2);
-                invoiceFieldsVM.CGST = Math.Round(gstAmount / 2, 2);
-                invoiceFieldsVM.SGST = Math.Round(gstAmount / 2, 2);
-                invoiceFieldsVM.IGST = 0;
+                invoiceFieldsVM.CGST = isCGSTSGSTApply ? Math.Round(gstAmount / 2, 2) : 0;
+                invoiceFieldsVM.SGST = isCGSTSGSTApply ? Math.Round(gstAmount / 2, 2) : 0;
+                invoiceFieldsVM.IGST = !isCGSTSGSTApply ? gstAmount : 0;
                 invoiceFieldsVM.Qty = 1;
 
                 string htmlContent = CommonMethod.GetInvoiceContent(invoiceFieldsVM);
@@ -331,11 +334,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 Response.Cache.SetCacheability(HttpCacheability.NoCache);
                 Response.Write(pdfDoc1);
                 Response.End();
-                 
+
             }
             catch (Exception ex)
-            {  }
-             
+            { }
+
         }
     }
 }
