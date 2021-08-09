@@ -188,7 +188,16 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-
+        $(document).on('keypress', function (e) {
+            if (e.which == 13) {
+                if ($('#OtpModal').hasClass('show')) {
+                    $('#BtnOtpSubmit').click();
+                    return false;
+                } else {
+                    return false;
+                }
+            }
+        });
 
         $('#btnDeletePayment').click(function () {
              var employeePayment_Id = $("#hdnDeleteEmployeePaymentId").val();
