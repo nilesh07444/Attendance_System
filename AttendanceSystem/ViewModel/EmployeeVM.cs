@@ -138,6 +138,7 @@ namespace AttendanceSystem.ViewModel
         public List<SelectListItem> WorkerTypeList { get; set; }
         public string EmploymentCategoryText { get; set; }
         public DateTime? CreatedDate { get; set; }
+        public int TotalSavedFingerprint { get; set; }
     }
 
     public class EmployeeFilterVM

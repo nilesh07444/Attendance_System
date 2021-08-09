@@ -183,6 +183,7 @@
 
                     if (res.data.ErrorCode == "0") {
                         for (var i = 0; i < thumbsArr.length; i++) {
+
                             var result = VerifyFinger(thumbsArr[i], res.data.IsoTemplate);
                             if (result.httpStaus) {
                                 if (result.data.Status) {

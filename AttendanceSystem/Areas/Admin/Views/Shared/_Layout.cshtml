@@ -14,7 +14,7 @@
     <title> Contract Book - Admin Panel </title>
     <!-- General CSS Files -->
     <link rel="stylesheet" href="~/Content/admin-theme/assets/css/app.min.css">
-
+    <link href="~/Content/admin-theme/assets/bundles/izitoast/css/iziToast.min.css" rel="stylesheet" />
     <!-- DataTable CSS -->
     <link rel="stylesheet" href="~/Content/admin-theme/assets/bundles/datatables/datatables.min.css">
     <link rel="stylesheet" href="~/Content/admin-theme/assets/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
@@ -22,6 +22,7 @@
     <!-- Template CSS -->
     <link rel="stylesheet" href="~/Content/admin-theme/assets/css/style.css">
     <link rel="stylesheet" href="~/Content/admin-theme/assets/css/components.css">
+
 
     <!-- Custom style CSS -->
     <link rel="stylesheet" href="~/Content/admin-theme/assets/css/custom.css">
@@ -169,7 +170,7 @@
                             </li>
                             <li class="dropdown @(ViewBag.Title == "Followup" ? "active" : "")">
                                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="message-circle"></i><span>Followup</span></a>
-                                <ul class="dropdown-menu"> 
+                                <ul class="dropdown-menu">
                                     <li><a class="nav-link" href="/admin/followup">Followup List</a></li>
                                     <li><a class="nav-link" href="/admin/followup/reminders">Reminder List</a></li>
                                 </ul>
@@ -256,10 +257,9 @@
                                 </li>
 
                                 <li class="dropdown @(ViewBag.Title == "Attendance" ? "active" : "")">
-                                    <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="command"></i><span>Attendance</span></a>
+                                    <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="command"></i><span>Employee Attendance</span></a>
                                     <ul class="dropdown-menu">
-                                        @*<li><a class="nav-link" href="/admin/payment/add/0">Add Attendance</a></li>*@
-                                        <li><a class="nav-link" href="/admin/attendance">Attendance List</a></li>
+                                        <li><a class="nav-link" href="/admin/attendance">Employee Attendance List</a></li>
                                     </ul>
                                 </li>
                                 if (clsAdminSession.CompanyTypeId == (int)CompanyType.ConstructionCompany)
@@ -381,6 +381,7 @@
     </div>
     <!-- General JS Scripts -->
     <script src="~/Content/admin-theme/assets/js/app.min.js"></script>
+    <script src="~/Content/admin-theme/assets/bundles/izitoast/js/iziToast.min.js"></script>
     <!-- JS Libraies -->
     <script src="~/Content/admin-theme/assets/bundles/apexcharts/apexcharts.min.js"></script>
     <!-- Page Specific JS File -->
@@ -404,7 +405,6 @@
     <script src="~/Content/admin-theme/assets/js/page/datatables.js"></script>
     <!-- Datatable - JS - End -->
     <script src="~/Scripts/jquery.blockUI.js"></script>
-
     <script src="~/Content/admin-theme/assets/js/jquery.table2excel.min.js"></script>
 
     <script>
@@ -416,8 +416,6 @@
         function StopLoading() {
             $.unblockUI();
         }
-
-
 
     </script>
 
