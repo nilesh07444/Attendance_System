@@ -110,9 +110,18 @@
     </div>
 </div>
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
-
-
 <script type="text/javascript">
+    $(document).on('keypress', function (e) {
+        if (e.which == 13) {
+            if ($('#OtpModal').hasClass('show')) {
+                $('#BtnOtpSubmit').click();
+                return false;
+            } else {
+                $('#btnSubmit').click();
+                return false;
+            }
+        }
+    });
     $(document).ready(function () {
 
         $('#MoreDetail').click(function () {
