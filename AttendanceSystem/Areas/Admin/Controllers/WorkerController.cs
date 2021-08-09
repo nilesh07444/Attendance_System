@@ -89,7 +89,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                      IsFingerprintEnabled = emp.IsFingerprintEnabled,
                                                      NoOfFreeLeavePerMonth = emp.NoOfFreeLeavePerMonth,
                                                      WorkerTypeId = emp.WorkerTypeId,
-                                                     WorkerTypeText = w.WorkerTypeName 
+                                                     WorkerTypeText = w.WorkerTypeName,
+                                                     TotalSavedFingerprint = _db.tbl_EmployeeFingerprint.Where(x => x.EmployeeId == emp.EmployeeId).ToList().Count
                                                  }).OrderByDescending(x => x.EmployeeId).ToList();
 
                 employeeFilterVM.EmployeeList.ForEach(x =>
@@ -330,7 +331,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult View(int id)
+        public ActionResult View(int Id)
         {
             EmployeeVM employeeVM = new EmployeeVM();
 
@@ -338,7 +339,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                           join rl in _db.mst_AdminRole on emp.AdminRoleId equals rl.AdminRoleId
                           join wt in _db.tbl_WorkerType on emp.WorkerTypeId equals wt.WorkerTypeId into wtc
                           from w in wtc.DefaultIfEmpty()
-                          where !emp.IsDeleted && emp.EmployeeId == id
+                          where !emp.IsDeleted && emp.EmployeeId == Id
                           select new EmployeeVM
                           {
                               EmployeeId = emp.EmployeeId,
@@ -380,6 +381,21 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                           }).FirstOrDefault();
 
             employeeVM.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)employeeVM.EmploymentCategory);
+
+            // Get Fingerprint List
+            List<EmployeeFingerprintVM> lstFingerprint = (from f in _db.tbl_EmployeeFingerprint
+                                                          where f.EmployeeId == Id
+                                                          select new EmployeeFingerprintVM
+                                                          {
+                                                              EmployeeFingerprintId = f.EmployeeFingerprintId,
+                                                              EmployeeId = f.EmployeeId,
+                                                              BitmapCode = f.BitmapCode,
+                                                              ISOCode = f.ISOCode,
+                                                              CreatedDate = f.CreatedDate
+                                                          }).ToList();
+
+            ViewData["lstFingerprint"] = lstFingerprint;
+
             return View(employeeVM);
         }
 
@@ -535,6 +551,36 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                 }).ToList();
 
             return Json(customerList);
+        }
+
+        [HttpPost]
+        public string DeleteEmployeeFingerprint(int EmployeeFingerprintId)
+        {
+            string ReturnMessage = "";
+
+            try
+            {
+                tbl_EmployeeFingerprint objEmployeeFingerprint = _db.tbl_EmployeeFingerprint.Where(x => x.EmployeeFingerprintId == EmployeeFingerprintId).FirstOrDefault();
+
+                if (objEmployeeFingerprint == null)
+                {
+                    ReturnMessage = "notfound";
+                }
+                else
+                {
+                    _db.tbl_EmployeeFingerprint.Remove(objEmployeeFingerprint);
+                    _db.SaveChanges();
+
+                    ReturnMessage = "success";
+                }
+            }
+            catch (Exception ex)
+            {
+                string msg = ex.Message.ToString();
+                ReturnMessage = "exception";
+            }
+
+            return ReturnMessage;
         }
 
 

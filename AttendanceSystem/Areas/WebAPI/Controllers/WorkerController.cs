@@ -71,8 +71,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
             return response;
         }
-
-
+         
         [HttpGet]
         [Route("Search")]
         public ResponseDataModel<List<EmployeeVM>> Search(string searchText)
