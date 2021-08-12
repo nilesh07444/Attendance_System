@@ -11327,3 +11327,13 @@ table thead tr:first-child {
 table thead th, table thead td {
     color: #FFCEA3 !important;
 }
+
+.clsRow label {
+    background-color: #425C59;
+    color: #FFCEA3;
+    border-radius: .50rem;
+    line-height: 2;
+}
+.form-control {
+    border-radius: .50rem;
+}
