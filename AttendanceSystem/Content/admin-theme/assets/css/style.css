@@ -2573,7 +2573,7 @@ p, ul:not(.list-unstyled), ol {
 .form-control, .input-group-text, .custom-select, .custom-file-label {
     background-color: #fdfdff;
     border-color: #425C59;
-    border-width:1.6px;
+    border-width:2.3px;
 }
 
     .form-control:focus, .input-group-text:focus, .custom-select:focus, .custom-file-label:focus {
@@ -11336,4 +11336,6 @@ table thead th, table thead td {
 }
 .form-control {
     border-radius: .50rem;
+    color: #000000;
+    font-family: "Arial Bold", sans-serif;
 }
