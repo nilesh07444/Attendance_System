@@ -31,136 +31,182 @@
                     </div>
                     <div class="card-body">
                         <div class="card-body">
-                            <div class="row">
-                                <div class="form-group col-4">
-                                    @Html.LabelFor(model => model.EmployeeCode)
-                                    <p>@Model.EmployeeCode</p>
-                                </div>
-                                <div class="form-group col-4">
-                                    @Html.LabelFor(model => model.WorkerTypeId)
-                                    <p>@Model.WorkerTypeText</p>
-                                </div>
-                                <div class="form-group col-4">
-                                    @Html.LabelFor(model => model.Prefix)
-                                    <p>@Model.Prefix</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-4">
-                                    @Html.LabelFor(model => model.FirstName)
-                                    <p>@Model.FirstName</p>
-                                </div>
-                                <div class="form-group col-4">
-                                    @Html.LabelFor(model => model.LastName)
-                                    <p>@Model.LastName</p>
-                                </div>
-                                <div class="form-group col-4">
-                                    @Html.LabelFor(model => model.MobileNo)
-                                    <p>@Model.MobileNo</p>
+
+
+                            <div class="form-group row clsRow">
+                                @Html.LabelFor(model => model.EmployeeCode, htmlAttributes: new { @class = "col-sm-3 col-form-label" })
+                                <div class="col-sm-9">
+                                    @Html.TextBoxFor(model => model.EmployeeCode, new { @type = "text", @class = "form-control", @placeholder = "Employee Code", @readonly = "true" })
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="form-group col-4">
-                                    @Html.LabelFor(model => model.Address)
-                                    <p>@Model.Address</p>
-                                </div>
-                                <div class="form-group col-4">
-                                    @Html.LabelFor(model => model.Pincode)
-                                    <p>@Model.Pincode</p>
-                                </div>
-                                <div class="form-group col-4">
-                                    @Html.LabelFor(model => model.City)
-                                    <p>@Model.City</p>
-                                </div>
-
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-4">
-                                    @Html.LabelFor(model => model.State)
-                                    <p>@Model.State</p>
-                                </div>
-                                <div class="form-group col-4">
-                                    @Html.LabelFor(model => model.Dob)
-                                    <p>@(Model.Dob != null ? Convert.ToDateTime(Model.Dob).ToString("dd-MM-yyyy") : "")</p>
-                                </div>
-
-                            </div>
-                            <div class="row">
-
-                                <div class="form-group col-4">
-                                    @Html.LabelFor(model => model.DateOfJoin)
-                                    <p>@(Model.DateOfJoin != null ? Convert.ToDateTime(Model.DateOfJoin).ToString("dd-MM-yyyy") : "")</p>
-                                </div>
-                                <div class="form-group col-4">
-                                    @Html.LabelFor(model => model.BloodGroup)
-                                    <p>@Model.BloodGroup</p>
-                                </div>
-                                <div class="form-group col-4">
-                                    @Html.LabelFor(model => model.AdharCardNo)
-                                    <p>@Model.AdharCardNo</p>
+                            <div class="form-group row clsRow">
+                                @Html.LabelFor(model => model.WorkerTypeId, htmlAttributes: new { @class = "col-sm-3 col-form-label" })
+                                <div class="col-sm-9">
+                                    @Html.TextBoxFor(model => model.WorkerTypeText, new { @type = "text", @class = "form-control", @placeholder = "Worker Type", @readonly = "true" })
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="form-group col-4">
-                                    @Html.LabelFor(model => model.EmploymentCategory)
-                                    <p>@Model.EmploymentCategoryText</p>
+                            <div class="form-group row clsRow">
+                                @Html.LabelFor(model => model.Prefix, htmlAttributes: new { @class = "col-sm-3 col-form-label" })
+                                <div class="col-sm-9">
+                                    @Html.TextBoxFor(model => model.Prefix, new { @type = "text", @class = "form-control", @placeholder = "Prefix", @readonly = "true" })
                                 </div>
-                                @if (Model.EmploymentCategory == (int)EmploymentCategory.MonthlyBased)
+                            </div>
+
+                            <div class="form-group row clsRow">
+                                @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "col-sm-3 col-form-label" })
+                                <div class="col-sm-9">
+                                    @Html.TextBoxFor(model => model.FirstName, new { @type = "text", @class = "form-control", @placeholder = "FirstName", @readonly = "true" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row clsRow">
+                                @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "col-sm-3 col-form-label" })
+                                <div class="col-sm-9">
+                                    @Html.TextBoxFor(model => model.LastName, new { @type = "text", @class = "form-control", @placeholder = "LastName", @readonly = "true" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row clsRow">
+                                @Html.LabelFor(model => model.MobileNo, htmlAttributes: new { @class = "col-sm-3 col-form-label" })
+                                <div class="col-sm-9">
+                                    @Html.TextBoxFor(model => model.MobileNo, new { @type = "text", @class = "form-control", @placeholder = "MobileNo", @readonly = "true" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row clsRow">
+                                @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "col-sm-3 col-form-label" })
+                                <div class="col-sm-9">
+                                    @Html.TextBoxFor(model => model.Address, new { @type = "text", @class = "form-control", @placeholder = "Address", @readonly = "true" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row clsRow">
+                                @Html.LabelFor(model => model.Pincode, htmlAttributes: new { @class = "col-sm-3 col-form-label" })
+                                <div class="col-sm-9">
+                                    @Html.TextBoxFor(model => model.Pincode, new { @type = "text", @class = "form-control", @placeholder = "Pincode", @readonly = "true" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row clsRow">
+                                @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "col-sm-3 col-form-label" })
+                                <div class="col-sm-9">
+                                    @Html.TextBoxFor(model => model.City, new { @type = "text", @class = "form-control", @placeholder = "City", @readonly = "true" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row clsRow">
+                                @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "col-sm-3 col-form-label" })
+                                <div class="col-sm-9">
+                                    @Html.TextBoxFor(model => model.State, new { @type = "text", @class = "form-control", @placeholder = "State", @readonly = "true" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row clsRow">
+                                @Html.LabelFor(model => model.Dob, htmlAttributes: new { @class = "col-sm-3 col-form-label" })
+                                <div class="col-sm-9">
+                                    @{ string Dob = Model.Dob != null ? Model.Dob.Value.ToString("dd MMM yyyy") : ""; }
+                                    <input type="text" class="form-control" value="@Dob" placeholder="Birth Date" readonly />
+                                </div>
+                            </div>
+
+                            <div class="form-group row clsRow">
+                                @Html.LabelFor(model => model.DateOfJoin, htmlAttributes: new { @class = "col-sm-3 col-form-label" })
+                                <div class="col-sm-9">
+                                    @{ string DateOfJoin = Model.DateOfJoin != null ? Model.DateOfJoin.Value.ToString("dd MMM yyyy") : ""; }
+                                    <input type="text" class="form-control" value="@DateOfJoin" placeholder="Birth Date" readonly />
+                                </div>
+                            </div>
+
+                            <div class="form-group row clsRow">
+                                @Html.LabelFor(model => model.BloodGroup, htmlAttributes: new { @class = "col-sm-3 col-form-label" })
+                                <div class="col-sm-9">
+                                    @Html.TextBoxFor(model => model.BloodGroup, new { @type = "text", @class = "form-control", @placeholder = "Blood Group", @readonly = "true" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row clsRow">
+                                @Html.LabelFor(model => model.AdharCardNo, htmlAttributes: new { @class = "col-sm-3 col-form-label" })
+                                <div class="col-sm-9">
+                                    @Html.TextBoxFor(model => model.AdharCardNo, new { @type = "text", @class = "form-control", @placeholder = "Adhar Card No", @readonly = "true" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row clsRow">
+                                @Html.LabelFor(model => model.EmploymentCategory, htmlAttributes: new { @class = "col-sm-3 col-form-label" })
+                                <div class="col-sm-9">
+                                    @Html.TextBoxFor(model => model.EmploymentCategoryText, new { @type = "text", @class = "form-control", @placeholder = "Employment Category", @readonly = "true" })
+                                </div>
+                            </div>
+
+                            @if (Model.EmploymentCategory == (int)EmploymentCategory.MonthlyBased)
+                            {
+                                <div class="form-group row clsRow">
+                                    @Html.LabelFor(model => model.MonthlySalaryPrice, htmlAttributes: new { @class = "col-sm-3 col-form-label" })
+                                    <div class="col-sm-9">
+                                        @Html.TextBoxFor(model => model.MonthlySalaryPrice, new { @type = "text", @class = "form-control", @placeholder = "Monthly Salary Price", @readonly = "true" })
+                                    </div>
+                                </div>
+                            }
+
+                            <div class="form-group row clsRow">
+                                @{ string strPerCategoryLabel = ""; }
+                                @if (Model.EmploymentCategory == (int)EmploymentCategory.DailyBased)
                                 {
-                                    <div class="form-group col-4">
-                                        @Html.LabelFor(model => model.MonthlySalaryPrice)
-                                        <p>@Model.MonthlySalaryPrice</p>
-                                    </div>
+                                    strPerCategoryLabel = "Per Day Salary";
                                 }
-
-                                <div class="form-group col-4">
-                                    @if (Model.EmploymentCategory == (int)EmploymentCategory.DailyBased)
-                                    {
-                                        <label>Per Day Salary</label>
-                                    }
-                                    else if (Model.EmploymentCategory == (int)EmploymentCategory.HourlyBased)
-                                    {
-                                        <label>Per Hour Price</label>
-                                    }
-                                    else if (Model.EmploymentCategory == (int)EmploymentCategory.UnitBased)
-                                    {
-                                        <label>Per Unit Price</label>
-                                    }
-                                    else
-                                    {
-                                        @Html.LabelFor(model => model.PerCategoryPrice)
-                                    }
-
-                                    <p>@Model.PerCategoryPrice</p>
-                                </div>
-
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-4">
-                                    @Html.LabelFor(model => model.ExtraPerHourPrice)
-                                    <p>@Model.ExtraPerHourPrice</p>
-                                </div>
-                                @if (Model.EmploymentCategory == (int)EmploymentCategory.MonthlyBased)
+                                else if (Model.EmploymentCategory == (int)EmploymentCategory.HourlyBased)
                                 {
-                                    <div class="form-group col-4">
-                                        @Html.LabelFor(model => model.IsLeaveForward)
-                                        <p>@(Model.IsLeaveForward ? "Yes" : "No")</p>
-                                    </div>
-                                    <div class="form-group col-4">
-                                        @Html.LabelFor(model => model.NoOfFreeLeavePerMonth)
-                                        <p>@Model.NoOfFreeLeavePerMonth</p>
-                                    </div>
+                                    strPerCategoryLabel = "Per Hour Price";
                                 }
-                            </div>
-
-                            <div class="row">
-                                <div class="form-group col-6">
-                                    @Html.LabelFor(model => model.ProfileImageFile)
-                                    <p><a target="_blank" href="@ErrorMessage.EmployeeDirectoryPath/@Model.ProfilePicture"> Click here to view image </a></p>
+                                else if (Model.EmploymentCategory == (int)EmploymentCategory.UnitBased)
+                                {
+                                    strPerCategoryLabel = "Per Unit Price";
+                                }
+                                else
+                                {
+                                    strPerCategoryLabel = "Per Category Price";
+                                }
+                                <label class="col-sm-3 col-form-label">@strPerCategoryLabel</label>
+                                <div class="col-sm-9">
+                                    @Html.TextBoxFor(model => model.PerCategoryPrice, new { @type = "text", @class = "form-control", @placeholder = "Per Category Price", @readonly = "true" })
                                 </div>
                             </div>
+                             
+                            <div class="form-group row clsRow">
+                                @Html.LabelFor(model => model.ExtraPerHourPrice, htmlAttributes: new { @class = "col-sm-3 col-form-label" })
+                                <div class="col-sm-9">
+                                    @Html.TextBoxFor(model => model.ExtraPerHourPrice, new { @type = "text", @class = "form-control", @placeholder = "Extra Per Hour Price", @readonly = "true" })
+                                </div>
+                            </div>
+                             
+                            @if (Model.EmploymentCategory == (int)EmploymentCategory.MonthlyBased)
+                            {
+                                <div class="form-group row clsRow">
+                                    @Html.LabelFor(model => model.IsLeaveForward, htmlAttributes: new { @class = "col-sm-3 col-form-label" })
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" value="@(Model.IsLeaveForward ? "Yes" : "No")" disabled />
+                                    </div>
+                                </div>
+
+                                <div class="form-group row clsRow">
+                                    @Html.LabelFor(model => model.NoOfFreeLeavePerMonth, htmlAttributes: new { @class = "col-sm-3 col-form-label" })
+                                    <div class="col-sm-9">
+                                        @Html.TextBoxFor(model => model.NoOfFreeLeavePerMonth, new { @type = "text", @class = "form-control", @placeholder = "No Of Free Leave Per Month", @readonly = "true" })
+                                    </div>
+                                </div>
+                            }
+
+                            <div class="form-group row clsRow">
+                                @Html.LabelFor(model => model.ProfileImageFile, htmlAttributes: new { @class = "col-sm-3 col-form-label" })
+                                <div class="col-sm-9">
+                                    @if (!string.IsNullOrEmpty(Model.ProfilePicture))
+                                    {
+                                        <a class="form-control" style="color:dodgerblue;" target="_blank" href="@ErrorMessage.EmployeeDirectoryPath/@Model.ProfilePicture"> Click here to view image </a>}
+                                </div>
+                            </div>
+
 
                         </div>
                     </div>
@@ -288,5 +334,5 @@
         jQuery("#hdnDeleteEmployeeFingerprint").val(EmployeeFingerprint_Id);
         $('#deleteEmployeeModal').modal('show');
     }
-     
+
 </script>
