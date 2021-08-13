@@ -67,6 +67,22 @@ namespace AttendanceSystem.ViewModel
     {
         public AttendanceFilterVM()
         {
+            StartDate = new DateTime(CommonMethod.CurrentIndianDateTime().Year, CommonMethod.CurrentIndianDateTime().Month, 1);
+            EndDate = StartDate.AddMonths(1).AddDays(-1);
+        }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public int? AttendanceStatus { get; set; }
+        public int? UserId { get; set; }
+        public List<SelectListItem> EmployeeList { get; set; }
+        public List<SelectListItem> CalenderMonth { get; set; }
+        public List<AttendanceVM> AttendanceList { get; set; }
+    }
+
+    public class AttendanceAPIFilterVM
+    {
+        public AttendanceAPIFilterVM()
+        {
             Year = CommonMethod.CurrentIndianDateTime().Year;
             AttendanceStatus = (int)Helper.AttendanceStatus.Pending;
         }

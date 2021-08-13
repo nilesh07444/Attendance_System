@@ -21,7 +21,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header" style="background-color: #425C59;">
-                        <h4 style="color: #FFCEA3;">Attendance List</h4>
+                        <h4 style="color: #FFCEA3;">Employee Attendance List</h4>
                     </div>
                 </div>
                 <div class="card">
@@ -31,20 +31,14 @@
                             <div class="card-header ">
                                 <div class="col-sm-2">
                                     <div class="form-group">
-                                        <label>Start Month</label>
-                                        @Html.DropDownListFor(model => model.StartMonth, new SelectList(Model.CalenderMonth, "Value", "Text"), "- All -", new { @class = "form-control required", style = "" })
+                                        <label>Attendance Start Date</label>
+                                        @Html.TextBoxFor(model => model.StartDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control", @placeholder = "Start Date", style = "height: calc(2.25rem + 6px)" })
                                     </div>
                                 </div>
                                 <div class="col-sm-2">
                                     <div class="form-group">
-                                        <label>End Month</label>
-                                        @Html.DropDownListFor(model => model.EndMonth, new SelectList(Model.CalenderMonth, "Value", "Text"), "- All -", new { @class = "form-control required", style = "" })
-                                    </div>
-                                </div>
-                                <div class="col-sm-2">
-                                    <div class="form-group">
-                                        <label>Year</label>
-                                        @Html.TextBoxFor(model => model.Year, new { @type = "number", @class = "form-control required", @placeholder = "Year", @max = "9999", @maxLength = 4, @style = "height: calc(2.25rem + 6px)" })
+                                        <label>Attendance End Date</label>
+                                        @Html.TextBoxFor(model => model.EndDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control", @placeholder = "End Date", style = "height: calc(2.25rem + 6px)" })
                                     </div>
                                 </div>
                                 <div class="col-sm-2">
@@ -215,21 +209,16 @@
                 return false;
             }
 
-            var startMonth = $("#StartMonth").val();
-            var endMonth = $("#EndMonth").val();
-            var year = $("#Year").val();
-            if (startMonth > endMonth) {
-                alert("Please select valid Month.");
-                return false;
-            }
-
+            var startDate = $("#StartDate").val();
+            var endDate = $("#EndDate").val(); 
+              
             var attendanceStatus = $("#AttendanceStatus").val();
             var userId = $("#UserId").val();
             StartLoading();
             if (attendanceStatus == "") {
                 attendanceStatus = "0";
             }
-            window.location.href = "/admin/attendance/Index?userId=" + userId + "&attendanceStatus=" + attendanceStatus + "&startMonth=" + startMonth + "&endMonth=" + endMonth + "&year=" + year;
+            window.location.href = "/admin/attendance/Index?userId=" + userId + "&attendanceStatus=" + attendanceStatus + "&startDate=" + startDate + "&endDate=" + endDate;
         });
 
          $('#btnAccept').click(function () {

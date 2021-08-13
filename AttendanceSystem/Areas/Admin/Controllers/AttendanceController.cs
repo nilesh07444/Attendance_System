@@ -3,6 +3,7 @@ using AttendanceSystem.Models;
 using AttendanceSystem.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
@@ -23,25 +24,21 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             companyId = clsAdminSession.CompanyId;
             LoggedInUserId = clsAdminSession.UserID;
         }
-        public ActionResult Index(int? userId = null, int? attendanceStatus = null, int? startMonth = null, int? endMonth = null, int? year = null)
+        public ActionResult Index(int? userId = null, DateTime? startDate = null, DateTime? endDate = null, int? attendanceStatus = null)
         {
             AttendanceFilterVM attendanceFilterVM = new AttendanceFilterVM();
             try
             {
                 if (userId.HasValue)
                     attendanceFilterVM.UserId = userId.Value;
+
                 if (attendanceStatus.HasValue)
                     attendanceFilterVM.AttendanceStatus = attendanceStatus.Value;
 
-                if (startMonth.HasValue && endMonth.HasValue)
+                if (startDate.HasValue && endDate.HasValue)
                 {
-                    attendanceFilterVM.StartMonth = startMonth.Value;
-                    attendanceFilterVM.EndMonth = endMonth.Value;
-                }
-
-                if (year.HasValue)
-                {
-                    attendanceFilterVM.Year = year.Value;
+                    attendanceFilterVM.StartDate = startDate.Value;
+                    attendanceFilterVM.EndDate = endDate.Value;
                 }
 
                 long companyId = clsAdminSession.CompanyId;
@@ -52,9 +49,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                      join emp in _db.tbl_Employee on at.UserId equals emp.EmployeeId
                                                      where !at.IsDeleted
                                                      && emp.CompanyId == companyId
-
-                                                     && ((attendanceFilterVM.StartMonth > 0 && attendanceFilterVM.EndMonth > 0) ? (at.AttendanceDate.Month >= attendanceFilterVM.StartMonth && at.AttendanceDate.Month <= attendanceFilterVM.EndMonth) : true)
-                                                     && at.AttendanceDate.Year == attendanceFilterVM.Year
+                                                     && DbFunctions.TruncateTime(at.AttendanceDate) >= DbFunctions.TruncateTime(attendanceFilterVM.StartDate)
+                                                     && DbFunctions.TruncateTime(at.AttendanceDate) <= DbFunctions.TruncateTime(attendanceFilterVM.EndDate)
                                                      && (attendanceFilterVM.AttendanceStatus.HasValue && attendanceFilterVM.AttendanceStatus.Value > 0 ? at.Status == attendanceFilterVM.AttendanceStatus.Value : true)
                                                      && (attendanceFilterVM.UserId.HasValue ? emp.EmployeeId == attendanceFilterVM.UserId.Value : true)
                                                      select new AttendanceVM
@@ -348,6 +344,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             }
             return RedirectToAction("index");
         }
-         
+
     }
 }

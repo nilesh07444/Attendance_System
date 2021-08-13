@@ -3,6 +3,7 @@ using AttendanceSystem.Models;
 using AttendanceSystem.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
@@ -58,7 +59,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                            from workerTypeInfo in outerworkerTypeInfo.DefaultIfEmpty()
 
                                                            where emp.CompanyId == companyId
-                                                           && at.AttendanceDate >= workerAttendanceFilterVM.StartDate && at.AttendanceDate <= workerAttendanceFilterVM.EndDate
+                                                           && DbFunctions.TruncateTime(at.AttendanceDate) >= DbFunctions.TruncateTime(workerAttendanceFilterVM.StartDate)
+                                                           && DbFunctions.TruncateTime(at.AttendanceDate) <= DbFunctions.TruncateTime(workerAttendanceFilterVM.EndDate)
                                                            && (workerAttendanceFilterVM.SiteId > 0 ? (at.MorningSiteId == workerAttendanceFilterVM.SiteId
                                                            || at.AfternoonSiteId == workerAttendanceFilterVM.SiteId
                                                            || at.EveningSiteId == workerAttendanceFilterVM.SiteId) : true)

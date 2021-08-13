@@ -131,7 +131,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
         [HttpPost]
         [Route("List")]
-        public ResponseDataModel<List<AttendanceVM>> List(AttendanceFilterVM attendanceFilterVM)
+        public ResponseDataModel<List<AttendanceVM>> List(AttendanceAPIFilterVM attendanceFilterVM)
         {
             ResponseDataModel<List<AttendanceVM>> response = new ResponseDataModel<List<AttendanceVM>>();
             response.IsError = false;
