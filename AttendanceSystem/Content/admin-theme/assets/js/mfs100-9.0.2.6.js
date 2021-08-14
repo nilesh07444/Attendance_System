@@ -136,8 +136,7 @@ function GetMFS100Client(method) {
     });
     return res;
 }
-function getHttpError(jqXHR) {
-    debugger;
+function getHttpError(jqXHR) { 
     var err = "Unhandled Exception";
     if (jqXHR.status === 0) {
         err = 'Service Unavailable';

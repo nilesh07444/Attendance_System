@@ -257,12 +257,32 @@
     </div>
 </div>
 
+<!-- Fingerprint Popup -->
+<div class="modal fade open " id="fingerprintPlayModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content" style="align-items: center; background-color: #425C59; padding-bottom: 25px;">
+            <div class="modal-header" style="background-color: #425C59; padding-bottom: 15px; ">
+                <h4 class="modal-title" style="color: #FFCEA3;"></h4>
+                @*<button type="button" class="close" data-dismiss="modal" aria-hidden="true" style=" background: white;">&times;</button>*@
+            </div>
+
+            <img style="width: 200px;" id="imgFingerprintPlay" src="~/Content/admin-theme/assets/img/contrabook/fingerprint_play.gif" alt="Employee Thumb Image" />
+        </div>
+    </div>
+</div>
+
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-
+<script src="~/Content/admin-theme/assets/js/mfs100-9.0.2.6.js"></script>
 
 <script type="text/javascript">
+
+    //...Globally Declare...
+    var thumbCaptured = 1;
+    var quality = 70; //(1 to 100) (recommanded minimum 55)
+    var timeout = 10; // seconds (minimum=10(recommanded), maximum=60, unlimited=0)
+
     $(document).ready(function () {
 
 
@@ -362,7 +382,193 @@
     }
 
     function fnTakeFingerprint(employeeId, employeeName) {
-        alert("Development is in progress by Nilesh");
+        StartLoading();
+        var fingerprintCapturedData = [];
+
+        var StrURL = '/Admin/Employee/GetTotalPendingFingerprint?employeeId=' + employeeId;
+        $.ajax({
+            url: StrURL,
+            cache: false,
+            type: 'POST',
+            success: function (result) {
+                StopLoading();
+                if (result.TotalPendingFingerprintCount == 0) {
+                    alert("All fingerprints are already taken of this employee.");
+                }
+                else if (result.TotalPendingFingerprintCount > 0) {
+
+                    setTimeout(() => {
+
+                        var scannerConnectionValid = PrepareScanner();
+                        //console.log("scannerConnectionValid = "+ scannerConnectionValid);
+
+                        if (scannerConnectionValid) {
+
+                            $('#fingerprintPlayModal .modal-title').text(employeeName);
+                            $('#fingerprintPlayModal').modal('show');
+                            setTimeout(() => {
+                                for (i = 1; i <= result.TotalPendingFingerprintCount; i++) {
+
+                                    var fingerprintResponse = newFingerprintResponse();
+
+                                    if (fingerprintResponse.data.ErrorDescription == "MFS100 not Found") {
+
+                                        iziToast.error({
+                                            //title: '',
+                                            message: 'Fingerprint device is not found.',
+                                            position: 'topCenter'
+                                        });
+
+                                        setTimeout(() => {
+                                            $('#fingerprintPlayModal').modal('hide');
+                                        }, 300);
+
+                                        break;
+                                    }
+                                    else if (fingerprintResponse.data.ErrorDescription == "Timeout") {
+                                        alert("Timeout !!!");
+                                    }
+                                    else {
+
+
+                                        var IsMatched = MatchFingerPrintAllEmployees(employeeId, fingerprintResponse.data.IsoTemplate);
+
+                                        if (IsMatched) {
+                                            alert("Fingerprint matched with other employee.");
+                                        }
+                                        else {
+                                            alert("Fingerprint Captured");
+                                            var obj = {
+                                                "ISOCode": fingerprintResponse.data.IsoTemplate,
+                                                "BitmapCode": fingerprintResponse.data.BitmapData
+                                            }
+
+                                            fingerprintCapturedData.push(obj);
+                                        }
+
+                                    }
+
+                                    if (i == result.TotalPendingFingerprintCount) {
+
+                                        //console.log("fingerprintCapturedData = ", fingerprintCapturedData);
+
+                                        setTimeout(() => {
+                                            $('#fingerprintPlayModal').modal('hide');
+
+                                            // Save all fingerprints
+                                            if (fingerprintCapturedData != null && fingerprintCapturedData.length > 0) {
+                                                SaveFingerprints(fingerprintCapturedData, employeeId);
+                                            }
+                                            else {
+                                                window.location.reload();
+                                            }
+
+                                        }, 100);
+                                    }
+                                }
+                            }, 200);
+                        }
+                        else {
+                            setTimeout(() => {
+                                alert("Fingerprint device service not properly connected.");
+                            }, 200);
+                        }
+
+                    }, 200);
+                }
+                else {
+                    alert("Something went wrong. Please try again later.");
+                    window.location.reload();
+                }
+
+            },
+            error: function (req, status, error) {
+                StopLoading();
+                alert(error);
+            }
+        });
+
+    }
+
+    function newFingerprintResponse() {
+        return CaptureFinger(quality, timeout);
+    }
+
+    function SaveFingerprints(lstFingerprints, employeeId) {
+
+        if (lstFingerprints != null) {
+            StartLoading();
+
+            var requestObj = {
+                'FingerprintTemplateList': lstFingerprints,
+                'EmployeeId': employeeId,
+            };
+
+            var StrURL = '/Admin/Employee/SaveEmployeeFingerprints';
+            $.ajax({
+                url: StrURL,
+                cache: false,
+                data: {
+                    'fingerprintData': JSON.stringify(requestObj)
+                },
+                type: 'POST',
+                success: function (result) {
+                    StopLoading();
+                    if (result.IsSuccess) {
+                        alert("Fingerprint saved successfully");
+                        window.location.reload();
+                    }
+                    else if (!result.IsSuccess && result.ErrorMessage == "exception") {
+                        alert("Something went wrong. Please try again later.");
+                    }
+                    else {
+                        alert(result.ErrorMessage);
+                    }
+                },
+                error: function (req, status, error) {
+                    alert(error);
+                }
+            });
+        }
+
+    }
+
+    function MatchFingerPrintAllEmployees(employeeId, ISOTemplateCode) {
+        var isMatched = false;
+        StartLoading();
+        var StrURL = '/Admin/Employee/GetOtherEmployeesFingerprints?employeeId=' + employeeId;
+        $.ajax({
+            url: StrURL,
+            cache: false,
+            async: false,
+            type: 'GET',
+            success: function (result) {
+                StopLoading();
+                if (result.IsSuccess) {
+                    var allEmployeeFingerprintList = result.data;
+                    if (allEmployeeFingerprintList != null) {
+                        for (var f in allEmployeeFingerprintList) {
+                            var o = allEmployeeFingerprintList[f];
+                            var resultVerify = VerifyFinger(o.ISOCode, ISOTemplateCode);
+                            if (resultVerify.httpStaus) {
+                                if (resultVerify.data.Status) {
+                                    console.log("OHHHH...... MATCHED....");
+                                    isMatched = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                else {
+                    alert("Something went wrong.");
+                }
+            },
+            error: function (req, status, error) {
+                alert(error);
+            }
+        });
+        return isMatched;
     }
 
 </script> 

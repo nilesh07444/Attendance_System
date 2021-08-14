@@ -314,7 +314,7 @@
                 $.ajax({
                     type: 'POST',
                     async: true,
-                    url: URL + "?EmployeeId=" + Employee_Id ,
+                    url: URL + "?EmployeeId=" + Employee_Id,
                     success: function (result) {
                         if (result == "success") {
                             alert("Employee deleted successfully");
@@ -327,10 +327,10 @@
                             alert("Something went wrong. Please try again");
                         }
 
-                       StopLoading();
+                        StopLoading();
                     },
                     error: function (resultData) {
-                       StopLoading();
+                        StopLoading();
                     }
                 });
             }
@@ -348,7 +348,7 @@
                 $.ajax({
                     type: 'POST',
                     async: true,
-                    url: URL + "?Id=" + Id+"&Status="+jQuery("#hdnstatus").val(),
+                    url: URL + "?Id=" + Id + "&Status=" + jQuery("#hdnstatus").val(),
                     success: function (result) {
                         if (result == "success") {
                             alert("Status change Successfully...");
@@ -358,7 +358,7 @@
                             alert("Something went wrong. Please try again");
                         }
 
-                       //StopLoading();
+                        //StopLoading();
                     },
                     error: function (resultData) {
                         //StopLoading();
@@ -371,9 +371,9 @@
             var userStatus = $("#UserStatus").val();
             var userRole = $("#UserRole").val();
             StartLoading();
-            window.location.href = "/admin/employee/Index?userRole=" + userRole + "&userStatus=" + userStatus ;
+            window.location.href = "/admin/employee/Index?userRole=" + userRole + "&userStatus=" + userStatus;
         });
-    })
+    });
 
     function fnDeleteEmployee(Employee_Id) {
         jQuery("#hdnDeleteEmployee").val(Employee_Id);
@@ -442,22 +442,22 @@
                                         alert("Timeout !!!");
                                     }
                                     else {
-                                        alert("Fingerprint Captured");
+                                        
 
-                                        //var IsMatched = MatchFingerPrintAllEmployees(employeeId, fingerprintResponse.data.IsoTemplate);
+                                        var IsMatched = MatchFingerPrintAllEmployees(employeeId, fingerprintResponse.data.IsoTemplate);
 
-                                        //if (IsMatched) {
-                                        //    alert("Fingerprint matched with other employee.");
-                                        //}
-                                        //else {
-                                            
+                                        if (IsMatched) {
+                                            alert("Fingerprint matched with other employee.");
+                                        }
+                                        else {
+                                            alert("Fingerprint Captured");
                                             var obj = {
                                                 "ISOCode": fingerprintResponse.data.IsoTemplate,
                                                 "BitmapCode": fingerprintResponse.data.BitmapData
                                             }
 
                                             fingerprintCapturedData.push(obj);
-                                        //}
+                                        }
 
                                     }
 
@@ -471,6 +471,9 @@
                                             // Save all fingerprints
                                             if (fingerprintCapturedData != null && fingerprintCapturedData.length > 0) {
                                                 SaveFingerprints(fingerprintCapturedData, employeeId);
+                                            }
+                                            else {
+                                                window.location.reload();
                                             }
 
                                         }, 100);
@@ -552,6 +555,7 @@
         $.ajax({
             url: StrURL,
             cache: false,
+            async: false,
             type: 'GET',
             success: function (result) {
                
@@ -567,6 +571,7 @@
                             var resultVerify = VerifyFinger(o.ISOCode, ISOTemplateCode);
                             if (resultVerify.httpStaus) {
                                 if (resultVerify.data.Status) {
+                                    console.log("OHHHH...... MATCHED....");
                                     isMatched = true;
                                     break;
                                 }
