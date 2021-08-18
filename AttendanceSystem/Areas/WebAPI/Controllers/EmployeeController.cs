@@ -860,5 +860,38 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
             return response;
         }
+
+        [HttpGet]
+        [Route("GetOtherEmployeesFingerprints/{id}")]
+        public ResponseDataModel<List<EmployeeFingerprintVM>> GetOtherEmployeesFingerprints(int id)
+        {
+            ResponseDataModel<List<EmployeeFingerprintVM>> response = new ResponseDataModel<List<EmployeeFingerprintVM>>();
+            response.IsError = false;
+            try
+            {
+                long employeeId = id;
+                companyId = base.UTI.CompanyId;
+
+                List<EmployeeFingerprintVM> lstEmployeeFingerprint = (from f in _db.tbl_EmployeeFingerprint
+                                                                      join e in _db.tbl_Employee on f.EmployeeId equals e.EmployeeId
+                                                                      where f.EmployeeId != employeeId 
+                                                                      && e.CompanyId == companyId
+                                                                      select new EmployeeFingerprintVM
+                                                                      {
+                                                                          EmployeeFingerprintId = f.EmployeeFingerprintId,
+                                                                          EmployeeId = f.EmployeeId,
+                                                                          ISOCode = f.ISOCode
+                                                                      }).ToList();
+
+                response.Data = lstEmployeeFingerprint;
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message);
+            }
+            return response;
+        }
+
     }
 }
