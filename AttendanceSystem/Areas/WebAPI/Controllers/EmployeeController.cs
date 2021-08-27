@@ -4,6 +4,7 @@ using AttendanceSystem.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Entity;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
@@ -753,10 +754,11 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 companyId = base.UTI.CompanyId;
 
                 #region Validation
-                if (requestVM.Date != DateTime.Today)
+                DateTime todayDate = CommonMethod.CurrentIndianDateTime();
+                if (requestVM.Date.Date != todayDate.Date)
                 {
                     response.IsError = true;
-                    response.AddError(ErrorMessage.WorkerCanCloseForTodayOnly);
+                    response.AddError(ErrorMessage.AssignWorkerCanRemoveForTodayOnly);
                 }
 
                 if (!_db.tbl_Site.Any(x => x.CompanyId == companyId && x.SiteId == requestVM.SiteId && x.IsActive && !x.IsDeleted))
@@ -874,7 +876,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                 List<EmployeeFingerprintVM> lstEmployeeFingerprint = (from f in _db.tbl_EmployeeFingerprint
                                                                       join e in _db.tbl_Employee on f.EmployeeId equals e.EmployeeId
-                                                                      where f.EmployeeId != employeeId 
+                                                                      where f.EmployeeId != employeeId
                                                                       && e.CompanyId == companyId
                                                                       select new EmployeeFingerprintVM
                                                                       {
