@@ -772,5 +772,35 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
         }
 
+        public JsonResult GetAllEmployeesFingerprintList()
+        {
+            List<EmployeeFingerprintDetailVM> lstEmployeeFingerprint = new List<EmployeeFingerprintDetailVM>();
+            bool isSuccess = false;
+            try
+            {
+                lstEmployeeFingerprint = (from f in _db.tbl_EmployeeFingerprint
+                                          join e in _db.tbl_Employee on f.EmployeeId equals e.EmployeeId
+                                          join r in _db.mst_AdminRole on e.AdminRoleId equals r.AdminRoleId
+                                          where e.CompanyId == companyId
+                                          select new EmployeeFingerprintDetailVM
+                                          {
+                                              EmployeeFingerprintId = f.EmployeeFingerprintId,
+                                              EmployeeId = f.EmployeeId,
+                                              ISOCode = f.ISOCode,
+                                              BitmapCode = f.BitmapCode,
+                                              EmployeeCode = e.EmployeeCode,
+                                              EmployeeName = e.Prefix + " " + e.FirstName + " " + e.LastName,
+                                              EmployeeRole = r.AdminRoleName
+                                          }).ToList();
+
+                isSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                isSuccess = false;
+            }
+            return Json(new { IsSuccess = isSuccess, data = lstEmployeeFingerprint }, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

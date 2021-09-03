@@ -26,4 +26,15 @@ namespace AttendanceSystem
         public List<FingerprintTemplateVM> FingerprintTemplateList { get; set; }
     }
 
+    public class EmployeeFingerprintDetailVM
+    {
+        public long EmployeeFingerprintId { get; set; }
+        public long EmployeeId { get; set; }
+        public string ISOCode { get; set; }
+        public string BitmapCode { get; set; }
+        public string EmployeeName { get; set; }
+        public string EmployeeCode { get; set; }
+        public string EmployeeRole { get; set; }
+    }
+
 }

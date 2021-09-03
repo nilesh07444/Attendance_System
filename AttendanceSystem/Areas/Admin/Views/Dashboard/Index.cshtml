@@ -52,6 +52,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
                 <div class="card">
                     <div class="card-statistic-4">
@@ -109,6 +110,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
                 <div class="card">
                     <div class="card-statistic-4">
@@ -135,6 +137,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
                 <div class="card">
                     <div class="card-statistic-4">
@@ -161,6 +164,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
                 <div class="card">
                     <div class="card-statistic-4">
@@ -368,12 +372,36 @@
                 </div>
             }
         </div>
+
+        <div class="row">
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="card">
+                    <div class="card-statistic-4">
+                        <div class="align-items-center justify-content-between">
+                            <div class="row ">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
+                                    <div class="card-content">
+                                        <h5 class="font-15">Find Fingerprint</h5>
+                                        <button id="btnStartTestFingerprint" class="btn" style="margin-top: 15px; color: #FFCEA3;background-color: #425A49;">Start</button>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
+                                    <div class="banner-img">
+                                        <img style="height:94px;" src="~/Content/admin-theme/assets/img/contrabook/fingerprint.jpg" alt="">
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     }
 
     @if (clsAdminSession.RoleID == (int)AdminRoles.SuperAdmin)
     {
         <div class="row ">
-
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
                 <div class="card">
                     <div class="card-statistic-4">
@@ -468,7 +496,7 @@
             </div>
         </div>
 
-        <div class="row ">
+        <div class="row">
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
                 <div class="card">
                     <div class="card-statistic-4">
@@ -516,6 +544,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
                 <div class="card">
                     <div class="card-statistic-4">
@@ -539,6 +568,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
                 <div class="card">
                     <div class="card-statistic-4">
@@ -563,41 +593,84 @@
                 </div>
             </div>
 
-
         </div>
     }
 </section>
+
+<!-- Fingerprint Popup -->
+<div class="modal fade open " id="fingerprintPlayModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content" style="align-items: center; background-color: #425C59; padding-bottom: 25px;">
+            <div class="modal-header" style="background-color: #425C59; padding-bottom: 15px; ">
+                <h4 class="modal-title" style="color: #FFCEA3;">Find Fingerprint</h4>
+                @*<button type="button" class="close" data-dismiss="modal" aria-hidden="true" style=" background: white;">&times;</button>*@
+            </div>
+
+            <img style="width: 200px;" id="imgFingerprintPlay" src="~/Content/admin-theme/assets/img/contrabook/fingerprint_play.gif" alt="Employee Thumb Image" />
+        </div>
+    </div>
+</div>
+
+<div class="modal fade open" id="fingerprintEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Fingerprint Match Details:</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <label><strong>Employee Name:</strong> <span id="spn_EmpName"></span></label><br />
+                <label><strong>Employee Code:</strong> <span id="spn_EmpCode"></span></label><br />
+                <label><strong>Employee Role:</strong> <span id="spn_EmpRole"></span></label><br />
+
+                <a href="" class="btn btn-primary">More details</a>
+
+            </div>
+            @*<div class="modal-footer">
+                    <button data-dismiss="modal" class="btn btn-primary" type="button">Close</button>
+                </div>*@
+        </div>
+    </div>
+</div>
+
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Content/admin-theme/assets/js/mfs100-9.0.2.6.js"></script>
 
 <script type="text/javascript">
+
+    //...Globally Declare...
+    var thumbCaptured = 1;
+    var quality = 70; //(1 to 100) (recommanded minimum 55)
+    var timeout = 10; // seconds (minimum=10(recommanded), maximum=60, unlimited=0)
+
     $(document).ready(function () {
 
 
         $('#btnEmployee').click(function () {
-                StartLoading();
-                var month = $("#Month").val();
-                var year = $("#Year").val();
-                var URL = '@Url.Action("ConversionOfEmployeeUsers", "Dashboard")';
-                $.ajax({
-                    type: 'POST',
-                    async: true,
-                    url: URL + "?month=" + month + "&year=" + year ,
-                    success: function (result) {
-                        if (result.Status == 1) {
-                            alert("Conversion complete successfully");
-                            window.location.reload();
-                        }
-                        else {
-
-                            alert(result.ErrorMessage);
-                        }
-
-                       StopLoading();
-                    },
-                    error: function (resultData) {
-                       StopLoading();
+            StartLoading();
+            var month = $("#Month").val();
+            var year = $("#Year").val();
+            var URL = '@Url.Action("ConversionOfEmployeeUsers", "Dashboard")';
+            $.ajax({
+                type: 'POST',
+                async: true,
+                url: URL + "?month=" + month + "&year=" + year,
+                success: function (result) {
+                    if (result.Status == 1) {
+                        alert("Conversion complete successfully");
+                        window.location.reload();
                     }
-                });
+                    else {
+
+                        alert(result.ErrorMessage);
+                    }
+
+                    StopLoading();
+                },
+                error: function (resultData) {
+                    StopLoading();
+                }
+            });
         });
 
         $('#btnWorker').click(function () {
@@ -605,30 +678,150 @@
             StartLoading();
             var month = $("#Month").val();
             var year = $("#Year").val();
-                var URL = '@Url.Action("ConversionOfWorkerUsers", "Dashboard")';
-                $.ajax({
-                    type: 'POST',
-                    async: true,
-                    url: URL + "?month=" + month + "&year=" + year ,
-                    success: function (result) {
-                        if (result.Status == 1) {
-                            alert("Conversion complete successfully");
-                            window.location.reload();
-                        }
-                        else {
-                            alert(result.ErrorMessage);
-                        }
-
-                       StopLoading();
-                    },
-                    error: function (resultData) {
-                       StopLoading();
+            var URL = '@Url.Action("ConversionOfWorkerUsers", "Dashboard")';
+            $.ajax({
+                type: 'POST',
+                async: true,
+                url: URL + "?month=" + month + "&year=" + year,
+                success: function (result) {
+                    if (result.Status == 1) {
+                        alert("Conversion complete successfully");
+                        window.location.reload();
                     }
-                });
+                    else {
+                        alert(result.ErrorMessage);
+                    }
+
+                    StopLoading();
+                },
+                error: function (resultData) {
+                    StopLoading();
+                }
+            });
         });
 
 
-    })
+    });
+
+    $('#btnStartTestFingerprint').click(function () {
+        var scannerConnectionValid = PrepareScanner();
+        if (scannerConnectionValid) {
+            $('#fingerprintPlayModal').modal('show');
+
+            setTimeout(() => {
+
+                var fingerprintResponse = CaptureFinger(quality, timeout);
+
+                if (fingerprintResponse.data.ErrorDescription == "MFS100 not Found") {
+
+                    iziToast.error({
+                        //title: '',
+                        message: 'Fingerprint device is not found.',
+                        position: 'topCenter'
+                    });
+
+                    setTimeout(() => {
+                        $('#fingerprintPlayModal').modal('hide');
+                    }, 300);
+
+                }
+                else if (fingerprintResponse.data.ErrorDescription == "Timeout") {
+                    alert("Timeout !!!");
+
+                    setTimeout(() => {
+                        $('#fingerprintPlayModal').modal('hide');
+                    }, 200);
+
+                }
+                else {
+                    alert("Fingerprint Captured");
+                    //alert("IsoTemplate = " + fingerprintResponse.data.IsoTemplate);
+
+                    setTimeout(() => {
+                        $('#fingerprintPlayModal').modal('hide');
+                        setTimeout(() => {
+                            fnMatchCapturedFingerprint(fingerprintResponse.data.IsoTemplate);
+                        }, 200);
+                    }, 200);
+
+
+
+                }
+
+
+
+            }, 300);
+        }
+        else {
+            setTimeout(() => {
+                alert("Fingerprint device service not properly connected.");
+            }, 200);
+        }
+    });
+
+
+    function fnMatchCapturedFingerprint(ISOTemplateCode) {
+
+        $.blockUI({ message: '<h4> Please Wait...</h4><p><h5>We are matching your fingerprint...</h5></p>' });
+
+        setTimeout(() => {
+        var StrURL = '/Admin/Employee/GetAllEmployeesFingerprintList';
+          $.ajax({
+            url: StrURL,
+            cache: false,
+            async: false,
+            type: 'GET',
+            success: function (result) {
+
+                if (result.IsSuccess) {
+                    var isMatched = false;
+                    console.log("result.data = ", result.data);
+                    var allEmployeeFingerprintList = result.data;
+                    if (allEmployeeFingerprintList != null) {
+
+                        for (var f in allEmployeeFingerprintList) {
+                            var o = allEmployeeFingerprintList[f];
+
+                            var resultVerify = VerifyFinger(o.ISOCode, ISOTemplateCode);
+                            if (resultVerify.httpStaus) {
+                                if (resultVerify.data.Status) {
+                                    //$('#fingerprintEmployeeModal .modal-title').text(o.EmployeeName);
+                                    $("#spn_EmpName").text(o.EmployeeName);
+                                    $("#spn_EmpCode").text(o.EmployeeCode);
+                                    $("#spn_EmpRole").text(o.EmployeeRole);
+
+                                    if (o.EmployeeRole == "Worker") {
+                                        $('#fingerprintEmployeeModal a').attr("href", "/admin/worker/view/" + o.EmployeeId);
+                                    }
+                                    else {
+                                        $('#fingerprintEmployeeModal a').attr("href", "/admin/employee/view/" + o.EmployeeId);
+                                    }
+
+                                    $('#fingerprintEmployeeModal').modal('show');
+                                    isMatched = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (!isMatched) {
+                            alert("Fingerprint does not exist in the system");
+                        }
+
+                        StopLoading();
+                    }
+                }
+                else {
+                    StopLoading();
+                    alert("Something went wrong.");
+                }
+            },
+            error: function (req, status, error) {
+                alert(error);
+            }
+        });
+        }, 200);
+    }
 
 </script>
 
