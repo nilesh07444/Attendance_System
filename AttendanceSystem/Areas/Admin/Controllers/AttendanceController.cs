@@ -166,7 +166,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                         if (employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased)
                         {
-                            objEmployeePayment.CreditAmount = (employeeObj.PerCategoryPrice) + (employeeObj.ExtraPerHourPrice * attendance.ExtraHours);
+                            objEmployeePayment.CreditAmount = (attendance.DayType == (double)DayType.FullDay ? employeeObj.PerCategoryPrice : Math.Round((employeeObj.PerCategoryPrice / 2), 2)) + (employeeObj.ExtraPerHourPrice * attendance.ExtraHours);
                         }
                         else if (employeeObj.EmploymentCategory == (int)EmploymentCategory.HourlyBased)
                         {
@@ -309,7 +309,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                             if (employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased)
                             {
-                                objEmployeePayment.CreditAmount = (employeeObj.PerCategoryPrice) + (employeeObj.ExtraPerHourPrice * objAttendance.ExtraHours);
+                                objEmployeePayment.CreditAmount = (objAttendance.DayType == (double)DayType.FullDay ? employeeObj.PerCategoryPrice : Math.Round((employeeObj.PerCategoryPrice / 2), 2)) + (employeeObj.ExtraPerHourPrice * objAttendance.ExtraHours);
                             }
                             else if (employeeObj.EmploymentCategory == (int)EmploymentCategory.HourlyBased)
                             {
