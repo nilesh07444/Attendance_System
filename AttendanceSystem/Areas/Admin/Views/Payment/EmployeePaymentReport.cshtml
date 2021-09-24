@@ -1,17 +1,15 @@
-﻿@using AttendanceSystem.Helper
-@using AttendanceSystem.ViewModel;
+﻿@using AttendanceSystem.ViewModel;
 @model AttendanceSystem.ViewModel.PaymentReportFilterVM
-@{
-    /**/
-
+@{    
     ViewBag.Title = "Report";
     int counter = 1;
 
     decimal totalcredit = 0;
     decimal totaldebit = 0;
+    decimal closing = 0;
+    decimal opening = 0;
 }
-
-
+ 
 <section class="section">
     <div class="section-body">
         <div class="row">
@@ -72,6 +70,7 @@
                                 <tbody>
                                     @if (Model != null && Model.EmployeeList.Count > 0)
                                     {
+                                        opening = Model.PaymentReportList.Select(x => x.Opening).FirstOrDefault();
                                         foreach (EmployeePaymentReportVM obj in Model.PaymentReportList)
                                         {
                                             <tr>
@@ -86,6 +85,7 @@
                                             </tr>
                                             totalcredit = totalcredit + obj.Credit;
                                             totaldebit = totaldebit + obj.Debit;
+                                            closing = obj.Closing;
                                             counter++;
                                         }
                                     }
@@ -94,10 +94,11 @@
                                 <thead>
                                     <tr>
                                         <th style="display:none"></th>
-                                        <th colspan="3">Total</th>
+                                        <th colspan="2">Total</th>
+                                        <th>@opening</th>
                                         <th>@totalcredit</th>
                                         <th>@totaldebit</th>
-                                        <th>@(totalcredit - totaldebit)</th>
+                                        <th>@closing</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -109,13 +110,11 @@
         </div>
     </div>
 </section>
-
-
+ 
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-
-
+ 
 <script type="text/javascript">
     $(document).ready(function () {
         $('#btnSearch').click(function () {

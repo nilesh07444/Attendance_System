@@ -786,7 +786,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 Value = paymentReportFilterVM.EndDate
             };
 
-            paymentReportFilterVM.PaymentReportList = _db.Database.SqlQuery<EmployeePaymentReportVM>("exec Usp_GetDateWiseEmployeePaymentReport @StartDate,@EndDate,@EmployeeId", startDateParam, endDateParam, employeeIdParam).ToList<EmployeePaymentReportVM>();
+            paymentReportFilterVM.PaymentReportList = _db.Database.SqlQuery<EmployeePaymentReportVM>("exec Usp_GetDateWiseWorkerPaymentReport @StartDate,@EndDate,@EmployeeId", startDateParam, endDateParam, employeeIdParam).ToList<EmployeePaymentReportVM>();
 
             paymentReportFilterVM.EmployeeList = GetWorkerList();
             return View(paymentReportFilterVM);
