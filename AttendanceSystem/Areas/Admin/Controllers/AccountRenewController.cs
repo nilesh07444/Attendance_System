@@ -199,49 +199,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                             _db.SaveChanges();
 
                             #region checkEmployee
-
-                            List<tbl_Employee> totalEmployeeList = _db.tbl_Employee.Where(x => x.CompanyId == companyId && !x.IsDeleted).ToList();
-                            int activeEmployee = totalEmployeeList.Where(x => x.IsActive).Count();
-                            int allowedEmployees = objCompanyRenewPayment.NoOfEmployee;
-
-                            if (allowedEmployees > activeEmployee)
-                            {
-                                int employeeToActive = allowedEmployees - activeEmployee;
-                                if (employeeToActive > 0)
-                                {
-                                    List<tbl_Employee> employeeListToBeActive = totalEmployeeList.Where(x => !x.IsActive).OrderBy(x => x.EmployeeId).Take(employeeToActive).ToList();
-                                    if (employeeListToBeActive.Count > 0)
-                                    {
-                                        employeeListToBeActive.ForEach(x =>
-                                        {
-                                            x.IsActive = true;
-                                            x.UpdatedBy = loggedInUserId;
-                                            x.UpdatedDate = today;
-                                            _db.SaveChanges();
-                                        });
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                int employeeToDeActive = activeEmployee - allowedEmployees;
-                                if (employeeToDeActive > 0)
-                                {
-                                    List<tbl_Employee> employeeListToBeDeActive = totalEmployeeList.Where(x => x.IsActive).OrderBy(x => x.EmployeeId).Take(employeeToDeActive).ToList();
-                                    if (employeeListToBeDeActive.Count > 0)
-                                    {
-                                        employeeListToBeDeActive.ForEach(x =>
-                                        {
-                                            x.IsActive = false;
-                                            x.UpdatedBy = loggedInUserId;
-                                            x.UpdatedDate = today;
-                                            _db.SaveChanges();
-                                        });
-                                    }
-                                }
-                            }
-
-
+                            ActiveDeactiveEmployeeFromPackage(companyObj.CompanyId, objCompanyRenewPayment.NoOfEmployee);
                             #endregion checkEmployee
                         }
                         else
@@ -271,6 +229,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                 companyObj.CurrentPackageId = objCompanyRenewPayment.CompanyRegistrationPaymentId;
                                 companyObj.CurrentSMSPackageId = companyObj.CurrentSMSPackageId == null ? Convert.ToInt32(objCompanySMSPackRenew.CompanySMSPackRenewId) : companyObj.CurrentSMSPackageId;
                                 _db.SaveChanges();
+
+                                #region checkEmployee
+                                ActiveDeactiveEmployeeFromPackage(companyObj.CompanyId, objCompanyRenewPayment.NoOfEmployee);
+                                #endregion checkEmployee
                             }
                         }
                         isSuccess = true;
@@ -464,5 +426,54 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             //return response;
         }
 
+        private void ActiveDeactiveEmployeeFromPackage(long companyId, int allowedEmployees)
+        {
+            #region checkEmployee
+            DateTime today = CommonMethod.CurrentIndianDateTime();
+            long loggedInUserId = (int)PaymentGivenBy.CompanyAdmin;
+
+            List<tbl_Employee> totalEmployeeList = _db.tbl_Employee.Where(x => x.CompanyId == companyId && !x.IsDeleted).ToList();
+            int activeEmployee = totalEmployeeList.Where(x => x.IsActive).Count();
+
+            if (allowedEmployees > activeEmployee)
+            {
+                int employeeToActive = allowedEmployees - activeEmployee;
+                if (employeeToActive > 0)
+                {
+                    List<tbl_Employee> employeeListToBeActive = totalEmployeeList.Where(x => !x.IsActive).OrderBy(x => x.EmployeeId).Take(employeeToActive).ToList();
+                    if (employeeListToBeActive.Count > 0)
+                    {
+                        employeeListToBeActive.ForEach(x =>
+                        {
+                            x.IsActive = true;
+                            x.UpdatedBy = loggedInUserId;
+                            x.UpdatedDate = today;
+                            _db.SaveChanges();
+                        });
+                    }
+                }
+            }
+            else
+            {
+                int employeeToDeActive = activeEmployee - allowedEmployees;
+                if (employeeToDeActive > 0)
+                {
+                    List<tbl_Employee> employeeListToBeDeActive = totalEmployeeList.Where(x => x.IsActive).OrderBy(x => x.EmployeeId).Take(employeeToDeActive).ToList();
+                    if (employeeListToBeDeActive.Count > 0)
+                    {
+                        employeeListToBeDeActive.ForEach(x =>
+                        {
+                            x.IsActive = false;
+                            x.UpdatedBy = loggedInUserId;
+                            x.UpdatedDate = today;
+                            _db.SaveChanges();
+                        });
+                    }
+                }
+            }
+
+
+            #endregion checkEmployee
+        }
     }
 }
