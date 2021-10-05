@@ -427,7 +427,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 List<EmployeeVM> workerList = (from emp in _db.tbl_Employee
                                                join wt in _db.tbl_WorkerType on emp.WorkerTypeId equals wt.WorkerTypeId into wtc
                                                from w in wtc.DefaultIfEmpty()
-                                               where !emp.IsDeleted && emp.CompanyId == companyId
+                                               where emp.IsActive && !emp.IsDeleted && emp.CompanyId == companyId
                                                && emp.AdminRoleId == (int)AdminRoles.Worker
                                                && !assignedEmployeeIds.Contains(emp.EmployeeId)
                                                && fingerprintEmployeesIds.Contains(emp.EmployeeId)
@@ -588,7 +588,13 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 if (_db.tbl_Employee.Any(x => x.CompanyId != companyId && requestVM.WorkerList.Contains(x.EmployeeId)))
                 {
                     response.IsError = true;
-                    response.AddError(ErrorMessage.SiteDoesNotExistForCurrentCompany);
+                    response.AddError(ErrorMessage.InvalidWorkersSelectedToAssign);
+                }
+
+                if (_db.tbl_Employee.Any(x => !x.IsActive && requestVM.WorkerList.Contains(x.EmployeeId)))
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.InactiveWorkersCanNotAssign);
                 }
 
                 if (_db.tbl_AssignWorker.Any(x => x.Date == requestVM.Date && !x.IsClosed && requestVM.WorkerList.Contains(x.EmployeeId)))

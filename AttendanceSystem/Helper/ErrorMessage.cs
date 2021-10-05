@@ -115,7 +115,7 @@
         public static string InvalidWorkersSelectedToAssign = "Invalid workers selected to assign.";
         public static string WorkerFingerprintLimitReached = "Worker fingerprint limit reached";
         public static string WorkerAttendanceAlreadyTakenCanNotremove = "Worker attendance already taken, can not remove.";
-
+        public static string InactiveWorkersCanNotAssign = "Inactive workers can not assign.";
         public static string AlreadyInForTheDay = "Already in for the day.";
         public static string AlreadyOutForTheDay = "Already out for the day.";
         public static string YouAreOnLeaveForTheday = "You are on leave the day.";
