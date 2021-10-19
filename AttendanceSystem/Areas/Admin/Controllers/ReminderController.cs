@@ -36,11 +36,21 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                 long companyId = clsAdminSession.CompanyId;
 
+                var startMonthFromStartDate = reminderFilterVM.StartDate.Month;
+                var endMonthFromStartDate = reminderFilterVM.EndDate.Month;
+
+                List<int> lstSelectedMonths = new List<int>();
+                for (int i = startMonthFromStartDate; i <= endMonthFromStartDate; i++)
+                {
+                    lstSelectedMonths.Add(i);
+                }
+
                 reminderFilterVM.ReminderList = (from user in _db.tbl_AdminUser
                                                  join company in _db.tbl_Company on user.CompanyId equals company.CompanyId
                                                  where user.DateOfMarriageAnniversary.HasValue && !user.IsDeleted
-                                                 && user.DateOfMarriageAnniversary.Value.Day >= reminderFilterVM.StartDate.Day && user.DateOfMarriageAnniversary.Value.Month >= reminderFilterVM.StartDate.Month
-                                                 && user.DateOfMarriageAnniversary.Value.Day <= reminderFilterVM.EndDate.Day && user.DateOfMarriageAnniversary.Value.Month <= reminderFilterVM.EndDate.Month
+                                                 && lstSelectedMonths.Contains(user.DOB.Month)
+                                                 && (user.DOB.Month == reminderFilterVM.StartDate.Month ? user.DOB.Day >= reminderFilterVM.StartDate.Day : true)
+                                                 && (user.DOB.Month == reminderFilterVM.EndDate.Month ? user.DOB.Day <= reminderFilterVM.EndDate.Day : true)
                                                  select new ReminderVM
                                                  {
                                                      UserId = user.AdminUserId,
@@ -48,7 +58,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                      ReminderDate = user.DateOfMarriageAnniversary,
                                                      CompanyId = company.CompanyId,
                                                      CompanyName = company.CompanyName
-                                                 }).OrderBy(x => x.ReminderDate).ToList();
+                                                 }).OrderBy(x => x.ReminderDate.Value.Month).ThenBy(x => x.ReminderDate.Value.Day).ToList();
 
             }
             catch (Exception ex)
@@ -73,11 +83,21 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                 long companyId = clsAdminSession.CompanyId;
 
+                var startMonthFromStartDate = reminderFilterVM.StartDate.Month;
+                var endMonthFromStartDate = reminderFilterVM.EndDate.Month;
+
+                List<int> lstSelectedMonths = new List<int>();
+                for (int i = startMonthFromStartDate; i <= endMonthFromStartDate; i++)
+                {
+                    lstSelectedMonths.Add(i);
+                }
+
                 reminderFilterVM.ReminderList = (from user in _db.tbl_AdminUser
                                                  join company in _db.tbl_Company on user.CompanyId equals company.CompanyId
                                                  where user.DOB != null && !user.IsDeleted
-                                                 && user.DOB.Day >= reminderFilterVM.StartDate.Day && user.DOB.Month >= reminderFilterVM.StartDate.Month
-                                                 && user.DOB.Day <= reminderFilterVM.EndDate.Day && user.DOB.Month <= reminderFilterVM.EndDate.Month
+                                                 && lstSelectedMonths.Contains(user.DOB.Month)
+                                                 && (user.DOB.Month == reminderFilterVM.StartDate.Month ? user.DOB.Day >= reminderFilterVM.StartDate.Day : true)
+                                                 && (user.DOB.Month == reminderFilterVM.EndDate.Month ? user.DOB.Day <= reminderFilterVM.EndDate.Day : true)
                                                  select new ReminderVM
                                                  {
                                                      UserId = user.AdminUserId,
@@ -85,7 +105,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                      ReminderDate = user.DOB,
                                                      CompanyId = company.CompanyId,
                                                      CompanyName = company.CompanyName
-                                                 }).OrderBy(x => x.ReminderDate).ToList();
+                                                 }).OrderBy(x => x.ReminderDate.Value.Month).ThenBy(x => x.ReminderDate.Value.Day).ToList();
 
             }
             catch (Exception ex)
@@ -110,37 +130,34 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                 long companyId = clsAdminSession.CompanyId;
 
-                int startDateDay = reminderFilterVM.StartDate.Day;
-                int startDateMonth = reminderFilterVM.StartDate.Month;
+                var startMonthFromStartDate = reminderFilterVM.StartDate.Month;
+                var endMonthFromStartDate = reminderFilterVM.EndDate.Month;
 
-                int endDateDay = reminderFilterVM.EndDate.Day;
-                int endDateMonth = reminderFilterVM.EndDate.Month;
-                
+                List<int> lstSelectedMonths = new List<int>();
+                for (int i = startMonthFromStartDate; i <= endMonthFromStartDate; i++)
+                {
+                    lstSelectedMonths.Add(i);
+                }
+
                 reminderFilterVM.ReminderList = (from user in _db.tbl_Employee
-                                                 join company in _db.tbl_Company on user.CompanyId equals company.CompanyId
-                                                 join role in _db.mst_AdminRole on user.AdminRoleId equals role.AdminRoleId
-                                                 where user.Dob != null && !user.IsDeleted && user.CompanyId == companyId && user.AdminRoleId != (int)AdminRoles.Worker
-
-                                                 //&& user.Dob.Value.Day >= reminderFilterVM.StartDate.Day && user.Dob.Value.Month >= reminderFilterVM.StartDate.Month
-                                                 //&& user.Dob.Value.Day <= reminderFilterVM.EndDate.Day && user.Dob.Value.Month <= reminderFilterVM.EndDate.Month
-
-                                                 && user.Dob.Value.Day >= startDateDay && user.Dob.Value.Month >= startDateMonth
-                                                 && user.Dob.Value.Day <= endDateDay && user.Dob.Value.Month <= endDateMonth
-                                                 
-                                                 && user.Dob.Value.Month >= startDateMonth
-
-                                                 select new ReminderVM
-                                                 {
-                                                     UserId = user.EmployeeId,
-                                                     UserName = user.Prefix + " " + user.FirstName + " " + user.LastName,
-                                                     ReminderDate = user.Dob,
-                                                     CompanyId = company.CompanyId,
-                                                     CompanyName = company.CompanyName,
-                                                     EmployeeRole = role.AdminRoleName,
-                                                     EmploymentCategoryId = user.EmploymentCategory,
-                                                     EmployeeCode = user.EmployeeCode
-                                                 }).OrderBy(x => x.ReminderDate).ToList();
-
+                            join company in _db.tbl_Company on user.CompanyId equals company.CompanyId
+                            join role in _db.mst_AdminRole on user.AdminRoleId equals role.AdminRoleId
+                            where user.Dob != null && !user.IsDeleted && user.CompanyId == companyId && user.AdminRoleId != (int)AdminRoles.Worker
+                            && lstSelectedMonths.Contains(user.Dob.Value.Month)
+                            && (user.Dob.Value.Month == reminderFilterVM.StartDate.Month ? user.Dob.Value.Day >= reminderFilterVM.StartDate.Day : true)
+                            && (user.Dob.Value.Month == reminderFilterVM.EndDate.Month ? user.Dob.Value.Day <= reminderFilterVM.EndDate.Day : true)
+                            select new ReminderVM
+                            {
+                                UserId = user.EmployeeId,
+                                UserName = user.Prefix + " " + user.FirstName + " " + user.LastName,
+                                ReminderDate = user.Dob,
+                                CompanyId = company.CompanyId,
+                                CompanyName = company.CompanyName,
+                                EmployeeRole = role.AdminRoleName,
+                                EmploymentCategoryId = user.EmploymentCategory,
+                                EmployeeCode = user.EmployeeCode
+                            }).OrderBy(x => x.ReminderDate.Value.Month).ThenBy(x => x.ReminderDate.Value.Day).ToList();
+                  
                 reminderFilterVM.ReminderList.ForEach(x =>
                 {
                     x.EmploymentCategoryName = CommonMethod.GetEnumDescription((EmploymentCategory)x.EmploymentCategoryId);
@@ -153,16 +170,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
             return View(reminderFilterVM);
         }
-
-        public dynamic WithinTimeRange(DateTime begin, DateTime end)
-        {
-            var items = from a in _db.tbl_Employee
-                        where a.Dob.Value.Month.Equals(begin.Month) && a.Dob.Value.Day >= begin.Day
-                        && a.Dob.Value.Month.Equals(end.Month) && a.Dob.Value.Day <= end.Day
-                        select a;
-
-            return items.ToList();
-        }
-
+        
     }
 }

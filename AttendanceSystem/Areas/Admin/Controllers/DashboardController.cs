@@ -222,7 +222,17 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     dashboardVM.TotalClientRegistration = companyRequestList.Where(x => x.RequestStatus == (int)CompanyRequestStatus.Accept).Count();
                     dashboardVM.TotalClientForConstruction = companyRequestList.Where(x => x.RequestStatus == (int)CompanyRequestStatus.Accept && x.CompanyTypeId == (int)CompanyType.ConstructionCompany).Count();
                     dashboardVM.TotalClientForOffice = companyRequestList.Where(x => x.RequestStatus == (int)CompanyRequestStatus.Accept && x.CompanyTypeId == (int)CompanyType.Banking_OfficeCompany).Count();
+
+                    // Get count of birthday and anniversary for SA
+                    dashboardVM.NoOfTodayBirthday = _db.tbl_AdminUser.Where(x => x.DOB == today).ToList().Count;
+                    dashboardVM.NoOfTodayAnniversary = _db.tbl_AdminUser.Where(x => x.DateOfMarriageAnniversary.HasValue && x.DateOfMarriageAnniversary.Value == today).ToList().Count;
                 }
+                else
+                {
+                    // Get count of birthday for CA
+                    dashboardVM.NoOfTodayBirthday = _db.tbl_Employee.Where(x => !x.IsDeleted && x.CompanyId == companyId && x.Dob == today).ToList().Count;
+                }
+
             }
             catch (Exception ex)
             {

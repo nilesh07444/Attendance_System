@@ -38,5 +38,8 @@ namespace AttendanceSystem.ViewModel
         public long CurrentSMSPackageId { get; set; }
         public int NoOfEmployeeAllowed { get; set; }
 
+        public int NoOfTodayBirthday { get; set; }
+        public int NoOfTodayAnniversary { get; set; }
+
     }
 }
