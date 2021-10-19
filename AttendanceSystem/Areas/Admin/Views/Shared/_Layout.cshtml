@@ -115,6 +115,15 @@
                             <li class="dropdown @(ViewBag.Title == "Dashboard" ? "active" : "")">
                                 <a href="/admin/dashboard" class="nav-link"><i data-feather="monitor"></i><span>Dashboard</span></a>
                             </li>
+                            <li class="dropdown @(ViewBag.Title == "Reminder" ? "active" : "")">
+                                <a href="#" class="menu-toggle nav-link has-dropdown">
+                                    <i data-feather="briefcase"></i><span>Reminder</span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="nav-link" href="/admin/reminder/birthday">Birthday</a></li>
+                                    <li><a class="nav-link" href="/admin/reminder/anniversary">Anniversary</a></li>
+                                </ul>
+                            </li>
                             <li class="dropdown @(ViewBag.Title == "Company" ? "active" : "")">
                                 <a href="#" class="menu-toggle nav-link has-dropdown">
                                     <i data-feather="briefcase"></i><span>Company</span>
@@ -226,6 +235,14 @@
                                         </ul>
                                     </li>
                                 }
+                                <li class="dropdown @(ViewBag.Title == "Reminder" ? "active" : "")">
+                                    <a href="#" class="menu-toggle nav-link has-dropdown">
+                                        <i data-feather="briefcase"></i><span>Reminder</span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="nav-link" href="/admin/reminder/employeebirthday">Birthday</a></li>
+                                    </ul>
+                                </li>
                                 <li class="dropdown @(ViewBag.Title == "Leave" ? "active" : "")">
                                     <a href="#" class="menu-toggle nav-link has-dropdown">
                                         <i data-feather="briefcase"></i><span>Leave</span>

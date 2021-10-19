@@ -50,6 +50,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objSASetting.AccountPackageBuyGSTPer = (decimal)setting.AccountPackageBuyGSTPer;
                         objSASetting.SMSPackageBuyGSTPer = (decimal)setting.SMSPackageBuyGSTPer;
                         objSASetting.EmployeeBuyGSTPer = (decimal)setting.EmployeeBuyGSTPer;
+                        objSASetting.AddVideoUrl = setting.AddVideoUrl;
+                        objSASetting.AddVideoDescription = setting.AddVideoDescription;
 
                         objSASetting.SMTPHost = setting.SMTPHost;
                         objSASetting.SMTPPort = setting.SMTPPort;
@@ -59,9 +61,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objSASetting.SMTPFromEmailId = setting.SMTPFromEmailId;
                         objSASetting.SuperAdminEmailId = setting.SuperAdminEmailId;
                         objSASetting.SuperAdminMobileNo = setting.SuperAdminMobileNo;
-                        objSASetting.StripeSandboxModeAPIKey = setting.StripeSandboxModeAPIKey;
-                        objSASetting.StripeLiveModeAPIKey = setting.StripeLiveModeAPIKey;
-                        objSASetting.IsStripeLiveMode = setting.IsStripeLiveMode;
 
                         objSASetting.ServiceImage = setting.ServiceImage;
                         objSASetting.HomeImage = setting.HomeImage;
@@ -110,6 +109,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                         AccountPackageBuyGSTPer = (decimal)s.AccountPackageBuyGSTPer,
                                                         SMSPackageBuyGSTPer = (decimal)s.SMSPackageBuyGSTPer,
                                                         EmployeeBuyGSTPer = (decimal)s.EmployeeBuyGSTPer,
+                                                        AddVideoUrl = s.AddVideoUrl,
+                                                        AddVideoDescription = s.AddVideoDescription,
+
                                                         SMTPHost = s.SMTPHost,
                                                         SMTPPort = s.SMTPPort,
                                                         SMTPEmail = s.SMTPEmail,
@@ -120,9 +122,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                         SuperAdminEmailId = s.SuperAdminEmailId,
                                                         SuperAdminMobileNo = s.SuperAdminMobileNo,
 
-                                                        IsStripeLiveMode = s.IsStripeLiveMode,
-                                                        StripeSandboxModeAPIKey = s.StripeSandboxModeAPIKey,
-                                                        StripeLiveModeAPIKey = s.StripeLiveModeAPIKey,
                                                         HomeImage = s.HomeImage,
                                                         HomeImage2 = s.HomeImage2,
                                                         ServiceImage = s.ServiceImage,
@@ -574,6 +573,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     objSetting.AccountPackageBuyGSTPer = settingVM.AccountPackageBuyGSTPer;
                     objSetting.SMSPackageBuyGSTPer = settingVM.SMSPackageBuyGSTPer;
                     objSetting.EmployeeBuyGSTPer = settingVM.EmployeeBuyGSTPer;
+                    objSetting.AddVideoUrl = settingVM.AddVideoUrl;
+                    objSetting.AddVideoDescription = settingVM.AddVideoDescription;
 
                     objSetting.SMTPHost = settingVM.SMTPHost;
                     objSetting.SMTPPort = settingVM.SMTPPort;
@@ -583,9 +584,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     objSetting.SMTPFromEmailId = settingVM.SMTPFromEmailId;
                     objSetting.SuperAdminEmailId = settingVM.SuperAdminEmailId;
                     objSetting.SuperAdminMobileNo = settingVM.SuperAdminMobileNo;
-                    objSetting.IsStripeLiveMode = settingVM.IsStripeLiveMode;
-                    objSetting.StripeSandboxModeAPIKey = settingVM.StripeSandboxModeAPIKey;
-                    objSetting.StripeLiveModeAPIKey = settingVM.StripeLiveModeAPIKey;
+
                     objSetting.ServiceImage = servicefileName;
                     objSetting.HomeImage = homefileName;
                     objSetting.HomeImage2 = homefileName2;

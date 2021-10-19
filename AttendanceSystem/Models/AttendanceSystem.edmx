@@ -155,6 +155,7 @@
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="ModifiedBy" Type="bigint" />
           <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="NoOfLunchBreakAllowed" Type="int" />
         </EntityType>
         <EntityType Name="tbl_CompanyRenewPayment">
           <Key>
@@ -369,6 +370,21 @@
           <Property Name="ISOCode" Type="nvarchar(max)" Nullable="false" />
           <Property Name="BitmapCode" Type="nvarchar(max)" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbl_EmployeeLunchBreak">
+          <Key>
+            <PropertyRef Name="EmployeeLunchBreakId" />
+          </Key>
+          <Property Name="EmployeeLunchBreakId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeId" Type="bigint" Nullable="false" />
+          <Property Name="StartDateTime" Type="datetime" Nullable="false" />
+          <Property Name="EndDateTime" Type="datetime" />
+          <Property Name="StartLunchLocationFrom" Type="nvarchar" MaxLength="200" />
+          <Property Name="StartLunchLatitude" Type="decimal" Precision="11" Scale="8" />
+          <Property Name="StartLunchLongitude" Type="decimal" Precision="11" Scale="8" />
+          <Property Name="EndLunchLocationFrom" Type="nvarchar" MaxLength="200" />
+          <Property Name="EndLunchLatitude" Type="decimal" Precision="11" Scale="8" />
+          <Property Name="EndLunchLongitude" Type="decimal" Precision="11" Scale="8" />
         </EntityType>
         <EntityType Name="tbl_EmployeePayment">
           <Key>
@@ -606,9 +622,6 @@
           <Property Name="ServiceImage" Type="nvarchar" MaxLength="100" />
           <Property Name="HomeImage" Type="nvarchar" MaxLength="100" />
           <Property Name="HomeImage2" Type="nvarchar" MaxLength="100" />
-          <Property Name="StripeSandboxModeAPIKey" Type="nvarchar" MaxLength="50" />
-          <Property Name="StripeLiveModeAPIKey" Type="nvarchar" MaxLength="50" />
-          <Property Name="IsStripeLiveMode" Type="bit" />
           <Property Name="HeroAboutPageImageName" Type="nvarchar" MaxLength="100" />
           <Property Name="HeroContactPageImageName" Type="nvarchar" MaxLength="100" />
           <Property Name="HeroTermsConditionPageImageName" Type="nvarchar" MaxLength="100" />
@@ -617,6 +630,8 @@
           <Property Name="HeroPrivacyPolicyPageImageName" Type="nvarchar" MaxLength="100" />
           <Property Name="HeroHowToUsePageImageName" Type="nvarchar" MaxLength="100" />
           <Property Name="HeroCompanyRequestPageImageName" Type="nvarchar" MaxLength="100" />
+          <Property Name="AddVideoUrl" Type="nvarchar" MaxLength="100" />
+          <Property Name="AddVideoDescription" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="tbl_Site">
           <Key>
@@ -797,6 +812,7 @@
           <EntitySet Name="tbl_Employee" EntityType="Self.tbl_Employee" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_EmployeeBuyTransaction" EntityType="Self.tbl_EmployeeBuyTransaction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_EmployeeFingerprint" EntityType="Self.tbl_EmployeeFingerprint" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_EmployeeLunchBreak" EntityType="Self.tbl_EmployeeLunchBreak" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_EmployeePayment" EntityType="Self.tbl_EmployeePayment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_EmployeeRating" EntityType="Self.tbl_EmployeeRating" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Feedback" EntityType="Self.tbl_Feedback" Schema="dbo" store:Type="Tables" />
@@ -1095,7 +1111,6 @@
           <EntitySet Name="tbl_Conversion" EntityType="AttendanceSystemModel.tbl_Conversion" />
           <EntitySet Name="tbl_WorkerPayment" EntityType="AttendanceSystemModel.tbl_WorkerPayment" />
           <EntitySet Name="tbl_HomeImage" EntityType="AttendanceSystemModel.tbl_HomeImage" />
-          <EntitySet Name="tbl_Setting" EntityType="AttendanceSystemModel.tbl_Setting" />
           <EntitySet Name="tbl_AdminUser" EntityType="AttendanceSystemModel.tbl_AdminUser" />
           <EntitySet Name="tbl_Company" EntityType="AttendanceSystemModel.tbl_Company" />
           <EntitySet Name="tbl_CompanyRequest" EntityType="AttendanceSystemModel.tbl_CompanyRequest" />
@@ -1116,6 +1131,8 @@
           <EntitySet Name="tbl_EmployeeBuyTransaction" EntityType="AttendanceSystemModel.tbl_EmployeeBuyTransaction" />
           <EntitySet Name="tbl_Followup" EntityType="AttendanceSystemModel.tbl_Followup" />
           <EntitySet Name="tbl_WorkerAttendance" EntityType="AttendanceSystemModel.tbl_WorkerAttendance" />
+          <EntitySet Name="tbl_EmployeeLunchBreak" EntityType="AttendanceSystemModel.tbl_EmployeeLunchBreak" />
+          <EntitySet Name="tbl_Setting" EntityType="AttendanceSystemModel.tbl_Setting" />
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -1292,39 +1309,6 @@
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int64" />
         </EntityType>
-        <EntityType Name="tbl_Setting">
-          <Key>
-            <PropertyRef Name="SettingId" />
-          </Key>
-          <Property Name="SettingId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AccountFreeAccessDays" Type="Int32" />
-          <Property Name="AmountPerEmp" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="AccountPackageBuyGSTPer" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="SMSPackageBuyGSTPer" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="EmployeeBuyGSTPer" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="SMTPHost" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="SMTPPort" Type="Int32" />
-          <Property Name="SMTPEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="SMTPPassword" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="SMTPEnableSSL" Type="Boolean" />
-          <Property Name="SMTPFromEmailId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="SuperAdminEmailId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="SuperAdminMobileNo" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
-          <Property Name="ServiceImage" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="HomeImage" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="HomeImage2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="StripeSandboxModeAPIKey" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="StripeLiveModeAPIKey" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="IsStripeLiveMode" Type="Boolean" />
-          <Property Name="HeroAboutPageImageName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="HeroContactPageImageName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="HeroTermsConditionPageImageName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="HeroFAQPageImageName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="HeroServicePageImageName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="HeroPrivacyPolicyPageImageName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="HeroHowToUsePageImageName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="HeroCompanyRequestPageImageName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="tbl_AdminUser">
           <Key>
             <PropertyRef Name="AdminUserId" />
@@ -1406,6 +1390,7 @@
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="NextFollowupDate" Type="DateTime" Precision="3" />
           <Property Name="FollowupStatus" Type="Int32" />
+          <Property Name="NoOfLunchBreakAllowed" Type="Int32" />
         </EntityType>
         <EntityType Name="tbl_CompanyRequest">
           <Key>
@@ -1695,6 +1680,53 @@
           <Property Name="IsClosed" Type="Boolean" Nullable="false" />
           <Property Name="TodaySalary" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
           <Property Name="SalaryGiven" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="tbl_EmployeeLunchBreak">
+          <Key>
+            <PropertyRef Name="EmployeeLunchBreakId" />
+          </Key>
+          <Property Name="EmployeeLunchBreakId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="Int64" Nullable="false" />
+          <Property Name="StartDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndDateTime" Type="DateTime" Precision="3" />
+          <Property Name="StartLunchLocationFrom" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="StartLunchLatitude" Type="Decimal" Precision="11" Scale="8" />
+          <Property Name="StartLunchLongitude" Type="Decimal" Precision="11" Scale="8" />
+          <Property Name="EndLunchLocationFrom" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="EndLunchLatitude" Type="Decimal" Precision="11" Scale="8" />
+          <Property Name="EndLunchLongitude" Type="Decimal" Precision="11" Scale="8" />
+        </EntityType>
+        <EntityType Name="tbl_Setting">
+          <Key>
+            <PropertyRef Name="SettingId" />
+          </Key>
+          <Property Name="SettingId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AccountFreeAccessDays" Type="Int32" />
+          <Property Name="AmountPerEmp" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="AccountPackageBuyGSTPer" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="SMSPackageBuyGSTPer" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="EmployeeBuyGSTPer" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="SMTPHost" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SMTPPort" Type="Int32" />
+          <Property Name="SMTPEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SMTPPassword" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SMTPEnableSSL" Type="Boolean" />
+          <Property Name="SMTPFromEmailId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SuperAdminEmailId" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SuperAdminMobileNo" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="ServiceImage" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="HomeImage" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="HomeImage2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="HeroAboutPageImageName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="HeroContactPageImageName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="HeroTermsConditionPageImageName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="HeroFAQPageImageName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="HeroServicePageImageName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="HeroPrivacyPolicyPageImageName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="HeroHowToUsePageImageName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="HeroCompanyRequestPageImageName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="AddVideoUrl" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="AddVideoDescription" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -2105,40 +2137,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tbl_Setting">
-            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Setting">
-              <MappingFragment StoreEntitySet="tbl_Setting">
-                <ScalarProperty Name="HeroCompanyRequestPageImageName" ColumnName="HeroCompanyRequestPageImageName" />
-                <ScalarProperty Name="HeroHowToUsePageImageName" ColumnName="HeroHowToUsePageImageName" />
-                <ScalarProperty Name="HeroPrivacyPolicyPageImageName" ColumnName="HeroPrivacyPolicyPageImageName" />
-                <ScalarProperty Name="HeroServicePageImageName" ColumnName="HeroServicePageImageName" />
-                <ScalarProperty Name="HeroFAQPageImageName" ColumnName="HeroFAQPageImageName" />
-                <ScalarProperty Name="HeroTermsConditionPageImageName" ColumnName="HeroTermsConditionPageImageName" />
-                <ScalarProperty Name="HeroContactPageImageName" ColumnName="HeroContactPageImageName" />
-                <ScalarProperty Name="HeroAboutPageImageName" ColumnName="HeroAboutPageImageName" />
-                <ScalarProperty Name="IsStripeLiveMode" ColumnName="IsStripeLiveMode" />
-                <ScalarProperty Name="StripeLiveModeAPIKey" ColumnName="StripeLiveModeAPIKey" />
-                <ScalarProperty Name="StripeSandboxModeAPIKey" ColumnName="StripeSandboxModeAPIKey" />
-                <ScalarProperty Name="HomeImage2" ColumnName="HomeImage2" />
-                <ScalarProperty Name="HomeImage" ColumnName="HomeImage" />
-                <ScalarProperty Name="ServiceImage" ColumnName="ServiceImage" />
-                <ScalarProperty Name="SuperAdminMobileNo" ColumnName="SuperAdminMobileNo" />
-                <ScalarProperty Name="SuperAdminEmailId" ColumnName="SuperAdminEmailId" />
-                <ScalarProperty Name="SMTPFromEmailId" ColumnName="SMTPFromEmailId" />
-                <ScalarProperty Name="SMTPEnableSSL" ColumnName="SMTPEnableSSL" />
-                <ScalarProperty Name="SMTPPassword" ColumnName="SMTPPassword" />
-                <ScalarProperty Name="SMTPEmail" ColumnName="SMTPEmail" />
-                <ScalarProperty Name="SMTPPort" ColumnName="SMTPPort" />
-                <ScalarProperty Name="SMTPHost" ColumnName="SMTPHost" />
-                <ScalarProperty Name="EmployeeBuyGSTPer" ColumnName="EmployeeBuyGSTPer" />
-                <ScalarProperty Name="SMSPackageBuyGSTPer" ColumnName="SMSPackageBuyGSTPer" />
-                <ScalarProperty Name="AccountPackageBuyGSTPer" ColumnName="AccountPackageBuyGSTPer" />
-                <ScalarProperty Name="AmountPerEmp" ColumnName="AmountPerEmp" />
-                <ScalarProperty Name="AccountFreeAccessDays" ColumnName="AccountFreeAccessDays" />
-                <ScalarProperty Name="SettingId" ColumnName="SettingId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="tbl_AdminUser">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_AdminUser">
               <MappingFragment StoreEntitySet="tbl_AdminUser">
@@ -2179,6 +2177,7 @@
           <EntitySetMapping Name="tbl_Company">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Company">
               <MappingFragment StoreEntitySet="tbl_Company">
+                <ScalarProperty Name="NoOfLunchBreakAllowed" ColumnName="NoOfLunchBreakAllowed" />
                 <ScalarProperty Name="FollowupStatus" ColumnName="FollowupStatus" />
                 <ScalarProperty Name="NextFollowupDate" ColumnName="NextFollowupDate" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
@@ -2513,6 +2512,55 @@
                 <ScalarProperty Name="AttendanceDate" ColumnName="AttendanceDate" />
                 <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
                 <ScalarProperty Name="WorkerAttendanceId" ColumnName="WorkerAttendanceId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_EmployeeLunchBreak">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_EmployeeLunchBreak">
+              <MappingFragment StoreEntitySet="tbl_EmployeeLunchBreak">
+                <ScalarProperty Name="EndLunchLongitude" ColumnName="EndLunchLongitude" />
+                <ScalarProperty Name="EndLunchLatitude" ColumnName="EndLunchLatitude" />
+                <ScalarProperty Name="EndLunchLocationFrom" ColumnName="EndLunchLocationFrom" />
+                <ScalarProperty Name="StartLunchLongitude" ColumnName="StartLunchLongitude" />
+                <ScalarProperty Name="StartLunchLatitude" ColumnName="StartLunchLatitude" />
+                <ScalarProperty Name="StartLunchLocationFrom" ColumnName="StartLunchLocationFrom" />
+                <ScalarProperty Name="EndDateTime" ColumnName="EndDateTime" />
+                <ScalarProperty Name="StartDateTime" ColumnName="StartDateTime" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="EmployeeLunchBreakId" ColumnName="EmployeeLunchBreakId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_Setting">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Setting">
+              <MappingFragment StoreEntitySet="tbl_Setting">
+                <ScalarProperty Name="AddVideoDescription" ColumnName="AddVideoDescription" />
+                <ScalarProperty Name="AddVideoUrl" ColumnName="AddVideoUrl" />
+                <ScalarProperty Name="HeroCompanyRequestPageImageName" ColumnName="HeroCompanyRequestPageImageName" />
+                <ScalarProperty Name="HeroHowToUsePageImageName" ColumnName="HeroHowToUsePageImageName" />
+                <ScalarProperty Name="HeroPrivacyPolicyPageImageName" ColumnName="HeroPrivacyPolicyPageImageName" />
+                <ScalarProperty Name="HeroServicePageImageName" ColumnName="HeroServicePageImageName" />
+                <ScalarProperty Name="HeroFAQPageImageName" ColumnName="HeroFAQPageImageName" />
+                <ScalarProperty Name="HeroTermsConditionPageImageName" ColumnName="HeroTermsConditionPageImageName" />
+                <ScalarProperty Name="HeroContactPageImageName" ColumnName="HeroContactPageImageName" />
+                <ScalarProperty Name="HeroAboutPageImageName" ColumnName="HeroAboutPageImageName" />
+                <ScalarProperty Name="HomeImage2" ColumnName="HomeImage2" />
+                <ScalarProperty Name="HomeImage" ColumnName="HomeImage" />
+                <ScalarProperty Name="ServiceImage" ColumnName="ServiceImage" />
+                <ScalarProperty Name="SuperAdminMobileNo" ColumnName="SuperAdminMobileNo" />
+                <ScalarProperty Name="SuperAdminEmailId" ColumnName="SuperAdminEmailId" />
+                <ScalarProperty Name="SMTPFromEmailId" ColumnName="SMTPFromEmailId" />
+                <ScalarProperty Name="SMTPEnableSSL" ColumnName="SMTPEnableSSL" />
+                <ScalarProperty Name="SMTPPassword" ColumnName="SMTPPassword" />
+                <ScalarProperty Name="SMTPEmail" ColumnName="SMTPEmail" />
+                <ScalarProperty Name="SMTPPort" ColumnName="SMTPPort" />
+                <ScalarProperty Name="SMTPHost" ColumnName="SMTPHost" />
+                <ScalarProperty Name="EmployeeBuyGSTPer" ColumnName="EmployeeBuyGSTPer" />
+                <ScalarProperty Name="SMSPackageBuyGSTPer" ColumnName="SMSPackageBuyGSTPer" />
+                <ScalarProperty Name="AccountPackageBuyGSTPer" ColumnName="AccountPackageBuyGSTPer" />
+                <ScalarProperty Name="AmountPerEmp" ColumnName="AmountPerEmp" />
+                <ScalarProperty Name="AccountFreeAccessDays" ColumnName="AccountFreeAccessDays" />
+                <ScalarProperty Name="SettingId" ColumnName="SettingId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

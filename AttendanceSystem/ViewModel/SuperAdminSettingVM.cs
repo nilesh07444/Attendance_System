@@ -20,6 +20,11 @@ namespace AttendanceSystem
         [Required, Display(Name = "Employee Buy GST (%)")]
         public decimal EmployeeBuyGSTPer { get; set; }
 
+        [Display(Name = "Add Video Url")]
+        public string AddVideoUrl { get; set; }
+        [Display(Name = "Add Video Description")]
+        public string AddVideoDescription { get; set; }
+
         [Required, Display(Name = "SMTP Host")]
         public string SMTPHost { get; set; }
         [Required, Display(Name = "SMTP Port")]
@@ -36,16 +41,7 @@ namespace AttendanceSystem
         public string SuperAdminEmailId { get; set; }
         [Required, Display(Name = "Super Admin Mobile No")]
         public string SuperAdminMobileNo { get; set; }
-
-        [Required, Display(Name = "Is Stripe Live Mode ?")]
-        public bool? IsStripeLiveMode { get; set; }
-
-        [Required, Display(Name = "Stripe Sandbox Mode API Key")]
-        public string StripeSandboxModeAPIKey { get; set; }
-
-        [Required, Display(Name = "Stripe Live Mode API Key")]
-        public string StripeLiveModeAPIKey { get; set; }
-
+         
         [Display(Name = "Service Image")]
         public HttpPostedFileBase ServiceImageFile { get; set; }
 

@@ -31,9 +31,6 @@ namespace AttendanceSystem.Models
         public string ServiceImage { get; set; }
         public string HomeImage { get; set; }
         public string HomeImage2 { get; set; }
-        public string StripeSandboxModeAPIKey { get; set; }
-        public string StripeLiveModeAPIKey { get; set; }
-        public Nullable<bool> IsStripeLiveMode { get; set; }
         public string HeroAboutPageImageName { get; set; }
         public string HeroContactPageImageName { get; set; }
         public string HeroTermsConditionPageImageName { get; set; }
@@ -42,5 +39,7 @@ namespace AttendanceSystem.Models
         public string HeroPrivacyPolicyPageImageName { get; set; }
         public string HeroHowToUsePageImageName { get; set; }
         public string HeroCompanyRequestPageImageName { get; set; }
+        public string AddVideoUrl { get; set; }
+        public string AddVideoDescription { get; set; }
     }
 }

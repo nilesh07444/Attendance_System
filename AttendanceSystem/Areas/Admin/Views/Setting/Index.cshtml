@@ -78,6 +78,22 @@
 
                             </div>
 
+                            <div class="row">
+                                <div class="form-group col-4">
+                                    <label>Add Video Url</label>
+                                    @if (!string.IsNullOrEmpty(objSASetting.AddVideoUrl))
+                                    {
+                                        <p><a target="_blank" href="@objSASetting.AddVideoUrl">@objSASetting.AddVideoUrl</a></p>
+                                    }
+                                </div>
+
+                                <div class="form-group col-8">
+                                    <label>Add Video Description</label>
+                                    <p>@objSASetting.AddVideoDescription</p>
+                                </div>
+
+                            </div>
+
                         </div>
                     </div>
 
@@ -154,36 +170,6 @@
 
                     <div class="card">
                         <div class="card-header">
-                            <h4>Stripe Payment Gateway Information</h4>
-                            <div class="card-header-action">
-                                <a href="/admin/setting/edit" class="btn btn-primary">Edit</a>
-                            </div>
-                        </div>
-                        <div class="card-body">
-
-                            <div class="row">
-                                <div class="form-group col-4">
-                                    <label>Stripe Sandbox Mode API Key</label>
-                                    <p>@objSASetting.StripeSandboxModeAPIKey</p>
-                                </div>
-
-                                <div class="form-group col-4">
-                                    <label>Stripe Live Mode API Key</label>
-                                    <p>@objSASetting.StripeLiveModeAPIKey</p>
-                                </div>
-
-                                <div class="form-group col-4">
-                                    <label>Is Stripe Live Mode ?</label>
-                                    <p>@(objSASetting.IsStripeLiveMode == true ? "Yes" : "No" )</p>
-                                </div>
-
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-header">
                             <h4>Hero Images of Frontend Pages</h4>
                             <div class="card-header-action">
                                 <a href="/admin/setting/edit" class="btn btn-primary">Edit</a>
@@ -230,7 +216,7 @@
                                     <label>Company Request Page Image </label>
                                     <p><a target="_blank" href="@ErrorMessage.HeroDirectoryPath/@objSASetting.HeroCompanyRequestPageImageName"> Click here to view image </a></p>
                                 </div>
-                                 
+
                             </div>
 
                         </div>

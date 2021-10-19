@@ -119,9 +119,12 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     int applyMonth = currentMonth - 1;
                     List<long> workerIds = new List<long>();
 
+                    bool IsConstructionCompany = false;
+
                     if (clsAdminSession.CompanyTypeId == (int)CompanyType.ConstructionCompany)
                     {
                         workerIds = _db.tbl_Employee.Where(x => x.CompanyId == companyId && x.AdminRoleId == (int)AdminRoles.Worker).Select(x => x.EmployeeId).ToList();
+                        IsConstructionCompany = true;
                     }
                     else
                     {
@@ -183,6 +186,23 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                             dashboardVM.Month = applyMonth;
                             dashboardVM.MonthName = CommonMethod.GetEnumDescription((CalenderMonths)dashboardVM.Month);
                             dashboardVM.Year = applyYear;
+
+                            if (applyYear < currentYear)
+                            {
+                                dashboardVM.AllowForEmployee = true;
+                                dashboardVM.AllowForWorker = IsConstructionCompany ? true : false;
+                            }
+                            else
+                            {
+                                if (applyMonth < currentMonth)
+                                {
+                                    dashboardVM.AllowForEmployee = true;
+                                    dashboardVM.AllowForWorker = IsConstructionCompany ? true : false;
+                                }
+                            }
+
+
+
                         }
                     }
 
