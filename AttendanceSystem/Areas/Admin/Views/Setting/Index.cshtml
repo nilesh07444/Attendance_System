@@ -1,234 +1,242 @@
 ﻿@using AttendanceSystem.Helper;
 @{
     ViewBag.Title = "Setting";
-
     SuperAdminSettingVM objSASetting = ViewData["objSASetting"] as SuperAdminSettingVM;
     CompanyAdminSettingVM objCASetting = ViewData["objCASetting"] as CompanyAdminSettingVM;
-
 }
 
-<div class="page-body">
-
-    <!-- Container-fluid starts-->
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="card">
-                    <div class="card-header" style="background-color: #425C59;">
-                        <h4 style="color: #FFCEA3;">Setting</h4>
-                    </div>
-                </div>
-
-                @if (clsAdminSession.RoleID == (int)AdminRoles.SuperAdmin)
-                {
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>General Setting</h4>
-                            <div class="card-header-action">
-                                <a href="/admin/setting/edit" class="btn btn-primary">Edit</a>
-                            </div>
-                        </div>
-                        <div class="card-body">
-
-                            <div class="row">
-                                <div class="form-group col-4">
-                                    <label>Account Free Access Days</label>
-                                    <p>@objSASetting.AccountFreeAccessDays</p>
-                                </div>
-
-                                <div class="form-group col-4">
-                                    <label>Amount Per Employee Buy</label>
-                                    <p>@objSASetting.AmountPerEmp</p>
-                                </div>
-
-                            </div>
-
-                            <div class="row">
-                                <div class="form-group col-4">
-                                    <label>Account Package Buy GST (%)</label>
-                                    <p>@objSASetting.AccountPackageBuyGSTPer</p>
-                                </div>
-
-                                <div class="form-group col-4">
-                                    <label>SMS Package Buy GST (%)</label>
-                                    <p>@objSASetting.SMSPackageBuyGSTPer</p>
-                                </div>
-
-                                <div class="form-group col-4">
-                                    <label>Employee Buy GST (%)</label>
-                                    <p>@objSASetting.EmployeeBuyGSTPer</p>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="form-group col-4">
-                                    <label>Service Image</label>
-                                    <p><a target="_blank" href="@ErrorMessage.ServiceDirectoryPath/@objSASetting.ServiceImage"> Click here to view image </a></p>
-                                </div>
-
-                                <div class="form-group col-4">
-                                    <label>Home Image 1</label>
-                                    <p><a target="_blank" href="@ErrorMessage.HomeDirectoryPath/@objSASetting.HomeImage"> Click here to view image </a></p>
-                                </div>
-
-                                <div class="form-group col-4">
-                                    <label>Home Image 2</label>
-                                    <p><a target="_blank" href="@ErrorMessage.HomeDirectoryPath/@objSASetting.HomeImage2"> Click here to view image </a></p>
-                                </div>
-
-                            </div>
-
-                            <div class="row">
-                                <div class="form-group col-4">
-                                    <label>Add Video Url</label>
-                                    @if (!string.IsNullOrEmpty(objSASetting.AddVideoUrl))
-                                    {
-                                        <p><a target="_blank" href="@objSASetting.AddVideoUrl">@objSASetting.AddVideoUrl</a></p>
-                                    }
-                                </div>
-
-                                <div class="form-group col-8">
-                                    <label>Add Video Description</label>
-                                    <p>@objSASetting.AddVideoDescription</p>
-                                </div>
-
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>Super Admin Information</h4>
-                            <div class="card-header-action">
-                                <a href="/admin/setting/edit" class="btn btn-primary">Edit</a>
-                            </div>
-                        </div>
-                        <div class="card-body">
-
-                            <div class="row">
-                                <div class="form-group col-4">
-                                    <label>Super Admin EmailId</label>
-                                    <p>@objSASetting.SuperAdminEmailId</p>
-                                </div>
-
-                                <div class="form-group col-4">
-                                    <label>Super Admin Mobile No</label>
-                                    <p>@objSASetting.SuperAdminMobileNo</p>
-                                </div>
-
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>SMTP Information</h4>
-                            <div class="card-header-action">
-                                <a href="/admin/setting/edit" class="btn btn-primary">Edit</a>
-                            </div>
-                        </div>
-                        <div class="card-body">
-
-                            <div class="row">
-                                <div class="form-group col-4">
-                                    <label>SMTP Host</label>
-                                    <p>@objSASetting.SMTPHost</p>
-                                </div>
-
-                                <div class="form-group col-4">
-                                    <label>SMTP Port</label>
-                                    <p>@objSASetting.SMTPPort</p>
-                                </div>
-
-                                <div class="form-group col-4">
-                                    <label>SMTP Enable SSL</label>
-                                    <p>@objSASetting.SMTPEnableSSL</p>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="form-group col-4">
-                                    <label>SMTP Email</label>
-                                    <p>@objSASetting.SMTPEmail</p>
-                                </div>
-
-                                <div class="form-group col-4">
-                                    <label>SMTP Password</label>
-                                    <p>@objSASetting.SMTPPassword</p>
-                                </div>
-
-                                <div class="form-group col-4">
-                                    <label>SMTP From Email</label>
-                                    <p>@objSASetting.SMTPFromEmailId</p>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>Hero Images of Frontend Pages</h4>
-                            <div class="card-header-action">
-                                <a href="/admin/setting/edit" class="btn btn-primary">Edit</a>
-                            </div>
-                        </div>
-                        <div class="card-body">
-
-                            <div class="row">
-                                <div class="form-group col-4">
-                                    <label>About Page Image </label>
-                                    <p><a target="_blank" href="@ErrorMessage.HeroDirectoryPath/@objSASetting.HeroAboutPageImageName"> Click here to view image </a></p>
-                                </div>
-                                <div class="form-group col-4">
-                                    <label>Contact Page Image </label>
-                                    <p><a target="_blank" href="@ErrorMessage.HeroDirectoryPath/@objSASetting.HeroContactPageImageName"> Click here to view image </a></p>
-                                </div>
-                                <div class="form-group col-4">
-                                    <label>Service Page Image </label>
-                                    <p><a target="_blank" href="@ErrorMessage.HeroDirectoryPath/@objSASetting.HeroServicePageImageName"> Click here to view image </a></p>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="form-group col-4">
-                                    <label>FAQ Page Image </label>
-                                    <p><a target="_blank" href="@ErrorMessage.HeroDirectoryPath/@objSASetting.HeroFAQPageImageName"> Click here to view image </a></p>
-                                </div>
-                                <div class="form-group col-4">
-                                    <label>Terms Condition Page Image </label>
-                                    <p><a target="_blank" href="@ErrorMessage.HeroDirectoryPath/@objSASetting.HeroTermsConditionPageImageName"> Click here to view image </a></p>
-                                </div>
-                                <div class="form-group col-4">
-                                    <label>Privacy Policy Page Image </label>
-                                    <p><a target="_blank" href="@ErrorMessage.HeroDirectoryPath/@objSASetting.HeroPrivacyPolicyPageImageName"> Click here to view image </a></p>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="form-group col-4">
-                                    <label>How To Use Page Image </label>
-                                    <p><a target="_blank" href="@ErrorMessage.HeroDirectoryPath/@objSASetting.HeroHowToUsePageImageName"> Click here to view image </a></p>
-                                </div>
-                                <div class="form-group col-4">
-                                    <label>Company Request Page Image </label>
-                                    <p><a target="_blank" href="@ErrorMessage.HeroDirectoryPath/@objSASetting.HeroCompanyRequestPageImageName"> Click here to view image </a></p>
-                                </div>
-
-                            </div>
-
-                        </div>
-                    </div>
-
-                }
-                else if (clsAdminSession.RoleID == (int)AdminRoles.CompanyAdmin)
-                {
-                }
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header" style="background-color: #425C59;">
+                <h4 style="color: #FFCEA3;">Setting</h4>
             </div>
         </div>
-    </div>
-    <!-- Container-fluid Ends-->
 
+        @if (clsAdminSession.RoleID == (int)AdminRoles.SuperAdmin)
+        {
+            <div class="card">
+                <div class="card-header">
+                    <h4>General Setting</h4>
+                    <div class="card-header-action">
+                        <a href="/admin/setting/edit" class="btn btn-primary">Edit</a>
+                    </div>
+                </div>
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="form-group col-4">
+                            <label>Account Free Access Days</label>
+                            <p>@objSASetting.AccountFreeAccessDays</p>
+                        </div>
+
+                        <div class="form-group col-4">
+                            <label>Amount Per Employee Buy</label>
+                            <p>@objSASetting.AmountPerEmp</p>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-4">
+                            <label>Account Package Buy GST (%)</label>
+                            <p>@objSASetting.AccountPackageBuyGSTPer</p>
+                        </div>
+
+                        <div class="form-group col-4">
+                            <label>SMS Package Buy GST (%)</label>
+                            <p>@objSASetting.SMSPackageBuyGSTPer</p>
+                        </div>
+
+                        <div class="form-group col-4">
+                            <label>Employee Buy GST (%)</label>
+                            <p>@objSASetting.EmployeeBuyGSTPer</p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-4">
+                            <label>Service Image</label>
+                            <p><a target="_blank" href="@ErrorMessage.ServiceDirectoryPath/@objSASetting.ServiceImage"> Click here to view image </a></p>
+                        </div>
+
+                        <div class="form-group col-4">
+                            <label>Home Image 1</label>
+                            <p><a target="_blank" href="@ErrorMessage.HomeDirectoryPath/@objSASetting.HomeImage"> Click here to view image </a></p>
+                        </div>
+
+                        <div class="form-group col-4">
+                            <label>Home Image 2</label>
+                            <p><a target="_blank" href="@ErrorMessage.HomeDirectoryPath/@objSASetting.HomeImage2"> Click here to view image </a></p>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-4">
+                            <label>Add Video Url</label>
+                            @if (!string.IsNullOrEmpty(objSASetting.AddVideoUrl))
+                            {
+                                <p><a target="_blank" href="@objSASetting.AddVideoUrl">@objSASetting.AddVideoUrl</a></p>
+                            }
+                        </div>
+
+                        <div class="form-group col-8">
+                            <label>Add Video Description</label>
+                            <p>@objSASetting.AddVideoDescription</p>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h4>Super Admin Information</h4>
+                    <div class="card-header-action">
+                        <a href="/admin/setting/edit" class="btn btn-primary">Edit</a>
+                    </div>
+                </div>
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="form-group col-4">
+                            <label>Super Admin EmailId</label>
+                            <p>@objSASetting.SuperAdminEmailId</p>
+                        </div>
+
+                        <div class="form-group col-4">
+                            <label>Super Admin Mobile No</label>
+                            <p>@objSASetting.SuperAdminMobileNo</p>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h4>SMTP Information</h4>
+                    <div class="card-header-action">
+                        <a href="/admin/setting/edit" class="btn btn-primary">Edit</a>
+                    </div>
+                </div>
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="form-group col-4">
+                            <label>SMTP Host</label>
+                            <p>@objSASetting.SMTPHost</p>
+                        </div>
+
+                        <div class="form-group col-4">
+                            <label>SMTP Port</label>
+                            <p>@objSASetting.SMTPPort</p>
+                        </div>
+
+                        <div class="form-group col-4">
+                            <label>SMTP Enable SSL</label>
+                            <p>@objSASetting.SMTPEnableSSL</p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-4">
+                            <label>SMTP Email</label>
+                            <p>@objSASetting.SMTPEmail</p>
+                        </div>
+
+                        <div class="form-group col-4">
+                            <label>SMTP Password</label>
+                            <p>@objSASetting.SMTPPassword</p>
+                        </div>
+
+                        <div class="form-group col-4">
+                            <label>SMTP From Email</label>
+                            <p>@objSASetting.SMTPFromEmailId</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h4>Hero Images of Frontend Pages</h4>
+                    <div class="card-header-action">
+                        <a href="/admin/setting/edit" class="btn btn-primary">Edit</a>
+                    </div>
+                </div>
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="form-group col-4">
+                            <label>About Page Image </label>
+                            <p><a target="_blank" href="@ErrorMessage.HeroDirectoryPath/@objSASetting.HeroAboutPageImageName"> Click here to view image </a></p>
+                        </div>
+                        <div class="form-group col-4">
+                            <label>Contact Page Image </label>
+                            <p><a target="_blank" href="@ErrorMessage.HeroDirectoryPath/@objSASetting.HeroContactPageImageName"> Click here to view image </a></p>
+                        </div>
+                        <div class="form-group col-4">
+                            <label>Service Page Image </label>
+                            <p><a target="_blank" href="@ErrorMessage.HeroDirectoryPath/@objSASetting.HeroServicePageImageName"> Click here to view image </a></p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-4">
+                            <label>FAQ Page Image </label>
+                            <p><a target="_blank" href="@ErrorMessage.HeroDirectoryPath/@objSASetting.HeroFAQPageImageName"> Click here to view image </a></p>
+                        </div>
+                        <div class="form-group col-4">
+                            <label>Terms Condition Page Image </label>
+                            <p><a target="_blank" href="@ErrorMessage.HeroDirectoryPath/@objSASetting.HeroTermsConditionPageImageName"> Click here to view image </a></p>
+                        </div>
+                        <div class="form-group col-4">
+                            <label>Privacy Policy Page Image </label>
+                            <p><a target="_blank" href="@ErrorMessage.HeroDirectoryPath/@objSASetting.HeroPrivacyPolicyPageImageName"> Click here to view image </a></p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-4">
+                            <label>How To Use Page Image </label>
+                            <p><a target="_blank" href="@ErrorMessage.HeroDirectoryPath/@objSASetting.HeroHowToUsePageImageName"> Click here to view image </a></p>
+                        </div>
+                        <div class="form-group col-4">
+                            <label>Company Request Page Image </label>
+                            <p><a target="_blank" href="@ErrorMessage.HeroDirectoryPath/@objSASetting.HeroCompanyRequestPageImageName"> Click here to view image </a></p>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        }
+        else if (clsAdminSession.RoleID == (int)AdminRoles.CompanyAdmin)
+        {
+            <div class="card">
+                <div class="card-header">
+                    <h4>General Setting</h4>
+                    <div class="card-header-action">
+                        <a href="/admin/setting/edit" class="btn btn-primary">Edit</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="form-group col-4">
+                            <label>No Of Lunch Break Allowed Per Day</label>
+                            <p>@objCASetting.NoOfLunchBreakAllowed</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+   
+    </div>
 </div>

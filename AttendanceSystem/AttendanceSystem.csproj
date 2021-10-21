@@ -191,6 +191,7 @@
     <Compile Include="Areas\Admin\Controllers\ContactFormController.cs" />
     <Compile Include="Areas\Admin\Controllers\EmployeeBuyTransactionController.cs" />
     <Compile Include="Areas\Admin\Controllers\FollowupController.cs" />
+    <Compile Include="Areas\Admin\Controllers\LunchBreakController.cs" />
     <Compile Include="Areas\Admin\Controllers\PaymentGatewayController.cs" />
     <Compile Include="Areas\Admin\Controllers\ReminderController.cs" />
     <Compile Include="Areas\Admin\Controllers\ReportController.cs" />
@@ -244,6 +245,7 @@
     <Compile Include="Areas\WebAPI\Controllers\HolidayController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\EmployeeRatingController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\LeaveController.cs" />
+    <Compile Include="Areas\WebAPI\Controllers\LunchBreakController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\MaterialController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\MaterialCategoryController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\SiteController.cs" />
@@ -318,6 +320,12 @@
     <Compile Include="Models\tbl_Conversion.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\tbl_Country.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\tbl_District.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tbl_DynamicContent.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
@@ -390,6 +398,9 @@
     <Compile Include="Models\tbl_Sponsor.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\tbl_State.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tbl_Testimonial.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
@@ -410,6 +421,8 @@
     <Compile Include="ViewModel\AttendanceVM.cs" />
     <Compile Include="ViewModel\CompanyAdminSettingVM.cs" />
     <Compile Include="ViewModel\ConvertionFilterVM.cs" />
+    <Compile Include="ViewModel\CountryVM.cs" />
+    <Compile Include="ViewModel\DistrictVM.cs" />
     <Compile Include="ViewModel\EmployeeBuyTransactionVM.cs" />
     <Compile Include="ViewModel\CompanySMSPackRenewVM.cs" />
     <Compile Include="ViewModel\CompanyRenewPaymentVM.cs" />
@@ -428,9 +441,11 @@
     <Compile Include="ViewModel\InvoiceFieldsVM.cs" />
     <Compile Include="ViewModel\LeaveVM.cs" />
     <Compile Include="ViewModel\LoginHistoryVM.cs" />
+    <Compile Include="ViewModel\EmployeeLunchBreakVM.cs" />
     <Compile Include="ViewModel\ReminderVM.cs" />
     <Compile Include="ViewModel\SalesReportVM.cs" />
     <Compile Include="ViewModel\SMSLogVM.cs" />
+    <Compile Include="ViewModel\StateVM.cs" />
     <Compile Include="ViewModel\WorkerTypeVM.cs" />
     <Compile Include="ViewModel\MaterialVM.cs" />
     <Compile Include="ViewModel\MaterialCategoryVM.cs" />
@@ -1631,6 +1646,7 @@
     <Content Include="Areas\Admin\Views\Reminder\Anniversary.cshtml" />
     <Content Include="Areas\Admin\Views\Reminder\Birthday.cshtml" />
     <Content Include="Areas\Admin\Views\Reminder\EmployeeBirthday.cshtml" />
+    <Content Include="Areas\Admin\Views\LunchBreak\Index.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
@@ -1675,6 +1691,7 @@
     <Folder Include="Areas\WebAPI\Data\" />
     <Folder Include="Areas\WebAPI\Views\Account\" />
     <Folder Include="Areas\WebAPI\Views\Admin\" />
+    <Folder Include="Areas\WebAPI\Views\LunchBreak\" />
     <Folder Include="Areas\WebAPI\Views\Setting\" />
     <Folder Include="Areas\WebAPI\Views\Shared\" />
     <Folder Include="Content\Invoice\" />

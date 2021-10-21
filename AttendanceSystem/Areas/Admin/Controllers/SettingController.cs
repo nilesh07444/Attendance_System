@@ -39,11 +39,12 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
             try
             {
-                tbl_Setting setting = _db.tbl_Setting.FirstOrDefault();
-                if (setting != null)
+                if (loggedUserRoleId == (int)AdminRoles.SuperAdmin)
                 {
-                    if (loggedUserRoleId == (int)AdminRoles.SuperAdmin)
+                    tbl_Setting setting = _db.tbl_Setting.FirstOrDefault();
+                    if (setting != null)
                     {
+
                         // Super Admin Setting
                         objSASetting.AccountFreeAccessDays = (int)setting.AccountFreeAccessDays;
                         objSASetting.AmountPerEmp = (decimal)setting.AmountPerEmp;
@@ -76,13 +77,21 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objSASetting.HeroCompanyRequestPageImageName = setting.HeroCompanyRequestPageImageName;
 
                         ViewData["objSASetting"] = objSASetting;
-                    }
-                    else
-                    {
-                        // Company Admin Setting
 
-                        ViewData["objCASetting"] = objCASetting;
                     }
+                }
+                else
+                {
+                    // Company Admin Setting
+                    long companyId = clsAdminSession.CompanyId;
+
+                    tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == companyId).FirstOrDefault();
+                    if (objCompany != null)
+                    {
+                        objCASetting.NoOfLunchBreakAllowed = objCompany.NoOfLunchBreakAllowed;
+                    }
+
+                    ViewData["objCASetting"] = objCASetting;
                 }
 
             }
@@ -141,11 +150,14 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             }
             else
             {
-                CompanyAdminSettingVM objCASetting = (from s in _db.tbl_Setting
-                                                      select new CompanyAdminSettingVM
-                                                      {
-                                                          SettingId = s.SettingId,
-                                                      }).FirstOrDefault();
+                CompanyAdminSettingVM objCASetting = new CompanyAdminSettingVM();
+                long companyId = clsAdminSession.CompanyId;
+
+                tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == companyId).FirstOrDefault();
+                if (objCompany != null)
+                {
+                    objCASetting.NoOfLunchBreakAllowed = objCompany.NoOfLunchBreakAllowed;
+                }
 
                 return View("~/Areas/Admin/Views/Setting/EditSettingCA.cshtml", objCASetting);
             }
@@ -602,6 +614,37 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                     return RedirectToAction("Index");
 
+                }
+            }
+            catch (Exception ex)
+            {
+                string ErrorMessage = ex.Message.ToString();
+                throw ex;
+            }
+
+            return View(settingVM);
+        }
+
+
+        [HttpPost]
+        public ActionResult EditCompanyAdminSetting(CompanyAdminSettingVM settingVM)
+        {
+            try
+            {
+                IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
+                if (ModelState.IsValid)
+                {                    
+                    // Get Setting record
+                    long companyId = clsAdminSession.CompanyId;
+
+                    tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == companyId).FirstOrDefault();
+                    if (objCompany != null)
+                    {
+                        objCompany.NoOfLunchBreakAllowed = settingVM.NoOfLunchBreakAllowed;
+                        _db.SaveChanges();
+                    }
+                     
+                    return RedirectToAction("Index");
                 }
             }
             catch (Exception ex)

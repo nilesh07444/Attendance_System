@@ -155,6 +155,9 @@ namespace AttendanceSystem.Areas.Client.Controllers
                 ViewData["lstHomeSlider1"] = lstHomeSlider1;
                 ViewData["lstHomeSlider2"] = lstHomeSlider2;
 
+                ViewBag.VideoAddLink = objGensetting.AddVideoUrl;
+                ViewBag.VideoAddDescription = objGensetting.AddVideoDescription;
+
             }
             catch (Exception ex)
             {

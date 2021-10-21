@@ -1,17 +1,41 @@
-﻿@{
-    Layout = null;
+﻿@model CompanyAdminSettingVM
+@{
+    ViewBag.Title = "Setting";
 }
 
-<!DOCTYPE html>
+<section class="section">
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title></title>
-</head>
-<body>
-    <div>
-    
+    <div class="row">
+        <div class="col-12">
+            @using (Html.BeginForm("EditCompanyAdminSetting", "Setting", FormMethod.Post, new { @id = "SettingFormId", @class = "", enctype = "multipart/form-data", role = "form" }))
+            {
+                <div class="card">
+                    <div class="card-header" style="background-color: #425C59;">
+                        <h4 style="color: #FFCEA3;">Edit General Setting</h4>
+                    </div>
+                </div>
+
+                <div class="card card-primary">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="form-group col-4">
+                                @Html.LabelFor(model => model.NoOfLunchBreakAllowed, htmlAttributes: new { @class = "" })
+                                @Html.EditorFor(model => model.NoOfLunchBreakAllowed, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter No Of Lunch Break Allowed", maxlength = "10" } })
+                                @Html.ValidationMessageFor(model => model.NoOfLunchBreakAllowed, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-footer text-center">
+                        <button class="btn btn-success mr-1" type="submit">Submit</button>
+                        <a href="/admin/setting" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </div>
+            }
+        </div>
     </div>
-</body>
-</html>
+
+</section>
+

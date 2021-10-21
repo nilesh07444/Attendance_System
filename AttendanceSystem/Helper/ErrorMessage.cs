@@ -68,6 +68,8 @@
         public static string LeaveNotFound = "Leave not found.";
         public static string CanNotAddLeaveOnHoliday = "Can not add leave on holiday.";
 
+        public static string LunchBreakLimitReached = "You have reached maximum 2 Lunch breaks for today";
+
         public static string MaterialCategoryIsNotValid = "Material category is not valid.";
         public static string SiteIsNotValid = "Site is not valid.";
         public static string MaterialQtyNotValid = "Material qty is not valid.";

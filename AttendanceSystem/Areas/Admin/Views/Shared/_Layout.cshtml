@@ -85,13 +85,12 @@
                                 <i class="fas fa-bolt"></i>
                                 Change Password
                             </a>
-                            @if (clsAdminSession.RoleID == (int)AdminRoles.SuperAdmin)
-                            {
-                                <a href="/admin/setting" class="dropdown-item has-icon">
-                                    <i class="fas fa-cog"></i>
-                                    Setting
-                                </a>
-                            }
+
+                            <a href="/admin/setting" class="dropdown-item has-icon">
+                                <i class="fas fa-cog"></i>
+                                Setting
+                            </a>
+
                             <div class="dropdown-divider"></div>
                             <a href="/admin/login/signout" class="dropdown-item has-icon text-danger">
                                 <i class="fas fa-sign-out-alt"></i>
@@ -272,7 +271,14 @@
                                         <li><a class="nav-link" href="/admin/payment/deletedpayment">Deleted Payment List</a></li>
                                     </ul>
                                 </li>
-
+                                <li class="dropdown @(ViewBag.Title == "LunchBreak" ? "active" : "")">
+                                    <a href="#" class="menu-toggle nav-link has-dropdown">
+                                        <i data-feather="briefcase"></i><span>Lunch Break</span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="nav-link" href="/admin/lunchbreak">Lunch Break List</a></li>
+                                    </ul>
+                                </li>
                                 <li class="dropdown @(ViewBag.Title == "Attendance" ? "active" : "")">
                                     <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="command"></i><span>Employee Attendance</span></a>
                                     <ul class="dropdown-menu">
