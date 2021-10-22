@@ -23,7 +23,6 @@
     <link rel="stylesheet" href="~/Content/admin-theme/assets/css/style.css">
     <link rel="stylesheet" href="~/Content/admin-theme/assets/css/components.css">
 
-
     <!-- Custom style CSS -->
     <link rel="stylesheet" href="~/Content/admin-theme/assets/css/custom.css">
     <link rel='shortcut icon' type='image/x-icon' href='~/favicon.ico' />
@@ -187,6 +186,13 @@
                                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="message-circle"></i><span>Contact Form</span></a>
                                 <ul class="dropdown-menu">
                                     <li><a class="nav-link" href="/admin/contactform">Contact Form List</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown @(ViewBag.Title == "StateDistrict" ? "active" : "")">
+                                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="message-circle"></i><span>State & District</span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="nav-link" href="/admin/state">State List</a></li>
+                                    <li><a class="nav-link" href="/admin/district">District List</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown @(ViewBag.Title == "Report" ? "active" : "")">

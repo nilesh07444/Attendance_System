@@ -1,0 +1,231 @@
+﻿@model DistrictFilterVM
+@{
+    ViewBag.Title = "StateDistrict";
+    int counter = 1;
+}
+
+<section class="section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12">
+
+                <div class="card">
+                    <div class="card-header" style="background-color: #425C59;">
+                        <h4 style="color: #FFCEA3;">District List</h4>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header" style="display: block;">
+                        <div class="card-header-action pull-right">
+                            <a href="/admin/district/add" class="btn btn-icon icon-left btn-primary"><i class="fas fa-plus-circle"></i> Add New District</a>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="card-header ">
+
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label for="FeedbackStatus" style="font-size: 1rem">State</label>
+                                        @Html.DropDownListFor(model => model.StateId, new SelectList(Model.StateList, "Value", "Text"), "- Select -", new { @class = "form-control required", style = "" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="card-header-action">
+                                        <button class="btn btn-primary mr-1" style="font-size: 1rem" id="btnSearch" type="button">Search</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover" id="tableExport" style="width:100%;">
+                                <thead>
+                                    <tr>
+                                        <td>#</td>
+                                        <th>State Name</th>
+                                        <th>District Name</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null && Model.DistrictList.Count > 0)
+                                    {
+                                        foreach (DistrictVM obj in Model.DistrictList)
+                                        {
+                                            <tr>
+                                                <td>@counter.</td>
+                                                <td>@obj.StateName</td>
+                                                <td>@obj.DistrictName</td>
+                                                @if (obj.IsActive == true)
+                                                {
+                                                    <td><span class="badge badge-success" style="cursor:pointer;" title="Click to Inactive" onclick="fnChangeStatus('@obj.DistrictId','InActive');">Active</span></td>
+                                                }
+                                                else
+                                                {
+                                                    <td><span class="badge badge-danger" style="cursor:pointer;" title="Click to Active" onclick="fnChangeStatus('@obj.DistrictId','Active');">InActive</span></td>
+                                                }
+                                                <td>
+                                                    <a href="/admin/district/edit/@obj.DistrictId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
+                                                    <a href="javascript:void(0);" title="Delete" class="btn btn-icon btn-danger" onclick="fnDeleteState('@obj.DistrictId')"><i class="fas fa-trash-alt"></i></a>
+                                                </td>
+                                            </tr>
+
+                                            counter++;
+                                        }
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="modal fade open" id="deleteDistrictModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Delete Confirm</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete ?
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" id="hdnDeleteDistrict" />
+                <button data-dismiss="modal" class="btn btn-primary" type="button">Close</button>
+                <button id="btnDeleteDistrict" class="btn btn-danger" type="button">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade open" id="activeinactiveModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Status Confirm</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to active ?
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" id="hdndataId" />
+                <input type="hidden" id="hdnstatus" />
+                <button data-dismiss="modal" class="btn btn-primary" type="button">Close</button>
+                <button id="btnChangeStatus" class="btn btn-danger" type="button">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+        $('#btnDeleteDistrict').click(function () {
+            var District_Id = jQuery("#hdnDeleteDistrict").val();
+            if (District_Id != "" && District_Id != null) {
+                $('#deleteDistrictModal').modal('hide');
+
+                StartLoading();
+
+                var URL = '@Url.Action("DeleteDistrict", "District")';
+                $.ajax({
+                    type: 'POST',
+                    async: true,
+                    url: URL + "?Id=" + District_Id,
+                    success: function (result) {
+                        if (result == "success") {
+                            alert("District deleted successfully");
+                            window.location.reload();
+                        }
+                        else if (result == "notfound") {
+                            alert("District Not Found");
+                        }
+                        else {
+                            alert("Something went wrong. Please try again");
+                        }
+
+                        StopLoading();
+                    },
+                    error: function (resultData) {
+                        StopLoading();
+                    }
+                });
+            }
+        });
+
+        $('#btnChangeStatus').click(function () {
+
+            var Id = jQuery("#hdndataId").val();
+            if (Id != "" && Id != null) {
+                $('#activeinactiveModal').modal('hide');
+
+                //StartLoading();
+
+                var URL = '@Url.Action("ChangeStatus", "District")';
+                $.ajax({
+                    type: 'POST',
+                    async: true,
+                    url: URL + "?Id=" + Id + "&Status=" + jQuery("#hdnstatus").val(),
+                    success: function (result) {
+                        if (result == "success") {
+                            alert("Status change Successfully...");
+                            window.location.reload();
+                        }
+                        else {
+                            alert("Something went wrong. Please try again");
+                        }
+
+                        //StopLoading();
+                    },
+                    error: function (resultData) {
+                        //StopLoading();
+                    }
+                });
+            }
+        });
+
+    });
+
+    function fnDeleteState(District_Id) {
+        jQuery("#hdnDeleteDistrict").val(District_Id);
+        $('#deleteDistrictModal').modal('show');
+    }
+
+    function fnChangeStatus(District_Id, status) {
+        jQuery("#hdndataId").val(District_Id);
+        jQuery("#hdnstatus").val(status);
+        if (status == "Active") {
+            $('#btnChangeStatus').html("Active");
+            $('#activeinactiveModal .modal-body').html(" Are you sure you want to make active ?");
+        }
+        else {
+            $('#btnChangeStatus').html("Inactive");
+            $('#activeinactiveModal .modal-body').html(" Are you sure you want to make inactive ?");
+        }
+        $('#activeinactiveModal').modal('show');
+    }
+
+    $('#btnSearch').click(function () {
+        var StateId = $("#StateId").val();
+        StartLoading();
+        window.location.href = "/admin/district?state=" + StateId;
+    });
+
+</script> 

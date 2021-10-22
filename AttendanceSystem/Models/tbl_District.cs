@@ -17,6 +17,8 @@ namespace AttendanceSystem.Models
         public long DistrictId { get; set; }
         public string DistrictName { get; set; }
         public long StateId { get; set; }
+        public bool IsDeleted { get; set; }
+        public bool IsActive { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
     }

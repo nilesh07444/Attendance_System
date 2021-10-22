@@ -207,5 +207,8 @@
         public static string AccountPackageBuySuccessfully = "Account package buy successfully";
 
         public static string Gujarat = "Gujarat";
+
+        public static string StateNameExist = "State Name is Already Exist";
+        public static string DistrictNameExist = "District Name is Already Exist";
     }
 }
