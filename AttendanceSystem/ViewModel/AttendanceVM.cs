@@ -386,4 +386,19 @@ namespace AttendanceSystem.ViewModel
         [Display(Name = "No Of Unit Worked")]
         public int? NoOfUnitWorked { get; set; }
     }
+
+    public class AfternoonAttendanceEmployeeVM
+    {
+        public long EmployeeId { get; set; }
+    }
+
+    public class AfternoonAttendanceRequestVM
+    {
+        public long SiteId { get; set; }
+        public string LocationFrom { get; set; }
+        public decimal Latitude { get; set; }
+        public decimal Longitude { get; set; }
+        public List<AfternoonAttendanceEmployeeVM> EmployeeList { get; set; }
+    }
+
 }

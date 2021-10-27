@@ -128,6 +128,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     objEmployee.State = employeeVM.State;
                     objEmployee.IsActive = isTrailMode ? true : (activeEmployee >= noOfEmployee ? false : true);
                     objEmployee.WorkerTypeId = employeeVM.WorkerTypeId;
+                    objEmployee.WorkerHeadId = employeeVM.WorkerHeadId;
                     objEmployee.CreatedBy = employeeId;
                     objEmployee.CreatedDate = CommonMethod.CurrentIndianDateTime();
                     objEmployee.UpdatedBy = employeeId;
@@ -239,6 +240,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                 City = emp.City,
                                                 Pincode = emp.Pincode,
                                                 State = emp.State,
+                                                WorkerHeadId = emp.WorkerHeadId,
                                                 IsActive = emp.IsActive,
                                                 ProfilePicture = !string.IsNullOrEmpty(emp.ProfilePicture) ? domainUrl + ErrorMessage.EmployeeDirectoryPath + emp.ProfilePicture : string.Empty
                                             }).FirstOrDefault();

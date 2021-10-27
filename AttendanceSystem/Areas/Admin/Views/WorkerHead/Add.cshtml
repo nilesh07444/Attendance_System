@@ -1,0 +1,66 @@
+﻿@model WorkerHeadVM
+@{
+    ViewBag.Title = "WorkerHead";
+}
+
+<section class="section">
+
+    <div class="row">
+        <div class="col-12">
+
+            <div class="card card-primary">
+
+                @using (Html.BeginForm("Add", "WorkerHead", FormMethod.Post, new { @id = "FormId", @class = "", enctype = "multipart/form-data", role = "form" }))
+                {
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="form-group col-12">
+                                @Html.LabelFor(model => model.HeadName, htmlAttributes: new { @class = "" })
+                                @Html.EditorFor(model => model.HeadName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Head Name ", maxlength = "200", @autofocus = "autofocus" } })
+                                @Html.ValidationMessageFor(model => model.HeadName, "", new { @class = "text-danger" })
+                                @Html.HiddenFor(model => model.WorkerHeadId)
+                            </div>
+                            <div class="form-group col-12">
+                                @Html.LabelFor(model => model.HeadContactNo, htmlAttributes: new { @class = "" })
+                                @Html.EditorFor(model => model.HeadContactNo, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Head Contact No", maxlength = "10" } })
+                                @Html.ValidationMessageFor(model => model.HeadContactNo, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-12">
+                                @Html.LabelFor(model => model.HeadCity, htmlAttributes: new { @class = "" })
+                                @Html.EditorFor(model => model.HeadCity, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Head Contact City", maxlength = "100" } })
+                                @Html.ValidationMessageFor(model => model.HeadCity, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="card-footer text-center">
+                        <button class="btn btn-success mr-1" type="submit">Submit</button>
+                        <a href="/admin/workerhead" class="btn btn-secondary">Cancel</a>
+                    </div>
+
+                }
+
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnCancel').click(function () {
+            window.location.href = "/admin/workerhead";
+        });
+
+        $('#btnSubmit').click(function () {
+            if ($("#FormId").valid()) {
+            }
+            else {
+                return false;
+            }
+        });
+    })
+</script>

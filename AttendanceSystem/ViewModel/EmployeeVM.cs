@@ -28,20 +28,20 @@ namespace AttendanceSystem.ViewModel
         [Display(Name = "Last Name *")]
         [Required(ErrorMessage = ErrorMessage.ThisFieldRequired)]
         public string LastName { get; set; }
-        
+
         [Display(Name = "Email")]
         public string Email { get; set; }
 
         [Display(Name = "Employee Code *")]
         public string EmployeeCode { get; set; }
-        
+
         public string Password { get; set; }
-        
+
         [Display(Name = "Mobile No *")]
         [Required(ErrorMessage = ErrorMessage.ThisFieldRequired)]
         [RegularExpression(@"^([0-9]{10})$", ErrorMessage = "Invalid Mobile Number.")]
         public string MobileNo { get; set; }
-        
+
         [Display(Name = "Alternate Mobile no")]
         [RegularExpression(@"^([0-9]{10})$", ErrorMessage = "Invalid Alternate Mobile Number.")]
         public string AlternateMobile { get; set; }
@@ -62,21 +62,21 @@ namespace AttendanceSystem.ViewModel
         [Display(Name = "State *")]
         [Required(ErrorMessage = ErrorMessage.ThisFieldRequired)]
         public string State { get; set; }
-        
+
         [Display(Name = "Designation")]
         public string Designation { get; set; }
-        
+
         [Display(Name = "Date of Birth *")]
         [Required(ErrorMessage = ErrorMessage.ThisFieldRequired)]
         public DateTime? Dob { get; set; }
-        
+
         [Display(Name = "Date of Join *")]
         [Required(ErrorMessage = ErrorMessage.ThisFieldRequired)]
         public DateTime? DateOfJoin { get; set; }
-        
+
         [Display(Name = "Blood Group")]
         public string BloodGroup { get; set; }
-        
+
         [Display(Name = "Working TIme")]
         public string WorkingTime { get; set; }
 
@@ -125,7 +125,10 @@ namespace AttendanceSystem.ViewModel
 
         [Display(Name = "Worker Type *")]
         public long? WorkerTypeId { get; set; }
-        
+
+        [Display(Name = "Worker Head")]
+        public long? WorkerHeadId { get; set; }
+
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
 
@@ -139,6 +142,7 @@ namespace AttendanceSystem.ViewModel
         public string EmploymentCategoryText { get; set; }
         public DateTime? CreatedDate { get; set; }
         public int TotalSavedFingerprint { get; set; }
+        public List<SelectListItem> WorkerHeadList { get; set; }
     }
 
     public class EmployeeFilterVM

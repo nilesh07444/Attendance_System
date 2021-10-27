@@ -23,7 +23,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         long companyId;
         long loggedInUserId;
         bool isTrailMode;
-        
+
         public WorkerController()
         {
             _db = new AttendanceSystemEntities();
@@ -112,7 +112,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     long? companyAccountPackageId = _db.tbl_Company.Where(x => x.CompanyId == companyId).Select(x => x.CurrentPackageId).FirstOrDefault();
                     clsAdminSession.CurrentAccountPackageId = companyAccountPackageId.HasValue ? companyAccountPackageId.Value : 0;
 
-                    tbl_CompanyRenewPayment companyPackage = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == companyId 
+                    tbl_CompanyRenewPayment companyPackage = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == companyId
                     && x.StartDate <= currentDateTime && x.EndDate >= currentDateTime
                     && (clsAdminSession.CurrentAccountPackageId > 0 ? x.CompanyRegistrationPaymentId == clsAdminSession.CurrentAccountPackageId : true)).FirstOrDefault();
                     employeeFilterVM.NoOfEmployeeAllowed = companyPackage.NoOfEmployee + companyPackage.BuyNoOfEmployee;
@@ -176,12 +176,13 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                   IsDeleted = emp.IsDeleted,
                                   IsFingerprintEnabled = emp.IsFingerprintEnabled,
                                   NoOfFreeLeavePerMonth = emp.NoOfFreeLeavePerMonth,
-                                  WorkerTypeId = emp.WorkerTypeId
-
+                                  WorkerTypeId = emp.WorkerTypeId,
+                                  WorkerHeadId = emp.WorkerHeadId
                               }).FirstOrDefault();
             }
 
             employeeVM.WorkerTypeList = GetWorkerTypeList();
+            employeeVM.WorkerHeadList = GetWorkerHeadList();
             return View(employeeVM);
         }
 
@@ -233,7 +234,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     {
                         int MaximumFreeLeavePerMonth = Convert.ToInt32(ConfigurationManager.AppSettings["MaximumFreeLeavePerMonth"]);
                         if (employeeVM.NoOfFreeLeavePerMonth > MaximumFreeLeavePerMonth)
-                        {                            
+                        {
                             ModelState.AddModelError("NoOfFreeLeavePerMonth", ErrorMessage.Maximum10FreeLeavePerMonthAllowed);
                             return View(employeeVM);
                         }
@@ -259,6 +260,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployee.AdharCardNo = employeeVM.AdharCardNo;
                         objEmployee.EmploymentCategory = employeeVM.EmploymentCategory;
                         objEmployee.WorkerTypeId = employeeVM.WorkerTypeId;
+                        objEmployee.WorkerHeadId = employeeVM.WorkerHeadId;
                         objEmployee.PerCategoryPrice = employeeVM.PerCategoryPrice;
                         objEmployee.MonthlySalaryPrice = employeeVM.MonthlySalaryPrice;
                         objEmployee.ExtraPerHourPrice = employeeVM.ExtraPerHourPrice;
@@ -309,6 +311,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployee.WorkerTypeId = employeeVM.WorkerTypeId;
                         objEmployee.NoOfFreeLeavePerMonth = employeeVM.NoOfFreeLeavePerMonth;
                         objEmployee.IsActive = isTrailMode ? true : (activeEmployee >= noOfEmployee ? false : true);
+                        objEmployee.WorkerHeadId = employeeVM.WorkerHeadId;
                         objEmployee.CreatedBy = (int)PaymentGivenBy.CompanyAdmin;
                         objEmployee.CreatedDate = CommonMethod.CurrentIndianDateTime();
                         objEmployee.UpdatedBy = (int)PaymentGivenBy.CompanyAdmin;
@@ -498,7 +501,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 msg = regReplace.Replace(msg, num.ToString(), 1);
 
                 msg = msg.Replace("\r\n", "\n");
-                 
+
                 ResponseDataModel<string> smsResponse = CommonMethod.SendSMS(msg, mobileNo, companyId, 0, "", (int)PaymentGivenBy.CompanyAdmin, isTrailMode);
 
                 if (smsResponse.Data != null && smsResponse.Data.Contains("invalidnumber"))
@@ -513,7 +516,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 }
 
                 #endregion
-                 
+
             }
             catch (Exception ex)
             {
@@ -536,13 +539,32 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return lst;
         }
 
+        private List<SelectListItem> GetWorkerHeadList()
+        {
+            List<SelectListItem> lst = new List<SelectListItem>();
 
+            var data = (from wt in _db.tbl_WorkerHead
+                        where wt.IsActive && !wt.IsDeleted && wt.CompanyId == companyId
+                        select new SelectListItem
+                        {
+                            Text = wt.HeadName,
+                            Value = wt.WorkerHeadId.ToString()
+                        }).ToList();
+
+            if (data != null)
+            {
+                lst = data;
+            }
+
+            return lst;
+        }
+         
         [HttpPost]
         public JsonResult GetWorkerList(string prefix)
         {
             var customerList = (from c in _db.tbl_Employee
                                 where c.CompanyId == companyId
-                                && c.IsActive 
+                                && c.IsActive
                                 && (c.EmployeeCode.ToLower().Contains(prefix.ToLower()) || c.FirstName.ToLower().Contains(prefix.ToLower()) || c.LastName.ToLower().Contains(prefix.ToLower()))
                                 select new
                                 {

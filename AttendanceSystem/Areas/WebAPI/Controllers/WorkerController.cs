@@ -71,7 +71,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
             return response;
         }
-         
+
         [HttpGet]
         [Route("Search")]
         public ResponseDataModel<List<EmployeeVM>> Search(string searchText)
@@ -247,5 +247,68 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
             return response;
         }
+
+        [HttpGet]
+        [Route("GetFingerPrintListOfSelectedWorker/{id}")]
+        public ResponseDataModel<List<EmployeeFingerprintVM>> GetFingerPrintListOfSelectedWorker(long id)
+        {
+            ResponseDataModel<List<EmployeeFingerprintVM>> response = new ResponseDataModel<List<EmployeeFingerprintVM>>();
+            try
+            {
+                companyId = base.UTI.CompanyId;
+                List<EmployeeFingerprintVM> lstEmployeeFingerPrints = (from f in _db.tbl_EmployeeFingerprint
+                                                                       join e in _db.tbl_Employee on f.EmployeeId equals e.EmployeeId
+                                                                       where e.AdminRoleId == (int)AdminRoles.Worker
+                                                                       && e.CompanyId == companyId && f.EmployeeId == id
+                                                                       select new EmployeeFingerprintVM
+                                                                       {
+                                                                           EmployeeId = f.EmployeeId,
+                                                                           ISOCode = f.ISOCode
+                                                                       }).ToList();
+                response.Data = lstEmployeeFingerPrints;
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message);
+            }
+
+            return response;
+        }
+         
+        [HttpGet]
+        [Route("WorkerHeadList")]
+        public ResponseDataModel<List<WorkerHeadVM>> WorkerHeadList()
+        {
+            ResponseDataModel<List<WorkerHeadVM>> response = new ResponseDataModel<List<WorkerHeadVM>>();
+            response.IsError = false;
+            try
+            {
+                long employeeId = base.UTI.EmployeeId;
+                long companyId = base.UTI.CompanyId;
+
+                List<WorkerHeadVM> WorkerHeadList = (from wt in _db.tbl_WorkerHead
+                                                               where !wt.IsDeleted && wt.IsActive && wt.CompanyId == companyId
+                                                               select new WorkerHeadVM
+                                                               {
+
+                                                                   WorkerHeadId = wt.WorkerHeadId,
+                                                                   HeadName = wt.HeadName,
+                                                                   HeadContactNo = wt.HeadContactNo,
+                                                                   HeadCity = wt.HeadCity,
+                                                                   IsActive = wt.IsActive
+                                                               }).OrderBy(x => x.HeadName).ToList();
+
+                response.Data = WorkerHeadList;
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message);
+            }
+
+            return response;
+        }
+
     }
 }

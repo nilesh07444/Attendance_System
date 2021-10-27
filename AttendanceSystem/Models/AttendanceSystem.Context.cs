@@ -70,6 +70,7 @@ namespace AttendanceSystem.Models
         public virtual DbSet<tbl_Country> tbl_Country { get; set; }
         public virtual DbSet<tbl_State> tbl_State { get; set; }
         public virtual DbSet<tbl_District> tbl_District { get; set; }
+        public virtual DbSet<tbl_WorkerHead> tbl_WorkerHead { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

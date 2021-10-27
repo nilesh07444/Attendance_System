@@ -200,6 +200,7 @@
     <Compile Include="Areas\Admin\Controllers\StateController.cs" />
     <Compile Include="Areas\Admin\Controllers\UnAuthorizeAccessController.cs" />
     <Compile Include="Areas\Admin\Controllers\WorkerAttendanceController.cs" />
+    <Compile Include="Areas\Admin\Controllers\WorkerHeadController.cs" />
     <Compile Include="Areas\Admin\Controllers\WorkerTypeController.cs" />
     <Compile Include="Areas\Admin\Controllers\SMSContentController.cs" />
     <Compile Include="Areas\Admin\Controllers\WorkerController.cs" />
@@ -226,6 +227,7 @@
     <Compile Include="Areas\Admin\Controllers\PaymentController.cs" />
     <Compile Include="Areas\Admin\Controllers\SettingController.cs" />
     <Compile Include="Areas\Admin\Controllers\TestimonialController.cs" />
+    <Compile Include="Areas\Admin\Views\WorkerHead\DefaultController.cs" />
     <Compile Include="Areas\Client\ClientAreaRegistration.cs" />
     <Compile Include="Areas\Client\Controllers\AboutController.cs" />
     <Compile Include="Areas\Client\Controllers\CompanyRequestController.cs" />
@@ -409,6 +411,9 @@
     <Compile Include="Models\tbl_WorkerAttendance.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\tbl_WorkerHead.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tbl_WorkerPayment.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
@@ -448,6 +453,7 @@
     <Compile Include="ViewModel\SalesReportVM.cs" />
     <Compile Include="ViewModel\SMSLogVM.cs" />
     <Compile Include="ViewModel\StateVM.cs" />
+    <Compile Include="ViewModel\WorkerHeadVM.cs" />
     <Compile Include="ViewModel\WorkerTypeVM.cs" />
     <Compile Include="ViewModel\MaterialVM.cs" />
     <Compile Include="ViewModel\MaterialCategoryVM.cs" />
@@ -1654,6 +1660,8 @@
     <Content Include="Areas\Admin\Views\District\Index.cshtml" />
     <Content Include="Areas\Admin\Views\District\Add.cshtml" />
     <Content Include="Areas\Admin\Views\District\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\WorkerHead\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\WorkerHead\Add.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
@@ -1693,6 +1701,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Admin\Views\Default\" />
     <Folder Include="Areas\Admin\Views\Upcoming\" />
     <Folder Include="Areas\Client\Data\" />
     <Folder Include="Areas\WebAPI\Data\" />

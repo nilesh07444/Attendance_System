@@ -240,6 +240,18 @@
                                         </ul>
                                     </li>
                                 }
+                                if (clsAdminSession.CompanyTypeId == (int)CompanyType.ConstructionCompany)
+                                {
+                                    <li class="dropdown @(ViewBag.Title == "WorkerHead" ? "active" : "")">
+                                        <a href="#" class="menu-toggle nav-link has-dropdown">
+                                            <i data-feather="users"></i><span>Worker Head</span>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="nav-link" href="/admin/workerhead/add/0">Add Worker Head</a></li>
+                                            <li><a class="nav-link" href="/admin/workerhead">Worker Head List</a></li>
+                                        </ul>
+                                    </li>
+                                }
                                 <li class="dropdown @(ViewBag.Title == "Reminder" ? "active" : "")">
                                     <a href="#" class="menu-toggle nav-link has-dropdown">
                                         <i data-feather="briefcase"></i><span>Reminder</span>

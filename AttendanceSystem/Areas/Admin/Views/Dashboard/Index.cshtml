@@ -423,7 +423,7 @@
 
         </div>
 
-        
+
 
     }
 
@@ -709,6 +709,25 @@
     </div>
 </div>
 
+<div class="modal fade open" id="conversionConfirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Confirm</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to start conversion ?
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" id="hdnConversionType" />
+                <button data-dismiss="modal" class="btn btn-primary" type="button">Close</button>
+                <button id="btnStartConversion" class="btn btn-danger" type="button">Start Conversion</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script src="~/Content/admin-theme/assets/js/mfs100-9.0.2.6.js"></script>
 
@@ -721,59 +740,77 @@
 
     $(document).ready(function () {
 
+        $('#btnStartConversion').click(function () {
+            var conversionType = $('#hdnConversionType').val();
+            $('#conversionConfirmModal').modal('hide');
+
+            if (conversionType == "Employee") {
+                StartLoading();
+                var month = $("#Month").val();
+                var year = $("#Year").val();
+                var URL = '@Url.Action("ConversionOfEmployeeUsers", "Dashboard")';
+                $.ajax({
+                    type: 'POST',
+                    async: true,
+                    url: URL + "?month=" + month + "&year=" + year,
+                    success: function (result) {
+                        if (result.Status == 1) {
+                            alert("Conversion complete successfully");
+                            window.location.reload();
+                        }
+                        else {
+
+                            alert(result.ErrorMessage);
+                        }
+
+                        StopLoading();
+                    },
+                    error: function (resultData) {
+                        StopLoading();
+                    }
+                });
+            }
+            else if (conversionType == "Worker") {
+                StartLoading();
+                var month = $("#Month").val();
+                var year = $("#Year").val();
+                var URL = '@Url.Action("ConversionOfWorkerUsers", "Dashboard")';
+                $.ajax({
+                    type: 'POST',
+                    async: true,
+                    url: URL + "?month=" + month + "&year=" + year,
+                    success: function (result) {
+                        if (result.Status == 1) {
+                            alert("Conversion complete successfully");
+                            window.location.reload();
+                        }
+                        else {
+                            alert(result.ErrorMessage);
+                        }
+
+                        StopLoading();
+                    },
+                    error: function (resultData) {
+                        StopLoading();
+                    }
+                });
+            }
+
+        });
 
         $('#btnEmployee').click(function () {
-            StartLoading();
-            var month = $("#Month").val();
-            var year = $("#Year").val();
-            var URL = '@Url.Action("ConversionOfEmployeeUsers", "Dashboard")';
-            $.ajax({
-                type: 'POST',
-                async: true,
-                url: URL + "?month=" + month + "&year=" + year,
-                success: function (result) {
-                    if (result.Status == 1) {
-                        alert("Conversion complete successfully");
-                        window.location.reload();
-                    }
-                    else {
 
-                        alert(result.ErrorMessage);
-                    }
-
-                    StopLoading();
-                },
-                error: function (resultData) {
-                    StopLoading();
-                }
-            });
+            $("#conversionConfirmModal .modal-title").text("Employee Conversion Confirmation");
+            $('#hdnConversionType').val('Employee');
+            $('#conversionConfirmModal').modal('show');
         });
 
         $('#btnWorker').click(function () {
 
-            StartLoading();
-            var month = $("#Month").val();
-            var year = $("#Year").val();
-            var URL = '@Url.Action("ConversionOfWorkerUsers", "Dashboard")';
-            $.ajax({
-                type: 'POST',
-                async: true,
-                url: URL + "?month=" + month + "&year=" + year,
-                success: function (result) {
-                    if (result.Status == 1) {
-                        alert("Conversion complete successfully");
-                        window.location.reload();
-                    }
-                    else {
-                        alert(result.ErrorMessage);
-                    }
+            $("#conversionConfirmModal .modal-title").text("Worker Conversion Confirmation");
+            $('#hdnConversionType').val('Worker');
+            $('#conversionConfirmModal').modal('show');
 
-                    StopLoading();
-                },
-                error: function (resultData) {
-                    StopLoading();
-                }
-            });
         });
 
 

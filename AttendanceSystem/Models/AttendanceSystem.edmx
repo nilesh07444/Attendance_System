@@ -351,6 +351,7 @@
           <Property Name="NoOfFreeLeavePerMonth" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="CarryForwardLeave" Type="decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="WorkerTypeId" Type="bigint" />
+          <Property Name="WorkerHeadId" Type="bigint" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="IsFingerprintEnabled" Type="bit" Nullable="false" />
@@ -786,6 +787,22 @@
           <Property Name="TodaySalary" Type="numeric" Precision="18" Scale="2" Nullable="false" />
           <Property Name="SalaryGiven" Type="numeric" Precision="18" Scale="2" Nullable="false" />
         </EntityType>
+        <EntityType Name="tbl_WorkerHead">
+          <Key>
+            <PropertyRef Name="WorkerHeadId" />
+          </Key>
+          <Property Name="WorkerHeadId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyId" Type="bigint" Nullable="false" />
+          <Property Name="HeadName" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="HeadContactNo" Type="nvarchar" MaxLength="15" />
+          <Property Name="HeadCity" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="CreatedBy" Type="bigint" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="bigint" />
+          <Property Name="ModifiedDate" Type="datetime" />
+        </EntityType>
         <EntityType Name="tbl_WorkerPayment">
           <Key>
             <PropertyRef Name="WorkerPaymentId" />
@@ -868,6 +885,7 @@
           <EntitySet Name="tbl_State" EntityType="Self.tbl_State" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Testimonial" EntityType="Self.tbl_Testimonial" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_WorkerAttendance" EntityType="Self.tbl_WorkerAttendance" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_WorkerHead" EntityType="Self.tbl_WorkerHead" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_WorkerPayment" EntityType="Self.tbl_WorkerPayment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_WorkerType" EntityType="Self.tbl_WorkerType" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
@@ -1170,6 +1188,7 @@
           <EntitySet Name="tbl_Country" EntityType="AttendanceSystemModel.tbl_Country" />
           <EntitySet Name="tbl_State" EntityType="AttendanceSystemModel.tbl_State" />
           <EntitySet Name="tbl_District" EntityType="AttendanceSystemModel.tbl_District" />
+          <EntitySet Name="tbl_WorkerHead" EntityType="AttendanceSystemModel.tbl_WorkerHead" />
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -1547,6 +1566,7 @@
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedBy" Type="Int64" />
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="WorkerHeadId" Type="Int64" />
         </EntityType>
         <EntityType Name="tbl_EmployeePayment">
           <Key>
@@ -1794,6 +1814,22 @@
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="tbl_WorkerHead">
+          <Key>
+            <PropertyRef Name="WorkerHeadId" />
+          </Key>
+          <Property Name="WorkerHeadId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyId" Type="Int64" Nullable="false" />
+          <Property Name="HeadName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="HeadContactNo" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="HeadCity" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int64" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
         </EntityType>
       </Schema>
@@ -2361,6 +2397,7 @@
           <EntitySetMapping Name="tbl_Employee">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Employee">
               <MappingFragment StoreEntitySet="tbl_Employee">
+                <ScalarProperty Name="WorkerHeadId" ColumnName="WorkerHeadId" />
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
@@ -2663,6 +2700,23 @@
                 <ScalarProperty Name="StateId" ColumnName="StateId" />
                 <ScalarProperty Name="DistrictName" ColumnName="DistrictName" />
                 <ScalarProperty Name="DistrictId" ColumnName="DistrictId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_WorkerHead">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_WorkerHead">
+              <MappingFragment StoreEntitySet="tbl_WorkerHead">
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="HeadCity" ColumnName="HeadCity" />
+                <ScalarProperty Name="HeadContactNo" ColumnName="HeadContactNo" />
+                <ScalarProperty Name="HeadName" ColumnName="HeadName" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="WorkerHeadId" ColumnName="WorkerHeadId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

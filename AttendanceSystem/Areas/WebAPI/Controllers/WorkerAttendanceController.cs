@@ -5,6 +5,7 @@ using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -18,9 +19,11 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
         long employeeId;
         long companyId;
         int roleId;
+        string domainUrl = string.Empty;
         public WorkerAttendanceController()
         {
             _db = new AttendanceSystemEntities();
+            domainUrl = ConfigurationManager.AppSettings["DomainUrl"].ToString();
         }
 
         [HttpPost]
@@ -562,5 +565,230 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             return response;
 
         }
+
+        [HttpGet]
+        [Route("GetWorkerListOfPendingMorningAttendance")]
+        public ResponseDataModel<List<EmployeeVM>> GetWorkerListOfPendingMorningAttendance(string searchText)
+        {
+            ResponseDataModel<List<EmployeeVM>> response = new ResponseDataModel<List<EmployeeVM>>();
+            response.IsError = false;
+            try
+            {
+                companyId = base.UTI.CompanyId;
+                DateTime today = CommonMethod.CurrentIndianDateTime().Date;
+
+                List<EmployeeVM> workerList = (from emp in _db.tbl_Employee
+                                               join att in _db.tbl_WorkerAttendance on emp.EmployeeId equals att.EmployeeId
+                                               where !emp.IsDeleted && emp.IsActive 
+                                               && att.AttendanceDate == today
+                                               && emp.AdminRoleId == (int)AdminRoles.Worker
+                                               && emp.CompanyId == companyId
+                                               && (!string.IsNullOrEmpty(searchText) ? (emp.EmployeeCode.Contains(searchText)
+                                               || emp.FirstName.Contains(searchText)
+                                               || emp.LastName.Contains(searchText)) : true)
+                                               select new EmployeeVM
+                                               {
+                                                   EmployeeId = emp.EmployeeId,
+                                                   EmployeeCode = emp.EmployeeCode,
+                                                   CompanyId = emp.CompanyId,
+                                                   Prefix = emp.Prefix,
+                                                   FirstName = emp.FirstName,
+                                                   LastName = emp.LastName,
+                                                   MobileNo = emp.MobileNo,
+                                                   Dob = emp.Dob,
+                                                   DateOfJoin = emp.DateOfJoin,
+                                                   BloodGroup = emp.BloodGroup,
+                                                   EmploymentCategory = emp.EmploymentCategory,
+                                                   MonthlySalaryPrice = emp.MonthlySalaryPrice,
+                                                   AdharCardNo = emp.AdharCardNo,
+                                                   Address = emp.Address,
+                                                   City = emp.City,
+                                                   Pincode = emp.Pincode,
+                                                   State = emp.State,
+                                                   IsActive = emp.IsActive,
+                                                   ProfilePicture = !string.IsNullOrEmpty(emp.ProfilePicture) ? domainUrl + ErrorMessage.EmployeeDirectoryPath + emp.ProfilePicture : string.Empty
+                                               }).ToList();
+                response.Data = workerList;
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message);
+            }
+
+            return response;
+        }
+
+        [HttpGet]
+        [Route("GetWorkerListOfPendingAfternoonAttendance")]
+        public ResponseDataModel<List<EmployeeVM>> GetWorkerListOfPendingAfternoonAttendance(string searchText)
+        {
+            ResponseDataModel<List<EmployeeVM>> response = new ResponseDataModel<List<EmployeeVM>>();
+            response.IsError = false;
+            try
+            {
+                companyId = base.UTI.CompanyId;
+
+                List<EmployeeVM> workerList = (from emp in _db.tbl_Employee
+                                               where !emp.IsDeleted && emp.IsActive
+                                               && emp.AdminRoleId == (int)AdminRoles.Worker
+                                               && emp.CompanyId == companyId
+                                               && (!string.IsNullOrEmpty(searchText) ? (emp.EmployeeCode.Contains(searchText)
+                                               || emp.FirstName.Contains(searchText)
+                                               || emp.LastName.Contains(searchText)) : true)
+                                               select new EmployeeVM
+                                               {
+                                                   EmployeeId = emp.EmployeeId,
+                                                   EmployeeCode = emp.EmployeeCode,
+                                                   CompanyId = emp.CompanyId,
+                                                   Prefix = emp.Prefix,
+                                                   FirstName = emp.FirstName,
+                                                   LastName = emp.LastName,
+                                                   MobileNo = emp.MobileNo,
+                                                   Dob = emp.Dob,
+                                                   DateOfJoin = emp.DateOfJoin,
+                                                   BloodGroup = emp.BloodGroup,
+                                                   EmploymentCategory = emp.EmploymentCategory,
+                                                   MonthlySalaryPrice = emp.MonthlySalaryPrice,
+                                                   AdharCardNo = emp.AdharCardNo,
+                                                   Address = emp.Address,
+                                                   City = emp.City,
+                                                   Pincode = emp.Pincode,
+                                                   State = emp.State,
+                                                   IsActive = emp.IsActive,
+                                                   ProfilePicture = !string.IsNullOrEmpty(emp.ProfilePicture) ? domainUrl + ErrorMessage.EmployeeDirectoryPath + emp.ProfilePicture : string.Empty
+                                               }).ToList();
+                response.Data = workerList;
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message);
+            }
+
+            return response;
+        }
+
+        [HttpGet]
+        [Route("GetWorkerListOfPendingEveningAttendance")]
+        public ResponseDataModel<List<EmployeeVM>> GetWorkerListOfPendingEveningAttendance(string searchText)
+        {
+            ResponseDataModel<List<EmployeeVM>> response = new ResponseDataModel<List<EmployeeVM>>();
+            response.IsError = false;
+            try
+            {
+                companyId = base.UTI.CompanyId;
+
+                List<EmployeeVM> workerList = (from emp in _db.tbl_Employee
+                                               where !emp.IsDeleted && emp.IsActive
+                                               && emp.AdminRoleId == (int)AdminRoles.Worker
+                                               && emp.CompanyId == companyId
+                                               && (!string.IsNullOrEmpty(searchText) ? (emp.EmployeeCode.Contains(searchText)
+                                               || emp.FirstName.Contains(searchText)
+                                               || emp.LastName.Contains(searchText)) : true)
+                                               select new EmployeeVM
+                                               {
+                                                   EmployeeId = emp.EmployeeId,
+                                                   EmployeeCode = emp.EmployeeCode,
+                                                   CompanyId = emp.CompanyId,
+                                                   Prefix = emp.Prefix,
+                                                   FirstName = emp.FirstName,
+                                                   LastName = emp.LastName,
+                                                   MobileNo = emp.MobileNo,
+                                                   Dob = emp.Dob,
+                                                   DateOfJoin = emp.DateOfJoin,
+                                                   BloodGroup = emp.BloodGroup,
+                                                   EmploymentCategory = emp.EmploymentCategory,
+                                                   MonthlySalaryPrice = emp.MonthlySalaryPrice,
+                                                   AdharCardNo = emp.AdharCardNo,
+                                                   Address = emp.Address,
+                                                   City = emp.City,
+                                                   Pincode = emp.Pincode,
+                                                   State = emp.State,
+                                                   IsActive = emp.IsActive,
+                                                   ProfilePicture = !string.IsNullOrEmpty(emp.ProfilePicture) ? domainUrl + ErrorMessage.EmployeeDirectoryPath + emp.ProfilePicture : string.Empty
+                                               }).ToList();
+                response.Data = workerList;
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message);
+            }
+
+            return response;
+        }
+         
+        [HttpPost]
+        [Route("SaveMultipleAfternoonWorkerAttendance")]
+        public ResponseDataModel<string> SaveMultipleAfternoonWorkerAttendance(AfternoonAttendanceRequestVM afternoonAttendanceRequestVM)
+        {
+            ResponseDataModel<string> response = new ResponseDataModel<string>();
+            response.IsError = false;
+            response.Data = string.Empty;
+            try
+            {
+                roleId = base.UTI.RoleId;
+                employeeId = base.UTI.EmployeeId;
+                companyId = base.UTI.CompanyId;
+                DateTime today = CommonMethod.CurrentIndianDateTime().Date;
+
+                #region Validation
+
+                if (!_db.tbl_Attendance.Any(x => x.UserId == employeeId && x.InDateTime != null && x.OutDateTime == null))
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.YourAttendanceNotTakenYetYouCanNotAssignWorker);
+                }
+
+                if (roleId == (int)AdminRoles.Payer)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.PayerCanNotTakeMorningOrAfterNoonAttendance);
+                }
+
+                if (afternoonAttendanceRequestVM.SiteId == 0)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.SiteRequired);
+                }
+
+                #endregion Validation
+
+                if (!response.IsError && afternoonAttendanceRequestVM != null && afternoonAttendanceRequestVM.EmployeeList != null && afternoonAttendanceRequestVM.EmployeeList.Count > 0)
+                {
+                    afternoonAttendanceRequestVM.EmployeeList.ForEach(objEmployee =>
+                    {
+                        bool IsWorkerAssigned = !_db.tbl_AssignWorker.Any(x => x.EmployeeId == objEmployee.EmployeeId && x.SiteId == afternoonAttendanceRequestVM.SiteId && x.Date == today && !x.IsClosed);
+                        if (IsWorkerAssigned)
+                        {
+                            tbl_WorkerAttendance attendanceObject = _db.tbl_WorkerAttendance.Where(x => x.EmployeeId == objEmployee.EmployeeId && x.AttendanceDate == today && !x.IsClosed).FirstOrDefault();
+                            if (attendanceObject != null && attendanceObject.IsMorning && !attendanceObject.IsAfternoon)
+                            {
+                                // update attendance with afternoon data
+                                attendanceObject.IsAfternoon = true;
+                                attendanceObject.AfternoonAttendanceBy = employeeId;
+                                attendanceObject.AfternoonAttendanceDate = CommonMethod.CurrentIndianDateTime();
+                                attendanceObject.AfternoonSiteId = afternoonAttendanceRequestVM.SiteId;
+                                attendanceObject.AfternoonLatitude = afternoonAttendanceRequestVM.Latitude;
+                                attendanceObject.AfternoonLongitude = afternoonAttendanceRequestVM.Longitude;
+                                attendanceObject.AfternoonLocationFrom = afternoonAttendanceRequestVM.LocationFrom;
+                                _db.SaveChanges();
+                            }
+                        }
+
+                    });
+                }
+                 
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message);
+            }
+
+            return response;
+        }
+
     }
 }

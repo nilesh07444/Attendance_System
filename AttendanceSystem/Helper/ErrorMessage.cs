@@ -186,6 +186,7 @@
         public static string MonthlyConvesrionCompletedYouCanNotAddOrModifyAttendance = "Monthly convesrion completed you can not add or modify attendance";
         public static string MonthlyConvesrionCompletedYouCanNotAddOrModifyHoliday = "Monthly convesrion completed you can not add or modify holiday";
         public static string CompanyDoesNotExist = "Company does not exit.";
+        public static string HolidayShouldNotBePastDays = "Holiday should not be of past days";
 
         public static string YES = "Yes";
         public static string NO = "No";
@@ -210,5 +211,7 @@
 
         public static string StateNameExist = "State Name is Already Exist";
         public static string DistrictNameExist = "District Name is Already Exist";
+
+        public static string YourAttendanceNotTakenYetYouCanNotTakeLunch = "Your attendance status not Login, so you can not take lunch.";
     }
 }

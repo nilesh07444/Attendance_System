@@ -78,9 +78,16 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             try
             {
                 long companyId = clsAdminSession.CompanyId;
+                DateTime today = CommonMethod.CurrentIndianDateTime().Date;
                 IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
                 if (ModelState.IsValid)
                 {
+                    if (HolidayVM.StartDate < today || HolidayVM.EndDate < today)
+                    {
+                        ModelState.AddModelError("", ErrorMessage.HolidayShouldNotBePastDays);
+                        return View(HolidayVM);
+                    }
+
                     if (_db.tbl_Conversion.Any(x => x.CompanyId == companyId && x.Month == HolidayVM.StartDate.Month && x.Year == HolidayVM.StartDate.Year && (x.IsEmployeeDone || x.IsWorkerDone)))
                     {
                         ModelState.AddModelError("", ErrorMessage.MonthlyConvesrionCompletedYouCanNotAddOrModifyHoliday);

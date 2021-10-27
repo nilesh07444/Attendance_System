@@ -16,7 +16,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
         {
             _db = new AttendanceSystemEntities();
         }
-        
+
         [HttpPost]
         [Route("Add")]
         public ResponseDataModel<bool> Add(LunchBreakLocationVM lunchbreakVM)
@@ -54,6 +54,12 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                 #region Validation
 
+                if (IsStartLunchMode && !_db.tbl_Attendance.Any(x => x.UserId == employeeId && x.InDateTime != null && x.OutDateTime == null))
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.YourAttendanceNotTakenYetYouCanNotTakeLunch);
+                }
+
                 if (IsStartLunchMode && lstExistLunchs != null && lstExistLunchs.Count >= NoOfLunchBreakAllowed)
                 {
                     response.IsError = true;
@@ -64,7 +70,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                 if (!response.IsError)
                 {
-                     
+
                     // Add or Update Lunch Break
 
                     if (IsStartLunchMode)
@@ -104,7 +110,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
             return response;
         }
-          
+
         [Route("List"), HttpGet]
         public ResponseDataModel<List<EmployeeLunchBreakVM>> List()
         {
