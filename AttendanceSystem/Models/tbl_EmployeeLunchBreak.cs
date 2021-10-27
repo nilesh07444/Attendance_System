@@ -24,5 +24,6 @@ namespace AttendanceSystem.Models
         public string EndLunchLocationFrom { get; set; }
         public Nullable<decimal> EndLunchLatitude { get; set; }
         public Nullable<decimal> EndLunchLongitude { get; set; }
+        public Nullable<long> AttendanceId { get; set; }
     }
 }

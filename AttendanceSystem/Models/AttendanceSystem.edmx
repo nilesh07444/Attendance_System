@@ -397,11 +397,12 @@
           </Key>
           <Property Name="EmployeeLunchBreakId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="EmployeeId" Type="bigint" Nullable="false" />
+          <Property Name="AttendanceId" Type="bigint" />
           <Property Name="StartDateTime" Type="datetime" Nullable="false" />
-          <Property Name="EndDateTime" Type="datetime" />
           <Property Name="StartLunchLocationFrom" Type="nvarchar" MaxLength="200" />
           <Property Name="StartLunchLatitude" Type="decimal" Precision="11" Scale="8" />
           <Property Name="StartLunchLongitude" Type="decimal" Precision="11" Scale="8" />
+          <Property Name="EndDateTime" Type="datetime" />
           <Property Name="EndLunchLocationFrom" Type="nvarchar" MaxLength="200" />
           <Property Name="EndLunchLatitude" Type="decimal" Precision="11" Scale="8" />
           <Property Name="EndLunchLongitude" Type="decimal" Precision="11" Scale="8" />
@@ -843,6 +844,59 @@
           <Property Name="ModifiedBy" Type="bigint" />
           <Property Name="ModifiedDate" Type="datetime" />
         </EntityType>
+        <Function Name="Usp_EMployeePaymentSummuryReport" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CompanyId" Type="bigint" Mode="In" />
+          <Parameter Name="Month" Type="int" Mode="In" />
+          <Parameter Name="Year" Type="int" Mode="In" />
+          <Parameter Name="EmployeeId" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="Usp_GetAssignedWorkerListWithAttendance" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CompanyId" Type="int" Mode="In" />
+          <Parameter Name="RoleId" Type="int" Mode="In" />
+          <Parameter Name="Date" Type="datetime" Mode="In" />
+          <Parameter Name="SiteId" Type="int" Mode="In" />
+          <Parameter Name="EmployeeId" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="Usp_GetDateWiseEmployeePaymentReport" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="StartDate" Type="datetime" Mode="In" />
+          <Parameter Name="EndDate" Type="datetime" Mode="In" />
+          <Parameter Name="EmployeeId" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="Usp_GetDateWiseEmployeePaymentReport_dipaktest" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="StartDate" Type="datetime" Mode="In" />
+          <Parameter Name="EndDate" Type="datetime" Mode="In" />
+          <Parameter Name="EmployeeId" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="Usp_GetDateWiseMaterialReport" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="StartDate" Type="datetime" Mode="In" />
+          <Parameter Name="EndDate" Type="datetime" Mode="In" />
+          <Parameter Name="MaterialCategory" Type="bigint" Mode="In" />
+          <Parameter Name="SiteId" Type="bigint" Mode="In" />
+          <Parameter Name="CompanyId" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="Usp_GetDateWiseWorkerPaymentReport" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="StartDate" Type="datetime" Mode="In" />
+          <Parameter Name="EndDate" Type="datetime" Mode="In" />
+          <Parameter Name="EmployeeId" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="Usp_GetPaymentReport" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="StartMonth" Type="int" Mode="In" />
+          <Parameter Name="EndMonth" Type="int" Mode="In" />
+          <Parameter Name="Year" Type="int" Mode="In" />
+          <Parameter Name="EmployeeId" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="Usp_GetSiteAssignedWorkerList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CompanyId" Type="bigint" Mode="In" />
+          <Parameter Name="RoleId" Type="int" Mode="In" />
+          <Parameter Name="SiteId" Type="bigint" Mode="In" />
+          <Parameter Name="Date" Type="datetime" Mode="In" />
+        </Function>
+        <Function Name="Usp_WorkerPaymentSummuryReport" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CompanyId" Type="bigint" Mode="In" />
+          <Parameter Name="Month" Type="int" Mode="In" />
+          <Parameter Name="Year" Type="int" Mode="In" />
+          <Parameter Name="EmployeeId" Type="bigint" Mode="In" />
+        </Function>
         <EntityContainer Name="AttendanceSystemModelStoreContainer">
           <EntitySet Name="mst_AdminRole" EntityType="Self.mst_AdminRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="mst_CompanyType" EntityType="Self.mst_CompanyType" Schema="dbo" store:Type="Tables" />
@@ -1189,6 +1243,59 @@
           <EntitySet Name="tbl_State" EntityType="AttendanceSystemModel.tbl_State" />
           <EntitySet Name="tbl_District" EntityType="AttendanceSystemModel.tbl_District" />
           <EntitySet Name="tbl_WorkerHead" EntityType="AttendanceSystemModel.tbl_WorkerHead" />
+          <FunctionImport Name="Usp_EMployeePaymentSummuryReport" ReturnType="Collection(AttendanceSystemModel.Usp_EMployeePaymentSummuryReport_Result)">
+            <Parameter Name="CompanyId" Mode="In" Type="Int64" />
+            <Parameter Name="Month" Mode="In" Type="Int32" />
+            <Parameter Name="Year" Mode="In" Type="Int32" />
+            <Parameter Name="EmployeeId" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="Usp_GetAssignedWorkerListWithAttendance" ReturnType="Collection(AttendanceSystemModel.Usp_GetAssignedWorkerListWithAttendance_Result)">
+            <Parameter Name="CompanyId" Mode="In" Type="Int32" />
+            <Parameter Name="RoleId" Mode="In" Type="Int32" />
+            <Parameter Name="Date" Mode="In" Type="DateTime" />
+            <Parameter Name="SiteId" Mode="In" Type="Int32" />
+            <Parameter Name="EmployeeId" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="Usp_GetDateWiseEmployeePaymentReport" ReturnType="Collection(AttendanceSystemModel.Usp_GetDateWiseEmployeePaymentReport_Result)">
+            <Parameter Name="StartDate" Mode="In" Type="DateTime" />
+            <Parameter Name="EndDate" Mode="In" Type="DateTime" />
+            <Parameter Name="EmployeeId" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="Usp_GetDateWiseEmployeePaymentReport_dipaktest" ReturnType="Collection(AttendanceSystemModel.Usp_GetDateWiseEmployeePaymentReport_dipaktest_Result)">
+            <Parameter Name="StartDate" Mode="In" Type="DateTime" />
+            <Parameter Name="EndDate" Mode="In" Type="DateTime" />
+            <Parameter Name="EmployeeId" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="Usp_GetDateWiseMaterialReport" ReturnType="Collection(AttendanceSystemModel.Usp_GetDateWiseMaterialReport_Result)">
+            <Parameter Name="StartDate" Mode="In" Type="DateTime" />
+            <Parameter Name="EndDate" Mode="In" Type="DateTime" />
+            <Parameter Name="MaterialCategory" Mode="In" Type="Int64" />
+            <Parameter Name="SiteId" Mode="In" Type="Int64" />
+            <Parameter Name="CompanyId" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="Usp_GetDateWiseWorkerPaymentReport" ReturnType="Collection(AttendanceSystemModel.Usp_GetDateWiseWorkerPaymentReport_Result)">
+            <Parameter Name="StartDate" Mode="In" Type="DateTime" />
+            <Parameter Name="EndDate" Mode="In" Type="DateTime" />
+            <Parameter Name="EmployeeId" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="Usp_GetPaymentReport" ReturnType="Collection(AttendanceSystemModel.Usp_GetPaymentReport_Result)">
+            <Parameter Name="StartMonth" Mode="In" Type="Int32" />
+            <Parameter Name="EndMonth" Mode="In" Type="Int32" />
+            <Parameter Name="Year" Mode="In" Type="Int32" />
+            <Parameter Name="EmployeeId" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="Usp_GetSiteAssignedWorkerList" ReturnType="Collection(AttendanceSystemModel.Usp_GetSiteAssignedWorkerList_Result)">
+            <Parameter Name="CompanyId" Mode="In" Type="Int64" />
+            <Parameter Name="RoleId" Mode="In" Type="Int32" />
+            <Parameter Name="SiteId" Mode="In" Type="Int64" />
+            <Parameter Name="Date" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="Usp_WorkerPaymentSummuryReport" ReturnType="Collection(AttendanceSystemModel.Usp_WorkerPaymentSummuryReport_Result)">
+            <Parameter Name="CompanyId" Mode="In" Type="Int64" />
+            <Parameter Name="Month" Mode="In" Type="Int32" />
+            <Parameter Name="Year" Mode="In" Type="Int32" />
+            <Parameter Name="EmployeeId" Mode="In" Type="Int64" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -1752,6 +1859,7 @@
           <Property Name="EndLunchLocationFrom" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="EndLunchLatitude" Type="Decimal" Precision="11" Scale="8" />
           <Property Name="EndLunchLongitude" Type="Decimal" Precision="11" Scale="8" />
+          <Property Name="AttendanceId" Type="Int64" />
         </EntityType>
         <EntityType Name="tbl_Setting">
           <Key>
@@ -1832,6 +1940,107 @@
           <Property Name="ModifiedBy" Type="Int64" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
         </EntityType>
+        <ComplexType Name="Usp_EMployeePaymentSummuryReport_Result">
+          <Property Type="Int64" Name="EmployeeId" Nullable="false" />
+          <Property Type="String" Name="EmployeeCode" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="652" />
+          <Property Type="Int32" Name="EmploymentCategory" Nullable="false" />
+          <Property Type="Decimal" Name="PendingSalary" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="String" Name="Designation" Nullable="true" MaxLength="350" />
+        </ComplexType>
+        <ComplexType Name="Usp_GetAssignedWorkerListWithAttendance_Result">
+          <Property Type="Int64" Name="EmployeeId" Nullable="false" />
+          <Property Type="String" Name="EmployeeCode" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="652" />
+          <Property Type="String" Name="WorkerTypeName" Nullable="true" MaxLength="100" />
+          <Property Type="DateTime" Name="Date" Nullable="false" Precision="23" />
+          <Property Type="Int64" Name="SiteId" Nullable="false" />
+          <Property Type="String" Name="SiteName" Nullable="false" MaxLength="200" />
+          <Property Type="Boolean" Name="IsClosed" Nullable="false" />
+          <Property Type="Int64" Name="WorkerAttendanceId" Nullable="true" />
+          <Property Type="Boolean" Name="IsMorning" Nullable="false" />
+          <Property Type="Boolean" Name="IsAfternoon" Nullable="false" />
+          <Property Type="Boolean" Name="IsEvening" Nullable="false" />
+          <Property Type="Int32" Name="EmploymentCategory" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="Usp_GetDateWiseEmployeePaymentReport_Result">
+          <Property Type="DateTime" Name="Date" Nullable="false" Precision="23" />
+          <Property Type="Decimal" Name="Opening" Nullable="false" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="Credit" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="Debit" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="String" Name="Remark" Nullable="false" MaxLength="500" />
+          <Property Type="Decimal" Name="Closing" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="652" />
+        </ComplexType>
+        <ComplexType Name="Usp_GetDateWiseEmployeePaymentReport_dipaktest_Result">
+          <Property Type="DateTime" Name="Date" Nullable="false" Precision="23" />
+          <Property Type="Decimal" Name="Opening" Nullable="false" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="Credit" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="Debit" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="String" Name="Remark" Nullable="false" MaxLength="500" />
+          <Property Type="Decimal" Name="Closing" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="652" />
+        </ComplexType>
+        <ComplexType Name="Usp_GetDateWiseMaterialReport_Result">
+          <Property Type="Int64" Name="MaterialId" Nullable="false" />
+          <Property Type="DateTime" Name="MaterialDate" Nullable="false" Precision="23" />
+          <Property Type="Decimal" Name="Opening" Nullable="false" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="InWard" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="Outward" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="String" Name="Remark" Nullable="false" MaxLength="500" />
+          <Property Type="Decimal" Name="Closing" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="50" />
+          <Property Type="Int64" Name="SiteId" Nullable="false" />
+          <Property Type="String" Name="SiteName" Nullable="false" MaxLength="200" />
+        </ComplexType>
+        <ComplexType Name="Usp_GetDateWiseWorkerPaymentReport_Result">
+          <Property Type="DateTime" Name="Date" Nullable="false" Precision="23" />
+          <Property Type="Decimal" Name="Opening" Nullable="false" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="Credit" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="Debit" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="String" Name="Remark" Nullable="false" MaxLength="500" />
+          <Property Type="Decimal" Name="Closing" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="652" />
+        </ComplexType>
+        <ComplexType Name="Usp_GetPaymentReport_Result">
+          <Property Type="DateTime" Name="Date" Nullable="false" Precision="23" />
+          <Property Type="Decimal" Name="Opening" Nullable="false" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="Credit" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="Debit" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="String" Name="Remark" Nullable="false" MaxLength="500" />
+          <Property Type="Decimal" Name="Closing" Nullable="true" Precision="38" Scale="2" />
+        </ComplexType>
+        <ComplexType Name="Usp_GetSiteAssignedWorkerList_Result">
+          <Property Type="Boolean" Name="IsClosed" Nullable="false" />
+          <Property Type="Int64" Name="AttendanceId" Nullable="true" />
+          <Property Type="Int64" Name="EmployeeId" Nullable="false" />
+          <Property Type="Int64" Name="CompanyId" Nullable="false" />
+          <Property Type="String" Name="Prefix" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="FirstName" Nullable="false" MaxLength="350" />
+          <Property Type="String" Name="LastName" Nullable="false" MaxLength="250" />
+          <Property Type="String" Name="MobileNo" Nullable="true" MaxLength="20" />
+          <Property Type="DateTime" Name="Dob" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="DateOfJoin" Nullable="true" Precision="23" />
+          <Property Type="String" Name="BloodGroup" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="EmploymentCategory" Nullable="false" />
+          <Property Type="Decimal" Name="MonthlySalaryPrice" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="AdharCardNo" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="EmployeeCode" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Address" Nullable="true" MaxLength="450" />
+          <Property Type="String" Name="City" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="Pincode" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="State" Nullable="true" MaxLength="200" />
+          <Property Type="Boolean" Name="IsActive" Nullable="false" />
+          <Property Type="String" Name="ProfilePicture" Nullable="true" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="Usp_WorkerPaymentSummuryReport_Result">
+          <Property Type="Int64" Name="EmployeeId" Nullable="false" />
+          <Property Type="String" Name="EmployeeCode" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="652" />
+          <Property Type="Int32" Name="EmploymentCategory" Nullable="false" />
+          <Property Type="Decimal" Name="PendingSalary" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="String" Name="Designation" Nullable="true" MaxLength="350" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2623,6 +2832,7 @@
           <EntitySetMapping Name="tbl_EmployeeLunchBreak">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_EmployeeLunchBreak">
               <MappingFragment StoreEntitySet="tbl_EmployeeLunchBreak">
+                <ScalarProperty Name="AttendanceId" ColumnName="AttendanceId" />
                 <ScalarProperty Name="EndLunchLongitude" ColumnName="EndLunchLongitude" />
                 <ScalarProperty Name="EndLunchLatitude" ColumnName="EndLunchLatitude" />
                 <ScalarProperty Name="EndLunchLocationFrom" ColumnName="EndLunchLocationFrom" />
@@ -2720,6 +2930,143 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Usp_EMployeePaymentSummuryReport" FunctionName="AttendanceSystemModel.Store.Usp_EMployeePaymentSummuryReport">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AttendanceSystemModel.Usp_EMployeePaymentSummuryReport_Result">
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="EmployeeCode" ColumnName="EmployeeCode" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="EmploymentCategory" ColumnName="EmploymentCategory" />
+                <ScalarProperty Name="PendingSalary" ColumnName="PendingSalary" />
+                <ScalarProperty Name="Designation" ColumnName="Designation" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Usp_GetAssignedWorkerListWithAttendance" FunctionName="AttendanceSystemModel.Store.Usp_GetAssignedWorkerListWithAttendance">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AttendanceSystemModel.Usp_GetAssignedWorkerListWithAttendance_Result">
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="EmployeeCode" ColumnName="EmployeeCode" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="WorkerTypeName" ColumnName="WorkerTypeName" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="SiteId" ColumnName="SiteId" />
+                <ScalarProperty Name="SiteName" ColumnName="SiteName" />
+                <ScalarProperty Name="IsClosed" ColumnName="IsClosed" />
+                <ScalarProperty Name="WorkerAttendanceId" ColumnName="WorkerAttendanceId" />
+                <ScalarProperty Name="IsMorning" ColumnName="IsMorning" />
+                <ScalarProperty Name="IsAfternoon" ColumnName="IsAfternoon" />
+                <ScalarProperty Name="IsEvening" ColumnName="IsEvening" />
+                <ScalarProperty Name="EmploymentCategory" ColumnName="EmploymentCategory" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Usp_GetDateWiseEmployeePaymentReport" FunctionName="AttendanceSystemModel.Store.Usp_GetDateWiseEmployeePaymentReport">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AttendanceSystemModel.Usp_GetDateWiseEmployeePaymentReport_Result">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Opening" ColumnName="Opening" />
+                <ScalarProperty Name="Credit" ColumnName="Credit" />
+                <ScalarProperty Name="Debit" ColumnName="Debit" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Closing" ColumnName="Closing" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Usp_GetDateWiseEmployeePaymentReport_dipaktest" FunctionName="AttendanceSystemModel.Store.Usp_GetDateWiseEmployeePaymentReport_dipaktest">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AttendanceSystemModel.Usp_GetDateWiseEmployeePaymentReport_dipaktest_Result">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Opening" ColumnName="Opening" />
+                <ScalarProperty Name="Credit" ColumnName="Credit" />
+                <ScalarProperty Name="Debit" ColumnName="Debit" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Closing" ColumnName="Closing" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Usp_GetDateWiseMaterialReport" FunctionName="AttendanceSystemModel.Store.Usp_GetDateWiseMaterialReport">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AttendanceSystemModel.Usp_GetDateWiseMaterialReport_Result">
+                <ScalarProperty Name="MaterialId" ColumnName="MaterialId" />
+                <ScalarProperty Name="MaterialDate" ColumnName="MaterialDate" />
+                <ScalarProperty Name="Opening" ColumnName="Opening" />
+                <ScalarProperty Name="InWard" ColumnName="InWard" />
+                <ScalarProperty Name="Outward" ColumnName="Outward" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Closing" ColumnName="Closing" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="SiteId" ColumnName="SiteId" />
+                <ScalarProperty Name="SiteName" ColumnName="SiteName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Usp_GetDateWiseWorkerPaymentReport" FunctionName="AttendanceSystemModel.Store.Usp_GetDateWiseWorkerPaymentReport">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AttendanceSystemModel.Usp_GetDateWiseWorkerPaymentReport_Result">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Opening" ColumnName="Opening" />
+                <ScalarProperty Name="Credit" ColumnName="Credit" />
+                <ScalarProperty Name="Debit" ColumnName="Debit" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Closing" ColumnName="Closing" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Usp_GetPaymentReport" FunctionName="AttendanceSystemModel.Store.Usp_GetPaymentReport">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AttendanceSystemModel.Usp_GetPaymentReport_Result">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Opening" ColumnName="Opening" />
+                <ScalarProperty Name="Credit" ColumnName="Credit" />
+                <ScalarProperty Name="Debit" ColumnName="Debit" />
+                <ScalarProperty Name="Remark" ColumnName="Remark" />
+                <ScalarProperty Name="Closing" ColumnName="Closing" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Usp_GetSiteAssignedWorkerList" FunctionName="AttendanceSystemModel.Store.Usp_GetSiteAssignedWorkerList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AttendanceSystemModel.Usp_GetSiteAssignedWorkerList_Result">
+                <ScalarProperty Name="IsClosed" ColumnName="IsClosed" />
+                <ScalarProperty Name="AttendanceId" ColumnName="AttendanceId" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="Prefix" ColumnName="Prefix" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="MobileNo" ColumnName="MobileNo" />
+                <ScalarProperty Name="Dob" ColumnName="Dob" />
+                <ScalarProperty Name="DateOfJoin" ColumnName="DateOfJoin" />
+                <ScalarProperty Name="BloodGroup" ColumnName="BloodGroup" />
+                <ScalarProperty Name="EmploymentCategory" ColumnName="EmploymentCategory" />
+                <ScalarProperty Name="MonthlySalaryPrice" ColumnName="MonthlySalaryPrice" />
+                <ScalarProperty Name="AdharCardNo" ColumnName="AdharCardNo" />
+                <ScalarProperty Name="EmployeeCode" ColumnName="EmployeeCode" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Pincode" ColumnName="Pincode" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ProfilePicture" ColumnName="ProfilePicture" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Usp_WorkerPaymentSummuryReport" FunctionName="AttendanceSystemModel.Store.Usp_WorkerPaymentSummuryReport">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AttendanceSystemModel.Usp_WorkerPaymentSummuryReport_Result">
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="EmployeeCode" ColumnName="EmployeeCode" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="EmploymentCategory" ColumnName="EmploymentCategory" />
+                <ScalarProperty Name="PendingSalary" ColumnName="PendingSalary" />
+                <ScalarProperty Name="Designation" ColumnName="Designation" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

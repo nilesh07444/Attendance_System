@@ -250,6 +250,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 string ErrorMessage = ex.Message.ToString();
                 throw ex;
             }
+
             return View(attendanceVM);
         }
 
@@ -343,6 +344,92 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 throw ex;
             }
             return RedirectToAction("index");
+        }
+
+        public ActionResult LunchBreak(long id)
+        {
+            List<EmployeeLunchBreakVM> lstEmployeeLunchBreak = new List<EmployeeLunchBreakVM>();
+            AttendanceVM attendanceVM = new AttendanceVM();
+
+
+            try
+            {
+                #region Get Attendance detail
+
+                attendanceVM = (from at in _db.tbl_Attendance
+                                join emp in _db.tbl_Employee on at.UserId equals emp.EmployeeId
+                                where !at.IsDeleted
+                                && emp.CompanyId == companyId
+                                && at.AttendanceId == id
+                                select new AttendanceVM
+                                {
+                                    AttendanceId = at.AttendanceId,
+                                    CompanyId = at.CompanyId,
+                                    UserId = at.UserId,
+                                    Name = emp.Prefix + " " + emp.FirstName + " " + emp.LastName,
+                                    AttendanceDate = at.AttendanceDate,
+                                    DayType = at.DayType,
+                                    ExtraHours = at.ExtraHours,
+                                    TodayWorkDetail = at.TodayWorkDetail,
+                                    TomorrowWorkDetail = at.TomorrowWorkDetail,
+                                    Remarks = at.Remarks,
+                                    LocationFrom = at.LocationFrom,
+                                    OutLocationFrom = at.OutLocationFrom,
+                                    Status = at.Status,
+                                    RejectReason = at.RejectReason,
+                                    InDateTime = at.InDateTime,
+                                    OutDateTime = at.OutDateTime,
+                                    NoOfHoursWorked = at.NoOfHoursWorked.HasValue ? at.NoOfHoursWorked.Value : 0,
+                                    NoOfUnitWorked = at.NoOfUnitWorked.HasValue ? at.NoOfUnitWorked.Value : 0,
+                                    PerCategoryPrice = emp.PerCategoryPrice,
+                                    EmploymentCategory = emp.EmploymentCategory
+                                }).FirstOrDefault();
+
+                attendanceVM.StatusText = CommonMethod.GetEnumDescription((AttendanceStatus)attendanceVM.Status);
+
+                if (attendanceVM.DayType != 0)
+                {
+                    attendanceVM.DayTypeText = attendanceVM.DayType == 1 ? CommonMethod.GetEnumDescription(DayType.FullDay) : CommonMethod.GetEnumDescription(DayType.HalfDay);
+                }
+
+                attendanceVM.WorkedHoursAmount = attendanceVM.NoOfHoursWorked * attendanceVM.PerCategoryPrice;
+                attendanceVM.WorkedUnitAmount = attendanceVM.NoOfUnitWorked * attendanceVM.PerCategoryPrice;
+
+                ViewData["AttendanceDetail"] = attendanceVM;
+
+                #endregion
+
+                #region Get Lunch break list
+
+                lstEmployeeLunchBreak = (from lunch in _db.tbl_EmployeeLunchBreak
+                                         join emp in _db.tbl_Employee on lunch.EmployeeId equals emp.EmployeeId
+                                         join role in _db.mst_AdminRole on emp.AdminRoleId equals role.AdminRoleId
+                                         where !emp.IsDeleted && emp.CompanyId == companyId && lunch.AttendanceId == id
+                                         select new EmployeeLunchBreakVM
+                                         {
+                                             EmployeeLunchBreakId = lunch.EmployeeLunchBreakId,
+                                             EmployeeId = lunch.EmployeeId,
+                                             EmployeeName = emp.Prefix + " " + emp.FirstName + " " + emp.LastName,
+                                             EmployeeCode = emp.EmployeeCode,
+                                             StartDateTime = lunch.StartDateTime,
+                                             EndDateTime = lunch.EndDateTime,
+                                             EmployeeRole = role.AdminRoleName,
+                                             StartLunchLocationFrom = lunch.StartLunchLocationFrom,
+                                             EndLunchLocationFrom = lunch.EndLunchLocationFrom
+                                         }).OrderByDescending(x => x.StartDateTime).ToList();
+
+                #endregion
+
+            }
+            catch (Exception ex)
+            {
+                string ErrorMessage = ex.Message.ToString();
+                throw ex;
+            }
+
+
+
+            return View(lstEmployeeLunchBreak);
         }
 
     }

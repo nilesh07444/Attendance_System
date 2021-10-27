@@ -195,5 +195,190 @@ namespace AttendanceSystem.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Usp_GetPatmentReport_Result>("Usp_GetPatmentReport", startMonthParameter, endMonthParameter, yearParameter, employeeIdParameter);
         }
+    
+        public virtual ObjectResult<Usp_EMployeePaymentSummuryReport_Result> Usp_EMployeePaymentSummuryReport(Nullable<long> companyId, Nullable<int> month, Nullable<int> year, Nullable<long> employeeId)
+        {
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(long));
+    
+            var monthParameter = month.HasValue ?
+                new ObjectParameter("Month", month) :
+                new ObjectParameter("Month", typeof(int));
+    
+            var yearParameter = year.HasValue ?
+                new ObjectParameter("Year", year) :
+                new ObjectParameter("Year", typeof(int));
+    
+            var employeeIdParameter = employeeId.HasValue ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Usp_EMployeePaymentSummuryReport_Result>("Usp_EMployeePaymentSummuryReport", companyIdParameter, monthParameter, yearParameter, employeeIdParameter);
+        }
+    
+        public virtual ObjectResult<Usp_GetAssignedWorkerListWithAttendance_Result> Usp_GetAssignedWorkerListWithAttendance(Nullable<int> companyId, Nullable<int> roleId, Nullable<System.DateTime> date, Nullable<int> siteId, Nullable<long> employeeId)
+        {
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(int));
+    
+            var roleIdParameter = roleId.HasValue ?
+                new ObjectParameter("RoleId", roleId) :
+                new ObjectParameter("RoleId", typeof(int));
+    
+            var dateParameter = date.HasValue ?
+                new ObjectParameter("Date", date) :
+                new ObjectParameter("Date", typeof(System.DateTime));
+    
+            var siteIdParameter = siteId.HasValue ?
+                new ObjectParameter("SiteId", siteId) :
+                new ObjectParameter("SiteId", typeof(int));
+    
+            var employeeIdParameter = employeeId.HasValue ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Usp_GetAssignedWorkerListWithAttendance_Result>("Usp_GetAssignedWorkerListWithAttendance", companyIdParameter, roleIdParameter, dateParameter, siteIdParameter, employeeIdParameter);
+        }
+    
+        public virtual ObjectResult<Usp_GetDateWiseEmployeePaymentReport_Result> Usp_GetDateWiseEmployeePaymentReport(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, Nullable<long> employeeId)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var employeeIdParameter = employeeId.HasValue ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Usp_GetDateWiseEmployeePaymentReport_Result>("Usp_GetDateWiseEmployeePaymentReport", startDateParameter, endDateParameter, employeeIdParameter);
+        }
+    
+        public virtual ObjectResult<Usp_GetDateWiseEmployeePaymentReport_dipaktest_Result> Usp_GetDateWiseEmployeePaymentReport_dipaktest(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, Nullable<long> employeeId)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var employeeIdParameter = employeeId.HasValue ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Usp_GetDateWiseEmployeePaymentReport_dipaktest_Result>("Usp_GetDateWiseEmployeePaymentReport_dipaktest", startDateParameter, endDateParameter, employeeIdParameter);
+        }
+    
+        public virtual ObjectResult<Usp_GetDateWiseMaterialReport_Result> Usp_GetDateWiseMaterialReport(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, Nullable<long> materialCategory, Nullable<long> siteId, Nullable<long> companyId)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var materialCategoryParameter = materialCategory.HasValue ?
+                new ObjectParameter("MaterialCategory", materialCategory) :
+                new ObjectParameter("MaterialCategory", typeof(long));
+    
+            var siteIdParameter = siteId.HasValue ?
+                new ObjectParameter("SiteId", siteId) :
+                new ObjectParameter("SiteId", typeof(long));
+    
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Usp_GetDateWiseMaterialReport_Result>("Usp_GetDateWiseMaterialReport", startDateParameter, endDateParameter, materialCategoryParameter, siteIdParameter, companyIdParameter);
+        }
+    
+        public virtual ObjectResult<Usp_GetDateWiseWorkerPaymentReport_Result> Usp_GetDateWiseWorkerPaymentReport(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, Nullable<long> employeeId)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("StartDate", startDate) :
+                new ObjectParameter("StartDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("EndDate", endDate) :
+                new ObjectParameter("EndDate", typeof(System.DateTime));
+    
+            var employeeIdParameter = employeeId.HasValue ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Usp_GetDateWiseWorkerPaymentReport_Result>("Usp_GetDateWiseWorkerPaymentReport", startDateParameter, endDateParameter, employeeIdParameter);
+        }
+    
+        public virtual ObjectResult<Usp_GetPaymentReport_Result> Usp_GetPaymentReport(Nullable<int> startMonth, Nullable<int> endMonth, Nullable<int> year, Nullable<long> employeeId)
+        {
+            var startMonthParameter = startMonth.HasValue ?
+                new ObjectParameter("StartMonth", startMonth) :
+                new ObjectParameter("StartMonth", typeof(int));
+    
+            var endMonthParameter = endMonth.HasValue ?
+                new ObjectParameter("EndMonth", endMonth) :
+                new ObjectParameter("EndMonth", typeof(int));
+    
+            var yearParameter = year.HasValue ?
+                new ObjectParameter("Year", year) :
+                new ObjectParameter("Year", typeof(int));
+    
+            var employeeIdParameter = employeeId.HasValue ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Usp_GetPaymentReport_Result>("Usp_GetPaymentReport", startMonthParameter, endMonthParameter, yearParameter, employeeIdParameter);
+        }
+    
+        public virtual ObjectResult<Usp_GetSiteAssignedWorkerList_Result> Usp_GetSiteAssignedWorkerList(Nullable<long> companyId, Nullable<int> roleId, Nullable<long> siteId, Nullable<System.DateTime> date)
+        {
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(long));
+    
+            var roleIdParameter = roleId.HasValue ?
+                new ObjectParameter("RoleId", roleId) :
+                new ObjectParameter("RoleId", typeof(int));
+    
+            var siteIdParameter = siteId.HasValue ?
+                new ObjectParameter("SiteId", siteId) :
+                new ObjectParameter("SiteId", typeof(long));
+    
+            var dateParameter = date.HasValue ?
+                new ObjectParameter("Date", date) :
+                new ObjectParameter("Date", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Usp_GetSiteAssignedWorkerList_Result>("Usp_GetSiteAssignedWorkerList", companyIdParameter, roleIdParameter, siteIdParameter, dateParameter);
+        }
+    
+        public virtual ObjectResult<Usp_WorkerPaymentSummuryReport_Result> Usp_WorkerPaymentSummuryReport(Nullable<long> companyId, Nullable<int> month, Nullable<int> year, Nullable<long> employeeId)
+        {
+            var companyIdParameter = companyId.HasValue ?
+                new ObjectParameter("CompanyId", companyId) :
+                new ObjectParameter("CompanyId", typeof(long));
+    
+            var monthParameter = month.HasValue ?
+                new ObjectParameter("Month", month) :
+                new ObjectParameter("Month", typeof(int));
+    
+            var yearParameter = year.HasValue ?
+                new ObjectParameter("Year", year) :
+                new ObjectParameter("Year", typeof(int));
+    
+            var employeeIdParameter = employeeId.HasValue ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Usp_WorkerPaymentSummuryReport_Result>("Usp_WorkerPaymentSummuryReport", companyIdParameter, monthParameter, yearParameter, employeeIdParameter);
+        }
     }
 }
