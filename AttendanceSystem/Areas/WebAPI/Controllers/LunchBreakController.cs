@@ -32,8 +32,11 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 long companyId = base.UTI.CompanyId;
                 bool IsStartLunchMode = false;
                 int NoOfLunchBreakAllowed = 1;
+                int LunchBreakNumber = 1;
 
                 #region Get Lunch Info
+
+                tbl_Attendance runningAttendance = _db.tbl_Attendance.Where(x => x.UserId == employeeId && x.InDateTime != null && x.OutDateTime == null).FirstOrDefault();
 
                 tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == companyId).FirstOrDefault();
                 if (objCompany != null)
@@ -47,23 +50,30 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     IsStartLunchMode = true;
                 }
 
-                // Get today's taken lunch breaks of employee
-                List<tbl_EmployeeLunchBreak> lstExistLunchs = _db.tbl_EmployeeLunchBreak.Where(x => x.EmployeeId == employeeId && DbFunctions.TruncateTime(x.StartDateTime) == DbFunctions.TruncateTime(today)).ToList();
-
                 #endregion
 
                 #region Validation
 
-                if (IsStartLunchMode && !_db.tbl_Attendance.Any(x => x.UserId == employeeId && x.InDateTime != null && x.OutDateTime == null))
+                if (runningAttendance == null)
                 {
                     response.IsError = true;
                     response.AddError(ErrorMessage.YourAttendanceNotTakenYetYouCanNotTakeLunch);
                 }
 
-                if (IsStartLunchMode && lstExistLunchs != null && lstExistLunchs.Count >= NoOfLunchBreakAllowed)
+                // Get today's taken lunch breaks of employee
+                if (runningAttendance != null)
                 {
-                    response.IsError = true;
-                    response.AddError("Your Break Limit Reached, so you can not take lunch break more for today.");
+                    List<tbl_EmployeeLunchBreak> lstExistLunchs = _db.tbl_EmployeeLunchBreak.Where(x => x.EmployeeId == employeeId && x.AttendanceId == runningAttendance.AttendanceId).ToList();
+                    if (lstExistLunchs != null && lstExistLunchs.Count > 0)
+                    {
+                        LunchBreakNumber = lstExistLunchs.Count + 1;
+                    }
+
+                    if (IsStartLunchMode && lstExistLunchs != null && lstExistLunchs.Count >= NoOfLunchBreakAllowed)
+                    {
+                        response.IsError = true;
+                        response.AddError("Your Break Limit Reached, so you can not take lunch break more for today.");
+                    }
                 }
 
                 #endregion Validation
@@ -79,7 +89,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                         tbl_EmployeeLunchBreak lunchObject = new tbl_EmployeeLunchBreak();
                         lunchObject.EmployeeId = base.UTI.EmployeeId;
-
+                        lunchObject.AttendanceId = runningAttendance.AttendanceId;
+                        lunchObject.LunchBreakNo = LunchBreakNumber;
                         lunchObject.StartDateTime = CommonMethod.CurrentIndianDateTime();
                         lunchObject.StartLunchLatitude = lunchbreakVM.Latitude;
                         lunchObject.StartLunchLongitude = lunchbreakVM.Longitude;
@@ -111,12 +122,11 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             return response;
         }
 
-        [Route("List"), HttpGet]
-        public ResponseDataModel<List<EmployeeLunchBreakVM>> List()
+        [Route("List/{attendanceId}"), HttpGet]
+        public ResponseDataModel<List<EmployeeLunchBreakVM>> List(long attendanceId)
         {
             ResponseDataModel<List<EmployeeLunchBreakVM>> response = new ResponseDataModel<List<EmployeeLunchBreakVM>>();
             List<EmployeeLunchBreakVM> lunchBreakVM = new List<EmployeeLunchBreakVM>();
-            DateTime today = CommonMethod.CurrentIndianDateTime();
 
             try
             {
@@ -126,8 +136,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 lunchBreakVM = (from lunch in _db.tbl_EmployeeLunchBreak
                                 join emp in _db.tbl_Employee on lunch.EmployeeId equals emp.EmployeeId
                                 join role in _db.mst_AdminRole on emp.AdminRoleId equals role.AdminRoleId
-                                where !emp.IsDeleted && emp.CompanyId == companyId && emp.EmployeeId == employeeId
-                                && DbFunctions.TruncateTime(lunch.StartDateTime) == DbFunctions.TruncateTime(today)
+                                join att in _db.tbl_Attendance on lunch.AttendanceId equals att.AttendanceId
+                                where !emp.IsDeleted && emp.CompanyId == companyId && emp.EmployeeId == employeeId && lunch.AttendanceId == attendanceId
                                 select new EmployeeLunchBreakVM
                                 {
                                     EmployeeLunchBreakId = lunch.EmployeeLunchBreakId,
@@ -144,8 +154,11 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                     EndLunchLatitude = lunch.EndLunchLatitude,
                                     EndLunchLongitude = lunch.EndLunchLongitude,
 
-                                    EmployeeRole = role.AdminRoleName
-                                }).OrderByDescending(x => x.StartDateTime).ToList();
+                                    EmployeeRole = role.AdminRoleName,
+                                    AttendaceId = lunch.AttendanceId,
+                                    AttendaceDate = att.AttendanceDate,
+                                    LunchBreakNo = lunch.LunchBreakNo
+                                }).OrderBy(x => x.LunchBreakNo).ThenBy(x => x.StartDateTime).ToList();
 
                 response.Data = lunchBreakVM;
                 response.IsError = false;
@@ -154,6 +167,36 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             {
                 response.IsError = true;
                 response.AddError(ex.Message.ToString());
+            }
+
+            return response;
+        }
+
+        [Route("CheckEmployeeLunchStatus"), HttpGet]
+        public ResponseDataModel<LunchBreakStatusVM> CheckEmployeeLunchStatus()
+        {
+            LunchBreakStatusVM lunchBreakStatusVM = new LunchBreakStatusVM();
+            ResponseDataModel<LunchBreakStatusVM> response = new ResponseDataModel<LunchBreakStatusVM>();
+
+            try
+            {
+                long employeeId = base.UTI.EmployeeId;
+                long companyId = base.UTI.CompanyId;
+
+                lunchBreakStatusVM.EmployeeId = employeeId;
+
+                tbl_EmployeeLunchBreak objBreak = _db.tbl_EmployeeLunchBreak.Where(x => x.EmployeeId == employeeId).OrderByDescending(x => x.EmployeeLunchBreakId).FirstOrDefault();
+                if (objBreak != null && objBreak.EndDateTime == null)
+                {
+                    lunchBreakStatusVM.IsLunchBreakRunning = true;
+                    lunchBreakStatusVM.AttendanceId = objBreak.AttendanceId;
+                    lunchBreakStatusVM.LunchBreakId = objBreak.EmployeeLunchBreakId;
+                }
+
+                response.Data = lunchBreakStatusVM;
+            }
+            catch (Exception ex)
+            {
             }
 
             return response;

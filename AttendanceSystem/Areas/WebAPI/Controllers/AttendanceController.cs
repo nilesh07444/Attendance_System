@@ -530,7 +530,18 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 tbl_Employee employeeObj = _db.tbl_Employee.FirstOrDefault(x => x.EmployeeId == employeeId);
 
                 #region Validation
-                if (!_db.tbl_Attendance.Any(x => x.UserId == employeeId && x.InDateTime != null && x.OutDateTime == null))
+
+                tbl_Attendance attendanceObject = _db.tbl_Attendance.FirstOrDefault(x => x.UserId == employeeId && x.InDateTime != null && x.OutDateTime == null);
+
+                // Get Lunch breaks of attendance
+                tbl_EmployeeLunchBreak lunchBreakObject = _db.tbl_EmployeeLunchBreak.Where(x => x.EmployeeId == employeeId && x.AttendanceId == attendanceObject.AttendanceId && x.EndDateTime == null).FirstOrDefault();
+                if (lunchBreakObject != null)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.YouAreInLuchBreakYouCanNotOutAttendance);
+                }
+
+                if (attendanceObject == null)
                 {
                     response.IsError = true;
                     response.AddError(ErrorMessage.AlreadyOutForTheDay);
@@ -560,7 +571,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                 if (!response.IsError)
                 {
-                    tbl_Attendance attendanceObject = _db.tbl_Attendance.FirstOrDefault(x => x.UserId == employeeId && x.InDateTime != null && x.OutDateTime == null);
+                    
                     attendanceObject.OutLocationFrom = outTimeRequestVM.OutLocationFrom;
                     attendanceObject.Status = (int)AttendanceStatus.Pending;
                     attendanceObject.OutDateTime = CommonMethod.CurrentIndianDateTime();

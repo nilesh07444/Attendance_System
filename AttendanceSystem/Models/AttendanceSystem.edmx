@@ -406,6 +406,7 @@
           <Property Name="EndLunchLocationFrom" Type="nvarchar" MaxLength="200" />
           <Property Name="EndLunchLatitude" Type="decimal" Precision="11" Scale="8" />
           <Property Name="EndLunchLongitude" Type="decimal" Precision="11" Scale="8" />
+          <Property Name="LunchBreakNo" Type="int" />
         </EntityType>
         <EntityType Name="tbl_EmployeePayment">
           <Key>
@@ -1860,6 +1861,7 @@
           <Property Name="EndLunchLatitude" Type="Decimal" Precision="11" Scale="8" />
           <Property Name="EndLunchLongitude" Type="Decimal" Precision="11" Scale="8" />
           <Property Name="AttendanceId" Type="Int64" />
+          <Property Name="LunchBreakNo" Type="Int32" />
         </EntityType>
         <EntityType Name="tbl_Setting">
           <Key>
@@ -2832,6 +2834,7 @@
           <EntitySetMapping Name="tbl_EmployeeLunchBreak">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_EmployeeLunchBreak">
               <MappingFragment StoreEntitySet="tbl_EmployeeLunchBreak">
+                <ScalarProperty Name="LunchBreakNo" ColumnName="LunchBreakNo" />
                 <ScalarProperty Name="AttendanceId" ColumnName="AttendanceId" />
                 <ScalarProperty Name="EndLunchLongitude" ColumnName="EndLunchLongitude" />
                 <ScalarProperty Name="EndLunchLatitude" ColumnName="EndLunchLatitude" />

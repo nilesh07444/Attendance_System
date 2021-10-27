@@ -15,8 +15,11 @@ namespace AttendanceSystem
         public string EndLunchLocationFrom { get; set; }
         public decimal? EndLunchLatitude { get; set; }
         public decimal? EndLunchLongitude { get; set; }
+        public int? LunchBreakNo { get; set; }
 
         // Additional
+        public long? AttendaceId { get; set; }
+        public DateTime? AttendaceDate { get; set; }
         public string EmployeeName { get; set; }
         public string EmployeeCode { get; set; }
         public string EmployeeRole { get; set; }
@@ -43,4 +46,13 @@ namespace AttendanceSystem
         public decimal? Latitude { get; set; }
         public decimal? Longitude { get; set; }
     }
+
+    public class LunchBreakStatusVM
+    {
+        public long EmployeeId { get; set; }
+        public long? AttendanceId { get; set; }
+        public long? LunchBreakId { get; set; }
+        public bool IsLunchBreakRunning { get; set; }
+    }
+
 }

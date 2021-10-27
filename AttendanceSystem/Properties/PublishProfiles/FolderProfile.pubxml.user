@@ -24,7 +24,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>06/08/2021 12:37:18</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Attendance/Index.cshtml">
-      <publishTime>08/13/2021 23:29:57</publishTime>
+      <publishTime>10/27/2021 12:49:47</publishTime>
+    </File>
+    <File Include="Areas/Admin/Views/Attendance/LunchBreak.cshtml">
+      <publishTime>10/27/2021 18:19:27</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Attendance/Reject.cshtml">
       <publishTime>06/06/2021 00:24:25</publishTime>
@@ -60,7 +63,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Dashboard/Index.cshtml">
-      <publishTime>10/20/2021 00:22:42</publishTime>
+      <publishTime>10/27/2021 00:19:39</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Dashboard/URLRedirect.cshtml">
       <publishTime>07/10/2021 01:07:13</publishTime>
@@ -273,7 +276,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>10/20/2021 23:20:58</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Shared/_Layout.cshtml">
-      <publishTime>10/22/2021 12:58:56</publishTime>
+      <publishTime>10/26/2021 19:24:27</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Site/Add.cshtml">
       <publishTime>07/17/2021 11:19:46</publishTime>
@@ -333,7 +336,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>04/15/2021 23:40:49</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Worker/Add.cshtml">
-      <publishTime>08/08/2021 10:36:58</publishTime>
+      <publishTime>10/26/2021 23:41:37</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Worker/Index.cshtml">
       <publishTime>08/15/2021 00:16:45</publishTime>
@@ -352,6 +355,12 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     </File>
     <File Include="Areas/Admin/Views/WorkerAttendance/View.cshtml">
       <publishTime>07/17/2021 11:47:57</publishTime>
+    </File>
+    <File Include="Areas/Admin/Views/WorkerHead/Add.cshtml">
+      <publishTime>10/26/2021 19:37:03</publishTime>
+    </File>
+    <File Include="Areas/Admin/Views/WorkerHead/Index.cshtml">
+      <publishTime>10/26/2021 19:23:41</publishTime>
     </File>
     <File Include="Areas/Admin/Views/WorkerType/Add.cshtml">
       <publishTime>07/17/2021 10:44:51</publishTime>
@@ -420,10 +429,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>10/09/2013 16:29:20</publishTime>
     </File>
     <File Include="bin/AttendanceSystem.dll">
-      <publishTime>10/22/2021 16:27:50</publishTime>
+      <publishTime>10/27/2021 19:25:36</publishTime>
     </File>
     <File Include="bin/AttendanceSystem.pdb">
-      <publishTime>10/22/2021 16:27:50</publishTime>
+      <publishTime>10/27/2021 19:25:36</publishTime>
     </File>
     <File Include="bin/BouncyCastle.Crypto.dll">
       <publishTime>02/21/2020 16:24:54</publishTime>
@@ -3747,7 +3756,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>04/15/2021 23:38:39</publishTime>
     </File>
     <File Include="Models/AttendanceSystem.edmx.diagram">
-      <publishTime>10/22/2021 14:40:43</publishTime>
+      <publishTime>10/26/2021 19:13:26</publishTime>
     </File>
     <File Include="Scripts/bootstrap-multiselect.css">
       <publishTime>01/05/2021 18:29:12</publishTime>

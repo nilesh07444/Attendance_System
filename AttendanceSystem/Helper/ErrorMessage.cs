@@ -213,5 +213,6 @@
         public static string DistrictNameExist = "District Name is Already Exist";
 
         public static string YourAttendanceNotTakenYetYouCanNotTakeLunch = "Your attendance status not Login, so you can not take lunch.";
+        public static string YouAreInLuchBreakYouCanNotOutAttendance = "You are in lunch break now, so you can not out from attendance.";
     }
 }
