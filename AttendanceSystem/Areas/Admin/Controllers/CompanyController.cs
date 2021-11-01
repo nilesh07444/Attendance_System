@@ -231,6 +231,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         {
             try
             {
+
+                var errors = ModelState.Where(m => m.Value.Errors.Count() > 0);
+                 
+                IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
                 if (ModelState.IsValid)
                 {
                     #region

@@ -71,7 +71,7 @@ namespace AttendanceSystem.ViewModel
         public string CompanyDistrict { get; set; }
 
         [Display(Name = "State *")]
-        [Required(ErrorMessage = "This field is required")]
+        //[Required(ErrorMessage = "This field is required")]
         public long? CompanyStateId { get; set; }
 
         [Display(Name = "District *")]
@@ -114,7 +114,7 @@ namespace AttendanceSystem.ViewModel
         public string CompanyAdminDOB { get; set; }
 
         [Display(Name = "Date Of Marriage Anniversary *")]
-        [Required(ErrorMessage = "This field is required")]
+        //[Required(ErrorMessage = "This field is required")]
         public DateTime? CompanyAdminDateOfMarriageAnniversary { get; set; }
 
         [Display(Name = "Email Id")]
@@ -154,7 +154,7 @@ namespace AttendanceSystem.ViewModel
         public string CompanyAdminDistrict { get; set; }
 
         [Display(Name = "State *")]
-        [Required(ErrorMessage = "This field is required")]
+        //[Required(ErrorMessage = "This field is required")]
         public long? CompanyAdminStateId { get; set; }
 
         [Display(Name = "District *")]
