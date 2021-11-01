@@ -853,5 +853,42 @@ namespace AttendanceSystem
             return htmlContent.Replace("\r\n", "");
         }
 
+        public static List<SelectListItem> GetDistrictListByStateId(long StateId)
+        {
+            AttendanceSystemEntities _db = new AttendanceSystemEntities();
+            List<SelectListItem> lstDistricts = new List<SelectListItem>();
+
+            List<SelectListItem> lst = (from st in _db.tbl_District
+                                        where !st.IsDeleted && st.IsActive
+                                        && st.StateId == StateId
+                                        select new SelectListItem
+                                        {
+                                            Text = st.DistrictName,
+                                            Value = st.DistrictId.ToString()
+                                        }).OrderBy(x => x.Text).ToList();
+
+            lstDistricts = lst != null ? lst : lstDistricts;
+
+            return lstDistricts;
+        }
+
+        public static List<SelectListItem> GetStateListOfIndia()
+        {
+            AttendanceSystemEntities _db = new AttendanceSystemEntities();
+            List<SelectListItem> lstStates = new List<SelectListItem>();
+
+            List<SelectListItem> lst = (from st in _db.tbl_State
+                                        where !st.IsDeleted && st.IsActive
+                                        select new SelectListItem
+                                        {
+                                            Text = st.StateName,
+                                            Value = st.StateId.ToString()
+                                        }).OrderBy(x => x.Text).ToList();
+
+            lstStates = lst != null ? lst : lstStates;
+
+            return lstStates;
+        }
+
     }
 }

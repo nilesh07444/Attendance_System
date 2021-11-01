@@ -4,6 +4,7 @@ using AttendanceSystem.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Entity.SqlServer;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -48,6 +49,11 @@ namespace AttendanceSystem.Areas.Client.Controllers
             var HeroImageName = _db.tbl_Setting.FirstOrDefault().HeroCompanyRequestPageImageName;
             ViewBag.HeroUrl = ErrorMessage.HeroDirectoryPath + HeroImageName;
 
+            var stateList = CommonMethod.GetStateListOfIndia();
+            companyRequestVM.CompanyStateList = stateList;
+            companyRequestVM.CompanyAdminStateList = stateList;
+            companyRequestVM.CompanyDistrictList = new List<SelectListItem>();
+            companyRequestVM.CompanyAdminDistrictList = new List<SelectListItem>();
             return View(companyRequestVM);
         }
 
@@ -307,15 +313,15 @@ namespace AttendanceSystem.Areas.Client.Controllers
                     objCompany.CompanyEmailId = companyRequestVM.CompanyEmailId;
                     objCompany.CompanyContactNo = companyRequestVM.CompanyContactNo;
                     objCompany.CompanyAlternateContactNo = companyRequestVM.CompanyAlternateContactNo;
-                    objCompany.CompanyGSTNo = companyRequestVM.CompanyGSTNo.ToUpper();
+                    objCompany.CompanyGSTNo = !string.IsNullOrEmpty(companyRequestVM.CompanyGSTNo) ? companyRequestVM.CompanyGSTNo.ToUpper(): string.Empty;
                     objCompany.CompanyGSTPhoto = companyGstFileName;
                     objCompany.CompanyPanNo = companyRequestVM.CompanyPanNo.ToUpper();
                     objCompany.CompanyPanPhoto = companyPanCardFileName;
                     objCompany.CompanyAddress = companyRequestVM.CompanyAddress.ToUpper();
                     objCompany.CompanyPincode = companyRequestVM.CompanyPincode;
                     objCompany.CompanyCity = companyRequestVM.CompanyCity.ToUpper();
-                    objCompany.CompanyState = companyRequestVM.CompanyState.ToUpper();
-                    objCompany.CompanyDistrict = companyRequestVM.CompanyDistrict.ToUpper();
+                    objCompany.CompanyStateId = companyRequestVM.CompanyStateId;
+                    objCompany.CompanyDistrictId = companyRequestVM.CompanyDistrictId;
                     objCompany.CompanyLogoImage = companyLogoFileName;
                     objCompany.CompanyRegisterProofImage = companyRegisterProofFileName;
                     objCompany.CompanyDescription = companyRequestVM.CompanyDescription.ToUpper();
@@ -333,8 +339,8 @@ namespace AttendanceSystem.Areas.Client.Controllers
                     objCompany.CompanyAdminAddress = companyRequestVM.CompanyAdminAddress.ToUpper();
                     objCompany.CompanyAdminPincode = companyRequestVM.CompanyAdminPincode;
                     objCompany.CompanyAdminCity = companyRequestVM.CompanyAdminCity.ToUpper();
-                    objCompany.CompanyAdminState = companyRequestVM.CompanyAdminState.ToUpper();
-                    objCompany.CompanyAdminDistrict = companyRequestVM.CompanyAdminDistrict.ToUpper();
+                    objCompany.CompanyAdminStateId = companyRequestVM.CompanyAdminStateId;
+                    objCompany.CompanyAdminDistrictId = companyRequestVM.CompanyAdminDistrictId;
                     objCompany.CompanyAdminProfilePhoto = profileFileName;
                     objCompany.CompanyAdminAadharCardNo = companyRequestVM.CompanyAdminAadharCardNo;
                     objCompany.CompanyAdminAadharCardPhoto = companyAdminAdharCardFileName;
@@ -348,7 +354,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
                     objCompany.ModifiedBy = -1;
                     objCompany.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     _db.tbl_CompanyRequest.Add(objCompany);
-
+                     
                     _db.SaveChanges();
 
 
@@ -469,5 +475,15 @@ namespace AttendanceSystem.Areas.Client.Controllers
 
             return Json(new { Status = status, Otp = otp, ErrorMessage = errorMessage, SetOtp = setOtp }, JsonRequestBehavior.AllowGet);
         }
+         
+        public JsonResult GeAjaxtDistrictListByStateId(long Id)
+        {
+            var DistrictList = _db.tbl_District.Where(x => (x.StateId == Id) && x.IsActive && !x.IsDeleted)
+                         .Select(o => new SelectListItem { Value = SqlFunctions.StringConvert((double)o.DistrictId).Trim(), Text = o.DistrictName })
+                         .OrderBy(x => x.Text).ToList();
+
+            return Json(DistrictList, JsonRequestBehavior.AllowGet);
+        }
+         
     }
 }

@@ -29,6 +29,8 @@ namespace AttendanceSystem.Models
         public string City { get; set; }
         public string Pincode { get; set; }
         public string State { get; set; }
+        public Nullable<long> StateId { get; set; }
+        public Nullable<long> DistrictId { get; set; }
         public string Designation { get; set; }
         public Nullable<System.DateTime> Dob { get; set; }
         public Nullable<System.DateTime> DateOfJoin { get; set; }
@@ -46,6 +48,7 @@ namespace AttendanceSystem.Models
         public decimal NoOfFreeLeavePerMonth { get; set; }
         public decimal CarryForwardLeave { get; set; }
         public Nullable<long> WorkerTypeId { get; set; }
+        public Nullable<long> WorkerHeadId { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
         public bool IsFingerprintEnabled { get; set; }
@@ -54,6 +57,5 @@ namespace AttendanceSystem.Models
         public System.DateTime CreatedDate { get; set; }
         public Nullable<long> UpdatedBy { get; set; }
         public Nullable<System.DateTime> UpdatedDate { get; set; }
-        public Nullable<long> WorkerHeadId { get; set; }
     }
 }

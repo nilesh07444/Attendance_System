@@ -124,8 +124,9 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     objEmployee.EmployeeCode = CommonMethod.getEmployeeCodeFormat(companyId, objCompany.CompanyName, empCount.Count());
                     objEmployee.Address = employeeVM.Address;
                     objEmployee.City = employeeVM.City;
-                    objEmployee.Pincode = employeeVM.Pincode;
-                    objEmployee.State = employeeVM.State;
+                    objEmployee.Pincode = employeeVM.Pincode; 
+                    objEmployee.StateId = employeeVM.StateId;
+                    objEmployee.DistrictId = employeeVM.DistrictId;
                     objEmployee.IsActive = isTrailMode ? true : (activeEmployee >= noOfEmployee ? false : true);
                     objEmployee.WorkerTypeId = employeeVM.WorkerTypeId;
                     objEmployee.WorkerHeadId = employeeVM.WorkerHeadId;
@@ -159,6 +160,11 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 int maximumEmployeeFingerprint = Convert.ToInt32(ConfigurationManager.AppSettings["MaximumEmployeeFingerprint"].ToString());
 
                 List<EmployeeVM> workerList = (from emp in _db.tbl_Employee
+                                               join st in _db.tbl_State on emp.StateId equals st.StateId into state
+                                               from st in state.DefaultIfEmpty()
+
+                                               join dt in _db.tbl_District on emp.DistrictId equals dt.DistrictId into district
+                                               from dt in district.DefaultIfEmpty()
                                                where !emp.IsDeleted && emp.CompanyId == companyId
                                                && emp.AdminRoleId == (int)AdminRoles.Worker
                                                && (!string.IsNullOrEmpty(searchText) ? (emp.EmployeeCode.Contains(searchText)
@@ -184,7 +190,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                    Address = emp.Address,
                                                    City = emp.City,
                                                    Pincode = emp.Pincode,
-                                                   State = emp.State,
+                                                   StateName = st != null ? st.StateName : "",
+                                                   DistrictName = dt != null ? dt.DistrictName : "",
                                                    IsActive = emp.IsActive,
                                                    ProfilePicture = !string.IsNullOrEmpty(emp.ProfilePicture) ? domainUrl + ErrorMessage.EmployeeDirectoryPath + emp.ProfilePicture : string.Empty,
                                                    IsFingerprintLimitExceed = (_db.tbl_EmployeeFingerprint.Where(x => x.EmployeeId == emp.EmployeeId).Count() >= maximumEmployeeFingerprint)
@@ -216,6 +223,13 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 companyId = base.UTI.CompanyId;
 
                 EmployeeVM workerDetails = (from emp in _db.tbl_Employee
+
+                                            join st in _db.tbl_State on emp.StateId equals st.StateId into state
+                                            from st in state.DefaultIfEmpty()
+
+                                            join dt in _db.tbl_District on emp.DistrictId equals dt.DistrictId into district
+                                            from dt in district.DefaultIfEmpty()
+
                                             where !emp.IsDeleted && emp.CompanyId == companyId
                                             && emp.AdminRoleId == (int)AdminRoles.Worker
                                             && emp.EmployeeId == id
@@ -239,7 +253,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                 Address = emp.Address,
                                                 City = emp.City,
                                                 Pincode = emp.Pincode,
-                                                State = emp.State,
+                                                StateName = st != null ? st.StateName : "",
+                                                DistrictName = dt != null ? dt.DistrictName : "",
                                                 WorkerHeadId = emp.WorkerHeadId,
                                                 IsActive = emp.IsActive,
                                                 ProfilePicture = !string.IsNullOrEmpty(emp.ProfilePicture) ? domainUrl + ErrorMessage.EmployeeDirectoryPath + emp.ProfilePicture : string.Empty
@@ -334,8 +349,9 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         employeeObject.AdharCardNo = employeeVM.AdharCardNo;
                         employeeObject.Address = employeeVM.Address;
                         employeeObject.City = employeeVM.City;
-                        employeeObject.Pincode = employeeVM.Pincode;
-                        employeeObject.State = employeeVM.State;
+                        employeeObject.Pincode = employeeVM.Pincode; 
+                        employeeObject.StateId = employeeVM.StateId;
+                        employeeObject.DistrictId = employeeVM.DistrictId;
                         employeeObject.UpdatedBy = employeeId;
                         employeeObject.UpdatedDate = CommonMethod.CurrentIndianDateTime();
                         _db.SaveChanges();
@@ -363,6 +379,13 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 companyId = base.UTI.CompanyId;
 
                 List<EmployeeVM> workerList = (from emp in _db.tbl_Employee
+
+                                               join st in _db.tbl_State on emp.StateId equals st.StateId into state
+                                               from st in state.DefaultIfEmpty()
+
+                                               join dt in _db.tbl_District on emp.DistrictId equals dt.DistrictId into district
+                                               from dt in district.DefaultIfEmpty()
+
                                                where !emp.IsDeleted && emp.IsActive && emp.CompanyId == companyId
                                                && (!string.IsNullOrEmpty(searchText) ? (emp.EmployeeCode.Contains(searchText)
                                                || emp.FirstName.Contains(searchText)
@@ -385,7 +408,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                    Address = emp.Address,
                                                    City = emp.City,
                                                    Pincode = emp.Pincode,
-                                                   State = emp.State,
+                                                   StateName = st != null ? st.StateName : "",
+                                                   DistrictName = dt != null ? dt.DistrictName : "",
                                                    IsActive = emp.IsActive,
                                                    ProfilePicture = !string.IsNullOrEmpty(emp.ProfilePicture) ? domainUrl + ErrorMessage.EmployeeDirectoryPath + emp.ProfilePicture : string.Empty
                                                }).ToList();
@@ -429,6 +453,13 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 List<EmployeeVM> workerList = (from emp in _db.tbl_Employee
                                                join wt in _db.tbl_WorkerType on emp.WorkerTypeId equals wt.WorkerTypeId into wtc
                                                from w in wtc.DefaultIfEmpty()
+
+                                               join st in _db.tbl_State on emp.StateId equals st.StateId into state
+                                               from st in state.DefaultIfEmpty()
+
+                                               join dt in _db.tbl_District on emp.DistrictId equals dt.DistrictId into district
+                                               from dt in district.DefaultIfEmpty()
+
                                                where emp.IsActive && !emp.IsDeleted && emp.CompanyId == companyId
                                                && emp.AdminRoleId == (int)AdminRoles.Worker
                                                && !assignedEmployeeIds.Contains(emp.EmployeeId)
@@ -451,7 +482,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                    Address = emp.Address,
                                                    City = emp.City,
                                                    Pincode = emp.Pincode,
-                                                   State = emp.State,
+                                                   StateName = st != null ? st.StateName : "",
+                                                   DistrictName = dt != null ? dt.DistrictName : "",
                                                    IsActive = emp.IsActive,
                                                    ExtraPerHourPrice = emp.ExtraPerHourPrice,
                                                    WorkerTypeId = emp.WorkerTypeId,

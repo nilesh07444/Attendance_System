@@ -59,9 +59,17 @@ namespace AttendanceSystem.ViewModel
         [RegularExpression(@"^([0-9]{6})$", ErrorMessage = "Invalid Pincode.")]
         public string Pincode { get; set; }
 
+        //[Display(Name = "State *")]
+        //[Required(ErrorMessage = ErrorMessage.ThisFieldRequired)]
+        //public string State { get; set; }
+
         [Display(Name = "State *")]
-        [Required(ErrorMessage = ErrorMessage.ThisFieldRequired)]
-        public string State { get; set; }
+        //[Required(ErrorMessage = ErrorMessage.ThisFieldRequired)]
+        public long? StateId { get; set; }
+
+        [Display(Name = "District *")]
+        //[Required(ErrorMessage = ErrorMessage.ThisFieldRequired)]
+        public long? DistrictId { get; set; }
 
         [Display(Name = "Designation")]
         public string Designation { get; set; }
@@ -143,6 +151,10 @@ namespace AttendanceSystem.ViewModel
         public DateTime? CreatedDate { get; set; }
         public int TotalSavedFingerprint { get; set; }
         public List<SelectListItem> WorkerHeadList { get; set; }
+        public List<SelectListItem> StateList { get; set; }
+        public List<SelectListItem> DistrictList { get; set; }
+        public string StateName { get; set; }
+        public string DistrictName { get; set; }
     }
 
     public class EmployeeFilterVM

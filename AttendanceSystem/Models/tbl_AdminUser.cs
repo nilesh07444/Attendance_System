@@ -34,6 +34,8 @@ namespace AttendanceSystem.Models
         public string City { get; set; }
         public string State { get; set; }
         public string District { get; set; }
+        public Nullable<long> StateId { get; set; }
+        public Nullable<long> DistrictId { get; set; }
         public string AadharCardNo { get; set; }
         public string AadharCardPhoto { get; set; }
         public string PanCardNo { get; set; }

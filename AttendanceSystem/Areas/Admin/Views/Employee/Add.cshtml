@@ -113,10 +113,22 @@
                                 @Html.TextBoxFor(model => model.Pincode, new { @type = "text", @class = "form-control required", @placeholder = "Enter Pincode", @maxlength = "6" })
                                 @Html.ValidationMessageFor(model => model.Pincode, "", new { @class = "text-danger" })
                             </div>
+                            @*<div class="form-group col-6">
+                                    @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "" })
+                                    @Html.TextBoxFor(model => model.State, new { @type = "text", @class = "form-control required", @placeholder = "Enter State" })
+                                    @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
+                                </div>*@
                             <div class="form-group col-6">
-                                @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "" })
-                                @Html.TextBoxFor(model => model.State, new { @type = "text", @class = "form-control required", @placeholder = "Enter State" })
-                                @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
+                                @Html.LabelFor(model => model.StateId, htmlAttributes: new { @class = "" })
+                                @Html.DropDownListFor(model => model.StateId, new SelectList(Model.StateList, "Value", "Text"), "- Select -", new { @class = "form-control required" })
+                                @Html.ValidationMessageFor(model => model.StateId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.DistrictId, htmlAttributes: new { @class = "" })
+                                @Html.DropDownListFor(model => model.DistrictId, new SelectList(Model.DistrictList, "Value", "Text"), "- Select -", new { @class = "form-control required" })
+                                @Html.ValidationMessageFor(model => model.DistrictId, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="row">
@@ -419,4 +431,32 @@
             $(".clsPerCategoryPrice").html("Per Unit Price *")
         }
     }
+
+    jQuery(document).on("change", "#StateId", function () {
+        var StateId = jQuery("#StateId option:selected").val();
+        if (StateId != "" && StateId != null) {
+            var URL = '@Url.Action("GeAjaxtDistrictListByStateId", "Employee")';
+            $.ajax({
+                type: 'GET',
+                async: true,
+                url: URL + "/" + StateId,
+                success: function (result) {
+                    var htmlData = "<option value=''>- Select -</option>";
+                    if (result && result.length > 0) {
+                        result.forEach(element => {
+                            htmlData += "<option value='" + element.Value + "'> " + element.Text + " </option>";
+                        });
+                    }
+                    $("#DistrictId").html(htmlData);
+                },
+                error: function (error) {
+                }
+            });
+        }
+       else {
+            var htmlSubData = "<option value=''>- Select -</option>";
+            $("#DistrictId").html(htmlSubData);
+        }
+    });
+
 </script>

@@ -26,6 +26,8 @@ namespace AttendanceSystem.Models
         public string City { get; set; }
         public string State { get; set; }
         public string District { get; set; }
+        public Nullable<long> StateId { get; set; }
+        public Nullable<long> DistrictId { get; set; }
         public string GSTNo { get; set; }
         public string GSTPhoto { get; set; }
         public string PanNo { get; set; }
@@ -47,14 +49,14 @@ namespace AttendanceSystem.Models
         public Nullable<System.DateTime> SMSPackExpiryDate { get; set; }
         public Nullable<int> TotalSMSReceived { get; set; }
         public Nullable<int> RemainingSMSToUse { get; set; }
+        public Nullable<System.DateTime> NextFollowupDate { get; set; }
+        public Nullable<int> FollowupStatus { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
         public long CreatedBy { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<long> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
-        public Nullable<System.DateTime> NextFollowupDate { get; set; }
-        public Nullable<int> FollowupStatus { get; set; }
         public Nullable<int> NoOfLunchBreakAllowed { get; set; }
     }
 }

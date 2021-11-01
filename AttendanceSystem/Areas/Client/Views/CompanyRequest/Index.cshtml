@@ -2,19 +2,15 @@
 
 @{
     ViewBag.Title = "Company Request";
-}
-
-@{
 
     List<SelectListItem> lstPrefix = new List<SelectListItem>();
-
     lstPrefix.Add(new SelectListItem { Value = "Mr", Text = "Mr" });
     lstPrefix.Add(new SelectListItem { Value = "Mrs", Text = "Mrs" });
     lstPrefix.Add(new SelectListItem { Value = "Miss", Text = "Miss" });
 }
 
 <style>
-      
+
     .form-control {
         border-color: #425C59 !important;
         border-width: 1.6px !important;
@@ -30,23 +26,11 @@
         cursor: pointer;
         border-radius: 5px;
     }
-
 </style>
 
 <!--? Hero Start -->
 <div class="slider-area2">
     <img src="@ViewBag.HeroUrl" class="d-block w-100" />
-    <!--<div class="slider-height2 d-flex align-items-center" style="background-image: url(@ViewBag.HeroUrl)">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-12">
-                    <div class="hero-cap hero-cap2 text-center">-->
-                        @*<h2>Company Request</h2>*@
-                    <!--</div>
-                </div>
-            </div>
-        </div>
-    </div>-->
 </div>
 <!-- Hero End -->
 <!-- ================ contact section start ================= -->
@@ -60,7 +44,7 @@
 
                 @using (Html.BeginForm("Index", "CompanyRequest", FormMethod.Post, new { @id = "CompanyRequestFormId", @class = "form-contact", enctype = "multipart/form-data", role = "form" }))
                 {
-                    // @Html.ValidationSummary()
+
                     <div class="row">
                         <div class="col-12">
                             <h5>Company Information</h5>
@@ -147,19 +131,19 @@
                         </div>
 
                     </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label>District*</label>
-                                @Html.TextBoxFor(model => model.CompanyDistrict, new { @type = "text", @class = "form-control customuppercase required", @placeholder = "Enter District" })
-                                @Html.ValidationMessageFor(model => model.CompanyDistrict, "", new { @class = "error" })
-                            </div>
-                        </div>
+                    <div class="row" style="margin-bottom: 50px;">
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>State*</label>
-                                @Html.TextBoxFor(model => model.CompanyState, new { @type = "text", @class = "form-control customuppercase", @placeholder = "Enter State" })
-                                @Html.ValidationMessageFor(model => model.CompanyState, "", new { @class = "error" })
+                                @Html.DropDownListFor(model => model.CompanyStateId, new SelectList(Model.CompanyStateList, "Value", "Text"), "- Select -", new { @class = "form-control required" })
+                                @Html.ValidationMessageFor(model => model.CompanyStateId, "", new { @class = "error" })
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group dvCompanyDistrict">
+                                <label>District*</label>
+                                @Html.DropDownListFor(model => model.CompanyDistrictId, new SelectList(Model.CompanyDistrictList, "Value", "Text"), "- Select -", new { @class = "form-control required" })
+                                @Html.ValidationMessageFor(model => model.CompanyDistrictId, "", new { @class = "error" })
                             </div>
                         </div>
                     </div>
@@ -211,7 +195,7 @@
                             </div>
                         </div>
                     </div>
-                     
+
                     <div class="row">
                         <div class="col-12">
                             <h5>Company Admin Information</h5>
@@ -323,18 +307,18 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>District*</label>
-                                @Html.TextBoxFor(model => model.CompanyAdminDistrict, new { @type = "text", @class = "form-control required customuppercase", @placeholder = "Enter District" })
-                                @Html.ValidationMessageFor(model => model.CompanyAdminDistrict, "", new { @class = "error" })
+                                <label>State*</label>
+                                @Html.DropDownListFor(model => model.CompanyAdminStateId, new SelectList(Model.CompanyAdminStateList, "Value", "Text"), "- Select -", new { @class = "form-control required" })
+                                @Html.ValidationMessageFor(model => model.CompanyAdminStateId, "", new { @class = "error" })
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
-                            <div class="form-group">
-                                <label>State*</label>
-                                @Html.TextBoxFor(model => model.CompanyAdminState, new { @type = "text", @class = "form-control customuppercase", @placeholder = "Enter State" })
-                                @Html.ValidationMessageFor(model => model.CompanyAdminState, "", new { @class = "error" })
+                            <div class="form-group dvCompanyAdminDistrict">
+                                <label>District*</label>
+                                @Html.DropDownListFor(model => model.CompanyAdminDistrictId, new SelectList(Model.CompanyAdminDistrictList, "Value", "Text"), "- Select -", new { @class = "form-control required" })
+                                @Html.ValidationMessageFor(model => model.CompanyAdminDistrictId, "", new { @class = "error" })
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -414,10 +398,10 @@
                         <label>OTP</label>
                         <div class="input-group">
                             @*<div class="input-group-prepend">
-                                <div class="input-group-text">
-                                    <i class="fas fa-envelope"></i>
-                                </div>
-                            </div>*@
+                                    <div class="input-group-text">
+                                        <i class="fas fa-envelope"></i>
+                                    </div>
+                                </div>*@
                             <input type="text" class="form-control" placeholder="Enter OTP" name="OTP" id="TextOTP">
                         </div>
                     </div>
@@ -467,7 +451,7 @@
 
                         if (data.Status == 1) {
                             $('#OtpModal').modal('show');
-                            $("#OTP").val(data.Otp);  
+                            $("#OTP").val(data.Otp);
                         }
                         else {
 
@@ -475,11 +459,10 @@
                         }
 
                     },
-                    error: function (req, status, error) {
-
+                    error: function (req, status, error) { 
                         alert(error);
                     }
-                }); 
+                });
             }
             else {
                 return false;
@@ -500,5 +483,76 @@
                 return false;
             }
         });
+
+        jQuery(document).on("change", "#CompanyStateId", function () {
+            var CompanyStateId = jQuery("#CompanyStateId option:selected").val();
+            if (CompanyStateId != "" && CompanyStateId != null) {
+                var URL = '@Url.Action("GeAjaxtDistrictListByStateId", "CompanyRequest")';
+                $.ajax({
+                    type: 'GET',
+                    async: true,
+                    url: URL + "/" + CompanyStateId,
+                    success: function (result) {
+                        var htmlData = "<option value=''>- Select -</option>";
+                        var htmlDataLI = "<li class='option'>- Select -</li>";
+                        if (result && result.length > 0) {
+                            result.forEach(element => {
+                                htmlData += "<option value='" + element.Value + "'> " + element.Text + " </option>";
+                                htmlDataLI += "<li class='option' data-value=" + element.Value + ">" + element.Text + "<li>";
+                            });
+                        }
+                        $("#CompanyDistrictId").html(htmlData);
+                        $(".dvCompanyDistrict ul.list").html(htmlDataLI);
+                        $(".dvCompanyDistrict .nice-select span.current").text('- Select -');
+                    },
+                    error: function (error) {
+                    }
+                });
+            }
+           else {
+                var htmlSubData = "<option value=''>- Select -</option>";
+                $("#CompanyDistrictId").html(htmlSubData);
+
+                var htmlDataLI = "<li class='option'>- Select -</li>";
+                $(".dvCompanyDistrict ul.list").html(htmlDataLI);
+                $(".dvCompanyDistrict .nice-select span.current").text('- Select -');
+            }
+        });
+
+        jQuery(document).on("change", "#CompanyAdminStateId", function () {
+            var CompanyAdminStateId = jQuery("#CompanyAdminStateId option:selected").val();
+            if (CompanyAdminStateId != "" && CompanyAdminStateId != null) {
+                var URL = '@Url.Action("GeAjaxtDistrictListByStateId", "CompanyRequest")';
+                $.ajax({
+                    type: 'GET',
+                    async: true,
+                    url: URL + "/" + CompanyAdminStateId,
+                    success: function (result) {
+                        var htmlData = "<option value=''>- Select -</option>";
+                        var htmlDataLI = "<li class='option'>- Select -</li>";
+                        if (result && result.length > 0) {
+                            result.forEach(element => {
+                                htmlData += "<option value='" + element.Value + "'> " + element.Text + " </option>";
+                                htmlDataLI += "<li class='option' data-value=" + element.Value + ">" + element.Text + "<li>";
+                            });
+                        }
+                        $("#CompanyAdminDistrictId").html(htmlData);
+                        $(".dvCompanyAdminDistrict ul.list").html(htmlDataLI);
+                        $(".dvCompanyAdminDistrict .nice-select span.current").text('- Select -');
+                    },
+                    error: function (error) {
+                    }
+                });
+            }
+           else {
+                var htmlSubData = "<option value=''>- Select -</option>";
+                $("#CompanyAdminDistrictId").html(htmlSubData);
+
+                var htmlDataLI = "<li class='option'>- Select -</li>";
+                $(".dvCompanyAdminDistrict ul.list").html(htmlDataLI);
+                $(".dvCompanyAdminDistrict .nice-select span.current").text('- Select -');
+            }
+        });
+
     })
 </script>

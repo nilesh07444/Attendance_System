@@ -138,6 +138,24 @@
 
                     <div class="col-sm-12">
                         <div class="form-group row clsRow">
+                            @Html.LabelFor(model => model.StateId, htmlAttributes: new { @class = "col-sm-3 col-form-label" })
+                            <div class="col-sm-9">
+                                @Html.TextBoxFor(model => model.StateName, new { @type = "text", @class = "form-control", @placeholder = "State", @readonly = "true" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="form-group row clsRow">
+                            @Html.LabelFor(model => model.DistrictId, htmlAttributes: new { @class = "col-sm-3 col-form-label" })
+                            <div class="col-sm-9">
+                                @Html.TextBoxFor(model => model.DistrictName, new { @type = "text", @class = "form-control", @placeholder = "District", @readonly = "true" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="form-group row clsRow">
                             @Html.LabelFor(model => model.Dob, htmlAttributes: new { @class = "col-sm-3 col-form-label" })
                             <div class="col-sm-9">
                                 @{ string Dob = Model.Dob != null ? Model.Dob.Value.ToString("dd MMM yyyy") : ""; }
@@ -307,11 +325,11 @@
                             </div>
                         </div>
                     </div>
-                     
+
 
                 </div>
 
-            </div>
+                </div>
 
             <div class="card">
 

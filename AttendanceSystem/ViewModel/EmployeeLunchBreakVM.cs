@@ -23,7 +23,8 @@ namespace AttendanceSystem
         public string EmployeeName { get; set; }
         public string EmployeeCode { get; set; }
         public string EmployeeRole { get; set; }
-
+        public DateTime? AttendaceInDate { get; set; }
+        public DateTime? AttendaceOutDate { get; set; }
     }
 
     public class EmployeeLunchBreakFilterVM

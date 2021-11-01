@@ -50,6 +50,13 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                  join wt in _db.tbl_WorkerType on emp.WorkerTypeId equals wt.WorkerTypeId
                                                  into wtc
                                                  from w in wtc.DefaultIfEmpty()
+
+                                                 join st in _db.tbl_State on emp.StateId equals st.StateId into state
+                                                 from st in state.DefaultIfEmpty()
+
+                                                 join dt in _db.tbl_District on emp.DistrictId equals dt.DistrictId into district
+                                                 from dt in district.DefaultIfEmpty()
+
                                                  where !emp.IsDeleted && emp.CompanyId == companyId && emp.AdminRoleId == (int)AdminRoles.Worker
                                                  && (employeeFilterVM.UserStatus.HasValue ? (employeeFilterVM.UserStatus.Value == (int)UserStatus.Active ? emp.IsActive == true : emp.IsActive == false) : true)
                                                  select new EmployeeVM
@@ -69,7 +76,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                      Address = emp.Address,
                                                      City = emp.City,
                                                      Pincode = emp.Pincode,
-                                                     State = emp.State,
+                                                     StateName = st != null ? st.StateName : "",
+                                                     DistrictName = dt != null ? dt.DistrictName : "",
                                                      Designation = emp.Designation,
                                                      Dob = emp.Dob,
                                                      DateOfJoin = emp.DateOfJoin,
@@ -139,6 +147,13 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             {
                 employeeVM = (from emp in _db.tbl_Employee
                               join rl in _db.mst_AdminRole on emp.AdminRoleId equals rl.AdminRoleId
+
+                              join st in _db.tbl_State on emp.StateId equals st.StateId into state
+                              from st in state.DefaultIfEmpty()
+
+                              join dt in _db.tbl_District on emp.DistrictId equals dt.DistrictId into district
+                              from dt in district.DefaultIfEmpty()
+
                               where !emp.IsDeleted && emp.EmployeeId == id
                               select new EmployeeVM
                               {
@@ -157,7 +172,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                   Address = emp.Address,
                                   City = emp.City,
                                   Pincode = emp.Pincode,
-                                  State = emp.State,
+                                  StateName = st != null ? st.StateName : "",
+                                  DistrictName = dt != null ? dt.DistrictName : "",
+                                  StateId = emp.StateId,
+                                  DistrictId = emp.DistrictId,
                                   Designation = emp.Designation,
                                   Dob = emp.Dob,
                                   DateOfJoin = emp.DateOfJoin,
@@ -179,10 +197,21 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                   WorkerTypeId = emp.WorkerTypeId,
                                   WorkerHeadId = emp.WorkerHeadId
                               }).FirstOrDefault();
+
+                if (employeeVM.StateId != null)
+                {
+                    employeeVM.DistrictList = CommonMethod.GetDistrictListByStateId(employeeVM.StateId.Value);
+                }
+            }
+
+            if (employeeVM.DistrictList == null)
+            {
+                employeeVM.DistrictList = new List<SelectListItem>();
             }
 
             employeeVM.WorkerTypeList = GetWorkerTypeList();
             employeeVM.WorkerHeadList = GetWorkerHeadList();
+            employeeVM.StateList = CommonMethod.GetStateListOfIndia();
             return View(employeeVM);
         }
 
@@ -252,8 +281,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployee.MobileNo = employeeVM.MobileNo;
                         objEmployee.Address = employeeVM.Address;
                         objEmployee.City = employeeVM.City;
-                        objEmployee.Pincode = employeeVM.Pincode;
-                        objEmployee.State = employeeVM.State;
+                        objEmployee.Pincode = employeeVM.Pincode; 
+                        objEmployee.StateId = employeeVM.StateId;
+                        objEmployee.DistrictId = employeeVM.DistrictId;
                         objEmployee.Dob = employeeVM.Dob;
                         objEmployee.DateOfJoin = employeeVM.DateOfJoin;
                         objEmployee.BloodGroup = employeeVM.BloodGroup;
@@ -297,8 +327,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployee.MobileNo = employeeVM.MobileNo;
                         objEmployee.Address = employeeVM.Address;
                         objEmployee.City = employeeVM.City;
-                        objEmployee.Pincode = employeeVM.Pincode;
-                        objEmployee.State = employeeVM.State;
+                        objEmployee.Pincode = employeeVM.Pincode; 
+                        objEmployee.StateId = employeeVM.StateId;
+                        objEmployee.DistrictId = employeeVM.DistrictId;
                         objEmployee.Dob = employeeVM.Dob;
                         objEmployee.DateOfJoin = employeeVM.DateOfJoin;
                         objEmployee.BloodGroup = employeeVM.BloodGroup;
@@ -342,6 +373,13 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                           join rl in _db.mst_AdminRole on emp.AdminRoleId equals rl.AdminRoleId
                           join wt in _db.tbl_WorkerType on emp.WorkerTypeId equals wt.WorkerTypeId into wtc
                           from w in wtc.DefaultIfEmpty()
+
+                          join st in _db.tbl_State on emp.StateId equals st.StateId into state
+                          from st in state.DefaultIfEmpty()
+
+                          join dt in _db.tbl_District on emp.DistrictId equals dt.DistrictId into district
+                          from dt in district.DefaultIfEmpty()
+
                           where !emp.IsDeleted && emp.EmployeeId == Id
                           select new EmployeeVM
                           {
@@ -360,7 +398,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                               Address = emp.Address,
                               Pincode = emp.Pincode,
                               City = emp.City,
-                              State = emp.State,
+                              StateName = st != null ? st.StateName : "",
+                              DistrictName = dt != null ? dt.DistrictName : "",
                               Designation = emp.Designation,
                               Dob = emp.Dob,
                               DateOfJoin = emp.DateOfJoin,
@@ -604,7 +643,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
             return ReturnMessage;
         }
-
 
     }
 }

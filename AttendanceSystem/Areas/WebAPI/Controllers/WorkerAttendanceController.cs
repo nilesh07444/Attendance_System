@@ -578,14 +578,28 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 DateTime today = CommonMethod.CurrentIndianDateTime().Date;
 
                 List<EmployeeVM> workerList = (from emp in _db.tbl_Employee
-                                               join att in _db.tbl_WorkerAttendance on emp.EmployeeId equals att.EmployeeId
+                                               join assi in _db.tbl_AssignWorker on emp.EmployeeId equals assi.EmployeeId
+                                               join att in _db.tbl_WorkerAttendance on assi.EmployeeId equals att.EmployeeId into wtc
+                                               from att in wtc.DefaultIfEmpty()
+
+                                               join st in _db.tbl_State on emp.StateId equals st.StateId into state
+                                               from st in state.DefaultIfEmpty()
+
+                                               join dt in _db.tbl_District on emp.DistrictId equals dt.DistrictId into district
+                                               from dt in district.DefaultIfEmpty()
+
                                                where !emp.IsDeleted && emp.IsActive 
-                                               && att.AttendanceDate == today
+                                               && assi.Date == today
                                                && emp.AdminRoleId == (int)AdminRoles.Worker
                                                && emp.CompanyId == companyId
+                                               
                                                && (!string.IsNullOrEmpty(searchText) ? (emp.EmployeeCode.Contains(searchText)
                                                || emp.FirstName.Contains(searchText)
                                                || emp.LastName.Contains(searchText)) : true)
+
+                                               && (wtc == null || (wtc != null && wtc.FirstOrDefault().AttendanceDate == today))
+                                               && (wtc == null || (wtc !=null && !wtc.FirstOrDefault().IsMorning))
+                                               
                                                select new EmployeeVM
                                                {
                                                    EmployeeId = emp.EmployeeId,
@@ -604,7 +618,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                    Address = emp.Address,
                                                    City = emp.City,
                                                    Pincode = emp.Pincode,
-                                                   State = emp.State,
+                                                   StateName = st != null ? st.StateName : "",
+                                                   DistrictName = dt != null ? dt.DistrictName : "",
                                                    IsActive = emp.IsActive,
                                                    ProfilePicture = !string.IsNullOrEmpty(emp.ProfilePicture) ? domainUrl + ErrorMessage.EmployeeDirectoryPath + emp.ProfilePicture : string.Empty
                                                }).ToList();
@@ -628,14 +643,31 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             try
             {
                 companyId = base.UTI.CompanyId;
+                DateTime today = CommonMethod.CurrentIndianDateTime().Date;
 
                 List<EmployeeVM> workerList = (from emp in _db.tbl_Employee
+                                               join assi in _db.tbl_AssignWorker on emp.EmployeeId equals assi.EmployeeId
+                                               join att in _db.tbl_WorkerAttendance on assi.EmployeeId equals att.EmployeeId into wtc
+                                               from att in wtc.DefaultIfEmpty()
+
+                                               join st in _db.tbl_State on emp.StateId equals st.StateId into state
+                                               from st in state.DefaultIfEmpty()
+
+                                               join dt in _db.tbl_District on emp.DistrictId equals dt.DistrictId into district
+                                               from dt in district.DefaultIfEmpty()
+
                                                where !emp.IsDeleted && emp.IsActive
+                                               && assi.Date == today
                                                && emp.AdminRoleId == (int)AdminRoles.Worker
                                                && emp.CompanyId == companyId
+
                                                && (!string.IsNullOrEmpty(searchText) ? (emp.EmployeeCode.Contains(searchText)
                                                || emp.FirstName.Contains(searchText)
                                                || emp.LastName.Contains(searchText)) : true)
+
+                                               && (wtc == null || (wtc != null && wtc.FirstOrDefault().AttendanceDate == today))
+                                               && (wtc == null || (wtc != null && !wtc.FirstOrDefault().IsAfternoon))
+                                                
                                                select new EmployeeVM
                                                {
                                                    EmployeeId = emp.EmployeeId,
@@ -654,7 +686,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                    Address = emp.Address,
                                                    City = emp.City,
                                                    Pincode = emp.Pincode,
-                                                   State = emp.State,
+                                                   StateName = st != null ? st.StateName : "",
+                                                   DistrictName = dt != null ? dt.DistrictName : "",
                                                    IsActive = emp.IsActive,
                                                    ProfilePicture = !string.IsNullOrEmpty(emp.ProfilePicture) ? domainUrl + ErrorMessage.EmployeeDirectoryPath + emp.ProfilePicture : string.Empty
                                                }).ToList();
@@ -678,14 +711,30 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             try
             {
                 companyId = base.UTI.CompanyId;
+                DateTime today = CommonMethod.CurrentIndianDateTime().Date;
 
                 List<EmployeeVM> workerList = (from emp in _db.tbl_Employee
+                                               join assi in _db.tbl_AssignWorker on emp.EmployeeId equals assi.EmployeeId
+                                               join att in _db.tbl_WorkerAttendance on assi.EmployeeId equals att.EmployeeId
+
+                                               join st in _db.tbl_State on emp.StateId equals st.StateId into state
+                                               from st in state.DefaultIfEmpty()
+
+                                               join dt in _db.tbl_District on emp.DistrictId equals dt.DistrictId into district
+                                               from dt in district.DefaultIfEmpty()
+
                                                where !emp.IsDeleted && emp.IsActive
+                                               && assi.Date == today
                                                && emp.AdminRoleId == (int)AdminRoles.Worker
                                                && emp.CompanyId == companyId
+
                                                && (!string.IsNullOrEmpty(searchText) ? (emp.EmployeeCode.Contains(searchText)
                                                || emp.FirstName.Contains(searchText)
                                                || emp.LastName.Contains(searchText)) : true)
+
+                                               && att.AttendanceDate == today
+                                               && !att.IsEvening
+
                                                select new EmployeeVM
                                                {
                                                    EmployeeId = emp.EmployeeId,
@@ -704,7 +753,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                    Address = emp.Address,
                                                    City = emp.City,
                                                    Pincode = emp.Pincode,
-                                                   State = emp.State,
+                                                   StateName = st != null ? st.StateName : "",
+                                                   DistrictName = dt != null ? dt.DistrictName : "",
                                                    IsActive = emp.IsActive,
                                                    ProfilePicture = !string.IsNullOrEmpty(emp.ProfilePicture) ? domainUrl + ErrorMessage.EmployeeDirectoryPath + emp.ProfilePicture : string.Empty
                                                }).ToList();
@@ -774,6 +824,21 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                 attendanceObject.AfternoonLongitude = afternoonAttendanceRequestVM.Longitude;
                                 attendanceObject.AfternoonLocationFrom = afternoonAttendanceRequestVM.LocationFrom;
                                 _db.SaveChanges();
+                            }
+                            else
+                            {
+                                tbl_WorkerAttendance attendanceObjectAfternoon = new tbl_WorkerAttendance();
+                                attendanceObjectAfternoon.EmployeeId = objEmployee.EmployeeId;
+                                attendanceObject.AttendanceDate = CommonMethod.CurrentIndianDateTime();
+                                attendanceObjectAfternoon.IsAfternoon = true;
+                                attendanceObjectAfternoon.AfternoonAttendanceBy = employeeId;
+                                attendanceObjectAfternoon.AfternoonAttendanceDate = CommonMethod.CurrentIndianDateTime();
+                                attendanceObjectAfternoon.AfternoonSiteId = afternoonAttendanceRequestVM.SiteId;
+                                attendanceObjectAfternoon.AfternoonLatitude = afternoonAttendanceRequestVM.Latitude;
+                                attendanceObjectAfternoon.AfternoonLongitude = afternoonAttendanceRequestVM.Longitude;
+                                attendanceObjectAfternoon.AfternoonLocationFrom = afternoonAttendanceRequestVM.LocationFrom;
+                                _db.tbl_WorkerAttendance.Add(attendanceObjectAfternoon);
+                                _db.SaveChanges(); 
                             }
                         }
 

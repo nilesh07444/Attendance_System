@@ -97,9 +97,16 @@
                             </div>
 
                             <div class="form-group row clsRow">
-                                @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "col-sm-3 col-form-label" })
+                                @Html.LabelFor(model => model.StateId, htmlAttributes: new { @class = "col-sm-3 col-form-label" })
                                 <div class="col-sm-9">
-                                    @Html.TextBoxFor(model => model.State, new { @type = "text", @class = "form-control", @placeholder = "State", @readonly = "true" })
+                                    @Html.TextBoxFor(model => model.StateName, new { @type = "text", @class = "form-control", @placeholder = "State", @readonly = "true" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row clsRow">
+                                @Html.LabelFor(model => model.DistrictId, htmlAttributes: new { @class = "col-sm-3 col-form-label" })
+                                <div class="col-sm-9">
+                                    @Html.TextBoxFor(model => model.DistrictName, new { @type = "text", @class = "form-control", @placeholder = "District", @readonly = "true" })
                                 </div>
                             </div>
 
@@ -173,14 +180,14 @@
                                     @Html.TextBoxFor(model => model.PerCategoryPrice, new { @type = "text", @class = "form-control", @placeholder = "Per Category Price", @readonly = "true" })
                                 </div>
                             </div>
-                             
+
                             <div class="form-group row clsRow">
                                 @Html.LabelFor(model => model.ExtraPerHourPrice, htmlAttributes: new { @class = "col-sm-3 col-form-label" })
                                 <div class="col-sm-9">
                                     @Html.TextBoxFor(model => model.ExtraPerHourPrice, new { @type = "text", @class = "form-control", @placeholder = "Extra Per Hour Price", @readonly = "true" })
                                 </div>
                             </div>
-                             
+
                             @if (Model.EmploymentCategory == (int)EmploymentCategory.MonthlyBased)
                             {
                                 <div class="form-group row clsRow">

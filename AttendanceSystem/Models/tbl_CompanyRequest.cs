@@ -29,6 +29,10 @@ namespace AttendanceSystem.Models
         public string CompanyCity { get; set; }
         public string CompanyState { get; set; }
         public string CompanyDistrict { get; set; }
+        public Nullable<long> CompanyStateId { get; set; }
+        public Nullable<long> CompanyDistrictId { get; set; }
+        public Nullable<long> StateId { get; set; }
+        public Nullable<long> DistrictId { get; set; }
         public string CompanyLogoImage { get; set; }
         public string CompanyRegisterProofImage { get; set; }
         public string CompanyDescription { get; set; }
@@ -48,6 +52,8 @@ namespace AttendanceSystem.Models
         public string CompanyAdminCity { get; set; }
         public string CompanyAdminState { get; set; }
         public string CompanyAdminDistrict { get; set; }
+        public Nullable<long> CompanyAdminStateId { get; set; }
+        public Nullable<long> CompanyAdminDistrictId { get; set; }
         public string CompanyAdminProfilePhoto { get; set; }
         public string CompanyAdminAadharCardNo { get; set; }
         public string CompanyAdminAadharCardPhoto { get; set; }

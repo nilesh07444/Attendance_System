@@ -171,7 +171,60 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
             return response;
         }
+         
+        [Route("GetLunchBreakDetail/{Id}"), HttpGet]
+        public ResponseDataModel<EmployeeLunchBreakVM> GetLunchBreakDetail(long Id)
+        {
+            ResponseDataModel<EmployeeLunchBreakVM> response = new ResponseDataModel<EmployeeLunchBreakVM>();
+            EmployeeLunchBreakVM lunchBreakVM = new EmployeeLunchBreakVM();
+            
+            try
+            {
+                long employeeId = base.UTI.EmployeeId;
+                long companyId = base.UTI.CompanyId;
 
+                lunchBreakVM = (from lunch in _db.tbl_EmployeeLunchBreak
+                                join emp in _db.tbl_Employee on lunch.EmployeeId equals emp.EmployeeId
+                                join role in _db.mst_AdminRole on emp.AdminRoleId equals role.AdminRoleId
+                                join att in _db.tbl_Attendance on lunch.AttendanceId equals att.AttendanceId
+                                where !emp.IsDeleted && emp.CompanyId == companyId && emp.EmployeeId == employeeId && lunch.EmployeeLunchBreakId == Id
+                                select new EmployeeLunchBreakVM
+                                {
+                                    EmployeeLunchBreakId = lunch.EmployeeLunchBreakId,
+                                    EmployeeId = lunch.EmployeeId,
+                                    EmployeeName = emp.Prefix + " " + emp.FirstName + " " + emp.LastName,
+                                    EmployeeCode = emp.EmployeeCode,
+
+                                    StartDateTime = lunch.StartDateTime,
+                                    StartLunchLocationFrom = lunch.StartLunchLocationFrom,
+                                    StartLunchLatitude = lunch.StartLunchLatitude,
+                                    StartLunchLongitude = lunch.StartLunchLongitude,
+
+                                    EndDateTime = lunch.EndDateTime,
+                                    EndLunchLocationFrom = lunch.EndLunchLocationFrom,
+                                    EndLunchLatitude = lunch.EndLunchLatitude,
+                                    EndLunchLongitude = lunch.EndLunchLongitude,
+
+                                    EmployeeRole = role.AdminRoleName,
+                                    AttendaceId = lunch.AttendanceId,
+                                    AttendaceDate = att.AttendanceDate,
+                                    LunchBreakNo = lunch.LunchBreakNo,
+                                    AttendaceInDate = att.InDateTime,
+                                    AttendaceOutDate = att.OutDateTime
+                                }).FirstOrDefault();
+
+                response.Data = lunchBreakVM;
+                response.IsError = false;
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message.ToString());
+            }
+
+            return response;
+        }
+         
         [Route("CheckEmployeeLunchStatus"), HttpGet]
         public ResponseDataModel<LunchBreakStatusVM> CheckEmployeeLunchStatus()
         {

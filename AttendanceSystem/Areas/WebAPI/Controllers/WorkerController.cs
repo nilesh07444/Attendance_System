@@ -83,6 +83,12 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 companyId = base.UTI.CompanyId;
 
                 List<EmployeeVM> workerList = (from emp in _db.tbl_Employee
+                                               join st in _db.tbl_State on emp.StateId equals st.StateId into state
+                                               from st in state.DefaultIfEmpty()
+
+                                               join dt in _db.tbl_District on emp.DistrictId equals dt.DistrictId into district
+                                               from dt in district.DefaultIfEmpty()
+
                                                where !emp.IsDeleted && emp.IsActive
                                                && emp.AdminRoleId == (int)AdminRoles.Worker
                                                && emp.CompanyId == companyId
@@ -107,7 +113,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                    Address = emp.Address,
                                                    City = emp.City,
                                                    Pincode = emp.Pincode,
-                                                   State = emp.State,
+                                                   StateName = st != null ? st.StateName : "",
+                                                   DistrictName = dt != null ? dt.DistrictName : "",
                                                    IsActive = emp.IsActive,
                                                    ProfilePicture = !string.IsNullOrEmpty(emp.ProfilePicture) ? domainUrl + ErrorMessage.EmployeeDirectoryPath + emp.ProfilePicture : string.Empty
                                                }).ToList();

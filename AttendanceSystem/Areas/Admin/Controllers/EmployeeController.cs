@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Entity;
+using System.Data.Entity.SqlServer;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -56,6 +57,13 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                 employeeFilterVM.EmployeeList = (from emp in _db.tbl_Employee
                                                  join rl in _db.mst_AdminRole on emp.AdminRoleId equals rl.AdminRoleId
+
+                                                 join st in _db.tbl_State on emp.StateId equals st.StateId into state
+                                                 from st in state.DefaultIfEmpty()
+
+                                                 join dt in _db.tbl_District on emp.DistrictId equals dt.DistrictId into district
+                                                 from dt in district.DefaultIfEmpty()
+
                                                  where !emp.IsDeleted && emp.CompanyId == companyId && emp.AdminRoleId != (int)AdminRoles.Worker
                                                  && (employeeFilterVM.UserRole.HasValue ? emp.AdminRoleId == employeeFilterVM.UserRole.Value : true)
                                                  && (employeeFilterVM.UserStatus.HasValue ? (employeeFilterVM.UserStatus.Value == (int)UserStatus.Active ? emp.IsActive == true : emp.IsActive == false) : true)
@@ -76,7 +84,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                      Address = emp.Address,
                                                      City = emp.City,
                                                      Pincode = emp.Pincode,
-                                                     State = emp.State,
+                                                     StateName = st != null ? st.StateName : "",
+                                                     DistrictName = dt != null ? dt.DistrictName : "",
                                                      Designation = emp.Designation,
                                                      Dob = emp.Dob,
                                                      DateOfJoin = emp.DateOfJoin,
@@ -151,6 +160,13 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             {
                 employeeVM = (from emp in _db.tbl_Employee
                               join rl in _db.mst_AdminRole on emp.AdminRoleId equals rl.AdminRoleId
+                              
+                              join st in _db.tbl_State on emp.StateId equals st.StateId into state
+                              from st in state.DefaultIfEmpty()
+
+                              join dt in _db.tbl_District on emp.DistrictId equals dt.DistrictId into district
+                              from dt in district.DefaultIfEmpty()
+
                               where !emp.IsDeleted && emp.EmployeeId == id
                               select new EmployeeVM
                               {
@@ -169,7 +185,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                   Address = emp.Address,
                                   City = emp.City,
                                   Pincode = emp.Pincode,
-                                  State = emp.State,
+                                  StateName = st != null ? st.StateName : "",
+                                  DistrictName = dt != null ? dt.DistrictName : "",
+                                  StateId = emp.StateId,
+                                  DistrictId = emp.DistrictId,
                                   Designation = emp.Designation,
                                   Dob = emp.Dob,
                                   DateOfJoin = emp.DateOfJoin,
@@ -193,9 +212,21 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                               }).FirstOrDefault();
                 employeeVM.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)employeeVM.EmploymentCategory);
                 employeeVM.AdminRoleText = CommonMethod.GetEnumDescription((AdminRoles)employeeVM.AdminRoleId);
+
+                if (employeeVM.StateId != null)
+                {
+                    employeeVM.DistrictList = GetDistrictListByStateId(employeeVM.StateId.Value);
+                }
+
+            }
+
+            if (employeeVM.DistrictList == null)
+            {
+                employeeVM.DistrictList = new List<SelectListItem>();
             }
 
             employeeVM.UserRoleList = GetUserRoleList();
+            employeeVM.StateList = CommonMethod.GetStateListOfIndia();
             return View(employeeVM);
         }
 
@@ -262,7 +293,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployee.Address = employeeVM.Address;
                         objEmployee.City = employeeVM.City;
                         objEmployee.Pincode = employeeVM.Pincode;
-                        objEmployee.State = employeeVM.State;
+                        objEmployee.StateId = employeeVM.StateId;
+                        objEmployee.DistrictId = employeeVM.DistrictId;
                         objEmployee.Designation = employeeVM.Designation;
                         objEmployee.Dob = employeeVM.Dob;
                         objEmployee.DateOfJoin = employeeVM.DateOfJoin;
@@ -279,6 +311,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployee.NoOfFreeLeavePerMonth = employeeVM.NoOfFreeLeavePerMonth;
                         objEmployee.UpdatedBy = (int)PaymentGivenBy.CompanyAdmin;
                         objEmployee.UpdatedDate = CommonMethod.CurrentIndianDateTime();
+
                         _db.SaveChanges();
                     }
                     else
@@ -311,8 +344,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployee.AlternateMobile = employeeVM.AlternateMobile;
                         objEmployee.Address = employeeVM.Address;
                         objEmployee.City = employeeVM.City;
-                        objEmployee.Pincode = employeeVM.Pincode;
-                        objEmployee.State = employeeVM.State;
+                        objEmployee.Pincode = employeeVM.Pincode; 
+                        objEmployee.StateId = employeeVM.StateId;
+                        objEmployee.DistrictId = employeeVM.DistrictId;
                         objEmployee.Designation = employeeVM.Designation;
                         objEmployee.Dob = employeeVM.Dob;
                         objEmployee.DateOfJoin = employeeVM.DateOfJoin;
@@ -400,6 +434,13 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
             employeeVM = (from emp in _db.tbl_Employee
                           join rl in _db.mst_AdminRole on emp.AdminRoleId equals rl.AdminRoleId
+
+                          join st in _db.tbl_State on emp.StateId equals st.StateId into state
+                          from st in state.DefaultIfEmpty()
+
+                          join dt in _db.tbl_District on emp.DistrictId equals dt.DistrictId into district
+                          from dt in district.DefaultIfEmpty()
+
                           where !emp.IsDeleted && emp.EmployeeId == Id
                           select new EmployeeVM
                           {
@@ -417,6 +458,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                               AlternateMobile = emp.AlternateMobile,
                               Address = emp.Address,
                               City = emp.City,
+                              StateName = st != null ? st.StateName : "",
+                              DistrictName = dt != null ? dt.DistrictName : "",
                               Designation = emp.Designation,
                               Dob = emp.Dob,
                               DateOfJoin = emp.DateOfJoin,
@@ -800,6 +843,33 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 isSuccess = false;
             }
             return Json(new { IsSuccess = isSuccess, data = lstEmployeeFingerprint }, JsonRequestBehavior.AllowGet);
+        }
+
+        public List<SelectListItem> GetDistrictListByStateId(long StateId)
+        {
+            List<SelectListItem> lstDistricts = new List<SelectListItem>();
+
+            List<SelectListItem> lst = (from st in _db.tbl_District
+                                        where !st.IsDeleted && st.IsActive
+                                        && st.StateId == StateId
+                                        select new SelectListItem
+                                        {
+                                            Text = st.DistrictName,
+                                            Value = st.DistrictId.ToString()
+                                        }).OrderBy(x => x.Text).ToList();
+
+            lstDistricts = lst != null ? lst : lstDistricts;
+
+            return lstDistricts;
+        }
+
+        public JsonResult GeAjaxtDistrictListByStateId(long Id)
+        {
+            var DistrictList = _db.tbl_District.Where(x => (x.StateId == Id) && x.IsActive && !x.IsDeleted)
+                         .Select(o => new SelectListItem { Value = SqlFunctions.StringConvert((double)o.DistrictId).Trim(), Text = o.DistrictName })
+                         .OrderBy(x => x.Text).ToList();
+
+            return Json(DistrictList, JsonRequestBehavior.AllowGet);
         }
 
     }

@@ -51,11 +51,7 @@ namespace AttendanceSystem.Models
         public virtual DbSet<tbl_Conversion> tbl_Conversion { get; set; }
         public virtual DbSet<tbl_WorkerPayment> tbl_WorkerPayment { get; set; }
         public virtual DbSet<tbl_HomeImage> tbl_HomeImage { get; set; }
-        public virtual DbSet<tbl_AdminUser> tbl_AdminUser { get; set; }
-        public virtual DbSet<tbl_Company> tbl_Company { get; set; }
-        public virtual DbSet<tbl_CompanyRequest> tbl_CompanyRequest { get; set; }
         public virtual DbSet<tbl_HomeSlider> tbl_HomeSlider { get; set; }
-        public virtual DbSet<tbl_Employee> tbl_Employee { get; set; }
         public virtual DbSet<tbl_EmployeePayment> tbl_EmployeePayment { get; set; }
         public virtual DbSet<tbl_SMSLog> tbl_SMSLog { get; set; }
         public virtual DbSet<tbl_CompanyRenewPayment> tbl_CompanyRenewPayment { get; set; }
@@ -71,6 +67,10 @@ namespace AttendanceSystem.Models
         public virtual DbSet<tbl_State> tbl_State { get; set; }
         public virtual DbSet<tbl_District> tbl_District { get; set; }
         public virtual DbSet<tbl_WorkerHead> tbl_WorkerHead { get; set; }
+        public virtual DbSet<tbl_AdminUser> tbl_AdminUser { get; set; }
+        public virtual DbSet<tbl_Company> tbl_Company { get; set; }
+        public virtual DbSet<tbl_Employee> tbl_Employee { get; set; }
+        public virtual DbSet<tbl_CompanyRequest> tbl_CompanyRequest { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

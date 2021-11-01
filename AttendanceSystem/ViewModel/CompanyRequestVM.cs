@@ -64,11 +64,18 @@ namespace AttendanceSystem.ViewModel
         public string CompanyCity { get; set; }
 
         [Display(Name = "Company State *")]
-        [Required(ErrorMessage = "This field is required")]
+        //[Required(ErrorMessage = "This field is required")]
         public string CompanyState { get; set; }
 
         [Display(Name = "Company District *")]
         public string CompanyDistrict { get; set; }
+
+        [Display(Name = "State *")]
+        [Required(ErrorMessage = "This field is required")]
+        public long? CompanyStateId { get; set; }
+
+        [Display(Name = "District *")]
+        public long? CompanyDistrictId { get; set; }
 
         [Display(Name = "Company Logo Image")]
         public HttpPostedFileBase CompanyLogoImageFile { get; set; }
@@ -140,11 +147,18 @@ namespace AttendanceSystem.ViewModel
         public string CompanyAdminCity { get; set; }
 
         [Display(Name = "State *")]
-        [Required(ErrorMessage = "This field is required")]
+        //[Required(ErrorMessage = "This field is required")]
         public string CompanyAdminState { get; set; }
 
         [Display(Name = "District *")]
         public string CompanyAdminDistrict { get; set; }
+
+        [Display(Name = "State *")]
+        [Required(ErrorMessage = "This field is required")]
+        public long? CompanyAdminStateId { get; set; }
+
+        [Display(Name = "District *")]
+        public long? CompanyAdminDistrictId { get; set; }
 
         [Display(Name = "Aadhar Card No *")]
         [Required(ErrorMessage = "This field is required")]
@@ -186,7 +200,7 @@ namespace AttendanceSystem.ViewModel
         [Display(Name = "I accept the terms and conditions.")]
         public bool IsAccept { get; set; }
 
-        //
+        // Additional
         public DateTime dtCompanyAdminDOB { get; set; }
         public string RequestStatusText { get; set; }
         [Display(Name = "Employee Code *")]
@@ -199,6 +213,12 @@ namespace AttendanceSystem.ViewModel
         public DateTime? TrialExpiryDate { get; set; }
         [Display(Name = "Expiry Date")]
         public DateTime? AccountExpiryDate { get; set; }
+
+        public List<SelectListItem> CompanyStateList { get; set; }
+        public List<SelectListItem> CompanyDistrictList { get; set; }
+
+        public List<SelectListItem> CompanyAdminStateList { get; set; }
+        public List<SelectListItem> CompanyAdminDistrictList { get; set; }
     }
 
     public class CompanyRequestFilterVM
