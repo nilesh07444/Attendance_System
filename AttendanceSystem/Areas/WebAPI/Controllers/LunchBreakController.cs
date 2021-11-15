@@ -122,14 +122,15 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             return response;
         }
 
-        [Route("List/{attendanceId}"), HttpGet]
-        public ResponseDataModel<List<EmployeeLunchBreakVM>> List(long attendanceId)
+        [Route("List/{Id}"), HttpGet]
+        public ResponseDataModel<List<EmployeeLunchBreakVM>> List(long Id) // Id = attendanceId
         {
             ResponseDataModel<List<EmployeeLunchBreakVM>> response = new ResponseDataModel<List<EmployeeLunchBreakVM>>();
             List<EmployeeLunchBreakVM> lunchBreakVM = new List<EmployeeLunchBreakVM>();
 
             try
             {
+                long attendanceId = Id;
                 long employeeId = base.UTI.EmployeeId;
                 long companyId = base.UTI.CompanyId;
 
@@ -171,13 +172,13 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
             return response;
         }
-         
+
         [Route("GetLunchBreakDetail/{Id}"), HttpGet]
         public ResponseDataModel<EmployeeLunchBreakVM> GetLunchBreakDetail(long Id)
         {
             ResponseDataModel<EmployeeLunchBreakVM> response = new ResponseDataModel<EmployeeLunchBreakVM>();
             EmployeeLunchBreakVM lunchBreakVM = new EmployeeLunchBreakVM();
-            
+
             try
             {
                 long employeeId = base.UTI.EmployeeId;
@@ -224,7 +225,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
             return response;
         }
-         
+
         [Route("CheckEmployeeLunchStatus"), HttpGet]
         public ResponseDataModel<LunchBreakStatusVM> CheckEmployeeLunchStatus()
         {

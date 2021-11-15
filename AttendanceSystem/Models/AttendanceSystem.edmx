@@ -160,6 +160,7 @@
           <Property Name="ModifiedBy" Type="bigint" />
           <Property Name="ModifiedDate" Type="datetime" />
           <Property Name="NoOfLunchBreakAllowed" Type="int" />
+          <Property Name="SiteLocationAccessPassword" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="tbl_CompanyRenewPayment">
           <Key>
@@ -677,6 +678,9 @@
           <Property Name="SiteDescription" Type="nvarchar" MaxLength="500" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="Latitude" Type="decimal" Precision="11" Scale="8" />
+          <Property Name="Longitude" Type="decimal" Precision="11" Scale="8" />
+          <Property Name="RadiousInMeter" Type="decimal" Precision="18" Scale="2" />
           <Property Name="CreatedBy" Type="bigint" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="ModifiedBy" Type="bigint" />
@@ -1139,6 +1143,9 @@
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ModifiedBy" Type="Int64" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="Latitude" Type="Decimal" Precision="11" Scale="8" />
+          <Property Name="Longitude" Type="Decimal" Precision="11" Scale="8" />
+          <Property Name="RadiousInMeter" Type="Decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="tbl_SMSPackage">
           <Key>
@@ -1959,6 +1966,7 @@
           <Property Name="ModifiedBy" Type="Int64" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="NoOfLunchBreakAllowed" Type="Int32" />
+          <Property Name="SiteLocationAccessPassword" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="tbl_Employee">
           <Key>
@@ -2252,6 +2260,9 @@
           <EntitySetMapping Name="tbl_Site">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Site">
               <MappingFragment StoreEntitySet="tbl_Site">
+                <ScalarProperty Name="RadiousInMeter" ColumnName="RadiousInMeter" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
                 <ScalarProperty Name="SiteId" ColumnName="SiteId" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="SiteName" ColumnName="SiteName" />
@@ -2950,6 +2961,7 @@
           <EntitySetMapping Name="tbl_Company">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Company">
               <MappingFragment StoreEntitySet="tbl_Company">
+                <ScalarProperty Name="SiteLocationAccessPassword" ColumnName="SiteLocationAccessPassword" />
                 <ScalarProperty Name="NoOfLunchBreakAllowed" ColumnName="NoOfLunchBreakAllowed" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />

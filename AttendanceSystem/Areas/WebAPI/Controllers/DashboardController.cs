@@ -145,7 +145,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                  StateId = st.StateId,
                                                  StateName = st.StateName,
                                                  CountryId = st.CountryId
-                                             }).OrderByDescending(x => x.StateName).ToList();
+                                             }).OrderBy(x => x.StateName).ToList();
 
                 response.Data = stateList;
             }
@@ -173,7 +173,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                     DistrictId = st.DistrictId,
                                                     DistrictName = st.DistrictName,
                                                     StateId = st.StateId
-                                                }).OrderByDescending(x => x.DistrictName).ToList();
+                                                }).OrderBy(x => x.DistrictName).ToList();
 
                 response.Data = districtList;
             }

@@ -89,6 +89,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     if (objCompany != null)
                     {
                         objCASetting.NoOfLunchBreakAllowed = objCompany.NoOfLunchBreakAllowed;
+                        objCASetting.SiteLocationAccessPassword = objCompany.SiteLocationAccessPassword;
                     }
 
                     ViewData["objCASetting"] = objCASetting;
@@ -157,6 +158,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 if (objCompany != null)
                 {
                     objCASetting.NoOfLunchBreakAllowed = objCompany.NoOfLunchBreakAllowed;
+                    objCASetting.SiteLocationAccessPassword = objCompany.SiteLocationAccessPassword;
                 }
 
                 return View("~/Areas/Admin/Views/Setting/EditSettingCA.cshtml", objCASetting);
@@ -633,7 +635,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             {
                 IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
                 if (ModelState.IsValid)
-                {                    
+                {
                     // Get Setting record
                     long companyId = clsAdminSession.CompanyId;
 
@@ -641,9 +643,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     if (objCompany != null)
                     {
                         objCompany.NoOfLunchBreakAllowed = settingVM.NoOfLunchBreakAllowed;
+                        objCompany.SiteLocationAccessPassword = settingVM.SiteLocationAccessPassword;
                         _db.SaveChanges();
                     }
-                     
+
                     return RedirectToAction("Index");
                 }
             }
@@ -655,8 +658,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
             return View(settingVM);
         }
-
-
+         
         private string SendChangePasswordOTP(tbl_AdminUser objUser)
         {
             string sentOTP = string.Empty;

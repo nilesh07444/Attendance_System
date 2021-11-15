@@ -269,6 +269,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                                        && e.CompanyId == companyId && f.EmployeeId == id
                                                                        select new EmployeeFingerprintVM
                                                                        {
+                                                                           EmployeeFingerprintId = f.EmployeeFingerprintId,
                                                                            EmployeeId = f.EmployeeId,
                                                                            ISOCode = f.ISOCode
                                                                        }).ToList();

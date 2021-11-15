@@ -124,7 +124,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     objEmployee.EmployeeCode = CommonMethod.getEmployeeCodeFormat(companyId, objCompany.CompanyName, empCount.Count());
                     objEmployee.Address = employeeVM.Address;
                     objEmployee.City = employeeVM.City;
-                    objEmployee.Pincode = employeeVM.Pincode; 
+                    objEmployee.Pincode = employeeVM.Pincode;
                     objEmployee.StateId = employeeVM.StateId;
                     objEmployee.DistrictId = employeeVM.DistrictId;
                     objEmployee.IsActive = isTrailMode ? true : (activeEmployee >= noOfEmployee ? false : true);
@@ -349,7 +349,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         employeeObject.AdharCardNo = employeeVM.AdharCardNo;
                         employeeObject.Address = employeeVM.Address;
                         employeeObject.City = employeeVM.City;
-                        employeeObject.Pincode = employeeVM.Pincode; 
+                        employeeObject.Pincode = employeeVM.Pincode;
                         employeeObject.StateId = employeeVM.StateId;
                         employeeObject.DistrictId = employeeVM.DistrictId;
                         employeeObject.UpdatedBy = employeeId;
@@ -926,6 +926,55 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                                       }).ToList();
 
                 response.Data = lstEmployeeFingerprint;
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message);
+            }
+            return response;
+        }
+
+        [HttpPost]
+        [Route("ValidateSiteLocationPassword")]
+        public ResponseDataModel<bool> ValidateSiteLocationPassword(LocationPasswordVM passwordVM)
+        {
+            ResponseDataModel<bool> response = new ResponseDataModel<bool>();
+            response.IsError = false;
+            try
+            {
+                companyId = base.UTI.CompanyId;
+                tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == companyId).FirstOrDefault();
+
+                #region Validation
+
+                int loggedInUserRoleId = base.UTI.RoleId;
+
+                if (loggedInUserRoleId != (int)AdminRoles.Supervisor)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.AccessDeniedOfSiteLocation);
+                }
+
+                if (!response.IsError && string.IsNullOrEmpty(passwordVM.SiteLocationAccessPassword))
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.EnterSiteLocationAccessPassword);
+                }
+
+                if (!response.IsError && string.IsNullOrEmpty(objCompany.SiteLocationAccessPassword))
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.SiteLocationAccessPasswordStillNotSaved);
+                }
+
+                if (!response.IsError && objCompany != null && objCompany.SiteLocationAccessPassword != passwordVM.SiteLocationAccessPassword)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.InvalidSiteLocationAccessPassword);
+                }
+
+                #endregion Validation
             }
             catch (Exception ex)
             {

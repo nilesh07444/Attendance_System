@@ -8,7 +8,11 @@ namespace AttendanceSystem
 {
     public class CompanyAdminSettingVM
     {
-        [Required, Display(Name = "No Of Lunch Break Allowed Per Day")]
+        [Required, Display(Name = "No Of Lunch Break Allowed Per Attendance")]
         public int? NoOfLunchBreakAllowed { get; set; }
+
+        [Display(Name = "Site Location Access Password")]
+        public string SiteLocationAccessPassword { get; set; }
+
     }
 }

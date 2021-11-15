@@ -229,14 +229,22 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="form-group col-4">
-                            <label>No Of Lunch Break Allowed Per Day</label>
+                            <label>No Of Lunch Break Allowed Per Attendance</label>
                             <p>@objCASetting.NoOfLunchBreakAllowed</p>
                         </div>
 
+                        @if (clsAdminSession.CompanyTypeId == (int)CompanyType.ConstructionCompany)
+                        {
+                            <div class="form-group col-4">
+                                <label>Site Location Access Password</label>
+                                <p>@objCASetting.SiteLocationAccessPassword</p>
+                            </div>
+                        }
+                         
                     </div>
                 </div>
             </div>
         }
-   
+
     </div>
 </div>

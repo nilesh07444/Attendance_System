@@ -18,5 +18,10 @@ namespace AttendanceSystem.ViewModel
         public string SiteDescription { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
+
+        public decimal? Latitude { get; set; }
+        public decimal? Longitude { get; set; }
+        public decimal? RadiousInMeter { get; set; }
+
     }
 }

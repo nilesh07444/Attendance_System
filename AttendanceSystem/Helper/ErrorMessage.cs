@@ -214,5 +214,10 @@
 
         public static string YourAttendanceNotTakenYetYouCanNotTakeLunch = "Your attendance status not Login, so you can not take lunch.";
         public static string YouAreInLuchBreakYouCanNotOutAttendance = "You are in lunch break now, so you can not out from attendance.";
+
+        public static string EnterSiteLocationAccessPassword = "Please enter site location access password";
+        public static string InvalidSiteLocationAccessPassword = "Invalid site location access password";
+        public static string AccessDeniedOfSiteLocation = "You do not have access of site location";
+        public static string SiteLocationAccessPasswordStillNotSaved = "Site location access password still not configured by admin. Please contact administrator";
     }
 }

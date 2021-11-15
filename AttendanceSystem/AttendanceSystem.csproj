@@ -480,6 +480,7 @@
     <Compile Include="ViewModel\SalesReportVM.cs" />
     <Compile Include="ViewModel\SMSLogVM.cs" />
     <Compile Include="ViewModel\StateVM.cs" />
+    <Compile Include="ViewModel\WebAPI\LocationPasswordVM.cs" />
     <Compile Include="ViewModel\WorkerHeadVM.cs" />
     <Compile Include="ViewModel\WorkerTypeVM.cs" />
     <Compile Include="ViewModel\MaterialVM.cs" />
