@@ -196,6 +196,47 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
             return response;
         }
-        
+
+        [HttpPost]
+        [Route("DeleteSiteLocation/{Id}")]
+        public ResponseDataModel<bool> DeleteSiteLocation(long Id)
+        {
+            ResponseDataModel<bool> response = new ResponseDataModel<bool>();
+            response.IsError = false;
+            try
+            {
+                long employeeId = base.UTI.EmployeeId;
+                long companyId = base.UTI.CompanyId;
+                int loggedInUserRoleId = base.UTI.RoleId;
+
+                if (loggedInUserRoleId != (int)AdminRoles.Supervisor)
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.AccessDeniedOfSiteLocation);
+                }
+
+                if (!response.IsError)
+                {
+                    tbl_Site objSite = _db.tbl_Site.Where(x => x.SiteId == Id && x.CompanyId == companyId).FirstOrDefault();
+                    if (objSite != null)
+                    {
+                        objSite.Latitude = null;
+                        objSite.Longitude = null;
+                        objSite.RadiousInMeter = null;
+                        objSite.ModifiedDate = CommonMethod.CurrentIndianDateTime();
+                        _db.SaveChanges();
+                    }
+                }
+                response.Data = true;
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message);
+            }
+
+            return response;
+        }
+
     }
 }

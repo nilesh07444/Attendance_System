@@ -18,4 +18,10 @@ namespace AttendanceSystem.ViewModel.WebAPI.ViewModel
         public decimal? Latitude { get; set; }
         public decimal? Longitude { get; set; }
     }
+
+    public class CompanyAdminAuthenticateRequestVM
+    {
+        public long CompanyAdminId { get; set; }
+    }
+
 }

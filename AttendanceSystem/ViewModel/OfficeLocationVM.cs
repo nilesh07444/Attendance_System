@@ -9,8 +9,7 @@ namespace AttendanceSystem
 {
     public class OfficeLocationVM
     {
-        public long OfficeLocationId { get; set; }
-        public long CompanyId { get; set; }
+        public long OfficeLocationId { get; set; } 
 
         [Display(Name = "Office Location Name *")]
         [Required(ErrorMessage = "This field is required")]

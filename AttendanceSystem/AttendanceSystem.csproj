@@ -253,6 +253,7 @@
     <Compile Include="Areas\WebAPI\Controllers\LunchBreakController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\MaterialController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\MaterialCategoryController.cs" />
+    <Compile Include="Areas\WebAPI\Controllers\OfficeLocationController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\SiteController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\PaymentController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\ProfileController.cs" />
@@ -1744,6 +1745,7 @@
     <Folder Include="Areas\WebAPI\Views\Account\" />
     <Folder Include="Areas\WebAPI\Views\Admin\" />
     <Folder Include="Areas\WebAPI\Views\LunchBreak\" />
+    <Folder Include="Areas\WebAPI\Views\OfficeLocation\" />
     <Folder Include="Areas\WebAPI\Views\Setting\" />
     <Folder Include="Areas\WebAPI\Views\Shared\" />
     <Folder Include="Content\Invoice\" />

@@ -219,5 +219,11 @@
         public static string InvalidSiteLocationAccessPassword = "Invalid site location access password";
         public static string AccessDeniedOfSiteLocation = "You do not have access of site location";
         public static string SiteLocationAccessPasswordStillNotSaved = "Site location access password still not configured by admin. Please contact administrator";
+
+        public static string EnterOfficeLocationAccessPassword = "Please enter office location access password";
+        public static string AccessDeniedOfOfficeLocation = "You do not have access of office location";
+        public static string OfficeLocationAccessPasswordStillNotSaved = "Office location access password still not configured by admin. Please contact administrator";
+        public static string InvalidOfficeLocationAccessPassword = "Invalid office location access password";
+
     }
 }

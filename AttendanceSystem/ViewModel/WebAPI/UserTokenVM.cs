@@ -10,5 +10,8 @@ namespace AttendanceSystem.ViewModel.WebAPI.ViewModel
 		public long CompanyId { get; set; }
 		public long CompanyTypeId { get; set; }
 		public bool IsTrailMode { get; set; }
-    }
+
+		public long? CompanyAdminId { get; set; }
+
+	}
 }

@@ -6,13 +6,14 @@ using System.Web;
 namespace AttendanceSystem.ViewModel.WebAPI.ViewModel
 {
     public class LoginResponseVM
-    {
-        //public int Status { get; set; }
-        //public string ErrorMessage { get; set; }
+    {        
         public bool IsFingerprintEnabled { get; set; }
         public long EmployeeId { get; set; }
         public string OTP { get; set; }
+
+        public long? CompanyAdminId { get; set; }
     }
+
     public class AuthenticateVM
     {
         public string Access_token { get; set; }

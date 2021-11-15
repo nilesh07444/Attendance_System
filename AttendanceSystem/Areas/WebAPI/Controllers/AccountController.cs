@@ -16,22 +16,10 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
         private readonly AttendanceSystemEntities _db;
         private string psSult = string.Empty;
-        private string enviornment = string.Empty;
         public AccountController()
         {
             _db = new AttendanceSystemEntities();
             psSult = ConfigurationManager.AppSettings["PasswordSult"].ToString();
-            enviornment = ConfigurationManager.AppSettings["Environment"].ToString();
-        }
-
-        [Route("TestMethod"), HttpGet]
-        public string TestMethod()
-        {
-            string psSult = ConfigurationManager.AppSettings["PasswordSult"].ToString();
-            string password = "12345";
-            string encryptedPwd = CommonMethod.Encrypt(password, psSult);
-
-            return encryptedPwd;
         }
 
         [HttpPost]
@@ -195,8 +183,35 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     }
                     else
                     {
-                        response.IsError = true;
-                        response.AddError(ErrorMessage.UserNameOrPasswordInvalid);
+                        // Check Company Admin Login
+                        var companyAdminLoginData = _db.tbl_AdminUser.Where(x => x.UserName == loginRequestVM.UserName && x.Password == encryptPassword
+                                                        && x.AdminUserRoleId == (int)AdminRoles.CompanyAdmin).FirstOrDefault();
+
+                        if (companyAdminLoginData != null)
+                        {
+                            if (!string.IsNullOrEmpty(companyAdminLoginData.MobileNo))
+                            {
+                                Random random = new Random();
+                                int num = random.Next(555555, 999999);
+
+                                int SmsId = (int)SMSType.SuperAdminLoginOTP;
+                                string msg = CommonMethod.GetSmsContent(SmsId);
+                                msg = msg.Replace("{#var#}", num.ToString());
+                                msg = msg.Replace("\r\n", "\n");
+
+                                string smsResponse = CommonMethod.SendSMSWithoutLog(msg, companyAdminLoginData.MobileNo);
+
+                                loginResponseVM.OTP = num.ToString();
+                                loginResponseVM.CompanyAdminId = companyAdminLoginData.AdminUserId;
+
+                                response.Data = loginResponseVM;
+                            }
+                        }
+                        else
+                        {
+                            response.IsError = true;
+                            response.AddError(ErrorMessage.UserNameOrPasswordInvalid);
+                        }
                     }
                 }
                 else
@@ -211,32 +226,6 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 response.AddError(ex.Message);
             }
 
-
-            return response;
-        }
-
-        [Route("SampleAPI"), HttpGet]
-        public ResponseDataModel<bool> SampleAPI()
-        {
-            ResponseDataModel<bool> response = new ResponseDataModel<bool>();
-
-            try
-            {
-                response.Data = true;
-
-                // for testing error
-                if (response.Data == true)
-                {
-                    throw new Exception("custom error by nilesh");
-                }
-
-            }
-            catch (Exception ex)
-            {
-                response.Data = false;
-
-                response.AddError(ex.Message.ToString());
-            }
 
             return response;
         }
@@ -309,6 +298,66 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     objLoginHistory.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     _db.tbl_LoginHistory.Add(objLoginHistory);
                     _db.SaveChanges();
+                }
+                else
+                {
+                    response.IsError = true;
+                    response.AddError(ErrorMessage.UserNameOrPasswordInvalid);
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IsError = false;
+                response.AddError(ex.Message.ToString());
+            }
+
+            return response;
+        }
+
+        [Route("AdminAuthenticate"), HttpPost]
+        public ResponseDataModel<AuthenticateVM> AdminAuthenticate(CompanyAdminAuthenticateRequestVM authenticateRequestVM)
+        {
+            ResponseDataModel<AuthenticateVM> response = new ResponseDataModel<AuthenticateVM>();
+            AuthenticateVM authenticateVM = new AuthenticateVM();
+
+            try
+            {
+                var data = _db.tbl_AdminUser.Where(x => x.AdminUserId == authenticateRequestVM.CompanyAdminId && x.IsActive && !x.IsDeleted).FirstOrDefault();
+                if (data != null)
+                {
+                    tbl_Company company = _db.tbl_Company.Where(x => x.CompanyId == data.CompanyId).FirstOrDefault();
+                    UserTokenVM userToken = new UserTokenVM()
+                    {                        
+                        RoleId = (int)AdminRoles.CompanyAdmin,
+                        UserName = data.FirstName + " " + data.LastName,
+                        CompanyId = (long)data.CompanyId,
+                        CompanyTypeId = company.CompanyTypeId,
+                        IsTrailMode = company.IsTrialMode,
+                        CompanyAdminId = data.AdminUserId
+                    };
+
+                    JWTAccessTokenVM tokenVM = new JWTAccessTokenVM();
+                    tokenVM = JWTAuthenticationHelper.GenerateToken(userToken); 
+                    authenticateVM.Access_token = tokenVM.Token; 
+
+                    authenticateVM.RoleId = (int)AdminRoles.CompanyAdmin;
+                    authenticateVM.CompanyId = (long)data.CompanyId;
+                    authenticateVM.CompanyTypeId = company.CompanyTypeId;
+                    authenticateVM.Prefix = data.Prefix;
+                    authenticateVM.FirstName = data.FirstName;
+                    authenticateVM.LastName = data.LastName;
+                    authenticateVM.Email = data.EmailId; 
+                    authenticateVM.Password = data.Password;
+                    authenticateVM.MobileNo = data.MobileNo;
+                    authenticateVM.AlternateMobile = data.AlternateMobileNo;
+                    authenticateVM.Address = data.Address;
+                    authenticateVM.City = data.City;
+                    authenticateVM.Designation = data.Designation;
+                    authenticateVM.Dob = data.DOB; 
+                    //authenticateVM.ProfilePicture = CommonMethod.GetCurrentDomain() + ErrorMessage.EmployeeDirectoryPath + data.ProfilePhoto; 
+                    authenticateVM.IsTrialMode = company.IsTrialMode;
+                    authenticateVM.CompanyName = company.CompanyName;
+                    response.Data = authenticateVM; 
                 }
                 else
                 {

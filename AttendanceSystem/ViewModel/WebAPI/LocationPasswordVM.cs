@@ -8,5 +8,6 @@ namespace AttendanceSystem
     public class LocationPasswordVM
     {
         public string SiteLocationAccessPassword { get; set; }
+        public string OfficeLocationAccessPassword { get; set; }
     }
 }
