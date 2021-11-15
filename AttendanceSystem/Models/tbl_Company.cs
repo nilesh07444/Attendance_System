@@ -59,5 +59,6 @@ namespace AttendanceSystem.Models
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public Nullable<int> NoOfLunchBreakAllowed { get; set; }
         public string SiteLocationAccessPassword { get; set; }
+        public string OfficeLocationAccessPassword { get; set; }
     }
 }

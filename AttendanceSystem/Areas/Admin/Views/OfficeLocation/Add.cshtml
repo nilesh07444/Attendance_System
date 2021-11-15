@@ -1,0 +1,83 @@
+﻿@model OfficeLocationVM
+@{
+    ViewBag.Title = "OfficeLocation";
+}
+
+<section class="section">
+
+    <div class="row">
+        <div class="col-12">
+
+            <div class="card card-primary">
+
+                @using (Html.BeginForm("Add", "OfficeLocation", FormMethod.Post, new { @id = "FormId", @class = "", enctype = "multipart/form-data", role = "form" }))
+                {
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="form-group col-12">
+                                @Html.LabelFor(model => model.OfficeLocationName, htmlAttributes: new { @class = "" })
+                                @Html.EditorFor(model => model.OfficeLocationName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Office Location Name ", maxlength = "200", @autofocus = "autofocus" } })
+                                @Html.ValidationMessageFor(model => model.OfficeLocationName, "", new { @class = "text-danger" })
+                                @Html.HiddenFor(model => model.OfficeLocationId)
+                            </div>
+                            <div class="form-group col-12">
+                                @Html.LabelFor(model => model.OfficeLocationDescription, htmlAttributes: new { @class = "" })
+                                @Html.TextAreaFor(model => model.OfficeLocationDescription, 10, 5, new { @class = "form-control", @placeholder = "Enter Office Location Description", maxlength = "250" })
+                                @Html.ValidationMessageFor(model => model.OfficeLocationDescription, "", new { @class = "text-danger" })
+                            </div>
+                        </div> 
+                    </div>
+
+                    <div class="card-footer text-center">
+                        <button class="btn btn-success mr-1" type="submit">Submit</button>
+                        <a href="/admin/officelocation" class="btn btn-secondary">Cancel</a>
+                    </div>
+
+                }
+
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnCancel').click(function () {
+            window.location.href = "/admin/officelocation";
+        });
+
+        $('#btnSubmit').click(function () {
+            if ($("#FormId").valid()) {
+            }
+            else {
+                return false;
+            }
+        });
+
+        $("#OfficeLocationName").change(function () {
+            var officeLocationName = $("#OfficeLocationName").val();
+
+            var StrURL = '/admin/OfficeLocation/CheckOfficeLocationName?officeLocationName=' + officeLocationName;
+            $.ajax({
+                url: StrURL,
+                cache: false,
+                data: {},
+                type: 'POST',
+                success: function (data) {
+                    if (data.Status == true) {
+                        alert("Office Location Name already exist, Please use another location.")
+                        $("#OfficeLocationName").val("");
+                    }
+                },
+                error: function (req, status, error) {
+                    alert(error);
+                }
+            });
+        });
+
+    })
+</script>

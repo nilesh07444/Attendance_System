@@ -13,8 +13,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
     public class SiteController : Controller
     {
         // GET: Admin/Site
-        AttendanceSystemEntities _db;
-        public string SiteDirectoryPath = "";
+        AttendanceSystemEntities _db; 
         public SiteController()
         {
             _db = new AttendanceSystemEntities();

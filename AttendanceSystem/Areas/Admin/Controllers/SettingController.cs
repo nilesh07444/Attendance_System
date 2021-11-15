@@ -90,6 +90,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     {
                         objCASetting.NoOfLunchBreakAllowed = objCompany.NoOfLunchBreakAllowed;
                         objCASetting.SiteLocationAccessPassword = objCompany.SiteLocationAccessPassword;
+                        objCASetting.OfficeLocationAccessPassword = objCompany.OfficeLocationAccessPassword;
                     }
 
                     ViewData["objCASetting"] = objCASetting;
@@ -159,6 +160,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 {
                     objCASetting.NoOfLunchBreakAllowed = objCompany.NoOfLunchBreakAllowed;
                     objCASetting.SiteLocationAccessPassword = objCompany.SiteLocationAccessPassword;
+                    objCASetting.OfficeLocationAccessPassword = objCompany.OfficeLocationAccessPassword;
                 }
 
                 return View("~/Areas/Admin/Views/Setting/EditSettingCA.cshtml", objCASetting);
@@ -644,6 +646,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     {
                         objCompany.NoOfLunchBreakAllowed = settingVM.NoOfLunchBreakAllowed;
                         objCompany.SiteLocationAccessPassword = settingVM.SiteLocationAccessPassword;
+                        objCompany.OfficeLocationAccessPassword = settingVM.OfficeLocationAccessPassword;
                         _db.SaveChanges();
                     }
 

@@ -193,6 +193,7 @@
     <Compile Include="Areas\Admin\Controllers\EmployeeBuyTransactionController.cs" />
     <Compile Include="Areas\Admin\Controllers\FollowupController.cs" />
     <Compile Include="Areas\Admin\Controllers\LunchBreakController.cs" />
+    <Compile Include="Areas\Admin\Controllers\OfficeLocationController.cs" />
     <Compile Include="Areas\Admin\Controllers\PaymentGatewayController.cs" />
     <Compile Include="Areas\Admin\Controllers\ReminderController.cs" />
     <Compile Include="Areas\Admin\Controllers\ReportController.cs" />
@@ -381,6 +382,9 @@
     <Compile Include="Models\tbl_MaterialCategory.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\tbl_OfficeLocation.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tbl_Package.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
@@ -476,6 +480,7 @@
     <Compile Include="ViewModel\LeaveVM.cs" />
     <Compile Include="ViewModel\LoginHistoryVM.cs" />
     <Compile Include="ViewModel\EmployeeLunchBreakVM.cs" />
+    <Compile Include="ViewModel\OfficeLocationVM.cs" />
     <Compile Include="ViewModel\ReminderVM.cs" />
     <Compile Include="ViewModel\SalesReportVM.cs" />
     <Compile Include="ViewModel\SMSLogVM.cs" />
@@ -1691,6 +1696,8 @@
     <Content Include="Areas\Admin\Views\WorkerHead\Index.cshtml" />
     <Content Include="Areas\Admin\Views\WorkerHead\Add.cshtml" />
     <Content Include="Areas\Admin\Views\Attendance\LunchBreak.cshtml" />
+    <Content Include="Areas\Admin\Views\OfficeLocation\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\OfficeLocation\Add.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />

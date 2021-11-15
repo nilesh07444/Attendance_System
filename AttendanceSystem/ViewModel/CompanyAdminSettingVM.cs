@@ -14,5 +14,8 @@ namespace AttendanceSystem
         [Display(Name = "Site Location Access Password")]
         public string SiteLocationAccessPassword { get; set; }
 
+        [Display(Name = "Office Location Access Password")]
+        public string OfficeLocationAccessPassword { get; set; }
+
     }
 }
