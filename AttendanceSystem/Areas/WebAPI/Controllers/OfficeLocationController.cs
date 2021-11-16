@@ -5,17 +5,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
- 
+
 namespace AttendanceSystem.Areas.WebAPI.Controllers
 {
     public class OfficeLocationController : BaseUserController
     {
-        private readonly AttendanceSystemEntities _db; 
+        private readonly AttendanceSystemEntities _db;
         public OfficeLocationController()
         {
             _db = new AttendanceSystemEntities();
         }
-         
+
         [HttpPost]
         [Route("ValidateOfficeLocationPassword")]
         public ResponseDataModel<bool> ValidateOfficeLocationPassword(LocationPasswordVM passwordVM)
@@ -25,6 +25,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             try
             {
                 long companyId = base.UTI.CompanyId;
+                long companyType = base.UTI.CompanyTypeId;
                 tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == companyId).FirstOrDefault();
 
                 #region Validation
@@ -64,7 +65,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             }
             return response;
         }
-         
+
         [HttpGet]
         [Route("OfficeLocationList")]
         public ResponseDataModel<List<OfficeLocationVM>> OfficeLocationList()
@@ -73,7 +74,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             response.IsError = false;
             try
             {
-                
+
                 long companyId = base.UTI.CompanyId;
 
                 List<OfficeLocationVM> officeLocationList = (from st in _db.tbl_OfficeLocation
@@ -109,7 +110,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             response.IsError = false;
             try
             {
-                
+
                 long companyId = base.UTI.CompanyId;
 
                 List<OfficeLocationVM> officeLocationList = (from st in _db.tbl_OfficeLocation
@@ -144,9 +145,10 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             ResponseDataModel<bool> response = new ResponseDataModel<bool>();
             response.IsError = false;
             try
-            { 
+            {
                 long companyId = base.UTI.CompanyId;
                 int loggedInUserRoleId = base.UTI.RoleId;
+                long companyType = base.UTI.CompanyTypeId;
 
                 if (loggedInUserRoleId != (int)AdminRoles.CompanyAdmin)
                 {
@@ -185,22 +187,22 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             response.IsError = false;
 
             try
-            { 
+            {
                 long companyId = base.UTI.CompanyId;
 
                 OfficeLocationVM objOfficeLocation = (from st in _db.tbl_OfficeLocation
-                                            where !st.IsDeleted && st.CompanyId == companyId
-                                            && st.OfficeLocationId == Id
-                                            select new OfficeLocationVM
-                                            {
-                                                OfficeLocationId = st.OfficeLocationId,
-                                                OfficeLocationName = st.OfficeLocationName,
-                                                OfficeLocationDescription = st.OfficeLocationDescription,
-                                                IsActive = st.IsActive,
-                                                Latitude = st.Latitude,
-                                                Longitude = st.Longitude,
-                                                RadiousInMeter = st.RadiousInMeter
-                                            }).FirstOrDefault();
+                                                      where !st.IsDeleted && st.CompanyId == companyId
+                                                      && st.OfficeLocationId == Id
+                                                      select new OfficeLocationVM
+                                                      {
+                                                          OfficeLocationId = st.OfficeLocationId,
+                                                          OfficeLocationName = st.OfficeLocationName,
+                                                          OfficeLocationDescription = st.OfficeLocationDescription,
+                                                          IsActive = st.IsActive,
+                                                          Latitude = st.Latitude,
+                                                          Longitude = st.Longitude,
+                                                          RadiousInMeter = st.RadiousInMeter
+                                                      }).FirstOrDefault();
 
                 response.Data = objOfficeLocation;
             }
