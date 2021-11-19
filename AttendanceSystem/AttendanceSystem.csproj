@@ -347,6 +347,9 @@
     <Compile Include="Models\tbl_EmployeeLunchBreak.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\tbl_EmployeeOfficeLocation.cs">
+      <DependentUpon>AttendanceSystem.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tbl_EmployeePayment.cs">
       <DependentUpon>AttendanceSystem.tt</DependentUpon>
     </Compile>
@@ -486,6 +489,7 @@
     <Compile Include="ViewModel\SalesReportVM.cs" />
     <Compile Include="ViewModel\SMSLogVM.cs" />
     <Compile Include="ViewModel\StateVM.cs" />
+    <Compile Include="ViewModel\WebAPI\EmployeeOfficeLocationVM.cs" />
     <Compile Include="ViewModel\WebAPI\LocationPasswordVM.cs" />
     <Compile Include="ViewModel\WorkerHeadVM.cs" />
     <Compile Include="ViewModel\WorkerTypeVM.cs" />

@@ -50,6 +50,7 @@
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_Employee" Width="1.5" PointX="25.375" PointY="0.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_CompanyRequest" Width="1.5" PointX="23.375" PointY="23.75" />
         <EntityTypeShape EntityType="AttendanceSystemModel.tbl_OfficeLocation" Width="1.5" PointX="3.375" PointY="3.75" />
+        <EntityTypeShape EntityType="AttendanceSystemModel.tbl_EmployeeOfficeLocation" Width="1.5" PointX="7.375" PointY="25.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

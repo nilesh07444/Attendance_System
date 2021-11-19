@@ -24,6 +24,8 @@
     lstEmploymentCategory.Add(new SelectListItem { Value = "3", Text = "Monthly Based" });
     lstEmploymentCategory.Add(new SelectListItem { Value = "4", Text = "Unit Based" });
 
+    List<EmployeeOfficeLocationVM> lstEmployeeOfficeLocation = ViewData["AssignedEmployeeLocationList"] as List<EmployeeOfficeLocationVM>;
+
 }
 
 <section class="section">
@@ -227,6 +229,29 @@
                                 @Html.CheckBoxFor(model => model.IsFingerprintEnabled)
                             </div>
                         </div>
+
+                        <div class="row">
+                            <div class="form-group col-12">
+                                @Html.LabelFor(model => model.EmployeeOfficeLocationType) <br />
+                                <label style="margin-right:5px; font-weight: inherit;"> @Html.RadioButtonFor(model => model.EmployeeOfficeLocationType, 1) Anywhere </label>
+                                <label style="margin-right:5px; font-weight: inherit;"> @Html.RadioButtonFor(model => model.EmployeeOfficeLocationType, 2) All Offices </label>
+                                <label style="font-weight: inherit;"> @Html.RadioButtonFor(model => model.EmployeeOfficeLocationType, 3) Selected Offices </label>
+                            </div>
+                        </div>
+
+                        <!-- Selected Office list -->
+                        <div class="row dvSelectedOffices" style="margin-left: 0px; margin-right: 0px;">
+                            <div class="form-group col-12" style="border: 2px solid; padding-top: 5px; border-radius: 10px;">
+                                @if (lstEmployeeOfficeLocation != null && lstEmployeeOfficeLocation.Count > 0)
+                                {
+                                    foreach (EmployeeOfficeLocationVM loc in lstEmployeeOfficeLocation)
+                                    {
+                                        <input id="loc_@loc.OfficeLocationId" type="checkbox" value="@loc.OfficeLocationId" @(loc.IsAssigned ? "checked" : "") /> <label for="loc_@loc.OfficeLocationId">@loc.OfficeLocationName</label> <br />
+                                    }
+                                }
+                            </div>
+                        </div>
+
                         <div class="row">
                             <div class="form-group col-12">
                                 @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "" })
@@ -244,6 +269,7 @@
 
                     @Html.HiddenFor(model => model.ProfilePicture)
                     @Html.HiddenFor(model => model.OTP)
+                    @Html.HiddenFor(model => model.strSelectedOfficeLocations)
                 }
 
             </div>
@@ -307,7 +333,17 @@
                 $("#dvMonthlySal").show();
             }
 
+            var employeeOfficeLocationType = '@Model.EmployeeOfficeLocationType';
+            if (employeeOfficeLocationType == 3) {
+                $(".dvSelectedOffices").show();
+            }
+            else {
+                $(".dvSelectedOffices").hide();
+            }
+
         } else {
+            $(".dvSelectedOffices").hide();
+
             $("#ProfileImageFile").addClass("required");
             $("#dvMonthlySal").hide();
             $("#dvExtraHours").hide();
@@ -377,6 +413,22 @@
             var TextOTP = $("#TextOTP").val();
 
             if (TextOTP == OTP) {
+                 
+                // set selected office locations with comma separated string to strSelectedOfficeLocations field
+                var employeeOfficeLocationType = $("#EmployeeOfficeLocationType:checked").val();
+                if (employeeOfficeLocationType == 3) // 3 = selected offices
+                {
+                    var selectedOffices = $(".dvSelectedOffices input[type='checkbox']:checked");
+                    if (selectedOffices.length > 0) {
+                        var str_selected_offices_values = "";
+                        $(".dvSelectedOffices input[type='checkbox']:checked").each(function () {
+                            str_selected_offices_values += this.value + ",";
+                        });
+                        str_selected_offices_values = str_selected_offices_values.substring(0, str_selected_offices_values.length - 1);
+                        $("#strSelectedOfficeLocations").val(str_selected_offices_values);
+                    }
+                }
+
                 $("#EmployeeFormId").submit();
             } else {
                 alert("Wrong OTP you have entered.")
@@ -456,6 +508,16 @@
        else {
             var htmlSubData = "<option value=''>- Select -</option>";
             $("#DistrictId").html(htmlSubData);
+        }
+    });
+
+    $('input[name="EmployeeOfficeLocationType"]').change(function () {
+        var value = $('input[name="EmployeeOfficeLocationType"]:checked').val();
+        if (value == 1 || value == 2) {
+            $(".dvSelectedOffices").hide();
+        }
+        else if (value == 3) {
+            $(".dvSelectedOffices").show();
         }
     });
 

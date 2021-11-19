@@ -370,6 +370,7 @@
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="IsFingerprintEnabled" Type="bit" Nullable="false" />
           <Property Name="IsFingerprintSaved" Type="bit" Nullable="false" />
+          <Property Name="EmployeeOfficeLocationType" Type="int" />
           <Property Name="CreatedBy" Type="bigint" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UpdatedBy" Type="bigint" />
@@ -421,6 +422,18 @@
           <Property Name="EndLunchLatitude" Type="decimal" Precision="11" Scale="8" />
           <Property Name="EndLunchLongitude" Type="decimal" Precision="11" Scale="8" />
           <Property Name="LunchBreakNo" Type="int" />
+        </EntityType>
+        <EntityType Name="tbl_EmployeeOfficeLocation">
+          <Key>
+            <PropertyRef Name="EmployeeOfficeLocationId" />
+          </Key>
+          <Property Name="EmployeeOfficeLocationId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OfficeLocationId" Type="bigint" Nullable="false" />
+          <Property Name="EmployeeId" Type="bigint" Nullable="false" />
+          <Property Name="CreatedBy" Type="bigint" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="bigint" />
+          <Property Name="ModifiedDate" Type="datetime" />
         </EntityType>
         <EntityType Name="tbl_EmployeePayment">
           <Key>
@@ -953,6 +966,7 @@
           <EntitySet Name="tbl_EmployeeBuyTransaction" EntityType="Self.tbl_EmployeeBuyTransaction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_EmployeeFingerprint" EntityType="Self.tbl_EmployeeFingerprint" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_EmployeeLunchBreak" EntityType="Self.tbl_EmployeeLunchBreak" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_EmployeeOfficeLocation" EntityType="Self.tbl_EmployeeOfficeLocation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_EmployeePayment" EntityType="Self.tbl_EmployeePayment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_EmployeeRating" EntityType="Self.tbl_EmployeeRating" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Feedback" EntityType="Self.tbl_Feedback" Schema="dbo" store:Type="Tables" />
@@ -1337,6 +1351,7 @@
           <EntitySet Name="tbl_Employee" EntityType="AttendanceSystemModel.tbl_Employee" />
           <EntitySet Name="tbl_CompanyRequest" EntityType="AttendanceSystemModel.tbl_CompanyRequest" />
           <EntitySet Name="tbl_OfficeLocation" EntityType="AttendanceSystemModel.tbl_OfficeLocation" />
+          <EntitySet Name="tbl_EmployeeOfficeLocation" EntityType="AttendanceSystemModel.tbl_EmployeeOfficeLocation" />
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -2037,6 +2052,7 @@
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedBy" Type="Int64" />
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="EmployeeOfficeLocationType" Type="Int32" />
         </EntityType>
         <EntityType Name="tbl_CompanyRequest">
           <Key>
@@ -2110,6 +2126,18 @@
           <Property Name="Latitude" Type="Decimal" Precision="11" Scale="8" />
           <Property Name="Longitude" Type="Decimal" Precision="11" Scale="8" />
           <Property Name="RadiousInMeter" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int64" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="tbl_EmployeeOfficeLocation">
+          <Key>
+            <PropertyRef Name="EmployeeOfficeLocationId" />
+          </Key>
+          <Property Name="EmployeeOfficeLocationId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OfficeLocationId" Type="Int64" Nullable="false" />
+          <Property Name="EmployeeId" Type="Int64" Nullable="false" />
           <Property Name="CreatedBy" Type="Int64" Nullable="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ModifiedBy" Type="Int64" />
@@ -3053,6 +3081,7 @@
           <EntitySetMapping Name="tbl_Employee">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Employee">
               <MappingFragment StoreEntitySet="tbl_Employee">
+                <ScalarProperty Name="EmployeeOfficeLocationType" ColumnName="EmployeeOfficeLocationType" />
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
@@ -3175,6 +3204,19 @@
                 <ScalarProperty Name="OfficeLocationName" ColumnName="OfficeLocationName" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="OfficeLocationId" ColumnName="OfficeLocationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_EmployeeOfficeLocation">
+            <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_EmployeeOfficeLocation">
+              <MappingFragment StoreEntitySet="tbl_EmployeeOfficeLocation">
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="OfficeLocationId" ColumnName="OfficeLocationId" />
+                <ScalarProperty Name="EmployeeOfficeLocationId" ColumnName="EmployeeOfficeLocationId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

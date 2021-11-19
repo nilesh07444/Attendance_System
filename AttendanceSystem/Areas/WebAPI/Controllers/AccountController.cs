@@ -13,7 +13,6 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 {
     public class AccountController : ApiController
     {
-
         private readonly AttendanceSystemEntities _db;
         private string psSult = string.Empty;
         public AccountController()
@@ -23,7 +22,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
         }
 
         [HttpPost]
-        [Route("login")]
+        [Route("Login")]
         public ResponseDataModel<LoginResponseVM> Login(LoginRequestVM loginRequestVM)
         {
             ResponseDataModel<LoginResponseVM> response = new ResponseDataModel<LoginResponseVM>();
@@ -53,7 +52,6 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                             }
 
                             tbl_CompanyRenewPayment companyPackage = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyId == data.CompanyId && today >= x.StartDate && today < x.EndDate).FirstOrDefault();
-                            //tbl_CompanySMSPackRenew companySMSPackage = _db.tbl_CompanySMSPackRenew.Where(x => x.CompanyId == data.CompanyId && today >= x.RenewDate && today < x.PackageExpiryDate).FirstOrDefault();
 
                             if (companyObj.IsTrialMode && companyObj.TrialExpiryDate < today && companyPackage == null)
                             {
@@ -147,7 +145,9 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                                 loginResponseVM.IsFingerprintEnabled = data.IsFingerprintEnabled;
                                 loginResponseVM.EmployeeId = data.EmployeeId;
+                                loginResponseVM.EmployeeOfficeLocationType = data.EmployeeOfficeLocationType;
 
+                                /*
                                 if (!loginResponseVM.IsFingerprintEnabled)
                                 {
                                     Random random = new Random();
@@ -168,9 +168,9 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                     else
                                     {
                                         loginResponseVM.OTP = num.ToString();
-                                    }
-
+                                    } 
                                 }
+                                */
                             }
                             response.Data = loginResponseVM;
                         }
@@ -186,11 +186,12 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         // Check Company Admin Login
                         var companyAdminLoginData = _db.tbl_AdminUser.Where(x => x.UserName == loginRequestVM.UserName && x.Password == encryptPassword
                                                         && x.AdminUserRoleId == (int)AdminRoles.CompanyAdmin).FirstOrDefault();
-
+                         
                         if (companyAdminLoginData != null)
                         {
                             if (!string.IsNullOrEmpty(companyAdminLoginData.MobileNo))
                             {
+                                /*
                                 Random random = new Random();
                                 int num = random.Next(555555, 999999);
 
@@ -202,6 +203,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                 string smsResponse = CommonMethod.SendSMSWithoutLog(msg, companyAdminLoginData.MobileNo);
 
                                 loginResponseVM.OTP = num.ToString();
+                                */
+
                                 loginResponseVM.CompanyAdminId = companyAdminLoginData.AdminUserId;
 
                                 response.Data = loginResponseVM;
@@ -283,6 +286,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     authenticateVM.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)data.EmploymentCategory);
                     authenticateVM.IsTrialMode = company.IsTrialMode;
                     authenticateVM.CompanyName = company.CompanyName;
+                    authenticateVM.EmployeeOfficeLocationType = data.EmployeeOfficeLocationType;
                     response.Data = authenticateVM;
 
                     tbl_LoginHistory objLoginHistory = new tbl_LoginHistory();
@@ -327,7 +331,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 {
                     tbl_Company company = _db.tbl_Company.Where(x => x.CompanyId == data.CompanyId).FirstOrDefault();
                     UserTokenVM userToken = new UserTokenVM()
-                    {                        
+                    {
                         RoleId = (int)AdminRoles.CompanyAdmin,
                         UserName = data.FirstName + " " + data.LastName,
                         CompanyId = (long)data.CompanyId,
@@ -337,8 +341,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     };
 
                     JWTAccessTokenVM tokenVM = new JWTAccessTokenVM();
-                    tokenVM = JWTAuthenticationHelper.GenerateToken(userToken); 
-                    authenticateVM.Access_token = tokenVM.Token; 
+                    tokenVM = JWTAuthenticationHelper.GenerateToken(userToken);
+                    authenticateVM.Access_token = tokenVM.Token;
 
                     authenticateVM.RoleId = (int)AdminRoles.CompanyAdmin;
                     authenticateVM.CompanyId = (long)data.CompanyId;
@@ -346,18 +350,18 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     authenticateVM.Prefix = data.Prefix;
                     authenticateVM.FirstName = data.FirstName;
                     authenticateVM.LastName = data.LastName;
-                    authenticateVM.Email = data.EmailId; 
+                    authenticateVM.Email = data.EmailId;
                     authenticateVM.Password = data.Password;
                     authenticateVM.MobileNo = data.MobileNo;
                     authenticateVM.AlternateMobile = data.AlternateMobileNo;
                     authenticateVM.Address = data.Address;
                     authenticateVM.City = data.City;
                     authenticateVM.Designation = data.Designation;
-                    authenticateVM.Dob = data.DOB; 
+                    authenticateVM.Dob = data.DOB;
                     //authenticateVM.ProfilePicture = CommonMethod.GetCurrentDomain() + ErrorMessage.EmployeeDirectoryPath + data.ProfilePhoto; 
                     authenticateVM.IsTrialMode = company.IsTrialMode;
                     authenticateVM.CompanyName = company.CompanyName;
-                    response.Data = authenticateVM; 
+                    response.Data = authenticateVM;
                 }
                 else
                 {
@@ -605,7 +609,171 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             return response;
         }
 
+        [HttpGet]
+        [Route("GetAssignedEmployeeOfficeLocationList/{Id}")]
+        public ResponseDataModel<List<EmployeeOfficeLocationVM>> GetAssignedEmployeeOfficeLocationList(long Id)
+        {
+            ResponseDataModel<List<EmployeeOfficeLocationVM>> response = new ResponseDataModel<List<EmployeeOfficeLocationVM>>();
+            response.IsError = false;
+            try
+            {
+                List<EmployeeOfficeLocationVM> assignedOfficeLocationList = (from emploc in _db.tbl_EmployeeOfficeLocation
+                                                                             join ol in _db.tbl_OfficeLocation on emploc.OfficeLocationId equals ol.OfficeLocationId
+                                                                             join emp in _db.tbl_Employee on emploc.EmployeeId equals emp.EmployeeId
+                                                                             where !emp.IsDeleted && emp.IsActive && ol.IsActive && !ol.IsDeleted
+                                                                             && emploc.EmployeeId == Id
+                                                                             select new EmployeeOfficeLocationVM
+                                                                             {
+                                                                                 EmployeeOfficeLocationId = emploc.EmployeeOfficeLocationId,
+                                                                                 OfficeLocationId = emploc.OfficeLocationId,
+                                                                                 OfficeLocationName = ol.OfficeLocationName,
+                                                                                 EmployeeId = emp.EmployeeId,
+                                                                                 EmployeeName = emp.Prefix + " " + emp.FirstName + " " + emp.LastName,
+                                                                                 Latitude = ol.Latitude,
+                                                                                 Longitude = ol.Longitude,
+                                                                                 RadiousInMeter = ol.RadiousInMeter
+                                                                             }).ToList();
+                response.Data = assignedOfficeLocationList;
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message);
+            }
 
+            return response;
+        }
+
+        [HttpGet]
+        [Route("GetOfficeLocationList/{Id}")]
+        public ResponseDataModel<List<OfficeLocationVM>> GetOfficeLocationList(long Id)
+        {
+            ResponseDataModel<List<OfficeLocationVM>> response = new ResponseDataModel<List<OfficeLocationVM>>();
+            response.IsError = false;
+            try
+            {
+
+                long employeeId = Id;
+                long companyId = _db.tbl_Employee.Where(x => x.EmployeeId == Id).FirstOrDefault().CompanyId;
+
+                List<OfficeLocationVM> officeLocationList = (from st in _db.tbl_OfficeLocation
+                                                             where !st.IsDeleted && st.IsActive && st.CompanyId == companyId
+                                                             && st.Latitude != null && st.Longitude != null
+                                                             select new OfficeLocationVM
+                                                             {
+                                                                 OfficeLocationId = st.OfficeLocationId,
+                                                                 OfficeLocationName = st.OfficeLocationName,
+                                                                 OfficeLocationDescription = st.OfficeLocationDescription,
+                                                                 IsActive = st.IsActive,
+                                                                 Latitude = st.Latitude,
+                                                                 Longitude = st.Longitude,
+                                                                 RadiousInMeter = st.RadiousInMeter
+                                                             }).OrderByDescending(x => x.OfficeLocationName).ToList();
+
+                response.Data = officeLocationList;
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message);
+            }
+
+            return response;
+        }
+
+        [HttpPost]
+        [Route("SendOTPSMSToEmployee/{Id}")]
+        public ResponseDataModel<OTPVM> SendOTPSMSToEmployee(long Id)
+        {
+            ResponseDataModel<OTPVM> response = new ResponseDataModel<OTPVM>();
+            OTPVM otpVM = new OTPVM();
+
+            try
+            {
+                // Check Company Admin Login
+                var employeeData = _db.tbl_Employee.Where(x => x.EmployeeId == Id).FirstOrDefault();
+                tbl_Company companyObj = _db.tbl_Company.Where(x => x.CompanyId == employeeData.CompanyId).FirstOrDefault();
+
+                if (employeeData != null)
+                {
+                    if (!string.IsNullOrEmpty(employeeData.MobileNo))
+                    {
+                        Random random = new Random();
+                        int num = random.Next(555555, 999999);
+
+                        int SmsId = (int)SMSType.EmployeeLoginOTP;
+                        string msg = CommonMethod.GetSmsContent(SmsId);
+                        msg = msg.Replace("{#var#}", num.ToString());
+                        msg = msg.Replace("\r\n", "\n");
+
+                        ResponseDataModel<string> smsResponse = CommonMethod.SendSMS(msg, employeeData.MobileNo, employeeData.CompanyId, employeeData.EmployeeId, employeeData.EmployeeCode, employeeData.EmployeeId, companyObj.IsTrialMode);
+
+                        if (smsResponse.IsError)
+                        {
+                            response.IsError = true;
+                            response.ErrorData = smsResponse.ErrorData;
+                        }
+                        else
+                        {
+                            otpVM.OTP = num.ToString();
+                        }
+
+                        otpVM.EmployeeId = employeeData.EmployeeId;
+
+                        response.Data = otpVM;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message);
+            }
+
+            return response;
+        }
+
+        [HttpPost]
+        [Route("SendOTPSMSToCompanyAdmin/{Id}")]
+        public ResponseDataModel<OTPVM> SendOTPSMSToCompanyAdmin(long Id)
+        {
+            ResponseDataModel<OTPVM> response = new ResponseDataModel<OTPVM>();
+            OTPVM otpVM = new OTPVM();
+
+            try
+            {
+                // Check Company Admin Login
+                var companyAdminLoginData = _db.tbl_AdminUser.Where(x => x.AdminUserId == Id).FirstOrDefault();
+
+                if (companyAdminLoginData != null)
+                {
+                    if (!string.IsNullOrEmpty(companyAdminLoginData.MobileNo))
+                    {
+                        Random random = new Random();
+                        int num = random.Next(555555, 999999);
+
+                        int SmsId = (int)SMSType.SuperAdminLoginOTP;
+                        string msg = CommonMethod.GetSmsContent(SmsId);
+                        msg = msg.Replace("{#var#}", num.ToString());
+                        msg = msg.Replace("\r\n", "\n");
+
+                        string smsResponse = CommonMethod.SendSMSWithoutLog(msg, companyAdminLoginData.MobileNo);
+
+                        otpVM.OTP = num.ToString();
+                        otpVM.CompanyAdminId = companyAdminLoginData.AdminUserId;
+
+                        response.Data = otpVM;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message);
+            }
+
+            return response;
+        }
 
     }
 }

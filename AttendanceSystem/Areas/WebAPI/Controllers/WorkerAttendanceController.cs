@@ -588,18 +588,18 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                join dt in _db.tbl_District on emp.DistrictId equals dt.DistrictId into district
                                                from dt in district.DefaultIfEmpty()
 
-                                               where !emp.IsDeleted && emp.IsActive 
+                                               where !emp.IsDeleted && emp.IsActive
                                                && assi.Date == today
                                                && emp.AdminRoleId == (int)AdminRoles.Worker
                                                && emp.CompanyId == companyId
-                                               
+
                                                && (!string.IsNullOrEmpty(searchText) ? (emp.EmployeeCode.Contains(searchText)
                                                || emp.FirstName.Contains(searchText)
                                                || emp.LastName.Contains(searchText)) : true)
 
-                                               && (wtc == null || (wtc != null && wtc.FirstOrDefault().AttendanceDate == today))
-                                               && (wtc == null || (wtc !=null && !wtc.FirstOrDefault().IsMorning))
-                                               
+                                               && (att == null || (att != null && att.AttendanceDate == today))
+                                               && (att == null || (att != null && !att.IsMorning))
+
                                                select new EmployeeVM
                                                {
                                                    EmployeeId = emp.EmployeeId,
@@ -665,9 +665,12 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                || emp.FirstName.Contains(searchText)
                                                || emp.LastName.Contains(searchText)) : true)
 
-                                               && (wtc == null || (wtc != null && wtc.FirstOrDefault().AttendanceDate == today))
-                                               && (wtc == null || (wtc != null && !wtc.FirstOrDefault().IsAfternoon))
-                                                
+                                               //&& (wtc == null || (wtc != null && wtc.FirstOrDefault().AttendanceDate == today))
+                                               //&& (wtc == null || (wtc != null && !wtc.FirstOrDefault().IsAfternoon))
+
+                                               && (att == null || (att != null && att.AttendanceDate == today))
+                                               && (att == null || (att != null && !att.IsAfternoon))
+
                                                select new EmployeeVM
                                                {
                                                    EmployeeId = emp.EmployeeId,
@@ -768,14 +771,14 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
             return response;
         }
-         
+
         [HttpPost]
         [Route("SaveMultipleAfternoonWorkerAttendance")]
-        public ResponseDataModel<string> SaveMultipleAfternoonWorkerAttendance(AfternoonAttendanceRequestVM afternoonAttendanceRequestVM)
+        public ResponseDataModel<bool> SaveMultipleAfternoonWorkerAttendance(AfternoonAttendanceRequestVM afternoonAttendanceRequestVM)
         {
-            ResponseDataModel<string> response = new ResponseDataModel<string>();
+            ResponseDataModel<bool> response = new ResponseDataModel<bool>();
             response.IsError = false;
-            response.Data = string.Empty;
+
             try
             {
                 roleId = base.UTI.RoleId;
@@ -838,13 +841,14 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                 attendanceObjectAfternoon.AfternoonLongitude = afternoonAttendanceRequestVM.Longitude;
                                 attendanceObjectAfternoon.AfternoonLocationFrom = afternoonAttendanceRequestVM.LocationFrom;
                                 _db.tbl_WorkerAttendance.Add(attendanceObjectAfternoon);
-                                _db.SaveChanges(); 
+                                _db.SaveChanges();
                             }
                         }
 
                     });
+                    response.Data = true;
                 }
-                 
+
             }
             catch (Exception ex)
             {

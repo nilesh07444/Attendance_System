@@ -186,5 +186,15 @@ namespace AttendanceSystem.Helper
         Account = 1,
         SMS = 2,
         Employee = 3
+    } 
+    public enum EmployeeOfficeLocationType
+    {
+        [Description("Anywhere")]
+        Anywhere = 1,
+        [Description("All Offices")]
+        AllOffices = 2,
+        [Description("Selected Office")]
+        SelectedOffice = 3
     }
+
 }

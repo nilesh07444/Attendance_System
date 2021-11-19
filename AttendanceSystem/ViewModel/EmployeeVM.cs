@@ -137,6 +137,9 @@ namespace AttendanceSystem.ViewModel
         [Display(Name = "Worker Head")]
         public long? WorkerHeadId { get; set; }
 
+        [Display(Name = "Office Location Access Type *")]
+        public int? EmployeeOfficeLocationType { get; set; }
+
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
 
@@ -155,6 +158,8 @@ namespace AttendanceSystem.ViewModel
         public List<SelectListItem> DistrictList { get; set; }
         public string StateName { get; set; }
         public string DistrictName { get; set; }
+
+        public string strSelectedOfficeLocations { get; set; }
     }
 
     public class EmployeeFilterVM

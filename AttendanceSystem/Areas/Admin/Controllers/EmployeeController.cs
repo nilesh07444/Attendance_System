@@ -104,13 +104,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                      IsDeleted = emp.IsDeleted,
                                                      IsFingerprintEnabled = emp.IsFingerprintEnabled,
                                                      NoOfFreeLeavePerMonth = emp.NoOfFreeLeavePerMonth,
-
+                                                     EmployeeOfficeLocationType = emp.EmployeeOfficeLocationType,
                                                      TotalSavedFingerprint = _db.tbl_EmployeeFingerprint.Where(x => x.EmployeeId == emp.EmployeeId).ToList().Count
 
                                                  }).OrderByDescending(x => x.EmployeeId).ToList();
-
-                //employeeFilterVM.NoOfEmployee = _db.tbl_Employee.Where(x => x.CompanyId == companyId && !x.IsDeleted && x.AdminRoleId != (int)AdminRoles.Worker).Count();
-                //employeeFilterVM.NoOfEmployeeAllowed = companyPackage != null ? (companyPackage.NoOfEmployee + companyPackage.BuyNoOfEmployee) : 0;
 
                 List<tbl_Employee> totalEmployeeList = _db.tbl_Employee.Where(x => x.CompanyId == companyId && !x.IsDeleted).ToList();
                 employeeFilterVM.NoOfEmployee = totalEmployeeList.Where(x => x.AdminRoleId != (int)AdminRoles.Worker).Count();
@@ -148,6 +145,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             catch (Exception ex)
             {
             }
+
             employeeFilterVM.UserRoleList = GetUserRoleList();
             employeeFilterVM.ActiveEmployee = employeeFilterVM.EmployeeList.Where(x => x.IsActive).Count();
             return View(employeeFilterVM);
@@ -160,7 +158,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             {
                 employeeVM = (from emp in _db.tbl_Employee
                               join rl in _db.mst_AdminRole on emp.AdminRoleId equals rl.AdminRoleId
-                              
+
                               join st in _db.tbl_State on emp.StateId equals st.StateId into state
                               from st in state.DefaultIfEmpty()
 
@@ -207,8 +205,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                   IsDeleted = emp.IsDeleted,
                                   IsFingerprintEnabled = emp.IsFingerprintEnabled,
                                   NoOfFreeLeavePerMonth = emp.NoOfFreeLeavePerMonth,
-                                  CarryForwardLeave = emp.CarryForwardLeave
-
+                                  CarryForwardLeave = emp.CarryForwardLeave,
+                                  EmployeeOfficeLocationType = emp.EmployeeOfficeLocationType
                               }).FirstOrDefault();
                 employeeVM.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)employeeVM.EmploymentCategory);
                 employeeVM.AdminRoleText = CommonMethod.GetEnumDescription((AdminRoles)employeeVM.AdminRoleId);
@@ -219,6 +217,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 }
 
             }
+            else
+            {
+                employeeVM.EmployeeOfficeLocationType = 1; // Anywhere
+            }
 
             if (employeeVM.DistrictList == null)
             {
@@ -227,6 +229,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
             employeeVM.UserRoleList = GetUserRoleList();
             employeeVM.StateList = CommonMethod.GetStateListOfIndia();
+
+            List<EmployeeOfficeLocationVM> AssignedEmployeeLocationList = GetAssignedEmployeeLocationList(employeeVM.EmployeeId);
+            ViewData["AssignedEmployeeLocationList"] = AssignedEmployeeLocationList;
+
             return View(employeeVM);
         }
 
@@ -309,10 +315,62 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployee.IsLeaveForward = employeeVM.IsLeaveForward;
                         objEmployee.IsFingerprintEnabled = employeeVM.IsFingerprintEnabled;
                         objEmployee.NoOfFreeLeavePerMonth = employeeVM.NoOfFreeLeavePerMonth;
+                        objEmployee.EmployeeOfficeLocationType = employeeVM.EmployeeOfficeLocationType;
                         objEmployee.UpdatedBy = (int)PaymentGivenBy.CompanyAdmin;
                         objEmployee.UpdatedDate = CommonMethod.CurrentIndianDateTime();
 
                         _db.SaveChanges();
+
+                        #region Assign selected office locations
+
+                        if (employeeVM.EmployeeOfficeLocationType == (int)EmployeeOfficeLocationType.SelectedOffice && !string.IsNullOrEmpty(employeeVM.strSelectedOfficeLocations))
+                        {
+                            List<string> lstSelectedOfficeLocations = employeeVM.strSelectedOfficeLocations.Split(',').ToList<string>();
+
+                            long x = 0;
+                            var longSelectedOfficeLocationsList = lstSelectedOfficeLocations.Where(str => long.TryParse(str, out x)).Select(str => x).ToList();
+
+                            // delete unselected locations
+                            List<tbl_EmployeeOfficeLocation> lstUnSelectedEmployeeOfficeLocations = _db.tbl_EmployeeOfficeLocation.Where(p => !longSelectedOfficeLocationsList.Contains(p.OfficeLocationId)).ToList();
+                            if (lstUnSelectedEmployeeOfficeLocations != null && lstUnSelectedEmployeeOfficeLocations.Count > 0)
+                            {
+                                _db.tbl_EmployeeOfficeLocation.RemoveRange(lstUnSelectedEmployeeOfficeLocations);
+                                _db.SaveChanges();
+                            }
+
+                            // Save missing locations
+                            lstSelectedOfficeLocations.ForEach(strOfficeLocationId =>
+                            {
+                                long officeLocationId = Convert.ToInt64(strOfficeLocationId);
+
+                                tbl_EmployeeOfficeLocation objDuplicateLocation = _db.tbl_EmployeeOfficeLocation.Where(l => l.EmployeeId == objEmployee.EmployeeId && l.OfficeLocationId == officeLocationId).FirstOrDefault();
+
+                                if (objDuplicateLocation == null)
+                                {
+                                    tbl_EmployeeOfficeLocation employeeOfficeLocationVM = new tbl_EmployeeOfficeLocation();
+                                    employeeOfficeLocationVM.EmployeeId = objEmployee.EmployeeId;
+                                    employeeOfficeLocationVM.OfficeLocationId = officeLocationId;
+                                    employeeOfficeLocationVM.CreatedBy = (int)PaymentGivenBy.CompanyAdmin;
+                                    employeeOfficeLocationVM.CreatedDate = CommonMethod.CurrentIndianDateTime();
+                                    _db.tbl_EmployeeOfficeLocation.Add(employeeOfficeLocationVM);
+                                    _db.SaveChanges();
+                                }
+                            });
+
+                        }
+                        else
+                        {
+                            // Remove old locations, if exists
+                            List<tbl_EmployeeOfficeLocation> lstEmployeeOfficeLocation = _db.tbl_EmployeeOfficeLocation.Where(x => x.EmployeeId == objEmployee.EmployeeId).ToList();
+                            if (lstEmployeeOfficeLocation != null && lstEmployeeOfficeLocation.Count > 0)
+                            {
+                                _db.tbl_EmployeeOfficeLocation.RemoveRange(lstEmployeeOfficeLocation);
+                                _db.SaveChanges();
+                            }
+                        }
+
+                        #endregion
+
                     }
                     else
                     {
@@ -344,7 +402,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployee.AlternateMobile = employeeVM.AlternateMobile;
                         objEmployee.Address = employeeVM.Address;
                         objEmployee.City = employeeVM.City;
-                        objEmployee.Pincode = employeeVM.Pincode; 
+                        objEmployee.Pincode = employeeVM.Pincode;
                         objEmployee.StateId = employeeVM.StateId;
                         objEmployee.DistrictId = employeeVM.DistrictId;
                         objEmployee.Designation = employeeVM.Designation;
@@ -363,12 +421,40 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployee.NoOfFreeLeavePerMonth = employeeVM.NoOfFreeLeavePerMonth;
                         objEmployee.IsActive = isTrailMode ? true : (activeEmployee >= noOfEmployee ? false : true);
                         objEmployee.IsFingerprintEnabled = employeeVM.IsFingerprintEnabled;
+                        objEmployee.EmployeeOfficeLocationType = employeeVM.EmployeeOfficeLocationType;
                         objEmployee.CreatedBy = (int)PaymentGivenBy.CompanyAdmin;
                         objEmployee.CreatedDate = CommonMethod.CurrentIndianDateTime();
                         objEmployee.UpdatedBy = (int)PaymentGivenBy.CompanyAdmin;
                         objEmployee.UpdatedDate = CommonMethod.CurrentIndianDateTime();
                         _db.tbl_Employee.Add(objEmployee);
                         _db.SaveChanges();
+
+                        #region Assign selected office locations WHILE CREATE NEW EMPLOYEE
+
+                        if (employeeVM.EmployeeOfficeLocationType == (int)EmployeeOfficeLocationType.SelectedOffice && !string.IsNullOrEmpty(employeeVM.strSelectedOfficeLocations))
+                        {
+                            List<string> lstSelectedOfficeLocations = employeeVM.strSelectedOfficeLocations.Split(',').ToList<string>();
+
+                            lstSelectedOfficeLocations.ForEach(strOfficeLocationId =>
+                            {
+                                long officeLocationId = Convert.ToInt64(strOfficeLocationId);
+
+                                tbl_EmployeeOfficeLocation objDuplicateLocation = _db.tbl_EmployeeOfficeLocation.Where(x => x.EmployeeId == objEmployee.EmployeeId && x.OfficeLocationId == officeLocationId).FirstOrDefault();
+
+                                if (objDuplicateLocation == null)
+                                {
+                                    tbl_EmployeeOfficeLocation employeeOfficeLocationVM = new tbl_EmployeeOfficeLocation();
+                                    employeeOfficeLocationVM.EmployeeId = objEmployee.EmployeeId;
+                                    employeeOfficeLocationVM.OfficeLocationId = officeLocationId;
+                                    employeeOfficeLocationVM.CreatedBy = (int)PaymentGivenBy.CompanyAdmin;
+                                    employeeOfficeLocationVM.CreatedDate = CommonMethod.CurrentIndianDateTime();
+                                    _db.tbl_EmployeeOfficeLocation.Add(employeeOfficeLocationVM);
+                                    _db.SaveChanges();
+                                }
+                            });
+                        }
+
+                        #endregion
 
                         #region Send SMS of Create Employee
 
@@ -426,6 +512,45 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        public List<EmployeeOfficeLocationVM> GetAssignedEmployeeLocationList(long employeeId)
+        {
+            List<EmployeeOfficeLocationVM> list = null;
+            try
+            {
+                if (employeeId == 0)
+                {
+                    list = (from o in _db.tbl_OfficeLocation
+                            where o.IsActive && !o.IsDeleted
+                            && o.CompanyId == companyId
+                            select new EmployeeOfficeLocationVM
+                            {
+                                OfficeLocationId = o.OfficeLocationId,
+                                OfficeLocationName = o.OfficeLocationName,
+                                EmployeeId = o.OfficeLocationId
+                            }).OrderBy(x => x.OfficeLocationName).ToList();
+                }
+                else
+                {
+                    list = (from o in _db.tbl_OfficeLocation
+                            join l in _db.tbl_EmployeeOfficeLocation.Where(x => x.EmployeeId == employeeId) on o.OfficeLocationId equals l.OfficeLocationId into location
+                            from l in location.DefaultIfEmpty()
+                            where o.IsActive && !o.IsDeleted && o.CompanyId == companyId
+                            select new EmployeeOfficeLocationVM
+                            {
+                                OfficeLocationId = o.OfficeLocationId,
+                                OfficeLocationName = o.OfficeLocationName,
+                                EmployeeId = o.OfficeLocationId,
+                                IsAssigned = l != null ? true : false
+                            }).OrderBy(x => x.OfficeLocationName).ToList();
+                }
+
+            }
+            catch (Exception ex)
+            {
+            }
+            return list;
         }
 
         public ActionResult View(int Id)

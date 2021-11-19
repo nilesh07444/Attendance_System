@@ -6,11 +6,19 @@ using System.Web;
 namespace AttendanceSystem.ViewModel.WebAPI.ViewModel
 {
     public class LoginResponseVM
-    {        
+    {
         public bool IsFingerprintEnabled { get; set; }
         public long EmployeeId { get; set; }
         public string OTP { get; set; }
 
+        public long? CompanyAdminId { get; set; }
+        public int? EmployeeOfficeLocationType { get; set; }
+    }
+
+    public class OTPVM
+    {
+        public string OTP { get; set; }
+        public long EmployeeId { get; set; }
         public long? CompanyAdminId { get; set; }
     }
 
@@ -54,5 +62,6 @@ namespace AttendanceSystem.ViewModel.WebAPI.ViewModel
         public decimal? ExtraPerHourPrice { get; set; }
         public decimal NoOfFreeLeavePerMonth { get; set; }
         public decimal? PerCategoryPrice { get; set; }
+        public int? EmployeeOfficeLocationType { get; set; }
     }
 }
