@@ -30,8 +30,11 @@
                                         <td>#</td>
                                         <th>Office Location</th>
                                         <th>Office Description</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
+                                        <th width="10%">Latitude</th>
+                                        <th width="10%">Longitude</th>
+                                        <th width="13%">Radious(In Meter)</th>
+                                        <th width="10%">Status</th>
+                                        <th width="10%">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -43,6 +46,9 @@
                                                 <td>@counter.</td>
                                                 <td>@obj.OfficeLocationName</td>
                                                 <td>@obj.OfficeLocationDescription</td>
+                                                <td>@obj.Latitude</td>
+                                                <td>@obj.Longitude</td>
+                                                <td>@obj.RadiousInMeter</td>
                                                 @if (obj.IsActive == true)
                                                 {
                                                     <td><span class="badge badge-success" style="cursor:pointer;" title="Click to Inactive" onclick="fnChangeStatus('@obj.OfficeLocationId', 'InActive');">Active</span></td>
@@ -114,7 +120,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-         
+
         $('#btnDeleteOffice').click(function () {
             var Office_Id = jQuery("#hdnDeleteOfficeLocation").val();
             if (Office_Id != "" && Office_Id != null) {

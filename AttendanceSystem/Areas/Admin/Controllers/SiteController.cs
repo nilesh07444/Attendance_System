@@ -31,7 +31,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                             SiteId = st.SiteId,
                             SiteName = st.SiteName,
                             SiteDescription = st.SiteDescription,
-                            IsActive = st.IsActive
+                            IsActive = st.IsActive,
+                            Latitude = st.Latitude,
+                            Longitude = st.Longitude,
+                            RadiousInMeter = st.RadiousInMeter
                         }).OrderByDescending(x => x.SiteId).ToList();
             }
             catch (Exception ex)

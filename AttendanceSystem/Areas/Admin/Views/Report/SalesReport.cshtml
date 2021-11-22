@@ -86,7 +86,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if (Model != null && Model.SalesReportList.Count > 0)
+                                    @if (Model != null && Model.SalesReportList != null && Model.SalesReportList.Count > 0)
                                     {
                                         DateTime? compareDate = null;
                                         decimal rowPackageAmount = 0;

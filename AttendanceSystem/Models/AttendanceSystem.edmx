@@ -153,15 +153,16 @@
           <Property Name="RemainingSMSToUse" Type="int" />
           <Property Name="NextFollowupDate" Type="datetime" />
           <Property Name="FollowupStatus" Type="int" />
+          <Property Name="NoOfLunchBreakAllowed" Type="int" />
+          <Property Name="SiteLocationAccessPassword" Type="nvarchar" MaxLength="200" />
+          <Property Name="OfficeLocationAccessPassword" Type="nvarchar" MaxLength="200" />
+          <Property Name="CompanyConversionType" Type="int" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="CreatedBy" Type="bigint" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="ModifiedBy" Type="bigint" />
           <Property Name="ModifiedDate" Type="datetime" />
-          <Property Name="NoOfLunchBreakAllowed" Type="int" />
-          <Property Name="SiteLocationAccessPassword" Type="nvarchar" MaxLength="200" />
-          <Property Name="OfficeLocationAccessPassword" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="tbl_CompanyRenewPayment">
           <Key>
@@ -241,6 +242,7 @@
           <Property Name="RejectReason" Type="nvarchar" MaxLength="500" />
           <Property Name="CompanyId" Type="bigint" />
           <Property Name="FreeAccessDays" Type="int" Nullable="false" />
+          <Property Name="CompanyConversionType" Type="int" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="CreatedBy" Type="bigint" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" />
@@ -2004,6 +2006,7 @@
           <Property Name="NoOfLunchBreakAllowed" Type="Int32" />
           <Property Name="SiteLocationAccessPassword" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="OfficeLocationAccessPassword" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyConversionType" Type="Int32" />
         </EntityType>
         <EntityType Name="tbl_Employee">
           <Key>
@@ -2112,6 +2115,7 @@
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedBy" Type="Int64" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="CompanyConversionType" Type="Int32" />
         </EntityType>
         <EntityType Name="tbl_OfficeLocation">
           <Key>
@@ -3029,6 +3033,7 @@
           <EntitySetMapping Name="tbl_Company">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Company">
               <MappingFragment StoreEntitySet="tbl_Company">
+                <ScalarProperty Name="CompanyConversionType" ColumnName="CompanyConversionType" />
                 <ScalarProperty Name="OfficeLocationAccessPassword" ColumnName="OfficeLocationAccessPassword" />
                 <ScalarProperty Name="SiteLocationAccessPassword" ColumnName="SiteLocationAccessPassword" />
                 <ScalarProperty Name="NoOfLunchBreakAllowed" ColumnName="NoOfLunchBreakAllowed" />
@@ -3131,6 +3136,7 @@
           <EntitySetMapping Name="tbl_CompanyRequest">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_CompanyRequest">
               <MappingFragment StoreEntitySet="tbl_CompanyRequest">
+                <ScalarProperty Name="CompanyConversionType" ColumnName="CompanyConversionType" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />

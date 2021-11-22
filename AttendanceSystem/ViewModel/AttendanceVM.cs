@@ -234,6 +234,8 @@ namespace AttendanceSystem.ViewModel
         public decimal? NoOfHoursWorked { get; set; }
         public decimal? NoOfUnitWorked { get; set; }
 
+        public long? WorkerHeadId { get; set; }
+        public string WorkerHeadName { get; set; }
     }
 
     public class WorkerAttendanceReportFilterVM

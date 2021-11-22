@@ -91,6 +91,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objCASetting.NoOfLunchBreakAllowed = objCompany.NoOfLunchBreakAllowed;
                         objCASetting.SiteLocationAccessPassword = objCompany.SiteLocationAccessPassword;
                         objCASetting.OfficeLocationAccessPassword = objCompany.OfficeLocationAccessPassword;
+                        objCASetting.CompanyConversionType = objCompany.CompanyConversionType;
                     }
 
                     ViewData["objCASetting"] = objCASetting;
@@ -161,6 +162,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     objCASetting.NoOfLunchBreakAllowed = objCompany.NoOfLunchBreakAllowed;
                     objCASetting.SiteLocationAccessPassword = objCompany.SiteLocationAccessPassword;
                     objCASetting.OfficeLocationAccessPassword = objCompany.OfficeLocationAccessPassword;
+                    objCASetting.CompanyConversionType = objCompany.CompanyConversionType;
                 }
 
                 return View("~/Areas/Admin/Views/Setting/EditSettingCA.cshtml", objCASetting);
@@ -628,8 +630,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
             return View(settingVM);
         }
-
-
+         
         [HttpPost]
         public ActionResult EditCompanyAdminSetting(CompanyAdminSettingVM settingVM)
         {
@@ -647,6 +648,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objCompany.NoOfLunchBreakAllowed = settingVM.NoOfLunchBreakAllowed;
                         objCompany.SiteLocationAccessPassword = settingVM.SiteLocationAccessPassword;
                         objCompany.OfficeLocationAccessPassword = settingVM.OfficeLocationAccessPassword;
+                        objCompany.CompanyConversionType = settingVM.CompanyConversionType;
                         _db.SaveChanges();
                     }
 

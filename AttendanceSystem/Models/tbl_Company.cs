@@ -60,5 +60,6 @@ namespace AttendanceSystem.Models
         public Nullable<int> NoOfLunchBreakAllowed { get; set; }
         public string SiteLocationAccessPassword { get; set; }
         public string OfficeLocationAccessPassword { get; set; }
+        public Nullable<int> CompanyConversionType { get; set; }
     }
 }

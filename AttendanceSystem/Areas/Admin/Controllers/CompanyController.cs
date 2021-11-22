@@ -303,6 +303,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objcomp.FreeAccessDays = objCompanyReq.FreeAccessDays;
                         objcomp.IsTrialMode = true;
                         objcomp.TrialExpiryDate = CommonMethod.CurrentIndianDateTime().AddDays(objCompanyReq.FreeAccessDays);
+                        objcomp.CompanyConversionType = objCompanyReq.CompanyConversionType;
+
                         objcomp.IsActive = true;
                         objcomp.CreatedBy = (int)PaymentGivenBy.SuperAdmin;
                         objcomp.CreatedDate = CommonMethod.CurrentIndianDateTime();
@@ -320,8 +322,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         //Update company id in company request table.
                         objCompanyReq.CompanyId = companyId;
                         _db.SaveChanges();
-
-
+                          
                         string randomPassword = CommonMethod.GetRandomPassword(8);
 
                         tbl_AdminUser objAdminUser = new tbl_AdminUser();

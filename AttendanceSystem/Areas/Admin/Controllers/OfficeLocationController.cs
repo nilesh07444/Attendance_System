@@ -30,7 +30,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                     OfficeLocationId = st.OfficeLocationId,
                                     OfficeLocationName = st.OfficeLocationName,
                                     OfficeLocationDescription = st.OfficeLocationDescription,
-                                    IsActive = st.IsActive
+                                    IsActive = st.IsActive,
+                                    Latitude = st.Latitude,
+                                    Longitude = st.Longitude,
+                                    RadiousInMeter = st.RadiousInMeter
                                 }).OrderByDescending(x => x.OfficeLocationId).ToList();
             }
             catch (Exception ex)

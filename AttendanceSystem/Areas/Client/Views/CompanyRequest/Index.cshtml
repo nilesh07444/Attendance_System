@@ -1,4 +1,5 @@
-﻿@model AttendanceSystem.ViewModel.CompanyRequestVM
+﻿@using AttendanceSystem.Helper;
+@model AttendanceSystem.ViewModel.CompanyRequestVM
 
 @{
     ViewBag.Title = "Company Request";
@@ -7,6 +8,11 @@
     lstPrefix.Add(new SelectListItem { Value = "Mr", Text = "Mr" });
     lstPrefix.Add(new SelectListItem { Value = "Mrs", Text = "Mrs" });
     lstPrefix.Add(new SelectListItem { Value = "Miss", Text = "Miss" });
+
+    List<SelectListItem> lstCompanyConversionType = new List<SelectListItem>();
+    lstCompanyConversionType.Add(new SelectListItem { Value = Convert.ToString((int)CompanyConversionType.MonthBased), Text = "Month Based" });
+    lstCompanyConversionType.Add(new SelectListItem { Value = Convert.ToString((int)CompanyConversionType.DayBased), Text = "Day Based" });
+
 }
 
 <style>
@@ -197,6 +203,16 @@
                     </div>
 
                     <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Company Conversion Type *</label>
+                                @Html.DropDownListFor(model => model.CompanyConversionType, new SelectList(lstCompanyConversionType, "Value", "Text"), new { @class = "form-control required", style = "width: 100%" })
+                                @Html.ValidationMessageFor(model => model.CompanyConversionType, "", new { @class = "error" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top: 20px;">
                         <div class="col-12">
                             <h5>Company Admin Information</h5>
                         </div>
@@ -459,7 +475,7 @@
                         }
 
                     },
-                    error: function (req, status, error) { 
+                    error: function (req, status, error) {
                         alert(error);
                     }
                 });

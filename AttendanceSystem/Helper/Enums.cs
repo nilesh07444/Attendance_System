@@ -186,7 +186,7 @@ namespace AttendanceSystem.Helper
         Account = 1,
         SMS = 2,
         Employee = 3
-    } 
+    }
     public enum EmployeeOfficeLocationType
     {
         [Description("Anywhere")]
@@ -195,6 +195,12 @@ namespace AttendanceSystem.Helper
         AllOffices = 2,
         [Description("Selected Office")]
         SelectedOffice = 3
+    }
+
+    public enum CompanyConversionType
+    {
+        MonthBased = 1,
+        DayBased = 2
     }
 
 }

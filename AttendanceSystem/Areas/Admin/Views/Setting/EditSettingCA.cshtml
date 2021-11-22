@@ -2,6 +2,10 @@
 @model CompanyAdminSettingVM
 @{
     ViewBag.Title = "Setting";
+
+    List<SelectListItem> lstCompanyConversionType = new List<SelectListItem>();
+    lstCompanyConversionType.Add(new SelectListItem { Value = Convert.ToString((int)CompanyConversionType.MonthBased), Text = "Month Based" });
+    lstCompanyConversionType.Add(new SelectListItem { Value = Convert.ToString((int)CompanyConversionType.DayBased), Text = "Day Based" });
 }
 
 <section class="section">
@@ -20,13 +24,13 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="form-group col-4">
-                                @Html.LabelFor(model => model.NoOfLunchBreakAllowed, htmlAttributes: new { @class = "" })
+                                @Html.LabelFor(model => model.NoOfLunchBreakAllowed)
                                 @Html.EditorFor(model => model.NoOfLunchBreakAllowed, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter No Of Lunch Break Allowed", maxlength = "10" } })
                                 @Html.ValidationMessageFor(model => model.NoOfLunchBreakAllowed, "", new { @class = "text-danger" })
                             </div>
 
                             <div class="form-group col-4">
-                                @Html.LabelFor(model => model.OfficeLocationAccessPassword, htmlAttributes: new { @class = "" })
+                                @Html.LabelFor(model => model.OfficeLocationAccessPassword)
                                 @Html.EditorFor(model => model.OfficeLocationAccessPassword, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Office Location Access Password", maxlength = "200" } })
                                 @Html.ValidationMessageFor(model => model.OfficeLocationAccessPassword, "", new { @class = "text-danger" })
                             </div>
@@ -34,13 +38,22 @@
                             @if (clsAdminSession.CompanyTypeId == (int)CompanyType.ConstructionCompany)
                             {
                                 <div class="form-group col-4">
-                                    @Html.LabelFor(model => model.SiteLocationAccessPassword, htmlAttributes: new { @class = "" })
+                                    @Html.LabelFor(model => model.SiteLocationAccessPassword)
                                     @Html.EditorFor(model => model.SiteLocationAccessPassword, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Site Location Access Password", maxlength = "200" } })
                                     @Html.ValidationMessageFor(model => model.SiteLocationAccessPassword, "", new { @class = "text-danger" })
                                 </div>
                             }
 
                         </div>
+
+                        <div class="row">
+                            <div class="form-group col-4">
+                                @Html.LabelFor(model => model.CompanyConversionType)
+                                @Html.DropDownListFor(model => model.CompanyConversionType, new SelectList(lstCompanyConversionType, "Value", "Text"), new { @class = "form-control required" })
+                                @Html.ValidationMessageFor(model => model.CompanyConversionType, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 

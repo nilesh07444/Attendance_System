@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace AttendanceSystem
 {
@@ -20,4 +21,34 @@ namespace AttendanceSystem
         public bool IsActive { get; set; }
         public DateTime CreatedDate { get; set; }
     }
+
+    public class WorkerHeadReportVM
+    {
+        public long WorkerHeadId { get; set; }
+        public string HeadName { get; set; }
+        public DateTime PaymentDate { get; set; }
+        public decimal ActSalary { get; set; }
+        public decimal TodaySalary { get; set; }
+        public decimal AmountGiven { get; set; }
+
+        //
+        public int RowNumber { get; set; }
+    }
+
+    public class WorkerHeadFilterVM
+    {
+        public WorkerHeadFilterVM()
+        {
+            StartDate = new DateTime(CommonMethod.CurrentIndianDateTime().Year, CommonMethod.CurrentIndianDateTime().Month, 1);
+            EndDate = StartDate.AddMonths(1).AddDays(-1);
+        }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public long? WorkerHeadId { get; set; }
+        public List<SelectListItem> WorkerHeadList { get; set; }
+
+        public List<WorkerHeadReportVM> WorkerHeadReportList { get; set; }
+    }
+
+
 }

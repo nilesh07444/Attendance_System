@@ -576,10 +576,12 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             {
                 companyId = base.UTI.CompanyId;
                 DateTime today = CommonMethod.CurrentIndianDateTime().Date;
-
+                
                 List<EmployeeVM> workerList = (from emp in _db.tbl_Employee
                                                join assi in _db.tbl_AssignWorker on emp.EmployeeId equals assi.EmployeeId
-                                               join att in _db.tbl_WorkerAttendance on assi.EmployeeId equals att.EmployeeId into wtc
+
+                                               join at in _db.tbl_WorkerAttendance
+                                               on new { EmployeeId = assi.EmployeeId, Date = assi.Date, SiteId = assi.SiteId } equals new { EmployeeId = at.EmployeeId, Date = at.AttendanceDate, SiteId = at.MorningSiteId.Value } into wtc
                                                from att in wtc.DefaultIfEmpty()
 
                                                join st in _db.tbl_State on emp.StateId equals st.StateId into state
@@ -587,6 +589,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                                                join dt in _db.tbl_District on emp.DistrictId equals dt.DistrictId into district
                                                from dt in district.DefaultIfEmpty()
+
+                                               let isMorning = att == null ? false : att.IsMorning
 
                                                where !emp.IsDeleted && emp.IsActive
                                                && assi.Date == today
@@ -597,8 +601,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                || emp.FirstName.Contains(searchText)
                                                || emp.LastName.Contains(searchText)) : true)
 
-                                               && (att == null || (att != null && att.AttendanceDate == today))
-                                               && (att == null || (att != null && !att.IsMorning))
+                                               && !isMorning
 
                                                select new EmployeeVM
                                                {
@@ -623,6 +626,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                    IsActive = emp.IsActive,
                                                    ProfilePicture = !string.IsNullOrEmpty(emp.ProfilePicture) ? domainUrl + ErrorMessage.EmployeeDirectoryPath + emp.ProfilePicture : string.Empty
                                                }).ToList();
+
                 response.Data = workerList;
             }
             catch (Exception ex)
@@ -647,7 +651,9 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                 List<EmployeeVM> workerList = (from emp in _db.tbl_Employee
                                                join assi in _db.tbl_AssignWorker on emp.EmployeeId equals assi.EmployeeId
-                                               join att in _db.tbl_WorkerAttendance on assi.EmployeeId equals att.EmployeeId into wtc
+
+                                               join at in _db.tbl_WorkerAttendance
+                                               on new { EmployeeId = assi.EmployeeId, Date = assi.Date, SiteId = assi.SiteId } equals new { EmployeeId = at.EmployeeId, Date = at.AttendanceDate, SiteId = at.AfternoonSiteId.Value } into wtc
                                                from att in wtc.DefaultIfEmpty()
 
                                                join st in _db.tbl_State on emp.StateId equals st.StateId into state
@@ -655,6 +661,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                                                join dt in _db.tbl_District on emp.DistrictId equals dt.DistrictId into district
                                                from dt in district.DefaultIfEmpty()
+
+                                               let isAfternoon = att == null ? false : att.IsAfternoon
 
                                                where !emp.IsDeleted && emp.IsActive
                                                && assi.Date == today
@@ -665,11 +673,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                || emp.FirstName.Contains(searchText)
                                                || emp.LastName.Contains(searchText)) : true)
 
-                                               //&& (wtc == null || (wtc != null && wtc.FirstOrDefault().AttendanceDate == today))
-                                               //&& (wtc == null || (wtc != null && !wtc.FirstOrDefault().IsAfternoon))
-
-                                               && (att == null || (att != null && att.AttendanceDate == today))
-                                               && (att == null || (att != null && !att.IsAfternoon))
+                                               && !isAfternoon
 
                                                select new EmployeeVM
                                                {

@@ -1,0 +1,181 @@
+﻿@model AttendanceSystem.WorkerHeadFilterVM
+@{
+    ViewBag.Title = "Report";
+    int counter = 1;
+}
+
+<section class="section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header" style="background-color: #425C59;">
+                        <h4 style="color: #FFCEA3;">Worker Head Report</h4>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card-header ">
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label for="StartDate">Attendance Start Date</label>
+                                            @Html.TextBoxFor(model => model.StartDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control", @placeholder = "Start Date", style = "height: calc(2.25rem + 6px)" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label for="EndDate">Attendance End Date</label>
+                                            @Html.TextBoxFor(model => model.EndDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control ", @placeholder = "End Date", style = "height: calc(2.25rem + 6px)" })
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label for="UserRole">Select Worker Head</label>
+                                            @Html.DropDownListFor(model => model.WorkerHeadId, new SelectList(Model.WorkerHeadList, "Value", "Text"), "- All -", new { @class = "form-control required", style = "" })
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="card-header-action">
+                                            <button class="btn btn-primary mr-1" style="font-size: 1rem" id="btnSearch" type="button">Search</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-header" style="display: block; margin-bottom: 20px;">
+                            <div class="card-header-action pull-right">
+                                <button class="btn btn-success" style="float: right;" onclick="exportexcel('tbl', 'Worker Head Report')">Export to Excel</button>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="tbl" style="width:100%; margin-top:25px;">
+                                <thead>
+                                    <tr>
+                                        <th>Worker Head Name</th>
+                                        <th>Attendance Date</th>
+                                        <th>Act Salary</th>
+                                        <th>Today Salary</th>
+                                        <th>Amount Given</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null && Model.WorkerHeadReportList != null && Model.WorkerHeadReportList.Count > 0)
+                                    {
+                                        long compareWorkerId = 0;
+                                        bool showName = false;
+                                        bool showSubTotal = false; 
+
+                                        foreach (WorkerHeadReportVM obj in Model.WorkerHeadReportList)
+                                        {                                           
+                                            int totalCount = Model.WorkerHeadReportList.Where(x => x.WorkerHeadId == obj.WorkerHeadId).ToList().Count;
+                                             
+                                            if (compareWorkerId != obj.WorkerHeadId)
+                                            {
+                                                showName = true;
+                                            }
+                                            else
+                                            {
+                                                showName = false;
+                                            }
+
+                                            <tr>
+                                                <td>
+                                                    @if (showName)
+                                                    {
+                                                        @obj.HeadName
+                                                    }
+                                                </td>
+                                                <td>@obj.PaymentDate.ToString("dd MMM yyyy")</td>
+                                                <td>@obj.ActSalary</td>
+                                                <td>@obj.TodaySalary</td>
+                                                <td>@obj.AmountGiven</td>
+                                            </tr>
+
+                                            if (totalCount == obj.RowNumber)
+                                            {
+                                                showSubTotal = true;
+                                            }
+                                            else
+                                            {
+                                                showSubTotal = false;
+                                            }
+
+                                            if (showSubTotal)
+                                            {
+                                                var subTotalData = Model.WorkerHeadReportList.Where(x => x.WorkerHeadId == obj.WorkerHeadId).ToList();
+                                                decimal subTotalActSalary = subTotalData.Sum(x => x.ActSalary);
+                                                decimal subTodaySalary = subTotalData.Sum(x => x.TodaySalary);
+                                                decimal subAmountGiven = subTotalData.Sum(x => x.AmountGiven);
+                                                <tr style="background: lightgrey;">
+                                                    <th colspan="2" style="text-align: center;">Total :</th>
+                                                    <th>@subTotalActSalary</th>
+                                                    <th>@subTodaySalary</th>
+                                                    <th>@subAmountGiven</th>
+                                                </tr>
+                                            }
+
+                                            counter++;
+                                            compareWorkerId = obj.WorkerHeadId;
+                                        }
+                                    }
+                                </tbody>
+                                <thead>
+                                    <tr>
+                                        <th colspan="2" style="text-align: center;">Grand Total :</th>
+                                        <th>@Model.WorkerHeadReportList.Sum(x => x.ActSalary)</th>
+                                        <th>@Model.WorkerHeadReportList.Sum(x => x.TodaySalary)</th>
+                                        <th>@Model.WorkerHeadReportList.Sum(x => x.AmountGiven)</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+<script type="text/javascript">
+
+    function exportexcel(tableId, filename) {
+        $("#" + tableId).table2excel({
+            name: "Table2Excel",
+            filename: filename,
+            fileext: ".xls"
+        });
+    }
+
+    $(document).ready(function () {
+        $('#btnSearch').click(function () {
+            var startDate = $("#StartDate").val();
+            var endDate = $("#EndDate").val();
+            var workerHeadId = $("#WorkerHeadId").val();
+
+            if (startDate == "") {
+                alert("Please select valid start date");
+                return false;
+            }
+
+            if (endDate == "") {
+                alert("Please select valid end date");
+                return false;
+            }
+
+            StartLoading();
+            window.location.href = "/admin/report/workerheadreport?startDate=" + startDate + "&endDate=" + endDate + "&workerHeadId=" + workerHeadId;
+        });
+    })
+
+</script>
