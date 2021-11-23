@@ -49,15 +49,31 @@
                                 </div>
                                 <div class="col-sm-2">
                                     <div class="form-group">
-                                        <label>Employment Category</label>
+                                        <label>Employee Category</label>
                                         @Html.DropDownListFor(model => model.EmploymentCategory, new SelectList(Model.EmploymentCategoryList, "Value", "Text"), "- All -", new { @class = "form-control", style = "" })
                                     </div>
                                 </div>
                                 <div class="col-sm-2">
                                     <div class="form-group">
+                                        <label for="UserRole">Worker Head</label>
+                                        @Html.DropDownListFor(model => model.WorkerHeadId, new SelectList(Model.WorkerHeadList, "Value", "Text"), "- All -", new { @class = "form-control required", style = "" })
+                                    </div>
+                                </div>
+                                @*<div class="col-sm-2">
+                                    <div class="form-group">
                                         <label style="padding-top:45px"></label>
                                         <button class="btn btn-primary mr-1" id="btnSearch" type="button">Search</button>
                                     </div>
+                                </div>*@
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-10">
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label style="padding-top:0px;"></label>
+                                    <button class="btn btn-primary mr-1" style="float: right;" id="btnSearch" type="button">Search</button>
                                 </div>
                             </div>
                         </div>
@@ -69,7 +85,8 @@
                                         <th style="display:none">CompanyId</th>
                                         <th>Worker Name</th>
                                         <th>Worker Code</th>
-                                        <th style="display:none">WorkerType</th>
+                                        <th style="display:none">Worker Type</th>
+                                        <th>Head Name</th>
                                         <th>Attendance Date</th>
                                         <th>Employment Category</th>
                                         <th>Site Location</th>
@@ -113,6 +130,7 @@
                                                 <td>@obj.Name</td>
                                                 <td>@obj.EmployeeCode</td>
                                                 <td style="display:none">@obj.WorkerTypeName</td>
+                                                <td>@obj.WorkerHeadName</td>
                                                 <td>@obj.AttendanceDate.ToString("dd MMM yyyy")</td>
                                                 <td>@obj.EmploymentCategoryText</td>
                                                 <td>@obj.SiteName</td>
@@ -223,9 +241,10 @@
             var siteId = $("#SiteId").val();
             var employeeId = $("#EmployeeId").val();
             var employmentCategory = $("#EmploymentCategory").val();
+            var workerHeadId = $("#WorkerHeadId").val();
 
             StartLoading();
-            window.location.href = "/admin/workerattendance/Index?startDate=" + startDate + "&endDate=" + endDate + "&siteId=" + siteId + "&employeeId=" + employeeId + "&employmentCategory=" + employmentCategory;
+            window.location.href = "/admin/workerattendance/Index?startDate=" + startDate + "&endDate=" + endDate + "&siteId=" + siteId + "&employeeId=" + employeeId + "&employmentCategory=" + employmentCategory + "&workerHeadId=" + workerHeadId;
         });
     });
 

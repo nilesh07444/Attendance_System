@@ -1,8 +1,12 @@
 ﻿@using AttendanceSystem.ViewModel;
-@model List<AttendanceSystem.ViewModel.SiteVM>
+@model AttendanceSystem.ViewModel.SiteFilterVM
 @{
     ViewBag.Title = "Site";
     int counter = 1;
+
+    List<SelectListItem> lstLocationSet = new List<SelectListItem>();
+    lstLocationSet.Add(new SelectListItem { Value = "1", Text = "Yes" });
+    lstLocationSet.Add(new SelectListItem { Value = "0", Text = "No" });
 }
 
 <section class="section">
@@ -22,6 +26,21 @@
                             <a href="/admin/Site/add/0" class="btn btn-icon icon-left btn-primary"><i class="fas fa-plus-circle"></i> Add Site Location</a>
                         </div>
                     </div>
+
+                    <div class="card-header ">
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label>Is Location Set ?</label>
+                                @Html.DropDownListFor(model => model.IsLocationSet, new SelectList(lstLocationSet, "Value", "Text"), "- All -", new { @class = "form-control required", style = "" })
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            <div class="card-header-action">
+                                <button class="btn btn-primary mr-1" id="btnSearch" type="button" style="font-size: 1rem">Search</button>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="card-body">
 
                         <div class="table-responsive">
@@ -39,9 +58,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if (Model != null && Model.Count > 0)
+                                    @if (Model != null && Model.SiteList != null && Model.SiteList.Count > 0)
                                     {
-                                        foreach (SiteVM obj in Model)
+                                        foreach (SiteVM obj in Model.SiteList)
                                         {
                                             <tr>
                                                 <td>@counter.</td>
@@ -209,4 +228,11 @@
         $('#activeinactiveModal').modal('show');
     }
 
-</script> 
+    $('#btnSearch').click(function () {
+        var IsLocationSet = $("#IsLocationSet").val();
+
+        StartLoading();
+        window.location.href = "/admin/site?isLocationSet=" + IsLocationSet;
+    });
+
+</script>

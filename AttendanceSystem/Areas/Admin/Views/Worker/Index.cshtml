@@ -55,6 +55,12 @@
                                             @Html.DropDownListFor(model => model.UserStatus, new SelectList(lstEmployeeStatus, "Value", "Text"), "- All -", new { @class = "form-control required", style = "" })
                                         </div>
                                     </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label for="UserRole">Worker Head</label>
+                                            @Html.DropDownListFor(model => model.WorkerHeadId, new SelectList(Model.WorkerHeadList, "Value", "Text"), "- All -", new { @class = "form-control required", style = "" })
+                                        </div>
+                                    </div>
                                     <div class="col-sm-2">
                                         <div class="card-header-action">
                                             <button class="btn btn-primary mr-1" id="btnSearch" type="button" style="font-size: 1rem">Search</button>
@@ -70,11 +76,12 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th width="10%">Profile</th>
+                                        <th width="5%">Profile</th>
                                         <th>Worker Name</th>
                                         <th>Worker Code</th>
                                         <th>Worker Type</th>
                                         <th>Mobile No</th>
+                                        <th>Head Name</th>
                                         <th style="display:none">AlternateMobile</th>
                                         <th style="display:none">Address</th>
                                         <th style="display:none">City</th>
@@ -94,7 +101,7 @@
                                         <th>Status</th>
                                         <th>Fingerprint</th>
                                         <th style="display:none">CreatedDate</th>
-                                        <th width="18%">Action</th>
+                                        <th width="16%">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -126,6 +133,7 @@
                                                 <td>@obj.EmployeeCode</td>
                                                 <td>@obj.WorkerTypeText</td>
                                                 <td>@obj.MobileNo</td>
+                                                <td>@obj.WorkerHeadName</td>
                                                 <td style="display:none">@obj.AlternateMobile</td>
                                                 <td style="display:none">@obj.Address</td>
                                                 <td style="display:none">@obj.City</td>
@@ -357,8 +365,9 @@
 
         $('#btnSearch').click(function () {
             var userStatus = $("#UserStatus").val();
+            var workerHeadId = $("#WorkerHeadId").val();
             StartLoading();
-            window.location.href = "/admin/worker/Index?userStatus=" + userStatus ;
+            window.location.href = "/admin/worker/Index?userStatus=" + userStatus + "&workerHeadId=" + workerHeadId;
         });
     })
 

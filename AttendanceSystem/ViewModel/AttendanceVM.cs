@@ -158,11 +158,13 @@ namespace AttendanceSystem.ViewModel
         public int SiteId { get; set; }
         public long? EmployeeId { get; set; }
         public long? EmploymentCategory { get; set; }
+        public long? WorkerHeadId { get; set; }
 
         public List<WorkerAttendanceReportVM> AttendanceList { get; set; }
         public List<SelectListItem> SiteList { get; set; }
         public List<SelectListItem> EmployeeList { get; set; }
         public List<SelectListItem> EmploymentCategoryList { get; set; }
+        public List<SelectListItem> WorkerHeadList { get; set; }
     }
 
     public class WorkerAttendanceVM

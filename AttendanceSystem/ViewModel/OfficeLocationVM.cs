@@ -24,4 +24,11 @@ namespace AttendanceSystem
         public decimal? Longitude { get; set; }
         public decimal? RadiousInMeter { get; set; }
     }
+
+    public class OfficeLocationFilterVM
+    {
+        public int? IsLocationSet { get; set; }
+        public List<OfficeLocationVM> OfficeLocationList { get; set; }
+    }
+
 }

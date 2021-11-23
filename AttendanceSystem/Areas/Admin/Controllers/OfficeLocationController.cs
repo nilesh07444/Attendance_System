@@ -17,29 +17,37 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         {
             _db = new AttendanceSystemEntities();
         }
-        public ActionResult Index()
+        public ActionResult Index(int? IsLocationSet)
         {
-            List<OfficeLocationVM> lstLocations = new List<OfficeLocationVM>();
+            OfficeLocationFilterVM officeLocationFilterVM = new OfficeLocationFilterVM();
             try
             {
+                if (IsLocationSet.HasValue)
+                {
+                    officeLocationFilterVM.IsLocationSet = IsLocationSet.Value;
+                }
+
                 long companyId = clsAdminSession.CompanyId;
-                lstLocations = (from st in _db.tbl_OfficeLocation
-                                where !st.IsDeleted && st.CompanyId == companyId
-                                select new OfficeLocationVM
-                                {
-                                    OfficeLocationId = st.OfficeLocationId,
-                                    OfficeLocationName = st.OfficeLocationName,
-                                    OfficeLocationDescription = st.OfficeLocationDescription,
-                                    IsActive = st.IsActive,
-                                    Latitude = st.Latitude,
-                                    Longitude = st.Longitude,
-                                    RadiousInMeter = st.RadiousInMeter
-                                }).OrderByDescending(x => x.OfficeLocationId).ToList();
+                officeLocationFilterVM.OfficeLocationList = (from st in _db.tbl_OfficeLocation
+                                                             where !st.IsDeleted && st.CompanyId == companyId
+                                                             && (officeLocationFilterVM.IsLocationSet.HasValue ?
+                                                                (officeLocationFilterVM.IsLocationSet.Value == 1 ? st.Latitude.HasValue : st.Latitude == null)
+                                                             : true)
+                                                             select new OfficeLocationVM
+                                                             {
+                                                                 OfficeLocationId = st.OfficeLocationId,
+                                                                 OfficeLocationName = st.OfficeLocationName,
+                                                                 OfficeLocationDescription = st.OfficeLocationDescription,
+                                                                 IsActive = st.IsActive,
+                                                                 Latitude = st.Latitude,
+                                                                 Longitude = st.Longitude,
+                                                                 RadiousInMeter = st.RadiousInMeter
+                                                             }).OrderByDescending(x => x.OfficeLocationId).ToList();
             }
             catch (Exception ex)
             {
             }
-            return View(lstLocations);
+            return View(officeLocationFilterVM);
         }
 
         public ActionResult Add(long Id)

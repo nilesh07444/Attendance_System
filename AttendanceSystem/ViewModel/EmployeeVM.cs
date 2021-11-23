@@ -160,20 +160,23 @@ namespace AttendanceSystem.ViewModel
         public string DistrictName { get; set; }
 
         public string strSelectedOfficeLocations { get; set; }
+        public string WorkerHeadName { get; set; }
     }
 
     public class EmployeeFilterVM
     {
         public int? UserRole { get; set; }
-        public int? UserStatus { get; set; }
-        public List<SelectListItem> UserRoleList { get; set; }
-        public List<EmployeeVM> EmployeeList { get; set; }
+        public int? UserStatus { get; set; }        
         public int NoOfEmployee { get; set; }
         public int NoOfWorker { get; set; }
         public int ActiveEmployee { get; set; }
         public int ActiveWorker { get; set; }
         public int NoOfEmployeeAllowed { get; set; }
         public bool IsNoOfEmployeeExceed { get; set; }
+        public long? WorkerHeadId { get; set; }
+        public List<SelectListItem> UserRoleList { get; set; }
+        public List<EmployeeVM> EmployeeList { get; set; }
+        public List<SelectListItem> WorkerHeadList { get; set; }
     }
 
     public class EmployeePendingSalaryVM

@@ -23,7 +23,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             _db = new AttendanceSystemEntities();
             companyId = clsAdminSession.CompanyId;
         }
-        public ActionResult Index(DateTime? startDate, DateTime? endDate, int? siteId, long? employeeId, long? employmentCategory)
+        public ActionResult Index(DateTime? startDate, DateTime? endDate, int? siteId, long? employeeId, long? employmentCategory, long? workerHeadId = null)
         {
             WorkerAttendanceReportListFilterVM workerAttendanceFilterVM = new WorkerAttendanceReportListFilterVM();
             try
@@ -49,6 +49,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     workerAttendanceFilterVM.EmploymentCategory = employmentCategory.Value;
                 }
 
+                if (workerHeadId.HasValue)
+                {
+                    workerAttendanceFilterVM.WorkerHeadId = workerHeadId.Value;
+                }
+
                 workerAttendanceFilterVM.AttendanceList = (from at in _db.tbl_WorkerAttendance
                                                            join emp in _db.tbl_Employee on at.EmployeeId equals emp.EmployeeId
 
@@ -58,6 +63,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                            join workerTypeInfo in _db.tbl_WorkerType on emp.WorkerTypeId equals workerTypeInfo.WorkerTypeId into outerworkerTypeInfo
                                                            from workerTypeInfo in outerworkerTypeInfo.DefaultIfEmpty()
 
+                                                           join whead in _db.tbl_WorkerHead on emp.WorkerHeadId equals whead.WorkerHeadId into outerWorkerHead
+                                                           from whead in outerWorkerHead.DefaultIfEmpty()
+
                                                            where emp.CompanyId == companyId
                                                            && DbFunctions.TruncateTime(at.AttendanceDate) >= DbFunctions.TruncateTime(workerAttendanceFilterVM.StartDate)
                                                            && DbFunctions.TruncateTime(at.AttendanceDate) <= DbFunctions.TruncateTime(workerAttendanceFilterVM.EndDate)
@@ -66,6 +74,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                            || at.EveningSiteId == workerAttendanceFilterVM.SiteId) : true)
                                                            && (workerAttendanceFilterVM.EmployeeId.HasValue ? at.EmployeeId == workerAttendanceFilterVM.EmployeeId.Value : true)
                                                            && (workerAttendanceFilterVM.EmploymentCategory.HasValue ? emp.EmploymentCategory == workerAttendanceFilterVM.EmploymentCategory.Value : true)
+                                                           && (workerAttendanceFilterVM.WorkerHeadId.HasValue ? emp.WorkerHeadId == workerAttendanceFilterVM.WorkerHeadId.Value : true)
                                                            select new WorkerAttendanceReportVM
                                                            {
                                                                AttendanceId = at.WorkerAttendanceId,
@@ -104,6 +113,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                                ExtraHours = at.ExtraHours,
                                                                NoOfHoursWorked = at.NoOfHoursWorked,
                                                                NoOfUnitWorked = at.NoOfUnitWorked,
+                                                               WorkerHeadId = emp.WorkerHeadId,
+                                                               WorkerHeadName = whead != null ? whead.HeadName : string.Empty,
                                                            }).OrderByDescending(x => x.AttendanceDate).ToList();
 
                 workerAttendanceFilterVM.AttendanceList.ForEach(x =>
@@ -174,6 +185,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 workerAttendanceFilterVM.EmployeeList = GetWorkerList();
                 workerAttendanceFilterVM.SiteList = GetSiteList();
                 workerAttendanceFilterVM.EmploymentCategoryList = GetEmploymentCategoryList();
+                workerAttendanceFilterVM.WorkerHeadList = GetWorkerHeadList();
             }
             catch (Exception ex)
             {
@@ -1003,5 +1015,26 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                         }).ToList();
             return lst;
         }
+
+        private List<SelectListItem> GetWorkerHeadList()
+        {
+            List<SelectListItem> lst = new List<SelectListItem>();
+
+            var data = (from wt in _db.tbl_WorkerHead
+                        where wt.IsActive && !wt.IsDeleted && wt.CompanyId == companyId
+                        select new SelectListItem
+                        {
+                            Text = wt.HeadName,
+                            Value = wt.WorkerHeadId.ToString()
+                        }).ToList();
+
+            if (data != null)
+            {
+                lst = data;
+            }
+
+            return lst;
+        }
+
     }
 }

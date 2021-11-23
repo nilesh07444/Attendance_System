@@ -13,34 +13,46 @@ namespace AttendanceSystem.Areas.Admin.Controllers
     public class SiteController : Controller
     {
         // GET: Admin/Site
-        AttendanceSystemEntities _db; 
+        AttendanceSystemEntities _db;
         public SiteController()
         {
             _db = new AttendanceSystemEntities();
         }
-        public ActionResult Index()
+
+        public ActionResult Index(int? IsLocationSet)
         {
-            List<SiteVM> Site = new List<SiteVM>();
+            SiteFilterVM siteFilterVM = new SiteFilterVM();
+
             try
             {
+                if (IsLocationSet.HasValue)
+                {
+                    siteFilterVM.IsLocationSet = IsLocationSet.Value;
+                }
+
                 long companyId = clsAdminSession.CompanyId;
-                Site = (from st in _db.tbl_Site
-                        where !st.IsDeleted && st.CompanyId == companyId
-                        select new SiteVM
-                        {
-                            SiteId = st.SiteId,
-                            SiteName = st.SiteName,
-                            SiteDescription = st.SiteDescription,
-                            IsActive = st.IsActive,
-                            Latitude = st.Latitude,
-                            Longitude = st.Longitude,
-                            RadiousInMeter = st.RadiousInMeter
-                        }).OrderByDescending(x => x.SiteId).ToList();
+                siteFilterVM.SiteList = (from st in _db.tbl_Site
+                                         where !st.IsDeleted && st.CompanyId == companyId
+                                         && (siteFilterVM.IsLocationSet.HasValue ?
+                                            (siteFilterVM.IsLocationSet.Value == 1 ? st.Latitude.HasValue : st.Latitude == null)
+                                         : true)
+                                         select new SiteVM
+                                         {
+                                             SiteId = st.SiteId,
+                                             SiteName = st.SiteName,
+                                             SiteDescription = st.SiteDescription,
+                                             IsActive = st.IsActive,
+                                             Latitude = st.Latitude,
+                                             Longitude = st.Longitude,
+                                             RadiousInMeter = st.RadiousInMeter
+                                         }).OrderByDescending(x => x.SiteId).ToList();
+
             }
             catch (Exception ex)
             {
             }
-            return View(Site);
+
+            return View(siteFilterVM);
         }
 
         public ActionResult Add(long id)

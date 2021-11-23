@@ -94,7 +94,7 @@ namespace AttendanceSystem.ViewModel
         public string CompanyWebisteUrl { get; set; }
 
         [Display(Name = "Company Conversion Type *")]
-        [Required(ErrorMessage = "This field is required")]
+        //[Required(ErrorMessage = "This field is required")]
         public int? CompanyConversionType { get; set; }
 
         [Display(Name = "Prefix *")]

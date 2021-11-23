@@ -33,13 +33,18 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             loggedInUserId = clsAdminSession.UserID;
             isTrailMode = clsAdminSession.IsTrialMode;
         }
-        public ActionResult Index(int? userStatus = null)
+        public ActionResult Index(int? userStatus = null, long? workerHeadId = null)
         {
             EmployeeFilterVM employeeFilterVM = new EmployeeFilterVM();
             DateTime currentDateTime = CommonMethod.CurrentIndianDateTime();
             if (userStatus.HasValue)
             {
                 employeeFilterVM.UserStatus = userStatus.Value;
+            }
+
+            if (workerHeadId.HasValue)
+            {
+                employeeFilterVM.WorkerHeadId = workerHeadId.Value;
             }
 
             try
@@ -57,8 +62,12 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                  join dt in _db.tbl_District on emp.DistrictId equals dt.DistrictId into district
                                                  from dt in district.DefaultIfEmpty()
 
+                                                 join whead in _db.tbl_WorkerHead on emp.WorkerHeadId equals whead.WorkerHeadId into outerWorkerHead
+                                                 from whead in outerWorkerHead.DefaultIfEmpty()
+
                                                  where !emp.IsDeleted && emp.CompanyId == companyId && emp.AdminRoleId == (int)AdminRoles.Worker
                                                  && (employeeFilterVM.UserStatus.HasValue ? (employeeFilterVM.UserStatus.Value == (int)UserStatus.Active ? emp.IsActive == true : emp.IsActive == false) : true)
+                                                 && (employeeFilterVM.WorkerHeadId.HasValue ? emp.WorkerHeadId == employeeFilterVM.WorkerHeadId.Value : true)
                                                  select new EmployeeVM
                                                  {
                                                      EmployeeId = emp.EmployeeId,
@@ -98,7 +107,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                      NoOfFreeLeavePerMonth = emp.NoOfFreeLeavePerMonth,
                                                      WorkerTypeId = emp.WorkerTypeId,
                                                      WorkerTypeText = w.WorkerTypeName,
-                                                     TotalSavedFingerprint = _db.tbl_EmployeeFingerprint.Where(x => x.EmployeeId == emp.EmployeeId).ToList().Count
+                                                     TotalSavedFingerprint = _db.tbl_EmployeeFingerprint.Where(x => x.EmployeeId == emp.EmployeeId).ToList().Count,
+                                                     WorkerHeadName = whead != null ? whead.HeadName : string.Empty,
+                                                     WorkerHeadId = emp.WorkerHeadId
                                                  }).OrderByDescending(x => x.EmployeeId).ToList();
 
                 employeeFilterVM.EmployeeList.ForEach(x =>
@@ -133,6 +144,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         employeeFilterVM.IsNoOfEmployeeExceed = true;
                     }
                 }
+
+                employeeFilterVM.WorkerHeadList = GetWorkerHeadList();
+                 
             }
             catch (Exception ex)
             {
@@ -281,7 +295,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployee.MobileNo = employeeVM.MobileNo;
                         objEmployee.Address = employeeVM.Address;
                         objEmployee.City = employeeVM.City;
-                        objEmployee.Pincode = employeeVM.Pincode; 
+                        objEmployee.Pincode = employeeVM.Pincode;
                         objEmployee.StateId = employeeVM.StateId;
                         objEmployee.DistrictId = employeeVM.DistrictId;
                         objEmployee.Dob = employeeVM.Dob;
@@ -327,7 +341,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployee.MobileNo = employeeVM.MobileNo;
                         objEmployee.Address = employeeVM.Address;
                         objEmployee.City = employeeVM.City;
-                        objEmployee.Pincode = employeeVM.Pincode; 
+                        objEmployee.Pincode = employeeVM.Pincode;
                         objEmployee.StateId = employeeVM.StateId;
                         objEmployee.DistrictId = employeeVM.DistrictId;
                         objEmployee.Dob = employeeVM.Dob;
@@ -597,7 +611,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
             return lst;
         }
-         
+
         [HttpPost]
         public JsonResult GetWorkerList(string prefix)
         {
@@ -643,6 +657,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
             return ReturnMessage;
         }
-
+          
     }
 }

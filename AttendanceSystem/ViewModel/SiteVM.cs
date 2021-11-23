@@ -24,4 +24,11 @@ namespace AttendanceSystem.ViewModel
         public decimal? RadiousInMeter { get; set; }
 
     }
+
+    public class SiteFilterVM
+    {
+        public int? IsLocationSet { get; set; }
+        public List<SiteVM> SiteList { get; set; }
+    }
+
 }
