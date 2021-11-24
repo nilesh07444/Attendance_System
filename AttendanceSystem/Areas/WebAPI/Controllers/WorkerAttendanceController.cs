@@ -265,6 +265,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                             }
 
                             attendanceObject.TodaySalary = objWorkerPayment.CreditAmount.HasValue ? objWorkerPayment.CreditAmount.Value : 0;
+                            objWorkerPayment.FinancialYearId = CommonMethod.GetFinancialYearId();
                             _db.tbl_WorkerPayment.Add(objWorkerPayment);
                             _db.SaveChanges();
                         }
@@ -287,7 +288,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         //    objWorkerPaymentDebit.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         //    objWorkerPaymentDebit.ModifiedBy = employeeId;
                         //    objWorkerPaymentDebit.CreditAmount = 0;
-
+                        //    objWorkerPaymentDebit.FinancialYearId = CommonMethod.GetFinancialYearId();
                         //    _db.tbl_WorkerPayment.Add(objWorkerPaymentDebit);
                         //    _db.SaveChanges();
                         //}

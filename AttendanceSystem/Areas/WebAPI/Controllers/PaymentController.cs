@@ -187,6 +187,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         objWorkerPayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
                         objWorkerPayment.ModifiedBy = employeeId;
                         objWorkerPayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
+                        objWorkerPayment.FinancialYearId = CommonMethod.GetFinancialYearId();
                         _db.tbl_WorkerPayment.Add(objWorkerPayment);
                         _db.SaveChanges();
                         response.Data = true;

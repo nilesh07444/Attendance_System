@@ -131,6 +131,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     objMaterial.CreatedDate = CommonMethod.CurrentIndianDateTime();
                     objMaterial.ModifiedBy = employeeId;
                     objMaterial.ModifiedDate = CommonMethod.CurrentIndianDateTime();
+                    objMaterial.FinancialYearId = CommonMethod.GetFinancialYearId();
                     _db.tbl_Material.Add(objMaterial);
                     _db.SaveChanges();
                     response.Data = true;

@@ -182,7 +182,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                             decimal perDayAmount = Math.Round((employeeObj.MonthlySalaryPrice.HasValue ? employeeObj.MonthlySalaryPrice.Value : 0) / totalDaysinMonth, 2);
                             objEmployeePayment.CreditAmount = attendance.DayType == (double)DayType.FullDay ? perDayAmount : Math.Round((perDayAmount / 2), 2);
                         }
-
+                        objEmployeePayment.FinancialYearId = CommonMethod.GetFinancialYearId();
                         _db.tbl_EmployeePayment.Add(objEmployeePayment);
                         _db.SaveChanges();
 
@@ -326,6 +326,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                 decimal perDayAmount = Math.Round((employeeObj.MonthlySalaryPrice.HasValue ? employeeObj.MonthlySalaryPrice.Value : 0) / totalDaysinMonth, 2);
                                 objEmployeePayment.CreditAmount = objAttendance.DayType == (double)DayType.FullDay ? perDayAmount : Math.Round((perDayAmount / 2), 2);
                             }
+                            objEmployeePayment.FinancialYearId = CommonMethod.GetFinancialYearId();
                             _db.tbl_EmployeePayment.Add(objEmployeePayment);
                             _db.SaveChanges();
                         }

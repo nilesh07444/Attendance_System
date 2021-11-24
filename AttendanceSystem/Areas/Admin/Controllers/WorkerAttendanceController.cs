@@ -671,6 +671,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                 {
                                     objWorkerPayment.CreditAmount = 0;
                                 }
+                                objWorkerPayment.FinancialYearId = CommonMethod.GetFinancialYearId();
                                 _db.tbl_WorkerPayment.Add(objWorkerPayment);
                                 _db.SaveChanges();
 
@@ -900,7 +901,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                             decimal perDayAmount = Math.Round((emp.MonthlySalaryPrice.HasValue ? emp.MonthlySalaryPrice.Value : 0) / totalDaysinMonth, 2);
                                             objWorkerPayment.CreditAmount = Math.Round((attendanceObject.IsMorning && attendanceObject.IsAfternoon && attendanceObject.IsEvening ? (perDayAmount) : (perDayAmount / 2)), 2);
                                         }
-
+                                        objWorkerPayment.FinancialYearId = CommonMethod.GetFinancialYearId();
                                         _db.tbl_WorkerPayment.Add(objWorkerPayment);
                                         _db.SaveChanges();
                                     }

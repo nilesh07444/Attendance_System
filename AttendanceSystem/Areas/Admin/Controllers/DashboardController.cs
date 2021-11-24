@@ -255,8 +255,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             int dateYear = month == 12 ? year + 1 : year;
             int employeeId = (int)clsAdminSession.UserID;
             DateTime openDate = new DateTime(dateYear, nextMonth, 1);
+
             try
             {
+                tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == companyId).FirstOrDefault();
+
                 if (month == CommonMethod.CurrentIndianDateTime().Month && year == CommonMethod.CurrentIndianDateTime().Year)
                 {
                     status = 0;
@@ -362,7 +365,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployeePayment.CreatedBy = loggedinUser;
                         objEmployeePayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         objEmployeePayment.ModifiedBy = loggedinUser;
-
+                        objEmployeePayment.FinancialYearId = CommonMethod.GetFinancialYearId();
                         _db.tbl_EmployeePayment.Add(objEmployeePayment);
                         _db.SaveChanges();
                     });
@@ -421,7 +424,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                     objLeaveEmployeePayment.CreatedBy = loggedinUser;
                                     objLeaveEmployeePayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                                     objLeaveEmployeePayment.ModifiedBy = loggedinUser;
-
+                                    objLeaveEmployeePayment.FinancialYearId = CommonMethod.GetFinancialYearId();
                                     _db.tbl_EmployeePayment.Add(objLeaveEmployeePayment);
                                     leaveIndex--;
                                 }
@@ -453,7 +456,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                     objHolidayEmployeePayment.CreatedBy = loggedinUser;
                                     objHolidayEmployeePayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                                     objHolidayEmployeePayment.ModifiedBy = loggedinUser;
-
+                                    objHolidayEmployeePayment.FinancialYearId = CommonMethod.GetFinancialYearId();
                                     _db.tbl_EmployeePayment.Add(objHolidayEmployeePayment);
                                     holidayDate = holidayDate.AddDays(1);
                                 }
@@ -507,7 +510,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployeePayment.CreatedBy = loggedinUser;
                         objEmployeePayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         objEmployeePayment.ModifiedBy = loggedinUser;
-
+                        objEmployeePayment.FinancialYearId = CommonMethod.GetFinancialYearId();
                         _db.tbl_EmployeePayment.Add(objEmployeePayment);
                         _db.SaveChanges();
 
@@ -685,7 +688,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objWorkerPayment.CreatedBy = loggedinUser;
                         objWorkerPayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         objWorkerPayment.ModifiedBy = loggedinUser;
-
+                        objWorkerPayment.FinancialYearId = CommonMethod.GetFinancialYearId();
                         _db.tbl_WorkerPayment.Add(objWorkerPayment);
                         _db.SaveChanges();
                     });
@@ -747,7 +750,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                     objLeaveWorkerPayment.CreatedBy = loggedinUser;
                                     objLeaveWorkerPayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                                     objLeaveWorkerPayment.ModifiedBy = loggedinUser;
-
+                                    objLeaveWorkerPayment.FinancialYearId = CommonMethod.GetFinancialYearId();
                                     _db.tbl_WorkerPayment.Add(objLeaveWorkerPayment);
                                     leaveIndex--;
                                 }
@@ -779,7 +782,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                     objHolidayWorkerPayment.CreatedBy = loggedinUser;
                                     objHolidayWorkerPayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                                     objHolidayWorkerPayment.ModifiedBy = loggedinUser;
-
+                                    objHolidayWorkerPayment.FinancialYearId = CommonMethod.GetFinancialYearId();
                                     _db.tbl_WorkerPayment.Add(objHolidayWorkerPayment);
                                     holidayDate = holidayDate.AddDays(1);
                                 }
@@ -848,7 +851,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objWorkerPayment.CreatedBy = loggedinUser;
                         objWorkerPayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         objWorkerPayment.ModifiedBy = loggedinUser;
-
+                        objWorkerPayment.FinancialYearId = CommonMethod.GetFinancialYearId();
                         _db.tbl_WorkerPayment.Add(objWorkerPayment);
                         _db.SaveChanges();
 

@@ -647,7 +647,7 @@ namespace AttendanceSystem
                     SMTPPassword = objGensetting.SMTPPassword;
                     SMTPEnableSSL = objGensetting.SMTPEnableSSL.Value;
                 }
-                 
+
                 MailMessage mailMessage = new MailMessage(
                       SMTPFromEmailId, // From field
                       To, // Recipient field
@@ -655,9 +655,9 @@ namespace AttendanceSystem
                       body // Email message body
                  );
 
-                mailMessage.From = new MailAddress(SMTPFromEmailId, "Contract Book"); 
+                mailMessage.From = new MailAddress(SMTPFromEmailId, "Contract Book");
                 mailMessage.IsBodyHtml = true;
-                 
+
                 using (SmtpClient client = new SmtpClient())
                 {
                     client.EnableSsl = SMTPEnableSSL == true ? true : false;
@@ -888,6 +888,49 @@ namespace AttendanceSystem
             lstStates = lst != null ? lst : lstStates;
 
             return lstStates;
+        }
+
+        public static string GetCurrentFinancialYear()
+        {
+            DateTime today = CurrentIndianDateTime();
+
+            int CurrentYear = today.Year;
+            int PreviousYear = today.Year - 1;
+            int NextYear = today.Year + 1;
+            string PreYear = PreviousYear.ToString();
+            string NexYear = NextYear.ToString();
+            string CurYear = CurrentYear.ToString();
+            string FinYear = null;
+
+            if (today.Month > 3)
+                FinYear = CurYear + "-" + NexYear;
+            else
+                FinYear = PreYear + "-" + CurYear;
+
+            return FinYear.Trim();
+        }
+
+        public static long? GetFinancialYearId()
+        {
+            long? financialId = null;
+
+            try
+            {
+                string strFinancialYear = GetCurrentFinancialYear();
+                if (!string.IsNullOrEmpty(strFinancialYear))
+                {
+                    AttendanceSystemEntities _db = new AttendanceSystemEntities();
+                    var objFinancialYear = _db.mst_FinancialYear.Where(o => o.FinancialYearText == strFinancialYear).FirstOrDefault();
+                    if (objFinancialYear != null)
+                    {
+                        financialId = objFinancialYear.FinancialYearId;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+            return financialId;
         }
 
     }

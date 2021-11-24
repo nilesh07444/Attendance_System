@@ -762,6 +762,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                             objWorkerPayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                             objWorkerPayment.ModifiedBy = employeeId;
                             objWorkerPayment.CreditAmount = (attendanceObject.IsMorning && attendanceObject.IsAfternoon && attendanceObject.IsEvening ? (employeeObj.PerCategoryPrice) : (employeeObj.PerCategoryPrice / 2));
+                            objWorkerPayment.FinancialYearId = CommonMethod.GetFinancialYearId();
                             _db.tbl_WorkerPayment.Add(objWorkerPayment);
 
                             attendanceObject.IsClosed = true;

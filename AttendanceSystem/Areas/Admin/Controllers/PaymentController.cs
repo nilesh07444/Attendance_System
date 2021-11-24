@@ -275,6 +275,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                             objWorkerPayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
                             objWorkerPayment.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
                             objWorkerPayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
+                            objWorkerPayment.FinancialYearId = CommonMethod.GetFinancialYearId();
                             _db.tbl_WorkerPayment.Add(objWorkerPayment);
                         }
                         else
@@ -294,6 +295,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                             objEmployeePayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
                             objEmployeePayment.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
                             objEmployeePayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
+                            objEmployeePayment.FinancialYearId = CommonMethod.GetFinancialYearId();
                             _db.tbl_EmployeePayment.Add(objEmployeePayment);
                         }
                     }
