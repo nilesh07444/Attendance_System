@@ -2,6 +2,10 @@
 @{
     ViewBag.Title = "LunchBreak";
     int counter = 1;
+
+    List<SelectListItem> lstLunchStatus = new List<SelectListItem>();
+    lstLunchStatus.Add(new SelectListItem { Value = "1", Text = "In" });
+    lstLunchStatus.Add(new SelectListItem { Value = "2", Text = "Out" });
 }
 
 <section class="section">
@@ -21,15 +25,15 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="card-header ">
-                                    <div class="col-sm-2">
+                                    <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label>Start Date</label>
+                                            <label>Attendance Start Date</label>
                                             @Html.TextBoxFor(model => model.StartDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "Start Date", style = "height: calc(2.25rem + 6px)" })
                                         </div>
                                     </div>
-                                    <div class="col-sm-2">
+                                    <div class="col-sm-3">
                                         <div class="form-group">
-                                            <label>End Date</label>
+                                            <label>Attendance End Date</label>
                                             @Html.TextBoxFor(model => model.EndDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control required", @placeholder = "End Date", style = "height: calc(2.25rem + 6px)" })
                                         </div>
                                     </div>
@@ -37,6 +41,13 @@
                                         <div class="form-group">
                                             <label>Employee Code</label>
                                             @Html.TextBoxFor(model => model.EmployeeCode, new { @type = "text", @class = "form-control", @placeholder = "Enter Employee Code", @style = "height: calc(2.25rem + 6px)" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-2">
+                                        <div class="form-group">
+                                            <label>Lunch Status</label>
+                                            @Html.DropDownListFor(model => model.LunchStatus, new SelectList(lstLunchStatus, "Value", "Text"), "- All -", new { @class = "form-control required", style = "" })
                                         </div>
                                     </div>
 
@@ -56,8 +67,11 @@
                                         <td>#</td>
                                         <th>Employee Name</th>
                                         <th>Employee Code</th>
+                                        <th>Attendance Date</th>
+                                        <th>Lunch Type</th>
                                         <th>Lunch Start Time</th>
                                         <th>Lunch End Time</th>
+                                        <th>Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -68,13 +82,25 @@
                                         {
                                             <tr>
                                                 <td>@counter.</td>
-
                                                 <td>@obj.EmployeeName</td>
                                                 <td>@obj.EmployeeCode</td>
+                                                <td>@Convert.ToDateTime(obj.AttendaceDate).ToString("dd MMM yyyy")</td>
+                                                <td>Break @obj.LunchBreakNo</td>
                                                 <td>@Convert.ToDateTime(obj.StartDateTime).ToString("dd MMM yyyy hh:mm tt")</td>
                                                 <td>@(obj.EndDateTime != null ? Convert.ToDateTime(obj.EndDateTime).ToString("dd MMM yyyy hh:mm tt") : "")</td>
                                                 <td>
-                                                    <a target="_blank" href="/admin/employee/view/@obj.EmployeeId" title="View" class="btn btn-icon btn-warning"><i class="fas fa-eye"></i></a>
+                                                    @if (obj.EndDateTime != null)
+                                                    {
+                                                        <span class="badge badge-danger">Out</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="badge badge-success">In</span>
+                                                    } 
+                                                </td>
+
+                                                <td>
+                                                    <a target="_blank" href="/admin/lunchbreak/view/@obj.EmployeeLunchBreakId" title="View" class="btn btn-icon btn-warning"><i class="fas fa-eye"></i></a>
                                                 </td>
                                             </tr>
 
@@ -103,9 +129,11 @@
             var startDate = $("#StartDate").val();
             var endDate = $("#EndDate").val();
             var employeeCode = $("#EmployeeCode").val();
+            var lunchStatus = $("#LunchStatus").val();
             StartLoading();
-            window.location.href = "/admin/lunchbreak?startDate=" + startDate + "&endDate=" + endDate + "&employeeCode=" + employeeCode;
+            window.location.href = "/admin/lunchbreak?startDate=" + startDate + "&endDate=" + endDate + "&employeeCode=" + employeeCode + "&lunchStatus=" + lunchStatus;
         });
-    })
+
+    });
 
 </script> 

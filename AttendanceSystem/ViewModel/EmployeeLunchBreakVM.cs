@@ -37,6 +37,7 @@ namespace AttendanceSystem
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string EmployeeCode { get; set; }
+        public int? LunchStatus { get; set; }
         public List<EmployeeLunchBreakVM> EmployeeLunchBreakList { get; set; }
 
     }

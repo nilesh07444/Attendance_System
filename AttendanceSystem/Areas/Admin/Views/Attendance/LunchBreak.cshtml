@@ -81,10 +81,12 @@
                                 <thead>
                                     <tr>
                                         <td>#</td>
+                                        <th>Lunch Type</th>
                                         <th>Lunch Start Time</th>
                                         <th>Lunch End Time</th>
                                         <th>Lunch Start Location</th>
                                         <th>Lunch End Location</th>
+                                        <th>Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -95,12 +97,23 @@
                                         {
                                             <tr>
                                                 <td>@counter.</td>
+                                                <td>Break @obj.LunchBreakNo</td>
                                                 <td>@Convert.ToDateTime(obj.StartDateTime).ToString("dd MMM yyyy hh:mm tt")</td>
                                                 <td>@(obj.EndDateTime != null ? Convert.ToDateTime(obj.EndDateTime).ToString("dd MMM yyyy hh:mm tt") : "")</td>
                                                 <td>@obj.StartLunchLocationFrom</td>
                                                 <td>@obj.EndLunchLocationFrom</td>
                                                 <td>
-                                                    <a target="_blank" href="/admin/employee/view/@obj.EmployeeId" title="View" class="btn btn-icon btn-warning"><i class="fas fa-eye"></i></a>
+                                                    @if (obj.EndDateTime != null)
+                                                    {
+                                                        <span class="badge badge-danger">Out</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="badge badge-success">In</span>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    <a target="_blank" href="/admin/attendance/viewlunchbreak/@obj.EmployeeLunchBreakId" title="View" class="btn btn-icon btn-warning"><i class="fas fa-eye"></i></a>
                                                 </td>
                                             </tr>
 

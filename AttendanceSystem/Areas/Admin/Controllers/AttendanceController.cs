@@ -415,8 +415,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                              EndDateTime = lunch.EndDateTime,
                                              EmployeeRole = role.AdminRoleName,
                                              StartLunchLocationFrom = lunch.StartLunchLocationFrom,
-                                             EndLunchLocationFrom = lunch.EndLunchLocationFrom
-                                         }).OrderByDescending(x => x.StartDateTime).ToList();
+                                             EndLunchLocationFrom = lunch.EndLunchLocationFrom,
+                                             LunchBreakNo = lunch.LunchBreakNo
+                                         }).OrderBy(x => x.StartDateTime).ToList();
 
                 #endregion
 
@@ -430,6 +431,51 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
 
             return View(lstEmployeeLunchBreak);
+        }
+
+        public ActionResult ViewLunchBreak(long Id)
+        {
+            EmployeeLunchBreakVM objLunchBreakVM = new EmployeeLunchBreakVM();
+
+            try
+            {
+                objLunchBreakVM = (from lunch in _db.tbl_EmployeeLunchBreak
+                                   join att in _db.tbl_Attendance on lunch.AttendanceId equals att.AttendanceId
+                                   join emp in _db.tbl_Employee on lunch.EmployeeId equals emp.EmployeeId
+                                   join role in _db.mst_AdminRole on emp.AdminRoleId equals role.AdminRoleId
+                                   where lunch.EmployeeLunchBreakId == Id
+                                   select new EmployeeLunchBreakVM
+                                   {
+                                       EmployeeLunchBreakId = lunch.EmployeeLunchBreakId,
+                                       EmployeeId = lunch.EmployeeId,
+                                       EmployeeName = emp.Prefix + " " + emp.FirstName + " " + emp.LastName,
+                                       EmployeeCode = emp.EmployeeCode,
+                                       EmployeeRole = role.AdminRoleName,
+
+                                       AttendaceDate = att.AttendanceDate,
+                                       AttendaceId = att.AttendanceId,
+                                       AttendaceInDate = att.InDateTime,
+                                       AttendaceOutDate = att.OutDateTime,
+
+                                       LunchBreakNo = lunch.LunchBreakNo,
+
+                                       StartDateTime = lunch.StartDateTime,
+                                       StartLunchLatitude = lunch.StartLunchLatitude,
+                                       StartLunchLongitude = lunch.StartLunchLongitude,
+                                       StartLunchLocationFrom = lunch.StartLunchLocationFrom,
+
+                                       EndDateTime = lunch.EndDateTime,
+                                       EndLunchLatitude = lunch.EndLunchLatitude,
+                                       EndLunchLongitude = lunch.EndLunchLongitude,
+                                       EndLunchLocationFrom = lunch.EndLunchLocationFrom
+
+                                   }).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return View(objLunchBreakVM);
         }
 
     }

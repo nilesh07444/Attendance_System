@@ -27,10 +27,13 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>10/27/2021 12:49:47</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Attendance/LunchBreak.cshtml">
-      <publishTime>10/27/2021 18:19:27</publishTime>
+      <publishTime>11/24/2021 11:18:08</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Attendance/Reject.cshtml">
       <publishTime>06/06/2021 00:24:25</publishTime>
+    </File>
+    <File Include="Areas/Admin/Views/Attendance/ViewLunchBreak.cshtml">
+      <publishTime>11/24/2021 11:17:14</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Company/Edit.cshtml">
       <publishTime>08/12/2021 10:10:46</publishTime>
@@ -180,7 +183,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>07/07/2021 00:09:24</publishTime>
     </File>
     <File Include="Areas/Admin/Views/LunchBreak/Index.cshtml">
-      <publishTime>10/20/2021 22:55:16</publishTime>
+      <publishTime>11/24/2021 11:12:28</publishTime>
+    </File>
+    <File Include="Areas/Admin/Views/LunchBreak/View.cshtml">
+      <publishTime>11/24/2021 11:12:59</publishTime>
     </File>
     <File Include="Areas/Admin/Views/Material/Add.cshtml">
       <publishTime>03/07/2021 00:52:35</publishTime>
@@ -438,10 +444,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>10/09/2013 16:29:20</publishTime>
     </File>
     <File Include="bin/AttendanceSystem.dll">
-      <publishTime>11/23/2021 10:24:38</publishTime>
+      <publishTime>11/24/2021 11:20:16</publishTime>
     </File>
     <File Include="bin/AttendanceSystem.pdb">
-      <publishTime>11/23/2021 10:24:38</publishTime>
+      <publishTime>11/24/2021 11:20:16</publishTime>
     </File>
     <File Include="bin/BouncyCastle.Crypto.dll">
       <publishTime>02/21/2020 16:24:54</publishTime>

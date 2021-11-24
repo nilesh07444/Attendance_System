@@ -1,0 +1,148 @@
+﻿@model EmployeeLunchBreakVM
+@{
+    ViewBag.Title = "LunchBreak";
+}
+
+<section class="section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12">
+
+                <div class="card">
+                    <div class="card-header" style="background-color: #425C59; display: block;">
+                        <div class="pull-left">
+                            <h4 style="color: #FFCEA3;">Lunch Break View - @Model.EmployeeName</h4>
+                        </div>
+                        <div class="pull-right">
+                            <a href="/admin/lunchbreak" class="btn btn-warning pull-right"><i class="fas fa-backward"></i> Back</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Employee Detail</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="form-group col-4">
+                                <label>Employee Name</label>
+                                <p>@Model.EmployeeName</p>
+                            </div>
+
+                            <div class="form-group col-4">
+                                <label>Employee Code</label>
+                                <p>@Model.EmployeeCode</p>
+                            </div>
+                            <div class="form-group col-4">
+                                <label>Employee Role</label>
+                                <p>@Model.EmployeeRole</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Attendance Detail</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="form-group col-4">
+                                <label>Attendance Date</label>
+                                <p>@Convert.ToDateTime(Model.AttendaceDate).ToString("dd MMM yyyy")</p>
+                            </div>
+
+                            <div class="form-group col-4">
+                                <label>Attendace In Date</label> 
+                                <p>@(Model.AttendaceInDate != null ? Convert.ToDateTime(Model.AttendaceInDate).ToString("dd MMM yyyy hh:mm tt") : "")</p>
+                            </div>
+                            <div class="form-group col-4">
+                                <label>Attendace Out Date</label> 
+                                <p>@(Model.AttendaceOutDate != null ? Convert.ToDateTime(Model.AttendaceOutDate).ToString("dd MMM yyyy hh:mm tt") : "")</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Lunch Break Detail</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="form-group col-3">
+                                <label>Lunch Break Type</label>
+                                <p>Break @Model.LunchBreakNo</p>
+                            </div>
+
+                            <div class="form-group col-3">
+                                <label>Lunch Break Status</label>
+                                <p>
+                                    @if (Model.EndDateTime != null)
+                                    {
+                                        <span class="badge badge-danger">Out</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-success">In</span>
+                                    } 
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-3">
+                                <label>Lunch Start Date Time</label>
+                                <p>@Convert.ToDateTime(Model.StartDateTime).ToString("dd MMM yyyy hh:mm tt")</p>
+                            </div>
+
+                            <div class="form-group col-3">
+                                <label>Lunch Start Location From</label>
+                                <p>@Model.StartLunchLocationFrom</p>
+                            </div>
+
+                            <div class="form-group col-3">
+                                <label>Lunch Start Latitude</label>
+                                <p>@Model.StartLunchLatitude</p>
+                            </div>
+
+                            <div class="form-group col-3">
+                                <label>Lunch Start Longitude</label>
+                                <p>@Model.StartLunchLongitude</p>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-3">
+                                <label>Lunch End Date Time</label>
+                                <p>@(Model.EndDateTime != null ? Convert.ToDateTime(Model.EndDateTime).ToString("dd MMM yyyy hh:mm tt") : "")</p>
+                            </div>
+
+                            <div class="form-group col-3">
+                                <label>Lunch End Location From</label>
+                                <p>@Model.EndLunchLocationFrom</p>
+                            </div>
+
+                            <div class="form-group col-3">
+                                <label>Lunch End Latitude</label>
+                                <p>@Model.EndLunchLatitude</p>
+                            </div>
+
+                            <div class="form-group col-3">
+                                <label>Lunch End Longitude</label>
+                                <p>@Model.EndLunchLongitude</p>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
