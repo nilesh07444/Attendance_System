@@ -393,7 +393,13 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 Value = materialInWardOutWardReportFilterVM.EndDate
             };
 
-            materialInWardOutWardReportFilterVM.MaterialList = _db.Database.SqlQuery<MaterialInWardOutWardReportVM>("exec Usp_GetDateWiseMaterialReport @StartDate,@EndDate,@MaterialCategory,@SiteId,@CompanyId", startDateParam, endDateParam, materialCategoryIdParam, siteIdParam, companyIdParam).ToList<MaterialInWardOutWardReportVM>();
+            var financialYearIdParam = new SqlParameter()
+            {
+                ParameterName = "FinancialYearId",
+                Value = materialInWardOutWardReportFilterVM.FinancialYearId
+            };
+
+            materialInWardOutWardReportFilterVM.MaterialList = _db.Database.SqlQuery<MaterialInWardOutWardReportVM>("exec Usp_GetDateWiseMaterialReport @StartDate,@EndDate,@MaterialCategory,@SiteId,@CompanyId,@FinancialYearId", startDateParam, endDateParam, materialCategoryIdParam, siteIdParam, companyIdParam, financialYearIdParam).ToList<MaterialInWardOutWardReportVM>();
 
             materialInWardOutWardReportFilterVM.MaterialCategoryList = GetMaterialCategoryList();
             materialInWardOutWardReportFilterVM.SiteList = GetSiteList();

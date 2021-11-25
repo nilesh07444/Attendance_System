@@ -797,7 +797,13 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 Value = paymentReportFilterVM.EndDate
             };
 
-            paymentReportFilterVM.PaymentReportList = _db.Database.SqlQuery<EmployeePaymentReportVM>("exec Usp_GetDateWiseWorkerPaymentReport @StartDate,@EndDate,@EmployeeId", startDateParam, endDateParam, employeeIdParam).ToList<EmployeePaymentReportVM>();
+            var financialYearIdParam = new SqlParameter()
+            {
+                ParameterName = "FinancialYearId",
+                Value = paymentReportFilterVM.FinancialYearId
+            };
+
+            paymentReportFilterVM.PaymentReportList = _db.Database.SqlQuery<EmployeePaymentReportVM>("exec Usp_GetDateWiseWorkerPaymentReport @StartDate,@EndDate,@EmployeeId,@FinancialYearId", startDateParam, endDateParam, employeeIdParam, financialYearIdParam).ToList<EmployeePaymentReportVM>();
 
             paymentReportFilterVM.EmployeeList = GetWorkerList();
             paymentReportFilterVM.FinancialYearList = CommonMethod.GetFinancialYearList();
@@ -855,7 +861,13 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 Value = paymentReportFilterVM.EndDate
             };
 
-            paymentReportFilterVM.PaymentReportList = _db.Database.SqlQuery<EmployeePaymentReportVM>("exec Usp_GetDateWiseEmployeePaymentReport @StartDate,@EndDate,@EmployeeId", startDateParam, endDateParam, employeeIdParam).ToList<EmployeePaymentReportVM>();
+            var financialYearIdParam = new SqlParameter()
+            {
+                ParameterName = "FinancialYearId",
+                Value = paymentReportFilterVM.FinancialYearId
+            };
+
+            paymentReportFilterVM.PaymentReportList = _db.Database.SqlQuery<EmployeePaymentReportVM>("exec Usp_GetDateWiseEmployeePaymentReport @StartDate,@EndDate,@EmployeeId,@FinancialYearId", startDateParam, endDateParam, employeeIdParam, financialYearIdParam).ToList<EmployeePaymentReportVM>();
 
             paymentReportFilterVM.EmployeeList = GetOnlyEmployeeList();
             paymentReportFilterVM.FinancialYearList = CommonMethod.GetFinancialYearList();
