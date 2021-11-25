@@ -933,5 +933,17 @@ namespace AttendanceSystem
             return financialId;
         }
 
+        public static List<SelectListItem> GetFinancialYearList()
+        {
+            AttendanceSystemEntities _db = new AttendanceSystemEntities();
+            List<SelectListItem> lst = (from yr in _db.mst_FinancialYear
+                                        select new SelectListItem
+                                        {
+                                            Text = yr.FinancialYearText,
+                                            Value = yr.FinancialYearId.ToString()
+                                        }).ToList();
+            return lst;
+        }
+
     }
 }

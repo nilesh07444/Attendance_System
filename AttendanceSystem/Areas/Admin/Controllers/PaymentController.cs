@@ -746,7 +746,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return View(paymentSummuryReportFilterVM);
         }
 
-        public ActionResult WorkerPaymentReport(DateTime? startDate = null, DateTime? endDate = null, long? employeeId = null)
+        public ActionResult WorkerPaymentReport(DateTime? startDate = null, DateTime? endDate = null, long? employeeId = null, long? financialYearId = null)
         {
             PaymentReportFilterVM paymentReportFilterVM = new PaymentReportFilterVM();
             long companyId = clsAdminSession.CompanyId;
@@ -755,6 +755,15 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             {
                 paymentReportFilterVM.EmployeeId = employeeId.Value;
             }
+
+            if (financialYearId == null)
+                financialYearId = CommonMethod.GetFinancialYearId();
+
+            if (financialYearId.HasValue)
+            {
+                paymentReportFilterVM.FinancialYearId = financialYearId.Value;
+            }
+
             if (startDate.HasValue && endDate.HasValue)
             {
                 paymentReportFilterVM.StartDate = startDate.Value;
@@ -791,10 +800,12 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             paymentReportFilterVM.PaymentReportList = _db.Database.SqlQuery<EmployeePaymentReportVM>("exec Usp_GetDateWiseWorkerPaymentReport @StartDate,@EndDate,@EmployeeId", startDateParam, endDateParam, employeeIdParam).ToList<EmployeePaymentReportVM>();
 
             paymentReportFilterVM.EmployeeList = GetWorkerList();
+            paymentReportFilterVM.FinancialYearList = CommonMethod.GetFinancialYearList();
+
             return View(paymentReportFilterVM);
         }
 
-        public ActionResult EmployeePaymentReport(DateTime? startDate = null, DateTime? endDate = null, long? employeeId = null)
+        public ActionResult EmployeePaymentReport(DateTime? startDate = null, DateTime? endDate = null, long? employeeId = null, long? financialYearId = null)
         {
             PaymentReportFilterVM paymentReportFilterVM = new PaymentReportFilterVM();
             long companyId = clsAdminSession.CompanyId;
@@ -807,6 +818,14 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             {
                 paymentReportFilterVM.StartDate = startDate.Value;
                 paymentReportFilterVM.EndDate = endDate.Value;
+            }
+
+            if (financialYearId == null)
+                financialYearId = CommonMethod.GetFinancialYearId();
+
+            if (financialYearId.HasValue)
+            {
+                paymentReportFilterVM.FinancialYearId = financialYearId.Value;
             }
 
             var employeeIdParam = new SqlParameter()
@@ -839,6 +858,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             paymentReportFilterVM.PaymentReportList = _db.Database.SqlQuery<EmployeePaymentReportVM>("exec Usp_GetDateWiseEmployeePaymentReport @StartDate,@EndDate,@EmployeeId", startDateParam, endDateParam, employeeIdParam).ToList<EmployeePaymentReportVM>();
 
             paymentReportFilterVM.EmployeeList = GetOnlyEmployeeList();
+            paymentReportFilterVM.FinancialYearList = CommonMethod.GetFinancialYearList();
             return View(paymentReportFilterVM);
         }
 

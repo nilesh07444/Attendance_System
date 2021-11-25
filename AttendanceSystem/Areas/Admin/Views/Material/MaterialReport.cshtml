@@ -51,6 +51,12 @@
                                             @Html.DropDownListFor(model => model.SiteId, new SelectList(Model.SiteList, "Value", "Text"), "- All -", new { @class = "form-control required", style = "" })
                                         </div>
                                     </div>
+                                    <div class="col-sm-2">
+                                        <div class="form-group">
+                                            <label for="UserRole">Financial Year</label>
+                                            @Html.DropDownListFor(model => model.FinancialYearId, new SelectList(Model.FinancialYearList, "Value", "Text"), new { @class = "form-control required", style = "" })
+                                        </div>
+                                    </div>
                                     <div class="col-sm-4">
                                         <div class="card-header-action">
                                             <button class="btn btn-primary mr-1" style="font-size: 1rem" id="btnSearch" type="button">Search</button>
@@ -131,6 +137,7 @@
             var endDate = $("#EndDate").val();
             var materialCategoryId = $("#MaterialCategoryId").val();
             var siteId = $("#SiteId").val();
+            var financialYearId = $("#FinancialYearId").val();  
 
             if (startDate == "") {
                 alert("Please select valid start date");
@@ -148,7 +155,7 @@
             }
 
             StartLoading();
-            window.location.href = "/admin/material/MaterialReport?startDate=" + startDate + "&endDate=" + endDate + "&materialCategoryId=" + materialCategoryId + "&siteId=" + siteId;
+            window.location.href = "/admin/material/MaterialReport?startDate=" + startDate + "&endDate=" + endDate + "&materialCategoryId=" + materialCategoryId + "&siteId=" + siteId + "&financialYearId=" + financialYearId;
         });
     })
 

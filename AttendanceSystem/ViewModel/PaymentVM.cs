@@ -21,20 +21,20 @@ namespace AttendanceSystem.ViewModel
         [Required(ErrorMessage = "This field is required")]
         public long UserId { get; set; }
         public string UserName { get; set; }
-        
+
         [Display(Name = "Credit Amount")]
         public decimal? CreditAmount { get; set; }
-        
+
         [Display(Name = "Debit Amount")]
         public decimal? DebitAmount { get; set; }
-        
+
         [Display(Name = "Payment Type")]
         [Required(ErrorMessage = "This field is required")]
         public int? PaymentType { get; set; }
-          
+
         [Display(Name = "Remarks")]
         public string Remarks { get; set; }
-         
+
         [Display(Name = "Pending Salary")]
         public decimal PendingSalary { get; set; }
 
@@ -63,7 +63,7 @@ namespace AttendanceSystem.ViewModel
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public int? UserRole { get; set; }
-        public int? EmploymentCategory { get; set; }        
+        public int? EmploymentCategory { get; set; }
         public List<PaymentVM> PaymentList { get; set; }
         public List<SelectListItem> UserRoleList { get; set; }
         public List<SelectListItem> EmploymentCategoryList { get; set; }
@@ -107,6 +107,9 @@ namespace AttendanceSystem.ViewModel
         public List<SelectListItem> EmployeeList { get; set; }
         public long? EmployeeId { get; set; }
         public List<EmployeePaymentReportVM> PaymentReportList { get; set; }
+
+        public List<SelectListItem> FinancialYearList { get; set; }
+        public long? FinancialYearId { get; set; }
     }
 
     public class EmployeePaymentReportVM

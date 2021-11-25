@@ -43,6 +43,12 @@
                                             @Html.DropDownListFor(model => model.EmployeeId, new SelectList(Model.EmployeeList, "Value", "Text"), "- All -", new { @class = "form-control required", style = "" })
                                         </div>
                                     </div>
+                                    <div class="col-sm-2">
+                                        <div class="form-group">
+                                            <label for="UserRole">Financial Year</label>
+                                            @Html.DropDownListFor(model => model.FinancialYearId, new SelectList(Model.FinancialYearList, "Value", "Text"), new { @class = "form-control required", style = "" })
+                                        </div>
+                                    </div>
                                     <div class="col-sm-3">
                                         <div class="card-header-action">
                                             <button class="btn btn-primary mr-1" style="font-size: 1rem" id="btnSearch" type="button">Search</button>
@@ -121,6 +127,7 @@
             var startDate = $("#StartDate").val();
             var endDate = $("#EndDate").val();
             var employeeId = $("#EmployeeId").val();
+            var financialYearId = $("#FinancialYearId").val();  
 
             if (startDate == "") {
                 alert("Please select valid start date");
@@ -133,7 +140,7 @@
             }
 
             StartLoading();
-            window.location.href = "/admin/payment/employeePaymentReport?startDate=" + startDate + "&endDate=" + endDate + "&employeeId=" + employeeId;
+            window.location.href = "/admin/payment/employeePaymentReport?startDate=" + startDate + "&endDate=" + endDate + "&employeeId=" + employeeId + "&financialYearId=" + financialYearId;
         });
     })
 

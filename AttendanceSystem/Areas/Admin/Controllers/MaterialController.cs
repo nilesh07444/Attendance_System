@@ -333,7 +333,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             return View(material);
         }
 
-        public ActionResult MaterialReport(DateTime? startDate = null, DateTime? endDate = null, long? materialCategoryId = null, long? siteId = null)
+        public ActionResult MaterialReport(DateTime? startDate = null, DateTime? endDate = null, long? materialCategoryId = null, long? siteId = null, long? financialYearId = null)
         {
             MaterialInWardOutWardReportFilterVM materialInWardOutWardReportFilterVM = new MaterialInWardOutWardReportFilterVM();
             long companyId = clsAdminSession.CompanyId;
@@ -341,6 +341,14 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             if (materialCategoryId.HasValue)
             {
                 materialInWardOutWardReportFilterVM.MaterialCategoryId = materialCategoryId.Value;
+            }
+
+            if (financialYearId == null)
+                financialYearId = CommonMethod.GetFinancialYearId();
+
+            if (financialYearId.HasValue)
+            {
+                materialInWardOutWardReportFilterVM.FinancialYearId = financialYearId.Value;
             }
 
             if (siteId.HasValue)
@@ -389,6 +397,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
             materialInWardOutWardReportFilterVM.MaterialCategoryList = GetMaterialCategoryList();
             materialInWardOutWardReportFilterVM.SiteList = GetSiteList();
+            materialInWardOutWardReportFilterVM.FinancialYearList = CommonMethod.GetFinancialYearList();
+
             return View(materialInWardOutWardReportFilterVM);
         }
     }
