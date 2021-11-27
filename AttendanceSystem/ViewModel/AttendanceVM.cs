@@ -186,8 +186,7 @@ namespace AttendanceSystem.ViewModel
         public bool IsEvening { get; set; }
         public string IsEveningText { get; set; }
         public string SiteName { get; set; }
-        public string BgColor { get; set; }
-
+        public string BgColor { get; set; } 
     }
 
     public class WorkerAttendanceReportVM

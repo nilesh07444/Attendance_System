@@ -682,8 +682,10 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 employeeId = base.UTI.EmployeeId;
                 companyId = base.UTI.CompanyId;
 
+                DateTime today = CommonMethod.CurrentIndianDateTime().Date;
+
                 #region Validation
-                if (requestVM.Date != DateTime.Today)
+                if (requestVM.Date != today)
                 {
                     response.IsError = true;
                     response.AddError(ErrorMessage.WorkerCanCloseForTodayOnly);
@@ -763,11 +765,9 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                             objWorkerPayment.ModifiedBy = employeeId;
                             objWorkerPayment.CreditAmount = (attendanceObject.IsMorning && attendanceObject.IsAfternoon && attendanceObject.IsEvening ? (employeeObj.PerCategoryPrice) : (employeeObj.PerCategoryPrice / 2));
                             objWorkerPayment.FinancialYearId = CommonMethod.GetFinancialYearId();
-                            _db.tbl_WorkerPayment.Add(objWorkerPayment);
-
-                            attendanceObject.IsClosed = true;
-
+                            _db.tbl_WorkerPayment.Add(objWorkerPayment); 
                         }
+                        attendanceObject.IsClosed = true;
                         _db.SaveChanges();
                         response.Data = true;
                     }

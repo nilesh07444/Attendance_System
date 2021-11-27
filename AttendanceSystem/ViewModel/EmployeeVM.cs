@@ -160,7 +160,7 @@ namespace AttendanceSystem.ViewModel
         public string DistrictName { get; set; }
 
         public string strSelectedOfficeLocations { get; set; }
-        public string WorkerHeadName { get; set; }
+        public string WorkerHeadName { get; set; } 
     }
 
     public class EmployeeFilterVM
