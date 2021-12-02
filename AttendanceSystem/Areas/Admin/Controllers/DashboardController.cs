@@ -586,10 +586,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                 #region Yearly Conversion of Material
 
-                if (month == (int)CalenderMonths.March)
+                if (month == (int)CalenderMonths.March && objCompany.CompanyTypeId == (int)CompanyType.ConstructionCompany)
                 {
                     string strMonth = month.ToString().Length > 1 ? month.ToString() : "0" + month.ToString();
-                    DateTime materialConversionDate = DateTime.ParseExact("31-" + strMonth + "-" + year, "dd-MM-yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                    DateTime materialConversionDate = DateTime.ParseExact("31-" + strMonth + "-" + (year + 1), "dd-MM-yyyy", System.Globalization.CultureInfo.InvariantCulture);
                     GeneralResponseVM materialConversionResponse = processMaterialConversion(materialConversionDate);
                 }
 
@@ -999,7 +999,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 {
                     lstMaterialConversion.ForEach(materialVM =>
                     {
-                        DateTime materialDate = DateTime.ParseExact("01-04" + "-" + materialConversionDate.Year, "dd-MM-yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                        DateTime materialDate = DateTime.ParseExact("01-04" + "-" + (materialConversionDate.Year-1), "dd-MM-yyyy", System.Globalization.CultureInfo.InvariantCulture);
 
                         tbl_Material objMaterial = new tbl_Material();
                         objMaterial.CompanyId = companyId;
