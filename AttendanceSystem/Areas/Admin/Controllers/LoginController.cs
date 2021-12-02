@@ -1,5 +1,6 @@
 ﻿using AttendanceSystem.Helper;
 using AttendanceSystem.Models;
+using AttendanceSystem.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -20,9 +21,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         {
             _db = new AttendanceSystemEntities();
         }
-         
+
         public ActionResult Index()
-        {
+        {             
             return View();
         }
 

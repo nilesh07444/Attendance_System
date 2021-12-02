@@ -632,6 +632,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                || emp.LastName.Contains(searchText)) : true)
 
                                                && !isMorning
+                                               && !assi.IsClosed 
 
                                                select new EmployeeVM
                                                {
@@ -674,6 +675,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
         {
             ResponseDataModel<List<EmployeeVM>> response = new ResponseDataModel<List<EmployeeVM>>();
             response.IsError = false;
+
             try
             {
                 companyId = base.UTI.CompanyId;
@@ -704,6 +706,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                || emp.LastName.Contains(searchText)) : true)
 
                                                && !isAfternoon
+                                               && !assi.IsClosed 
 
                                                select new EmployeeVM
                                                {

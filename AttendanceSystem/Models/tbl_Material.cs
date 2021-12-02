@@ -29,5 +29,6 @@ namespace AttendanceSystem.Models
         public Nullable<long> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public Nullable<long> FinancialYearId { get; set; }
+        public Nullable<bool> IsYearlyConversionEntry { get; set; }
     }
 }

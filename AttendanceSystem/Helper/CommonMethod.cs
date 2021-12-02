@@ -933,6 +933,42 @@ namespace AttendanceSystem
             return financialId;
         }
 
+        public static long? GetFinancialYearIdFromDate(DateTime date)
+        {
+            long? financialId = null;
+
+            try
+            {
+                int CurrentYear = date.Year;
+                int PreviousYear = date.Year - 1;
+                int NextYear = date.Year + 1;
+                string PreYear = PreviousYear.ToString();
+                string NexYear = NextYear.ToString();
+                string CurYear = CurrentYear.ToString();
+                string strFinancialYear = null;
+
+                if (date.Month > 3)
+                    strFinancialYear = CurYear + "-" + NexYear;
+                else
+                    strFinancialYear = PreYear + "-" + CurYear;
+
+                if (!string.IsNullOrEmpty(strFinancialYear))
+                {
+                    AttendanceSystemEntities _db = new AttendanceSystemEntities();
+                    var objFinancialYear = _db.mst_FinancialYear.Where(o => o.FinancialYearText == strFinancialYear).FirstOrDefault();
+                    if (objFinancialYear != null)
+                    {
+                        financialId = objFinancialYear.FinancialYearId;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+            }
+            return financialId;
+        }
+
         public static List<SelectListItem> GetFinancialYearList()
         {
             AttendanceSystemEntities _db = new AttendanceSystemEntities();

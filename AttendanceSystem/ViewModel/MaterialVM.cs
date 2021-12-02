@@ -104,12 +104,25 @@ namespace AttendanceSystem.ViewModel
         public long SiteId { get; set; }
         public long MaterialCategoryId { get; set; }
         public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; } 
+        public DateTime EndDate { get; set; }
         public long? FinancialYearId { get; set; }
 
         public List<MaterialInWardOutWardReportVM> MaterialList { get; set; }
         public List<SelectListItem> MaterialCategoryList { get; set; }
-        public List<SelectListItem> SiteList { get; set; } 
+        public List<SelectListItem> SiteList { get; set; }
         public List<SelectListItem> FinancialYearList { get; set; }
     }
+
+    public class MaterialConversionVM
+    {
+        public long? MaterialCategoryId { get; set; }
+        public string MaterialCategoryName { get; set; }
+        public long SiteId { get; set; }
+        public string SiteName { get; set; }
+        public int InOut { get; set; }
+        public decimal Qty { get; set; }
+        public decimal CreditAmount { get; set; }
+        public decimal DebitAmount { get; set; }
+    }
+
 }

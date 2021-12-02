@@ -609,6 +609,7 @@
           <Property Name="InOut" Type="int" Nullable="false" />
           <Property Name="Remarks" Type="nvarchar" MaxLength="500" />
           <Property Name="FinancialYearId" Type="bigint" />
+          <Property Name="IsYearlyConversionEntry" Type="bit" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="CreatedBy" Type="bigint" Nullable="false" />
@@ -912,11 +913,7 @@
           <Parameter Name="StartDate" Type="datetime" Mode="In" />
           <Parameter Name="EndDate" Type="datetime" Mode="In" />
           <Parameter Name="EmployeeId" Type="bigint" Mode="In" />
-        </Function>
-        <Function Name="Usp_GetDateWiseEmployeePaymentReport_dipaktest" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="StartDate" Type="datetime" Mode="In" />
-          <Parameter Name="EndDate" Type="datetime" Mode="In" />
-          <Parameter Name="EmployeeId" Type="bigint" Mode="In" />
+          <Parameter Name="FinancialYearId" Type="bigint" Mode="In" />
         </Function>
         <Function Name="Usp_GetDateWiseMaterialReport" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="StartDate" Type="datetime" Mode="In" />
@@ -924,11 +921,13 @@
           <Parameter Name="MaterialCategory" Type="bigint" Mode="In" />
           <Parameter Name="SiteId" Type="bigint" Mode="In" />
           <Parameter Name="CompanyId" Type="bigint" Mode="In" />
+          <Parameter Name="FinancialYearId" Type="bigint" Mode="In" />
         </Function>
         <Function Name="Usp_GetDateWiseWorkerPaymentReport" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="StartDate" Type="datetime" Mode="In" />
           <Parameter Name="EndDate" Type="datetime" Mode="In" />
           <Parameter Name="EmployeeId" Type="bigint" Mode="In" />
+          <Parameter Name="FinancialYearId" Type="bigint" Mode="In" />
         </Function>
         <Function Name="Usp_GetPaymentReport" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="StartMonth" Type="int" Mode="In" />
@@ -1128,6 +1127,7 @@
           <Property Name="ModifiedBy" Type="Int64" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="FinancialYearId" Type="Int64" />
+          <Property Name="IsYearlyConversionEntry" Type="Boolean" />
         </EntityType>
         <EntityType Name="tbl_MaterialCategory">
           <Key>
@@ -1312,6 +1312,7 @@
             <Parameter Name="StartDate" Mode="In" Type="DateTime" />
             <Parameter Name="EndDate" Mode="In" Type="DateTime" />
             <Parameter Name="EmployeeId" Mode="In" Type="Int64" />
+            <Parameter Name="FinancialYearId" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="Usp_GetDateWiseEmployeePaymentReport_dipaktest" ReturnType="Collection(AttendanceSystemModel.Usp_GetDateWiseEmployeePaymentReport_dipaktest_Result)">
             <Parameter Name="StartDate" Mode="In" Type="DateTime" />
@@ -1324,11 +1325,13 @@
             <Parameter Name="MaterialCategory" Mode="In" Type="Int64" />
             <Parameter Name="SiteId" Mode="In" Type="Int64" />
             <Parameter Name="CompanyId" Mode="In" Type="Int64" />
+            <Parameter Name="FinancialYearId" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="Usp_GetDateWiseWorkerPaymentReport" ReturnType="Collection(AttendanceSystemModel.Usp_GetDateWiseWorkerPaymentReport_Result)">
             <Parameter Name="StartDate" Mode="In" Type="DateTime" />
             <Parameter Name="EndDate" Mode="In" Type="DateTime" />
             <Parameter Name="EmployeeId" Mode="In" Type="Int64" />
+            <Parameter Name="FinancialYearId" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="Usp_GetPaymentReport" ReturnType="Collection(AttendanceSystemModel.Usp_GetPaymentReport_Result)">
             <Parameter Name="StartMonth" Mode="In" Type="Int32" />
@@ -2273,6 +2276,7 @@
           <EntitySetMapping Name="tbl_Material">
             <EntityTypeMapping TypeName="AttendanceSystemModel.tbl_Material">
               <MappingFragment StoreEntitySet="tbl_Material">
+                <ScalarProperty Name="IsYearlyConversionEntry" ColumnName="IsYearlyConversionEntry" />
                 <ScalarProperty Name="FinancialYearId" ColumnName="FinancialYearId" />
                 <ScalarProperty Name="MaterialId" ColumnName="MaterialId" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
@@ -2888,19 +2892,6 @@
           <FunctionImportMapping FunctionImportName="Usp_GetDateWiseEmployeePaymentReport" FunctionName="AttendanceSystemModel.Store.Usp_GetDateWiseEmployeePaymentReport">
             <ResultMapping>
               <ComplexTypeMapping TypeName="AttendanceSystemModel.Usp_GetDateWiseEmployeePaymentReport_Result">
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="Opening" ColumnName="Opening" />
-                <ScalarProperty Name="Credit" ColumnName="Credit" />
-                <ScalarProperty Name="Debit" ColumnName="Debit" />
-                <ScalarProperty Name="Remark" ColumnName="Remark" />
-                <ScalarProperty Name="Closing" ColumnName="Closing" />
-                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="Usp_GetDateWiseEmployeePaymentReport_dipaktest" FunctionName="AttendanceSystemModel.Store.Usp_GetDateWiseEmployeePaymentReport_dipaktest">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="AttendanceSystemModel.Usp_GetDateWiseEmployeePaymentReport_dipaktest_Result">
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="Opening" ColumnName="Opening" />
                 <ScalarProperty Name="Credit" ColumnName="Credit" />

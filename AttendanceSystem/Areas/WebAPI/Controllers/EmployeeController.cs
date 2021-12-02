@@ -765,7 +765,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                             objWorkerPayment.ModifiedBy = employeeId;
                             objWorkerPayment.CreditAmount = (attendanceObject.IsMorning && attendanceObject.IsAfternoon && attendanceObject.IsEvening ? (employeeObj.PerCategoryPrice) : (employeeObj.PerCategoryPrice / 2));
                             objWorkerPayment.FinancialYearId = CommonMethod.GetFinancialYearId();
-                            _db.tbl_WorkerPayment.Add(objWorkerPayment); 
+                            _db.tbl_WorkerPayment.Add(objWorkerPayment);
                         }
                         attendanceObject.IsClosed = true;
                         _db.SaveChanges();
@@ -984,6 +984,37 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             }
             return response;
         }
+
+
+        [HttpGet]
+        [Route("GetEmployeeOfficeLocationType")]
+        public ResponseDataModel<EmployeeOfficeLocationTypeVM> GetEmployeeOfficeLocationType()
+        {
+            ResponseDataModel<EmployeeOfficeLocationTypeVM> response = new ResponseDataModel<EmployeeOfficeLocationTypeVM>();
+            response.IsError = false;
+
+            try
+            {
+                employeeId = base.UTI.EmployeeId;
+
+                EmployeeOfficeLocationTypeVM employeeDetails = (from emp in _db.tbl_Employee
+                                                                where emp.EmployeeId == employeeId
+                                                                select new EmployeeOfficeLocationTypeVM
+                                                                {
+                                                                    EmployeeId = emp.EmployeeId,
+                                                                    EmployeeOfficeLocationType = emp.EmployeeOfficeLocationType
+                                                                }).FirstOrDefault();
+                response.Data = employeeDetails;
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message);
+            }
+
+            return response;
+        }
+
 
     }
 }

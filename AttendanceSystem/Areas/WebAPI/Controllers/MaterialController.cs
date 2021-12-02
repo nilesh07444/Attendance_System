@@ -26,7 +26,6 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             companyId = base.UTI.CompanyId;
         }
 
-
         [HttpPost]
         [Route("List")]
         public ResponseDataModel<List<MaterialVM>> List(MaterialFilterVM materialFilterVM)
@@ -132,6 +131,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     objMaterial.ModifiedBy = employeeId;
                     objMaterial.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     objMaterial.FinancialYearId = CommonMethod.GetFinancialYearId();
+                    objMaterial.IsYearlyConversionEntry = false;
                     _db.tbl_Material.Add(objMaterial);
                     _db.SaveChanges();
                     response.Data = true;

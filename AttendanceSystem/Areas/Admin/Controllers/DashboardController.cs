@@ -26,6 +26,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 int roleId = clsAdminSession.RoleID;
                 DateTime today = CommonMethod.CurrentIndianDateTime().Date;
                 DateTime currentDateTime = CommonMethod.CurrentIndianDateTime();
+
                 if (roleId == (int)AdminRoles.CompanyAdmin)
                 {
                     tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == companyId).FirstOrDefault();
@@ -55,8 +56,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                      && at.Status == (int)AttendanceStatus.Pending
                                                      select at.AttendanceId
                                                ).Count();
-
-
 
                     if (clsAdminSession.IsTrialMode)
                     {
@@ -584,6 +583,17 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         _db.SaveChanges();
                     }
                 }
+
+                #region Yearly Conversion of Material
+
+                if (month == (int)CalenderMonths.March)
+                {
+                    string strMonth = month.ToString().Length > 1 ? month.ToString() : "0" + month.ToString();
+                    DateTime materialConversionDate = DateTime.ParseExact("31-" + strMonth + "-" + year, "dd-MM-yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                    GeneralResponseVM materialConversionResponse = processMaterialConversion(materialConversionDate);
+                }
+
+                #endregion
             }
             catch (Exception ex)
             {
@@ -949,6 +959,77 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                             Value = pt.Key.ToString()
                                         }).ToList();
             return lst;
+        }
+
+        private GeneralResponseVM processMaterialConversion(DateTime materialConversionDate)
+        {
+            GeneralResponseVM objGeneralResponseVM = new GeneralResponseVM();
+
+            try
+            {
+                long companyId = clsAdminSession.CompanyId;
+                long? financialYearId = CommonMethod.GetFinancialYearIdFromDate(materialConversionDate);
+
+                List<MaterialConversionVM> lstMaterialConversion = (from m in _db.tbl_Material
+                                                                    join mc in _db.tbl_MaterialCategory on m.MaterialCategoryId equals mc.MaterialCategoryId
+                                                                    join site in _db.tbl_Site on m.SiteId equals site.SiteId
+                                                                    where m.CompanyId == companyId && !m.IsDeleted && !mc.IsDeleted
+                                                                    && m.FinancialYearId == financialYearId
+                                                                    select new MaterialConversionVM
+                                                                    {
+                                                                        MaterialCategoryId = m.MaterialCategoryId.Value,
+                                                                        MaterialCategoryName = mc.MaterialCategoryName,
+                                                                        SiteId = m.SiteId,
+                                                                        SiteName = site.SiteName,
+                                                                        InOut = m.InOut,
+                                                                        Qty = m.Qty
+                                                                    }).ToList()
+                            .GroupBy(x => new { x.MaterialCategoryId, x.SiteId })
+                            .Select((mg) => new MaterialConversionVM
+                            {
+                                MaterialCategoryId = mg.FirstOrDefault().MaterialCategoryId,
+                                SiteId = mg.FirstOrDefault().SiteId,
+                                SiteName = mg.FirstOrDefault().SiteName,
+                                MaterialCategoryName = mg.FirstOrDefault().MaterialCategoryName,
+                                CreditAmount = mg.ToList().Where(x => x.InOut == (int)MaterialStatus.Inward).ToList().Sum(x => x.Qty),
+                                DebitAmount = mg.ToList().Where(x => x.InOut == (int)MaterialStatus.Outward).ToList().Sum(x => x.Qty)
+                            }).ToList();
+
+                if (lstMaterialConversion != null && lstMaterialConversion.Count > 0)
+                {
+                    lstMaterialConversion.ForEach(materialVM =>
+                    {
+                        DateTime materialDate = DateTime.ParseExact("01-04" + "-" + materialConversionDate.Year, "dd-MM-yyyy", System.Globalization.CultureInfo.InvariantCulture);
+
+                        tbl_Material objMaterial = new tbl_Material();
+                        objMaterial.CompanyId = companyId;
+                        objMaterial.MaterialCategoryId = materialVM.MaterialCategoryId;
+                        objMaterial.MaterialDate = materialDate;
+                        objMaterial.SiteId = materialVM.SiteId;
+                        objMaterial.Qty = materialVM.CreditAmount - materialVM.DebitAmount;
+                        objMaterial.InOut = (int)MaterialStatus.Inward;
+                        objMaterial.Remarks = "Yearly Auto Material Conversion Entry";
+                        objMaterial.IsActive = true;
+                        objMaterial.CreatedBy = (int)PaymentGivenBy.CompanyAdmin;
+                        objMaterial.CreatedDate = CommonMethod.CurrentIndianDateTime();
+                        objMaterial.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
+                        objMaterial.ModifiedDate = CommonMethod.CurrentIndianDateTime();
+                        objMaterial.FinancialYearId = CommonMethod.GetFinancialYearIdFromDate(materialDate);
+                        objMaterial.IsYearlyConversionEntry = true;
+                        _db.tbl_Material.Add(objMaterial);
+                        _db.SaveChanges();
+
+                    });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                objGeneralResponseVM.IsError = true;
+                objGeneralResponseVM.ErrorMessage = ex.Message.ToString();
+            }
+
+            return objGeneralResponseVM;
         }
 
     }

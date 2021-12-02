@@ -244,7 +244,7 @@ namespace AttendanceSystem.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Usp_GetAssignedWorkerListWithAttendance_Result>("Usp_GetAssignedWorkerListWithAttendance", companyIdParameter, roleIdParameter, dateParameter, siteIdParameter, employeeIdParameter);
         }
     
-        public virtual ObjectResult<Usp_GetDateWiseEmployeePaymentReport_Result> Usp_GetDateWiseEmployeePaymentReport(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, Nullable<long> employeeId)
+        public virtual ObjectResult<Usp_GetDateWiseEmployeePaymentReport_Result> Usp_GetDateWiseEmployeePaymentReport(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, Nullable<long> employeeId, Nullable<long> financialYearId)
         {
             var startDateParameter = startDate.HasValue ?
                 new ObjectParameter("StartDate", startDate) :
@@ -258,7 +258,11 @@ namespace AttendanceSystem.Models
                 new ObjectParameter("EmployeeId", employeeId) :
                 new ObjectParameter("EmployeeId", typeof(long));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Usp_GetDateWiseEmployeePaymentReport_Result>("Usp_GetDateWiseEmployeePaymentReport", startDateParameter, endDateParameter, employeeIdParameter);
+            var financialYearIdParameter = financialYearId.HasValue ?
+                new ObjectParameter("FinancialYearId", financialYearId) :
+                new ObjectParameter("FinancialYearId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Usp_GetDateWiseEmployeePaymentReport_Result>("Usp_GetDateWiseEmployeePaymentReport", startDateParameter, endDateParameter, employeeIdParameter, financialYearIdParameter);
         }
     
         public virtual ObjectResult<Usp_GetDateWiseEmployeePaymentReport_dipaktest_Result> Usp_GetDateWiseEmployeePaymentReport_dipaktest(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, Nullable<long> employeeId)
@@ -278,7 +282,7 @@ namespace AttendanceSystem.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Usp_GetDateWiseEmployeePaymentReport_dipaktest_Result>("Usp_GetDateWiseEmployeePaymentReport_dipaktest", startDateParameter, endDateParameter, employeeIdParameter);
         }
     
-        public virtual ObjectResult<Usp_GetDateWiseMaterialReport_Result> Usp_GetDateWiseMaterialReport(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, Nullable<long> materialCategory, Nullable<long> siteId, Nullable<long> companyId)
+        public virtual ObjectResult<Usp_GetDateWiseMaterialReport_Result> Usp_GetDateWiseMaterialReport(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, Nullable<long> materialCategory, Nullable<long> siteId, Nullable<long> companyId, Nullable<long> financialYearId)
         {
             var startDateParameter = startDate.HasValue ?
                 new ObjectParameter("StartDate", startDate) :
@@ -300,10 +304,14 @@ namespace AttendanceSystem.Models
                 new ObjectParameter("CompanyId", companyId) :
                 new ObjectParameter("CompanyId", typeof(long));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Usp_GetDateWiseMaterialReport_Result>("Usp_GetDateWiseMaterialReport", startDateParameter, endDateParameter, materialCategoryParameter, siteIdParameter, companyIdParameter);
+            var financialYearIdParameter = financialYearId.HasValue ?
+                new ObjectParameter("FinancialYearId", financialYearId) :
+                new ObjectParameter("FinancialYearId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Usp_GetDateWiseMaterialReport_Result>("Usp_GetDateWiseMaterialReport", startDateParameter, endDateParameter, materialCategoryParameter, siteIdParameter, companyIdParameter, financialYearIdParameter);
         }
     
-        public virtual ObjectResult<Usp_GetDateWiseWorkerPaymentReport_Result> Usp_GetDateWiseWorkerPaymentReport(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, Nullable<long> employeeId)
+        public virtual ObjectResult<Usp_GetDateWiseWorkerPaymentReport_Result> Usp_GetDateWiseWorkerPaymentReport(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, Nullable<long> employeeId, Nullable<long> financialYearId)
         {
             var startDateParameter = startDate.HasValue ?
                 new ObjectParameter("StartDate", startDate) :
@@ -317,7 +325,11 @@ namespace AttendanceSystem.Models
                 new ObjectParameter("EmployeeId", employeeId) :
                 new ObjectParameter("EmployeeId", typeof(long));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Usp_GetDateWiseWorkerPaymentReport_Result>("Usp_GetDateWiseWorkerPaymentReport", startDateParameter, endDateParameter, employeeIdParameter);
+            var financialYearIdParameter = financialYearId.HasValue ?
+                new ObjectParameter("FinancialYearId", financialYearId) :
+                new ObjectParameter("FinancialYearId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Usp_GetDateWiseWorkerPaymentReport_Result>("Usp_GetDateWiseWorkerPaymentReport", startDateParameter, endDateParameter, employeeIdParameter, financialYearIdParameter);
         }
     
         public virtual ObjectResult<Usp_GetPaymentReport_Result> Usp_GetPaymentReport(Nullable<int> startMonth, Nullable<int> endMonth, Nullable<int> year, Nullable<long> employeeId)

@@ -216,4 +216,9 @@ namespace AttendanceSystem.ViewModel
         public bool IsClosed { get; set; }
         public long? AttendanceId { get; set; }
     }
+    public class EmployeeOfficeLocationTypeVM
+    {
+        public long EmployeeId { get; set; }
+        public int? EmployeeOfficeLocationType { get; set; }
+    }
 }

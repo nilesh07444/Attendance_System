@@ -166,6 +166,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objMaterial.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
                         objMaterial.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                         objMaterial.FinancialYearId = CommonMethod.GetFinancialYearId();
+                        objMaterial.IsYearlyConversionEntry = false;
                         _db.tbl_Material.Add(objMaterial);
                     }
                     _db.SaveChanges();
