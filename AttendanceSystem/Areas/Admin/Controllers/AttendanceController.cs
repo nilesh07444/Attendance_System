@@ -137,6 +137,9 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 string[] ids_array = ids.Split(',');
                 List<tbl_Attendance> attendanceList = _db.tbl_Attendance.Where(x => ids_array.Contains(x.AttendanceId.ToString())).ToList();
                 DateTime today = CommonMethod.CurrentIndianDateTime();
+
+                tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == companyId).FirstOrDefault();
+
                 if (attendanceList != null)
                 {
                     attendanceList.ForEach(attendance =>
@@ -146,7 +149,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         attendance.ModifiedDate = today;
 
                         tbl_Employee employeeObj = _db.tbl_Employee.Where(x => x.EmployeeId == attendance.UserId).FirstOrDefault();
-
 
                         tbl_EmployeePayment objEmployeePayment = new tbl_EmployeePayment();
                         objEmployeePayment.CompanyId = attendance.CompanyId;
@@ -178,11 +180,21 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         }
                         else if (employeeObj.EmploymentCategory == (int)EmploymentCategory.MonthlyBased)
                         {
-                            decimal totalDaysinMonth = DateTime.DaysInMonth(attendance.AttendanceDate.Year, attendance.AttendanceDate.Month);
-                            decimal perDayAmount = Math.Round((employeeObj.MonthlySalaryPrice.HasValue ? employeeObj.MonthlySalaryPrice.Value : 0) / totalDaysinMonth, 2);
-                            objEmployeePayment.CreditAmount = attendance.DayType == (double)DayType.FullDay ? perDayAmount : Math.Round((perDayAmount / 2), 2);
+                            if (objCompany.CompanyConversionType == (int)CompanyConversionType.MonthBased)
+                            {
+                                decimal totalDaysinMonth = DateTime.DaysInMonth(attendance.AttendanceDate.Year, attendance.AttendanceDate.Month);
+                                decimal perDayAmount = Math.Round((employeeObj.MonthlySalaryPrice.HasValue ? employeeObj.MonthlySalaryPrice.Value : 0) / totalDaysinMonth, 2);
+                                objEmployeePayment.CreditAmount = (attendance.DayType == (double)DayType.FullDay ? perDayAmount : Math.Round((perDayAmount / 2), 2)) + (employeeObj.ExtraPerHourPrice * attendance.ExtraHours);
+                            }
+                            else
+                            {
+                                decimal totalDaysinMonth = DateTime.DaysInMonth(attendance.AttendanceDate.Year, attendance.AttendanceDate.Month);
+                                decimal totalDaysToApply = (decimal)totalDaysinMonth - employeeObj.NoOfFreeLeavePerMonth;
+                                decimal perDayAmount = Math.Round((employeeObj.MonthlySalaryPrice.HasValue ? employeeObj.MonthlySalaryPrice.Value : 0) / totalDaysToApply, 2);
+                                objEmployeePayment.CreditAmount = (attendance.DayType == (double)DayType.FullDay ? perDayAmount : Math.Round((perDayAmount / 2), 2)) + (employeeObj.ExtraPerHourPrice * attendance.ExtraHours);
+                            }
                         }
-                        objEmployeePayment.FinancialYearId = CommonMethod.GetFinancialYearId();
+                        objEmployeePayment.FinancialYearId = CommonMethod.GetFinancialYearIdFromDate(attendance.AttendanceDate);
                         _db.tbl_EmployeePayment.Add(objEmployeePayment);
                         _db.SaveChanges();
 

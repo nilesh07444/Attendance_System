@@ -508,6 +508,75 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                             decimal presentDays = (decimal)dayTypeAttendanceList.Select(z => z.dayType).Sum();
                             decimal monthlySal = Math.Round(presentDays * perDayAmount, 2);
 
+                            if (leaveDays > 0)
+                            {
+                                decimal leaveIndex = totalFreeLeave;
+                                if (leaveDays <= totalFreeLeave)
+                                {
+                                    leaveIndex = leaveDays;
+                                }
+
+                                leaveList.ForEach(leave =>
+                                {
+                                    if (leaveIndex > 0)
+                                    {
+                                        tbl_EmployeePayment objLeaveEmployeePayment = new tbl_EmployeePayment();
+                                        objLeaveEmployeePayment.CompanyId = companyId;
+                                        objLeaveEmployeePayment.UserId = x.EmployeeId;
+                                        objLeaveEmployeePayment.PaymentDate = leave.StartDate;
+                                        objLeaveEmployeePayment.PaymentType = (int)EmployeePaymentType.Salary;
+                                        objLeaveEmployeePayment.CreditOrDebitText = ErrorMessage.Credit;
+                                        objLeaveEmployeePayment.DebitAmount = 0;
+                                        objLeaveEmployeePayment.CreditAmount = perDayAmount;
+                                        objLeaveEmployeePayment.Remarks = ErrorMessage.SalaryCreditForLeave;
+                                        objLeaveEmployeePayment.Month = leave.StartDate.Month;
+                                        objLeaveEmployeePayment.Year = leave.StartDate.Year;
+                                        objLeaveEmployeePayment.Status = ErrorMessage.Open;
+                                        objLeaveEmployeePayment.ProcessStatusText = ErrorMessage.InProgress;
+                                        objLeaveEmployeePayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
+                                        objLeaveEmployeePayment.CreatedBy = loggedinUser;
+                                        objLeaveEmployeePayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
+                                        objLeaveEmployeePayment.ModifiedBy = loggedinUser;
+                                        objLeaveEmployeePayment.FinancialYearId = CommonMethod.GetFinancialYearIdFromDate(leave.StartDate);
+                                        _db.tbl_EmployeePayment.Add(objLeaveEmployeePayment);
+                                        leaveIndex--;
+                                    }
+                                });
+                                _db.SaveChanges();
+                            }
+
+                            if (currentMonthHolidays.Count > 0)
+                            {
+                                currentMonthHolidays.ForEach(holiday =>
+                                {
+                                    DateTime holidayDate = holiday.StartDate;
+                                    while (holidayDate <= holiday.EndDate)
+                                    {
+                                        tbl_EmployeePayment objHolidayEmployeePayment = new tbl_EmployeePayment();
+                                        objHolidayEmployeePayment.CompanyId = companyId;
+                                        objHolidayEmployeePayment.UserId = x.EmployeeId;
+                                        objHolidayEmployeePayment.PaymentDate = holidayDate;
+                                        objHolidayEmployeePayment.PaymentType = (int)EmployeePaymentType.Salary;
+                                        objHolidayEmployeePayment.CreditOrDebitText = ErrorMessage.Credit;
+                                        objHolidayEmployeePayment.DebitAmount = 0;
+                                        objHolidayEmployeePayment.CreditAmount = perDayAmount;
+                                        objHolidayEmployeePayment.Remarks = ErrorMessage.SalaryCreditForHoliday;
+                                        objHolidayEmployeePayment.Month = holidayDate.Month;
+                                        objHolidayEmployeePayment.Year = holidayDate.Year;
+                                        objHolidayEmployeePayment.Status = ErrorMessage.Open;
+                                        objHolidayEmployeePayment.ProcessStatusText = ErrorMessage.InProgress;
+                                        objHolidayEmployeePayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
+                                        objHolidayEmployeePayment.CreatedBy = loggedinUser;
+                                        objHolidayEmployeePayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
+                                        objHolidayEmployeePayment.ModifiedBy = loggedinUser;
+                                        objHolidayEmployeePayment.FinancialYearId = CommonMethod.GetFinancialYearIdFromDate(holidayDate);
+                                        _db.tbl_EmployeePayment.Add(objHolidayEmployeePayment);
+                                        holidayDate = holidayDate.AddDays(1);
+                                    }
+                                });
+                                _db.SaveChanges();
+                            }
+
                             tbl_EmployeePayment dayBaseEmployeePayment = new tbl_EmployeePayment();
                             dayBaseEmployeePayment.CompanyId = companyId;
                             dayBaseEmployeePayment.UserId = x.EmployeeId;
