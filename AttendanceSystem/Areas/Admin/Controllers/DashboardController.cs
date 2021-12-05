@@ -577,6 +577,12 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                 _db.SaveChanges();
                             }
 
+                            monthlySal = _db.tbl_EmployeePayment.Any(z => z.UserId == x.EmployeeId && !z.IsDeleted && z.Month == month && z.Year == year 
+                                            && z.PaymentType != (int)EmployeePaymentType.Extra) ?
+                                            _db.tbl_EmployeePayment.Where(z => z.UserId == x.EmployeeId && !z.IsDeleted && z.Month == month && z.Year == year 
+                                            && z.PaymentType != (int)EmployeePaymentType.Extra)
+                                            .Select(z => (z.CreditAmount.HasValue ? z.CreditAmount.Value : 0) - (z.DebitAmount.HasValue ? z.DebitAmount.Value : 0)).Sum() : 0;
+
                             tbl_EmployeePayment dayBaseEmployeePayment = new tbl_EmployeePayment();
                             dayBaseEmployeePayment.CompanyId = companyId;
                             dayBaseEmployeePayment.UserId = x.EmployeeId;
