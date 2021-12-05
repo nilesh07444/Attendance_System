@@ -139,13 +139,13 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             try
             {
                 List<StateVM> stateList = (from st in _db.tbl_State
-                                             where  !st.IsDeleted && st.IsActive && st.CountryId == 1 // India = 1
-                                             select new StateVM
-                                             {
-                                                 StateId = st.StateId,
-                                                 StateName = st.StateName,
-                                                 CountryId = st.CountryId
-                                             }).OrderBy(x => x.StateName).ToList();
+                                           where !st.IsDeleted && st.IsActive && st.CountryId == 1 // India = 1
+                                           select new StateVM
+                                           {
+                                               StateId = st.StateId,
+                                               StateName = st.StateName,
+                                               CountryId = st.CountryId
+                                           }).OrderBy(x => x.StateName).ToList();
 
                 response.Data = stateList;
             }
@@ -167,15 +167,42 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             try
             {
                 List<DistrictVM> districtList = (from st in _db.tbl_District
-                                                where st.StateId == Id && !st.IsDeleted && st.IsActive
-                                                select new DistrictVM
-                                                {
-                                                    DistrictId = st.DistrictId,
-                                                    DistrictName = st.DistrictName,
-                                                    StateId = st.StateId
-                                                }).OrderBy(x => x.DistrictName).ToList();
+                                                 where st.StateId == Id && !st.IsDeleted && st.IsActive
+                                                 select new DistrictVM
+                                                 {
+                                                     DistrictId = st.DistrictId,
+                                                     DistrictName = st.DistrictName,
+                                                     StateId = st.StateId
+                                                 }).OrderBy(x => x.DistrictName).ToList();
 
                 response.Data = districtList;
+            }
+            catch (Exception ex)
+            {
+                response.IsError = true;
+                response.AddError(ex.Message);
+            }
+
+            return response;
+        }
+
+        [HttpGet]
+        [Route("GetFinancialYearList")]
+        public ResponseDataModel<List<FinancialYearVM>> GetFinancialYearList()
+        {
+            ResponseDataModel<List<FinancialYearVM>> response = new ResponseDataModel<List<FinancialYearVM>>();
+            response.IsError = false;
+
+            try
+            {
+                List<FinancialYearVM> financialYearList = (from st in _db.mst_FinancialYear
+                                                           select new FinancialYearVM
+                                                           {
+                                                               FinancialYearId = st.FinancialYearId,
+                                                               FinancialYearText = st.FinancialYearText
+                                                           }).OrderBy(x => x.FinancialYearId).ToList();
+
+                response.Data = financialYearList;
             }
             catch (Exception ex)
             {
