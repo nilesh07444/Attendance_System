@@ -245,7 +245,13 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         Value = paymentReportFilterVM.EmployeeId
                     };
 
-                    List<PaymentReportVM> paymentReport = _db.Database.SqlQuery<PaymentReportVM>("exec Usp_GetPaymentReport @StartMonth,@EndMonth,@Year,@EmployeeId ", startMonthParam, endMonthParam, yearParam, employeeIdParam).ToList<PaymentReportVM>();
+                    var financialYearIdParam = new SqlParameter()
+                    {
+                        ParameterName = "FinancialYearId",
+                        Value = paymentReportFilterVM.FinancialYearId
+                    };
+
+                    List<PaymentReportVM> paymentReport = _db.Database.SqlQuery<PaymentReportVM>("exec Usp_GetPaymentReport @StartMonth,@EndMonth,@Year,@EmployeeId,@FinancialYearId ", startMonthParam, endMonthParam, yearParam, employeeIdParam, financialYearIdParam).ToList<PaymentReportVM>();
                     response.Data = paymentReport;
 
                 }
@@ -258,8 +264,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
             return response;
         }
-
-
+         
         [HttpPost]
         [Route("WorkerPaymentReportDownload")]
         public ResponseDataModel<string> WorkerPaymentReportDownload(WorkerPaymentReportFilterVM paymentReportFilterVM)
@@ -294,8 +299,15 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     ParameterName = "EmployeeId",
                     Value = paymentReportFilterVM.EmployeeId
                 };
+
+                var financialYearIdParam = new SqlParameter()
+                {
+                    ParameterName = "FinancialYearId",
+                    Value = paymentReportFilterVM.FinancialYearId
+                };
+
                 //Get student name of string type
-                List<PaymentReportVM> paymentReport = _db.Database.SqlQuery<PaymentReportVM>("exec Usp_GetPaymentReport @StartMonth,@EndMonth,@Year,@EmployeeId ", startMonthParam, endMonthParam, yearParam, employeeIdParam).ToList<PaymentReportVM>();
+                List<PaymentReportVM> paymentReport = _db.Database.SqlQuery<PaymentReportVM>("exec Usp_GetPaymentReport @StartMonth,@EndMonth,@Year,@EmployeeId,@FinancialYearId ", startMonthParam, endMonthParam, yearParam, employeeIdParam, financialYearIdParam).ToList<PaymentReportVM>();
 
                 string employeeName = _db.tbl_Employee.Where(x => x.EmployeeId == paymentReportFilterVM.EmployeeId).Select(x => x.FirstName + "_" + x.LastName).FirstOrDefault();
 
@@ -474,8 +486,15 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     ParameterName = "EmployeeId",
                     Value = employeeId
                 };
+
+                var financialYearIdParam = new SqlParameter()
+                {
+                    ParameterName = "FinancialYearId",
+                    Value = paymentReportFilterVM.FinancialYearId
+                };
+
                 //Get student name of string type
-                List<PaymentReportVM> paymentReport = _db.Database.SqlQuery<PaymentReportVM>("exec Usp_GetPaymentReport @StartMonth,@EndMonth,@Year,@EmployeeId ", startMonthParam, endMonthParam, yearParam, employeeIdParam).ToList<PaymentReportVM>();
+                List<PaymentReportVM> paymentReport = _db.Database.SqlQuery<PaymentReportVM>("exec Usp_GetPaymentReport @StartMonth,@EndMonth,@Year,@EmployeeId,@FinancialYearId ", startMonthParam, endMonthParam, yearParam, employeeIdParam, financialYearIdParam).ToList<PaymentReportVM>();
                 response.Data = paymentReport;
 
             }
@@ -487,8 +506,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
             return response;
         }
-
-
+         
         [HttpPost]
         [Route("PaymentReportDownload")]
         public ResponseDataModel<string> PaymentReportDownload(PaymentReportFilterVM paymentReportFilterVM)
@@ -523,11 +541,16 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     ParameterName = "EmployeeId",
                     Value = employeeId
                 };
+
+                var financialYearIdParam = new SqlParameter()
+                {
+                    ParameterName = "FinancialYearId",
+                    Value = paymentReportFilterVM.FinancialYearId
+                };
+
                 //Get student name of string type
-                List<PaymentReportVM> paymentReport = _db.Database.SqlQuery<PaymentReportVM>("exec Usp_GetPaymentReport @StartMonth,@EndMonth,@Year,@EmployeeId ", startMonthParam, endMonthParam, yearParam, employeeIdParam).ToList<PaymentReportVM>();
-
-
-
+                List<PaymentReportVM> paymentReport = _db.Database.SqlQuery<PaymentReportVM>("exec Usp_GetPaymentReport @StartMonth,@EndMonth,@Year,@EmployeeId,@FinancialYearId ", startMonthParam, endMonthParam, yearParam, employeeIdParam, financialYearIdParam).ToList<PaymentReportVM>();
+                 
                 string StartMonthName = CommonMethod.GetEnumDescription((CalenderMonths)paymentReportFilterVM.StartMonth);
                 string EndMonthName = CommonMethod.GetEnumDescription((CalenderMonths)paymentReportFilterVM.EndMonth);
 
@@ -668,5 +691,6 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             return response;
 
         }
+ 
     }
 }

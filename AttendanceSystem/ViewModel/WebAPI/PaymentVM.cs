@@ -42,6 +42,7 @@ namespace AttendanceSystem.ViewModel.WebAPI
         public int StartMonth { get; set; }
         public int EndMonth { get; set; }
         public int Year { get; set; }
+        public long FinancialYearId { get; set; }
     }
 
     public class WorkerPaymentReportFilterVM
@@ -50,6 +51,7 @@ namespace AttendanceSystem.ViewModel.WebAPI
         public int EndMonth { get; set; }
         public int Year { get; set; }
         public long EmployeeId { get; set; }
+        public long FinancialYearId { get; set; }
     }
 
     public class PaymentReportVM
