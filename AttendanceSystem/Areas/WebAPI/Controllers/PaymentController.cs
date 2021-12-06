@@ -245,6 +245,10 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         Value = paymentReportFilterVM.EmployeeId
                     };
 
+                    // Set default current financial year if null passed
+                    if (paymentReportFilterVM.FinancialYearId == 0)
+                        paymentReportFilterVM.FinancialYearId = (long)CommonMethod.GetFinancialYearId();
+
                     var financialYearIdParam = new SqlParameter()
                     {
                         ParameterName = "FinancialYearId",
@@ -264,7 +268,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
             return response;
         }
-         
+
         [HttpPost]
         [Route("WorkerPaymentReportDownload")]
         public ResponseDataModel<string> WorkerPaymentReportDownload(WorkerPaymentReportFilterVM paymentReportFilterVM)
@@ -299,6 +303,10 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     ParameterName = "EmployeeId",
                     Value = paymentReportFilterVM.EmployeeId
                 };
+
+                // Set default current financial year if null passed
+                if (paymentReportFilterVM.FinancialYearId == 0)
+                    paymentReportFilterVM.FinancialYearId = (long)CommonMethod.GetFinancialYearId();
 
                 var financialYearIdParam = new SqlParameter()
                 {
@@ -487,6 +495,10 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     Value = employeeId
                 };
 
+                // Set default current financial year if null passed
+                if (paymentReportFilterVM.FinancialYearId == 0)
+                    paymentReportFilterVM.FinancialYearId = (long)CommonMethod.GetFinancialYearId();
+
                 var financialYearIdParam = new SqlParameter()
                 {
                     ParameterName = "FinancialYearId",
@@ -506,7 +518,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
             return response;
         }
-         
+
         [HttpPost]
         [Route("PaymentReportDownload")]
         public ResponseDataModel<string> PaymentReportDownload(PaymentReportFilterVM paymentReportFilterVM)
@@ -542,6 +554,10 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     Value = employeeId
                 };
 
+                // Set default current financial year if null passed
+                if (paymentReportFilterVM.FinancialYearId == 0)
+                    paymentReportFilterVM.FinancialYearId = (long)CommonMethod.GetFinancialYearId();
+
                 var financialYearIdParam = new SqlParameter()
                 {
                     ParameterName = "FinancialYearId",
@@ -550,7 +566,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                 //Get student name of string type
                 List<PaymentReportVM> paymentReport = _db.Database.SqlQuery<PaymentReportVM>("exec Usp_GetPaymentReport @StartMonth,@EndMonth,@Year,@EmployeeId,@FinancialYearId ", startMonthParam, endMonthParam, yearParam, employeeIdParam, financialYearIdParam).ToList<PaymentReportVM>();
-                 
+
                 string StartMonthName = CommonMethod.GetEnumDescription((CalenderMonths)paymentReportFilterVM.StartMonth);
                 string EndMonthName = CommonMethod.GetEnumDescription((CalenderMonths)paymentReportFilterVM.EndMonth);
 
@@ -691,6 +707,6 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             return response;
 
         }
- 
+
     }
 }
