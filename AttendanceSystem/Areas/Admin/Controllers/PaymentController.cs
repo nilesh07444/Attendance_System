@@ -661,7 +661,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                         {
                                             Text = emp.Prefix + " " + emp.FirstName + " " + emp.LastName + " (" + emp.EmployeeCode + ")",
                                             Value = emp.EmployeeId.ToString()
-                                        }).OrderBy(x => x.Text).ToList();
+                                        }).OrderBy(x => x.Value).ToList();
             return lst;
         }
 
@@ -675,7 +675,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                         {
                                             Text = emp.Prefix + " " + emp.FirstName + " " + emp.LastName + " (" + emp.EmployeeCode + ")",
                                             Value = emp.EmployeeId.ToString()
-                                        }).OrderBy(x => x.Text).ToList();
+                                        }).OrderBy(x => x.Value).ToList();
             return lst;
         }
 
