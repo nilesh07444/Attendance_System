@@ -3,6 +3,7 @@ using AttendanceSystem.Models;
 using AttendanceSystem.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -88,7 +89,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                                          where !emp.IsDeleted && emp.CompanyId == companyId && !empp.IsDeleted && empp.CreditOrDebitText.ToLower() == "debit"
                                          && (paymentFilterVM.EmploymentCategory.HasValue ? emp.EmploymentCategory == paymentFilterVM.EmploymentCategory.Value : true)
-                                         && empp.PaymentDate >= paymentFilterVM.StartDate && empp.PaymentDate <= paymentFilterVM.EndDate
+                                         && DbFunctions.TruncateTime(empp.PaymentDate) >= DbFunctions.TruncateTime(paymentFilterVM.StartDate) 
+                                         && DbFunctions.TruncateTime(empp.PaymentDate) <= DbFunctions.TruncateTime(paymentFilterVM.EndDate)
                                          && (paymentFilterVM.UserRole.HasValue ? emp.AdminRoleId == paymentFilterVM.UserRole.Value : true)
                                          select new PaymentVM
                                          {
@@ -524,8 +526,10 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 long companyId = clsAdminSession.CompanyId;
                 paymentFilterVM.PaymentList = (from empp in _db.tbl_EmployeePayment
                                                join emp in _db.tbl_Employee on empp.UserId equals emp.EmployeeId
+                                               join role in _db.mst_AdminRole on emp.AdminRoleId equals role.AdminRoleId
                                                where emp.CompanyId == companyId && empp.IsDeleted
-                                               && empp.PaymentDate >= paymentFilterVM.StartDate && empp.PaymentDate <= paymentFilterVM.EndDate
+                                               && DbFunctions.TruncateTime(empp.PaymentDate) >= DbFunctions.TruncateTime(paymentFilterVM.StartDate)
+                                               && DbFunctions.TruncateTime(empp.PaymentDate) <= DbFunctions.TruncateTime(paymentFilterVM.EndDate)
                                                && (paymentFilterVM.UserRole.HasValue ? emp.AdminRoleId == paymentFilterVM.UserRole.Value : true)
                                                select new PaymentVM
                                                {
@@ -537,8 +541,32 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                    CreditAmount = empp.CreditAmount,
                                                    DebitAmount = empp.DebitAmount,
                                                    PaymentType = empp.PaymentType,
-                                                   DeletedDate = empp.ModifiedDate
+                                                   DeletedDate = empp.ModifiedDate,
+                                                   RoleName = role.AdminRoleName
                                                }).OrderByDescending(x => x.EmployeePaymentId).ToList();
+
+                var workerPaymentList = (from empp in _db.tbl_WorkerPayment
+                                         join emp in _db.tbl_Employee on empp.UserId equals emp.EmployeeId
+                                         join role in _db.mst_AdminRole on emp.AdminRoleId equals role.AdminRoleId
+                                         where emp.CompanyId == companyId && empp.IsDeleted && empp.CreditOrDebitText.ToLower() == "debit"
+                                        && DbFunctions.TruncateTime(empp.PaymentDate) >= DbFunctions.TruncateTime(paymentFilterVM.StartDate)
+                                        && DbFunctions.TruncateTime(empp.PaymentDate) <= DbFunctions.TruncateTime(paymentFilterVM.EndDate)
+                                        && (paymentFilterVM.UserRole.HasValue ? emp.AdminRoleId == paymentFilterVM.UserRole.Value : true)
+                                         select new PaymentVM
+                                         {
+                                             EmployeePaymentId = empp.WorkerPaymentId,
+                                             UserId = empp.UserId,
+                                             PaymentDate = empp.PaymentDate,
+                                             EmployeeCode = emp.EmployeeCode,
+                                             UserName = emp.Prefix + " " + emp.FirstName + " " + emp.LastName,
+                                             CreditAmount = empp.CreditAmount,
+                                             DebitAmount = empp.DebitAmount,
+                                             PaymentType = empp.PaymentType,
+                                             DeletedDate = empp.ModifiedDate,
+                                             RoleName = role.AdminRoleName
+                                         }).OrderByDescending(x => x.EmployeePaymentId).ToList();
+
+                paymentFilterVM.PaymentList = paymentFilterVM.PaymentList.Union(workerPaymentList).OrderByDescending(x => x.EmployeePaymentId).ToList().OrderBy(x => x.PaymentDate).ThenBy(x => x.EmployeePaymentId).ToList();
 
                 paymentFilterVM.PaymentList.ForEach(x =>
                 {

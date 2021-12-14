@@ -4,6 +4,7 @@ using AttendanceSystem.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Http;
 
@@ -194,13 +195,17 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
         public ResponseDataModel<EmployeePendingSalaryVM> GetWorkerPendingSalary(long id)
         {
             ResponseDataModel<EmployeePendingSalaryVM> response = new ResponseDataModel<EmployeePendingSalaryVM>();
+
             try
             {
                 DateTime today = CommonMethod.CurrentIndianDateTime().Date;
+
                 companyId = base.UTI.CompanyId;
                 int currMonth = today.Month;
                 int currYear = today.Year;
                 double totalDaysinMonth = DateTime.DaysInMonth(currYear, currMonth);
+
+                tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == companyId).FirstOrDefault();
 
                 EmployeePendingSalaryVM employeeDetails = (from e in _db.tbl_Employee
                                                            where e.EmployeeId == id
@@ -210,13 +215,26 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                                EmploymentCategory = e.EmploymentCategory,
                                                                PerCategoryPrice = e.PerCategoryPrice,
                                                                ExtraPerHourPrice = e.ExtraPerHourPrice,
-                                                               MonthlySalary = e.MonthlySalaryPrice
+                                                               MonthlySalary = e.MonthlySalaryPrice,
+                                                               NoOfFreeLeavePerMonth = e.NoOfFreeLeavePerMonth
                                                            }).FirstOrDefault();
-
 
                 if (employeeDetails.EmploymentCategory == (int)EmploymentCategory.MonthlyBased)
                 {
-                    decimal perDayAmount = Math.Round((employeeDetails.MonthlySalary.HasValue ? employeeDetails.MonthlySalary.Value : 0) / (decimal)totalDaysinMonth, 2);
+
+                    //decimal perDayAmount = Math.Round((employeeDetails.MonthlySalary.HasValue ? employeeDetails.MonthlySalary.Value : 0) / (decimal)totalDaysinMonth, 2);
+
+                    decimal perDayAmount = 0;
+                    if (objCompany.CompanyConversionType == (int)CompanyConversionType.MonthBased)
+                    {
+                        perDayAmount = Math.Round((employeeDetails.MonthlySalary.HasValue ? employeeDetails.MonthlySalary.Value : 0) / (decimal)totalDaysinMonth, 2);
+                    }
+                    else
+                    {
+                        decimal totalDaysToApply = (decimal)totalDaysinMonth - employeeDetails.NoOfFreeLeavePerMonth;
+                        perDayAmount = Math.Round((employeeDetails.MonthlySalary.HasValue ? employeeDetails.MonthlySalary.Value : 0) / totalDaysToApply, 2);
+                    }
+
                     employeeDetails.PerCategoryPrice = perDayAmount;
                     tbl_WorkerAttendance attendanceObject = _db.tbl_WorkerAttendance.Where(x => x.EmployeeId == id && x.AttendanceDate == today && !x.IsClosed).FirstOrDefault();
                     if (attendanceObject != null)
@@ -237,13 +255,47 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 }
 
                 employeeDetails.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)employeeDetails.EmploymentCategory);
-                employeeDetails.PendingSalary = _db.tbl_WorkerPayment.Any(x => x.UserId == id && !x.IsDeleted && x.Month == currMonth && x.Year == currYear && x.PaymentType != (int)EmployeePaymentType.Extra) ?
-                    _db.tbl_WorkerPayment.Where(x => x.UserId == id
+
+                //employeeDetails.PendingSalary = _db.tbl_WorkerPayment.Any(x => x.UserId == id && !x.IsDeleted && x.Month == currMonth && x.Year == currYear && x.PaymentType != (int)EmployeePaymentType.Extra) ?
+                //    _db.tbl_WorkerPayment.Where(x => x.UserId == id
+                //    && !x.IsDeleted
+                //    && x.Month == currMonth
+                //    && x.Year == currYear
+                //    && x.PaymentType != (int)EmployeePaymentType.Extra)
+                //    .Select(x => (x.CreditAmount.HasValue ? x.CreditAmount.Value : 0) - (x.DebitAmount.HasValue ? x.DebitAmount.Value : 0)).Sum() : 0;
+
+                decimal? totalCreditAmount1 = (from e in _db.tbl_WorkerPayment
+                                              join att in _db.tbl_WorkerAttendance on e.AttendanceId equals att.WorkerAttendanceId
+                                              where e.UserId == id
+                                                 && !e.IsDeleted
+                                                 && e.Month == currMonth
+                                                 && e.Year == currYear
+                                                 && e.PaymentType != (int)EmployeePaymentType.Extra 
+                                                 && att.AttendanceDate != today
+                                              select e).ToList().Sum(x => x.CreditAmount);
+
+                decimal? totalCreditAmount2 = (from e in _db.tbl_WorkerPayment
+                                               join att in _db.tbl_WorkerAttendance on e.AttendanceId equals att.WorkerAttendanceId
+                                               where e.UserId == id
+                                                  && !e.IsDeleted
+                                                  && e.Month == currMonth
+                                                  && e.Year == currYear
+                                                  && e.PaymentType != (int)EmployeePaymentType.Extra
+                                                  && att.IsClosed && att.AttendanceDate == today
+                                               select e).ToList().Sum(x => x.CreditAmount);
+
+                decimal? totalCreditAmount = totalCreditAmount1 + totalCreditAmount2;
+
+                decimal? totalDebitAmount = _db.tbl_WorkerPayment.Where(x => x.UserId == id
                     && !x.IsDeleted
                     && x.Month == currMonth
                     && x.Year == currYear
-                    && x.PaymentType != (int)EmployeePaymentType.Extra)
-                    .Select(x => (x.CreditAmount.HasValue ? x.CreditAmount.Value : 0) - (x.DebitAmount.HasValue ? x.DebitAmount.Value : 0)).Sum() : 0;
+                    && x.CreditOrDebitText == "Debit"
+                    && DbFunctions.TruncateTime(x.PaymentDate) <= DbFunctions.TruncateTime(today)
+                    && x.PaymentType != (int)EmployeePaymentType.Extra).ToList().Sum(x => x.DebitAmount);
+
+                employeeDetails.PendingSalary = totalCreditAmount - totalDebitAmount;
+
                 response.Data = employeeDetails;
             }
             catch (Exception ex)
@@ -283,7 +335,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
             return response;
         }
-         
+
         [HttpGet]
         [Route("WorkerHeadList")]
         public ResponseDataModel<List<WorkerHeadVM>> WorkerHeadList()
@@ -296,16 +348,16 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 long companyId = base.UTI.CompanyId;
 
                 List<WorkerHeadVM> WorkerHeadList = (from wt in _db.tbl_WorkerHead
-                                                               where !wt.IsDeleted && wt.IsActive && wt.CompanyId == companyId
-                                                               select new WorkerHeadVM
-                                                               {
+                                                     where !wt.IsDeleted && wt.IsActive && wt.CompanyId == companyId
+                                                     select new WorkerHeadVM
+                                                     {
 
-                                                                   WorkerHeadId = wt.WorkerHeadId,
-                                                                   HeadName = wt.HeadName,
-                                                                   HeadContactNo = wt.HeadContactNo,
-                                                                   HeadCity = wt.HeadCity,
-                                                                   IsActive = wt.IsActive
-                                                               }).OrderBy(x => x.HeadName).ToList();
+                                                         WorkerHeadId = wt.WorkerHeadId,
+                                                         HeadName = wt.HeadName,
+                                                         HeadContactNo = wt.HeadContactNo,
+                                                         HeadCity = wt.HeadCity,
+                                                         IsActive = wt.IsActive
+                                                     }).OrderBy(x => x.HeadName).ToList();
 
                 response.Data = WorkerHeadList;
             }

@@ -981,5 +981,41 @@ namespace AttendanceSystem
             return lst;
         }
 
+        public static string SentenceCase(string value)
+        {
+            string strSentenceCase = string.Empty;
+
+            try
+            {
+                if (!string.IsNullOrEmpty(value))
+                {
+                    TextInfo txtSdk = CultureInfo.CurrentCulture.TextInfo;
+                    strSentenceCase = txtSdk.ToTitleCase(value);
+                }
+            }
+            catch (Exception ex)
+            {
+            } 
+            return strSentenceCase;
+        }
+
+        public static string UpperCase(string value)
+        {
+            string strSentenceCase = string.Empty;
+
+            try
+            {
+                if (!string.IsNullOrEmpty(value))
+                {
+                    TextInfo txtSdk = CultureInfo.CurrentCulture.TextInfo;
+                    strSentenceCase = txtSdk.ToUpper(value);
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+            return strSentenceCase;
+        }
+
     }
 }

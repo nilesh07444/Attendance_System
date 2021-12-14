@@ -189,6 +189,7 @@ namespace AttendanceSystem.ViewModel
         public decimal? PendingSalary { get; set; }
         public decimal? MonthlySalary { get; set; }
         public decimal? TodaySalary { get; set; }
+        public decimal NoOfFreeLeavePerMonth { get; set; }
     }
 
     public class SiteAssignedWorkerVM

@@ -320,6 +320,8 @@ namespace AttendanceSystem.ViewModel
         public decimal TotalPendingSalary { get; set; }
         [Display(Name = "Remaining Balance")]
         public decimal RemainingBalance { get; set; }
+
+        public decimal NoOfFreeLeavePerMonth { get; set; }
     }
 
     public class WorkerAttendanceViewVM

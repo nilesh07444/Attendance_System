@@ -179,10 +179,12 @@
                                 @Html.ValidationMessageFor(model => model.ProfileImageFile, "", new { @class = "text-danger" })
                             </div>
                             <div class="form-group col-6">
-
+                                @Html.LabelFor(model => model.WorkerHeadId, htmlAttributes: new { @class = "" })
+                                @Html.DropDownListFor(model => model.WorkerHeadId, new SelectList(Model.WorkerHeadList, "Value", "Text"), "- Select -", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.WorkerHeadId, "", new { @class = "text-danger" })
                             </div>
                         </div>
-                        <div class="row" id="dvFreeLeave">
+                        <div class="row" id="dvFreeLeave" style="display:none;">
                             <div class="form-group col-6">
                                 @Html.LabelFor(model => model.IsLeaveForward, htmlAttributes: new { @class = "" })
                                 @Html.CheckBoxFor(model => model.IsLeaveForward, new { @type = "checkbox" })
@@ -193,15 +195,7 @@
                                 @Html.TextBoxFor(model => model.NoOfFreeLeavePerMonth, new { @type = "text", @class = "form-control", @placeholder = "Enter Extra Per Hour Price", @maxlength = "2", @min = "0", @max = "30" })
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="form-group col-6">
-                                @Html.LabelFor(model => model.WorkerHeadId, htmlAttributes: new { @class = "" })
-                                @Html.DropDownListFor(model => model.WorkerHeadId, new SelectList(Model.WorkerHeadList, "Value", "Text"), "- Select -", new { @class = "form-control" })
-                                @Html.ValidationMessageFor(model => model.WorkerHeadId, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="form-group col-6">
-                            </div>
-                        </div>
+                         
                     </div>
 
                     <div class="card-footer text-center">
@@ -361,7 +355,7 @@
         if (EmploymentCategory == "3") {
             $("#dvMonthlySal").show();
             $("#dvExtraHours").show();
-            $("#dvFreeLeave").show();
+            //$("#dvFreeLeave").show();
             $("#dvPerCatPrice").hide();
             $("#MonthlySalaryPrice").attr("required", true);
             $("#ExtraPerHourPrice").attr("required", true);
@@ -372,7 +366,7 @@
             $("#dvMonthlySal").hide();
             $("#dvExtraHours").show();
             $("#dvPerCatPrice").show();
-            $("#dvFreeLeave").hide();
+            //$("#dvFreeLeave").hide();
             $("#MonthlySalaryPrice").removeAttr("required", true);
             $("#ExtraPerHourPrice").attr("required", true);
             $("#MonthlySalaryPrice").removeAttr("min");
@@ -383,7 +377,7 @@
             $("#dvMonthlySal").hide();
             $("#dvExtraHours").hide();
             $("#dvPerCatPrice").show();
-            $("#dvFreeLeave").hide();
+            //$("#dvFreeLeave").hide();
             $("#MonthlySalaryPrice").removeAttr("required");
             $("#MonthlySalaryPrice").removeAttr("min");
             $("#ExtraPerHourPrice").removeAttr("min");

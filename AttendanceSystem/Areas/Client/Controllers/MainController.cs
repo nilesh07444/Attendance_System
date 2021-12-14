@@ -3,6 +3,7 @@ using AttendanceSystem.Models;
 using AttendanceSystem.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -24,9 +25,7 @@ namespace AttendanceSystem.Areas.Client.Controllers
         }
 
         public ActionResult Index()
-        {
-            var abc = CommonMethod.GetCurrentFinancialYear();
-
+        {            
             List<HomeImageVM> lstHomeImages = new List<HomeImageVM>();
             List<PackageVM> lstAccountPackages = new List<PackageVM>();
             List<SMSPackageVM> lstSMSPackages = new List<SMSPackageVM>();

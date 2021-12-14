@@ -60,7 +60,8 @@
                                         <th>Payment Date</th>
                                         <th>Employee Code</th>
                                         <th>Employee</th>
-                                        <th>Credit Amount</th>
+                                        <th>Role</th>
+                                        @*<th>Credit Amount</th>*@
                                         <th>Debit Amount</th>
                                         <th>Payment Type</th>
                                         <th style="display:none">Deleted Date</th>
@@ -76,7 +77,8 @@
                                                 <td>@obj.PaymentDate.ToString("dd MMM yyyy")</td>
                                                 <td>@obj.EmployeeCode</td>
                                                 <td>@obj.UserName</td>
-                                                <td>@obj.CreditAmount</td>
+                                                <td>@obj.RoleName</td>
+                                                @*<td>@obj.CreditAmount</td>*@
                                                 <td>@obj.DebitAmount</td>
                                                 <td>@obj.PaymentTypeText</td>
                                                 <td style="display:none">@obj.DeletedDate</td>

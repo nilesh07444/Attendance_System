@@ -58,7 +58,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         {
                             Random random = new Random();
                             int num = random.Next(555555, 999999);
-                             
+
                             int SmsId = (int)SMSType.ChangePasswordOTP;
                             string msg = CommonMethod.GetSmsContent(SmsId);
 
@@ -78,7 +78,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                             {
                                 loginResponseVM.OTP = num.ToString();
                             }
-                             
+
                             loginResponseVM.EmployeeId = employeeId;
                             loginResponseVM.IsFingerprintEnabled = data.IsFingerprintEnabled;
 
@@ -150,7 +150,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
             return response;
         }
-         
+
         [Route("GetMyProfile"), HttpGet]
         public ResponseDataModel<AuthenticateVM> GetMyProfile()
         {
@@ -161,6 +161,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             {
                 long employeeId = base.UTI.EmployeeId;
                 tbl_Employee data = _db.tbl_Employee.Where(x => x.EmployeeId == employeeId && x.IsActive && !x.IsDeleted).FirstOrDefault();
+
                 if (data != null)
                 {
                     tbl_Company companyObj = _db.tbl_Company.Where(x => x.CompanyId == data.CompanyId).FirstOrDefault();
@@ -195,12 +196,30 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     authenticateVM.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)data.EmploymentCategory);
                     authenticateVM.IsFingerprintEnabled = data.IsFingerprintEnabled;
                     authenticateVM.IsLeaveForward = data.IsLeaveForward;
-                    authenticateVM.State = data.State;
                     authenticateVM.Pincode = data.Pincode;
                     authenticateVM.MonthlySalaryPrice = data.MonthlySalaryPrice;
                     authenticateVM.ExtraPerHourPrice = data.ExtraPerHourPrice;
                     authenticateVM.NoOfFreeLeavePerMonth = data.NoOfFreeLeavePerMonth;
                     authenticateVM.PerCategoryPrice = data.PerCategoryPrice;
+
+                    if (data.StateId != null && data.StateId > 0)
+                    {
+                        tbl_State objState = _db.tbl_State.Where(x => x.StateId == data.StateId).FirstOrDefault();
+                        if (objState != null)
+                        {
+                            authenticateVM.State = objState.StateName;
+                        }
+                    }
+
+                    if (data.DistrictId != null && data.DistrictId > 0)
+                    {
+                        tbl_District objDistrict = _db.tbl_District.Where(x => x.StateId == data.DistrictId).FirstOrDefault();
+                        if (objDistrict != null)
+                        {
+                            authenticateVM.District = objDistrict.DistrictName;
+                        }
+                    }
+
                     response.Data = authenticateVM;
                 }
                 else
@@ -247,7 +266,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     msg = msg.Replace("\r\n", "\n");
 
                     var json = CommonMethod.SendSMSWithoutLog(msg, data.MobileNo);
-                    
+
                     if (json.Contains("invalidnumber"))
                     {
                         response.IsError = true;

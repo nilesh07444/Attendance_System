@@ -51,6 +51,8 @@ namespace AttendanceSystem.ViewModel
         public string EmploymentCategoryText { get; set; }
         public string Designation { get; set; }
         public DateTime? DeletedDate { get; set; }
+
+        public string RoleName { get; set; }
     }
 
     public class PaymentFilterVM

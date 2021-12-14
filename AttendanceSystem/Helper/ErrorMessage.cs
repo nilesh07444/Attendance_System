@@ -160,6 +160,7 @@
         public static string Debit = "Debit";
         public static string AutoCreditOnAttendanceAccept = "Auto credit on attendance accept";
         public static string AutoCreditOnEveningAttendance = "Auto credit on evening attendance";
+        public static string AutoCreditOnAfternoonAttendance = "Auto credit on afternoon attendance";
         public static string SalaryGivenOnEveningAttendance = "Salary given on evening attendance";
         public static string MonthlyConversion = "Monthly conversion.";
         public static string SalaryCreditForLeave = "Salary credit for leave.";

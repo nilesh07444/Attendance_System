@@ -56,6 +56,7 @@ namespace AttendanceSystem.ViewModel.WebAPI.ViewModel
         public bool IsFingerprintEnabled { get; set; }
         public bool IsLeaveForward { get; set; }
         public string State { get; set; }
+        public string District { get; set; }
         public string Pincode { get; set; }
         public bool IsTrialMode { get; set; }
         public decimal? MonthlySalaryPrice { get; set; }

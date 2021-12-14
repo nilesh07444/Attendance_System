@@ -110,8 +110,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     objEmployee.Password = CommonMethod.Encrypt(randomPassword, psSult);
                     objEmployee.AdminRoleId = (int)AdminRoles.Worker;
                     objEmployee.Prefix = employeeVM.Prefix;
-                    objEmployee.FirstName = employeeVM.FirstName;
-                    objEmployee.LastName = employeeVM.LastName;
+                    objEmployee.FirstName = CommonMethod.SentenceCase(employeeVM.FirstName);
+                    objEmployee.LastName = CommonMethod.SentenceCase(employeeVM.LastName);
                     objEmployee.MobileNo = employeeVM.MobileNo;
                     objEmployee.Dob = employeeVM.Dob;
                     objEmployee.DateOfJoin = employeeVM.DateOfJoin;
@@ -120,9 +120,9 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     objEmployee.MonthlySalaryPrice = employeeVM.MonthlySalaryPrice;
                     objEmployee.PerCategoryPrice = employeeVM.PerCategoryPrice;
                     objEmployee.ExtraPerHourPrice = employeeVM.ExtraPerHourPrice.HasValue ? employeeVM.ExtraPerHourPrice.Value : 0;
-                    objEmployee.AdharCardNo = employeeVM.AdharCardNo;
+                    objEmployee.AdharCardNo = CommonMethod.UpperCase(employeeVM.AdharCardNo);
                     objEmployee.EmployeeCode = CommonMethod.getEmployeeCodeFormat(companyId, objCompany.CompanyName, empCount.Count());
-                    objEmployee.Address = employeeVM.Address;
+                    objEmployee.Address = CommonMethod.SentenceCase(employeeVM.Address);
                     objEmployee.City = employeeVM.City;
                     objEmployee.Pincode = employeeVM.Pincode;
                     objEmployee.StateId = employeeVM.StateId;
@@ -136,6 +136,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                     objEmployee.UpdatedDate = CommonMethod.CurrentIndianDateTime();
                     _db.tbl_Employee.Add(objEmployee);
                     _db.SaveChanges();
+
                     response.Data = objEmployee.EmployeeId;
                 }
             }
@@ -336,8 +337,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                         employeeObject.ProfilePicture = employeeVM.ProfilePicture;
                         employeeObject.Prefix = employeeVM.Prefix;
-                        employeeObject.FirstName = employeeVM.FirstName;
-                        employeeObject.LastName = employeeVM.LastName;
+                        employeeObject.FirstName = CommonMethod.SentenceCase(employeeVM.FirstName);
+                        employeeObject.LastName = CommonMethod.SentenceCase(employeeVM.LastName);
                         employeeObject.MobileNo = employeeVM.MobileNo;
                         employeeObject.Dob = employeeVM.Dob;
                         employeeObject.DateOfJoin = employeeVM.DateOfJoin;
@@ -346,15 +347,16 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         employeeObject.MonthlySalaryPrice = employeeVM.MonthlySalaryPrice;
                         employeeObject.PerCategoryPrice = employeeVM.PerCategoryPrice;
                         employeeObject.ExtraPerHourPrice = employeeVM.ExtraPerHourPrice;
-                        employeeObject.AdharCardNo = employeeVM.AdharCardNo;
-                        employeeObject.Address = employeeVM.Address;
-                        employeeObject.City = employeeVM.City;
+                        employeeObject.AdharCardNo = CommonMethod.UpperCase(employeeVM.AdharCardNo);
+                        employeeObject.Address = CommonMethod.SentenceCase(employeeVM.Address);
+                        employeeObject.City = CommonMethod.SentenceCase(employeeVM.City);
                         employeeObject.Pincode = employeeVM.Pincode;
                         employeeObject.StateId = employeeVM.StateId;
                         employeeObject.DistrictId = employeeVM.DistrictId;
                         employeeObject.UpdatedBy = employeeId;
                         employeeObject.UpdatedDate = CommonMethod.CurrentIndianDateTime();
                         _db.SaveChanges();
+
                         response.Data = true;
                     }
                 }
@@ -745,8 +747,10 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         assignedWorker.ModifiedBy = employeeId;
                         assignedWorker.ModifiedDate = CommonMethod.CurrentIndianDateTime();
 
-                        //tbl_WorkerAttendance workerAttendance = _db.tbl_WorkerAttendance.Where(x => x.AttendanceDate == requestVM.Date && x.EmployeeId == requestVM.EmployeeId && !x.IsEvening).FirstOrDefault();
-                        if (attendanceObject != null && employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased)
+                        #region Removed this code due to this logic moved on afternoon attendance, save worker payment entry
+
+                        /*
+                        if (attendanceObject != null && (employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased || employeeObj.EmploymentCategory == (int)EmploymentCategory.MonthlyBased))
                         {
                             tbl_WorkerPayment objWorkerPayment = new tbl_WorkerPayment();
                             objWorkerPayment.CompanyId = companyId;
@@ -767,6 +771,9 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                             objWorkerPayment.FinancialYearId = CommonMethod.GetFinancialYearId();
                             _db.tbl_WorkerPayment.Add(objWorkerPayment);
                         }
+                        */
+                        #endregion
+
                         attendanceObject.IsClosed = true;
                         _db.SaveChanges();
                         response.Data = true;

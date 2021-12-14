@@ -24,6 +24,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
         {
             ResponseDataModel<List<ViewModel.SiteVM>> response = new ResponseDataModel<List<ViewModel.SiteVM>>();
             response.IsError = false;
+
             try
             {
                 long employeeId = base.UTI.EmployeeId;
@@ -38,7 +39,6 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                        SiteName = st.SiteName,
                                                        SiteDescription = st.SiteDescription,
                                                        IsActive = st.IsActive
-
                                                    }).OrderByDescending(x => x.SiteId).ToList();
 
                 response.Data = siteList;
@@ -58,6 +58,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
         {
             ResponseDataModel<List<ViewModel.SiteVM>> response = new ResponseDataModel<List<ViewModel.SiteVM>>();
             response.IsError = false;
+
             try
             {
                 long employeeId = base.UTI.EmployeeId;
@@ -75,7 +76,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                        Latitude = st.Latitude,
                                                        Longitude = st.Longitude,
                                                        RadiousInMeter = st.RadiousInMeter
-                                                   }).OrderByDescending(x => x.SiteName).ToList();
+                                                   }).OrderBy(x => x.SiteName).ToList();
 
                 response.Data = siteList;
             }
@@ -108,7 +109,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                        SiteName = st.SiteName,
                                                        SiteDescription = st.SiteDescription,
                                                        IsActive = st.IsActive
-                                                   }).OrderByDescending(x => x.SiteName).ToList();
+                                                   }).OrderBy(x => x.SiteName).ToList();
 
                 response.Data = siteList;
             }

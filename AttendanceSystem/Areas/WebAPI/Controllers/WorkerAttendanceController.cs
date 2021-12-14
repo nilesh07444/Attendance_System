@@ -33,6 +33,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
             ResponseDataModel<string> response = new ResponseDataModel<string>();
             response.IsError = false;
             response.Data = string.Empty;
+
             try
             {
                 roleId = base.UTI.RoleId;
@@ -41,6 +42,9 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 DateTime today = CommonMethod.CurrentIndianDateTime().Date;
 
                 #region Validation
+
+                tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == companyId).FirstOrDefault();
+
                 if (!_db.tbl_Attendance.Any(x => x.UserId == employeeId && x.InDateTime != null && x.OutDateTime == null))
                 {
                     response.IsError = true;
@@ -192,8 +196,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                             attendanceObject.MorningLongitude = workerAttendanceRequestVM.Longitude;
                             attendanceObject.MorningLocationFrom = workerAttendanceRequestVM.LocationFrom;
                         }
-
-
+                         
                         _db.SaveChanges();
                     }
                     else
@@ -225,11 +228,90 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         _db.SaveChanges();
                     }
 
+                    // Save worker payment entry
+
                     if (workerAttendanceRequestVM.AttendanceType == (int)WorkerAttendanceType.Evening)
                     {
-                        if (!_db.tbl_WorkerPayment.Any(x => x.UserId == attendanceObject.EmployeeId && !x.IsDeleted && x.AttendanceId == attendanceObject.WorkerAttendanceId && x.PaymentType != (int)EmployeePaymentType.Extra))
+                        tbl_WorkerPayment objWorkerPayment = _db.tbl_WorkerPayment.Where(x => x.UserId == attendanceObject.EmployeeId
+                                                                    && !x.IsDeleted && x.AttendanceId == attendanceObject.WorkerAttendanceId
+                                                                    && x.PaymentType != (int)EmployeePaymentType.Extra).FirstOrDefault();
+
+                        if (objWorkerPayment == null)
                         {
-                            tbl_WorkerPayment objWorkerPayment = new tbl_WorkerPayment();
+                            objWorkerPayment = new tbl_WorkerPayment();
+                            _db.tbl_WorkerPayment.Add(objWorkerPayment);
+                        }
+
+                        objWorkerPayment.CompanyId = companyId;
+                        objWorkerPayment.UserId = attendanceObject.EmployeeId;
+                        objWorkerPayment.AttendanceId = attendanceObject.WorkerAttendanceId;
+                        objWorkerPayment.PaymentDate = attendanceObject.AttendanceDate;
+                        objWorkerPayment.PaymentType = (int)EmployeePaymentType.Salary;
+                        objWorkerPayment.CreditOrDebitText = ErrorMessage.Credit;
+                        objWorkerPayment.DebitAmount = 0; // workerAttendanceRequestVM.TodaySalary.HasValue && employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased ? workerAttendanceRequestVM.TodaySalary.Value : 0;
+                        objWorkerPayment.Remarks = ErrorMessage.AutoCreditOnEveningAttendance;
+                        objWorkerPayment.Month = attendanceObject.AttendanceDate.Month;
+                        objWorkerPayment.Year = attendanceObject.AttendanceDate.Year;
+                        objWorkerPayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
+                        objWorkerPayment.CreatedBy = employeeId;
+                        objWorkerPayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
+                        objWorkerPayment.ModifiedBy = employeeId;
+
+                        #region Get CreditAmount
+
+                        if (employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased)
+                        {
+                            objWorkerPayment.CreditAmount = (attendanceObject.IsMorning && attendanceObject.IsAfternoon && attendanceObject.IsEvening ? (employeeObj.PerCategoryPrice) : (employeeObj.PerCategoryPrice / 2)) + (employeeObj.ExtraPerHourPrice * workerAttendanceRequestVM.ExtraHours);
+                        }
+                        else if (employeeObj.EmploymentCategory == (int)EmploymentCategory.HourlyBased)
+                        {
+                            objWorkerPayment.CreditAmount = employeeObj.PerCategoryPrice * workerAttendanceRequestVM.NoOfHoursWorked;
+                        }
+                        else if (employeeObj.EmploymentCategory == (int)EmploymentCategory.UnitBased)
+                        {
+                            objWorkerPayment.CreditAmount = employeeObj.PerCategoryPrice * workerAttendanceRequestVM.NoOfUnitWorked;
+                        }
+                        else if (employeeObj.EmploymentCategory == (int)EmploymentCategory.MonthlyBased)
+                        {
+                            decimal totalDaysinMonth = DateTime.DaysInMonth(today.Year, today.Month);
+                            //decimal perDayAmount = Math.Round((employeeObj.MonthlySalaryPrice.HasValue ? employeeObj.MonthlySalaryPrice.Value : 0) / totalDaysinMonth, 2);
+
+                            decimal perDayAmount = 0;
+                            if (objCompany.CompanyConversionType == (int)CompanyConversionType.MonthBased)
+                            {
+                                perDayAmount = Math.Round((employeeObj.MonthlySalaryPrice.HasValue ? employeeObj.MonthlySalaryPrice.Value : 0) / (decimal)totalDaysinMonth, 2);
+                            }
+                            else
+                            {
+                                decimal totalDaysToApply = (decimal)totalDaysinMonth - employeeObj.NoOfFreeLeavePerMonth;
+                                perDayAmount = Math.Round((employeeObj.MonthlySalaryPrice.HasValue ? employeeObj.MonthlySalaryPrice.Value : 0) / totalDaysToApply, 2);
+                            }
+
+                            objWorkerPayment.CreditAmount = (attendanceObject.IsMorning && attendanceObject.IsAfternoon && attendanceObject.IsEvening ? perDayAmount : Math.Round((perDayAmount / 2), 2)) + (employeeObj.ExtraPerHourPrice * workerAttendanceRequestVM.ExtraHours);
+                        }
+
+                        #endregion
+
+                        attendanceObject.TodaySalary = objWorkerPayment.CreditAmount.HasValue ? objWorkerPayment.CreditAmount.Value : 0;
+                        objWorkerPayment.FinancialYearId = CommonMethod.GetFinancialYearIdFromDate(attendanceObject.AttendanceDate);
+                        _db.SaveChanges();
+                         
+                    }
+                    else if (workerAttendanceRequestVM.AttendanceType == (int)WorkerAttendanceType.Afternoon)
+                    {
+                        if (attendanceObject.IsMorning && attendanceObject.IsAfternoon && (employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased || employeeObj.EmploymentCategory == (int)EmploymentCategory.MonthlyBased))
+                        {
+
+                            tbl_WorkerPayment objWorkerPayment = _db.tbl_WorkerPayment.Where(x => x.UserId == attendanceObject.EmployeeId
+                                                                    && !x.IsDeleted && x.AttendanceId == attendanceObject.WorkerAttendanceId
+                                                                    && x.PaymentType != (int)EmployeePaymentType.Extra).FirstOrDefault();
+
+                            if (objWorkerPayment == null)
+                            {
+                                objWorkerPayment = new tbl_WorkerPayment();
+                                _db.tbl_WorkerPayment.Add(objWorkerPayment);
+                            }
+
                             objWorkerPayment.CompanyId = companyId;
                             objWorkerPayment.UserId = attendanceObject.EmployeeId;
                             objWorkerPayment.AttendanceId = attendanceObject.WorkerAttendanceId;
@@ -237,63 +319,42 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                             objWorkerPayment.PaymentType = (int)EmployeePaymentType.Salary;
                             objWorkerPayment.CreditOrDebitText = ErrorMessage.Credit;
                             objWorkerPayment.DebitAmount = workerAttendanceRequestVM.TodaySalary.HasValue && employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased ? workerAttendanceRequestVM.TodaySalary.Value : 0;
-                            objWorkerPayment.Remarks = ErrorMessage.AutoCreditOnEveningAttendance;
+                            objWorkerPayment.Remarks = ErrorMessage.AutoCreditOnAfternoonAttendance;
                             objWorkerPayment.Month = attendanceObject.AttendanceDate.Month;
                             objWorkerPayment.Year = attendanceObject.AttendanceDate.Year;
                             objWorkerPayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
                             objWorkerPayment.CreatedBy = employeeId;
                             objWorkerPayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                             objWorkerPayment.ModifiedBy = employeeId;
+                            objWorkerPayment.FinancialYearId = CommonMethod.GetFinancialYearIdFromDate(attendanceObject.AttendanceDate);
 
                             if (employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased)
                             {
-                                objWorkerPayment.CreditAmount = (attendanceObject.IsMorning && attendanceObject.IsAfternoon && attendanceObject.IsEvening ? (employeeObj.PerCategoryPrice) : (employeeObj.PerCategoryPrice / 2)) + (employeeObj.ExtraPerHourPrice * workerAttendanceRequestVM.ExtraHours);
-                            }
-                            else if (employeeObj.EmploymentCategory == (int)EmploymentCategory.HourlyBased)
-                            {
-                                objWorkerPayment.CreditAmount = employeeObj.PerCategoryPrice * workerAttendanceRequestVM.NoOfHoursWorked;
-                            }
-                            else if (employeeObj.EmploymentCategory == (int)EmploymentCategory.UnitBased)
-                            {
-                                objWorkerPayment.CreditAmount = employeeObj.PerCategoryPrice * workerAttendanceRequestVM.NoOfUnitWorked;
+                                objWorkerPayment.CreditAmount = attendanceObject.IsMorning && attendanceObject.IsAfternoon && attendanceObject.IsEvening ? (employeeObj.PerCategoryPrice) : (employeeObj.PerCategoryPrice / 2);
                             }
                             else if (employeeObj.EmploymentCategory == (int)EmploymentCategory.MonthlyBased)
                             {
                                 decimal totalDaysinMonth = DateTime.DaysInMonth(today.Year, today.Month);
-                                decimal perDayAmount = Math.Round((employeeObj.MonthlySalaryPrice.HasValue ? employeeObj.MonthlySalaryPrice.Value : 0) / totalDaysinMonth, 2);
-                                objWorkerPayment.CreditAmount = (attendanceObject.IsMorning && attendanceObject.IsAfternoon && attendanceObject.IsEvening ? perDayAmount : Math.Round((perDayAmount / 2), 2)) + (employeeObj.ExtraPerHourPrice * workerAttendanceRequestVM.ExtraHours);
+                                decimal perDayAmount = 0;
+                                if (objCompany.CompanyConversionType == (int)CompanyConversionType.MonthBased)
+                                {
+                                    perDayAmount = Math.Round((employeeObj.MonthlySalaryPrice.HasValue ? employeeObj.MonthlySalaryPrice.Value : 0) / (decimal)totalDaysinMonth, 2);
+                                }
+                                else
+                                {
+                                    decimal totalDaysToApply = (decimal)totalDaysinMonth - employeeObj.NoOfFreeLeavePerMonth;
+                                    perDayAmount = Math.Round((employeeObj.MonthlySalaryPrice.HasValue ? employeeObj.MonthlySalaryPrice.Value : 0) / totalDaysToApply, 2);
+                                }
+
+                                objWorkerPayment.CreditAmount = attendanceObject.IsMorning && attendanceObject.IsAfternoon && attendanceObject.IsEvening ? perDayAmount : Math.Round((perDayAmount / 2), 2);
                             }
 
                             attendanceObject.TodaySalary = objWorkerPayment.CreditAmount.HasValue ? objWorkerPayment.CreditAmount.Value : 0;
-                            objWorkerPayment.FinancialYearId = CommonMethod.GetFinancialYearId();
-                            _db.tbl_WorkerPayment.Add(objWorkerPayment);
+
                             _db.SaveChanges();
                         }
-
-                        //if (workerAttendanceRequestVM.TodaySalary.HasValue && workerAttendanceRequestVM.TodaySalary.Value > 0 && employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased)
-                        //{
-                        //    tbl_WorkerPayment objWorkerPaymentDebit = new tbl_WorkerPayment();
-                        //    objWorkerPaymentDebit.CompanyId = companyId;
-                        //    objWorkerPaymentDebit.UserId = attendanceObject.EmployeeId;
-                        //    objWorkerPaymentDebit.AttendanceId = attendanceObject.WorkerAttendanceId;
-                        //    objWorkerPaymentDebit.PaymentDate = attendanceObject.AttendanceDate;
-                        //    objWorkerPaymentDebit.PaymentType = (int)EmployeePaymentType.Salary;
-                        //    objWorkerPaymentDebit.CreditOrDebitText = ErrorMessage.Debit;
-                        //    objWorkerPaymentDebit.DebitAmount = workerAttendanceRequestVM.TodaySalary.Value;
-                        //    objWorkerPaymentDebit.Remarks = ErrorMessage.AutoCreditOnEveningAttendance;
-                        //    objWorkerPaymentDebit.Month = attendanceObject.AttendanceDate.Month;
-                        //    objWorkerPaymentDebit.Year = attendanceObject.AttendanceDate.Year;
-                        //    objWorkerPaymentDebit.CreatedDate = CommonMethod.CurrentIndianDateTime();
-                        //    objWorkerPaymentDebit.CreatedBy = employeeId;
-                        //    objWorkerPaymentDebit.ModifiedDate = CommonMethod.CurrentIndianDateTime();
-                        //    objWorkerPaymentDebit.ModifiedBy = employeeId;
-                        //    objWorkerPaymentDebit.CreditAmount = 0;
-                        //    objWorkerPaymentDebit.FinancialYearId = CommonMethod.GetFinancialYearId();
-                        //    _db.tbl_WorkerPayment.Add(objWorkerPaymentDebit);
-                        //    _db.SaveChanges();
-                        //}
-
                     }
+                
                     response.Data = employeeObj.FirstName + " " + employeeObj.LastName;
                 }
             }
@@ -348,7 +409,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                               join at in _db.tbl_WorkerAttendance
                                                               on new { EmployeeId = assi.EmployeeId, Date = assi.Date, assi.IsClosed } equals new { EmployeeId = at.EmployeeId, Date = at.AttendanceDate, IsClosed = at.IsClosed } into wtc
                                                               from at in wtc.DefaultIfEmpty()
-                                                                                                                            
+
                                                               where emp.CompanyId == companyId
                                                               && (assi.Date == workerAttendanceFilterVM.AttendanceDate || at.AttendanceDate == workerAttendanceFilterVM.AttendanceDate)
                                                               && assi.SiteId == workerAttendanceFilterVM.SiteId
@@ -365,7 +426,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                                   IsMorning = (at != null ? (at.IsMorning && at.MorningSiteId == workerAttendanceFilterVM.SiteId ? true : false) : false),
                                                                   IsAfternoon = (at != null ? (at.IsAfternoon && at.AfternoonSiteId == workerAttendanceFilterVM.SiteId ? true : false) : false),
                                                                   IsEvening = (at != null ? (at.IsEvening && at.EveningSiteId == workerAttendanceFilterVM.SiteId ? true : false) : false),
-                                                                  ProfilePicture = emp.ProfilePicture                                                                   
+                                                                  ProfilePicture = emp.ProfilePicture
                                                               }).OrderByDescending(x => x.AttendanceDate).ToList();
 
                 attendanceNewList.ForEach(x =>
@@ -598,10 +659,11 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
         [HttpGet]
         [Route("GetWorkerListOfPendingMorningAttendance")]
-        public ResponseDataModel<List<EmployeeVM>> GetWorkerListOfPendingMorningAttendance(string searchText)
+        public ResponseDataModel<List<EmployeeVM>> GetWorkerListOfPendingMorningAttendance(long siteId, string searchText)
         {
             ResponseDataModel<List<EmployeeVM>> response = new ResponseDataModel<List<EmployeeVM>>();
             response.IsError = false;
+
             try
             {
                 companyId = base.UTI.CompanyId;
@@ -632,8 +694,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                || emp.LastName.Contains(searchText)) : true)
 
                                                && !isMorning
-                                               && !assi.IsClosed 
-
+                                               && !assi.IsClosed
+                                               && assi.SiteId == siteId
                                                select new EmployeeVM
                                                {
                                                    EmployeeId = emp.EmployeeId,
@@ -671,7 +733,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
         [HttpGet]
         [Route("GetWorkerListOfPendingAfternoonAttendance")]
-        public ResponseDataModel<List<EmployeeVM>> GetWorkerListOfPendingAfternoonAttendance(string searchText)
+        public ResponseDataModel<List<EmployeeVM>> GetWorkerListOfPendingAfternoonAttendance(long siteId, string searchText)
         {
             ResponseDataModel<List<EmployeeVM>> response = new ResponseDataModel<List<EmployeeVM>>();
             response.IsError = false;
@@ -706,7 +768,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                || emp.LastName.Contains(searchText)) : true)
 
                                                && !isAfternoon
-                                               && !assi.IsClosed 
+                                               && !assi.IsClosed
+                                               && assi.SiteId == siteId
 
                                                select new EmployeeVM
                                                {
@@ -744,7 +807,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
         [HttpGet]
         [Route("GetWorkerListOfPendingEveningAttendance")]
-        public ResponseDataModel<List<EmployeeVM>> GetWorkerListOfPendingEveningAttendance(string searchText)
+        public ResponseDataModel<List<EmployeeVM>> GetWorkerListOfPendingEveningAttendance(long siteId, string searchText)
         {
             ResponseDataModel<List<EmployeeVM>> response = new ResponseDataModel<List<EmployeeVM>>();
             response.IsError = false;
@@ -774,9 +837,11 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                || emp.LastName.Contains(searchText)) : true)
 
                                                && att.AttendanceDate == today
+                                               && att.IsAfternoon
                                                && !att.IsEvening
                                                && !att.IsClosed
                                                && !assi.IsClosed
+                                               && assi.SiteId == siteId
 
                                                select new EmployeeVM
                                                {
@@ -799,7 +864,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                                    StateName = st != null ? st.StateName : "",
                                                    DistrictName = dt != null ? dt.DistrictName : "",
                                                    IsActive = emp.IsActive,
-                                                   ProfilePicture = !string.IsNullOrEmpty(emp.ProfilePicture) ? domainUrl + ErrorMessage.EmployeeDirectoryPath + emp.ProfilePicture : string.Empty                                                    
+                                                   ProfilePicture = !string.IsNullOrEmpty(emp.ProfilePicture) ? domainUrl + ErrorMessage.EmployeeDirectoryPath + emp.ProfilePicture : string.Empty
                                                }).ToList();
                 response.Data = workerList;
             }
@@ -828,6 +893,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                 #region Validation
 
+                tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == companyId).FirstOrDefault();
+
                 if (!_db.tbl_Attendance.Any(x => x.UserId == employeeId && x.InDateTime != null && x.OutDateTime == null))
                 {
                     response.IsError = true;
@@ -852,6 +919,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                 {
                     afternoonAttendanceRequestVM.EmployeeList.ForEach(objEmployee =>
                     {
+                        tbl_Employee employeeObj = _db.tbl_Employee.Where(x => x.EmployeeId == objEmployee.EmployeeId).FirstOrDefault();
                         bool IsWorkerAssigned = _db.tbl_AssignWorker.Any(x => x.EmployeeId == objEmployee.EmployeeId && x.SiteId == afternoonAttendanceRequestVM.SiteId && x.Date == today && !x.IsClosed);
                         if (IsWorkerAssigned)
                         {
@@ -870,7 +938,6 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                             }
                             else
                             {
-
                                 tbl_WorkerAttendance attendanceObjectAfternoon = new tbl_WorkerAttendance();
                                 attendanceObjectAfternoon.EmployeeId = objEmployee.EmployeeId;
                                 attendanceObjectAfternoon.AttendanceDate = today;
@@ -884,6 +951,64 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                 _db.tbl_WorkerAttendance.Add(attendanceObjectAfternoon);
                                 _db.SaveChanges();
                             }
+
+                            // Save Worker payment entry on afternoon attendance
+                            
+                            if (attendanceObject != null && attendanceObject.IsMorning && attendanceObject.IsAfternoon && (employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased || employeeObj.EmploymentCategory == (int)EmploymentCategory.MonthlyBased))
+                            {
+
+                                tbl_WorkerPayment objWorkerPayment = _db.tbl_WorkerPayment.Where(x => x.UserId == attendanceObject.EmployeeId
+                                                                        && !x.IsDeleted && x.AttendanceId == attendanceObject.WorkerAttendanceId
+                                                                        && x.PaymentType != (int)EmployeePaymentType.Extra).FirstOrDefault();
+
+                                if (objWorkerPayment == null)
+                                {
+                                    objWorkerPayment = new tbl_WorkerPayment();
+                                    _db.tbl_WorkerPayment.Add(objWorkerPayment);
+                                }
+
+                                objWorkerPayment.CompanyId = companyId;
+                                objWorkerPayment.UserId = attendanceObject.EmployeeId;
+                                objWorkerPayment.AttendanceId = attendanceObject.WorkerAttendanceId;
+                                objWorkerPayment.PaymentDate = attendanceObject.AttendanceDate;
+                                objWorkerPayment.PaymentType = (int)EmployeePaymentType.Salary;
+                                objWorkerPayment.CreditOrDebitText = ErrorMessage.Credit;
+                                //objWorkerPayment.DebitAmount = workerAttendanceRequestVM.TodaySalary.HasValue && employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased ? workerAttendanceRequestVM.TodaySalary.Value : 0;
+                                objWorkerPayment.Remarks = ErrorMessage.AutoCreditOnAfternoonAttendance;
+                                objWorkerPayment.Month = attendanceObject.AttendanceDate.Month;
+                                objWorkerPayment.Year = attendanceObject.AttendanceDate.Year;
+                                objWorkerPayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
+                                objWorkerPayment.CreatedBy = employeeId;
+                                objWorkerPayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
+                                objWorkerPayment.ModifiedBy = employeeId;
+                                objWorkerPayment.FinancialYearId = CommonMethod.GetFinancialYearIdFromDate(attendanceObject.AttendanceDate);
+
+                                if (employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased)
+                                {
+                                    objWorkerPayment.CreditAmount = attendanceObject.IsMorning && attendanceObject.IsAfternoon && attendanceObject.IsEvening ? (employeeObj.PerCategoryPrice) : (employeeObj.PerCategoryPrice / 2);
+                                }
+                                else if (employeeObj.EmploymentCategory == (int)EmploymentCategory.MonthlyBased)
+                                {
+                                    decimal totalDaysinMonth = DateTime.DaysInMonth(today.Year, today.Month);
+                                    decimal perDayAmount = 0;
+                                    if (objCompany.CompanyConversionType == (int)CompanyConversionType.MonthBased)
+                                    {
+                                        perDayAmount = Math.Round((employeeObj.MonthlySalaryPrice.HasValue ? employeeObj.MonthlySalaryPrice.Value : 0) / (decimal)totalDaysinMonth, 2);
+                                    }
+                                    else
+                                    {
+                                        decimal totalDaysToApply = (decimal)totalDaysinMonth - employeeObj.NoOfFreeLeavePerMonth;
+                                        perDayAmount = Math.Round((employeeObj.MonthlySalaryPrice.HasValue ? employeeObj.MonthlySalaryPrice.Value : 0) / totalDaysToApply, 2);
+                                    }
+
+                                    objWorkerPayment.CreditAmount = attendanceObject.IsMorning && attendanceObject.IsAfternoon && attendanceObject.IsEvening ? perDayAmount : Math.Round((perDayAmount / 2), 2);
+                                }
+
+                                attendanceObject.TodaySalary = objWorkerPayment.CreditAmount.HasValue ? objWorkerPayment.CreditAmount.Value : 0;
+
+                                _db.SaveChanges();
+                            }
+
                         }
 
                     });
