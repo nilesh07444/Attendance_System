@@ -1045,7 +1045,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objMaterial.MaterialDate = materialDate;
                         objMaterial.SiteId = materialVM.SiteId;
                         objMaterial.Qty = materialVM.CreditAmount - materialVM.DebitAmount;
-                        objMaterial.InOut = (int)MaterialStatus.Inward;
+                        objMaterial.InOut = (int)MaterialStatus.Open;
                         objMaterial.Remarks = "Yearly Auto Material Conversion Entry";
                         objMaterial.IsActive = true;
                         objMaterial.CreatedBy = (int)PaymentGivenBy.CompanyAdmin;
