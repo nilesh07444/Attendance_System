@@ -51,16 +51,16 @@ namespace AttendanceSystem.ViewModel
         [Display(Name = "Worked Hours Amount")]
         public decimal WorkedHoursAmount { get; set; }
         [Display(Name = "No Of Unit Worked")]
-        public int NoOfUnitWorked { get; set; }
+        public decimal? NoOfUnitWorked { get; set; }
         [Display(Name = "Worked Unit Amount")]
         public decimal WorkedUnitAmount { get; set; }
 
         public string EmployeeCode { get; set; }
         public decimal PerCategoryPrice { get; set; }
+
         // Additional fields
         public string EmployeeDesignation { get; set; }
         public string BgColor { get; set; }
-
     }
 
     public class AttendanceFilterVM
@@ -114,7 +114,7 @@ namespace AttendanceSystem.ViewModel
         public string Remarks { get; set; }
         public double DayType { get; set; }
         public decimal NoOfHoursWorked { get; set; }
-        public int NoOfUnitWorked { get; set; }
+        public decimal NoOfUnitWorked { get; set; }
     }
 
     public class WorkerAttendanceRequestVM
@@ -123,7 +123,7 @@ namespace AttendanceSystem.ViewModel
         public long EmployeeId { get; set; }
         public decimal ExtraHours { get; set; }
         public decimal NoOfHoursWorked { get; set; }
-        public int NoOfUnitWorked { get; set; }
+        public decimal NoOfUnitWorked { get; set; }
         public long SiteId { get; set; }
         public decimal? TodaySalary { get; set; }
 
@@ -286,7 +286,7 @@ namespace AttendanceSystem.ViewModel
         [Display(Name = "No of Hours Worked Amount")]
         public decimal NoOfHoursWorkedAmount { get; set; }
         [Display(Name = "No of Unit Worked")]
-        public int NoOfUnitWorked { get; set; }
+        public decimal NoOfUnitWorked { get; set; }
         [Display(Name = "No of Unit Worked Amount")]
         public decimal NoOfUnitWorkedAmount { get; set; }
         public long SiteId { get; set; }
@@ -389,7 +389,7 @@ namespace AttendanceSystem.ViewModel
         [Display(Name = "No Of Hours Worked")]
         public decimal? NoOfHoursWorked { get; set; }
         [Display(Name = "No Of Unit Worked")]
-        public int? NoOfUnitWorked { get; set; }
+        public decimal? NoOfUnitWorked { get; set; }
     }
 
     public class AfternoonAttendanceEmployeeVM

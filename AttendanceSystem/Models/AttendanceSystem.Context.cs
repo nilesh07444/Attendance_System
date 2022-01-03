@@ -45,7 +45,6 @@ namespace AttendanceSystem.Models
         public virtual DbSet<tbl_AssignWorker> tbl_AssignWorker { get; set; }
         public virtual DbSet<tbl_ContactForm> tbl_ContactForm { get; set; }
         public virtual DbSet<tbl_Testimonial> tbl_Testimonial { get; set; }
-        public virtual DbSet<tbl_Attendance> tbl_Attendance { get; set; }
         public virtual DbSet<tbl_SMSContent> tbl_SMSContent { get; set; }
         public virtual DbSet<tbl_WorkerType> tbl_WorkerType { get; set; }
         public virtual DbSet<tbl_Conversion> tbl_Conversion { get; set; }
@@ -60,7 +59,6 @@ namespace AttendanceSystem.Models
         public virtual DbSet<mst_FinancialYear> mst_FinancialYear { get; set; }
         public virtual DbSet<tbl_EmployeeBuyTransaction> tbl_EmployeeBuyTransaction { get; set; }
         public virtual DbSet<tbl_Followup> tbl_Followup { get; set; }
-        public virtual DbSet<tbl_WorkerAttendance> tbl_WorkerAttendance { get; set; }
         public virtual DbSet<tbl_EmployeeLunchBreak> tbl_EmployeeLunchBreak { get; set; }
         public virtual DbSet<tbl_Setting> tbl_Setting { get; set; }
         public virtual DbSet<tbl_Country> tbl_Country { get; set; }
@@ -73,6 +71,8 @@ namespace AttendanceSystem.Models
         public virtual DbSet<tbl_CompanyRequest> tbl_CompanyRequest { get; set; }
         public virtual DbSet<tbl_OfficeLocation> tbl_OfficeLocation { get; set; }
         public virtual DbSet<tbl_EmployeeOfficeLocation> tbl_EmployeeOfficeLocation { get; set; }
+        public virtual DbSet<tbl_Attendance> tbl_Attendance { get; set; }
+        public virtual DbSet<tbl_WorkerAttendance> tbl_WorkerAttendance { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {
@@ -332,7 +332,7 @@ namespace AttendanceSystem.Models
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Usp_GetDateWiseWorkerPaymentReport_Result>("Usp_GetDateWiseWorkerPaymentReport", startDateParameter, endDateParameter, employeeIdParameter, financialYearIdParameter);
         }
     
-        public virtual ObjectResult<Usp_GetPaymentReport_Result> Usp_GetPaymentReport(Nullable<int> startMonth, Nullable<int> endMonth, Nullable<int> year, Nullable<long> employeeId)
+        public virtual ObjectResult<Usp_GetPaymentReport_Result> Usp_GetPaymentReport(Nullable<int> startMonth, Nullable<int> endMonth, Nullable<int> year, Nullable<long> employeeId, Nullable<long> financialYearId)
         {
             var startMonthParameter = startMonth.HasValue ?
                 new ObjectParameter("StartMonth", startMonth) :
@@ -350,7 +350,11 @@ namespace AttendanceSystem.Models
                 new ObjectParameter("EmployeeId", employeeId) :
                 new ObjectParameter("EmployeeId", typeof(long));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Usp_GetPaymentReport_Result>("Usp_GetPaymentReport", startMonthParameter, endMonthParameter, yearParameter, employeeIdParameter);
+            var financialYearIdParameter = financialYearId.HasValue ?
+                new ObjectParameter("FinancialYearId", financialYearId) :
+                new ObjectParameter("FinancialYearId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Usp_GetPaymentReport_Result>("Usp_GetPaymentReport", startMonthParameter, endMonthParameter, yearParameter, employeeIdParameter, financialYearIdParameter);
         }
     
         public virtual ObjectResult<Usp_GetSiteAssignedWorkerList_Result> Usp_GetSiteAssignedWorkerList(Nullable<long> companyId, Nullable<int> roleId, Nullable<long> siteId, Nullable<System.DateTime> date)

@@ -80,12 +80,15 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                          OutLongitude = at.OutLongitude,
                                                          NoOfHoursWorked = at.NoOfHoursWorked.HasValue ? at.NoOfHoursWorked.Value : 0,
                                                          NoOfUnitWorked = at.NoOfUnitWorked.HasValue ? at.NoOfUnitWorked.Value : 0,
+                                                         PerCategoryPrice = emp.PerCategoryPrice,
+                                                         ExtraPerHourPrice = emp.ExtraPerHourPrice
                                                      }).OrderByDescending(x => x.AttendanceDate).ToList();
 
                 attendanceFilterVM.EmployeeList = GetEmployeeList();
                 attendanceFilterVM.CalenderMonth = CommonMethod.GetCalenderMonthList();
                 attendanceFilterVM.AttendanceList.ForEach(x =>
                 {
+                    x.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)x.EmploymentCategory);
                     x.StatusText = attendanceStatusList.Where(z => z.Value == x.Status.ToString()).Select(c => c.Text).FirstOrDefault();
                     if (x.DayType != 0)
                     {
@@ -154,7 +157,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objEmployeePayment.CompanyId = attendance.CompanyId;
                         objEmployeePayment.UserId = attendance.UserId;
                         objEmployeePayment.AttendanceId = attendance.AttendanceId;
-                        objEmployeePayment.PaymentDate = attendance.AttendanceDate;
+                        objEmployeePayment.PaymentDate = attendance.AttendanceDate.Date;
                         objEmployeePayment.PaymentType = (int)EmployeePaymentType.Salary;
                         objEmployeePayment.CreditOrDebitText = ErrorMessage.Credit;
                         objEmployeePayment.DebitAmount = 0;
@@ -168,11 +171,13 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                         if (employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased)
                         {
-                            objEmployeePayment.CreditAmount = (attendance.DayType == (double)DayType.FullDay ? employeeObj.PerCategoryPrice : Math.Round((employeeObj.PerCategoryPrice / 2), 2)) + (employeeObj.ExtraPerHourPrice * attendance.ExtraHours);
+                            decimal extraHoursAmount = CommonMethod.getPriceBasedOnHours((double)employeeObj.ExtraPerHourPrice.Value, (double)attendance.ExtraHours);
+                            objEmployeePayment.CreditAmount = (attendance.DayType == (double)DayType.FullDay ? employeeObj.PerCategoryPrice : Math.Round((employeeObj.PerCategoryPrice / 2), 2)) + extraHoursAmount;
                         }
                         else if (employeeObj.EmploymentCategory == (int)EmploymentCategory.HourlyBased)
                         {
-                            objEmployeePayment.CreditAmount = employeeObj.PerCategoryPrice * attendance.NoOfHoursWorked;
+                            decimal totalAmount = CommonMethod.getPriceBasedOnHours((double)employeeObj.PerCategoryPrice, (double)attendance.NoOfHoursWorked);
+                            objEmployeePayment.CreditAmount = totalAmount;
                         }
                         else if (employeeObj.EmploymentCategory == (int)EmploymentCategory.UnitBased)
                         {
@@ -184,14 +189,16 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                             {
                                 decimal totalDaysinMonth = DateTime.DaysInMonth(attendance.AttendanceDate.Year, attendance.AttendanceDate.Month);
                                 decimal perDayAmount = Math.Round((employeeObj.MonthlySalaryPrice.HasValue ? employeeObj.MonthlySalaryPrice.Value : 0) / totalDaysinMonth, 2);
-                                objEmployeePayment.CreditAmount = (attendance.DayType == (double)DayType.FullDay ? perDayAmount : Math.Round((perDayAmount / 2), 2)) + (employeeObj.ExtraPerHourPrice * attendance.ExtraHours);
+                                decimal extraHoursAmount = CommonMethod.getPriceBasedOnHours((double)employeeObj.ExtraPerHourPrice.Value, (double)attendance.ExtraHours);
+                                objEmployeePayment.CreditAmount = (attendance.DayType == (double)DayType.FullDay ? perDayAmount : Math.Round((perDayAmount / 2), 2)) + extraHoursAmount;
                             }
                             else
                             {
                                 decimal totalDaysinMonth = DateTime.DaysInMonth(attendance.AttendanceDate.Year, attendance.AttendanceDate.Month);
                                 decimal totalDaysToApply = (decimal)totalDaysinMonth - employeeObj.NoOfFreeLeavePerMonth;
                                 decimal perDayAmount = Math.Round((employeeObj.MonthlySalaryPrice.HasValue ? employeeObj.MonthlySalaryPrice.Value : 0) / totalDaysToApply, 2);
-                                objEmployeePayment.CreditAmount = (attendance.DayType == (double)DayType.FullDay ? perDayAmount : Math.Round((perDayAmount / 2), 2)) + (employeeObj.ExtraPerHourPrice * attendance.ExtraHours);
+                                decimal extraHoursAmount = CommonMethod.getPriceBasedOnHours((double)employeeObj.ExtraPerHourPrice.Value, (double)attendance.ExtraHours);
+                                objEmployeePayment.CreditAmount = (attendance.DayType == (double)DayType.FullDay ? perDayAmount : Math.Round((perDayAmount / 2), 2)) + extraHoursAmount;
                             }
                         }
                         objEmployeePayment.FinancialYearId = CommonMethod.GetFinancialYearIdFromDate(attendance.AttendanceDate);
@@ -244,18 +251,30 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                     NoOfHoursWorked = at.NoOfHoursWorked.HasValue ? at.NoOfHoursWorked.Value : 0,
                                     NoOfUnitWorked = at.NoOfUnitWorked.HasValue ? at.NoOfUnitWorked.Value : 0,
                                     PerCategoryPrice = emp.PerCategoryPrice,
+                                    ExtraPerHourPrice = emp.ExtraPerHourPrice,
                                     EmploymentCategory = emp.EmploymentCategory
                                 }).FirstOrDefault();
 
                 attendanceVM.StatusText = CommonMethod.GetEnumDescription((AttendanceStatus)attendanceVM.Status);
+                attendanceVM.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)attendanceVM.EmploymentCategory);
 
                 if (attendanceVM.DayType != 0)
                 {
                     attendanceVM.DayTypeText = attendanceVM.DayType == 1 ? CommonMethod.GetEnumDescription(DayType.FullDay) : CommonMethod.GetEnumDescription(DayType.HalfDay);
                 }
 
-                attendanceVM.WorkedHoursAmount = attendanceVM.NoOfHoursWorked * attendanceVM.PerCategoryPrice;
-                attendanceVM.WorkedUnitAmount = attendanceVM.NoOfUnitWorked * attendanceVM.PerCategoryPrice;
+                if (attendanceVM.EmploymentCategory == (int)EmploymentCategory.HourlyBased)
+                {
+                    decimal totalAmount = CommonMethod.getPriceBasedOnHours((double)attendanceVM.PerCategoryPrice, (double)attendanceVM.NoOfHoursWorked);
+                    //attendanceVM.WorkedHoursAmount = attendanceVM.NoOfHoursWorked * attendanceVM.PerCategoryPrice;
+                    attendanceVM.WorkedHoursAmount = totalAmount;
+                }
+
+                if (attendanceVM.EmploymentCategory == (int)EmploymentCategory.UnitBased)
+                {
+                    attendanceVM.WorkedUnitAmount = (attendanceVM.NoOfUnitWorked != null ? attendanceVM.NoOfUnitWorked.Value : 0) * attendanceVM.PerCategoryPrice;
+                }
+
             }
             catch (Exception ex)
             {
@@ -273,6 +292,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    long companyId = clsAdminSession.CompanyId;
+                    tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == companyId).FirstOrDefault();
 
                     tbl_Attendance objAttendance = _db.tbl_Attendance.FirstOrDefault(x => x.AttendanceId == attendanceVM.AttendanceId);
                     if (objAttendance != null)
@@ -308,7 +329,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                             objEmployeePayment.CompanyId = objAttendance.CompanyId;
                             objEmployeePayment.UserId = objAttendance.UserId;
                             objEmployeePayment.AttendanceId = objAttendance.AttendanceId;
-                            objEmployeePayment.PaymentDate = objAttendance.AttendanceDate;
+                            objEmployeePayment.PaymentDate = objAttendance.AttendanceDate.Date;
                             objEmployeePayment.PaymentType = (int)EmployeePaymentType.Salary;
                             objEmployeePayment.CreditOrDebitText = ErrorMessage.Credit;
                             objEmployeePayment.DebitAmount = 0;
@@ -322,11 +343,15 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                             if (employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased)
                             {
-                                objEmployeePayment.CreditAmount = (objAttendance.DayType == (double)DayType.FullDay ? employeeObj.PerCategoryPrice : Math.Round((employeeObj.PerCategoryPrice / 2), 2)) + (employeeObj.ExtraPerHourPrice * objAttendance.ExtraHours);
+                                //objEmployeePayment.CreditAmount = (objAttendance.DayType == (double)DayType.FullDay ? employeeObj.PerCategoryPrice : Math.Round((employeeObj.PerCategoryPrice / 2), 2)) + (employeeObj.ExtraPerHourPrice * objAttendance.ExtraHours);
+
+                                decimal extraHoursAmount = CommonMethod.getPriceBasedOnHours((double)employeeObj.ExtraPerHourPrice.Value, (double)objAttendance.ExtraHours);
+                                objEmployeePayment.CreditAmount = (objAttendance.DayType == (double)DayType.FullDay ? employeeObj.PerCategoryPrice : Math.Round((employeeObj.PerCategoryPrice / 2), 2)) + extraHoursAmount;
                             }
                             else if (employeeObj.EmploymentCategory == (int)EmploymentCategory.HourlyBased)
                             {
-                                objEmployeePayment.CreditAmount = employeeObj.PerCategoryPrice * objAttendance.NoOfHoursWorked;
+                                decimal totalAmount = CommonMethod.getPriceBasedOnHours((double)employeeObj.PerCategoryPrice, (double)objAttendance.NoOfHoursWorked);
+                                objEmployeePayment.CreditAmount = totalAmount;
                             }
                             else if (employeeObj.EmploymentCategory == (int)EmploymentCategory.UnitBased)
                             {
@@ -334,11 +359,29 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                             }
                             else if (employeeObj.EmploymentCategory == (int)EmploymentCategory.MonthlyBased)
                             {
-                                decimal totalDaysinMonth = DateTime.DaysInMonth(objAttendance.AttendanceDate.Year, objAttendance.AttendanceDate.Month);
-                                decimal perDayAmount = Math.Round((employeeObj.MonthlySalaryPrice.HasValue ? employeeObj.MonthlySalaryPrice.Value : 0) / totalDaysinMonth, 2);
-                                objEmployeePayment.CreditAmount = objAttendance.DayType == (double)DayType.FullDay ? perDayAmount : Math.Round((perDayAmount / 2), 2);
+                                //decimal totalDaysinMonth = DateTime.DaysInMonth(objAttendance.AttendanceDate.Year, objAttendance.AttendanceDate.Month);
+                                //decimal perDayAmount = Math.Round((employeeObj.MonthlySalaryPrice.HasValue ? employeeObj.MonthlySalaryPrice.Value : 0) / totalDaysinMonth, 2);
+                                //objEmployeePayment.CreditAmount = objAttendance.DayType == (double)DayType.FullDay ? perDayAmount : Math.Round((perDayAmount / 2), 2);
+
+                                if (objCompany.CompanyConversionType == (int)CompanyConversionType.MonthBased)
+                                {
+                                    decimal totalDaysinMonth = DateTime.DaysInMonth(objAttendance.AttendanceDate.Year, objAttendance.AttendanceDate.Month);
+                                    decimal perDayAmount = Math.Round((employeeObj.MonthlySalaryPrice.HasValue ? employeeObj.MonthlySalaryPrice.Value : 0) / totalDaysinMonth, 2);
+                                    decimal extraHoursAmount = CommonMethod.getPriceBasedOnHours((double)employeeObj.ExtraPerHourPrice.Value, (double)objAttendance.ExtraHours);
+                                    objEmployeePayment.CreditAmount = (objAttendance.DayType == (double)DayType.FullDay ? perDayAmount : Math.Round((perDayAmount / 2), 2)) + extraHoursAmount;
+                                }
+                                else
+                                {
+                                    decimal totalDaysinMonth = DateTime.DaysInMonth(objAttendance.AttendanceDate.Year, objAttendance.AttendanceDate.Month);
+                                    decimal totalDaysToApply = (decimal)totalDaysinMonth - employeeObj.NoOfFreeLeavePerMonth;
+                                    decimal perDayAmount = Math.Round((employeeObj.MonthlySalaryPrice.HasValue ? employeeObj.MonthlySalaryPrice.Value : 0) / totalDaysToApply, 2);
+                                    decimal extraHoursAmount = CommonMethod.getPriceBasedOnHours((double)employeeObj.ExtraPerHourPrice.Value, (double)objAttendance.ExtraHours);
+                                    objEmployeePayment.CreditAmount = (objAttendance.DayType == (double)DayType.FullDay ? perDayAmount : Math.Round((perDayAmount / 2), 2)) + extraHoursAmount;
+                                }
+
                             }
-                            objEmployeePayment.FinancialYearId = CommonMethod.GetFinancialYearId();
+
+                            objEmployeePayment.FinancialYearId = CommonMethod.GetFinancialYearIdFromDate(objAttendance.AttendanceDate);
                             _db.tbl_EmployeePayment.Add(objEmployeePayment);
                             _db.SaveChanges();
                         }
@@ -363,7 +406,6 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         {
             List<EmployeeLunchBreakVM> lstEmployeeLunchBreak = new List<EmployeeLunchBreakVM>();
             AttendanceVM attendanceVM = new AttendanceVM();
-
 
             try
             {
@@ -399,14 +441,24 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                 }).FirstOrDefault();
 
                 attendanceVM.StatusText = CommonMethod.GetEnumDescription((AttendanceStatus)attendanceVM.Status);
+                attendanceVM.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)attendanceVM.EmploymentCategory);
 
                 if (attendanceVM.DayType != 0)
                 {
                     attendanceVM.DayTypeText = attendanceVM.DayType == 1 ? CommonMethod.GetEnumDescription(DayType.FullDay) : CommonMethod.GetEnumDescription(DayType.HalfDay);
                 }
 
-                attendanceVM.WorkedHoursAmount = attendanceVM.NoOfHoursWorked * attendanceVM.PerCategoryPrice;
-                attendanceVM.WorkedUnitAmount = attendanceVM.NoOfUnitWorked * attendanceVM.PerCategoryPrice;
+                if (attendanceVM.EmploymentCategory == (int)EmploymentCategory.HourlyBased)
+                {
+                    decimal totalAmount = CommonMethod.getPriceBasedOnHours((double)attendanceVM.PerCategoryPrice, (double)attendanceVM.NoOfHoursWorked);
+                    //attendanceVM.WorkedHoursAmount = attendanceVM.NoOfHoursWorked * attendanceVM.PerCategoryPrice;
+                    attendanceVM.WorkedHoursAmount = totalAmount;
+                }
+
+                if (attendanceVM.EmploymentCategory == (int)EmploymentCategory.UnitBased)
+                {
+                    attendanceVM.WorkedUnitAmount = (attendanceVM.NoOfUnitWorked != null ? attendanceVM.NoOfUnitWorked.Value : 0) * attendanceVM.PerCategoryPrice;
+                }
 
                 ViewData["AttendanceDetail"] = attendanceVM;
 

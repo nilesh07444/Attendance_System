@@ -22,6 +22,7 @@
                         </div>
                     </div>
                 </div>
+
                 @if (Model.Status == (int)AttendanceStatus.Pending)
                 {
                     <div class="card">
@@ -63,151 +64,204 @@
                                     </div>
                                 </div>
                             }
-                            </div>
+                        </div>
                     </div>
                 }
+
                 <div class="card">
                     <div class="card-body">
-                         
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Name)
-                                        <p>@Model.Name</p>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.AttendanceDate)
-                                        <p>@Model.AttendanceDate.ToString("dd MMM yyyy")</p>
-                                    </div>
-                                </div>
-                            </div>
-                            @if (Model.EmploymentCategory == (int)EmploymentCategory.MonthlyBased || Model.EmploymentCategory == (int)EmploymentCategory.DailyBased)
-                            {
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model.DayType)
-                                            <p>@Model.DayTypeText</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model.ExtraHours)
-                                            <p>@Model.ExtraHours</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.TodayWorkDetail)
-                                        <p>@Model.TodayWorkDetail</p>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.TomorrowWorkDetail)
-                                        <p>@Model.TomorrowWorkDetail</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Remarks)
-                                        <p>@Model.Remarks</p>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.InDateTime)
-                                        @if (Model.InDateTime != null)
-                                        {
-                                            <p>@Model.InDateTime.ToString("dd MMM yyyy hh:mm tt")</p>
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.Status)
-                                        <p>@Model.StatusText</p>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.OutDateTime)
-                                        @if (Model.OutDateTime != null)
-                                        {
-                                            <p>@Convert.ToDateTime(Model.OutDateTime).ToString("dd MMM yyyy hh:mm tt")</p>
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.LocationFrom)
-                                        <p>@Model.LocationFrom</p>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        @Html.LabelFor(model => model.OutLocationFrom)
-                                        <p>@Model.OutLocationFrom</p>
-                                    </div>
-                                </div>
-                            </div>
-                            @if (Model.EmploymentCategory == (int)EmploymentCategory.HourlyBased)
-                            {
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model.NoOfHoursWorked)
-                                            <p>@Model.NoOfHoursWorked</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model.WorkedHoursAmount)
-                                            <p>@Model.WorkedHoursAmount.ToString("#.##")</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-                            @if (Model.EmploymentCategory == (int)EmploymentCategory.UnitBased)
-                            {
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model.NoOfUnitWorked)
-                                            <p>@Model.NoOfUnitWorked</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model.WorkedUnitAmount)
-                                            <p>@Model.WorkedUnitAmount.ToString("#.##")</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-                            @if (Model.Status == (int)AttendanceStatus.Reject)
-                            {
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model.RejectReason)
-                                            <p>@Model.RejectReason</p>
-                                        </div>
-                                    </div>
 
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Name)
+                                    <p>@Model.Name</p>
                                 </div>
-                            }
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.AttendanceDate)
+                                    <p>@Model.AttendanceDate.ToString("dd MMM yyyy")</p>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        @if (Model.EmploymentCategory == (int)EmploymentCategory.MonthlyBased || Model.EmploymentCategory == (int)EmploymentCategory.DailyBased)
+                        {
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.DayType)
+                                        <p>@Model.DayTypeText</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Employment Category</label>
+                                        <p>@Model.EmploymentCategoryText</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.ExtraHours)
+                                        <p>@Model.ExtraHours</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Extra Per Hour Price</label>
+                                        <p>@Model.ExtraPerHourPrice</p>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Employment Category</label>
+                                        <p>@Model.EmploymentCategoryText</p>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.TodayWorkDetail)
+                                    <p>@Model.TodayWorkDetail</p>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.TomorrowWorkDetail)
+                                    <p>@Model.TomorrowWorkDetail</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.InDateTime)
+                                    @if (Model.InDateTime != null)
+                                    {
+                                        <p>@Model.InDateTime.ToString("dd MMM yyyy hh:mm tt")</p>
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.OutDateTime)
+                                    @if (Model.OutDateTime != null)
+                                    {
+                                        <p>@Convert.ToDateTime(Model.OutDateTime).ToString("dd MMM yyyy hh:mm tt")</p>
+                                    }
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Status)
+                                    <p>@Model.StatusText</p>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.LocationFrom)
+                                    <p>@Model.LocationFrom</p>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.OutLocationFrom)
+                                    <p>@Model.OutLocationFrom</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        @if (Model.EmploymentCategory == (int)EmploymentCategory.HourlyBased)
+                        {
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.NoOfHoursWorked)
+                                        <p>@Model.NoOfHoursWorked</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Per Hour Price</label>
+                                        <p>@Model.PerCategoryPrice.ToString("#.##")</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.WorkedHoursAmount)
+                                        <p>@Model.WorkedHoursAmount.ToString("#.##")</p>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+
+                        @if (Model.EmploymentCategory == (int)EmploymentCategory.UnitBased)
+                        {
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.NoOfUnitWorked)
+                                        <p>@Model.NoOfUnitWorked</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Per Unit Price</label>
+                                        <p>@Model.PerCategoryPrice.ToString("#.##")</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.WorkedUnitAmount)
+                                        <p>@Model.WorkedUnitAmount.ToString("#.##")</p>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+
+                        @if (Model.Status == (int)AttendanceStatus.Reject)
+                        {
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.RejectReason)
+                                        <p>@Model.RejectReason</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        }
 
                     </div>
                 </div>

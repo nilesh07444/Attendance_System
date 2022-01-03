@@ -34,7 +34,7 @@ namespace AttendanceSystem.Models
         public int Status { get; set; }
         public string RejectReason { get; set; }
         public Nullable<decimal> NoOfHoursWorked { get; set; }
-        public Nullable<int> NoOfUnitWorked { get; set; }
+        public Nullable<decimal> NoOfUnitWorked { get; set; }
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
         public long CreatedBy { get; set; }

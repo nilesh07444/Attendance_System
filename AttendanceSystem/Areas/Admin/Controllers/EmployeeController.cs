@@ -614,7 +614,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                                           {
                                                               EmployeeFingerprintId = f.EmployeeFingerprintId,
                                                               EmployeeId = f.EmployeeId,
-                                                              BitmapCode = f.BitmapCode,
+                                                              //BitmapCode = f.BitmapCode,
                                                               ISOCode = f.ISOCode,
                                                               CreatedDate = f.CreatedDate
                                                           }).ToList();
@@ -918,7 +918,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         if (totalPendingFingerprintCount > 0)
                         {
                             tbl_EmployeeFingerprint objFingerprint = new tbl_EmployeeFingerprint();
-                            objFingerprint.BitmapCode = fingerprint.BitmapCode;
+                            //objFingerprint.BitmapCode = fingerprint.BitmapCode;
                             objFingerprint.EmployeeId = fingerprintDataVM.EmployeeId;
                             objFingerprint.ISOCode = fingerprint.ISOCode;
                             objFingerprint.CreatedDate = CommonMethod.CurrentIndianDateTime();

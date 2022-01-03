@@ -23,7 +23,11 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         }
 
         public ActionResult Index()
-        {             
+        {
+            //double perHourPrice = 100;
+            //double extraHours = 2.3;             
+            //decimal amt = CommonMethod.getPriceBasedOnHours(perHourPrice, extraHours);
+
             return View();
         }
 

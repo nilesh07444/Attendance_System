@@ -98,7 +98,7 @@
                         </div>
 
                     </div>
-                     
+
                 </div>
 
                 <div class="card">
@@ -288,26 +288,54 @@
         $('#ExtraHours').change(function () {
             var extraHours = $('#ExtraHours').val();
             var extraPerHourPrice = $("#ExtraPerHourPrice").val();
-            var totalExtraAmount = parseFloat(extraHours) * parseFloat(extraPerHourPrice);
-            $("#ExtraHoursAmount").val(totalExtraAmount.toFixed(2));
+             
+            //var totalExtraAmount = parseFloat(extraHours) * parseFloat(extraPerHourPrice);
+            var totalExtraAmount = getHourBasedAmount(parseFloat(extraHours), parseFloat(extraPerHourPrice));
+
+            $("#ExtraHoursAmount").val(parseFloat(totalExtraAmount).toFixed(2));
             calulateTodaySalary();
         });
 
         $('#NoOfHoursWorked').change(function () {
             var noOfHoursWorked = $('#NoOfHoursWorked').val();
             var perCategoryPrice = $("#PerCategoryPrice").val();
-            var noOfHoursWorkedAmount = parseFloat(noOfHoursWorked) * parseFloat(perCategoryPrice);
-            $("#NoOfHoursWorkedAmount").val(noOfHoursWorkedAmount.toFixed(2));
+
+            //var noOfHoursWorkedAmount = parseFloat(noOfHoursWorked) * parseFloat(perCategoryPrice); 
+            var noOfHoursWorkedAmount = getHourBasedAmount(parseFloat(noOfHoursWorked), parseFloat(perCategoryPrice));
+
+            $("#NoOfHoursWorkedAmount").val(parseFloat(noOfHoursWorkedAmount).toFixed(2));
             calulateTodaySalary();
         });
 
         $('#NoOfUnitWorked').change(function () {
             var noOfUnitWorked = $('#NoOfUnitWorked').val();
-            var perCategoryPrice = $("#PerCategoryPrice").val();
+            var perCategoryPrice = $("#PerCategoryPrice").val(); 
             var noOfUnitWorkedAmount = parseFloat(noOfUnitWorked) * parseFloat(perCategoryPrice);
             $("#NoOfUnitWorkedAmount").val(noOfUnitWorkedAmount.toFixed(2));
             calulateTodaySalary();
         });
+
+        function getHourBasedAmount(noOfHours, perPrice) { 
+            var totalPrice = 0;
+            var ArrnoOfHours = noOfHours.toString().split(".");
+
+            if (ArrnoOfHours != null && ArrnoOfHours.length > 0) {
+                if (ArrnoOfHours.length == 1) {
+                    totalPrice = perPrice * noOfHours;
+                }
+                else {
+                    var decimalValue = parseFloat(ArrnoOfHours[0]);
+                    var strfractionValue = parseFloat(ArrnoOfHours[1]);
+                    var fractionValue = parseFloat("0." + strfractionValue);
+
+                    var hourPrice = (decimalValue * perPrice);
+                    var minPrice = (fractionValue * 100) * (perPrice / 60);
+
+                    totalPrice = hourPrice + minPrice;
+                }
+            }
+            return totalPrice.toFixed(2);
+        }
 
         $('#SalaryGiven').change(function () {
             var totalPendingSalary = $("#TotalPendingSalary").val();

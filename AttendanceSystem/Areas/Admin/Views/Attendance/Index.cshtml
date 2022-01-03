@@ -85,7 +85,8 @@
                                         <th>Day Type</th>
                                         <th style="display:none">In Date Time</th>
                                         <th style="display:none">Out Date Time</th>
-                                        <th>Extra Hours</th>
+                                        <th>Employment Category</th>
+                                        <th>Per Unit/Hour Work</th>
                                         <th style="display:none">Today Work Detail</th>
                                         <th style="display:none">Tomorrow Work Detail</th>
                                         <th style="display:none">In Location</th>
@@ -109,53 +110,71 @@
                                     {
                                         foreach (AttendanceVM obj in Model.AttendanceList)
                                         {
-                                    <tr style="background-color:@obj.BgColor;">
-                                        <td>@counter.</td>
-                                        <td>
-                                            @if (obj.Status == (int)AttendanceStatus.Pending)
-                                            {
-                                                <input type="checkbox" class="chkBox" id='@obj.AttendanceId' name="Select">
-                                            }
-                                        </td>
-                                        <td style="display:none">@obj.AttendanceId</td>
-                                        <td style="display:none">@obj.CompanyId</td>
-                                        <td style="display:none">@obj.UserId</td>
-                                        <td>@obj.AttendanceDate.ToString("dd MMM yyyy")</td>
-                                        <td>@obj.Name</td>
-                                        <td>@obj.EmployeeCode</td>
-                                        <td>@obj.EmployeeDesignation</td>
-                                        <td>@obj.DayTypeText</td>
-                                        <td style="display:none">@obj.InDateTime</td>
-                                        <td style="display:none">@obj.OutDateTime</td>
-                                        <td>@obj.ExtraHours</td>
-                                        <td style="display:none">@obj.TodayWorkDetail</td>
-                                        <td style="display:none">@obj.TomorrowWorkDetail</td>
-                                        <td style="display:none">@obj.LocationFrom</td>
-                                        <td style="display:none">@obj.OutLocationFrom</td>
-                                        <td style="display:none">@obj.InLatitude</td>
-                                        <td style="display:none">@obj.InLongitude</td>
-                                        <td style="display:none">@obj.OutLatitude</td>
-                                        <td style="display:none">@obj.OutLongitude</td>
-                                        <td style="display:none">@obj.RejectReason</td>
-                                        <td style="display:none">@obj.NoOfHoursWorked</td>
-                                        <td style="display:none">@obj.NoOfUnitWorked</td>
-                                        <td style="display:none">@obj.RejectReason</td>
-                                        <td style="display:none">@obj.Remarks</td>
-                                        <td>@obj.StatusText</td>
-                                        <td>
-                                            <a href="/admin/attendance/lunchbreak/@obj.AttendanceId" title="Break" class="btn btn-icon btn-primary">Break</a>
-                                        </td>
-                                        <td>
-                                            @if (obj.Status == (int)AttendanceStatus.Pending)
-                                            {
-                                                <a href="/admin/attendance/detail/@obj.AttendanceId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
-                                            }
-                                            else
-                                            {
-                                                <a href="/admin/attendance/detail/@obj.AttendanceId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
-                                            }
-                                        </td>
-                                    </tr>
+                                            <tr style="background-color:@obj.BgColor;">
+                                                <td>@counter.</td>
+                                                <td>
+                                                    @if (obj.Status == (int)AttendanceStatus.Pending)
+                                                    {
+                                                        <input type="checkbox" class="chkBox" id='@obj.AttendanceId' name="Select">
+                                                    }
+                                                </td>
+                                                <td style="display:none">@obj.AttendanceId</td>
+                                                <td style="display:none">@obj.CompanyId</td>
+                                                <td style="display:none">@obj.UserId</td>
+                                                <td>@obj.AttendanceDate.ToString("dd MMM yyyy")</td>
+                                                <td>@obj.Name</td>
+                                                <td>@obj.EmployeeCode</td>
+                                                <td>@obj.EmployeeDesignation</td>
+                                                <td>@obj.DayTypeText</td>
+                                                <td style="display:none">@obj.InDateTime</td>
+                                                <td style="display:none">@obj.OutDateTime</td>
+                                                <td>@obj.EmploymentCategoryText</td>
+                                                <td>
+                                                    @{
+                                                        decimal? perPrice = null;
+                                                        if (obj.EmploymentCategory == (int)EmploymentCategory.HourlyBased)
+                                                        {
+                                                            perPrice = obj.NoOfHoursWorked;
+                                                        }
+                                                        else if (obj.EmploymentCategory == (int)EmploymentCategory.UnitBased)
+                                                        {
+                                                            perPrice = obj.NoOfUnitWorked;
+                                                        }
+                                                        else
+                                                        {
+                                                            perPrice = obj.ExtraHours;
+                                                        }
+                                                    }
+                                                    @perPrice
+                                                </td>
+                                                <td style="display:none">@obj.TodayWorkDetail</td>
+                                                <td style="display:none">@obj.TomorrowWorkDetail</td>
+                                                <td style="display:none">@obj.LocationFrom</td>
+                                                <td style="display:none">@obj.OutLocationFrom</td>
+                                                <td style="display:none">@obj.InLatitude</td>
+                                                <td style="display:none">@obj.InLongitude</td>
+                                                <td style="display:none">@obj.OutLatitude</td>
+                                                <td style="display:none">@obj.OutLongitude</td>
+                                                <td style="display:none">@obj.RejectReason</td>
+                                                <td style="display:none">@obj.NoOfHoursWorked</td>
+                                                <td style="display:none">@obj.NoOfUnitWorked</td>
+                                                <td style="display:none">@obj.RejectReason</td>
+                                                <td style="display:none">@obj.Remarks</td>
+                                                <td>@obj.StatusText</td>
+                                                <td>
+                                                    <a href="/admin/attendance/lunchbreak/@obj.AttendanceId" title="Break" class="btn btn-icon btn-primary">Break</a>
+                                                </td>
+                                                <td>
+                                                    @if (obj.Status == (int)AttendanceStatus.Pending)
+                                                    {
+                                                        <a href="/admin/attendance/detail/@obj.AttendanceId" title="Edit" class="btn btn-icon btn-warning"><i class="fas fa-edit"></i></a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a href="/admin/attendance/detail/@obj.AttendanceId" title="View" class="btn btn-icon btn-success"><i class="fas fa-eye"></i></a>
+                                                    }
+                                                </td>
+                                            </tr>
 
                                             counter++;
                                         }
@@ -214,8 +233,8 @@
             }
 
             var startDate = $("#StartDate").val();
-            var endDate = $("#EndDate").val(); 
-              
+            var endDate = $("#EndDate").val();
+
             var attendanceStatus = $("#AttendanceStatus").val();
             var userId = $("#UserId").val();
             StartLoading();

@@ -245,7 +245,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         objWorkerPayment.CompanyId = companyId;
                         objWorkerPayment.UserId = attendanceObject.EmployeeId;
                         objWorkerPayment.AttendanceId = attendanceObject.WorkerAttendanceId;
-                        objWorkerPayment.PaymentDate = attendanceObject.AttendanceDate;
+                        objWorkerPayment.PaymentDate = attendanceObject.AttendanceDate.Date;
                         objWorkerPayment.PaymentType = (int)EmployeePaymentType.Salary;
                         objWorkerPayment.CreditOrDebitText = ErrorMessage.Credit;
                         objWorkerPayment.DebitAmount = 0; // workerAttendanceRequestVM.TodaySalary.HasValue && employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased ? workerAttendanceRequestVM.TodaySalary.Value : 0;
@@ -261,11 +261,13 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
 
                         if (employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased)
                         {
-                            objWorkerPayment.CreditAmount = (attendanceObject.IsMorning && attendanceObject.IsAfternoon && attendanceObject.IsEvening ? (employeeObj.PerCategoryPrice) : (employeeObj.PerCategoryPrice / 2)) + (employeeObj.ExtraPerHourPrice * workerAttendanceRequestVM.ExtraHours);
+                            decimal extraHoursAmount = CommonMethod.getPriceBasedOnHours((double)employeeObj.ExtraPerHourPrice.Value, (double)workerAttendanceRequestVM.ExtraHours);
+                            objWorkerPayment.CreditAmount = (attendanceObject.IsMorning && attendanceObject.IsAfternoon && attendanceObject.IsEvening ? (employeeObj.PerCategoryPrice) : (employeeObj.PerCategoryPrice / 2)) + extraHoursAmount;
                         }
                         else if (employeeObj.EmploymentCategory == (int)EmploymentCategory.HourlyBased)
                         {
-                            objWorkerPayment.CreditAmount = employeeObj.PerCategoryPrice * workerAttendanceRequestVM.NoOfHoursWorked;
+                            decimal totalAmount = CommonMethod.getPriceBasedOnHours((double)employeeObj.PerCategoryPrice, (double)workerAttendanceRequestVM.NoOfHoursWorked);
+                            objWorkerPayment.CreditAmount = totalAmount;
                         }
                         else if (employeeObj.EmploymentCategory == (int)EmploymentCategory.UnitBased)
                         {
@@ -286,8 +288,8 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                 decimal totalDaysToApply = (decimal)totalDaysinMonth - employeeObj.NoOfFreeLeavePerMonth;
                                 perDayAmount = Math.Round((employeeObj.MonthlySalaryPrice.HasValue ? employeeObj.MonthlySalaryPrice.Value : 0) / totalDaysToApply, 2);
                             }
-
-                            objWorkerPayment.CreditAmount = (attendanceObject.IsMorning && attendanceObject.IsAfternoon && attendanceObject.IsEvening ? perDayAmount : Math.Round((perDayAmount / 2), 2)) + (employeeObj.ExtraPerHourPrice * workerAttendanceRequestVM.ExtraHours);
+                            decimal extraHoursAmount = CommonMethod.getPriceBasedOnHours((double)employeeObj.ExtraPerHourPrice.Value, (double)workerAttendanceRequestVM.ExtraHours);
+                            objWorkerPayment.CreditAmount = (attendanceObject.IsMorning && attendanceObject.IsAfternoon && attendanceObject.IsEvening ? perDayAmount : Math.Round((perDayAmount / 2), 2)) + extraHoursAmount;
                         }
 
                         #endregion
@@ -295,7 +297,31 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                         attendanceObject.TodaySalary = objWorkerPayment.CreditAmount.HasValue ? objWorkerPayment.CreditAmount.Value : 0;
                         objWorkerPayment.FinancialYearId = CommonMethod.GetFinancialYearIdFromDate(attendanceObject.AttendanceDate);
                         _db.SaveChanges();
-                         
+
+                        #region Debit entry if entered Salary GIven
+
+                        if (attendanceObject.SalaryGiven > 0)
+                        {
+                            tbl_WorkerPayment objWorkerDebitPayment = new tbl_WorkerPayment();
+                            objWorkerDebitPayment.CompanyId = companyId;
+                            objWorkerDebitPayment.UserId = attendanceObject.EmployeeId;
+                            objWorkerDebitPayment.PaymentDate = CommonMethod.CurrentIndianDateTime().Date; //paymentVM.PaymentDate;
+                            objWorkerDebitPayment.CreditOrDebitText = ErrorMessage.Debit;
+                            objWorkerDebitPayment.DebitAmount = attendanceObject.SalaryGiven;
+                            objWorkerDebitPayment.PaymentType = (int)EmployeePaymentType.Salary;
+                            objWorkerDebitPayment.Month = attendanceObject.AttendanceDate.Month;
+                            objWorkerDebitPayment.Year = attendanceObject.AttendanceDate.Year;
+                            objWorkerDebitPayment.CreatedBy = employeeId;
+                            objWorkerDebitPayment.CreatedDate = CommonMethod.CurrentIndianDateTime();
+                            objWorkerDebitPayment.ModifiedBy = employeeId;
+                            objWorkerDebitPayment.ModifiedDate = CommonMethod.CurrentIndianDateTime();
+                            objWorkerDebitPayment.FinancialYearId = CommonMethod.GetFinancialYearId();
+                            _db.tbl_WorkerPayment.Add(objWorkerDebitPayment);
+                            _db.SaveChanges();
+                        }
+
+                        #endregion
+
                     }
                     else if (workerAttendanceRequestVM.AttendanceType == (int)WorkerAttendanceType.Afternoon)
                     {
@@ -315,7 +341,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                             objWorkerPayment.CompanyId = companyId;
                             objWorkerPayment.UserId = attendanceObject.EmployeeId;
                             objWorkerPayment.AttendanceId = attendanceObject.WorkerAttendanceId;
-                            objWorkerPayment.PaymentDate = attendanceObject.AttendanceDate;
+                            objWorkerPayment.PaymentDate = attendanceObject.AttendanceDate.Date;
                             objWorkerPayment.PaymentType = (int)EmployeePaymentType.Salary;
                             objWorkerPayment.CreditOrDebitText = ErrorMessage.Credit;
                             objWorkerPayment.DebitAmount = workerAttendanceRequestVM.TodaySalary.HasValue && employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased ? workerAttendanceRequestVM.TodaySalary.Value : 0;
@@ -970,7 +996,7 @@ namespace AttendanceSystem.Areas.WebAPI.Controllers
                                 objWorkerPayment.CompanyId = companyId;
                                 objWorkerPayment.UserId = attendanceObject.EmployeeId;
                                 objWorkerPayment.AttendanceId = attendanceObject.WorkerAttendanceId;
-                                objWorkerPayment.PaymentDate = attendanceObject.AttendanceDate;
+                                objWorkerPayment.PaymentDate = attendanceObject.AttendanceDate.Date;
                                 objWorkerPayment.PaymentType = (int)EmployeePaymentType.Salary;
                                 objWorkerPayment.CreditOrDebitText = ErrorMessage.Credit;
                                 //objWorkerPayment.DebitAmount = workerAttendanceRequestVM.TodaySalary.HasValue && employeeObj.EmploymentCategory == (int)EmploymentCategory.DailyBased ? workerAttendanceRequestVM.TodaySalary.Value : 0;

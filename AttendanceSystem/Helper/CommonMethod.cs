@@ -475,12 +475,14 @@ namespace AttendanceSystem
         public static string GetEnumDescription(Enum value)
         {
             FieldInfo fi = value.GetType().GetField(value.ToString());
-
-            DescriptionAttribute[] attributes = fi.GetCustomAttributes(typeof(DescriptionAttribute), false) as DescriptionAttribute[];
-
-            if (attributes != null && attributes.Any())
+            if (fi != null)
             {
-                return attributes.First().Description;
+                DescriptionAttribute[] attributes = fi.GetCustomAttributes(typeof(DescriptionAttribute), false) as DescriptionAttribute[];
+
+                if (attributes != null && attributes.Any())
+                {
+                    return attributes.First().Description;
+                }
             }
 
             return value.ToString();
@@ -995,7 +997,7 @@ namespace AttendanceSystem
             }
             catch (Exception ex)
             {
-            } 
+            }
             return strSentenceCase;
         }
 
@@ -1015,6 +1017,25 @@ namespace AttendanceSystem
             {
             }
             return strSentenceCase;
+        }
+
+        public static decimal getPriceBasedOnHours(double perPrice, double amount)
+        {
+            decimal totalAmount = 0;
+            try
+            {
+                double decimalValue = Math.Floor(amount);
+                double fractionValue = Math.Round(amount - decimalValue, 2);
+
+                double hourPrice = (decimalValue * perPrice);
+                double minPrice = (fractionValue * 100) * (perPrice / 60);
+
+                totalAmount = Math.Round((decimal)(hourPrice + minPrice), 2);
+            }
+            catch (Exception ex)
+            {
+            }
+            return totalAmount;
         }
 
     }

@@ -697,7 +697,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                             objWorkerPayment.CompanyId = companyId;
                             objWorkerPayment.UserId = attendanceObject.EmployeeId;
                             objWorkerPayment.AttendanceId = attendanceObject.WorkerAttendanceId;
-                            objWorkerPayment.PaymentDate = attendanceObject.AttendanceDate;
+                            objWorkerPayment.PaymentDate = attendanceObject.AttendanceDate.Date;
                             objWorkerPayment.PaymentType = (int)EmployeePaymentType.Salary;
                             objWorkerPayment.CreditOrDebitText = ErrorMessage.Credit;
                             objWorkerPayment.DebitAmount = 0; // addWorkerAttendanceVM.SalaryGiven > 0 ? addWorkerAttendanceVM.SalaryGiven : 0;
@@ -712,11 +712,13 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                             if (addWorkerAttendanceVM.EmploymentCategoryId == (int)EmploymentCategory.DailyBased)
                             {
-                                objWorkerPayment.CreditAmount = (attendanceObject.IsMorning && attendanceObject.IsAfternoon && attendanceObject.IsEvening ? (addWorkerAttendanceVM.PerCategoryPrice) : (addWorkerAttendanceVM.PerCategoryPrice / 2)) + (addWorkerAttendanceVM.ExtraPerHourPrice * addWorkerAttendanceVM.ExtraHours);
+                                decimal extraHoursAmount = CommonMethod.getPriceBasedOnHours((double)addWorkerAttendanceVM.ExtraPerHourPrice.Value, (double)addWorkerAttendanceVM.ExtraHours);
+                                objWorkerPayment.CreditAmount = (attendanceObject.IsMorning && attendanceObject.IsAfternoon && attendanceObject.IsEvening ? (addWorkerAttendanceVM.PerCategoryPrice) : (addWorkerAttendanceVM.PerCategoryPrice / 2)) + extraHoursAmount;
                             }
                             else if (addWorkerAttendanceVM.EmploymentCategoryId == (int)EmploymentCategory.HourlyBased)
                             {
-                                objWorkerPayment.CreditAmount = addWorkerAttendanceVM.PerCategoryPrice * addWorkerAttendanceVM.NoOfHoursWorked;
+                                decimal totalAmount = CommonMethod.getPriceBasedOnHours((double)addWorkerAttendanceVM.PerCategoryPrice, (double)addWorkerAttendanceVM.NoOfHoursWorked);
+                                objWorkerPayment.CreditAmount = totalAmount;
                             }
                             else if (addWorkerAttendanceVM.EmploymentCategoryId == (int)EmploymentCategory.UnitBased)
                             {
@@ -724,13 +726,15 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                             }
                             else if (addWorkerAttendanceVM.EmploymentCategoryId == (int)EmploymentCategory.MonthlyBased)
                             {
-                                objWorkerPayment.CreditAmount = addWorkerAttendanceVM.TodaySalary + addWorkerAttendanceVM.ExtraHoursAmount;
+                                decimal extraHoursAmount = CommonMethod.getPriceBasedOnHours((double)addWorkerAttendanceVM.ExtraPerHourPrice.Value, (double)addWorkerAttendanceVM.ExtraHours);
+                                //objWorkerPayment.CreditAmount = addWorkerAttendanceVM.TodaySalary + addWorkerAttendanceVM.ExtraHoursAmount;
+                                objWorkerPayment.CreditAmount = addWorkerAttendanceVM.TodaySalary + extraHoursAmount;
                             }
                             else
                             {
                                 objWorkerPayment.CreditAmount = 0;
                             }
-                             
+
                             _db.SaveChanges();
 
 
@@ -741,7 +745,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                 tbl_WorkerPayment objWorkerDebitPayment = new tbl_WorkerPayment();
                                 objWorkerDebitPayment.CompanyId = companyId;
                                 objWorkerDebitPayment.UserId = attendanceObject.EmployeeId;
-                                objWorkerDebitPayment.PaymentDate = CommonMethod.CurrentIndianDateTime(); //paymentVM.PaymentDate;
+                                objWorkerDebitPayment.PaymentDate = CommonMethod.CurrentIndianDateTime().Date; //paymentVM.PaymentDate;
                                 objWorkerDebitPayment.CreditOrDebitText = ErrorMessage.Debit;
                                 objWorkerDebitPayment.DebitAmount = addWorkerAttendanceVM.SalaryGiven;
                                 objWorkerDebitPayment.PaymentType = (int)EmployeePaymentType.Salary;
@@ -964,7 +968,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                     objWorkerPayment.CompanyId = companyId;
                                     objWorkerPayment.UserId = attendanceObject.EmployeeId;
                                     objWorkerPayment.AttendanceId = attendanceObject.WorkerAttendanceId;
-                                    objWorkerPayment.PaymentDate = attendanceObject.AttendanceDate;
+                                    objWorkerPayment.PaymentDate = attendanceObject.AttendanceDate.Date;
                                     objWorkerPayment.PaymentType = (int)EmployeePaymentType.Salary;
                                     objWorkerPayment.CreditOrDebitText = ErrorMessage.Credit;
                                     objWorkerPayment.DebitAmount = 0;
@@ -1022,7 +1026,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                         objWorkerPayment.CompanyId = companyId;
                                         objWorkerPayment.UserId = attendanceObject.EmployeeId;
                                         objWorkerPayment.AttendanceId = attendanceObject.WorkerAttendanceId;
-                                        objWorkerPayment.PaymentDate = attendanceObject.AttendanceDate;
+                                        objWorkerPayment.PaymentDate = attendanceObject.AttendanceDate.Date;
                                         objWorkerPayment.PaymentType = (int)EmployeePaymentType.Salary;
                                         objWorkerPayment.CreditOrDebitText = ErrorMessage.Credit;
                                         objWorkerPayment.DebitAmount = 0; // workerAttendanceRequestVM.TodaySalary.HasValue && emp.EmploymentCategory == (int)EmploymentCategory.DailyBased ? workerAttendanceRequestVM.TodaySalary.Value : 0;

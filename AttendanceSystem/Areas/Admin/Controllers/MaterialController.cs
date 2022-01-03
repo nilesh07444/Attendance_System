@@ -147,6 +147,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objMaterial.Qty = materialVM.Qty;
                         objMaterial.InOut = materialVM.InOut;
                         objMaterial.Remarks = materialVM.Remarks;
+                        objMaterial.FinancialYearId = CommonMethod.GetFinancialYearIdFromDate(materialVM.MaterialDate);
                         objMaterial.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
                         objMaterial.ModifiedDate = CommonMethod.CurrentIndianDateTime();
                     }
@@ -165,7 +166,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         objMaterial.CreatedDate = CommonMethod.CurrentIndianDateTime();
                         objMaterial.ModifiedBy = (int)PaymentGivenBy.CompanyAdmin;
                         objMaterial.ModifiedDate = CommonMethod.CurrentIndianDateTime();
-                        objMaterial.FinancialYearId = CommonMethod.GetFinancialYearId();
+                        objMaterial.FinancialYearId = CommonMethod.GetFinancialYearIdFromDate(materialVM.MaterialDate);
                         objMaterial.IsYearlyConversionEntry = false;
                         _db.tbl_Material.Add(objMaterial);
                     }

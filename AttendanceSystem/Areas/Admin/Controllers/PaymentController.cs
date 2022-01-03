@@ -89,7 +89,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
                                          where !emp.IsDeleted && emp.CompanyId == companyId && !empp.IsDeleted && empp.CreditOrDebitText.ToLower() == "debit"
                                          && (paymentFilterVM.EmploymentCategory.HasValue ? emp.EmploymentCategory == paymentFilterVM.EmploymentCategory.Value : true)
-                                         && DbFunctions.TruncateTime(empp.PaymentDate) >= DbFunctions.TruncateTime(paymentFilterVM.StartDate) 
+                                         && DbFunctions.TruncateTime(empp.PaymentDate) >= DbFunctions.TruncateTime(paymentFilterVM.StartDate)
                                          && DbFunctions.TruncateTime(empp.PaymentDate) <= DbFunctions.TruncateTime(paymentFilterVM.EndDate)
                                          && (paymentFilterVM.UserRole.HasValue ? emp.AdminRoleId == paymentFilterVM.UserRole.Value : true)
                                          select new PaymentVM
@@ -592,15 +592,54 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
             try
             {
+                long? currentFinancialYearId = CommonMethod.GetFinancialYearId();
+
                 tbl_Employee objEmployee = _db.tbl_Employee.Where(x => x.EmployeeId == employeeId).FirstOrDefault();
 
                 if (objEmployee.AdminRoleId == (int)AdminRoles.Worker)
                 {
-                    pendingSalary = _db.tbl_WorkerPayment.Any(x => x.UserId == employeeId && !x.IsDeleted && x.Month == currMonth && x.Year == currYear && x.PaymentType != (int)EmployeePaymentType.Extra) ? _db.tbl_WorkerPayment.Where(x => x.UserId == employeeId && !x.IsDeleted && x.Month == currMonth && x.Year == currYear && x.PaymentType != (int)EmployeePaymentType.Extra).Select(x => (x.CreditAmount.HasValue ? x.CreditAmount.Value : 0) - (x.DebitAmount.HasValue ? x.DebitAmount.Value : 0)).Sum() : 0;
+
+                    decimal? totalCreditAmount = (from e in _db.tbl_WorkerPayment
+                                                  join att in _db.tbl_WorkerAttendance on e.AttendanceId equals att.WorkerAttendanceId
+                                                  where e.UserId == employeeId
+                                                     && !e.IsDeleted
+                                                     && e.CreditOrDebitText == "Credit"
+                                                     && e.FinancialYearId == currentFinancialYearId
+                                                     && e.PaymentType != (int)EmployeePaymentType.Extra
+                                                  select e).ToList().Sum(x => x.CreditAmount);
+
+                    decimal? totalDebitAmount = _db.tbl_WorkerPayment.Where(x => x.UserId == employeeId
+                        && !x.IsDeleted
+                        && x.CreditOrDebitText == "Debit"
+                        && x.FinancialYearId == currentFinancialYearId
+                        && x.PaymentType != (int)EmployeePaymentType.Extra).ToList().Sum(x => x.DebitAmount);
+
+                    pendingSalary = totalCreditAmount - totalDebitAmount;
+
+                    //pendingSalary = _db.tbl_WorkerPayment.Any(x => x.UserId == employeeId && !x.IsDeleted && x.Month == currMonth && x.Year == currYear && x.PaymentType != (int)EmployeePaymentType.Extra) ? _db.tbl_WorkerPayment.Where(x => x.UserId == employeeId && !x.IsDeleted && x.Month == currMonth && x.Year == currYear && x.PaymentType != (int)EmployeePaymentType.Extra).Select(x => (x.CreditAmount.HasValue ? x.CreditAmount.Value : 0) - (x.DebitAmount.HasValue ? x.DebitAmount.Value : 0)).Sum() : 0;
                 }
                 else
                 {
-                    pendingSalary = _db.tbl_EmployeePayment.Any(x => x.UserId == employeeId && !x.IsDeleted && x.Month == currMonth && x.Year == currYear && x.PaymentType != (int)EmployeePaymentType.Extra) ? _db.tbl_EmployeePayment.Where(x => x.UserId == employeeId && !x.IsDeleted && x.Month == currMonth && x.Year == currYear && x.PaymentType != (int)EmployeePaymentType.Extra).Select(x => (x.CreditAmount.HasValue ? x.CreditAmount.Value : 0) - (x.DebitAmount.HasValue ? x.DebitAmount.Value : 0)).Sum() : 0;
+
+                    decimal? totalCreditAmount = (from e in _db.tbl_EmployeePayment
+                                                  join att in _db.tbl_Attendance on e.AttendanceId equals att.AttendanceId
+                                                  where e.UserId == employeeId
+                                                     && !e.IsDeleted
+                                                     && e.CreditOrDebitText == "Credit"
+                                                     && e.FinancialYearId == currentFinancialYearId
+                                                     && att.Status == (int)AttendanceStatus.Accept
+                                                     && e.PaymentType != (int)EmployeePaymentType.Extra
+                                                  select e).ToList().Sum(x => x.CreditAmount);
+
+                    decimal? totalDebitAmount = _db.tbl_EmployeePayment.Where(x => x.UserId == employeeId
+                        && !x.IsDeleted
+                        && x.CreditOrDebitText == "Debit"
+                        && x.FinancialYearId == currentFinancialYearId
+                        && x.PaymentType != (int)EmployeePaymentType.Extra).ToList().Sum(x => x.DebitAmount);
+
+                    pendingSalary = totalCreditAmount - totalDebitAmount;
+
+                    //pendingSalary = _db.tbl_EmployeePayment.Any(x => x.UserId == employeeId && !x.IsDeleted && x.Month == currMonth && x.Year == currYear && x.PaymentType != (int)EmployeePaymentType.Extra) ? _db.tbl_EmployeePayment.Where(x => x.UserId == employeeId && !x.IsDeleted && x.Month == currMonth && x.Year == currYear && x.PaymentType != (int)EmployeePaymentType.Extra).Select(x => (x.CreditAmount.HasValue ? x.CreditAmount.Value : 0) - (x.DebitAmount.HasValue ? x.DebitAmount.Value : 0)).Sum() : 0;
                 }
                 status = 1;
             }
