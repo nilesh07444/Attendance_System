@@ -110,13 +110,15 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         dashboardVM.Payer = _db.tbl_Employee.Where(x => x.CompanyId == companyId && x.IsActive && !x.IsDeleted && x.AdminRoleId == (int)AdminRoles.Payer).Count();
                         dashboardVM.Worker = _db.tbl_Employee.Where(x => x.CompanyId == companyId && x.IsActive && !x.IsDeleted && x.AdminRoleId == (int)AdminRoles.Worker).Count();
                     }
-
-
+                    
                     int currentMonth = CommonMethod.CurrentIndianDateTime().Month;
                     int currentYear = CommonMethod.CurrentIndianDateTime().Year;
                     int applyYear = currentMonth == 1 ? currentYear - 1 : currentYear;
                     int applyMonth = currentMonth - 1;
                     List<long> workerIds = new List<long>();
+
+                    if (applyMonth == 0)
+                        applyMonth = 12;
 
                     bool IsConstructionCompany = false;
 
@@ -247,7 +249,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         /// <returns></returns>
         public JsonResult ConversionOfEmployeeUsers(int month, int year)
         {
-             
+
             #region Variable Declaration
 
             bool IsValidationError = false;
@@ -263,7 +265,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
 
             try
             {
-                 
+
                 #region Validation
 
                 tbl_Company objCompany = _db.tbl_Company.Where(x => x.CompanyId == companyId).FirstOrDefault();
@@ -294,7 +296,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 }
 
                 #endregion
-                 
+
                 if (!IsValidationError)
                 {
                     #region Remove InProgress status payment data of last conversion
@@ -613,7 +615,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     #endregion
 
                 }
-  
+
                 #region Yearly Conversion of Material
 
                 if (IsConverstionCompleteSucess && month == (int)CalenderMonths.March && objCompany.CompanyTypeId == (int)CompanyType.ConstructionCompany)
@@ -624,7 +626,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                 }
 
                 #endregion
-                
+
             }
             catch (Exception ex)
             {
@@ -1038,7 +1040,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                     lstMaterialConversion.ForEach(materialVM =>
                     {
                         DateTime materialDate = DateTime.ParseExact("01-04" + "-" + materialConversionDate.Year, "dd-MM-yyyy", System.Globalization.CultureInfo.InvariantCulture);
-                        
+
                         tbl_Material objMaterial = new tbl_Material();
                         objMaterial.CompanyId = companyId;
                         objMaterial.MaterialCategoryId = materialVM.MaterialCategoryId;
