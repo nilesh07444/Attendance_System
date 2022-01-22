@@ -6,7 +6,7 @@
 }
 
 <div class="page-body">
-     
+
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
@@ -40,6 +40,24 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Employment Category</label>
+                                    <p>@Model.EmploymentCategoryText</p>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Employment Category</label>
+                                    <p>@Model.EmployeeCode</p>
+                                </div>
+                            </div>
+
+                        </div>
+
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
@@ -193,11 +211,41 @@
 
                         @if (Model.EmploymentCategory == (int)EmploymentCategory.MonthlyBased || Model.EmploymentCategory == (int)EmploymentCategory.DailyBased)
                         {
+                            if (Model.EmploymentCategory == (int)EmploymentCategory.MonthlyBased)
+                            {
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Monthly Salary Price</label>
+                                            <p>@Model.MonthlySalaryPrice</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                            if (Model.EmploymentCategory == (int)EmploymentCategory.DailyBased)
+                            {
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Per Day Price</label>
+                                            <p>@Model.PerCategoryPrice</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         @Html.LabelFor(model => model.ExtraHours)
                                         <p>@Model.ExtraHours</p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Extra Per Hour Price</label>
+                                        <p>@Model.ExtraPerHourPrice</p>
                                     </div>
                                 </div>
                             </div>
@@ -211,6 +259,20 @@
                                         <p>@Model.NoOfHoursWorked</p>
                                     </div>
                                 </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Per Hour Price</label>
+                                        <p>@Model.PerCategoryPrice</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.WorkedHoursAmount)
+                                        <p>@Model.WorkedHoursAmount</p>
+                                    </div>
+                                </div>
                             </div>
                         }
                         else if (Model.EmploymentCategory == (int)EmploymentCategory.UnitBased)
@@ -222,21 +284,35 @@
                                         <p>@Model.NoOfUnitWorked</p>
                                     </div>
                                 </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Per Unit Price</label>
+                                        <p>@Model.PerCategoryPrice</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.WorkedUnitAmount)
+                                        <p>@Model.WorkedUnitAmount</p>
+                                    </div>
+                                </div>
                             </div>
                         }
-                        
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
-      
+
 </div>
 
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
- 
+
 <script type="text/javascript">
     $(document).ready(function () {
         $('#btnCancel').click(function () {

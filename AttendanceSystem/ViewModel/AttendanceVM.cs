@@ -390,6 +390,17 @@ namespace AttendanceSystem.ViewModel
         public decimal? NoOfHoursWorked { get; set; }
         [Display(Name = "No Of Unit Worked")]
         public decimal? NoOfUnitWorked { get; set; }
+
+        // 
+        [Display(Name = "Worked Hours Amount")]
+        public decimal WorkedHoursAmount { get; set; }
+
+        [Display(Name = "Worked Unit Amount")]
+        public decimal WorkedUnitAmount { get; set; }
+
+        public decimal? MonthlySalaryPrice { get; set; }
+        public decimal? PerCategoryPrice { get; set; }
+        public decimal? ExtraPerHourPrice { get; set; }
     }
 
     public class AfternoonAttendanceEmployeeVM

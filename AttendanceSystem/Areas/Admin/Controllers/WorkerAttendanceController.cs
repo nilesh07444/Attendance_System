@@ -1090,6 +1090,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
         public ActionResult View(long id)
         {
             WorkerAttendanceViewVM workerAttendanceViewVM = new WorkerAttendanceViewVM();
+
             try
             {
                 companyId = clsAdminSession.CompanyId;
@@ -1136,10 +1137,22 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                               EveningLocationFrom = at.EveningLocationFrom,
                                               ExtraHours = at.ExtraHours,
                                               NoOfHoursWorked = at.NoOfHoursWorked,
-                                              NoOfUnitWorked = at.NoOfUnitWorked,
+                                              NoOfUnitWorked = at.NoOfHoursWorked,
+                                              ExtraPerHourPrice = emp.ExtraPerHourPrice,
+                                              PerCategoryPrice = emp.PerCategoryPrice,
+                                              MonthlySalaryPrice = emp.MonthlySalaryPrice
                                           }).OrderByDescending(x => x.AttendanceDate).FirstOrDefault();
 
+                if (workerAttendanceViewVM.EmploymentCategory == (int)EmploymentCategory.HourlyBased)
+                {
+                    decimal totalAmount = CommonMethod.getPriceBasedOnHours((double)workerAttendanceViewVM.PerCategoryPrice, (double)workerAttendanceViewVM.NoOfHoursWorked);                    
+                    workerAttendanceViewVM.WorkedHoursAmount = totalAmount;
+                }
 
+                if (workerAttendanceViewVM.EmploymentCategory == (int)EmploymentCategory.UnitBased)
+                {
+                    workerAttendanceViewVM.WorkedUnitAmount = (workerAttendanceViewVM.NoOfUnitWorked != null ? workerAttendanceViewVM.NoOfUnitWorked.Value : 0) * workerAttendanceViewVM.PerCategoryPrice.Value;
+                }
 
                 workerAttendanceViewVM.EmploymentCategoryText = CommonMethod.GetEnumDescription((EmploymentCategory)workerAttendanceViewVM.EmploymentCategory);
                 workerAttendanceViewVM.IsMorningText = workerAttendanceViewVM.IsMorning ? ErrorMessage.YES : ErrorMessage.NO;
