@@ -167,8 +167,8 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                                 _db.SaveChanges();
 
                                 clsAdminSession.CurrentAccountPackageId = companyObj.CurrentPackageId.Value;
-
-
+                               
+                                
                                 tbl_CompanySMSPackRenew objCompanySMSPackRenew = new tbl_CompanySMSPackRenew();
                                 objCompanySMSPackRenew.CompanyId = companyObj.CompanyId;
                                 objCompanySMSPackRenew.SMSPackageId = companyPackage.PackageId;
@@ -240,14 +240,14 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                             companyPackage = _db.tbl_CompanyRenewPayment.Where(x => x.CompanyRegistrationPaymentId == companyObj.CurrentPackageId).FirstOrDefault();
                         }
                     }
-                    else
-                    {
-                        if (companyObj.TrialExpiryDate < today)
-                        {
-                            companyObj.IsTrialMode = false;
-                            _db.SaveChanges();
-                        }
-                    }
+                    //else
+                    //{
+                    //    if (companyObj.TrialExpiryDate < today)
+                    //    {
+                    //        companyObj.IsTrialMode = false;
+                    //        _db.SaveChanges();
+                    //    }
+                    //}
                 }
 
                 clsAdminSession.SessionID = Session.SessionID;

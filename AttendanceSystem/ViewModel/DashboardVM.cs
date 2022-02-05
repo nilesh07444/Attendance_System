@@ -10,7 +10,7 @@ namespace AttendanceSystem.ViewModel
         public int? SMSLeft { get; set; }
         public long PendingLeaves { get; set; }
         public long PendingAttendance { get; set; }
-        public DateTime AccountExpiryDate { get; set; }
+        public DateTime? AccountExpiryDate { get; set; }
         public long ThisMonthHoliday { get; set; }
 
         public long Employee { get; set; }

@@ -74,7 +74,7 @@ namespace AttendanceSystem.Areas.Admin.Controllers
                         }
                         else
                         {
-                            dashboardVM.AccountExpiryDate = objCompany.AccountExpiryDate.Value;
+                            dashboardVM.AccountExpiryDate = objCompany.AccountExpiryDate;
                             dashboardVM.NoOfEmployeeAllowed = 0;
                         }
                     }
